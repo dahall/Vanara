@@ -1238,7 +1238,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms711261(v=vs.85) HRESULT GetView ( HCHAPTER hChapter, REFIID
 		// riid, HCHAPTER *phChapterSource, IUnknown **ppView);
 		[PreserveSig]
-		HRESULT GetView([In] HCHAPTER hChapter, in Guid riid, out HCHAPTER phChapterSource, [MarshalAs(UnmanagedType.IUnknown)] out object? ppView);
+		HRESULT GetView([In] HCHAPTER hChapter, in Guid riid, out HCHAPTER phChapterSource, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppView);
 	}
 
 	/// <summary>
@@ -2650,8 +2650,8 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms717916(v=vs.85) HRESULT OpenRowset ( IUnknown *pUnkOuter,
 		// DBID *pTableID, DBID *pIndexID, REFIID riid, ULONG cPropertySets, DBPROPSET rgPropertySets[ ], IUnknown **ppRowset );
 		[PreserveSig]
-		HRESULT OpenRowset([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional] IntPtr pTableID, [In, Optional] IntPtr pIndexID,
-			in Guid riid, uint cPropertySets, [In, Out] SafeDBPROPSETListHandle rgPropertySets, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppRowset);
+		HRESULT OpenRowset([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional] StructPointer<DBID> pTableID, [In, Optional] StructPointer<DBID> pIndexID,
+			in Guid riid, uint cPropertySets, [In, Out] SafeDBPROPSETListHandle rgPropertySets, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppRowset);
 	}
 
 	/// <summary>
@@ -3867,7 +3867,7 @@ public static partial class OleDb
 		HRESULT CreateTable([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional] IntPtr pTableID,
 			DBORDINAL cColumnDescs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DBCOLUMNDESC[]? rgColumnDescs,
 			in Guid riid, uint cPropertySets, [In] SafeDBPROPSETListHandle rgPropertySets,
-			out IntPtr ppTableID, [MarshalAs(UnmanagedType.IUnknown)] out object? ppRowset);
+			out IntPtr ppTableID, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppRowset);
 
 		/// <summary>Drops a base table in the data store.</summary>
 		/// <returns>

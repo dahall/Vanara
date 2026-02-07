@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 using Vanara.Collections;
+using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests;
@@ -46,5 +48,21 @@ public class IShellFolderTests
 			}
 		}
 
+	}
+
+	[Test]
+	public void Issue530Test()
+	{
+		var pFolder = (IShellFolder2)new MyDocuments();
+		var item = pFolder.EnumObjects().FirstOrDefault();
+		Assert.That(item, Is.Not.Null);
+
+		IPropertyStoreFactory? propertyStoreFactoryForChild = null;
+		Assert.That(() => propertyStoreFactoryForChild = pFolder.BindToObject<IPropertyStoreFactory>(item!), Throws.Nothing);
+		Assert.That(propertyStoreFactoryForChild, Is.Not.Null);
+
+		IPropertyStore? propertyStoreForChild = null;
+		Assert.That(() => propertyStoreFactoryForChild!.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_DEFAULT, null, typeof(IPropertyStore).GUID, out propertyStoreForChild), Throws.Nothing);
+		Assert.That(propertyStoreForChild, Is.Not.Null);
 	}
 }

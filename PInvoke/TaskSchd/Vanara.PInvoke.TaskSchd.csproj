@@ -26,7 +26,4 @@ IAction IActionCollection IBootTrigger IComHandlerAction IDailyTrigger IEmailAct
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

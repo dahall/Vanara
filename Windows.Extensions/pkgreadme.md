@@ -1,7 +1,7 @@
 ﻿![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/VanaraHeading.png)
 ### **Vanara.Windows.Extensions NuGet Package**
 [![Version](https://img.shields.io/nuget/v/Vanara.Windows.Extensions?label=NuGet&style=flat-square)](https://github.com/dahall/Vanara/releases)
-[![Build status](https://img.shields.io/appveyor/build/dahall/vanara?label=AppVeyor%20build&style=flat-square)](https://ci.appveyor.com/project/dahall/vanara)
+[![Build status](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml/badge.svg?branch=master)](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml)
 
 Extension methods and conversions from Vanara P/Invoke types and methods to Windows Forms types and methods.
 
@@ -11,7 +11,7 @@ Extension methods and conversions from Vanara P/Invoke types and methods to Wind
 
 ### **Issues?**
 
-First check if it's already fixed by trying the [AppVeyor build](https://ci.appveyor.com/nuget/vanara-prerelease).
+First check if it's already fixed by trying the [MyGet build](https://www.myget.org/feed/Packages/vanara).
 If you're still running into problems, file an [issue](https://github.com/dahall/Vanara/issues).
 
 ### **Included in Vanara.Windows.Extensions**

@@ -14,21 +14,21 @@ public class SafeCoTaskMemHandleTests
 		var r = new[] { 5, 5, 5, 5 };
 		var h = SafeCoTaskMemHandle.CreateFromList(r, r.Length);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
-		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(int)) * r.Length));
+		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf<int>() * r.Length));
 		Assert.That(h.ToStructure<int>(), Is.EqualTo(5));
 		Assert.That(h.ToEnumerable<int>(4), Has.Exactly(4).EqualTo(5).And.Exactly(4).Items);
 
 		var d = new[] { new RECT(1, 1, 1, 1), new RECT(2, 2, 2, 2) };
 		h = SafeCoTaskMemHandle.CreateFromList(d, d.Length);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
-		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * d.Length));
+		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf<RECT>() * d.Length));
 		Assert.That(h.ToStructure<RECT>().X, Is.EqualTo(1));
 		Assert.That(h.ToArray<RECT>(2), Has.Exactly(2).Items);
 
 		var p = new[] { new PRECT(1, 1, 1, 1), new PRECT(2, 2, 2, 2) };
 		h = SafeCoTaskMemHandle.CreateFromList(p);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
-		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(PRECT)) * p.Length));
+		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf<PRECT>() * p.Length));
 		Assert.That(h.ToArray<RECT>(2), Has.Exactly(2).Items);
 
 		Assert.That(() => SafeCoTaskMemHandle.CreateFromList(new[] { "X" }), Throws.ArgumentException);
@@ -66,7 +66,7 @@ public class SafeCoTaskMemHandleTests
 		Assert.That((int)h.Size, Is.EqualTo(IntPtr.Size + r.Length * (4 + IntPtr.Size)));
 		Assert.That(h.ToStringEnum(4, CharSet.Unicode), Has.Exactly(4).EqualTo("5").And.Exactly(4).Items);
 
-		h = SafeCoTaskMemHandle.CreateFromStringList(Enumerable.Empty<string>());
+		h = SafeCoTaskMemHandle.CreateFromStringList([]);
 		Assert.That((int)h.Size, Is.EqualTo(StringHelper.GetCharSize()));
 	}
 
@@ -76,7 +76,7 @@ public class SafeCoTaskMemHandleTests
 		var r = new RECT(5, 5, 5, 5);
 		var h = SafeCoTaskMemHandle.CreateFromStructure(r);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
-		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(RECT))));
+		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf<RECT>()));
 		Assert.That(h.ToStructure<RECT>().X, Is.EqualTo(5));
 	}
 
@@ -100,7 +100,9 @@ public class SafeCoTaskMemHandleTests
 		Assert.That(h.IsClosed && h.IsInvalid);
 
 		h = Marshal.AllocCoTaskMem(5);
+		h.DangerousOverrideSize(5);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
+		Assert.That(!h.Equals(SafeHGlobalHandle.Null));
 		Assert.That(h, Is.Not.EqualTo(SafeHGlobalHandle.Null));
 		h.Dispose();
 		Assert.That(h.IsClosed && h.IsInvalid);

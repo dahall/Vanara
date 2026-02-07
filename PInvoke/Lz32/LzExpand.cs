@@ -195,8 +195,8 @@ public static partial class Lz32
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/lzexpand/nf-lzexpand-getexpandednamea INT GetExpandedNameA( LPSTR lpszSource,
-	// LPSTR lpszBuffer );
+	// https://docs.microsoft.com/en-us/windows/win32/api/lzexpand/nf-lzexpand-getexpandednamea INT GetExpandedNameA( StrPtrAnsi lpszSource,
+	// StrPtrAnsi lpszBuffer );
 	[DllImport(Lib_Lz32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("lzexpand.h", MSDNShortId = "NF:lzexpand.GetExpandedNameA")]
 	public static extern int GetExpandedName([In, MarshalAs(UnmanagedType.LPTStr)] string lpszSource, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszBuffer);
@@ -580,7 +580,7 @@ public static partial class Lz32
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/lzexpand/nf-lzexpand-lzopenfilea INT LZOpenFileA( LPSTR lpFileName, LPOFSTRUCT
+	// https://docs.microsoft.com/en-us/windows/win32/api/lzexpand/nf-lzexpand-lzopenfilea INT LZOpenFileA( StrPtrAnsi lpFileName, LPOFSTRUCT
 	// lpReOpenBuf, WORD wStyle );
 	[DllImport(Lib_Lz32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("lzexpand.h", MSDNShortId = "NF:lzexpand.LZOpenFileA")]
@@ -774,6 +774,9 @@ public static partial class Lz32
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HLZFILE"/> object with <c>0</c>.</summary>
 		public static HLZFILE NULL => new(0);
+
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0;

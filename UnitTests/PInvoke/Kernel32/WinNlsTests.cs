@@ -8,10 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class WinNlsTests
 {
 	[Test]
-	public void ConvertDefaultLocaleTest()
-	{
-		Assert.That(ConvertDefaultLocale(LOCALE_USER_DEFAULT), ResultIs.Not.Value(LOCALE_USER_DEFAULT));
-	}
+	public void ConvertDefaultLocaleTest() => Assert.That(ConvertDefaultLocale(LOCALE_USER_DEFAULT), ResultIs.Not.Value(LOCALE_USER_DEFAULT));
 
 	[Test]
 	public void ConvertTest()
@@ -152,30 +149,20 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void FindNLSStringExTest()
-	{
-		Assert.That(FindNLSStringEx(LOCALE_NAME_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
-	}
+	public void FindNLSStringExTest() => Assert.That(FindNLSStringEx(LOCALE_NAME_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
 
 	[Test]
-	public void FindNLSStringTest()
-	{
-		Assert.That(FindNLSString(LOCALE_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
-	}
+	public void FindNLSStringTest() => Assert.That(FindNLSString(LOCALE_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
 
 	[Test]
-	public void GetACPTest()
-	{
-		Assert.That(GetACP(), ResultIs.Not.Value(0));
-	}
+	public void GetACPTest() => Assert.That(GetACP(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetCalendarDateFormatExTest()
 	{
 		GetSystemTime(out SYSTEMTIME st);
 		ConvertSystemTimeToCalDateTime(st, CALID.CAL_GREGORIAN, out CALDATETIME cdt);
-		StringBuilder sb = new(256);
-		Assert.That(GetCalendarDateFormatEx(LOCALE_NAME_USER_DEFAULT, 0, cdt, "d MMMM", sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetCalendarDateFormatEx(LOCALE_NAME_USER_DEFAULT, 0, cdt, "d MMMM", out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
@@ -183,8 +170,7 @@ public class WinNlsTests
 	public void GetCalendarInfoExTest()
 	{
 		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, null, CALTYPE.CAL_ITWODIGITYEARMAX | CALTYPE.CAL_RETURN_NUMBER, default, 0, out uint val), ResultIs.Not.Value(0));
-		StringBuilder sb = new(256);
-		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, null, CALTYPE.CAL_SCALNAME, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, out string? sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
@@ -216,43 +202,36 @@ public class WinNlsTests
 	[Test]
 	public void GetCurrencyFormatExTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetCurrencyFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetCurrencyFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetCurrencyFormatTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetCurrencyFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetCurrencyFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetDurationFormatExTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetDurationFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, IntPtr.Zero, 1500UL, null, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetDurationFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, IntPtr.Zero, 1500UL, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetDurationFormatTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetDurationFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, IntPtr.Zero, 1500UL, null, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetDurationFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, IntPtr.Zero, 1500UL, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetFileMUIInfoTest()
 	{
-		uint sz = 0U;
-		Assert.That(GetFileMUIInfo(MUI_QUERY.MUI_QUERY_CHECKSUM | MUI_QUERY.MUI_QUERY_LANGUAGE_NAME | MUI_QUERY.MUI_QUERY_RESOURCE_TYPES | MUI_QUERY.MUI_QUERY_TYPE,
-			@"C:\Windows\RegEdit.exe", IntPtr.Zero, ref sz), ResultIs.Failure);
-		FILEMUIINFO fmi = FILEMUIINFO.Default;
-		using SafeHGlobalHandle mem = SafeHGlobalHandle.CreateFromStructure(fmi);
+		using SafeHGlobalStruct<FILEMUIINFO> mem = new(FILEMUIINFO.Default, 256);
+		uint sz = mem.Size;
 		bool success = false;
 		do
 		{
@@ -261,16 +240,15 @@ public class WinNlsTests
 			success = GetFileMUIInfo(MUI_QUERY.MUI_QUERY_CHECKSUM | MUI_QUERY.MUI_QUERY_LANGUAGE_NAME | MUI_QUERY.MUI_QUERY_RESOURCE_TYPES | MUI_QUERY.MUI_QUERY_TYPE,
 				@"C:\Windows\RegEdit.exe", mem, ref sz);
 		} while (!success && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		Assert.That(success);
-		fmi = mem.ToStructure<FILEMUIINFO>();
-		fmi.WriteValues();
+		Assert.That(success, ResultIs.Successful);
+		mem.Value.WriteValues();
 	}
 
 	[Test]
 	public void GetFileMUIInfoTest2()
 	{
 		SafeFILEMUIINFO fmi = GetFileMUIInfo(MUI_QUERY.MUI_QUERY_CHECKSUM | MUI_QUERY.MUI_QUERY_LANGUAGE_NAME | MUI_QUERY.MUI_QUERY_RESOURCE_TYPES | MUI_QUERY.MUI_QUERY_TYPE,
-			@"C:\Windows\explorer.exe");
+			@"C:\Windows\RegEdit.exe");
 		fmi.WriteValues();
 	}
 
@@ -292,10 +270,9 @@ public class WinNlsTests
 	[Test]
 	public void GetGeoInfoExTest()
 	{
-		StringBuilder sb = new(256);
 		foreach (SYSGEOTYPE ev in Enum.GetValues(typeof(SYSGEOTYPE)))
 		{
-			if (GetGeoInfoEx("US", ev, sb, sb.Capacity) > 0)
+			if (GetGeoInfoEx("US", ev, out var sb) > 0)
 				TestContext.WriteLine($"{ev}={sb}");
 		}
 	}
@@ -303,10 +280,9 @@ public class WinNlsTests
 	[Test]
 	public void GetGeoInfoTest()
 	{
-		StringBuilder sb = new(256);
 		foreach (SYSGEOTYPE ev in Enum.GetValues(typeof(SYSGEOTYPE)))
 		{
-			if (GetGeoInfo(0xf4, ev, sb, sb.Capacity, 0) > 0)
+			if (GetGeoInfo(0xf4, ev, out var sb, 0) > 0)
 				TestContext.WriteLine($"{ev}={sb}");
 		}
 	}
@@ -314,9 +290,8 @@ public class WinNlsTests
 	[Test]
 	public void GetLocaleInfoExTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, sb, sb.Capacity), ResultIs.Not.Value(0));
-		Assert.That(sb.ToString(), Is.EqualTo("Wednesday"));
+		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out string? sb), ResultIs.Not.Value(0));
+		Assert.That(sb, Is.EqualTo("Wednesday"));
 
 		using SafeHGlobalHandle pVal = SafeHGlobalHandle.CreateFromStructure(16U);
 		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_ITIME | LCTYPE.LOCALE_RETURN_NUMBER, pVal, 4 / StringHelper.GetCharSize()), ResultIs.Not.Value(0));
@@ -342,24 +317,19 @@ public class WinNlsTests
 	[Test]
 	public void GetNumberFormatExTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetNumberFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetNumberFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetNumberFormatTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetNumberFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(GetNumberFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void GetOEMCPTest()
-	{
-		Assert.That(GetOEMCP(), ResultIs.Not.Value(0));
-	}
+	public void GetOEMCPTest() => Assert.That(GetOEMCP(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetSetCalendarInfoTest()
@@ -367,20 +337,18 @@ public class WinNlsTests
 		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_ITWODIGITYEARMAX | CALTYPE.CAL_RETURN_NUMBER, default, 0, out uint val), ResultIs.Not.Value(0));
 		Assert.That(SetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_ITWODIGITYEARMAX, $"{val}"), ResultIs.Successful);
 
-		StringBuilder sb = new(256);
-		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, out string? sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetSetLocaleInfoTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, sb, sb.Capacity), ResultIs.Not.Value(0));
-		Assert.That(sb.ToString(), Is.EqualTo("Wednesday"));
+		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out string? sb), ResultIs.Not.Value(0));
+		Assert.That(sb, Is.EqualTo("Wednesday"));
 
-		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_STIMEFORMAT, sb, sb.Capacity), ResultIs.Not.Value(0));
-		Assert.That(SetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_STIMEFORMAT, sb.ToString()), ResultIs.Successful);
+		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_STIMEFORMAT, out sb), ResultIs.Not.Value(0));
+		Assert.That(SetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_STIMEFORMAT, sb!), ResultIs.Successful);
 
 		using SafeHGlobalHandle pVal = SafeHGlobalHandle.CreateFromStructure(16U);
 		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_ITIME | LCTYPE.LOCALE_RETURN_NUMBER, pVal, 4 / StringHelper.GetCharSize()), ResultIs.Not.Value(0));
@@ -388,16 +356,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSetProcessPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			System.Collections.Generic.List<string> langs = GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).ToList();
-			langs.WriteValues();
-			langs.Add("en-UK");
-			Assert.That(SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID, langs.ToArray(), out uint num), ResultIs.Successful);
-		}, Throws.Nothing);
-	}
+	public void GetSetProcessPreferredUILanguagesTest() => Assert.That(() =>
+																{
+																	System.Collections.Generic.List<string> langs = GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).ToList();
+																	langs.WriteValues();
+																	langs.Add("en-UK");
+																	Assert.That(SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID, langs.ToArray(), out uint num), ResultIs.Successful);
+																}, Throws.Nothing);
 
 	[Test]
 	public void GetSetThreadLocaleTest()
@@ -407,16 +372,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSetThreadPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			System.Collections.Generic.List<string> langs = GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER.MUI_LANGUAGE_NAME).ToList();
-			langs.WriteValues();
-			Assert.That(SetThreadPreferredUILanguages(0, null, out _), ResultIs.Successful);
-			Assert.That(SetThreadPreferredUILanguages(MUI_LANGUAGE_FLAGS.MUI_LANGUAGE_NAME, langs.ToArray(), out uint num), ResultIs.Successful);
-		}, Throws.Nothing);
-	}
+	public void GetSetThreadPreferredUILanguagesTest() => Assert.That(() =>
+															   {
+																   System.Collections.Generic.List<string> langs = GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER.MUI_LANGUAGE_NAME).ToList();
+																   langs.WriteValues();
+																   Assert.That(SetThreadPreferredUILanguages(0, null, out _), ResultIs.Successful);
+																   Assert.That(SetThreadPreferredUILanguages(MUI_LANGUAGE_FLAGS.MUI_LANGUAGE_NAME, langs.ToArray(), out uint num), ResultIs.Successful);
+															   }, Throws.Nothing);
 
 	[Test]
 	public void GetSetThreadUILanguageTest()
@@ -428,10 +390,9 @@ public class WinNlsTests
 	[Test]
 	public void GetSetUserDefaultGeoNameTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetUserDefaultGeoName(sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetUserDefaultGeoName(out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
-		Assert.That(SetUserGeoName(sb.ToString()), ResultIs.Successful);
+		Assert.That(SetUserGeoName(sb!), ResultIs.Successful);
 	}
 
 	[Test]
@@ -448,51 +409,37 @@ public class WinNlsTests
 	{
 		int l = GetStringScripts(GetStringScriptsFlag.GSS_ALLOW_INHERITED_COMMON, "Hello", -1, null, 0);
 		Assert.That(l, ResultIs.Not.Value(0));
-		StringBuilder sb = new(l);
-		Assert.That(GetStringScripts(GetStringScriptsFlag.GSS_ALLOW_INHERITED_COMMON, "Hello", -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetStringScripts(GetStringScriptsFlag.GSS_ALLOW_INHERITED_COMMON, "Hello", -1, out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void GetSystemDefaultLangIDTest()
-	{
-		Assert.That(GetSystemDefaultLangID(), ResultIs.Not.Value(0));
-	}
+	public void GetSystemDefaultLangIDTest() => Assert.That(GetSystemDefaultLangID(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetSystemDefaultLCIDTest()
-	{
-		Assert.That((uint)GetSystemDefaultLCID(), ResultIs.Not.Value(0U));
-	}
+	public void GetSystemDefaultLCIDTest() => Assert.That((uint)GetSystemDefaultLCID(), ResultIs.Not.Value(0U));
 
 	[Test]
 	public void GetSystemDefaultLocaleNameTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetSystemDefaultLocaleName(sb, sb.Capacity), ResultIs.Not.Value(0U));
+		Assert.That(GetSystemDefaultLocaleName(out var sb), ResultIs.Not.Value(0U));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void GetSystemDefaultUILanguageTest()
-	{
-		Assert.That(GetSystemDefaultUILanguage(), ResultIs.Not.Value(0));
-	}
+	public void GetSystemDefaultUILanguageTest() => Assert.That(GetSystemDefaultUILanguage(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetSystemPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME).WriteValues();
-		}, Throws.Nothing);
-	}
+	public void GetSystemPreferredUILanguagesTest() => Assert.That(() =>
+															{
+																GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME).WriteValues();
+															}, Throws.Nothing);
 
 	[Test]
 	public void GetUILanguageInfoTest()
 	{
 		uint sz = 0U;
-		string[] langs = new[] { "en-US" };
+		string[] langs = ["en-US"];
 		Assert.That(GetUILanguageInfo(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME, langs, default, ref sz, out MUI_LANGUAGE attr), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
 		using SafeHGlobalHandle mem = new(sz);
 		Assert.That(GetUILanguageInfo(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME, langs, mem, ref sz, out attr), ResultIs.Successful);
@@ -501,51 +448,37 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetUserDefaultLangIDTest()
-	{
-		Assert.That(GetUserDefaultLangID(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultLangIDTest() => Assert.That(GetUserDefaultLangID(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetUserDefaultLCIDTest()
-	{
-		Assert.That((uint)GetUserDefaultLCID(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultLCIDTest() => Assert.That((uint)GetUserDefaultLCID(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetUserDefaultLocaleNameTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(GetUserDefaultLocaleName(sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetUserDefaultLocaleName(out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void GetUserDefaultUILanguageTest()
-	{
-		Assert.That(GetUserDefaultUILanguage(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultUILanguageTest() => Assert.That(GetUserDefaultUILanguage(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetUserPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).WriteValues();
-		}, Throws.Nothing);
-	}
+	public void GetUserPreferredUILanguagesTest() => Assert.That(() =>
+														  {
+															  GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).WriteValues();
+														  }, Throws.Nothing);
 
 	[Test]
 	public void IdnTest()
 	{
 		const string str = "&#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;.ExAmPlE.cOm";
 
-		StringBuilder sb = new(256);
-		Assert.That(IdnToAscii(0, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(IdnToAscii(0, str, -1, out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
-		Assert.That(IdnToNameprepUnicode(0, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(IdnToNameprepUnicode(0, str, -1, out sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
-		Assert.That(IdnToUnicode(0, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(IdnToUnicode(0, str, -1, out sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
@@ -590,56 +523,43 @@ public class WinNlsTests
 			if (nf == 0) continue;
 			if (!IsNormalizedString(nf, str))
 			{
-				StringBuilder sb = new(256);
-				Assert.That(NormalizeString(nf, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+				Assert.That(NormalizeString(nf, str, -1, out var sb), ResultIs.Not.Value(0));
 				TestContext.WriteLine($"{nf}: {sb}");
 			}
 		}
 	}
 
 	[Test]
-	public void IsValidCodePageTest()
-	{
-		Assert.That(IsValidCodePage(GetACP()), Is.True);
-	}
+	public void IsValidCodePageTest() => Assert.That(IsValidCodePage(GetACP()), Is.True);
 
 	[Test]
-	public void IsValidLanguageGroupTest()
-	{
-		Assert.That(IsValidLanguageGroup(EnumSystemLanguageGroups().First().LanguageGroup), Is.True);
-	}
+	public void IsValidLanguageGroupTest() => Assert.That(IsValidLanguageGroup(EnumSystemLanguageGroups().First().LanguageGroup), Is.True);
 
 	[Test]
 	public void IsValidLocaleNameTest()
 	{
-		StringBuilder sb = new(256);
-		GetUserDefaultLocaleName(sb, sb.Capacity);
-		Assert.That(IsValidLocaleName(sb.ToString()), Is.True);
+		GetUserDefaultLocaleName(out var sb);
+		Assert.That(IsValidLocaleName(sb), Is.True);
 	}
 
 	[Test]
-	public void IsValidLocaleTest()
-	{
-		Assert.That(IsValidLocale(GetThreadLocale(), LCID_FLAGS.LCID_INSTALLED), Is.True);
-	}
+	public void IsValidLocaleTest() => Assert.That(IsValidLocale(GetThreadLocale(), LCID_FLAGS.LCID_INSTALLED), Is.True);
 
 	[Test]
 	public void IsValidNLSVersionTest()
 	{
-		StringBuilder sb = new(256);
-		GetUserDefaultLocaleName(sb, sb.Capacity);
+		GetUserDefaultLocaleName(out var sb);
 
 		NLSVERSIONINFOEX vi = NLSVERSIONINFOEX.Default;
-		GetNLSVersionEx(SYSNLS_FUNCTION.COMPARE_STRING, sb.ToString(), ref vi);
+		GetNLSVersionEx(SYSNLS_FUNCTION.COMPARE_STRING, sb, ref vi);
 
-		Assert.That(IsValidNLSVersion(SYSNLS_FUNCTION.COMPARE_STRING, sb.ToString(), ref vi), Is.True);
+		Assert.That(IsValidNLSVersion(SYSNLS_FUNCTION.COMPARE_STRING, sb, ref vi), Is.True);
 	}
 
 	[Test]
 	public void LCIDToLocaleNameTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(LCIDToLocaleName(LOCALE_USER_DEFAULT, sb, sb.Capacity, 0), ResultIs.Not.Value(0));
+		Assert.That(LCIDToLocaleName(LOCALE_USER_DEFAULT, out var sb, 0), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
@@ -647,8 +567,7 @@ public class WinNlsTests
 	public void LCMapStringExTest()
 	{
 		const string str = "T\u00e8st string \uFF54\uFF4F n\u00f8rm\u00e4lize";
-		StringBuilder sb = new(256);
-		Assert.That(LCMapStringEx(LOCALE_NAME_USER_DEFAULT, (uint)LCMAP.LCMAP_UPPERCASE, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(LCMapStringEx(LOCALE_NAME_USER_DEFAULT, (uint)LCMAP.LCMAP_UPPERCASE, str, -1, out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
@@ -656,22 +575,17 @@ public class WinNlsTests
 	public void LCMapStringTest()
 	{
 		const string str = "T\u00e8st string \uFF54\uFF4F n\u00f8rm\u00e4lize";
-		StringBuilder sb = new(256);
-		Assert.That(LCMapString(LOCALE_USER_DEFAULT, (uint)LCMAP.LCMAP_UPPERCASE, str, -1, sb, sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(LCMapString(LOCALE_USER_DEFAULT, (uint)LCMAP.LCMAP_UPPERCASE, str, -1, out var sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void LocaleNameToLCIDTest()
-	{
-		Assert.That((uint)LocaleNameToLCID(LOCALE_NAME_USER_DEFAULT, 0), ResultIs.Not.Value(0));
-	}
+	public void LocaleNameToLCIDTest() => Assert.That((uint)LocaleNameToLCID(LOCALE_NAME_USER_DEFAULT, 0), ResultIs.Not.Value(0));
 
 	[Test]
 	public void ResolveLocaleNameTest()
 	{
-		StringBuilder sb = new(256);
-		Assert.That(ResolveLocaleName("en-FJ", sb, sb.Capacity), ResultIs.Successful);
+		Assert.That(ResolveLocaleName("en-FJ", out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
@@ -688,14 +602,13 @@ public class WinNlsTests
 	public void VerifyScriptsTest()
 	{
 		// Get the expected scripts
-		StringBuilder localeScripts = new(256), stringScripts = new(256);
-		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SSCRIPTS, localeScripts, localeScripts.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SSCRIPTS, out string? localeScripts), ResultIs.Not.Value(0));
 
 		// Get the actual scripts. We're expecting inherited and common characters (like ,:, etc.)
 		const string strTest = "This string has &#1057;&#1091;&#1075;&#1110;&#1472;&#1472;&#1110;&#1089;, Hebrew, and GR&#917;&#917;&#922; &#21313; Chinese &#24037;&#21475; and PUA &#63705; characters.  Depending on font it may look like Latin";
-		Assert.That(GetStringScripts(0, strTest, -1, stringScripts, stringScripts.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetStringScripts(0, strTest, -1, out var stringScripts), ResultIs.Not.Value(0));
 
 		// Test the output
-		Assert.That(VerifyScripts(0, localeScripts.ToString(), -1, stringScripts.ToString(), -1), ResultIs.Successful);
+		Assert.That(VerifyScripts(0, localeScripts!, -1, stringScripts!, -1), ResultIs.Successful);
 	}
 }

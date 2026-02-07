@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using System.Windows;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -213,7 +212,7 @@ public static partial class Shell32
 	{
 		/// <summary>Gets the name of a categorizer, such as Group By Device Type, that can be displayed in the UI.</summary>
 		/// <param name="pszDesc">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains a pointer to a string of length cch that contains the categorizer name.</para>
 		/// </param>
 		/// <param name="cch">
@@ -437,7 +436,7 @@ public static partial class Shell32
 		/// <para>A pointer to a GUID.</para>
 		/// </param>
 		/// <param name="pszName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains a pointer to a string that receives the name of the category.</para>
 		/// </param>
 		/// <param name="cch">
@@ -449,7 +448,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-getcategoryname HRESULT
-		// GetCategoryName( const GUID *pguid, LPWSTR pszName, UINT cch );
+		// GetCategoryName( const GUID *pguid, StrPtrUni pszName, UINT cch );
 		[PreserveSig]
 		HRESULT GetCategoryName(in Guid pguid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, uint cch);
 
@@ -593,7 +592,7 @@ public static partial class Shell32
 		/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszDisplayName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 		/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
@@ -673,7 +672,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
 		[PreserveSig]
-		HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+		HRESULT ParseDisplayName([In, Optional] HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out, Optional] StructPointer<SFGAO> pdwAttributes);
 
 		/// <summary>
 		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
@@ -788,7 +787,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -831,7 +830,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -954,7 +953,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1094,7 +1093,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">
@@ -1244,7 +1243,7 @@ public static partial class Shell32
 		/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszDisplayName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 		/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
@@ -1324,7 +1323,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-parsedisplayname
 		[PreserveSig]
-		new HRESULT ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+		new HRESULT ParseDisplayName([In, Optional] HWND hwnd, [In, Optional] IBindCtx? pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out, Optional] StructPointer<SFGAO> pdwAttributes);
 
 		/// <summary>
 		/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its
@@ -1439,7 +1438,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -1482,7 +1481,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -1605,7 +1604,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1745,7 +1744,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		new HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">
@@ -2399,7 +2398,207 @@ public static partial class Shell32
 	/// </param>
 	/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 	public static HRESULT GetUIObjectOf<T>(this IShellFolder sf, IntPtr pidl, out T? ppv, HWND hwndOwner = default) where T : class =>
-		GetUIObjectOf(sf, new[] { pidl }, out ppv, hwndOwner);
+		GetUIObjectOf(sf, [pidl], out ppv, hwndOwner);
+
+	/// <summary>Translates the display name of a file object or a folder into an item identifier list.</summary>
+	/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+	/// <param name="hwnd">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pbc">
+	/// <para>Type: <c>IBindCtx*</c></para>
+	/// <para>
+	/// Optional. A pointer to a bind context used to pass parameters as inputs and outputs to the parsing function. These passed parameters
+	/// are often specific to the data source and are documented by the data source owners. For example, the file system data source accepts
+	/// the name being parsed (as a WIN32_FIND_DATA structure), using the STR_FILE_SYS_BIND_DATA bind context parameter.
+	/// STR_PARSE_PREFER_FOLDER_BROWSING can be passed to indicate that URLs are parsed using the file system data source when possible.
+	/// Construct a bind context object using CreateBindCtx and populate the values using IBindCtx::RegisterObjectParam. See <c>Bind Context
+	/// String Keys</c> for a complete list of these.
+	/// </para>
+	/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pszDisplayName">
+	/// <para>Type: <c>StrPtrUni</c></para>
+	/// <para>
+	/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form this
+	/// string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also will accept
+	/// references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax. For example, to retrieve a
+	/// fully qualified identifier list for the control panel from the desktop folder, you can use the following:
+	/// </para>
+	/// <para><c>::{CLSID for Control Panel}\::{CLSID for printers folder}</c></para>
+	/// </param>
+	/// <param name="pchEaten">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// A pointer to a <c>ULONG</c> value that receives the number of characters of the display name that was parsed. If your application
+	/// does not need this information, set pchEaten to <c>NULL</c>, and no value will be returned.
+	/// </para>
+	/// </param>
+	/// <param name="ppidl">
+	/// <para>Type: <c>PIDLIST_RELATIVE*</c></para>
+	/// <para>
+	/// When this method returns, contains a pointer to the PIDL for the object. The returned item identifier list specifies the item
+	/// relative to the parsing folder. If the object associated with pszDisplayName is within the parsing folder, the returned item
+	/// identifier list will contain only one SHITEMID structure. If the object is in a subfolder of the parsing folder, the returned item
+	/// identifier list will contain multiple <c>SHITEMID</c> structures. If an error occurs, <c>NULL</c> is returned in this address.
+	/// </para>
+	/// <para>When it is no longer needed, it is the responsibility of the caller to free this resource by calling CoTaskMemFree.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Some Shell folders may not implement <c>IShellFolder::ParseDisplayName</c>. Each folder that does will define its own parsing syntax.
+	/// </para>
+	/// <para>
+	/// <c>ParseDisplayName</c> is not expected to handle the relative path or parent folder indicators ("." or ".."). It is up to the caller
+	/// to remove these appropriately.
+	/// </para>
+	/// <para>
+	/// Do not use the SFGAO_VALIDATE flag in pdwAttributes to verify the existence of the item whose name is being parsed.
+	/// <c>IShellFolder::ParseDisplayName</c> implicitly validates the existence of the item unless that behavior is overridden by a special
+	/// bind context parameter.
+	/// </para>
+	/// <para>
+	/// Querying for some attributes may be relatively slow and use significant amounts of memory. For example, to determine if a file is
+	/// shared, the Shell will load network components. This procedure may require the loading of several DLLs. The purpose of pdwAttributes
+	/// is to allow you to restrict the query to only that information that is needed. The following code fragment illustrates how to find
+	/// out if a file is compressed.
+	/// </para>
+	/// <para>
+	/// <code>
+	///LPITEMIDLIST pidl;
+	///ULONG cbEaten;
+	///DWORD dwAttribs = SFGAO_COMPRESSED;
+	///hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL
+	///&amp;pidl, &amp;dwAttribs);
+	///if(dwAttribs &amp; SFGAO_COMPRESSED)
+	///{
+	/// // Do something with the compressed file
+	///}
+	/// </code>
+	/// </para>
+	/// <para>
+	/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of the bits
+	/// may be inadvertantly set. <c>IShellFolder::ParseDisplayName</c> will then query for the corresponding attributes, which may lead to
+	/// undesirable delays or memory demands. If you do not wish to query for attributes, set pdwAttributes to <c>NULL</c> to avoid
+	/// unpredictable behavior.
+	/// </para>
+	/// <para>This method is similar to the IParseDisplayName::ParseDisplayName method.</para>
+	/// </remarks>
+	public static HRESULT ParseDisplayName(this IShellFolder sf, [In, Optional] HWND hwnd, [In, Optional] IBindCtx? pbc, string pszDisplayName,
+		out uint pchEaten, out PIDL ppidl) => sf.ParseDisplayName(hwnd, pbc, pszDisplayName, out pchEaten, out ppidl, default);
+
+	/// <summary>Translates the display name of a file object or a folder into an item identifier list.</summary>
+	/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+	/// <param name="hwnd">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A window handle. The client should provide a window handle if it displays a dialog or message box. Otherwise set hwnd to <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pbc">
+	/// <para>Type: <c>IBindCtx*</c></para>
+	/// <para>
+	/// Optional. A pointer to a bind context used to pass parameters as inputs and outputs to the parsing function. These passed parameters
+	/// are often specific to the data source and are documented by the data source owners. For example, the file system data source accepts
+	/// the name being parsed (as a WIN32_FIND_DATA structure), using the STR_FILE_SYS_BIND_DATA bind context parameter.
+	/// STR_PARSE_PREFER_FOLDER_BROWSING can be passed to indicate that URLs are parsed using the file system data source when possible.
+	/// Construct a bind context object using CreateBindCtx and populate the values using IBindCtx::RegisterObjectParam. See <c>Bind Context
+	/// String Keys</c> for a complete list of these.
+	/// </para>
+	/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="pszDisplayName">
+	/// <para>Type: <c>StrPtrUni</c></para>
+	/// <para>
+	/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form this
+	/// string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also will accept
+	/// references to items in the namespace that have a GUID associated with them using the "::{GUID}" syntax. For example, to retrieve a
+	/// fully qualified identifier list for the control panel from the desktop folder, you can use the following:
+	/// </para>
+	/// <para><c>::{CLSID for Control Panel}\::{CLSID for printers folder}</c></para>
+	/// </param>
+	/// <param name="pchEaten">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// A pointer to a <c>ULONG</c> value that receives the number of characters of the display name that was parsed. If your application
+	/// does not need this information, set pchEaten to <c>NULL</c>, and no value will be returned.
+	/// </para>
+	/// </param>
+	/// <param name="ppidl">
+	/// <para>Type: <c>PIDLIST_RELATIVE*</c></para>
+	/// <para>
+	/// When this method returns, contains a pointer to the PIDL for the object. The returned item identifier list specifies the item
+	/// relative to the parsing folder. If the object associated with pszDisplayName is within the parsing folder, the returned item
+	/// identifier list will contain only one SHITEMID structure. If the object is in a subfolder of the parsing folder, the returned item
+	/// identifier list will contain multiple <c>SHITEMID</c> structures. If an error occurs, <c>NULL</c> is returned in this address.
+	/// </para>
+	/// <para>When it is no longer needed, it is the responsibility of the caller to free this resource by calling CoTaskMemFree.</para>
+	/// </param>
+	/// <param name="pdwAttributes">
+	/// <para>Type: <c>ULONG*</c></para>
+	/// <para>
+	/// The value used to query for file attributes. To query for one or more attributes, initialize this parameter with the SFGAO flags
+	/// that represent the attributes of interest. On return, those attributes that are true and were requested will be set.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Some Shell folders may not implement <c>IShellFolder::ParseDisplayName</c>. Each folder that does will define its own parsing syntax.
+	/// </para>
+	/// <para>
+	/// <c>ParseDisplayName</c> is not expected to handle the relative path or parent folder indicators ("." or ".."). It is up to the caller
+	/// to remove these appropriately.
+	/// </para>
+	/// <para>
+	/// Do not use the SFGAO_VALIDATE flag in pdwAttributes to verify the existence of the item whose name is being parsed.
+	/// <c>IShellFolder::ParseDisplayName</c> implicitly validates the existence of the item unless that behavior is overridden by a special
+	/// bind context parameter.
+	/// </para>
+	/// <para>
+	/// Querying for some attributes may be relatively slow and use significant amounts of memory. For example, to determine if a file is
+	/// shared, the Shell will load network components. This procedure may require the loading of several DLLs. The purpose of pdwAttributes
+	/// is to allow you to restrict the query to only that information that is needed. The following code fragment illustrates how to find
+	/// out if a file is compressed.
+	/// </para>
+	/// <para>
+	/// <code>
+	///LPITEMIDLIST pidl;
+	///ULONG cbEaten;
+	///DWORD dwAttribs = SFGAO_COMPRESSED;
+	///hres = psf-&gt;ParseDisplayName(NULL, NULL, lpwszDisplayName, &amp;cbEaten, // This can be NULL
+	///&amp;pidl, &amp;dwAttribs);
+	///if(dwAttribs &amp; SFGAO_COMPRESSED)
+	///{
+	/// // Do something with the compressed file
+	///}
+	/// </code>
+	/// </para>
+	/// <para>
+	/// Since pdwAttributes is an in/out parameter, it should always be initialized. If you pass in an uninitialized value, some of the bits
+	/// may be inadvertantly set. <c>IShellFolder::ParseDisplayName</c> will then query for the corresponding attributes, which may lead to
+	/// undesirable delays or memory demands. If you do not wish to query for attributes, set pdwAttributes to <c>NULL</c> to avoid
+	/// unpredictable behavior.
+	/// </para>
+	/// <para>This method is similar to the IParseDisplayName::ParseDisplayName method.</para>
+	/// </remarks>
+	public static HRESULT ParseDisplayName(this IShellFolder sf, [In, Optional] HWND hwnd, [In, Optional] IBindCtx? pbc,
+		string pszDisplayName, out uint pchEaten, out PIDL ppidl, ref SFGAO pdwAttributes)
+	{
+		unsafe
+		{
+			fixed (SFGAO* pAttr = &pdwAttributes)
+			{
+				return sf.ParseDisplayName(hwnd, pbc, pszDisplayName, out pchEaten, out ppidl, pAttr);
+			}
+		}
+	}
 
 	/// <summary>Specifies methods for sorting category data.</summary>
 	/// <summary>

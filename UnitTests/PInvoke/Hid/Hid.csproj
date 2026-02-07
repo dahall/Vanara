@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.Hid</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\Hid\Vanara.PInvoke.Hid.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\SetupAPI\Vanara.PInvoke.SetupAPI.csproj" />
+  </ItemGroup>
+</Project>

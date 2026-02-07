@@ -21,6 +21,9 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
 	public ShellItemPropertyUpdates() => PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
 
+	/// <summary>Finalizes an instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
+	~ShellItemPropertyUpdates() => Dispose(false);
+
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 	public int Count => (int)changes.GetCount();
 
@@ -29,31 +32,10 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	public IPropertyChangeArray IPropertyChangeArray => changes;
 
 	/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the <see cref="IDictionary{TKey, TValue}"/>.</summary>
-	public ICollection<PROPERTYKEY> Keys
-	{
-		get
-		{
-			var l = new List<PROPERTYKEY>(Count);
-			for (uint i = 0; i < Count; i++)
-			{
-				using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i));
-				l.Add(p.Item.GetPropertyKey());
-			}
-			return l;
-		}
-	}
+	public ICollection<PROPERTYKEY> Keys => [.. new IEnumFromIndexer<PROPERTYKEY>(changes.GetCount, i => GetUse((int)i, p => p.GetPropertyKey()))];
 
 	/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{TKey, TValue}"/>.</summary>
-	public ICollection<object?> Values
-	{
-		get
-		{
-			var l = new List<object?>(Count);
-			for (int i = 0; i < Count; i++)
-				l.Add(this[i].Value);
-			return l;
-		}
-	}
+	public ICollection<object?> Values => [.. new IEnumFromIndexer<object?>(changes.GetCount, i => this[(int)i].Value)];
 
 	/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
 	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.IsReadOnly => false;
@@ -69,15 +51,11 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 		set => changes.AppendOrReplace(ToPC(key, value));
 	}
 
-	internal KeyValuePair<PROPERTYKEY, object?> this[int index]
+	internal KeyValuePair<PROPERTYKEY, object?> this[int index] => GetUse(index, p =>
 	{
-		get
-		{
-			using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>((uint)index));
-			p.Item.ApplyToPropVariant(new PROPVARIANT(), out var pv);
-			return new KeyValuePair<PROPERTYKEY, object?>(p.Item.GetPropertyKey(), pv.Value);
-		}
-	}
+		p.ApplyToPropVariant(new PROPVARIANT(), out var pv);
+		return new KeyValuePair<PROPERTYKEY, object?>(p.GetPropertyKey(), pv.Value);
+	});
 
 	/// <summary>Adds an element with the provided key and value to the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 	/// <param name="key">The object to use as the key of the element to add.</param>
@@ -146,7 +124,22 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 			array[i + arrayIndex] = this[i];
 	}
 
-	void IDisposable.Dispose() { }
+	void IDisposable.Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+
+	/// <summary>Releases the unmanaged resources used by the object and optionally releases the managed resources.</summary>
+	/// <remarks>
+	/// This method is called by both the public Dispose() method and the finalizer. When disposing is <see langword="true"/>, managed
+	/// resources can be disposed. Override this method to release resources specific to the derived class.
+	/// </remarks>
+	/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (changes is not null)
+		{
+			Marshal.FinalReleaseComObject(changes);
+			changes = null!;
+		}
+	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -158,18 +151,23 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 		try { changes.RemoveAt((uint)idx); return true; } catch { return false; }
 	}
 
+	private T GetUse<T>(int index, Func<IPropertyChange, T> func)
+	{
+		var p = changes.GetAt<IPropertyChange>((uint)index);
+		try { return func(p); } finally { Marshal.FinalReleaseComObject(p); }
+	}
+
 	private int IndexOf(PROPERTYKEY key)
 	{
-		for (uint i = 0; i < Count; i++)
+		for (int i = 0; i < Count; i++)
 		{
-			using var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i));
-			if (key == p.Item.GetPropertyKey())
-				return (int)i;
+			if (GetUse(i, p => key == p.GetPropertyKey()))
+				return i;
 		}
 		return -1;
 	}
 
-	private IPropertyChange ToPC(PROPERTYKEY key, object? value, PKA_FLAGS flags = PKA_FLAGS.PKA_SET)
+	private static IPropertyChange ToPC(PROPERTYKEY key, object? value, PKA_FLAGS flags = PKA_FLAGS.PKA_SET)
 	{
 		PSCreateSimplePropertyChange(flags, key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
 		return pc;

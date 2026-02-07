@@ -20,7 +20,7 @@ IEnumNetworkConnections IEnumNetworks INetwork INetworkConnection INetworkConnec
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(NETFRAMEWORK) ">
     <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup>

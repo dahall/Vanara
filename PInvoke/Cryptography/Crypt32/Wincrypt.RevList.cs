@@ -207,7 +207,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5dfa1c08-5d75-4ee4-bd65-ce56eb61ecce")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCRLContextToStore(HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, IntPtr ppStoreContext = default);
+	public static extern bool CertAddCRLContextToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, IntPtr ppStoreContext = default);
 
 	/// <summary>
 	/// The <c>CertAddCRLContextToStore</c> function adds a certificate revocation list (CRL) context to the specified certificate store.
@@ -317,7 +317,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5dfa1c08-5d75-4ee4-bd65-ce56eb61ecce")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCRLContextToStore(HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppStoreContext);
+	public static extern bool CertAddCRLContextToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppStoreContext);
 
 	/// <summary>
 	/// The <c>CertAddCRLLinkToStore</c> function adds a link in a store to a certificate revocation list (CRL) context in a different
@@ -418,7 +418,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2fde63ed-7522-4400-a16b-059a001e7c26")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCRLLinkToStore(HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppStoreContext);
+	public static extern bool CertAddCRLLinkToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppStoreContext);
 
 	/// <summary>
 	/// The <c>CertAddCRLLinkToStore</c> function adds a link in a store to a certificate revocation list (CRL) context in a different
@@ -519,7 +519,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2fde63ed-7522-4400-a16b-059a001e7c26")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCRLLinkToStore(HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, IntPtr ppStoreContext = default);
+	public static extern bool CertAddCRLLinkToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pCrlContext, CertStoreAdd dwAddDisposition, IntPtr ppStoreContext = default);
 
 	/// <summary>
 	/// The <c>CertAddEncodedCRLToStore</c> function creates a certificate revocation list (CRL) context from an encoded CRL and adds it
@@ -647,8 +647,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ec2361e6-a1e6-413a-828e-d543a09c88f8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddEncodedCRLToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCrlEncoded, uint cbCrlEncoded,
-		CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppCrlContext);
+	public static extern bool CertAddEncodedCRLToStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType,
+		[In, SizeDef(nameof(cbCrlEncoded))] IntPtr pbCrlEncoded, uint cbCrlEncoded, CertStoreAdd dwAddDisposition, out SafePCCRL_CONTEXT ppCrlContext);
 
 	/// <summary>
 	/// The <c>CertAddEncodedCRLToStore</c> function creates a certificate revocation list (CRL) context from an encoded CRL and adds it
@@ -776,8 +776,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ec2361e6-a1e6-413a-828e-d543a09c88f8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddEncodedCRLToStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, [In] IntPtr pbCrlEncoded, uint cbCrlEncoded,
-		CertStoreAdd dwAddDisposition, IntPtr ppCrlContext = default);
+	public static extern bool CertAddEncodedCRLToStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType,
+		[In, SizeDef(nameof(cbCrlEncoded))] IntPtr pbCrlEncoded, uint cbCrlEncoded, CertStoreAdd dwAddDisposition, IntPtr ppCrlContext = default);
 
 	/// <summary>
 	/// The <c>CertCreateCRLContext</c> function creates a certificate revocation list (CRL) context from an encoded CRL. The created
@@ -829,7 +829,8 @@ public static partial class Crypt32
 	// DWORD dwCertEncodingType, const BYTE *pbCrlEncoded, DWORD cbCrlEncoded );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "23d9dfb0-926d-443e-b960-a03338f1cc1b")]
-	public static extern SafePCCRL_CONTEXT CertCreateCRLContext(CertEncodingType dwCertEncodingType, [In] IntPtr pbCrlEncoded, uint cbCrlEncoded);
+	[return: AddAsCtor]
+	public static extern SafePCCRL_CONTEXT CertCreateCRLContext(CertEncodingType dwCertEncodingType, [In, SizeDef(nameof(cbCrlEncoded))] IntPtr pbCrlEncoded, uint cbCrlEncoded);
 
 	/// <summary>
 	/// The <c>CertDeleteCRLFromStore</c> function deletes the specified certificate revocation list (CRL) context from the certificate store.
@@ -923,7 +924,7 @@ public static partial class Crypt32
 	// HCERTSTORE hCertStore, PCCRL_CONTEXT pPrevCrlContext );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fc25ca04-8520-4053-9591-afc81c88670c")]
-	public static extern SafePCCRL_CONTEXT CertEnumCRLsInStore(HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pPrevCrlContext);
+	public static extern SafePCCRL_CONTEXT CertEnumCRLsInStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCRL_CONTEXT pPrevCrlContext);
 
 	/// <summary>The <c>CertFindCertificateInCRL</c> function searches the certificate revocation list (CRL) for the specified certificate.</summary>
 	/// <param name="pCert">A pointer to a CERT_CONTEXT of the certificate to be searched for in the CRL.</param>
@@ -940,7 +941,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c05a99e6-da38-431e-8d02-04056047a211")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertFindCertificateInCRL([In] PCCERT_CONTEXT pCert, [In] PCCRL_CONTEXT pCrlContext, [Optional] uint dwFlags, [Optional] IntPtr pvReserved, out IntPtr ppCrlEntry);
+	public static extern bool CertFindCertificateInCRL([In] PCCERT_CONTEXT pCert, [In, AddAsMember] PCCRL_CONTEXT pCrlContext, [Optional, Ignore] uint dwFlags,
+		[Optional, Ignore] IntPtr pvReserved, out StructPointer<CRL_ENTRY> ppCrlEntry);
 
 	/// <summary>
 	/// The <c>CertFindCRLInStore</c> function finds the first or next certificate revocation list (CRL) context in a certificate store
@@ -1076,7 +1078,7 @@ public static partial class Crypt32
 	// pPrevCrlContext );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3e481912-204a-4d86-ab67-81f8ae4d1aaa")]
-	public static extern SafePCCRL_CONTEXT CertFindCRLInStore(HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, CrlFindFlags dwFindFlags,
+	public static extern SafePCCRL_CONTEXT CertFindCRLInStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType, CrlFindFlags dwFindFlags,
 		CrlFindType dwFindType, [In, Optional] IntPtr pvFindPara, [In, Optional] PCCRL_CONTEXT pPrevCrlContext);
 
 	/// <summary>
@@ -1194,7 +1196,7 @@ public static partial class Crypt32
 	// HCERTSTORE hCertStore, PCCERT_CONTEXT pIssuerContext, PCCRL_CONTEXT pPrevCrlContext, DWORD *pdwFlags );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7bd21424-4f74-4bac-ab47-00d51ebdca1c")]
-	public static extern SafePCCRL_CONTEXT CertGetCRLFromStore(HCERTSTORE hCertStore, [In, Optional] PCCERT_CONTEXT pIssuerContext,
+	public static extern SafePCCRL_CONTEXT CertGetCRLFromStore([In, AddAsMember] HCERTSTORE hCertStore, [In, Optional] PCCERT_CONTEXT pIssuerContext,
 		[In, Optional] PCCRL_CONTEXT pPrevCrlContext, ref CertStoreVerification pdwFlags);
 
 	/// <summary>
@@ -1232,7 +1234,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4ab053cd-d3d4-483c-b0ff-b8de63d88707")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSerializeCRLStoreElement([In] PCCRL_CONTEXT pCrlContext, [Optional] uint dwFlags, [Optional] IntPtr pbElement, ref uint pcbElement);
+	public static extern bool CertSerializeCRLStoreElement([In] PCCRL_CONTEXT pCrlContext, [Optional] uint dwFlags,
+		[Out, Optional, SizeDef(nameof(pcbElement), SizingMethod.Query)] IntPtr pbElement, ref uint pcbElement);
 
 	public partial class SafePCCRL_CONTEXT
 	{

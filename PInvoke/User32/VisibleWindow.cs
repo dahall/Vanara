@@ -227,7 +227,7 @@ public class VisibleWindow : WindowBase
 		get { Win32Error.ThrowLastErrorIfFalse(GetClientRect(Handle, out RECT r)); return r; }
 	}
 
-	/// <summary>Gets a value indicating whether this <see cref="BasicMessageWindow"/> is enabled.</summary>
+	/// <summary>Gets a value indicating whether this <see cref="VisibleWindow"/> is enabled.</summary>
 	/// <value><see langword="true"/> if enabled; otherwise, <see langword="false"/>.</value>
 	public bool Enabled => IsWindowEnabled(Handle);
 
@@ -281,45 +281,6 @@ public class VisibleWindow : WindowBase
 			return r.Size;
 		}
 		set => Win32Error.ThrowLastErrorIfFalse(SetWindowPos(Handle, default, -1, -1, value.cx, value.cy, SetWindowPosFlags.SWP_NOACTIVATE | SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOZORDER));
-	}
-
-	/// <summary>Gets or sets the value of the style bit for the window.</summary>
-	/// <value>The styles value.</value>
-	public WindowStyles Styles
-	{
-		get => (WindowStyles)Param[WindowLongFlags.GWL_STYLE].ToInt32();
-		set => Param[WindowLongFlags.GWL_STYLE] = (IntPtr)(int)value;
-	}
-
-	/// <summary>Gets or sets the value of the extended style bit for the window.</summary>
-	/// <value>The extended styles value.</value>
-	public WindowStylesEx StylesEx
-	{
-		get => (WindowStylesEx)Param[WindowLongFlags.GWL_EXSTYLE].ToInt32();
-		set => Param[WindowLongFlags.GWL_EXSTYLE] = (IntPtr)(int)value;
-	}
-
-	/// <summary>Gets or sets the text of the window's title bar (if it has one).</summary>
-	/// <value>The text of the title bar.</value>
-	public string Text
-	{
-		get
-		{
-			if (!Handle.IsNull)
-			{
-				int len = GetWindowTextLength(Handle);
-				if (len > 0)
-				{
-					StringBuilder sb = new(len + 1);
-					if (GetWindowText(Handle, sb, sb.Capacity) > 0)
-					{
-						return sb.ToString();
-					}
-				}
-			}
-			return string.Empty;
-		}
-		set => Win32Error.ThrowLastErrorIfFalse(SetWindowText(Handle, value));
 	}
 
 	/// <summary>Gets a value indicating whether this window is visible.</summary>
@@ -441,15 +402,12 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
-	public static void Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
-	{
-		using TWin win = new();
-		if (win.Handle.IsNull)
-			win.CreateHandle(wc, text, size, position, style, exStyle, parent, hMenu);
-		win.Show();
-		new MessagePump().Run(win);
-	}
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
+	public static int Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
+		Run<TWin>(new CreateWindowParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -509,15 +467,12 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
-	public static void Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
-	{
-		using TWin win = new();
-		if (win.Handle.IsNull)
-			win.CreateHandle(null, text, size, position, style, exStyle, parent, hMenu);
-		win.Show();
-		new MessagePump().Run(win);
-	}
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
+	public static int Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
+		Run<TWin>(new CreateWindowParams(WindowClass.MakeVisibleWindowClass(MakeClassName<TWin>(), null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -578,12 +533,18 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
-	public static void Run(WindowProc wndProc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default)
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
+	public static int Run(WindowProc wndProc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default)
 	{
 		using VisibleWindow win = new(wndProc, text, size, position, style, exStyle, hMenu, parent);
 		win.Show();
-		new MessagePump().Run(win);
+		if (hAccl.IsInvalid)
+			return new MessagePump().Run(win);
+		else
+			return new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
 	}
 
 	/// <summary>Converts a rectangle from this window's client coordinates to screen coordinates.</summary>

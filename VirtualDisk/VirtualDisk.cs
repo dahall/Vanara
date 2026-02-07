@@ -110,6 +110,9 @@ public partial class VirtualDisk : IDisposable, IHandle
 	/// <value><see langword="true"/> if this instance has a parent backing store; otherwise, <see langword="false"/>.</value>
 	public bool IsChild => ProviderSubtype == Subtype.Differencing;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => Handle.IsInvalid;
+
 	/// <summary>
 	/// Indicates whether the virtual disk is currently mounted and in use. TRUE if the virtual disk is currently mounted and in use;
 	/// otherwise FALSE.

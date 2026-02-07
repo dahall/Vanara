@@ -199,8 +199,8 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceCreate")]
 	public static extern HRESULT SwDeviceCreate([MarshalAs(UnmanagedType.LPWStr)] string pszEnumeratorName, [MarshalAs(UnmanagedType.LPWStr)] string pszParentDeviceInstance,
-		in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DEVPROPERTY[]? pProperties, SW_DEVICE_CREATE_CALLBACK pCallback,
-		[In, Optional] IntPtr pContext, out SafeHSWDEVICE phSwDevice);
+		in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] DEVPROPERTY[]? pProperties,
+		SW_DEVICE_CREATE_CALLBACK pCallback, [In, Optional] IntPtr pContext, [AddAsCtor] out SafeHSWDEVICE phSwDevice);
 
 	/// <summary>Gets the lifetime of a software device.</summary>
 	/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to retrieve.</param>
@@ -307,7 +307,7 @@ public static partial class CfgMgr32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/swdevice/nf-swdevice-swdeviceinterfaceregister HRESULT
 	// SwDeviceInterfaceRegister( HSWDEVICE hSwDevice, const GUID *pInterfaceClassGuid, PCWSTR pszReferenceString, ULONG cPropertyCount,
-	// const DEVPROPERTY *pProperties, BOOL fEnabled, PWSTR *ppszDeviceInterfaceId );
+	// const DEVPROPERTY *pProperties, BOOL fEnabled, StrPtrUni *ppszDeviceInterfaceId );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceInterfaceRegister")]
 	public static extern HRESULT SwDeviceInterfaceRegister(HSWDEVICE hSwDevice, in Guid pInterfaceClassGuid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszReferenceString,

@@ -1156,7 +1156,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-gethostnamew int WSAAPI GetHostNameW( PWSTR name, int
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-gethostnamew int WSAAPI GetHostNameW( StrPtrUni name, int
 	// namelen );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winsock2.h", MSDNShortId = "787EB209-5944-4F0A-8550-FE1115C2298A")]

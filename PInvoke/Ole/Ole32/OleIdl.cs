@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke;
@@ -6885,6 +6886,22 @@ public static partial class Ole32
 	}
 
 	/// <summary>
+	/// Determines whether two FORMATETC structures are equal by comparing their format, aspect, index, target device, and storage medium fields.
+	/// </summary>
+	/// <remarks>
+	/// Two FORMATETC structures are considered equal if all fields except for the lindex and tymed field are identical, and the tymed fields
+	/// have at least one common storage medium flag set.
+	/// </remarks>
+	/// <param name="left">The first FORMATETC structure to compare.</param>
+	/// <param name="right">The second FORMATETC structure to compare.</param>
+	/// <returns>true if the specified FORMATETC structures are equal; otherwise, false.</returns>
+	public static bool Equals(this FORMATETC left, FORMATETC right) =>
+		left.cfFormat == right.cfFormat &&
+		left.dwAspect == right.dwAspect &&
+		left.ptd == right.ptd &&
+		(left.tymed & right.tymed) != 0;
+
+	/// <summary>
 	/// Contains information about the accelerators supported by a container during an in-place session. The structure is used in the
 	/// IOleInPlaceSite::GetWindowContext method and the OleTranslateAccelerator function.
 	/// </summary>
@@ -6964,5 +6981,24 @@ public static partial class Ole32
 
 		/// <summary>Combination of the verb attributes in the OLEVERBATTRIB enumeration.</summary>
 		public OLEVERBATTRIB grfAttribs;
+	}
+
+	/// <summary>
+	/// Provides an equality comparer for FORMATETC structures, enabling value-based comparisons and hash code generation for use in collections.
+	/// </summary>
+	/// <remarks>
+	/// Use this comparer when storing FORMATETC instances in hash-based collections such as dictionaries or hash sets to ensure correct
+	/// equality semantics.
+	/// </remarks>
+	public class FORMATETCComparer : IEqualityComparer<FORMATETC>
+	{
+		/// <summary>Gets the default instance of the FORMATETCComparer.</summary>
+		public static readonly IEqualityComparer<FORMATETC> Default = new FORMATETCComparer();
+
+		/// <inheritdoc/>
+		public bool Equals(FORMATETC x, FORMATETC y) => Ole32.Equals(x, y);
+
+		/// <inheritdoc/>
+		public int GetHashCode(FORMATETC obj) => obj.GetHashCode();
 	}
 }

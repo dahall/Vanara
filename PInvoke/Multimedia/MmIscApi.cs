@@ -124,7 +124,7 @@ public static partial class WinMm
 	/// </para>
 	/// <para>When searching for a specified I/O procedure, local procedures are searched first, then global procedures.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nc-mmiscapi-mmioproc MMIOPROC Mmioproc; LRESULT Mmioproc( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nc-mmiscapi-mmioproc MMIOPROC Mmioproc; LRESULT Mmioproc( StrPtrAnsi
 	// lpmmioinfo, UINT uMsg, LPARAM lParam1, LPARAM lParam2 ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NC:mmiscapi.MMIOPROC")]
@@ -1462,7 +1462,7 @@ public static partial class WinMm
 	/// application exits.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( LPSTR pszFileName, LPMMIOINFO
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( StrPtrAnsi pszFileName, LPMMIOINFO
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
@@ -1718,7 +1718,7 @@ public static partial class WinMm
 	/// application exits.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( LPSTR pszFileName, LPMMIOINFO
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( StrPtrAnsi pszFileName, LPMMIOINFO
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
@@ -1870,7 +1870,7 @@ public static partial class WinMm
 	/// pchBuffer to <c>NULL</c> and cchBuffer to the new buffer size. The contents of the buffer can be changed after resizing.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmiosetbuffer MMRESULT mmioSetBuffer( HMMIO hmmio, LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmiosetbuffer MMRESULT mmioSetBuffer( HMMIO hmmio, StrPtrAnsi
 	// pchBuffer, LONG cchBuffer, UINT fuBuffer );
 	[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioSetBuffer")]

@@ -2,6 +2,7 @@
 using NUnit.Framework.Constraints;
 using System.Collections.Generic;
 using System.Security.Principal;
+using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Security.AccessControl.Tests;
@@ -20,13 +21,13 @@ public class SystemSecurityTests
 	[TestCase("SYSTEM")]
 	[TestCase("Administrators")]
 	[TestCase("Everyone")]
-	[TestCase("dahall")]
-	[TestCase("AMERICAS\\dahall")]
-	[TestCase("AAADELETE")]
-	[TestCase("DAHALL18")]
-	[TestCase("DAHALL12", false)]
+	[TestCase("%USERNAME%")]
+	[TestCase("%USERDOMAIN%\\%USERNAME%")]
+	[TestCase("USER12", false)]
 	public void GetAccountInfoTest(string acctName, bool valid = true)
 	{
+		if (acctName.Contains('%'))
+			acctName = Environment.ExpandEnvironmentVariables(acctName);
 		SystemSecurity ss;
 		using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 		{

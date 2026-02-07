@@ -54,7 +54,7 @@ public static partial class Shell32
 		/// <param name="knownFolder">The KNOWNFOLDERID Guid.</param>
 		/// <returns>The KNOWNFOLDERID enum.</returns>
 		public static KNOWNFOLDERID GetKnownFolderFromGuid(Guid knownFolder) =>
-			Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>().Single(k => k.Guid() == knownFolder);
+			Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>().First(k => k.Guid() == knownFolder);
 
 		/// <summary>Gets the KNOWNFOLDERID enum from a path.</summary>
 		/// <param name="path">The folder path.</param>
@@ -63,7 +63,7 @@ public static partial class Shell32
 		{
 			if (Environment.OSVersion.Version.Major < 6)
 			{
-				return Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>().Single(k => string.Equals(k.FullPath(), path, StringComparison.InvariantCultureIgnoreCase));
+				return Enum.GetValues(typeof(KNOWNFOLDERID)).Cast<KNOWNFOLDERID>().First(k => string.Equals(k.FullPath(), path, StringComparison.InvariantCultureIgnoreCase));
 			}
 
 			IKnownFolderManager ikfm = new();
@@ -253,12 +253,11 @@ public static partial class Shell32
 		public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
 		{
 			HRESULT hr;
-			if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(IImageList).GUID, out object obj)).Succeeded)
+			if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), out IImageList? il)).Succeeded)
 			{
 				try
 				{
-					IImageList il = (IImageList)obj;
-					hico = il.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
+					hico = il!.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 					using ICONINFO icoInfo = new();
 					if (GetIconInfo(hico, icoInfo))
 					{
@@ -272,7 +271,7 @@ public static partial class Shell32
 				}
 				finally
 				{
-					Marshal.ReleaseComObject(obj);
+					Marshal.ReleaseComObject(il!);
 				}
 			}
 			else
@@ -299,9 +298,9 @@ public static partial class Shell32
 				{
 					StringBuilder szIconFile = new(Kernel32.MAX_PATH);
 					SIZE sz = new((int)imgSz, (int)imgSz);
-					IEIFLAG flags = 0;
-					if ((hr = iei!.GetLocation(szIconFile, (uint)szIconFile.Capacity, default, ref sz, 0, ref flags)).Succeeded &&
-						szIconFile.Length > 0 &&
+					IEIFLAG flags = IEIFLAG.IEIFLAG_ORIGSIZE;
+					if ((hr = iei!.GetLocation(szIconFile, (uint)szIconFile.Capacity, out _, sz, 32, ref flags)).Succeeded &&
+						//szIconFile.Length > 0 &&
 						(hr = iei.Extract(out hbmp)).Succeeded)
 					{
 						imgSz = (uint)sz.cx;

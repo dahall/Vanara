@@ -3,11 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (39 of 660 functions)  
+### Methods - 5% API coverage (39 of 663 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
+[ApiSetGetImplementationHost](https://www.google.com/search?num=5&q=ApiSetGetImplementationHost+site%3Alearn.microsoft.com) |  |   
 [ApiSetQueryApiSetPresenceEx](https://www.google.com/search?num=5&q=ApiSetQueryApiSetPresenceEx+site%3Alearn.microsoft.com) |  |   
+[ApiSetQuerySchema](https://www.google.com/search?num=5&q=ApiSetQuerySchema+site%3Alearn.microsoft.com) |  |   
 [DbgBreakPoint](https://www.google.com/search?num=5&q=DbgBreakPoint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgBreakPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgBreakPoint)  
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrint)  
 [DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrintEx](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrintEx)  
@@ -400,6 +402,7 @@ Native Method | Header | Managed Method
 [RtlpWow64SetContextOnAmd64](https://www.google.com/search?num=5&q=RtlpWow64SetContextOnAmd64+site%3Alearn.microsoft.com) |  |   
 [RtlQueryAllFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
 [RtlQueryAllInternalFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllInternalFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
+[RtlQueryAllInternalRuntimeFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllInternalRuntimeFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
 [RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureConfiguration](https://www.google.com/search?num=5&q=RtlQueryFeatureConfiguration+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureConfigurationChangeStamp](https://www.google.com/search?num=5&q=RtlQueryFeatureConfigurationChangeStamp+site%3Alearn.microsoft.com) |  |   

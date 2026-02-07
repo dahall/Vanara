@@ -337,7 +337,7 @@ public static partial class ShlwApi
 	/// <para>A null-terminated string of maximum length INTERNET_MAX_URL_LENGTH that contains a URL.</para>
 	/// </param>
 	/// <param name="pszOut">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives a null-terminated string set to the URL specified
 	/// by pszIn and converted to the standard scheme://URL_string format.
@@ -404,7 +404,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlapplyschemea LWSTDAPI UrlApplySchemeA( PCSTR pszIn,
-	// PSTR pszOut, DWORD *pcchOut, DWORD dwFlags );
+	// StrPtrAnsi pszOut, DWORD *pcchOut, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "af60643e-b1a4-4013-b116-dd9fad4e90bf")]
 	public static extern HRESULT UrlApplyScheme(string pszIn, StringBuilder pszOut, ref uint pcchOut, URL_APPLY dwFlags);
@@ -420,7 +420,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszCanonicalized">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a buffer that, when this function returns successfully, receives the converted URL as a null-terminated string.</para>
 	/// </param>
 	/// <param name="pcchCanonicalized">
@@ -491,7 +491,7 @@ public static partial class ShlwApi
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlcanonicalizea LWSTDAPI UrlCanonicalizeA( PCSTR pszUrl,
-	// PSTR pszCanonicalized, DWORD *pcchCanonicalized, DWORD dwFlags );
+	// StrPtrAnsi pszCanonicalized, DWORD *pcchCanonicalized, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "70802745-0611-4d37-800e-b50d5ea23426")]
 	public static extern HRESULT UrlCanonicalize(string pszUrl, StringBuilder pszCanonicalized, ref uint pcchCanonicalized, URLFLAGS dwFlags);
@@ -508,7 +508,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to a null-terminated string of maximum length INTERNET_MAX_URL_LENGTH that contains the relative URL.</para>
 	/// </param>
 	/// <param name="pszCombined">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives a null-terminated string that contains the combined URL.
 	/// </para>
@@ -597,7 +597,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlcombinea LWSTDAPI UrlCombineA( PCSTR pszBase, PCSTR
-	// pszRelative, PSTR pszCombined, DWORD *pcchCombined, DWORD dwFlags );
+	// pszRelative, StrPtrAnsi pszCombined, DWORD *pcchCombined, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f574d365-1ab9-4de4-84fe-17820c327ccf")]
 	public static extern HRESULT UrlCombine(string pszBase, string pszRelative, StringBuilder pszCombined, ref uint pcchCombined, URLFLAGS dwFlags);
@@ -644,7 +644,7 @@ public static partial class ShlwApi
 	/// <para>A null-terminated string of maximum length INTERNET_MAX_URL_LENGTH that contains the MS-DOS path.</para>
 	/// </param>
 	/// <param name="pszUrl">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a buffer that, when this function returns successfully, receives the URL.</para>
 	/// </param>
 	/// <param name="pcchUrl">
@@ -668,7 +668,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlcreatefrompatha LWSTDAPI UrlCreateFromPathA( PCSTR
-	// pszPath, PSTR pszUrl, DWORD *pcchUrl, DWORD dwFlags );
+	// pszPath, StrPtrAnsi pszUrl, DWORD *pcchUrl, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b69ab203-daab-4951-b3b9-c5ca37c532b3")]
 	public static extern HRESULT UrlCreateFromPath(string pszPath, StringBuilder pszUrl, ref uint pcchUrl, uint dwFlags = 0);
@@ -688,7 +688,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszEscaped">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer that receives the converted string, with the unsafe characters converted to their escape sequences.</para>
 	/// </param>
 	/// <param name="pcchEscaped">
@@ -841,7 +841,7 @@ public static partial class ShlwApi
 	/// demonstration purposes.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlescapea LWSTDAPI UrlEscapeA( PCSTR pszUrl, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlescapea LWSTDAPI UrlEscapeA( PCSTR pszUrl, StrPtrAnsi
 	// pszEscaped, DWORD *pcchEscaped, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "52ee1501-2cd4-4193-8363-0af91673ec88")]
@@ -862,7 +862,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszTranslatedUrl">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the copied characters. The buffer must be large
 	/// enough to contain the number of WCHAR characters specified by the cchMax parameter, including the terminating <c>NULL</c>
@@ -899,7 +899,7 @@ public static partial class ShlwApi
 	/// intended and demonstrate limitations of the heuristic used by the function.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlfixupw LWSTDAPI UrlFixupW( PCWSTR pcszUrl, PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlfixupw LWSTDAPI UrlFixupW( PCWSTR pcszUrl, StrPtrUni
 	// pszTranslatedUrl, DWORD cchMax );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3750d027-847f-4f33-851d-a10be7562bcb")]
@@ -935,7 +935,7 @@ public static partial class ShlwApi
 	/// <para>A null-terminated string of maximum length INTERNET_MAX_URL_LENGTH that contains the URL.</para>
 	/// </param>
 	/// <param name="pszOut">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives a null-terminated string with the specified part of
 	/// the URL.
@@ -980,7 +980,7 @@ public static partial class ShlwApi
 	/// character. Otherwise, a COM error value is returned.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlgetparta LWSTDAPI UrlGetPartA( PCSTR pszIn, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlgetparta LWSTDAPI UrlGetPartA( PCSTR pszIn, StrPtrAnsi
 	// pszOut, DWORD *pcchOut, DWORD dwPart, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5f43dedd-c543-46b2-b90e-f0af576d2605")]
@@ -1106,14 +1106,14 @@ public static partial class ShlwApi
 	/// <para>Converts escape sequences back into ordinary characters.</para>
 	/// </summary>
 	/// <param name="pszUrl">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string with the URL. If dwFlags is set to <c>URL_UNESCAPE_INPLACE</c>, the converted string is
 	/// returned through this parameter.
 	/// </para>
 	/// </param>
 	/// <param name="pszUnescaped">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that will receive a null-terminated string that contains the unescaped version of pszURL. If
 	/// <c>URL_UNESCAPE_INPLACE</c> is set in dwFlags, this parameter is ignored.
@@ -1152,7 +1152,7 @@ public static partial class ShlwApi
 	/// <para>An escape sequence has the form "%xy".</para>
 	/// <para>Input strings cannot be longer than INTERNET_MAX_URL_LENGTH.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlunescapea LWSTDAPI UrlUnescapeA( PSTR pszUrl, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlunescapea LWSTDAPI UrlUnescapeA( StrPtrAnsi pszUrl, StrPtrAnsi
 	// pszUnescaped, DWORD *pcchUnescaped, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5bff5161-3b57-4f12-b126-42eac3f60267")]

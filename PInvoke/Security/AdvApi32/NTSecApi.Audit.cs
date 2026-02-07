@@ -464,7 +464,7 @@ public static partial class AdvApi32
 	/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-auditlookupcategorynamea BOOLEAN
-	// AuditLookupCategoryNameA( const GUID *pAuditCategoryGuid, PSTR *ppszCategoryName );
+	// AuditLookupCategoryNameA( const GUID *pAuditCategoryGuid, StrPtrAnsi *ppszCategoryName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "8b30d864-8eb5-42d8-bc9a-a9eae1de5187")]
 	[return: MarshalAs(UnmanagedType.U1)]
@@ -484,7 +484,7 @@ public static partial class AdvApi32
 	/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-auditlookupsubcategorynamea BOOLEAN
-	// AuditLookupSubCategoryNameA( const GUID *pAuditSubCategoryGuid, PSTR *ppszSubCategoryName );
+	// AuditLookupSubCategoryNameA( const GUID *pAuditSubCategoryGuid, StrPtrAnsi *ppszSubCategoryName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "65ccd0f6-ee43-4b4d-98fd-b7a49f23ad9d")]
 	[return: MarshalAs(UnmanagedType.U1)]
@@ -1021,7 +1021,7 @@ public static partial class AdvApi32
 		{
 			if (IsInvalid) return Enumerable.Empty<T>();
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-			return handle.ToIEnum<T>(count, prefixBytes);
+			return this.ToIEnum<T>(count, prefixBytes);
 		}
 
 		/// <summary>

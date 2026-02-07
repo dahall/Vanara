@@ -29,12 +29,12 @@ public class VarTests
 		{ typeof(DateTime), "Date" },
 	};
 
-	public static IEnumerable<TestCaseData> NumericTests
+	public static IEnumerable<object[]> NumericTests
 	{
 		get
 		{
 			const int noNegCnt = 4;
-			object[] vals = new object[] { (byte)1, (ushort)1, 1u, 1ul, (sbyte)1, (short)1, 1, 1L, 1f, 1d, true, "1", new CY(1m), new DECIMAL(1m) };
+			object[] vals = [(byte)1, (ushort)1, 1u, 1ul, (sbyte)1, (short)1, 1, 1L, 1f, 1d, true, "1", new CY(1m), new DECIMAL(1m)];
 			for (int i = 0; i < vals.Length; i++)
 			{
 				Type t1 = vals[i].GetType();
@@ -47,7 +47,7 @@ public class VarTests
 					string fn = $"Var{(t1 == typeof(string) ? "Bstr" : funcPart[t1])}From{funcPart[t2]}";
 					MethodInfo? mi = typeof(OleAut32).GetMethod(fn, BindingFlags.Static | BindingFlags.Public);
 					if (mi is not null)
-						yield return new TestCaseData(GetVal(i, j), GetVal(j, i), mi).SetName(fn);
+						yield return new object[] { GetVal(i, j), GetVal(j, i), mi! };
 				}
 			}
 
@@ -80,9 +80,10 @@ public class VarTests
 	//[Test]
 	public void ShowOther()
 	{
-		List<string>? tested = NumericTests.Select(t => ((MethodInfo?)t.Arguments[2])?.Name)?.WhereNotNull().ToList();
+		List<object[]> cases = [.. NumericTests];
+		List<string>? tested = [.. cases.Select(t => ((MethodInfo)t[2]!).Name)];
 		Assert.That(tested, Is.Not.Null);
-		List<string> all = typeof(OleAut32).GetMethods(BindingFlags.Static | BindingFlags.Public).Where(mi => mi.Name.StartsWith("Var")).Select(mi => mi.Name).ToList();
+		List<string> all = [.. typeof(OleAut32).GetMethods(BindingFlags.Static | BindingFlags.Public).Where(mi => mi.Name.StartsWith("Var")).Select(mi => mi.Name)];
 		all.Except(tested!).OrderBy(s => s.ToLowerInvariant()).ToList().WriteValues();
 	}
 
@@ -90,7 +91,7 @@ public class VarTests
 	public void VarConvTest(object toVal, object fromVal, MethodInfo mi)
 	{
 		bool hasStr = fromVal is string || toVal is string;
-		object?[] p = hasStr ? new[] { fromVal, curLoc, Activator.CreateInstance(mi.GetParameters()[2].ParameterType), null } : new[] { fromVal, null };
+		object?[] p = hasStr ? [fromVal, curLoc, Activator.CreateInstance(mi.GetParameters()[2].ParameterType), null] : [fromVal, null];
 		HRESULT hr = 0;
 		try { hr = (HRESULT)mi.Invoke(null, p)!; }
 		catch { Assert.Ignore($"Function {mi.Name} fails Invoke."); }

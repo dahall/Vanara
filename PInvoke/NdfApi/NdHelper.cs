@@ -146,6 +146,11 @@ public static partial class NdfApi
 	public interface INetDiagExtensibleHelper
 	{
 		/// <summary/>
+		/// <param name="celt"></param>
+		/// <param name="rgKeyAttributes"></param>
+		/// <param name="pcelt"></param>
+		/// <param name="prgMatchValues"></param>
+		/// <returns></returns>
 		[PreserveSig]
 		HRESULT ResolveAttributes([In] uint celt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HELPER_ATTRIBUTE[] rgKeyAttributes,
 			out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out HELPER_ATTRIBUTE[]? prgMatchValues);
@@ -345,7 +350,7 @@ public static partial class NdfApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-lowhealth HRESULT LowHealth( [in] LPCWSTR
-		// pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
+		// pwszInstanceDescription, [out] StrPtrUni *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
 		HRESULT LowHealth([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
 			[MarshalAs(UnmanagedType.LPWStr)] out string? ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
@@ -401,7 +406,7 @@ public static partial class NdfApi
 		/// </returns>
 		/// <remarks>This method is not required when building a Helper Class Extension.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelper-highutilization HRESULT HighUtilization(
-		// [in] LPCWSTR pwszInstanceDescription, [out] LPWSTR *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
+		// [in] LPCWSTR pwszInstanceDescription, [out] StrPtrUni *ppwszDescription, [out] long *pDeferredTime, [out] DIAGNOSIS_STATUS *pStatus );
 		[PreserveSig]
 		HRESULT HighUtilization([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszInstanceDescription,
 			[MarshalAs(UnmanagedType.LPWStr)] out string? ppwszDescription, out long pDeferredTime, out DIAGNOSIS_STATUS pStatus);
@@ -1056,7 +1061,7 @@ public static partial class NdfApi
 		/// </returns>
 		/// <remarks>This method is not required when building a Helper Class Extension.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelperex-reconfirmlowhealth HRESULT
-		// ReconfirmLowHealth( [in] ULONG celt, [in] HypothesisResult *pResults, [out] LPWSTR *ppwszUpdatedDescription, [out]
+		// ReconfirmLowHealth( [in] ULONG celt, [in] HypothesisResult *pResults, [out] StrPtrUni *ppwszUpdatedDescription, [out]
 		// DIAGNOSIS_STATUS *pUpdatedStatus );
 		[PreserveSig]
 		HRESULT ReconfirmLowHealth([In] uint celt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HypothesisResult[] pResults,
@@ -1151,7 +1156,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelperutilfactory-createutilityinstance HRESULT
 		// CreateUtilityInstance( [in] REFIID riid, [out] void **ppvObject );
 		[PreserveSig]
-		HRESULT CreateUtilityInstance(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvObject);
+		HRESULT CreateUtilityInstance(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvObject);
 	}
 
 	/// <summary>The <c>DiagnosticsInfo</c> structure contains the estimate of diagnosis time, and flags for invocation.</summary>
@@ -1179,13 +1184,13 @@ public static partial class NdfApi
 
 	/// <summary>The <c>HelperAttributeInfo</c> structure contains the name of the helper attribute and its type.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/ns-ndhelper-helperattributeinfo typedef struct tagHelperAttributeInfo {
-	// LPWSTR pwszName; ATTRIBUTE_TYPE type; } HelperAttributeInfo, *PHelperAttributeInfo;
+	// StrPtrUni pwszName; ATTRIBUTE_TYPE type; } HelperAttributeInfo, *PHelperAttributeInfo;
 	[PInvokeData("ndhelper.h", MSDNShortId = "NS:ndhelper.tagHelperAttributeInfo")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct HelperAttributeInfo
 	{
 		/// <summary>
-		/// <para>Type: <c>[string] LPWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>Pointer to a null-terminated string that contains the name of the helper attribute.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1202,21 +1207,21 @@ public static partial class NdfApi
 	/// The <c>HYPOTHESIS</c> structure contains data used to submit a hypothesis to NDF for another helper class. The name of the helper
 	/// class, the number of parameters that the helper class requires, and the parameters to pass to the helper class are contained in this structure.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/ns-ndhelper-hypothesis typedef struct tagHYPOTHESIS { LPWSTR
-	// pwszClassName; LPWSTR pwszDescription; ULONG celt; PHELPER_ATTRIBUTE rgAttributes; } HYPOTHESIS, *PHYPOTHESIS;
+	// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/ns-ndhelper-hypothesis typedef struct tagHYPOTHESIS { StrPtrUni
+	// pwszClassName; StrPtrUni pwszDescription; ULONG celt; PHELPER_ATTRIBUTE rgAttributes; } HYPOTHESIS, *PHYPOTHESIS;
 	[PInvokeData("ndhelper.h", MSDNShortId = "NS:ndhelper.tagHYPOTHESIS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct HYPOTHESIS
 	{
 		/// <summary>
-		/// <para>Type: <c>[string] LPWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>A pointer to a null-terminated string that contains the name of the helper class.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pwszClassName;
 
 		/// <summary>
-		/// <para>Type: <c>[string] LPWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a null-terminated string that contains a user-friendly description of the data being passed to the helper class..
 		/// </para>

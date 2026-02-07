@@ -48,7 +48,7 @@ public static partial class Kernel32
 	/// buffer is not large enough to contain all the key name and value pairs associated with the named section, the return value is
 	/// equal to nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR
+	// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR
 	// lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724348(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724348")]
@@ -84,7 +84,7 @@ public static partial class Kernel32
 	/// character. If the buffer is not large enough to contain all the section names associated with the specified initialization file,
 	/// the return value is equal to the size specified by nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ LPTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
+	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ StrPtrAuto lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
 	public static extern uint GetPrivateProfileSectionNames(IntPtr lpszReturnBuffer, uint nSize, string lpFileName);
@@ -99,7 +99,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>The section names associated with the named file.</returns>
-	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ LPTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
+	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ StrPtrAuto lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
 	public static string[] GetPrivateProfileSectionNames(string lpFileName, int charLenHint = -1) =>
 		GetProfStrings((p, s) => GetPrivateProfileSectionNames(p, s, lpFileName), charLenHint);
@@ -144,7 +144,7 @@ public static partial class Kernel32
 	/// <c>errorno</c> with a value of '0x2' (File Not Found). To retrieve extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ LPTSTR
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
@@ -190,7 +190,7 @@ public static partial class Kernel32
 	/// <c>errorno</c> with a value of '0x2' (File Not Found). To retrieve extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ LPTSTR
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
@@ -213,22 +213,8 @@ public static partial class Kernel32
 	/// The character length hint. If provided, this is the first size used for the memory allocated to retrieve the information. This
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
-	/// <returns>
-	/// <para>The return value is the number of characters copied to the buffer, not including the terminating <c>null</c> character.</para>
-	/// <para>
-	/// If neither lpAppName nor lpKeyName is <c>NULL</c> and the supplied destination buffer is too small to hold the requested string,
-	/// the string is truncated and followed by a <c>null</c> character, and the return value is equal to nSize minus one.
-	/// </para>
-	/// <para>
-	/// If either lpAppName or lpKeyName is <c>NULL</c> and the supplied destination buffer is too small to hold all the strings, the
-	/// last string is truncated and followed by two <c>null</c> characters. In this case, the return value is equal to nSize minus two.
-	/// </para>
-	/// <para>
-	/// In the event the initialization file specified by lpFileName is not found, or contains invalid values, this function will set
-	/// <c>errorno</c> with a value of '0x2' (File Not Found). To retrieve extended error information, call GetLastError.
-	/// </para>
-	/// </returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ LPTSTR
+	/// <returns>The returned value(s).</returns>
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
 	public static string[] GetPrivateProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, string lpFileName, int charLenHint = -1) =>
@@ -315,7 +301,7 @@ public static partial class Kernel32
 	/// character. If the buffer is not large enough to contain all the keys and values associated with the named section, the return
 	/// value is equal to the size specified by nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
+	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
 	public static extern uint GetProfileSection(string lpAppName, IntPtr lpReturnedString, uint nSize);
@@ -327,7 +313,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>An array of keys and values associated with the named section.</returns>
-	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
+	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
 	public static string[] GetProfileSection(string lpAppName, int charLenHint = -1) => GetProfStrings((p, s) => GetProfileSection(lpAppName, p, s), charLenHint);
 
@@ -364,11 +350,47 @@ public static partial class Kernel32
 	/// last string is truncated and followed by two <c>null</c> characters. In this case, the return value is equal to nSize minus two.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ LPTSTR
+	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724366(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724366")]
 	public static extern uint GetProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, [Optional] string? lpDefault, StringBuilder lpReturnedString, uint nSize);
+
+	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
+	private static extern uint GetProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, [Optional] string? lpDefault, IntPtr lpReturnedString, uint nSize);
+
+	/// <summary>Retrieves the string associated with a key in the specified section of the Win.ini file.</summary>
+	/// <param name="lpAppName">
+	/// The name of the section containing the key. If this parameter is <c>NULL</c>, the function copies all section names in the file
+	/// to the supplied buffer.
+	/// </param>
+	/// <param name="lpKeyName">
+	/// The name of the key whose associated string is to be retrieved. If this parameter is <c>NULL</c>, the function copies all keys
+	/// in the given section to the supplied buffer. Each string is followed by a <c>null</c> character, and the final string is
+	/// followed by a second <c>null</c> character.
+	/// </param>
+	/// <param name="lpDefault">
+	/// <para>
+	/// A default string. If the lpKeyName key cannot be found in the initialization file, <c>GetProfileString</c> copies the default
+	/// string to the lpReturnedString buffer. If this parameter is <c>NULL</c>, the default is an empty string, "".
+	/// </para>
+	/// <para>
+	/// Avoid specifying a default string with trailing blank characters. The function inserts a <c>null</c> character in the
+	/// lpReturnedString buffer to strip any trailing blanks.
+	/// </para>
+	/// </param>
+	/// <param name="charLenHint">
+	/// The character length hint. If provided, this is the first size used for the memory allocated to retrieve the information. This
+	/// size will be increased until success or reaching the maximum number of characters supported by the function.
+	/// </param>
+	/// <returns>The returned value(s).</returns>
+	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
+	// lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724366(v=vs.85).aspx
+	[PInvokeData("Winbase.h", MSDNShortId = "ms724366")]
+	public static string[] GetProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, [Optional] string? lpDefault, int charLenHint = -1) =>
+		lpAppName is null || lpKeyName is null
+			? GetProfStrings((p, s) => GetProfileString(lpAppName, lpKeyName, lpDefault, p, s), charLenHint)
+			: throw new ArgumentException("Either lpAppName or lpKeyName must be <null>.");
 
 	/// <summary>Replaces the keys and values for the specified section in an initialization file.</summary>
 	/// <param name="lpAppName">
@@ -562,8 +584,8 @@ public static partial class Kernel32
 		while (true)
 		{
 			var ret = func(mem, chars);
-			if (ret == 0) return new string[0];
-			if (ret != chars - 2) return mem.ToStringEnum().ToArray();
+			if (ret == 0) return [];
+			if (ret != chars - 2) return [.. mem.ToStringEnum()];
 			if (chars == MaxChars) throw new InsufficientMemoryException();
 			mem.Size = (chars = Math.Min(chars * 2, MaxChars)) * AutoChSz;
 		}

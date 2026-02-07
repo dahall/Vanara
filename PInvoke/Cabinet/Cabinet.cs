@@ -132,7 +132,7 @@ public static partial class Cabinet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-compress BOOL Compress( COMPRESSOR_HANDLE
-	// CompressorHandle, LPCVOID UncompressedData, SIZE_T UncompressedDataSize, PVOID CompressedBuffer, SIZE_T CompressedBufferSize,
+	// CompressorHandle, LPCVOID UncompressedData, SizeT UncompressedDataSize, PVOID CompressedBuffer, SizeT CompressedBufferSize,
 	// PSIZE_T CompressedDataSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "0e32501c-5213-43e6-88ca-1e424181d7a2")]
@@ -397,7 +397,7 @@ public static partial class Cabinet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-decompress BOOL Decompress( DECOMPRESSOR_HANDLE
-	// DecompressorHandle, LPCVOID CompressedData, SIZE_T CompressedDataSize, PVOID UncompressedBuffer, SIZE_T UncompressedBufferSize,
+	// DecompressorHandle, LPCVOID CompressedData, SizeT CompressedDataSize, PVOID UncompressedBuffer, SizeT UncompressedBufferSize,
 	// PSIZE_T UncompressedDataSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "654b88c7-14f2-43d4-8850-675ea303b439")]
@@ -423,7 +423,7 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-querycompressorinformation BOOL
 	// QueryCompressorInformation( COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, PVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "90b2ef29-c488-4d32-a315-312b25a0e585")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -445,7 +445,7 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-querydecompressorinformation BOOL
 	// QueryDecompressorInformation( DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, PVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "85b39c04-2145-45d2-be59-24615905353d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -507,7 +507,7 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-setcompressorinformation BOOL
 	// SetCompressorInformation( COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, LPCVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "f8c2c425-9b21-4fe3-8b81-d8bf3cd8ec5b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -532,7 +532,7 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-setdecompressorinformation BOOL
 	// SetDecompressorInformation( DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, LPCVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "804B73D3-E68E-43A3-8F23-6A46ABDECB23")]
 	[return: MarshalAs(UnmanagedType.Bool)]

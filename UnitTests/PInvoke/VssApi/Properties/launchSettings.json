@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VssApi": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

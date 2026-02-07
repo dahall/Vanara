@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace Vanara.PInvoke;
 
@@ -25,7 +26,7 @@ public static partial class User32
 	/// <returns>To continue enumeration, the callback function must return <c>TRUE</c>; to stop enumeration, it must return <c>FALSE</c>.</returns>
 	// BOOL CALLBACK EnumChildProc( _In_ HWND hwnd, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633493(v=vs.85).aspx
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633493")]
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool EnumWindowsProc([In] HWND hwnd, [In] IntPtr lParam);
 
@@ -59,7 +60,7 @@ public static partial class User32
 	/// </returns>
 	// LRESULT CALLBACK WindowProc( _In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633573(v=vs.85).aspx
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633573")]
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	public delegate IntPtr WindowProc([In] HWND hwnd, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 
 	/// <summary>
@@ -83,7 +84,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="lpCmdLine">
-	/// <para>Type: <c>LPSTR</c></para>
+	/// <para>Type: <c>StrPtrAnsi</c></para>
 	/// <para>
 	/// The command line for the application, excluding the program name. To retrieve the entire command line, use the
 	/// <c>GetCommandLine</c> function.
@@ -160,10 +161,10 @@ public static partial class User32
 	/// that message's wParam parameter. If the function terminates before entering the message loop, it should return zero.
 	/// </para>
 	/// </returns>
-	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ StrPtrAnsi lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
-	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In][MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
+	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In, MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,
@@ -1461,7 +1462,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "animatewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AnimateWindow(HWND hWnd, uint dwTime, uint dwFlags);
+	public static extern bool AnimateWindow([In, AddAsMember] HWND hWnd, uint dwTime, uint dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1510,7 +1511,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-arrangeiconicwindows UINT ArrangeIconicWindows( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "arrangeiconicwindows")]
-	public static extern uint ArrangeIconicWindows(HWND hWnd);
+	public static extern uint ArrangeIconicWindows([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Allocates memory for a multiple-window- position structure and returns the handle to the structure.</para>
@@ -1551,6 +1552,7 @@ public static partial class User32
 	// nNumWindows );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "begindeferwindowpos")]
+	[return: AddAsCtor]
 	public static extern HDWP BeginDeferWindowPos(int nNumWindows);
 
 	/// <summary>
@@ -1579,7 +1581,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "bringwindowtotop")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BringWindowToTop(HWND hWnd);
+	public static extern bool BringWindowToTop([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -1772,7 +1774,7 @@ public static partial class User32
 	// lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern IntPtr CallWindowProc(WindowProc lpPrevWndFunc, HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr CallWindowProc([In, MarshalAs(UnmanagedType.FunctionPtr)] WindowProc lpPrevWndFunc, HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>Passes message information to the specified window procedure.</summary>
 	/// <param name="lpPrevWndFunc">
@@ -1906,7 +1908,8 @@ public static partial class User32
 	// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-	public static extern ushort CascadeWindows([Optional] HWND hwndParent, uint wHow, [In, Optional] PRECT? lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
+	public static extern ushort CascadeWindows([Optional, In, AddAsMember] HWND hwndParent, MdiTileFlags wHow, [In, Optional] PRECT? lpRect,
+		uint cKids, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
 
 	/// <summary>
 	/// <para>
@@ -2048,7 +2051,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "changewindowmessagefilterex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ChangeWindowMessageFilterEx(HWND hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
+	public static extern bool ChangeWindowMessageFilterEx([In, AddAsMember] HWND hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
 
 	/// <summary>
 	/// <para>
@@ -2093,7 +2096,7 @@ public static partial class User32
 	// hWndParent, POINT Point );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompoint")]
-	public static extern HWND ChildWindowFromPoint(HWND hWndParent, POINT Point);
+	public static extern HWND ChildWindowFromPoint([In, AddAsMember] HWND hWndParent, POINT Point);
 
 	/// <summary>
 	/// <para>
@@ -2155,7 +2158,7 @@ public static partial class User32
 	// hwnd, POINT pt, UINT flags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompointex")]
-	public static extern HWND ChildWindowFromPointEx(HWND hwnd, POINT pt, ChildWindowSkipOptions flags);
+	public static extern HWND ChildWindowFromPointEx([In, AddAsMember] HWND hwnd, POINT pt, ChildWindowSkipOptions flags);
 
 	/// <summary>
 	/// <para>Minimizes (but does not destroy) the specified window.</para>
@@ -2176,7 +2179,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "closewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CloseWindow(HWND hWnd);
+	public static extern bool CloseWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -2418,93 +2421,69 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowa
 	// void CreateWindowA( lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.CreateWindowA")]
+	[return: AddAsCtor]
 	public static SafeHWND CreateWindow(string lpClassName, [Optional] string? lpWindowName, [Optional] WindowStyles dwStyle,
 		[Optional] int x, [Optional] int y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 		[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam)
 		=> CreateWindowEx(0, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 
 	/// <summary>
-	/// <para>
 	/// Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical to the
 	/// CreateWindow function. For more information about creating a window and for full descriptions of the other parameters of
 	/// <c>CreateWindowEx</c>, see <c>CreateWindow</c>.
-	/// </para>
 	/// </summary>
 	/// <param name="dwExStyle">
-	/// <para>Type: <c>DWORD</c></para>
-	/// <para>The extended window style of the window being created. For a list of possible values,see Extended Window Styles.</para>
+	/// The extended window style of the window being created. For a list of possible values,see Extended Window Styles.
 	/// </param>
 	/// <param name="lpClassName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// A <c>null</c>-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The
-	/// atom must be in the low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the
-	/// window class name. The class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that
-	/// the module that registers the class is also the module that creates the window. The class name can also be any of the predefined
-	/// system class names.
-	/// </para>
+	/// A string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the
+	/// low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the window class name. The
+	/// class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that the module that registers
+	/// the class is also the module that creates the window. The class name can also be any of the predefined system class names.
 	/// </param>
 	/// <param name="lpWindowName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
 	/// The window name. If the window style specifies a title bar, the window title pointed to by lpWindowName is displayed in the title
-	/// bar. When using CreateWindow to create controls, such as buttons, check boxes, and static controls, use lpWindowName to specify
-	/// the text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon name
-	/// or identifier. To specify an identifier, use the syntax "#num".
-	/// </para>
+	/// bar. When using CreateWindow to create controls, such as buttons, check boxes, and static controls, use lpWindowName to specify the
+	/// text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon name or
+	/// identifier. To specify an identifier, use the syntax "#num".
 	/// </param>
 	/// <param name="dwStyle">
-	/// <para>Type: <c>DWORD</c></para>
-	/// <para>
 	/// The style of the window being created. This parameter can be a combination of the window style values, plus the control styles
 	/// indicated in the Remarks section.
-	/// </para>
 	/// </param>
 	/// <param name="X">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
-	/// The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of
-	/// the window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the
-	/// window relative to the upper-left corner of the parent window's client area. If x is set to <c>CW_USEDEFAULT</c>, the system
-	/// selects the default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only
-	/// for overlapped windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.
-	/// </para>
+	/// The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of the
+	/// window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the window
+	/// relative to the upper-left corner of the parent window's client area. If x is set to <c>CW_USEDEFAULT</c>, the system selects the
+	/// default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only for overlapped
+	/// windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.
 	/// </param>
 	/// <param name="Y">
-	/// <para>Type: <c>int</c></para>
 	/// <para>
 	/// The initial vertical position of the window. For an overlapped or pop-up window, the y parameter is the initial y-coordinate of
-	/// the window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner
-	/// of the child window relative to the upper-left corner of the parent window's client area. For a list box y is the initial
-	/// y-coordinate of the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's
-	/// client area.
+	/// the window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner of
+	/// the child window relative to the upper-left corner of the parent window's client area. For a list box y is the initial y-coordinate
+	/// of the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's client area.
 	/// </para>
 	/// <para>
-	/// If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>,
-	/// then the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager
-	/// calls ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the
-	/// window manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.
+	/// If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>, then
+	/// the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager calls
+	/// ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the window
+	/// manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.
 	/// </para>
 	/// </param>
 	/// <param name="nWidth">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
 	/// The width, in device units, of the window. For overlapped windows, nWidth is the window's width, in screen coordinates, or
-	/// <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the
-	/// default width extends from the initial x-coordinates to the right edge of the screen; the default height extends from the initial
+	/// <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the default
+	/// width extends from the initial x-coordinates to the right edge of the screen; the default height extends from the initial
 	/// y-coordinate to the top of the icon area. <c>CW_USEDEFAULT</c> is valid only for overlapped windows; if <c>CW_USEDEFAULT</c> is
 	/// specified for a pop-up or child window, the nWidth and nHeight parameter are set to zero.
-	/// </para>
 	/// </param>
 	/// <param name="nHeight">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
 	/// The height, in device units, of the window. For overlapped windows, nHeight is the window's height, in screen coordinates. If the
 	/// nWidth parameter is set to <c>CW_USEDEFAULT</c>, the system ignores nHeight.
-	/// </para>
 	/// </param>
 	/// <param name="hWndParent">
-	/// <para>Type: <c>HWND</c></para>
 	/// <para>
 	/// A handle to the parent or owner window of the window being created. To create a child window or an owned window, supply a valid
 	/// window handle. This parameter is optional for pop-up windows.
@@ -2512,62 +2491,47 @@ public static partial class User32
 	/// <para>To create a message-only window, supply <c>HWND_MESSAGE</c> or a handle to an existing message-only window.</para>
 	/// </param>
 	/// <param name="hMenu">
-	/// <para>Type: <c>HMENU</c></para>
-	/// <para>
-	/// A handle to a menu, or specifies a child-window identifier, depending on the window style. For an overlapped or pop-up window,
-	/// hMenu identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window,
-	/// hMenu specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
+	/// A handle to a menu, or specifies a child-window identifier, depending on the window style. For an overlapped or pop-up window, hMenu
+	/// identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window, hMenu
+	/// specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
-	/// </para>
 	/// </param>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>A handle to the instance of the module to be associated with the window.</para>
-	/// </param>
+	/// <param name="hInstance">A handle to the instance of the module to be associated with the window.</param>
 	/// <param name="lpParam">
-	/// <para>Type: <c>LPVOID</c></para>
 	/// <para>
-	/// Pointer to a value to be passed to the window through the CREATESTRUCT structure ( <c>lpCreateParams</c> member) pointed to by
-	/// the lParam param of the <c>WM_CREATE</c> message. This message is sent to the created window by this function before it returns.
+	/// Pointer to a value to be passed to the window through the CREATESTRUCT structure ( <c>lpCreateParams</c> member) pointed to by the
+	/// lParam param of the <c>WM_CREATE</c> message. This message is sent to the created window by this function before it returns.
 	/// </para>
 	/// <para>
-	/// If an application calls CreateWindow to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an
-	/// MDI client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure.
-	/// lpParam may be <c>NULL</c> if no additional data is needed.
+	/// If an application calls CreateWindow to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an MDI
+	/// client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure. lpParam
+	/// may be <c>NULL</c> if no additional data is needed.
 	/// </para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>Type: <c>HWND</c></c></para>
 	/// <para>If the function succeeds, the return value is a handle to the new window.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
 	/// <para>This function typically fails for one of the following reasons:</para>
 	/// <list type="bullet">
+	/// <item>an invalid parameter value -</item>
+	/// <item>the system class was registered by a different module -</item>
+	/// <item>The <c>WH_CBT</c> hook is installed and returns a failure code -</item>
 	/// <item>
-	/// <term>an invalid parameter value</term>
-	/// </item>
-	/// <item>
-	/// <term>the system class was registered by a different module</term>
-	/// </item>
-	/// <item>
-	/// <term>The <c>WH_CBT</c> hook is installed and returns a failure code</term>
-	/// </item>
-	/// <item>
-	/// <term>if one of the controls in the dialog template is not registered, or its window window procedure fails WM_CREATE or WM_NCCREATE</term>
+	/// if one of the controls in the dialog template is not registered, or its window window procedure fails WM_CREATE or WM_NCCREATE -
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>The <c>CreateWindowEx</c> function sends WM_NCCREATE, WM_NCCALCSIZE, and WM_CREATE messages to the window being created.</para>
 	/// <para>
-	/// If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a
-	/// top-level window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is
-	/// itself topmost).
+	/// If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a top-level
+	/// window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is itself topmost).
 	/// </para>
 	/// <para>For information on controlling whether the Taskbar displays a button for the created window, see Managing Taskbar Buttons.</para>
 	/// <para>For information on removing a window, see the DestroyWindow function.</para>
 	/// <para>
-	/// The following predefined control classes can be specified in the lpClassName parameter. Note the corresponding control styles you
-	/// can use in the dwStyle parameter.
+	/// The following predefined control classes can be specified in the lpClassName parameter. Note the corresponding control styles you can
+	/// use in the dwStyle parameter.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -2575,96 +2539,96 @@ public static partial class User32
 	/// <term>Meaning</term>
 	/// </listheader>
 	/// <item>
-	/// <term>BUTTON</term>
-	/// <term>
-	/// Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can
-	/// be used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance
-	/// when the user clicks them. For more information, see Buttons. For a table of the button styles you can specify in the dwStyle
-	/// parameter, see Button Styles.
-	/// </term>
+	/// <description>BUTTON</description>
+	/// <description>
+	/// Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can be
+	/// used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance when the
+	/// user clicks them. For more information, see Buttons. For a table of the button styles you can specify in the dwStyle parameter, see
+	/// Button Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>COMBOBOX</term>
-	/// <term>
-	/// Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an
-	/// application should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing
-	/// characters into the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting
-	/// an item in the list box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of
-	/// the combo box styles you can specify in the dwStyle parameter, see Combo Box Styles.
-	/// </term>
+	/// <description>COMBOBOX</description>
+	/// <description>
+	/// Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an application
+	/// should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing characters into
+	/// the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting an item in the list
+	/// box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of the combo box styles you
+	/// can specify in the dwStyle parameter, see Combo Box Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>EDIT</term>
-	/// <term>
-	/// Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives
-	/// it the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control
-	/// displays a flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for
-	/// inserting characters; or use the key to delete characters. For more information, see Edit Controls. For a table of the edit
-	/// control styles you can specify in the dwStyle parameter, see Edit Control Styles.
-	/// </term>
+	/// <description>EDIT</description>
+	/// <description>
+	/// Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives it
+	/// the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control displays a
+	/// flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for inserting characters;
+	/// or use the key to delete characters. For more information, see Edit Controls. For a table of the edit control styles you can specify
+	/// in the dwStyle parameter, see Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>LISTBOX</term>
-	/// <term>
-	/// Designates a list of character strings. Specify this control whenever an application must present a list of names, such as
-	/// filenames, from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a
-	/// notification message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you
-	/// can specify in the dwStyle parameter, see List Box Styles.
-	/// </term>
+	/// <description>LISTBOX</description>
+	/// <description>
+	/// Designates a list of character strings. Specify this control whenever an application must present a list of names, such as filenames,
+	/// from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a notification
+	/// message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you can specify in
+	/// the dwStyle parameter, see List Box Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>MDICLIENT</term>
-	/// <term>
+	/// <description>MDICLIENT</description>
+	/// <description>
 	/// Designates an MDI client window. This window receives messages that control the MDI application's child windows. The recommended
-	/// style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that
-	/// allows the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.
-	/// </term>
+	/// style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that allows
+	/// the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>RichEdit</term>
-	/// <term>
-	/// Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph
-	/// formatting, and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a
-	/// table of the rich edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
-	/// </term>
+	/// <description>RichEdit</description>
+	/// <description>
+	/// Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph formatting,
+	/// and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a table of the rich
+	/// edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>RICHEDIT_CLASS</term>
-	/// <term>
-	/// Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph
-	/// formatting, and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit
-	/// control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
-	/// </term>
+	/// <description>RICHEDIT_CLASS</description>
+	/// <description>
+	/// Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph formatting,
+	/// and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit control styles you
+	/// can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>SCROLLBAR</term>
-	/// <term>
-	/// Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification
-	/// message to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of
-	/// the scroll box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify
-	/// in the dwStyle parameter, see Scroll Bar Control Styles.
-	/// </term>
+	/// <description>SCROLLBAR</description>
+	/// <description>
+	/// Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification message
+	/// to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of the scroll
+	/// box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify in the dwStyle
+	/// parameter, see Scroll Bar Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>STATIC</term>
-	/// <term>
-	/// Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input
-	/// and provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the
-	/// dwStyle parameter, see Static Control Styles.
-	/// </term>
+	/// <description>STATIC</description>
+	/// <description>
+	/// Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input and
+	/// provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the dwStyle
+	/// parameter, see Static Control Styles.
+	/// </description>
 	/// </item>
 	/// </list>
 	/// <para>
-	/// The <c>WS_EX_NOACTIVATE</c> value for dwExStyle prevents foreground activation by the system. To prevent queue activation when
-	/// the user clicks on the window, you must process the WM_MOUSEACTIVATE message appropriately. To bring the window to the foreground
-	/// or to activate it programmatically, use SetForegroundWindow or SetActiveWindow. Returning <c>FALSE</c> to WM_NCACTIVATE prevents
-	/// the window from losing queue activation. However, the return value is ignored at activation time.
+	/// The <c>WS_EX_NOACTIVATE</c> value for dwExStyle prevents foreground activation by the system. To prevent queue activation when the
+	/// user clicks on the window, you must process the WM_MOUSEACTIVATE message appropriately. To bring the window to the foreground or to
+	/// activate it programmatically, use SetForegroundWindow or SetActiveWindow. Returning <c>FALSE</c> to WM_NCACTIVATE prevents the window
+	/// from losing queue activation. However, the return value is ignored at activation time.
 	/// </para>
 	/// <para>
-	/// With <c>WS_EX_COMPOSITED</c> set, all descendants of a window get bottom-to-top painting order using double-buffering.
-	/// Bottom-to-top painting order allows a descendent window to have translucency (alpha) and transparency (color-key) effects, but
-	/// only if the descendent window also has the <c>WS_EX_TRANSPARENT</c> bit set. Double-buffering allows the window and its
-	/// descendents to be painted without flicker.
+	/// With <c>WS_EX_COMPOSITED</c> set, all descendants of a window get bottom-to-top painting order using double-buffering. Bottom-to-top
+	/// painting order allows a descendent window to have translucency (alpha) and transparency (color-key) effects, but only if the
+	/// descendent window also has the <c>WS_EX_TRANSPARENT</c> bit set. Double-buffering allows the window and its descendents to be painted
+	/// without flicker.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createwindowexa HWND CreateWindowExA( DWORD dwExStyle,
@@ -2672,93 +2636,69 @@ public static partial class User32
 	// HINSTANCE hInstance, LPVOID lpParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
+	[return: AddAsCtor]
 	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, [MarshalAs(UnmanagedType.LPTStr)] string lpClassName,
 		[MarshalAs(UnmanagedType.LPTStr), Optional] string? lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
 		[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 		[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
 
 	/// <summary>
-	/// <para>
 	/// Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical to the
 	/// CreateWindow function. For more information about creating a window and for full descriptions of the other parameters of
 	/// <c>CreateWindowEx</c>, see <c>CreateWindow</c>.
-	/// </para>
 	/// </summary>
 	/// <param name="dwExStyle">
-	/// <para>Type: <c>DWORD</c></para>
-	/// <para>The extended window style of the window being created. For a list of possible values,see Extended Window Styles.</para>
+	/// The extended window style of the window being created. For a list of possible values,see Extended Window Styles.
 	/// </param>
 	/// <param name="lpClassName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// A <c>null</c>-terminated string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The
-	/// atom must be in the low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the
-	/// window class name. The class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that
-	/// the module that registers the class is also the module that creates the window. The class name can also be any of the predefined
-	/// system class names.
-	/// </para>
+	/// A string or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the
+	/// low-order word of lpClassName; the high-order word must be zero. If lpClassName is a string, it specifies the window class name. The
+	/// class name can be any name registered with <c>RegisterClass</c> or <c>RegisterClassEx</c>, provided that the module that registers
+	/// the class is also the module that creates the window. The class name can also be any of the predefined system class names.
 	/// </param>
 	/// <param name="lpWindowName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
 	/// The window name. If the window style specifies a title bar, the window title pointed to by lpWindowName is displayed in the title
-	/// bar. When using CreateWindow to create controls, such as buttons, check boxes, and static controls, use lpWindowName to specify
-	/// the text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon name
-	/// or identifier. To specify an identifier, use the syntax "#num".
-	/// </para>
+	/// bar. When using CreateWindow to create controls, such as buttons, check boxes, and static controls, use lpWindowName to specify the
+	/// text of the control. When creating a static control with the <c>SS_ICON</c> style, use lpWindowName to specify the icon name or
+	/// identifier. To specify an identifier, use the syntax "#num".
 	/// </param>
 	/// <param name="dwStyle">
-	/// <para>Type: <c>DWORD</c></para>
-	/// <para>
 	/// The style of the window being created. This parameter can be a combination of the window style values, plus the control styles
 	/// indicated in the Remarks section.
-	/// </para>
 	/// </param>
 	/// <param name="X">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
-	/// The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of
-	/// the window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the
-	/// window relative to the upper-left corner of the parent window's client area. If x is set to <c>CW_USEDEFAULT</c>, the system
-	/// selects the default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only
-	/// for overlapped windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.
-	/// </para>
+	/// The initial horizontal position of the window. For an overlapped or pop-up window, the x parameter is the initial x-coordinate of the
+	/// window's upper-left corner, in screen coordinates. For a child window, x is the x-coordinate of the upper-left corner of the window
+	/// relative to the upper-left corner of the parent window's client area. If x is set to <c>CW_USEDEFAULT</c>, the system selects the
+	/// default position for the window's upper-left corner and ignores the y parameter. <c>CW_USEDEFAULT</c> is valid only for overlapped
+	/// windows; if it is specified for a pop-up or child window, the x and y parameters are set to zero.
 	/// </param>
 	/// <param name="Y">
-	/// <para>Type: <c>int</c></para>
 	/// <para>
 	/// The initial vertical position of the window. For an overlapped or pop-up window, the y parameter is the initial y-coordinate of
-	/// the window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner
-	/// of the child window relative to the upper-left corner of the parent window's client area. For a list box y is the initial
-	/// y-coordinate of the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's
-	/// client area.
+	/// the window's upper-left corner, in screen coordinates. For a child window, y is the initial y-coordinate of the upper-left corner of
+	/// the child window relative to the upper-left corner of the parent window's client area. For a list box y is the initial y-coordinate
+	/// of the upper-left corner of the list box's client area relative to the upper-left corner of the parent window's client area.
 	/// </para>
 	/// <para>
-	/// If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>,
-	/// then the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager
-	/// calls ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the
-	/// window manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.
+	/// If an overlapped window is created with the <c>WS_VISIBLE</c> style bit set and the x parameter is set to <c>CW_USEDEFAULT</c>, then
+	/// the y parameter determines how the window is shown. If the y parameter is <c>CW_USEDEFAULT</c>, then the window manager calls
+	/// ShowWindow with the <c>SW_SHOW</c> flag after the window has been created. If the y parameter is some other value, then the window
+	/// manager calls <c>ShowWindow</c> with that value as the nCmdShow parameter.
 	/// </para>
 	/// </param>
 	/// <param name="nWidth">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
 	/// The width, in device units, of the window. For overlapped windows, nWidth is the window's width, in screen coordinates, or
-	/// <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the
-	/// default width extends from the initial x-coordinates to the right edge of the screen; the default height extends from the initial
+	/// <c>CW_USEDEFAULT</c>. If nWidth is <c>CW_USEDEFAULT</c>, the system selects a default width and height for the window; the default
+	/// width extends from the initial x-coordinates to the right edge of the screen; the default height extends from the initial
 	/// y-coordinate to the top of the icon area. <c>CW_USEDEFAULT</c> is valid only for overlapped windows; if <c>CW_USEDEFAULT</c> is
 	/// specified for a pop-up or child window, the nWidth and nHeight parameter are set to zero.
-	/// </para>
 	/// </param>
 	/// <param name="nHeight">
-	/// <para>Type: <c>int</c></para>
-	/// <para>
 	/// The height, in device units, of the window. For overlapped windows, nHeight is the window's height, in screen coordinates. If the
 	/// nWidth parameter is set to <c>CW_USEDEFAULT</c>, the system ignores nHeight.
-	/// </para>
 	/// </param>
 	/// <param name="hWndParent">
-	/// <para>Type: <c>HWND</c></para>
 	/// <para>
 	/// A handle to the parent or owner window of the window being created. To create a child window or an owned window, supply a valid
 	/// window handle. This parameter is optional for pop-up windows.
@@ -2766,62 +2706,47 @@ public static partial class User32
 	/// <para>To create a message-only window, supply <c>HWND_MESSAGE</c> or a handle to an existing message-only window.</para>
 	/// </param>
 	/// <param name="hMenu">
-	/// <para>Type: <c>HMENU</c></para>
-	/// <para>
-	/// A handle to a menu, or specifies a child-window identifier, depending on the window style. For an overlapped or pop-up window,
-	/// hMenu identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window,
-	/// hMenu specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
+	/// A handle to a menu, or specifies a child-window identifier, depending on the window style. For an overlapped or pop-up window, hMenu
+	/// identifies the menu to be used with the window; it can be <c>NULL</c> if the class menu is to be used. For a child window, hMenu
+	/// specifies the child-window identifier, an integer value used by a dialog box control to notify its parent about events. The
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
-	/// </para>
 	/// </param>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>A handle to the instance of the module to be associated with the window.</para>
-	/// </param>
+	/// <param name="hInstance">A handle to the instance of the module to be associated with the window.</param>
 	/// <param name="lpParam">
-	/// <para>Type: <c>LPVOID</c></para>
 	/// <para>
-	/// Pointer to a value to be passed to the window through the CREATESTRUCT structure ( <c>lpCreateParams</c> member) pointed to by
-	/// the lParam param of the <c>WM_CREATE</c> message. This message is sent to the created window by this function before it returns.
+	/// Pointer to a value to be passed to the window through the CREATESTRUCT structure ( <c>lpCreateParams</c> member) pointed to by the
+	/// lParam param of the <c>WM_CREATE</c> message. This message is sent to the created window by this function before it returns.
 	/// </para>
 	/// <para>
-	/// If an application calls CreateWindow to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an
-	/// MDI client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure.
-	/// lpParam may be <c>NULL</c> if no additional data is needed.
+	/// If an application calls CreateWindow to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure. If an MDI
+	/// client window calls <c>CreateWindow</c> to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure. lpParam
+	/// may be <c>NULL</c> if no additional data is needed.
 	/// </para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>Type: <c>HWND</c></c></para>
 	/// <para>If the function succeeds, the return value is a handle to the new window.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
 	/// <para>This function typically fails for one of the following reasons:</para>
 	/// <list type="bullet">
+	/// <item>an invalid parameter value -</item>
+	/// <item>the system class was registered by a different module -</item>
+	/// <item>The <c>WH_CBT</c> hook is installed and returns a failure code -</item>
 	/// <item>
-	/// <term>an invalid parameter value</term>
-	/// </item>
-	/// <item>
-	/// <term>the system class was registered by a different module</term>
-	/// </item>
-	/// <item>
-	/// <term>The <c>WH_CBT</c> hook is installed and returns a failure code</term>
-	/// </item>
-	/// <item>
-	/// <term>if one of the controls in the dialog template is not registered, or its window window procedure fails WM_CREATE or WM_NCCREATE</term>
+	/// if one of the controls in the dialog template is not registered, or its window window procedure fails WM_CREATE or WM_NCCREATE -
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>The <c>CreateWindowEx</c> function sends WM_NCCREATE, WM_NCCALCSIZE, and WM_CREATE messages to the window being created.</para>
 	/// <para>
-	/// If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a
-	/// top-level window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is
-	/// itself topmost).
+	/// If the created window is a child window, its default position is at the bottom of the Z-order. If the created window is a top-level
+	/// window, its default position is at the top of the Z-order (but beneath all topmost windows unless the created window is itself topmost).
 	/// </para>
 	/// <para>For information on controlling whether the Taskbar displays a button for the created window, see Managing Taskbar Buttons.</para>
 	/// <para>For information on removing a window, see the DestroyWindow function.</para>
 	/// <para>
-	/// The following predefined control classes can be specified in the lpClassName parameter. Note the corresponding control styles you
-	/// can use in the dwStyle parameter.
+	/// The following predefined control classes can be specified in the lpClassName parameter. Note the corresponding control styles you can
+	/// use in the dwStyle parameter.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -2829,96 +2754,96 @@ public static partial class User32
 	/// <term>Meaning</term>
 	/// </listheader>
 	/// <item>
-	/// <term>BUTTON</term>
-	/// <term>
-	/// Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can
-	/// be used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance
-	/// when the user clicks them. For more information, see Buttons. For a table of the button styles you can specify in the dwStyle
-	/// parameter, see Button Styles.
-	/// </term>
+	/// <description>BUTTON</description>
+	/// <description>
+	/// Designates a small rectangular child window that represents a button the user can click to turn it on or off. Button controls can be
+	/// used alone or in groups, and they can either be labeled or appear without text. Button controls typically change appearance when the
+	/// user clicks them. For more information, see Buttons. For a table of the button styles you can specify in the dwStyle parameter, see
+	/// Button Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>COMBOBOX</term>
-	/// <term>
-	/// Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an
-	/// application should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing
-	/// characters into the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting
-	/// an item in the list box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of
-	/// the combo box styles you can specify in the dwStyle parameter, see Combo Box Styles.
-	/// </term>
+	/// <description>COMBOBOX</description>
+	/// <description>
+	/// Designates a control consisting of a list box and a selection field similar to an edit control. When using this style, an application
+	/// should either display the list box at all times or enable a drop-down list box. If the list box is visible, typing characters into
+	/// the selection field highlights the first list box entry that matches the characters typed. Conversely, selecting an item in the list
+	/// box displays the selected text in the selection field. For more information, see Combo Boxes. For a table of the combo box styles you
+	/// can specify in the dwStyle parameter, see Combo Box Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>EDIT</term>
-	/// <term>
-	/// Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives
-	/// it the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control
-	/// displays a flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for
-	/// inserting characters; or use the key to delete characters. For more information, see Edit Controls. For a table of the edit
-	/// control styles you can specify in the dwStyle parameter, see Edit Control Styles.
-	/// </term>
+	/// <description>EDIT</description>
+	/// <description>
+	/// Designates a rectangular child window into which the user can type text from the keyboard. The user selects the control and gives it
+	/// the keyboard focus by clicking it or moving to it by pressing the TAB key. The user can type text when the edit control displays a
+	/// flashing caret; use the mouse to move the cursor, select characters to be replaced, or position the cursor for inserting characters;
+	/// or use the key to delete characters. For more information, see Edit Controls. For a table of the edit control styles you can specify
+	/// in the dwStyle parameter, see Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>LISTBOX</term>
-	/// <term>
-	/// Designates a list of character strings. Specify this control whenever an application must present a list of names, such as
-	/// filenames, from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a
-	/// notification message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you
-	/// can specify in the dwStyle parameter, see List Box Styles.
-	/// </term>
+	/// <description>LISTBOX</description>
+	/// <description>
+	/// Designates a list of character strings. Specify this control whenever an application must present a list of names, such as filenames,
+	/// from which the user can choose. The user can select a string by clicking it. A selected string is highlighted, and a notification
+	/// message is passed to the parent window. For more information, see List Boxes. For a table of the list box styles you can specify in
+	/// the dwStyle parameter, see List Box Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>MDICLIENT</term>
-	/// <term>
+	/// <description>MDICLIENT</description>
+	/// <description>
 	/// Designates an MDI client window. This window receives messages that control the MDI application's child windows. The recommended
-	/// style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that
-	/// allows the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.
-	/// </term>
+	/// style bits are WS_CLIPCHILDREN and WS_CHILD. Specify the WS_HSCROLL and WS_VSCROLL styles to create an MDI client window that allows
+	/// the user to scroll MDI child windows into view. For more information, see Multiple Document Interface.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>RichEdit</term>
-	/// <term>
-	/// Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph
-	/// formatting, and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a
-	/// table of the rich edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
-	/// </term>
+	/// <description>RichEdit</description>
+	/// <description>
+	/// Designates a Microsoft Rich Edit 1.0 control. This window lets the user view and edit text with character and paragraph formatting,
+	/// and can include embedded Component Object Model (COM) objects. For more information, see Rich Edit Controls. For a table of the rich
+	/// edit control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>RICHEDIT_CLASS</term>
-	/// <term>
-	/// Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph
-	/// formatting, and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit
-	/// control styles you can specify in the dwStyle parameter, see Rich Edit Control Styles.
-	/// </term>
+	/// <description>RICHEDIT_CLASS</description>
+	/// <description>
+	/// Designates a Microsoft Rich Edit 2.0 control. This controls let the user view and edit text with character and paragraph formatting,
+	/// and can include embedded COM objects. For more information, see Rich Edit Controls. For a table of the rich edit control styles you
+	/// can specify in the dwStyle parameter, see Rich Edit Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>SCROLLBAR</term>
-	/// <term>
-	/// Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification
-	/// message to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of
-	/// the scroll box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify
-	/// in the dwStyle parameter, see Scroll Bar Control Styles.
-	/// </term>
+	/// <description>SCROLLBAR</description>
+	/// <description>
+	/// Designates a rectangle that contains a scroll box and has direction arrows at both ends. The scroll bar sends a notification message
+	/// to its parent window whenever the user clicks the control. The parent window is responsible for updating the position of the scroll
+	/// box, if necessary. For more information, see Scroll Bars. For a table of the scroll bar control styles you can specify in the dwStyle
+	/// parameter, see Scroll Bar Control Styles.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>STATIC</term>
-	/// <term>
-	/// Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input
-	/// and provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the
-	/// dwStyle parameter, see Static Control Styles.
-	/// </term>
+	/// <description>STATIC</description>
+	/// <description>
+	/// Designates a simple text field, box, or rectangle used to label, box, or separate other controls. Static controls take no input and
+	/// provide no output. For more information, see Static Controls. For a table of the static control styles you can specify in the dwStyle
+	/// parameter, see Static Control Styles.
+	/// </description>
 	/// </item>
 	/// </list>
 	/// <para>
-	/// The <c>WS_EX_NOACTIVATE</c> value for dwExStyle prevents foreground activation by the system. To prevent queue activation when
-	/// the user clicks on the window, you must process the WM_MOUSEACTIVATE message appropriately. To bring the window to the foreground
-	/// or to activate it programmatically, use SetForegroundWindow or SetActiveWindow. Returning <c>FALSE</c> to WM_NCACTIVATE prevents
-	/// the window from losing queue activation. However, the return value is ignored at activation time.
+	/// The <c>WS_EX_NOACTIVATE</c> value for dwExStyle prevents foreground activation by the system. To prevent queue activation when the
+	/// user clicks on the window, you must process the WM_MOUSEACTIVATE message appropriately. To bring the window to the foreground or to
+	/// activate it programmatically, use SetForegroundWindow or SetActiveWindow. Returning <c>FALSE</c> to WM_NCACTIVATE prevents the window
+	/// from losing queue activation. However, the return value is ignored at activation time.
 	/// </para>
 	/// <para>
-	/// With <c>WS_EX_COMPOSITED</c> set, all descendants of a window get bottom-to-top painting order using double-buffering.
-	/// Bottom-to-top painting order allows a descendent window to have translucency (alpha) and transparency (color-key) effects, but
-	/// only if the descendent window also has the <c>WS_EX_TRANSPARENT</c> bit set. Double-buffering allows the window and its
-	/// descendents to be painted without flicker.
+	/// With <c>WS_EX_COMPOSITED</c> set, all descendants of a window get bottom-to-top painting order using double-buffering. Bottom-to-top
+	/// painting order allows a descendent window to have translucency (alpha) and transparency (color-key) effects, but only if the
+	/// descendent window also has the <c>WS_EX_TRANSPARENT</c> bit set. Double-buffering allows the window and its descendents to be painted
+	/// without flicker.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createwindowexa HWND CreateWindowExA( DWORD dwExStyle,
@@ -2926,7 +2851,8 @@ public static partial class User32
 	// HINSTANCE hInstance, LPVOID lpParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, IntPtr lpClassName,
+	[return: AddAsCtor]
+	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, Kernel32.ATOM lpClassName,
 		[MarshalAs(UnmanagedType.LPTStr), Optional] string? lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
 		[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 		[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
@@ -3138,7 +3064,7 @@ public static partial class User32
 	// hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT uFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deferwindowpos")]
-	public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, [Optional] HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+	public static extern HDWP DeferWindowPos([In, AddAsMember] HDWP hWinPosInfo, HWND hWnd, [Optional] HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 	/// <summary>
 	/// Provides default processing for any window messages that the window procedure of a multiple-document interface (MDI) frame window
@@ -3213,7 +3139,7 @@ public static partial class User32
 	// hWndMDIClient, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefFrameProc(HWND hWnd, [Optional] HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefFrameProc([In, AddAsMember] HWND hWnd, [Optional] HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// Provides default processing for any window message that the window procedure of a multiple-document interface (MDI) child window
@@ -3294,7 +3220,7 @@ public static partial class User32
 	// hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefMDIChildProc(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefMDIChildProc([In, AddAsMember] HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// Calls the default window procedure to provide default processing for any window messages that an application does not process.
@@ -3325,7 +3251,7 @@ public static partial class User32
 	// UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefWindowProc(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefWindowProc([In, AddAsMember] HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -3350,7 +3276,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deregistershellhookwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeregisterShellHookWindow(HWND hwnd);
+	public static extern bool DeregisterShellHookWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>
@@ -3387,7 +3313,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "destroywindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DestroyWindow(HWND hWnd);
+	public static extern bool DestroyWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// Disables the window ghosting feature for the calling GUI process. Window ghosting is a Windows Manager feature that lets the user
@@ -3427,7 +3353,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DragDetect(HWND hwnd, POINT pt);
+	public static extern bool DragDetect([In, AddAsMember] HWND hwnd, POINT pt);
 
 	/// <summary>
 	/// Enables or disables mouse and keyboard input to the specified window or control. When input is disabled, the window does not
@@ -3476,7 +3402,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnableWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
+	public static extern bool EnableWindow([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
 
 	/// <summary>
 	/// <para>Simultaneously updates the position and size of one or more windows in a single screen-refreshing cycle.</para>
@@ -3503,7 +3429,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enddeferwindowpos")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndDeferWindowPos(IntPtr hWinPosInfo);
+	public static extern bool EndDeferWindowPos(HDWP hWinPosInfo);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -3540,7 +3466,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "endtask")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndTask(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
+	public static extern bool EndTask([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
 
 	/// <summary>
 	/// Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to
@@ -3593,13 +3519,13 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <returns>An ordered sequence of child window handles.</returns>
-	public static IReadOnlyList<HWND> EnumChildWindows(this HWND hWndParent)
+	public static IReadOnlyList<HWND> EnumChildWindows([In, AddAsMember] this HWND hWndParent)
 	{
 		var children = new List<HWND>();
 		Win32Error.ThrowLastErrorIfFalse(EnumChildWindows(hWndParent, EnumProc, default));
 		return children;
 
-		bool EnumProc(HWND hwnd, IntPtr lParam) { children.Add(hwnd); return true; }
+		bool EnumProc([In, AddAsMember] HWND hwnd, IntPtr lParam) { children.Add(hwnd); return true; }
 	}
 
 	/// <summary>
@@ -3790,7 +3716,7 @@ public static partial class User32
 	// HWND FindWindowExA( [in, optional] HWND hWndParent, [in, optional] HWND hWndChildAfter, [in, optional] LPCSTR lpszClass, [in, optional] LPCSTR lpszWindow );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.FindWindowExA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern HWND FindWindowEx([In, Optional] HWND hWndParent, [In, Optional] HWND hWndChildAfter, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszClass,
+	public static extern HWND FindWindowEx([In, AddAsMember, Optional] HWND hWndParent, [In, Optional] HWND hWndChildAfter, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszClass,
 		[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszWindow);
 
 	/// <summary>
@@ -3904,7 +3830,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c4af997d-5cb8-4d5d-ae8d-1e0cc724fe02")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlashWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bInvert);
+	public static extern bool FlashWindow([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bInvert);
 
 	/// <summary>Flashes the specified window. It does not change the active state of the window.</summary>
 	/// <param name="pfwi">A pointer to a FLASHWINFO structure.</param>
@@ -3964,7 +3890,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="pszItemText">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The name of the item. If this parameter is <c>NULL</c>, the name of the item is not copied.</para>
 	/// </param>
 	/// <param name="cchItemText">
@@ -3984,11 +3910,11 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getalttabinfoa BOOL GetAltTabInfoA( HWND hwnd, int iItem,
-	// PALTTABINFO pati, LPSTR pszItemText, UINT cchItemText );
+	// PALTTABINFO pati, StrPtrAnsi pszItemText, UINT cchItemText );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getalttabinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAltTabInfo(HWND hwnd, int iItem, ref ALTTABINFO pati, [Optional] StringBuilder? pszItemText, uint cchItemText);
+	public static extern bool GetAltTabInfo([In, AddAsMember] HWND hwnd, int iItem, ref ALTTABINFO pati, [Out, Optional] StringBuilder? pszItemText, uint cchItemText);
 
 	/// <summary>
 	/// <para>Retrieves the handle to the ancestor of the specified window.</para>
@@ -4028,7 +3954,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getancestor HWND GetAncestor( HWND hwnd, UINT gaFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getancestor")]
-	public static extern HWND GetAncestor(HWND hwnd, GetAncestorFlag gaFlags);
+	public static extern HWND GetAncestor([In, AddAsMember] HWND hwnd, GetAncestorFlag gaFlags);
 
 	/// <summary>
 	/// Retrieves a handle to the window (if any) that has captured the mouse. Only one window at a time can capture the mouse; this
@@ -4062,7 +3988,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is a window handle. If no window exists with the specified relationship to the
 	/// specified window, the return value is NULL. To get extended error information, call GetLastError.
 	/// </returns>
-	public static HWND GetChildWindow(this HWND hWnd) => GetWindow(hWnd, GetWindowCmd.GW_CHILD);
+	public static HWND GetChildWindow([In, AddAsMember] HWND hWnd) => GetWindow(hWnd, GetWindowCmd.GW_CHILD);
 
 	/// <summary>
 	/// <para>Retrieves information about a window class.</para>
@@ -4144,7 +4070,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
 	// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static bool GetClassInfoEx([In] HINSTANCE hInstance, string lpszClass, out WNDCLASSEX lpwcx)
+	public static bool GetClassInfoEx([In, Optional] HINSTANCE hInstance, string lpszClass, out WNDCLASSEX lpwcx)
 	{
 		WNDCLASSEXB wc = new();
 		var ret = GetClassInfoEx(hInstance, lpszClass, ref wc);
@@ -4191,7 +4117,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
 	// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static bool GetClassInfoEx([In] HINSTANCE hInstance, IntPtr lpszClass, out WNDCLASSEX lpwcx)
+	public static bool GetClassInfoEx([In, Optional] HINSTANCE hInstance, Kernel32.ATOM lpszClass, out WNDCLASSEX lpwcx)
 	{
 		WNDCLASSEXB wc = new();
 		var ret = GetClassInfoEx(hInstance, lpszClass, ref wc);
@@ -4287,7 +4213,7 @@ public static partial class User32
 	/// the RegisterClassEx function.
 	/// </remarks>
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr GetClassLong(HWND hWnd, int nIndex) => IntPtr.Size > 4 ? GetClassLongPtr(hWnd, nIndex) : (IntPtr)GetClassLong32(hWnd, nIndex);
+	public static IntPtr GetClassLong([In, AddAsMember] HWND hWnd, int nIndex) => IntPtr.Size > 4 ? GetClassLongPtr(hWnd, nIndex) : (IntPtr)GetClassLong32(hWnd, nIndex);
 
 	/// <summary>
 	/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -4377,7 +4303,7 @@ public static partial class User32
 	/// the RegisterClassEx function.
 	/// </remarks>
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr GetClassLong(HWND hWnd, GetClassLongFlag nIndex) => GetClassLong(hWnd, (int)nIndex);
+	public static IntPtr GetClassLong([In, AddAsMember] HWND hWnd, GetClassLongFlag nIndex) => GetClassLong(hWnd, (int)nIndex);
 
 	/// <summary>Retrieves the name of the class to which the specified window belongs.</summary>
 	/// <param name="hWnd">
@@ -4385,7 +4311,7 @@ public static partial class User32
 	/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
 	/// </param>
 	/// <param name="lpClassName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The class name string.</para>
 	/// </param>
 	/// <param name="nMaxCount">
@@ -4399,11 +4325,11 @@ public static partial class User32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassname int GetClassName( HWND hWnd, LPTSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassname int GetClassName( HWND hWnd, StrPtrAuto
 	// lpClassName, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetClassName(HWND hWnd, StringBuilder lpClassName, int nMaxCount);
+	public static extern int GetClassName([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpClassName, int nMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -4473,7 +4399,7 @@ public static partial class User32
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool GetClientRect(HWND hWnd, out RECT lpRect);
+	public static extern bool GetClientRect([In, AddAsMember] HWND hWnd, out RECT lpRect);
 
 	/// <summary>
 	/// Retrieves a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of
@@ -4483,6 +4409,7 @@ public static partial class User32
 	// HWND WINAPI GetDesktopWindow(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633504(v=vs.85).aspx
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
+	[return: AddAsCtor]
 	public static extern HWND GetDesktopWindow();
 
 	/// <summary>
@@ -4513,6 +4440,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getfocus HWND GetFocus( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
+	[return: AddAsCtor]
 	public static extern HWND GetFocus();
 
 	/// <summary>
@@ -4531,6 +4459,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getforegroundwindow HWND GetForegroundWindow( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getforegroundwindow")]
+	[return: AddAsCtor]
 	public static extern HWND GetForegroundWindow();
 
 	/// <summary>
@@ -4656,7 +4585,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getlastactivepopup HWND GetLastActivePopup( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getlastactivepopup")]
-	public static extern HWND GetLastActivePopup(HWND hWnd);
+	public static extern HWND GetLastActivePopup([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves the opacity and transparency color key of a layered window.</para>
@@ -4721,7 +4650,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getlayeredwindowattributes")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLayeredWindowAttributes(HWND hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
+	public static extern bool GetLayeredWindowAttributes([In, AddAsMember] HWND hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
 
 	/// <summary>
 	/// <para>
@@ -4767,7 +4696,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getnextwindow void GetNextWindow( hWnd, wCmd );
 	[PInvokeData("winuser.h", MSDNShortId = "getnextwindow")]
-	public static void GetNextWindow(HWND hWnd, GetWindowCmd wCmd) => GetWindow(hWnd, wCmd);
+	public static void GetNextWindow([In, AddAsMember] HWND hWnd, GetWindowCmd wCmd) => GetWindow(hWnd, wCmd);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the specified window's parent or owner.</para>
@@ -4805,7 +4734,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getparent HWND GetParent( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getparent")]
-	public static extern HWND GetParent(HWND hWnd);
+	public static extern HWND GetParent([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves the default layout that is used when windows are created with no parent or owner.</para>
@@ -4842,6 +4771,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getshellwindow HWND GetShellWindow( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getshellwindow")]
+	[return: AddAsCtor]
 	public static extern HWND GetShellWindow();
 
 	/// <summary>
@@ -4868,7 +4798,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "gettitlebarinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTitleBarInfo(HWND hwnd, ref TITLEBARINFO pti);
+	public static extern bool GetTitleBarInfo([In, AddAsMember] HWND hwnd, ref TITLEBARINFO pti);
 
 	/// <summary>
 	/// <para>
@@ -4982,7 +4912,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindow")]
-	public static extern HWND GetWindow(HWND hWnd, GetWindowCmd uCmd);
+	public static extern HWND GetWindow([In, AddAsMember] HWND hWnd, GetWindowCmd uCmd);
 
 	/// <summary>Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.</summary>
 	/// <param name="hWnd">
@@ -5067,7 +4997,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND GetWindow(HWND hWnd, uint uCmd);
+	public static extern HWND GetWindow([In, AddAsMember] HWND hWnd, uint uCmd);
 
 	/// <summary>Retrieves the Help context identifier, if any, associated with the specified window.</summary>
 	/// <param name="Arg1">
@@ -5082,7 +5012,7 @@ public static partial class User32
 	// Arg1 );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "28e57c01-0327-4f64-9ef4-ca13c3c32b0c")]
-	public static extern uint GetWindowContextHelpId(HWND Arg1);
+	public static extern uint GetWindowContextHelpId([In, AddAsMember] HWND Arg1);
 
 	/// <summary>
 	/// <para>Retrieves the current display affinity setting, from any process, for a given window.</para>
@@ -5123,7 +5053,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowdisplayaffinity")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowDisplayAffinity(HWND hWnd, out WindowDisplayAffinity pdwAffinity);
+	public static extern bool GetWindowDisplayAffinity([In, AddAsMember] HWND hWnd, out WindowDisplayAffinity pdwAffinity);
 
 	/// <summary>Retrieves the feedback configuration for a window.</summary>
 	/// <param name="hwnd">The window to check for feedback configuration.</param>
@@ -5149,7 +5079,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a40806b3-9085-42b6-9a87-95be0d1669c6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, GWFS dwFlags, ref uint pSize, [MarshalAs(UnmanagedType.Bool)] out bool config);
+	public static extern bool GetWindowFeedbackSetting([In, AddAsMember] HWND hwnd, FEEDBACK_TYPE feedback, GWFS dwFlags, ref uint pSize, [MarshalAs(UnmanagedType.Bool)] out bool config);
 
 	/// <summary>
 	/// <para>Retrieves information about the specified window.</para>
@@ -5176,7 +5106,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowInfo(HWND hwnd, ref WINDOWINFO pwi);
+	public static extern bool GetWindowInfo([In, AddAsMember] HWND hwnd, ref WINDOWINFO pwi);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the module associated with the specified window handle.</para>
@@ -5186,7 +5116,7 @@ public static partial class User32
 	/// <para>A handle to the window whose module file name is to be retrieved.</para>
 	/// </param>
 	/// <param name="pszFileName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The path and file name.</para>
 	/// </param>
 	/// <param name="cchFileNameMax">
@@ -5198,10 +5128,10 @@ public static partial class User32
 	/// <para>The return value is the total number of characters copied into the buffer.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowmodulefilenamea UINT GetWindowModuleFileNameA(
-	// HWND hwnd, LPSTR pszFileName, UINT cchFileNameMax );
+	// HWND hwnd, StrPtrAnsi pszFileName, UINT cchFileNameMax );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowmodulefilename")]
-	public static extern uint GetWindowModuleFileName(HWND hwnd, StringBuilder pszFileName, uint cchFileNameMax);
+	public static extern uint GetWindowModuleFileName([In, AddAsMember] HWND hwnd, [Out, SizeDef(nameof(cchFileNameMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pszFileName, uint cchFileNameMax);
 
 	/// <summary>
 	/// <para>Retrieves the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -5238,7 +5168,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowplacement")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
+	public static extern bool GetWindowPlacement([In, AddAsMember] HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 	/// <summary>
 	/// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that
@@ -5256,7 +5186,7 @@ public static partial class User32
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool GetWindowRect(HWND hWnd, out RECT lpRect);
+	public static extern bool GetWindowRect([In, AddAsMember] HWND hWnd, out RECT lpRect);
 
 	/// <summary>
 	/// <para>
@@ -5269,7 +5199,7 @@ public static partial class User32
 	/// <para>A handle to the window or control containing the text.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The buffer that will receive the text. If the string is as long or longer than the buffer, the string is truncated and terminated
 	/// with a null character.
@@ -5303,11 +5233,11 @@ public static partial class User32
 	/// <para>Examples</para>
 	/// <para>For an example, see Sending a Message.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtexta int GetWindowTextA( HWND hWnd, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtexta int GetWindowTextA( HWND hWnd, StrPtrAnsi
 	// lpString, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
-	public static extern int GetWindowText(HWND hWnd, StringBuilder lpString, int nMaxCount);
+	public static extern int GetWindowText([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int nMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -5349,7 +5279,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtextlengtha int GetWindowTextLengthA( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtextlength")]
-	public static extern int GetWindowTextLength(HWND hWnd);
+	public static extern int GetWindowTextLength([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -5376,7 +5306,7 @@ public static partial class User32
 	// HWND hWnd, LPDWORD lpdwProcessId );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowthreadprocessid")]
-	public static extern uint GetWindowThreadProcessId(HWND hWnd, out uint lpdwProcessId);
+	public static extern uint GetWindowThreadProcessId([In, AddAsMember] HWND hWnd, out uint lpdwProcessId);
 
 	/// <summary>
 	/// Enables a Dynamic Data Exchange (DDE) server application to impersonate a DDE client application's security context. This
@@ -5417,7 +5347,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dde.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ImpersonateDdeClientWindow(HWND hWndClient, HWND hWndServer);
+	public static extern bool ImpersonateDdeClientWindow([In, AddAsMember] HWND hWndClient, HWND hWndServer);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -5434,7 +5364,7 @@ public static partial class User32
 	/// <para>A handle to the window or control containing the text.</para>
 	/// </param>
 	/// <param name="pString">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The buffer that is to receive the text.</para>
 	/// <para>If the string is as long or longer than the buffer, the string is truncated and terminated with a null character.</para>
 	/// </param>
@@ -5459,10 +5389,11 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext int InternalGetWindowText( HWND
-	// hWnd, LPWSTR pString, int cchMaxCount );
+	// hWnd, StrPtrUni pString, int cchMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
-	public static extern int InternalGetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
+	public static extern int InternalGetWindowText([In, AddAsMember] HWND hWnd,
+		[Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cchMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pString, int cchMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -5488,7 +5419,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "ischild")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsChild(HWND hWndParent, HWND hWnd);
+	public static extern bool IsChild([In, AddAsMember] HWND hWndParent, HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines whether the calling thread is already a GUI thread. It can also optionally convert the thread to a GUI thread.</para>
@@ -5548,7 +5479,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "ishungappwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsHungAppWindow(HWND hwnd);
+	public static extern bool IsHungAppWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>Determines whether the specified window is minimized (iconic).</para>
@@ -5566,7 +5497,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "isiconic")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsIconic(HWND hWnd);
+	public static extern bool IsIconic([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>[</para>
@@ -5614,7 +5545,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindow(HWND hWnd);
+	public static extern bool IsWindow([In] HWND hWnd);
 
 	/// <summary>Determines whether the specified window is enabled for mouse and keyboard input.</summary>
 	/// <param name="hWnd">
@@ -5631,7 +5562,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowEnabled(HWND hWnd);
+	public static extern bool IsWindowEnabled([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The <c>IsWindowRedirectedForPrint</c> function determines whether the specified window is currently redirected for printing.
@@ -5685,7 +5616,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindowunicode")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowUnicode(HWND hWnd);
+	public static extern bool IsWindowUnicode([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines the visibility state of the specified window.</para>
@@ -5719,7 +5650,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindowvisible")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowVisible(HWND hWnd);
+	public static extern bool IsWindowVisible([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines whether a window is maximized.</para>
@@ -5737,7 +5668,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iszoomed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsZoomed(HWND hWnd);
+	public static extern bool IsZoomed([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The foreground process can call the <c>LockSetForegroundWindow</c> function to disable calls to the SetForegroundWindow function.
@@ -5839,7 +5770,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "logicaltophysicalpoint")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LogicalToPhysicalPoint(HWND hWnd, ref POINT lpPoint);
+	public static extern bool LogicalToPhysicalPoint([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>
 	/// <para>
@@ -5897,7 +5828,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "movewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
+	public static extern bool MoveWindow([In, AddAsMember] HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
 
 	/// <summary>
 	/// Signals the system that a predefined event occurred. If any client applications have registered a hook function for the event,
@@ -5956,7 +5887,7 @@ public static partial class User32
 	// hwnd, LONG idObject, LONG idChild );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "08e74d45-95b6-44c2-a2e0-5ba6ffdcd56a")]
-	public static extern void NotifyWinEvent(uint winEvent, HWND hwnd, int idObject, int idChild);
+	public static extern void NotifyWinEvent(uint winEvent, [In, AddAsMember] HWND hwnd, int idObject, int idChild);
 
 	/// <summary>
 	/// <para>Restores a minimized (iconic) window to its previous size and position; it then activates the window.</para>
@@ -5977,7 +5908,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "openicon")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenIcon(HWND hWnd);
+	public static extern bool OpenIcon([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Converts the physical coordinates of a point in a window to logical coordinates.</para>
@@ -6034,7 +5965,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "physicaltologicalpoint")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref POINT lpPoint);
+	public static extern bool PhysicalToLogicalPoint([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>
 	/// The <c>PrintWindow</c> function copies a visual window into the specified device context (DC), typically a printer DC.
@@ -6076,7 +6007,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "00b38cd8-1cfb-408e-88da-6e61563d9d8e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PrintWindow(HWND hwnd, HDC hdcBlt, PW nFlags);
+	public static extern bool PrintWindow([In, AddAsMember] HWND hwnd, HDC hdcBlt, PW nFlags);
 
 	/// <summary>
 	/// <para>
@@ -6109,7 +6040,7 @@ public static partial class User32
 	// HWND hwndParent, POINT ptParentClientCoords );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "realchildwindowfrompoint")]
-	public static extern HWND RealChildWindowFromPoint(HWND hwndParent, POINT ptParentClientCoords);
+	public static extern HWND RealChildWindowFromPoint([In, AddAsMember] HWND hwndParent, POINT ptParentClientCoords);
 
 	/// <summary>
 	/// <para>Retrieves a string that specifies the window type.</para>
@@ -6119,7 +6050,7 @@ public static partial class User32
 	/// <para>A handle to the window whose type will be retrieved.</para>
 	/// </param>
 	/// <param name="ptszClassName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a string that receives the window type.</para>
 	/// </param>
 	/// <param name="cchClassNameMax">
@@ -6132,10 +6063,11 @@ public static partial class User32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-realgetwindowclassw UINT RealGetWindowClassW( HWND hwnd,
-	// LPWSTR ptszClassName, UINT cchClassNameMax );
+	// StrPtrUni ptszClassName, UINT cchClassNameMax );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "realgetwindowclass")]
-	public static extern uint RealGetWindowClass(HWND hwnd, StringBuilder ptszClassName, uint cchClassNameMax);
+	public static extern uint RealGetWindowClass([In, AddAsMember] HWND hwnd,
+		[Out, SizeDef(nameof(cchClassNameMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? ptszClassName, uint cchClassNameMax);
 
 	/// <summary>
 	/// <para>Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.</para>
@@ -6327,7 +6259,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "registershellhookwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterShellHookWindow(HWND hwnd);
+	public static extern bool RegisterShellHookWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has
@@ -6373,7 +6305,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setactivewindow HWND SetActiveWindow( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND SetActiveWindow(HWND hWnd);
+	public static extern HWND SetActiveWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <note type="warning"><c>SetAdditionalForegroundBoostProcesses</c> is a <c>limited access feature</c>. Contact
@@ -6477,7 +6409,7 @@ public static partial class User32
 	[PInvokeData("Winuser.h", MSDNShortId = "NF:winuser.SetAdditionalForegroundBoostProcesses", MinClient = PInvokeClient.Windows11)]
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetAdditionalForegroundBoostProcesses(HWND topLevelWindow, uint processHandleCount,
+	public static extern bool SetAdditionalForegroundBoostProcesses([In, AddAsMember] HWND topLevelWindow, uint processHandleCount,
 		[Optional, In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HPROCESS[]? processHandleArray);
 
 	/// <summary>
@@ -6520,7 +6452,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcapture HWND SetCapture( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND SetCapture(HWND hWnd);
+	public static extern HWND SetCapture([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -6625,7 +6557,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
 	// int nIndex, LONG_PTR dwNewLong );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr SetClassLong(HWND hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size > 4 ? SetClassLongPtr(hWnd, nIndex, dwNewLong) : (IntPtr)SetClassLong32(hWnd, nIndex, dwNewLong.ToInt32());
+	public static IntPtr SetClassLong([In, AddAsMember] HWND hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size > 4 ? SetClassLongPtr(hWnd, nIndex, dwNewLong) : (IntPtr)SetClassLong32(hWnd, nIndex, dwNewLong.ToInt32());
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -6730,7 +6662,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
 	// int nIndex, LONG_PTR dwNewLong );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr SetClassLong(HWND hWnd, GetClassLongFlag nIndex, IntPtr dwNewLong) => SetClassLong(hWnd, (int)nIndex, dwNewLong);
+	public static IntPtr SetClassLong([In, AddAsMember] HWND hWnd, GetClassLongFlag nIndex, IntPtr dwNewLong) => SetClassLong(hWnd, (int)nIndex, dwNewLong);
 
 	/// <summary>
 	/// <para>
@@ -6774,7 +6706,7 @@ public static partial class User32
 	// WORD wNewWord );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern ushort SetClassWord(HWND hWnd, int nIndex, ushort wNewWord);
+	public static extern ushort SetClassWord([In, AddAsMember] HWND hWnd, int nIndex, ushort wNewWord);
 
 	/// <summary>Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.</summary>
 	/// <param name="hWnd">
@@ -6877,7 +6809,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setforegroundwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetForegroundWindow(HWND hWnd);
+	public static extern bool SetForegroundWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Sets the opacity and transparency color key of a layered window.</para>
@@ -6942,7 +6874,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setlayeredwindowattributes")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
+	public static extern bool SetLayeredWindowAttributes([In, AddAsMember] HWND hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
 
 	/// <summary>
 	/// <para>Changes the parent window of the specified child window.</para>
@@ -7006,7 +6938,7 @@ public static partial class User32
 	// hWndNewParent );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setparent")]
-	public static extern HWND SetParent(HWND hWndChild, [Optional] HWND hWndNewParent);
+	public static extern HWND SetParent([In, AddAsMember] HWND hWndChild, [Optional] HWND hWndNewParent);
 
 	/// <summary>
 	/// <para>Changes the default layout when windows are created with no parent or owner only for the currently running process.</para>
@@ -7126,7 +7058,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "7e0963d1-5807-4db5-9abf-cdb21a03b525")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowContextHelpId(HWND arg1, uint arg2);
+	public static extern bool SetWindowContextHelpId([In, AddAsMember] HWND arg1, uint arg2);
 
 	/// <summary>
 	/// <para>Stores the display affinity setting in kernel mode on the hWnd associated with the window.</para>
@@ -7168,7 +7100,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowdisplayaffinity")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowDisplayAffinity(HWND hWnd, WindowDisplayAffinity dwAffinity);
+	public static extern bool SetWindowDisplayAffinity([In, AddAsMember] HWND hWnd, WindowDisplayAffinity dwAffinity);
 
 	/// <summary>Sets the feedback configuration for a window.</summary>
 	/// <param name="hwnd">The window to configure feedback on.</param>
@@ -7184,7 +7116,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "72bee160-7004-40be-9c91-e431b06ccaed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, [Optional] uint dwFlags, uint size, [Optional] IntPtr configuration);
+	public static extern bool SetWindowFeedbackSetting([In, AddAsMember] HWND hwnd, FEEDBACK_TYPE feedback, [Optional, Ignore] uint dwFlags, uint size, [In, Optional, SizeDef(nameof(size))] IntPtr configuration);
 
 	/// <summary>
 	/// <para>Sets the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -7222,7 +7154,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowplacement")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
+	public static extern bool SetWindowPlacement([In, AddAsMember] HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 	/// <summary>
 	/// <para>
@@ -7432,7 +7364,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowpos")]
 	[System.Security.SecurityCritical]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+	public static extern bool SetWindowPos([In, AddAsMember] HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
 	/// <summary>
 	/// <para>
@@ -7472,7 +7404,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPTStr)] string lpString);
+	public static extern bool SetWindowText([In, AddAsMember] HWND hWnd, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpString);
 
 	/// <summary>
 	/// <para>Shows or hides all pop-up windows owned by the specified window.</para>
@@ -7505,7 +7437,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showownedpopups")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowOwnedPopups(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
+	public static extern bool ShowOwnedPopups([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
 
 	/// <summary>
 	/// <para>Sets the specified window's show state.</para>
@@ -7634,7 +7566,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowWindow(HWND hWnd, ShowWindowCommand nCmdShow);
+	public static extern bool ShowWindow([In, AddAsMember] HWND hWnd, ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// <para>Sets the show state of a window without waiting for the operation to complete.</para>
@@ -7662,7 +7594,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showwindowasync")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowWindowAsync(HWND hWnd, ShowWindowCommand nCmdShow);
+	public static extern bool ShowWindowAsync([In, AddAsMember] HWND hWnd, ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// <para>Triggers a visual signal to indicate that a sound is playing.</para>
@@ -7723,7 +7655,7 @@ public static partial class User32
 	// BOOL fUnknown );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "switchtothiswindow")]
-	public static extern void SwitchToThisWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
+	public static extern void SwitchToThisWindow([In, AddAsMember] HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
 
 	/// <summary>
 	/// <para>Tiles the specified child windows of the specified parent window.</para>
@@ -7784,7 +7716,7 @@ public static partial class User32
 	// CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "tilewindows")]
-	public static extern ushort TileWindows([Optional] HWND hwndParent, MdiTileFlags wHow, [Optional] PRECT? lpRect, uint cKids, [In, Optional] HWND[]? lpKids);
+	public static extern ushort TileWindows([In, AddAsMember, Optional] HWND hwndParent, MdiTileFlags wHow, [Optional] PRECT? lpRect, uint cKids, [In, Optional] HWND[]? lpKids);
 
 	/// <summary>
 	/// Processes accelerator keystrokes for window menu commands of the multiple-document interface (MDI) child windows associated with
@@ -7812,7 +7744,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TranslateMDISysAccel(HWND hWndClient, ref MSG lpMsg);
+	public static extern bool TranslateMDISysAccel([In, AddAsMember] HWND hWndClient, ref MSG lpMsg);
 
 	/// <summary>Unregisters a window class, freeing the memory required for the class.</summary>
 	/// <param name="lpClassName">
@@ -7849,6 +7781,42 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UnregisterClass(string lpClassName, HINSTANCE hInstance);
+
+	/// <summary>Unregisters a window class, freeing the memory required for the class.</summary>
+	/// <param name="lpClassName">
+	/// <para>Type: <c>LPCTSTR</c></para>
+	/// <para>
+	/// A null-terminated string or a class atom. If lpClassName is a string, it specifies the window class name. This class name must
+	/// have been registered by a previous call to the RegisterClass or RegisterClassEx function. System classes, such as dialog box
+	/// controls, cannot be unregistered. If this parameter is an atom, it must be a class atom created by a previous call to the
+	/// <c>RegisterClass</c> or <c>RegisterClassEx</c> function. The atom must be in the low-order word of lpClassName; the high-order
+	/// word must be zero.
+	/// </para>
+	/// </param>
+	/// <param name="hInstance">
+	/// <para>Type: <c>HINSTANCE</c></para>
+	/// <para>A handle to the instance of the module that created the class.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the class could not be found or if a window still exists that was created with the class, the return value is zero. To get
+	/// extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Before calling this function, an application must destroy all windows created with the specified class.</para>
+	/// <para>All window classes that an application registers are unregistered when it terminates.</para>
+	/// <para>Class atoms are special atoms returned only by RegisterClass and RegisterClassEx.</para>
+	/// <para>No window classes registered by a DLL are unregistered when the .dll is unloaded.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-unregisterclassa BOOL UnregisterClassA( LPCSTR
+	// lpClassName, HINSTANCE hInstance );
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool UnregisterClass([In] Kernel32.ATOM lpClassName, HINSTANCE hInstance);
 
 	/// <summary>
 	/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -7971,7 +7939,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc,
+	public static extern bool UpdateLayeredWindow([In, AddAsMember] HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc,
 		in POINT pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>
@@ -8095,7 +8063,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize,
+	public static extern bool UpdateLayeredWindow([In, AddAsMember] HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize,
 		[In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>Updates the position, size, shape, content, and translucency of a layered window.</summary>
@@ -8123,7 +8091,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633557")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindowIndirect([In] HWND hwnd, in UPDATELAYEREDWINDOWINFO pULWInfo);
+	public static extern bool UpdateLayeredWindowIndirect([In, AddAsMember] HWND hwnd, in UPDATELAYEREDWINDOWINFO pULWInfo);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the window that contains the specified physical point.</para>
@@ -8201,7 +8169,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnls32.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WINNLSEnableIME([In, Optional] HWND hWnd, [In][MarshalAs(UnmanagedType.Bool)] bool fEnable);
+	public static extern bool WINNLSEnableIME([In, Optional, AddAsMember] HWND hWnd, [In][MarshalAs(UnmanagedType.Bool)] bool fEnable);
 
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -8209,7 +8177,7 @@ public static partial class User32
 
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	private static extern bool GetClassInfoEx([In] HINSTANCE hInstance, [In] IntPtr lpszClass, ref WNDCLASSEXB lpwcx);
+	private static extern bool GetClassInfoEx([In] HINSTANCE hInstance, [In] Kernel32.ATOM lpszClass, ref WNDCLASSEXB lpwcx);
 
 	/// <summary>
 	/// <para>Retrieves the specified 32-bit ( <c>DWORD</c>) value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -8301,7 +8269,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclasslonga DWORD GetClassLongA( HWND hWnd, int nIndex );
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "GetClassLong", CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern int GetClassLong32(HWND hWnd, int nIndex);
+	private static extern int GetClassLong32([In] HWND hWnd, int nIndex);
 
 	/// <summary>
 	/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -8394,7 +8362,7 @@ public static partial class User32
 	// int nIndex );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern IntPtr GetClassLongPtr(HWND hWnd, int nIndex);
+	private static extern IntPtr GetClassLongPtr([In] HWND hWnd, int nIndex);
 
 	/// <summary>
 	/// <para>
@@ -8508,7 +8476,7 @@ public static partial class User32
 	// LONG dwNewLong );
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetClassLong", CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern uint SetClassLong32(HWND hWnd, int nIndex, int dwNewLong);
+	private static extern uint SetClassLong32([In] HWND hWnd, int nIndex, int dwNewLong);
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -8614,7 +8582,7 @@ public static partial class User32
 	// int nIndex, LONG_PTR dwNewLong );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern IntPtr SetClassLongPtr(HWND hWnd, int nIndex, IntPtr dwNewLong);
+	private static extern IntPtr SetClassLongPtr([In, AddAsMember] HWND hWnd, int nIndex, IntPtr dwNewLong);
 
 	/// <summary>
 	/// <para>Contains status information for the application-switching (ALT+TAB) window.</para>
@@ -8779,13 +8747,13 @@ public static partial class User32
 	// { DWORD cbSize; DWORD ExtStatus; } CHANGEFILTERSTRUCT, *PCHANGEFILTERSTRUCT;
 	[PInvokeData("winuser.h", MSDNShortId = "changefilterstruct")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct CHANGEFILTERSTRUCT
+	public struct CHANGEFILTERSTRUCT()
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The size of the structure, in bytes. Must be set to , otherwise the function fails with <c>ERROR_INVALID_PARAMETER</c>.</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CHANGEFILTERSTRUCT>();
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8822,7 +8790,7 @@ public static partial class User32
 		public MessageFilterInformation ExtStatus;
 
 		/// <summary>The default value for this structure with the size field set appropriately.</summary>
-		public static CHANGEFILTERSTRUCT Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CHANGEFILTERSTRUCT)) };
+		public static readonly CHANGEFILTERSTRUCT Default = new();
 	}
 
 	/// <summary>
@@ -8937,6 +8905,124 @@ public static partial class User32
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
 		public string lpszClass;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The extended window style for the new window. For a list of possible values, see Extended Window Styles.</para>
+		/// </summary>
+		public WindowStylesEx dwExStyle;
+	}
+
+	/// <summary>
+	/// Defines the initialization parameters passed to the window procedure of an application. These members are identical to the
+	/// parameters of the CreateWindowEx function.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Because the <c>lpszClass</c> member can contain a pointer to a local (and thus inaccessable) atom, do not obtain the class name
+	/// by using this member. Use the GetClassName function instead.
+	/// </para>
+	/// <para>
+	/// You should access the data represented by the <c>lpCreateParams</c> member using a pointer that has been declared using the
+	/// <c>UNALIGNED</c> type, because the pointer may not be <c>DWORD</c> aligned. This is demonstrated in the following example:
+	/// </para>
+	/// <para>
+	/// <code>typedef struct tagMyData { // Define creation data here. } MYDATA; typedef struct tagMyDlgData { SHORT cbExtra; MYDATA myData; } MYDLGDATA, UNALIGNED *PMYDLGDATA; PMYDLGDATA pMyDlgdata = (PMYDLGDATA) (((LPCREATESTRUCT) lParam)-&gt;lpCreateParams);</code>
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-createstructa typedef struct tagCREATESTRUCTA { LPVOID
+	// lpCreateParams; HINSTANCE hInstance; HMENU hMenu; HWND hwndParent; int cy; int cx; int y; int x; LONG style; LPCSTR lpszName;
+	// LPCSTR lpszClass; DWORD dwExStyle; } CREATESTRUCTA, *LPCREATESTRUCTA;
+	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagCREATESTRUCTA")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	internal struct CREATESTRUCT_UNMGD
+	{
+		/// <summary>
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>
+		/// Contains additional data which may be used to create the window. If the window is being created as a result of a call to the
+		/// CreateWindow or CreateWindowEx function, this member contains the value of the lpParam parameter specified in the function call.
+		/// </para>
+		/// <para>
+		/// If the window being created is a MDI client window, this member contains a pointer to a CLIENTCREATESTRUCT structure. If the
+		/// window being created is a MDI child window, this member contains a pointer to an MDICREATESTRUCT structure.
+		/// </para>
+		/// <para>
+		/// If the window is being created from a dialog template, this member is the address of a <c>SHORT</c> value that specifies the
+		/// size, in bytes, of the window creation data. The value is immediately followed by the creation data. For more information,
+		/// see the following Remarks section.
+		/// </para>
+		/// </summary>
+		public IntPtr lpCreateParams;
+
+		/// <summary>
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>A handle to the module that owns the new window.</para>
+		/// </summary>
+		public HINSTANCE hInstance;
+
+		/// <summary>
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>A handle to the menu to be used by the new window.</para>
+		/// </summary>
+		public HMENU hMenu;
+
+		/// <summary>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the parent window, if the window is a child window. If the window is owned, this member identifies the owner
+		/// window. If the window is not a child or owned window, this member is <c>NULL</c>.
+		/// </para>
+		/// </summary>
+		public HWND hwndParent;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>The height of the new window, in pixels.</para>
+		/// </summary>
+		public int cy;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>The width of the new window, in pixels.</para>
+		/// </summary>
+		public int cx;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The y-coordinate of the upper left corner of the new window. If the new window is a child window, coordinates are relative
+		/// to the parent window. Otherwise, the coordinates are relative to the screen origin.
+		/// </para>
+		/// </summary>
+		public int y;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The x-coordinate of the upper left corner of the new window. If the new window is a child window, coordinates are relative
+		/// to the parent window. Otherwise, the coordinates are relative to the screen origin.
+		/// </para>
+		/// </summary>
+		public int x;
+
+		/// <summary>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>The style for the new window. For a list of possible values, see Window Styles.</para>
+		/// </summary>
+		public WindowStyles style;
+
+		/// <summary>
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The name of the new window.</para>
+		/// </summary>
+		public StrPtrAuto lpszName;
+
+		/// <summary>
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a null-terminated string or an atom that specifies the class name of the new window.</para>
+		/// </summary>
+		public StrPtrAuto lpszClass;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9277,7 +9363,7 @@ public static partial class User32
 		/// be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public IntPtr pptDst;
+		public StructPointer<POINT> pptDst;
 
 		/// <summary>
 		/// <para>Type: <c>const SIZE*</c></para>
@@ -9286,7 +9372,7 @@ public static partial class User32
 		/// <c>hdcSrc</c> is <c>NULL</c>, <c>psize</c> must be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public IntPtr psize;
+		public StructPointer<SIZE> psize;
 
 		/// <summary>
 		/// <para>Type: <c>HDC</c></para>
@@ -9301,7 +9387,7 @@ public static partial class User32
 		/// <para>Type: <c>const POINT*</c></para>
 		/// <para>The location of the layer in the device context. If <c>hdcSrc</c> is <c>NULL</c>, <c>pptSrc</c> should be <c>NULL</c>.</para>
 		/// </summary>
-		public IntPtr pptSrc;
+		public StructPointer<POINT> pptSrc;
 
 		/// <summary>
 		/// <para>Type: <c>COLORREF</c></para>
@@ -9313,7 +9399,7 @@ public static partial class User32
 		/// <para>Type: <c>const BLENDFUNCTION*</c></para>
 		/// <para>The transparency value to be used when composing the layered window.</para>
 		/// </summary>
-		public IntPtr pblend;
+		public StructPointer<Gdi32.BLENDFUNCTION> pblend;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9347,7 +9433,7 @@ public static partial class User32
 		/// </list>
 		/// <para>If <c>hdcSrc</c> is <c>NULL</c>, <c>dwFlags</c> should be zero.</para>
 		/// </summary>
-		public uint dwFlags;
+		public UpdateLayeredWindowFlags dwFlags;
 
 		/// <summary>
 		/// <para>Type: <c>const RECT*</c></para>
@@ -9356,7 +9442,7 @@ public static partial class User32
 		/// the source DC.
 		/// </para>
 		/// </summary>
-		public IntPtr prcDirty;
+		public StructPointer<RECT> prcDirty;
 	}
 
 	/// <summary>
@@ -9791,7 +9877,7 @@ public static partial class User32
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>
-		/// The size, in bytes, of this structure. Set this member to . Be sure to set this member before calling the GetClassInfoEx function.
+		/// The size, in bytes, of this structure. Set this member to <c>sizeof(WNDCLASSEX)</c>. Be sure to set this member before calling the GetClassInfoEx function.
 		/// </para>
 		/// </summary>
 		public uint cbSize;
@@ -10009,7 +10095,7 @@ public static partial class User32
 
 		public HICON hIconSm;
 
-		public WNDCLASSEXB() => cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEXB));
+		public WNDCLASSEXB() => cbSize = (uint)Marshal.SizeOf<WNDCLASSEXB>();
 
 		public static implicit operator WNDCLASSEX(WNDCLASSEXB wc) => new()
 		{
@@ -10032,14 +10118,15 @@ public static partial class User32
 	/// Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.
 	/// </summary>
 	[AutoSafeHandle(null, typeof(HWND))]
+	[AdjustAutoMethodNamePattern("GetWindowDC", "GetNonClientDC", "CloseWindow", "Minimize", "WINNLS|Windows?|^Win|Indirect|Ex$", "")]
 	public partial class SafeHWND : IUserHandle
 	{
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle()
 		{
-			var hp = GetAncestor(this, GetAncestorFlag.GA_ROOT);
+			var hp = GetAncestor(GetAncestorFlag.GA_ROOT);
 			if (hp != this) return true;
-			return DestroyWindow(this);
+			return Destroy();
 		}
 	}
 

@@ -113,7 +113,7 @@ public static partial class OleAut32
 	// LPFONTDESC lpFontDesc, REFIID riid, LPVOID *lplpvObj );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "9ab384d6-fc21-4152-a0cf-744948f2f72c")]
-	public static extern HRESULT OleCreateFontIndirect(in FONTDESC lpFontDesc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? lplpvObj);
+	public static extern HRESULT OleCreateFontIndirect(in FONTDESC lpFontDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? lplpvObj);
 
 	/// <summary>Creates a new picture object initialized according to a PICTDESC structure.</summary>
 	/// <param name="lpPictDesc">
@@ -155,10 +155,10 @@ public static partial class OleAut32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/olectl/nf-olectl-olecreatepictureindirect WINOLECTLAPI
 	// OleCreatePictureIndirect( LPPICTDESC lpPictDesc, REFIID riid, BOOL fOwn, LPVOID *lplpvObj );
-	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
 	[PInvokeData("olectl.h", MSDNShortId = "fb021348-07d4-4974-a71e-abb1b8d760c4")]
 	public static extern HRESULT OleCreatePictureIndirect(in PICTDESC lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn,
-		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? lplpvObj);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? lplpvObj);
 
 	/// <summary>Creates a new picture object initialized according to a PICTDESC structure.</summary>
 	/// <param name="lpPictDesc">
@@ -203,7 +203,7 @@ public static partial class OleAut32
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "fb021348-07d4-4974-a71e-abb1b8d760c4")]
 	public static extern HRESULT OleCreatePictureIndirect([In, Optional] IntPtr lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn,
-		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? lplpvObj);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? lplpvObj);
 
 	/// <summary>
 	/// Invokes a new property frame, that is, a property sheet dialog box, whose parent is hwndOwner, where the dialog is positioned at
@@ -566,7 +566,7 @@ public static partial class OleAut32
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("olectl.h", MSDNShortId = "08bad900-815a-4b6d-b977-92d5fdd7d9e8")]
 	public static extern HRESULT OleLoadPicturePath([MarshalAs(UnmanagedType.LPWStr)] string szURLorPath, [MarshalAs(UnmanagedType.IUnknown)] object? punkCaller,
-		[Optional] uint dwReserved, uint clrReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppvRet);
+		[Optional] uint dwReserved, uint clrReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvRet);
 
 	/// <summary>Saves a picture to a file.</summary>
 	/// <param name="lpdispPicture">Points to the <c>IPictureDisp</c> picture object.</param>

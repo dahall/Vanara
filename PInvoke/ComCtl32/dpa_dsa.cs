@@ -1364,7 +1364,7 @@ public static partial class ComCtl32
 
 	/// <summary>Sets ppszCurrent to a copy of pszNew and frees the previous value, if necessary.</summary>
 	/// <param name="ppszCurrent">
-	/// <para>Type: <c><c>LPTSTR</c>*</c></para>
+	/// <para>Type: <c><c>StrPtrAuto</c>*</c></para>
 	/// <para>The address of a pointer to the current string. The current string is freed and the pointer is set to a copy of pszNew.</para>
 	/// </param>
 	/// <param name="pszNew">
@@ -1375,7 +1375,7 @@ public static partial class ComCtl32
 	/// <para>Type: <c><c>BOOL</c></c></para>
 	/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
 	/// </returns>
-	// BOOL WINAPI Str_SetPtr( _Inout_ LPTSTR *ppszCurrent, LPCTSTR pszNew); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775735(v=vs.85).aspx
+	// BOOL WINAPI Str_SetPtr( _Inout_ StrPtrAuto *ppszCurrent, LPCTSTR pszNew); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775735(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, EntryPoint = "Str_SetPtrW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb775735")]
 	[return: MarshalAs(UnmanagedType.Bool)]

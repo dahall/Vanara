@@ -306,12 +306,12 @@ public static partial class AdvApi32
 			if (ownsHandle)
 				Count = count;
 			else
-				items = new List<SafePSID>(handle.ToIEnum<IntPtr>(count).Select(p => new SafePSID((PSID)p)));
+				items = [.. this.ToIEnum<IntPtr>(count).Select(p => new SafePSID((PSID)p))];
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>
 		/// <param name="pSIDs">A list of <see cref="SafePSID"/> instances.</param>
-		public SafePSIDArray(IEnumerable<SafePSID>? pSIDs) : this(pSIDs?.Select(p => (PSID)p) ?? Enumerable.Empty<PSID>())
+		public SafePSIDArray(IEnumerable<SafePSID>? pSIDs) : this(pSIDs?.Select(p => (PSID)p) ?? [])
 		{
 		}
 
@@ -320,7 +320,7 @@ public static partial class AdvApi32
 		public SafePSIDArray(IEnumerable<PSID> pSIDs) : base()
 		{
 			if (pSIDs is null) throw new ArgumentNullException(nameof(pSIDs));
-			items = pSIDs.Select(p => new SafePSID(p)).ToList();
+			items = [.. pSIDs.Select(p => new SafePSID(p))];
 			SetHandle(items.Select(p => (IntPtr)p).MarshalToPtr(i => LocalAlloc(LMEM.LPTR, i).DangerousGetHandle(), out _));
 		}
 
@@ -335,7 +335,7 @@ public static partial class AdvApi32
 			set
 			{
 				if (items != null) throw new InvalidOperationException("The length can only be set for partially initialized arrays.");
-				items = new List<SafePSID>();
+				items = [];
 				foreach (PSID psid in handle.ToIEnum<IntPtr>(value))
 				{
 					items.Add(new(psid));
@@ -354,7 +354,7 @@ public static partial class AdvApi32
 		/// <summary>Performs an implicit conversion from <see cref="SafePSIDArray"/> to <see cref="PSID"/>[].</summary>
 		/// <param name="a">The <see cref="SafePSIDArray"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSID[](SafePSIDArray a) => a.Enum().ToArray();
+		public static implicit operator PSID[](SafePSIDArray a) => [.. a.Enum()];
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="IEnumerator{PSID}"/> that can be used to iterate through the collection.</returns>
@@ -372,7 +372,7 @@ public static partial class AdvApi32
 			return LocalFree(handle) == HLOCAL.NULL;
 		}
 
-		private IEnumerable<PSID> Enum() => items?.Select(p => (PSID)p) ?? Enumerable.Empty<PSID>();
+		private IEnumerable<PSID> Enum() => items?.Select(p => (PSID)p) ?? [];
 	}
 }
 
@@ -412,7 +412,7 @@ public static class PSIDExtensions
 	/// <summary>Gets the binary form of the SID structure.</summary>
 	/// <param name="pSid">The SID structure pointer.</param>
 	/// <returns>The binary form (byte array) of the SID structure.</returns>
-	public static byte[] GetBinaryForm(this PSID pSid) => (pSid.IsValidSid() ? ((IntPtr)pSid).ToByteArray(pSid.Length()) : null) ?? new byte[0];
+	public static byte[] GetBinaryForm(this PSID pSid) => (pSid.IsValidSid() ? ((IntPtr)pSid).ToByteArray(pSid.Length()) : null) ?? [];
 
 	/// <summary>
 	/// The <c>GetDomainSid</c> function receives a security identifier (SID) and returns a SID representing the domain of that SID.
@@ -506,12 +506,12 @@ public static class PSIDExtensions
 
 			case "N":
 			case "P":
-				using (var hPol = AdvApi32.LsaOpenPolicy(AdvApi32.LsaPolicyRights.POLICY_ALL_ACCESS))
+				using (var hPol = AdvApi32.LsaOpenPolicy(AdvApi32.LsaPolicyRights.POLICY_LOOKUP_NAMES))
 				{
 					var flag = format == "P" ? AdvApi32.LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0;
 					try
 					{
-						AdvApi32.LsaLookupSids2(hPol, flag, 1, new[] { pSid }, out var memDoms, out var memNames).ThrowIfFailed();
+						AdvApi32.LsaLookupSids2(hPol, flag, 1, [pSid], out var memDoms, out var memNames).ThrowIfFailed();
 						memDoms.Dispose();
 						using (memNames)
 						{

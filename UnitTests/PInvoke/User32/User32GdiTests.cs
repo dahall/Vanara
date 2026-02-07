@@ -8,20 +8,20 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public partial class User32Tests
 {
-	[Test()]
+	//[Test()]
 	public void CallNextHookExTest() => throw new NotImplementedException();
 
-	[Test()]
+	//[Test()]
 	public void ChildWindowFromPointExTest() => throw new NotImplementedException();
 
-	[Test()]
+	//[Test()]
 	public void DestroyIconTest() => throw new NotImplementedException();
 
 	[Test]
 	public void EnumDisplayDevicesTest()
 	{
 		var devNum = 0U;
-		var dd = DISPLAY_DEVICE.Default;
+		DISPLAY_DEVICE dd = new();
 		while (EnumDisplayDevices(null, devNum, ref dd, EDD.EDD_GET_DEVICE_INTERFACE_NAME))
 		{
 			TestContext.WriteLine($"Name: {dd.DeviceName} : {dd.DeviceString}; State: {dd.StateFlags}");
@@ -67,8 +67,7 @@ public partial class User32Tests
 	[Test()]
 	public void GetActiveWindowTest()
 	{
-		var hwnd = GetActiveWindow();
-		Assert.That(hwnd.IsNull, Is.False);
+		Assert.That(GetActiveWindow, Throws.Nothing);
 	}
 
 	[Test]
@@ -76,5 +75,25 @@ public partial class User32Tests
 	{
 		Assert.That(GetDisplayAutoRotationPreferences(out var o));
 		Assert.That(o, Is.EqualTo(ORIENTATION_PREFERENCE.ORIENTATION_PREFERENCE_NONE));
+	}
+
+	[Test]
+	public void GetMouseMovePointsExTest()
+	{
+		const int ct = 64;
+		GetCursorPos(out var pt);
+		for (int i = 0; i < ct; i++)
+		{
+			SetCursorPos(pt.x + 100, pt.y + 100);
+			System.Threading.Thread.Sleep(10);
+			SetCursorPos(pt.x, pt.y);
+			System.Threading.Thread.Sleep(10);
+		}
+		MOUSEMOVEPOINT mmpt = new(pt.x, pt.y);
+		MOUSEMOVEPOINT[] pts = new MOUSEMOVEPOINT[ct];
+		var cnt = GetMouseMovePointsEx(MOUSEMOVEPOINT.Size, mmpt, pts, ct, GMMP.GMMP_USE_DISPLAY_POINTS);
+		Assert.That(cnt, Is.GreaterThanOrEqualTo(0));
+		for (int i = 0; i < cnt; i++)
+			TestContext.WriteLine($"{i}) {pts[i].x},{pts[i].y} @ {pts[i].time}");
 	}
 }

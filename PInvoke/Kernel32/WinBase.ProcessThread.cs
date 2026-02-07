@@ -119,6 +119,7 @@ public static partial class Kernel32
 	/// <summary>
 	/// Allocates a fiber object, assigns it a stack, and sets up execution to begin at the specified start address, typically the fiber
 	/// function. This function does not schedule the fiber.
+	/// <para>To specify both a commit and reserve stack size, use the CreateFiberEx function.</para>
 	/// </summary>
 	/// <param name="dwStackSize">
 	/// The initial size of the stack, in bytes. If this parameter is zero, the new fiber uses the default stack size for the executable.
@@ -136,7 +137,7 @@ public static partial class Kernel32
 	/// If the function succeeds, the return value is the address of the fiber. If the function fails, the return value is NULL.To get
 	/// extended error information, call GetLastError.
 	/// </returns>
-	// VOID CALLBACK FiberProc( _In_ PVOID lpParameter); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682402(v=vs.85).aspx
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms682402(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682402")]
 	public static extern IntPtr CreateFiber([Optional] SizeT dwStackSize, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
@@ -172,11 +173,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the address of the fiber.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// LPVOID WINAPI CreateFiberEx( _In_ SIZE_T dwStackCommitSize, _In_ SIZE_T dwStackReserveSize, _In_ DWORD dwFlags, _In_
+	// LPVOID WINAPI CreateFiberEx( _In_ SizeT dwStackCommitSize, _In_ SizeT dwStackReserveSize, _In_ DWORD dwFlags, _In_
 	// LPFIBER_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682406(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682406")]
-	public static extern IntPtr CreateFiberEx(SizeT dwStackCommitSize, SizeT dwStackReserveSize, FIBER_FLAG dwFlags, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
+	public static extern IntPtr CreateFiberEx([Optional] SizeT dwStackCommitSize, [Optional] SizeT dwStackReserveSize, FIBER_FLAG dwFlags, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
 
 	/// <summary>Deletes an existing fiber.</summary>
 	/// <param name="lpFiber">The address of the fiber to be deleted.</param>
@@ -423,7 +424,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683213")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessAffinityMask([In] HPROCESS hProcess, out nuint lpProcessAffinityMask, out nuint lpSystemAffinityMask);
+	public static extern bool GetProcessAffinityMask([In, AddAsMember] HPROCESS hProcess, out nuint lpProcessAffinityMask, out nuint lpSystemAffinityMask);
 
 	/// <summary>Retrieves accounting information for all I/O operations performed by the specified process.</summary>
 	/// <param name="hProcess">
@@ -444,7 +445,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683218")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessIoCounters([In] HPROCESS hProcess, out IO_COUNTERS lpIoCounters);
+	public static extern bool GetProcessIoCounters([In, AddAsMember] HPROCESS hProcess, out IO_COUNTERS lpIoCounters);
 
 	/// <summary>Retrieves the minimum and maximum working set sizes of the specified process.</summary>
 	/// <param name="hProcess">
@@ -470,7 +471,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683226")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessWorkingSetSize([In] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
+	public static extern bool GetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
 
 	/// <summary>
 	/// <para>
@@ -672,11 +673,12 @@ public static partial class Kernel32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-mapviewoffileexnuma LPVOID MapViewOfFileExNuma( HANDLE
-	// hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap, LPVOID
+	// hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow, SizeT dwNumberOfBytesToMap, LPVOID
 	// lpBaseAddress, DWORD nndPreferred );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "1e28c8db-112d-481d-b470-8ca618e125ce")]
-	public static extern IntPtr MapViewOfFileExNuma(HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
+	public static extern IntPtr MapViewOfFileExNuma([In, AddAsMember] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh,
+		uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
 
 	/// <summary>Sets a processor affinity mask for the threads of the specified process.</summary>
 	/// <param name="hProcess">
@@ -700,7 +702,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessAffinityMask([In] HPROCESS hProcess, nuint dwProcessAffinityMask);
+	public static extern bool SetProcessAffinityMask([In, AddAsMember] HPROCESS hProcess, nuint dwProcessAffinityMask);
 
 	/// <summary>Sets the minimum and maximum working set sizes for the specified process.</summary>
 	/// <param name="hProcess">
@@ -720,7 +722,7 @@ public static partial class Kernel32
 	/// the minimum value is set to 20 pages.
 	/// </para>
 	/// <para>
-	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SIZE_T</c>)–1, the function removes as many pages
+	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SizeT</c>)–1, the function removes as many pages
 	/// as possible from the working set of the specified process.
 	/// </para>
 	/// </param>
@@ -735,7 +737,7 @@ public static partial class Kernel32
 	/// bytes on systems with a 4K page size).
 	/// </para>
 	/// <para>
-	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SIZE_T</c>)–1, the function removes as many pages
+	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SizeT</c>)–1, the function removes as many pages
 	/// as possible from the working set of the specified process.
 	/// </para>
 	/// </param>
@@ -743,12 +745,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. Call <c>GetLastError</c> to obtain extended error information.</para>
 	/// </returns>
-	// BOOL WINAPI SetProcessWorkingSetSize( _In_ HANDLE hProcess, _In_ SIZE_T dwMinimumWorkingSetSize, _In_ SIZE_T
+	// BOOL WINAPI SetProcessWorkingSetSize( _In_ HANDLE hProcess, _In_ SizeT dwMinimumWorkingSetSize, _In_ SizeT
 	// dwMaximumWorkingSetSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686234(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686234")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessWorkingSetSize([In] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize);
+	public static extern bool SetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize);
 
 	/// <summary>Sets a processor affinity mask for the specified thread.</summary>
 	/// <param name="hThread">
@@ -779,7 +781,7 @@ public static partial class Kernel32
 	// DWORD_PTR WINAPI SetThreadAffinityMask( _In_ HANDLE hThread, _In_ DWORD_PTR dwThreadAffinityMask); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686247(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686247")]
-	public static extern nuint SetThreadAffinityMask([In] HTHREAD hThread, nuint dwThreadAffinityMask);
+	public static extern nuint SetThreadAffinityMask([In, AddAsMember] HTHREAD hThread, nuint dwThreadAffinityMask);
 
 	/// <summary>
 	/// Enables an application to inform the system that it is in use, thereby preventing the system from entering sleep or turning off

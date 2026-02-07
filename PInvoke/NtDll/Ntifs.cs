@@ -2239,7 +2239,7 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlallocateheap NTSYSAPI PVOID RtlAllocateHeap( PVOID
-	// HeapHandle, ULONG Flags, SIZE_T Size );
+	// HeapHandle, ULONG Flags, SizeT Size );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlAllocateHeap")]
 	public static extern IntPtr RtlAllocateHeap(IntPtr HeapHandle, [In, Optional] HeapFlags Flags, SizeT Size);
@@ -2388,7 +2388,7 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
-	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// PVOID HeapBase, SizeT ReserveSize, SizeT CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
 	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
@@ -2538,7 +2538,7 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
-	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// PVOID HeapBase, SizeT ReserveSize, SizeT CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
 	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,

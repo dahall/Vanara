@@ -1594,7 +1594,7 @@ public static partial class Secur32
 	// LsaRegisterPolicyChangeNotification( POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, HANDLE NotificationEventHandle );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "0c713d2b-e13a-44e0-8b48-68b233d1c562")]
-	public static extern NTStatus LsaRegisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, Kernel32.SafeEventHandle NotificationEventHandle);
+	public static extern NTStatus LsaRegisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, HEVENT NotificationEventHandle);
 
 	/// <summary>The <c>LsaUnregisterPolicyChangeNotification</c> function disables a previously registered notification event.</summary>
 	/// <param name="InformationClass">
@@ -1644,7 +1644,7 @@ public static partial class Secur32
 	// LsaUnregisterPolicyChangeNotification( POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, HANDLE NotificationEventHandle );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "c1000904-20a6-40db-9b59-2cbb79e00a67")]
-	public static extern NTStatus LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, Kernel32.SafeEventHandle NotificationEventHandle);
+	public static extern NTStatus LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS InformationClass, HEVENT NotificationEventHandle);
 
 	/// <summary>The <c>KERB_CRYPTO_KEY</c> structure contains information about a Kerberos cryptographic session key.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-kerb_crypto_key typedef struct KERB_CRYPTO_KEY { LONG

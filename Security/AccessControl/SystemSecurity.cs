@@ -146,7 +146,7 @@ public class SystemSecurity : IDisposable
 		if (ret == NTStatus.STATUS_NO_MORE_ENTRIES)
 			return new SecurityIdentifier[0];
 		ThrowIfLsaError(ret);
-		return buffer.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(count).Select(i => new SecurityIdentifier((IntPtr)i.Sid));
+		return buffer.ToIEnum<LSA_ENUMERATION_INFORMATION>(count).Select(i => new SecurityIdentifier((IntPtr)i.Sid));
 	}
 
 	/// <summary>
@@ -223,7 +223,7 @@ public class SystemSecurity : IDisposable
 	public IEnumerable<SecurityIdentifier> GetAvailableCAPIDs()
 	{
 		ThrowIfLsaError(LsaGetAppliedCAPIDs(svr, out SafeLsaMemoryHandle capIdArray, out var capCount));
-		return capCount == 0 || capIdArray.IsInvalid ? new SecurityIdentifier[0] : capIdArray.DangerousGetHandle().ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
+		return capCount == 0 || capIdArray.IsInvalid ? new SecurityIdentifier[0] : capIdArray.ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
 	}
 
 	/// <summary>Gets the system access for the specified user.</summary>

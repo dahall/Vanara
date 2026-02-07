@@ -58,13 +58,13 @@ protected:
 
     int i;
 public:
-    ListEnumerator(ListImplBase<T>^ l) : list(l), i(0) { }
+    ListEnumerator(ListImplBase<T>^ l) : list(l), i(-1) { }
     ~ListEnumerator() {}
     !ListEnumerator() { list = nullptr; }
 
-    virtual property T Current { T get() { return list->default[i]; } }
-    virtual bool MoveNext() { return i++ <= list->Count; }
-    virtual void Reset() { i = 0; }
+    virtual property T Current { T get() { return i < 0 ? T() : list->default[i]; } }
+    virtual bool MoveNext() { return ++i < list->Count; }
+    virtual void Reset() { i = -1; }
 private:
     property Object^ ObjectCurrent { virtual Object^ get() sealed = System::Collections::IEnumerator::Current::get{ return Current; } };
 };

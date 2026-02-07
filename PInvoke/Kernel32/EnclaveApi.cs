@@ -21,6 +21,21 @@ public static partial class Kernel32
 	[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 	public delegate IntPtr PENCLAVE_ROUTINE(IntPtr lpThreadParameter);
 
+	/// <summary>Flags that describe the runtime policy for the enclave.</summary>
+	[PInvokeData("ntenclv.h")]
+	[Flags]
+	public enum ENCLAVE_FLAG : uint
+	{
+		/// <summary>The enclave supports debugging.</summary>
+		ENCLAVE_FLAG_FULL_DEBUG_ENABLED = 0x00000001,
+
+		/// <summary>The enclave supports dynamic debugging.</summary>
+		ENCLAVE_FLAG_DYNAMIC_DEBUG_ENABLED = 0x00000002,
+
+		/// <summary>Dynamic debugging is turned on for the enclave.</summary>
+		ENCLAVE_FLAG_DYNAMIC_DEBUG_ACTIVE = 0x00000004,
+	}
+
 	/// <summary>
 	/// Specifies how another enclave must be related to the enclave that calls <c>EnclaveSealData</c> for the enclave to unseal the data.
 	/// </summary>
@@ -62,6 +77,12 @@ public static partial class Kernel32
 	{
 		/// <summary>An enclave for the Intel Software Guard Extensions (SGX) architecture extension.</summary>
 		ENCLAVE_TYPE_SGX = 0x00000001,
+
+		/// <summary>
+		/// Supports SGX2 and SGX1 enclaves. The platform and OS support SGX2 instructions with EDMM on this platform (in addition to other
+		/// SGX2 constructs).
+		/// </summary>
+		ENCLAVE_TYPE_SGX2 = 0x00000002,
 
 		/// <summary>A VBS enclave.</summary>
 		ENCLAVE_TYPE_VBS = 0x00000010,
@@ -166,11 +187,13 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ SIZE_T dwInitialCommittment,
+	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ SizeT dwInitialCommittment,
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, IntPtr lpAddress, SizeT dwSize, SizeT dwInitialCommittment, EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
+	[return: AddAsCtor]
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
+		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>
 	/// Creates a new uninitialized enclave. An enclave is an isolated region of code and data within the address space for an
@@ -248,11 +271,12 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ SIZE_T dwInitialCommittment,
+	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ SizeT dwInitialCommittment,
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, IntPtr lpAddress, SizeT dwSize, SizeT dwInitialCommittment,
+	[return: AddAsCtor]
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_VBS lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>Deletes the specified enclave.</summary>
@@ -277,7 +301,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// BOOL WINAPI DeleteEnclave( _In_ LPVOID lpAddress); https://msdn.microsoft.com/en-us/library/windows/desktop/mt844232(v=vs.85).aspx
-	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt844232")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool DeleteEnclave(IntPtr lpAddress);
@@ -337,7 +361,7 @@ public static partial class Kernel32
 	// *OutputSize );
 	[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "FEE8F05B-540F-4C10-A90C-55607A4E9293")]
-	public static extern HRESULT EnclaveGetAttestationReport([Optional] byte[]? EnclaveData, [Optional] IntPtr Report, uint BufferSize, out uint OutputSize);
+	public static extern HRESULT EnclaveGetAttestationReport([In, Optional] byte[]? EnclaveData, [Optional, SizeDef(nameof(BufferSize), SizingMethod.Query, OutVarName = nameof(OutputSize))] IntPtr Report, [Optional] uint BufferSize, out uint OutputSize);
 
 	/// <summary>Gets information about the currently executing enclave.</summary>
 	/// <param name="InformationSize">
@@ -412,8 +436,8 @@ public static partial class Kernel32
 	// ProtectedBlob, UINT32 BufferSize, UINT32 *ProtectedBlobSize );
 	[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "C5711D43-F0B4-43C6-B0DB-D65622851384")]
-	public static extern HRESULT EnclaveSealData(IntPtr DataToEncrypt, uint DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy,
-		uint RuntimePolicy, [Optional] IntPtr ProtectedBlob, uint BufferSize, out uint ProtectedBlobSize);
+	public static extern HRESULT EnclaveSealData([In, SizeDef(nameof(DataToEncryptSize))] IntPtr DataToEncrypt, uint DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy,
+		uint RuntimePolicy, [Optional, SizeDef(nameof(BufferSize), SizingMethod.Query, OutVarName = nameof(ProtectedBlobSize))] IntPtr ProtectedBlob, [Optional] uint BufferSize, out uint ProtectedBlobSize);
 
 	/// <summary>Decrypts an encrypted binary large object (blob).</summary>
 	/// <param name="ProtectedBlob">
@@ -731,14 +755,14 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI LoadEnclaveData( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ LPCVOID lpBuffer, _In_ SIZE_T nSize, _In_ DWORD
+	// BOOL WINAPI LoadEnclaveData( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ LPCVOID lpBuffer, _In_ SizeT nSize, _In_ DWORD
 	// flProtect, _In_ LPCVOID lpPageInformation, _In_ DWORD dwInfoLength, _Out_ PSIZE_T lpNumberOfBytesWritten, _Out_opt_ LPDWORD
 	// lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592871(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592871")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, IntPtr lpBuffer, SizeT nSize, MEM_PROTECTION flProtect,
-		IntPtr lpPageInformation, uint dwInfoLength, out SizeT lpNumberOfBytesWritten, out uint lpEnclaveError);
+	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, [Optional] IntPtr lpBuffer, [Optional] SizeT nSize, MEM_PROTECTION flProtect,
+		[Optional] IntPtr lpPageInformation, [Optional] uint dwInfoLength, out SizeT lpNumberOfBytesWritten, out uint lpEnclaveError);
 
 	/// <summary>Loads an image and all of its imports into an enclave.</summary>
 	/// <param name="lpEnclaveAddress">The base address of the image into which to load the image.</param>
@@ -763,6 +787,69 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool TerminateEnclave(IntPtr lpAddress, [MarshalAs(UnmanagedType.Bool)] bool fWait);
 
+	/// <summary>Copies data from an untrusted address (outside of the enclave) into the enclave.</summary>
+	/// <param name="EnclaveAddress">An address within the enclave to which to copy data.</param>
+	/// <param name="UnsecureAddress">An address outside of the enclave from which to copy data.</param>
+	/// <param name="NumberOfBytes">The number of bytes to copy.</param>
+	/// <returns>
+	/// An HRESULT value that indicates success or failure. The function returns <c>S_OK</c> if the copy operation was successful. Otherwise,
+	/// it returns an HRESULT error code.
+	/// </returns>
+	/// <remarks>
+	/// Note that the <c>EnclaveCopyOutOfEnclave</c> and <b>EnclaveCopyIntoEnclave</b> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyintoenclave HRESULT
+	// EnclaveCopyIntoEnclave( VOID *EnclaveAddress, const VOID *UnsecureAddress, SizeT NumberOfBytes );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyIntoEnclave")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SizeT NumberOfBytes);
+
+	/// <summary>Copies data from the enclave to an untrusted address (outside of the enclave).</summary>
+	/// <param name="UnsecureAddress">An address outside of the enclave to which to copy data.</param>
+	/// <param name="EnclaveAddress">An address within the enclave from which to copy data.</param>
+	/// <param name="NumberOfBytes">The number of bytes to copy.</param>
+	/// <returns>
+	/// An HRESULT value that indicates success or failure. The function returns <c>S_OK</c> if the copy operation was successful. Otherwise,
+	/// it returns an HRESULT error code.
+	/// </returns>
+	/// <remarks>
+	/// Note that the <b>EnclaveCopyOutOfEnclave</b> and <c>EnclaveCopyIntoEnclave</c> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyoutofenclave HRESULT
+	// EnclaveCopyOutOfEnclave( VOID *UnsecureAddress, const VOID *EnclaveAddress, SizeT NumberOfBytes );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyOutOfEnclave")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SizeT NumberOfBytes);
+
+	/// <summary>
+	/// Restricts (or restores) access by an enclave to the address space of its containing process. This policy applies to all threads in
+	/// the enclave.
+	/// </summary>
+	/// <param name="RestrictAccess">
+	/// Set this value to <c>TRUE</c> if the process should restrict (i.e. disable) access to the address space of the containing process.
+	/// Otherwise, set it to <c>FALSE</c> if restrictions should be relaxed, and the containing address space should be accessible.
+	/// </param>
+	/// <param name="PreviouslyRestricted">A pointer to a variable that will receive the previous state of the restriction.</param>
+	/// <returns>An <c>HRESULT</c> value that indicates the success or failure of the operation.</returns>
+	/// <remarks>
+	/// <para>
+	/// Note that the <c>EnclaveCopyOutOfEnclave</c> and <c>EnclaveCopyIntoEnclave</c> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <b>EnclaveRestrictContainingProcessAccess</b>.
+	/// </para>
+	/// <para>
+	/// Access to the containing process's address space can also be restricted by setting the <c>IMAGE_ENCLAVE_POLICY_STRICT_MEMORY</c> flag
+	/// in the enclave's image configuration. The <b>EnclaveRestrictContainingProcessAccess</b> API can be used to change this policy at runtime.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclaverestrictcontainingprocessaccess HRESULT
+	// EnclaveRestrictContainingProcessAccess( BOOL RestrictAccess, PBOOL PreviouslyRestricted );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveRestrictContainingProcessAccess")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveRestrictContainingProcessAccess([MarshalAs(UnmanagedType.Bool)] bool RestrictAccess,
+		[MarshalAs(UnmanagedType.Bool)] out bool PreviouslyRestricted);
+
 	/// <summary>
 	/// Contains architecture-specific information to use to create an enclave when the enclave type is <c>ENCLAVE_TYPE_SGX</c>, which
 	/// specifies an enclave for the Intel Software Guard Extensions (SGX) architecture extension.
@@ -786,6 +873,8 @@ public static partial class Kernel32
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ENCLAVE_CREATE_INFO_VBS
 	{
+		const int oidlen = 32;
+
 		/// <summary>
 		/// <para>A flag that indicates whether the enclave permits debugging.</para>
 		/// <para>
@@ -807,9 +896,23 @@ public static partial class Kernel32
 		/// </summary>
 		public ENCLAVE_VBS_FLAG Flags;
 
+		private unsafe fixed byte _OwnerID[oidlen];
+
+		/// <summary>Initializes a new instance of the <see cref="ENCLAVE_CREATE_INFO_VBS"/> struct.</summary>
+		/// <param name="flags">A flag that indicates whether the enclave permits debugging.</param>
+		/// <param name="ownerId">The identifier of the owner of the enclave.</param>
+		public ENCLAVE_CREATE_INFO_VBS(ENCLAVE_VBS_FLAG flags, Span<byte> ownerId) : this()
+		{
+			Flags = flags;
+			OwnerID = ownerId;
+		}
+
 		/// <summary>The identifier of the owner of the enclave.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-		public byte[] OwnerID;
+		public Span<byte> OwnerID
+		{
+			get { unsafe { fixed (byte* p = _OwnerID) { return new Span<byte>(p, oidlen); } } }
+			set { if (value.Length > oidlen) throw new ArgumentOutOfRangeException(); unsafe { fixed (byte* p = _OwnerID) { value.CopyTo(new Span<byte>(p, oidlen)); } } }
+		}
 	}
 
 	/// <summary>Describes the identity of the primary module of an enclave.</summary>
@@ -871,7 +974,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Flags;
+		public ENCLAVE_FLAG Flags;
 
 		/// <summary>The signing level of the primary module for the enclave.</summary>
 		public uint SigningLevel;
@@ -882,7 +985,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains information about the currently executing enclave.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ntenclv/ns-ntenclv-enclave_information typedef struct ENCLAVE_INFORMATION {
-	// ULONG EnclaveType; ULONG Reserved; PVOID BaseAddress; SIZE_T Size; ENCLAVE_IDENTITY Identity; } ENCLAVE_INFORMATION;
+	// ULONG EnclaveType; ULONG Reserved; PVOID BaseAddress; SizeT Size; ENCLAVE_IDENTITY Identity; } ENCLAVE_INFORMATION;
 	[PInvokeData("ntenclv.h", MSDNShortId = "6720EDBE-6A0E-4192-A096-2ACA681E2AAF")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ENCLAVE_INFORMATION
@@ -904,7 +1007,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint EnclaveType;
+		public EnclaveType EnclaveType;
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved;
@@ -927,29 +1030,29 @@ public static partial class Kernel32
 	// ENCLAVE_INIT_INFO_SGX, *PENCLAVE_INIT_INFO_SGX; https://msdn.microsoft.com/en-us/library/windows/desktop/mt592868(v=vs.85).aspx
 	[PInvokeData("Winnt.h", MSDNShortId = "mt592868")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENCLAVE_INIT_INFO_SGX
+	public struct ENCLAVE_INIT_INFO_SGX()
 	{
 		/// <summary>
 		/// The enclave signature structure ( <c>SIGSTRUCT</c>) to use to initialize the enclave. This structure specifies information
 		/// about the enclave from the enclave signer.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1808)]
-		public byte[] SigStruct;
+		public byte[] SigStruct = new byte[1808];
 
 		/// <summary>Not used.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 240)]
-		public byte[] Reserved1;
+		public byte[] Reserved1 = new byte[240];
 
 		/// <summary>
 		/// The EINIT token structure ( <c>EINITTOKEN</c>) to use to initialize the enclave. The initialization operation uses this
 		/// structure to verify that the enclave has permission to start.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 304)]
-		public byte[] EInitToken;
+		public byte[] EInitToken = new byte[304];
 
 		/// <summary>Not used.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1744)]
-		public byte[] Reserved2;
+		public byte[] Reserved2 = new byte[1744];
 	}
 
 	/// <summary>
@@ -973,5 +1076,6 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an enclave handle that is disposed using <see cref="DeleteEnclave(IntPtr)"/>.</summary>
 	[AutoSafeHandle("DeleteEnclave(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern("Enclave", "")]
 	public partial class SafeEnclaveHandle { }
 }

@@ -34,7 +34,7 @@ public static partial class Shell32
 		/// <para>The content type.</para>
 		/// </param>
 		/// <param name="ppszAction">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to the new action string, or <c>NULL</c> if the default action string is to be used.</para>
 		/// </param>
 		/// <returns>
@@ -52,7 +52,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-idynamichwhandler-getdynamicinfo HRESULT
-		// GetDynamicInfo( LPCWSTR pszDeviceID, DWORD dwContentType, LPWSTR *ppszAction );
+		// GetDynamicInfo( LPCWSTR pszDeviceID, DWORD dwContentType, StrPtrUni *ppszAction );
 		[PreserveSig]
 		HRESULT GetDynamicInfo([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceID, uint dwContentType, out StrPtrUni ppszAction);
 	}

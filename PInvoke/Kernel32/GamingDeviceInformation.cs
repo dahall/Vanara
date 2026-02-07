@@ -2,14 +2,10 @@
 
 public static partial class Kernel32
 {
-	/// <summary>
-	/// <para>Indicates the type of device that the game is running on.</para>
-	/// </summary>
+	/// <summary>Indicates the type of device that the game is running on.</summary>
 	/// <remarks>
-	/// <para>
-	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value
-	/// on Xbox devices.
-	/// </para>
+	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value on
+	/// Xbox devices.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/gamingdeviceinformation/ne-gamingdeviceinformation-gaming_device_device_id
 	// typedef enum GAMING_DEVICE_DEVICE_ID { GAMING_DEVICE_DEVICE_ID_NONE , GAMING_DEVICE_DEVICE_ID_XBOX_ONE ,
@@ -33,14 +29,10 @@ public static partial class Kernel32
 		GAMING_DEVICE_DEVICE_ID_XBOX_ONE_X_DEVKIT,
 	}
 
-	/// <summary>
-	/// <para>Indicates the vendor of the console that the game is running on.</para>
-	/// </summary>
+	/// <summary>Indicates the vendor of the console that the game is running on.</summary>
 	/// <remarks>
-	/// <para>
-	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value
-	/// on Xbox devices.
-	/// </para>
+	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value on
+	/// Xbox devices.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/gamingdeviceinformation/ne-gamingdeviceinformation-gaming_device_vendor_id
 	// typedef enum GAMING_DEVICE_VENDOR_ID { GAMING_DEVICE_VENDOR_ID_NONE , GAMING_DEVICE_VENDOR_ID_MICROSOFT } ;
@@ -54,27 +46,21 @@ public static partial class Kernel32
 		GAMING_DEVICE_VENDOR_ID_MICROSOFT,
 	}
 
-	/// <summary>
-	/// <para>Gets information about the device that the game is running on.</para>
-	/// </summary>
-	/// <param name="information">
-	/// <para>A structure containing information about the device that the game is running on.</para>
-	/// </param>
-	/// <returns>
-	/// <para>This function does not return a value.</para>
-	/// </returns>
+	/// <summary>Gets information about the device that the game is running on.</summary>
+	/// <param name="information">A structure containing information about the device that the game is running on.</param>
+	/// <returns>This function does not return a value.</returns>
 	/// <remarks>
 	/// <para>
-	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value
-	/// on Xbox devices.
+	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value on
+	/// Xbox devices.
 	/// </para>
 	/// <para>
-	/// This function gets information about the console that the game is running on, including the type of console (Xbox One, Xbox One
-	/// S, etc.) and the vendor. On non-Xbox devices, it returns <c>GAMING_DEVICE_DEVICE_ID_NONE</c> and <c>GAMING_DEVICE_VENDOR_ID_NONE</c>.
+	/// This function gets information about the console that the game is running on, including the type of console (Xbox One, Xbox One S,
+	/// etc.) and the vendor. On non-Xbox devices, it returns <c>GAMING_DEVICE_DEVICE_ID_NONE</c> and <c>GAMING_DEVICE_VENDOR_ID_NONE</c>.
 	/// </para>
 	/// <para>
-	/// If the game is running in an emulation mode, the type of device being emulated is returned. For example, if the game is running
-	/// on an Xbox One X dev kit in Xbox One emulation mode, <c>GAMING_DEVICE_DEVICE_ID_XBOX_ONE</c> is returned.
+	/// If the game is running in an emulation mode, the type of device being emulated is returned. For example, if the game is running on an
+	/// Xbox One X dev kit in Xbox One emulation mode, <c>GAMING_DEVICE_DEVICE_ID_XBOX_ONE</c> is returned.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/gamingdeviceinformation/nf-gamingdeviceinformation-getgamingdevicemodelinformation
@@ -83,14 +69,10 @@ public static partial class Kernel32
 	[PInvokeData("gamingdeviceinformation.h", MSDNShortId = "78101CBA-63B5-4B3F-9CEC-A215F32D9EB8")]
 	public static extern HRESULT GetGamingDeviceModelInformation(out GAMING_DEVICE_MODEL_INFORMATION information);
 
-	/// <summary>
-	/// <para>Contains information about the device that the game is running on.</para>
-	/// </summary>
+	/// <summary>Contains information about the device that the game is running on.</summary>
 	/// <remarks>
-	/// <para>
-	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value
-	/// on Xbox devices.
-	/// </para>
+	/// This is a Win32 API that's supported in both Win32 and UWP apps. While it works on any device family, it's only really of value on
+	/// Xbox devices.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/gamingdeviceinformation/ns-gamingdeviceinformation-gaming_device_model_information
 	// typedef struct GAMING_DEVICE_MODEL_INFORMATION { GAMING_DEVICE_VENDOR_ID vendorId; GAMING_DEVICE_DEVICE_ID deviceId; };

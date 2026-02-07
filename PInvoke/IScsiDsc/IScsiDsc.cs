@@ -645,7 +645,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addiscsisendtargetportala ISDSC_STATUS ISDSC_API
-	// AddIScsiSendTargetPortalA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_LOGIN_OPTIONS LoginOptions,
+	// AddIScsiSendTargetPortalA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_LOGIN_OPTIONS LoginOptions,
 	// ISCSI_SECURITY_FLAGS SecurityFlags, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddIScsiSendTargetPortalA")]
@@ -750,7 +750,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addiscsisendtargetportala ISDSC_STATUS ISDSC_API
-	// AddIScsiSendTargetPortalA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_LOGIN_OPTIONS LoginOptions,
+	// AddIScsiSendTargetPortalA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_LOGIN_OPTIONS LoginOptions,
 	// ISCSI_SECURITY_FLAGS SecurityFlags, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddIScsiSendTargetPortalA")]
@@ -821,7 +821,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addiscsistatictargeta ISDSC_STATUS ISDSC_API
-	// AddIScsiStaticTargetA( PSTR TargetName, PSTR TargetAlias, ISCSI_TARGET_FLAGS TargetFlags, BOOLEAN Persist, PISCSI_TARGET_MAPPINGA
+	// AddIScsiStaticTargetA( StrPtrAnsi TargetName, StrPtrAnsi TargetAlias, ISCSI_TARGET_FLAGS TargetFlags, BOOLEAN Persist, PISCSI_TARGET_MAPPINGA
 	// Mappings, PISCSI_LOGIN_OPTIONS LoginOptions, PISCSI_TARGET_PORTAL_GROUPA PortalGroup );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddIScsiStaticTargetA")]
@@ -893,7 +893,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addiscsistatictargeta ISDSC_STATUS ISDSC_API
-	// AddIScsiStaticTargetA( PSTR TargetName, PSTR TargetAlias, ISCSI_TARGET_FLAGS TargetFlags, BOOLEAN Persist, PISCSI_TARGET_MAPPINGA
+	// AddIScsiStaticTargetA( StrPtrAnsi TargetName, StrPtrAnsi TargetAlias, ISCSI_TARGET_FLAGS TargetFlags, BOOLEAN Persist, PISCSI_TARGET_MAPPINGA
 	// Mappings, PISCSI_LOGIN_OPTIONS LoginOptions, PISCSI_TARGET_PORTAL_GROUPA PortalGroup );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddIScsiStaticTargetA")]
@@ -935,7 +935,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addisnsserverw ISDSC_STATUS ISDSC_API AddISNSServerW(
-	// PWSTR Address );
+	// StrPtrUni Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddISNSServerW")]
 	public static extern Win32Error AddISNSServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
@@ -972,7 +972,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addpersistentiscsidevicea ISDSC_STATUS ISDSC_API
-	// AddPersistentIScsiDeviceA( PSTR DevicePath );
+	// AddPersistentIScsiDeviceA( StrPtrAnsi DevicePath );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddPersistentIScsiDeviceA")]
 	public static extern Win32Error AddPersistentIScsiDevice([MarshalAs(UnmanagedType.LPTStr)] string DevicePath);
@@ -1015,7 +1015,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-addradiusserverw ISDSC_STATUS ISDSC_API AddRadiusServerW(
-	// PWSTR Address );
+	// StrPtrUni Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.AddRadiusServerW")]
 	public static extern Win32Error AddRadiusServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
@@ -1095,7 +1095,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-getiscsiikeinfoa ISDSC_STATUS ISDSC_API GetIScsiIKEInfoA(
-	// PSTR InitiatorName, ULONG InitiatorPortNumber, PULONG Reserved, PIKE_AUTHENTICATION_INFORMATION AuthInfo );
+	// StrPtrAnsi InitiatorName, ULONG InitiatorPortNumber, PULONG Reserved, PIKE_AUTHENTICATION_INFORMATION AuthInfo );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiIKEInfoA")]
 	public static extern Win32Error GetIScsiIKEInfo([Optional, MarshalAs(UnmanagedType.LPTStr)] string? InitiatorName,
@@ -1253,7 +1253,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-getiscsitargetinformationa ISDSC_STATUS ISDSC_API
-	// GetIScsiTargetInformationA( PSTR TargetName, PSTR DiscoveryMechanism, TARGET_INFORMATION_CLASS InfoClass, PULONG BufferSize,
+	// GetIScsiTargetInformationA( StrPtrAnsi TargetName, StrPtrAnsi DiscoveryMechanism, TARGET_INFORMATION_CLASS InfoClass, PULONG BufferSize,
 	// PVOID Buffer );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.GetIScsiTargetInformationA")]
@@ -1469,7 +1469,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-loginiscsitargeta ISDSC_STATUS ISDSC_API
-	// LoginIScsiTargetA( PSTR TargetName, BOOLEAN IsInformationalSession, PSTR InitiatorInstance, ULONG InitiatorPortNumber,
+	// LoginIScsiTargetA( StrPtrAnsi TargetName, BOOLEAN IsInformationalSession, StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber,
 	// PISCSI_TARGET_PORTALA TargetPortal, ISCSI_SECURITY_FLAGS SecurityFlags, PISCSI_TARGET_MAPPINGA Mappings, PISCSI_LOGIN_OPTIONS
 	// LoginOptions, ULONG KeySize, PCHAR Key, BOOLEAN IsPersistent, PISCSI_UNIQUE_SESSION_ID UniqueSessionId,
 	// PISCSI_UNIQUE_CONNECTION_ID UniqueConnectionId );
@@ -1633,7 +1633,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-loginiscsitargeta ISDSC_STATUS ISDSC_API
-	// LoginIScsiTargetA( PSTR TargetName, BOOLEAN IsInformationalSession, PSTR InitiatorInstance, ULONG InitiatorPortNumber,
+	// LoginIScsiTargetA( StrPtrAnsi TargetName, BOOLEAN IsInformationalSession, StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber,
 	// PISCSI_TARGET_PORTALA TargetPortal, ISCSI_SECURITY_FLAGS SecurityFlags, PISCSI_TARGET_MAPPINGA Mappings, PISCSI_LOGIN_OPTIONS
 	// LoginOptions, ULONG KeySize, PCHAR Key, BOOLEAN IsPersistent, PISCSI_UNIQUE_SESSION_ID UniqueSessionId,
 	// PISCSI_UNIQUE_CONNECTION_ID UniqueConnectionId );
@@ -1689,7 +1689,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-refreshiscsisendtargetportala ISDSC_STATUS ISDSC_API
-	// RefreshIScsiSendTargetPortalA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_TARGET_PORTALA Portal );
+	// RefreshIScsiSendTargetPortalA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RefreshIScsiSendTargetPortalA")]
 	public static extern Win32Error RefreshIScsiSendTargetPortal([Optional, MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance,
@@ -1721,7 +1721,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-refreshisnsservera ISDSC_STATUS ISDSC_API
-	// RefreshISNSServerA( PSTR Address );
+	// RefreshISNSServerA( StrPtrAnsi Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RefreshISNSServerA")]
 	public static extern Win32Error RefreshISNSServer([MarshalAs(UnmanagedType.LPTStr)] string? Address);
@@ -1768,7 +1768,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeiscsipersistenttargeta ISDSC_STATUS ISDSC_API
-	// RemoveIScsiPersistentTargetA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PSTR TargetName, PISCSI_TARGET_PORTALA Portal );
+	// RemoveIScsiPersistentTargetA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, StrPtrAnsi TargetName, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
 	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance, [Optional] uint InitiatorPortNumber,
@@ -1799,7 +1799,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeiscsipersistenttargeta ISDSC_STATUS ISDSC_API
-	// RemoveIScsiPersistentTargetA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PSTR TargetName, PISCSI_TARGET_PORTALA Portal );
+	// RemoveIScsiPersistentTargetA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, StrPtrAnsi TargetName, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiPersistentTargetA")]
 	public static extern Win32Error RemoveIScsiPersistentTarget([MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance, [Optional] uint InitiatorPortNumber,
@@ -1832,7 +1832,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeiscsisendtargetportala ISDSC_STATUS ISDSC_API
-	// RemoveIScsiSendTargetPortalA( PSTR InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_TARGET_PORTALA Portal );
+	// RemoveIScsiSendTargetPortalA( StrPtrAnsi InitiatorInstance, ULONG InitiatorPortNumber, PISCSI_TARGET_PORTALA Portal );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiSendTargetPortalA")]
 	public static extern Win32Error RemoveIScsiSendTargetPortal([Optional, MarshalAs(UnmanagedType.LPTStr)] string? InitiatorInstance,
@@ -1853,7 +1853,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeiscsistatictargetw ISDSC_STATUS ISDSC_API
-	// RemoveIScsiStaticTargetW( PWSTR TargetName );
+	// RemoveIScsiStaticTargetW( StrPtrUni TargetName );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveIScsiStaticTargetW")]
 	public static extern Win32Error RemoveIScsiStaticTarget([MarshalAs(UnmanagedType.LPTStr)] string TargetName);
@@ -1881,7 +1881,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeisnsservera ISDSC_STATUS ISDSC_API
-	// RemoveISNSServerA( PSTR Address );
+	// RemoveISNSServerA( StrPtrAnsi Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveISNSServerA")]
 	public static extern Win32Error RemoveISNSServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
@@ -1907,7 +1907,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removepersistentiscsidevicea ISDSC_STATUS ISDSC_API
-	// RemovePersistentIScsiDeviceA( PSTR DevicePath );
+	// RemovePersistentIScsiDeviceA( StrPtrAnsi DevicePath );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemovePersistentIScsiDeviceA")]
 	public static extern Win32Error RemovePersistentIScsiDevice([MarshalAs(UnmanagedType.LPTStr)] string DevicePath);
@@ -1931,7 +1931,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-removeradiusservera ISDSC_STATUS ISDSC_API
-	// RemoveRadiusServerA( PSTR Address );
+	// RemoveRadiusServerA( StrPtrAnsi Address );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.RemoveRadiusServerA")]
 	public static extern Win32Error RemoveRadiusServer([MarshalAs(UnmanagedType.LPTStr)] string Address);
@@ -2142,7 +2142,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-reportiscsitargetportalsa ISDSC_STATUS ISDSC_API
-	// ReportIScsiTargetPortalsA( PSTR InitiatorName, PSTR TargetName, PUSHORT TargetPortalTag, PULONG ElementCount,
+	// ReportIScsiTargetPortalsA( StrPtrAnsi InitiatorName, StrPtrAnsi TargetName, PUSHORT TargetPortalTag, PULONG ElementCount,
 	// PISCSI_TARGET_PORTALA Portals );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.ReportIScsiTargetPortalsA")]
@@ -2450,7 +2450,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-setiscsiikeinfoa ISDSC_STATUS ISDSC_API SetIScsiIKEInfoA(
-	// PSTR InitiatorName, ULONG InitiatorPortNumber, PIKE_AUTHENTICATION_INFORMATION AuthInfo, BOOLEAN Persist );
+	// StrPtrAnsi InitiatorName, ULONG InitiatorPortNumber, PIKE_AUTHENTICATION_INFORMATION AuthInfo, BOOLEAN Persist );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetIScsiIKEInfoA")]
 	public static extern Win32Error SetIScsiIKEInfo([Optional, MarshalAs(UnmanagedType.LPTStr)] string? InitiatorName,
@@ -2509,7 +2509,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-setiscsiinitiatornodenamew ISDSC_STATUS ISDSC_API
-	// SetIScsiInitiatorNodeNameW( PWSTR InitiatorNodeName );
+	// SetIScsiInitiatorNodeNameW( StrPtrUni InitiatorNodeName );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetIScsiInitiatorNodeNameW")]
 	public static extern Win32Error SetIScsiInitiatorNodeName([Optional, MarshalAs(UnmanagedType.LPTStr)] string? InitiatorNodeName);
@@ -2566,7 +2566,7 @@ public static partial class IScsiDsc
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iscsidsc/nf-iscsidsc-setiscsitunnelmodeouteraddressa ISDSC_STATUS ISDSC_API
-	// SetIScsiTunnelModeOuterAddressA( PSTR InitiatorName, ULONG InitiatorPortNumber, PSTR DestinationAddress, PSTR OuterModeAddress,
+	// SetIScsiTunnelModeOuterAddressA( StrPtrAnsi InitiatorName, ULONG InitiatorPortNumber, StrPtrAnsi DestinationAddress, StrPtrAnsi OuterModeAddress,
 	// BOOLEAN Persist );
 	[DllImport(Lib_Iscsidsc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("iscsidsc.h", MSDNShortId = "NF:iscsidsc.SetIScsiTunnelModeOuterAddressA")]

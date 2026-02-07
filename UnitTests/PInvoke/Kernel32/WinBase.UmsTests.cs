@@ -10,6 +10,8 @@ public partial class WinBaseTests_Ums
 	[Test]
 	public void UmsTest()
 	{
+		if (System.Environment.OSVersion.Version.Build > 22000)
+			Assert.Inconclusive("UMS is not supported on this OS version.");
 		Assert.That(CreateUmsCompletionList(out SafePUMS_COMPLETION_LIST compList), ResultIs.Successful);
 		Assert.That(compList, ResultIs.ValidHandle);
 		UMS_SCHEDULER_STARTUP_INFO si = new(SchProc, default, compList);

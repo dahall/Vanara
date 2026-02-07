@@ -203,7 +203,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "12b9a7bf-2aad-48b7-8cfd-a72b353ba2b2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool NotifyChangeEventLog(HEVENTLOG hEventLog, Kernel32.SafeEventHandle hEvent);
+	public static extern bool NotifyChangeEventLog(HEVENTLOG hEventLog, HEVENT hEvent);
 
 	/// <summary>Opens a handle to a backup event log created by the BackupEventLog function.</summary>
 	/// <param name="lpUNCServerName">
@@ -606,7 +606,7 @@ public static partial class AdvApi32
 	[PInvokeData("winbase.h", MSDNShortId = "e39273c3-9e42-41a1-9ec1-1cdff2ab7b55")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReportEvent(HEVENTLOG hEventLog, EVENTLOG_TYPE wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
 
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]

@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net5.0-windows;net6.0;net7.0;net8.0-windows</TargetFrameworks>
-    <TargetFrameworks>$(TargetFrameworksNotStd)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworksNotStdCore)</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -17,17 +16,18 @@ ExplorerBrowser
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>Vanara WinUI 3 Controls and Classes</Title>
-    <Authors>David Hall, tajbender</Authors>
-    <PackageLicenseUrl>https://github.com/dahall/vanara</PackageLicenseUrl>
+    <NoWarn>$(NoWarn);NU1510;</NoWarn>
   </PropertyGroup>
+  <ItemGroup Condition=" $(NET40_OR_GREATER) ">
+    <Reference Include="netstandard" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.1.1" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" />
+    <!--<PackageReference Include="Microsoft.Windows.SDK.Contracts" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />-->
   </ItemGroup>
 </Project>

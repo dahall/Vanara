@@ -1072,7 +1072,7 @@ public static partial class Drt
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/drt/nf-drt-drtgetinstancename HRESULT DrtGetInstanceName( HDRT hDrt, ULONG
-	// ulcbInstanceNameSize, PWSTR pwzDrtInstanceName );
+	// ulcbInstanceNameSize, StrPtrUni pwzDrtInstanceName );
 	[DllImport(Lib_Drt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("drt.h", MSDNShortId = "NF:drt.DrtGetInstanceName")]
 	public static extern HRESULT DrtGetInstanceName(HDRT hDrt, uint ulcbInstanceNameSize, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzDrtInstanceName);
@@ -2078,7 +2078,7 @@ public static partial class Drt
 
 	/// <summary>The <c>DRT_SETTINGS</c> structure contains the settings utilized by the local Distributed Routing Table.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/drt/ns-drt-drt_settings typedef struct drt_settings_tag { DWORD dwSize; ULONG
-	// cbKey; BYTE bProtocolMajorVersion; BYTE bProtocolMinorVersion; ULONG ulMaxRoutingAddresses; PWSTR pwzDrtInstancePrefix;
+	// cbKey; BYTE bProtocolMajorVersion; BYTE bProtocolMinorVersion; ULONG ulMaxRoutingAddresses; StrPtrUni pwzDrtInstancePrefix;
 	// HDRT_TRANSPORT hTransport; DRT_SECURITY_PROVIDER *pSecurityProvider; DRT_BOOTSTRAP_PROVIDER *pBootstrapProvider;
 	// DRT_SECURITY_MODE eSecurityMode; } DRT_SETTINGS, *PDRT_SETTINGS;
 	[PInvokeData("drt.h", MSDNShortId = "NS:drt.drt_settings_tag")]

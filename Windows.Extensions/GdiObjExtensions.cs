@@ -161,7 +161,7 @@ public static class GdiObjExtensions2
 	// bmp.RotateFlip(RotateFlipType.Rotate180FlipNone); return bmp;
 
 	// static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp) { var dibSz =
-	// Marshal.SizeOf(typeof(DIBSECTION)); using var mem = GetObject(hbmp, dibSz); if (mem.Size == dibSz) { var dib =
+	// Marshal.SizeOf<DIBSECTION>(); using var mem = GetObject(hbmp, dibSz); if (mem.Size == dibSz) { var dib =
 	// mem.ToStructure<DIBSECTION>(); return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes,
 	// dib.dsBm.bmBits, true); } else { var bmp = mem.ToStructure<BITMAP>(); return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight,
 	// bmp.bmWidthBytes, bmp.bmBits, false); } }
@@ -218,6 +218,9 @@ public static class GdiObjExtensions2
 public class SafeTempHDC(IDeviceContext? dc) : IDisposable, IGraphicsObjectHandle
 {
 	private readonly IntPtr hdc = dc?.GetHdc() ?? default;
+
+	/// <inheritdoc/>
+	public bool IsInvalid => IsNull;
 
 	/// <summary>Gets a value indicating whether this instance has a NULL handle.</summary>
 	/// <value><see langword="true"/> if this has a NULL handle; otherwise, <see langword="false"/>.</value>

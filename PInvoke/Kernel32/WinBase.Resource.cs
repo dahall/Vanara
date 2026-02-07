@@ -32,6 +32,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI BeginUpdateResource( _In_ LPCTSTR pFileName, _In_ BOOL bDeleteExistingResources); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648030(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648030")]
+	[return: AddAsCtor]
 	public static extern SafeHUPDRES BeginUpdateResource(string pFileName, [MarshalAs(UnmanagedType.Bool)] bool bDeleteExistingResources);
 
 	/// <summary>Commits or discards changes made prior to a call to <c>UpdateResource</c>.</summary>
@@ -118,7 +119,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648049")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateResource([In] HUPDRES hUpdate, SafeResourceId lpType, SafeResourceId lpName, ushort wLanguage, [In, Optional] IntPtr lpData, uint cbData);
+	public static extern bool UpdateResource([In, AddAsMember] HUPDRES hUpdate, SafeResourceId lpType, SafeResourceId lpName, LANGID wLanguage,
+		[In, Optional, SizeDef(nameof(cbData))] IntPtr lpData, uint cbData);
 
 	public partial class SafeHUPDRES
 	{

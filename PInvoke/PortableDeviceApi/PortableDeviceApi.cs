@@ -25,8 +25,8 @@ public static partial class PortableDeviceApi
 		/// <summary>The <c>Next</c> method retrieves the next one or more object IDs in the enumeration sequence.</summary>
 		/// <param name="cObjects">A count of the objects requested.</param>
 		/// <param name="pObjIDs">
-		/// An array of <c>LPWSTR</c> pointers, each specifying a retrieved object ID. The caller must allocate an array of cObjects
-		/// LPWSTR elements. The caller must free both the array and the returned strings. The strings are freed by calling CoTaskMemFree.
+		/// An array of <c>StrPtrUni</c> pointers, each specifying a retrieved object ID. The caller must allocate an array of cObjects
+		/// StrPtrUni elements. The caller must free both the array and the returned strings. The strings are freed by calling CoTaskMemFree.
 		/// </param>
 		/// <param name="pcFetched">
 		/// On input, this parameter is ignored. On output, the number of IDs actually retrieved. If no object IDs are released and the
@@ -81,11 +81,11 @@ public static partial class PortableDeviceApi
 		///    // Loop calling Next() while S_OK is being returned.
 		///    while(hr == S_OK) {
 		///      DWORD cFetched = 0;
-		///      LPWSTR szObjectIDArray[NUM_OBJECTS_TO_REQUEST] = {0};
+		///      StrPtrUni szObjectIDArray[NUM_OBJECTS_TO_REQUEST] = {0};
 		///      hr = pEnumObjectIDs-&gt;Next(
 		///        NUM_OBJECTS_TO_REQUEST, // Number of objects to request on each NEXT call
-		///        szObjectIDArray, // Array of LPWSTR array which will be populated on each NEXT call
-		///        &amp;cFetched); // Number of objects written to the LPWSTR array
+		///        szObjectIDArray, // Array of StrPtrUni array which will be populated on each NEXT call
+		///        &amp;cFetched); // Number of objects written to the StrPtrUni array
 		///        
 		///      if (SUCCEEDED(hr)) {
 		///        // Traverse the results of the Next() operation and recursively enumerate
@@ -107,7 +107,7 @@ public static partial class PortableDeviceApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-ienumportabledeviceobjectids-next
-		// HRESULT Next( [in] ULONG cObjects, [in, out] LPWSTR *pObjIDs, [in, out] ULONG *pcFetched );
+		// HRESULT Next( [in] ULONG cObjects, [in, out] StrPtrUni *pObjIDs, [in, out] ULONG *pcFetched );
 		[PreserveSig]
 		HRESULT Next(uint cObjects, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pObjIDs, out uint pcFetched);
 
@@ -390,7 +390,7 @@ public static partial class PortableDeviceApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-advise HRESULT
 		// Advise( [in] const DWORD dwFlags, [in] IPortableDeviceEventCallback *pCallback, [in] IPortableDeviceValues *pParameters,
-		// [out] LPWSTR *ppszCookie );
+		// [out] StrPtrUni *ppszCookie );
 		void Advise([Optional] uint dwFlags, IPortableDeviceEventCallback pCallback, [Optional] IPortableDeviceValues? pParameters, [MarshalAs(UnmanagedType.LPWStr)] out string ppszCookie);
 
 		/// <summary>
@@ -414,7 +414,7 @@ public static partial class PortableDeviceApi
 		/// <para>The ppszPnPDeviceID argument must not be set to <c>NULL</c>.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevice-getpnpdeviceid
-		// HRESULT GetPnPDeviceID( [out] LPWSTR *ppszPnPDeviceID );
+		// HRESULT GetPnPDeviceID( [out] StrPtrUni *ppszPnPDeviceID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetPnPDeviceID();
 	}
@@ -718,7 +718,7 @@ public static partial class PortableDeviceApi
 		/// <para>For an example of how to use this method, see Transferring a Properties-Only Object to the Device.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-createobjectwithpropertiesonly
-		// HRESULT CreateObjectWithPropertiesOnly( IPortableDeviceValues *pValues, [in, out] LPWSTR *ppszObjectID );
+		// HRESULT CreateObjectWithPropertiesOnly( IPortableDeviceValues *pValues, [in, out] StrPtrUni *ppszObjectID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string CreateObjectWithPropertiesOnly(IPortableDeviceValues pValues);
 
@@ -763,7 +763,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-createobjectwithpropertiesanddata
 		// HRESULT CreateObjectWithPropertiesAndData( IPortableDeviceValues *pValues, [out] IStream **ppData, [in, out] DWORD
-		// *pdwOptimalWriteBufferSize, [in, out] LPWSTR *ppszCookie );
+		// *pdwOptimalWriteBufferSize, [in, out] StrPtrUni *ppszCookie );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string CreateObjectWithPropertiesAndData(IPortableDeviceValues pValues, out IStream ppData, [In, Out] ref uint pdwOptimalWriteBufferSize);
 
@@ -970,7 +970,7 @@ public static partial class PortableDeviceApi
 		/// <para>For an example of how to use this method, see Transferring a Properties-Only Object to the Device.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-createobjectwithpropertiesonly
-		// HRESULT CreateObjectWithPropertiesOnly( IPortableDeviceValues *pValues, [in, out] LPWSTR *ppszObjectID );
+		// HRESULT CreateObjectWithPropertiesOnly( IPortableDeviceValues *pValues, [in, out] StrPtrUni *ppszObjectID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string CreateObjectWithPropertiesOnly(IPortableDeviceValues pValues);
 
@@ -1016,7 +1016,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicecontent-createobjectwithpropertiesanddata
 		// HRESULT CreateObjectWithPropertiesAndData( IPortableDeviceValues *pValues, [out] IStream **ppData, [in, out] DWORD
-		// *pdwOptimalWriteBufferSize, [in, out] LPWSTR *ppszCookie );
+		// *pdwOptimalWriteBufferSize, [in, out] StrPtrUni *ppszCookie );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string CreateObjectWithPropertiesAndData(IPortableDeviceValues pValues, out IStream ppData, [In, Out] ref uint pdwOptimalWriteBufferSize);
 
@@ -1219,7 +1219,7 @@ public static partial class PortableDeviceApi
 		/// <c>Commit</c> on the data transfer stream.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicedatastream-getobjectid
-		// HRESULT GetObjectID( [out] LPWSTR *ppszObjectID );
+		// HRESULT GetObjectID( [out] StrPtrUni *ppszObjectID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetObjectID();
 
@@ -1338,7 +1338,7 @@ public static partial class PortableDeviceApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getdevices
-		// HRESULT GetDevices( [in, out] LPWSTR *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
+		// HRESULT GetDevices( [in, out] StrPtrUni *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
 		[PreserveSig]
 		HRESULT GetDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]? pPnPDeviceIDs,
 			ref uint pcPnPDeviceIDs);
@@ -1503,7 +1503,7 @@ public static partial class PortableDeviceApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledevicemanager-getprivatedevices
-		// HRESULT GetPrivateDevices( [in, out] LPWSTR *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
+		// HRESULT GetPrivateDevices( [in, out] StrPtrUni *pPnPDeviceIDs, [in, out] DWORD *pcPnPDeviceIDs );
 		[PreserveSig]
 		HRESULT GetPrivateDevices([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]? pPnPDeviceIDs, ref uint pcPnPDeviceIDs);
 	}
@@ -2053,7 +2053,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceresources-createresource
 		// HRESULT CreateResource( [in] IPortableDeviceValues *pResourceAttributes, [out] IStream **ppData, [out] DWORD
-		// *pdwOptimalWriteBufferSize, [out] LPWSTR *ppszCookie );
+		// *pdwOptimalWriteBufferSize, [out] StrPtrUni *ppszCookie );
 		void CreateResource(IPortableDeviceValues pResourceAttributes, out IStream ppData, out uint pdwOptimalWriteBufferSize, [MarshalAs(UnmanagedType.LPWStr)] out string ppszCookie);
 	}
 
@@ -2129,7 +2129,7 @@ public static partial class PortableDeviceApi
 		/// </summary>
 		/// <returns>The retrieved service object identifier.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceservice-getserviceobjectid
-		// HRESULT GetServiceObjectID( [out] LPWSTR *ppszServiceObjectID );
+		// HRESULT GetServiceObjectID( [out] StrPtrUni *ppszServiceObjectID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetServiceObjectID();
 
@@ -2143,7 +2143,7 @@ public static partial class PortableDeviceApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceservice-getpnpserviceid
-		// HRESULT GetPnPServiceID( [out] LPWSTR *ppszPnPServiceID );
+		// HRESULT GetPnPServiceID( [out] StrPtrUni *ppszPnPServiceID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetPnPServiceID();
 
@@ -2164,7 +2164,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceservice-advise
 		// HRESULT Advise( [in] const DWORD dwFlags, [in] IPortableDeviceEventCallback *pCallback, [in] IPortableDeviceValues
-		// *pParameters, [out] LPWSTR *ppszCookie );
+		// *pParameters, [out] StrPtrUni *ppszCookie );
 		void Advise([In, Optional] uint dwFlags, IPortableDeviceEventCallback pCallback, [In, Optional] IPortableDeviceValues? pParameters,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppszCookie);
 
@@ -2474,14 +2474,14 @@ public static partial class PortableDeviceApi
 		/// <para>Examples</para>
 		/// <para>The following example shows how to retrieve a list of services for all devices.</para>
 		/// <para>
-		/// <code> #include "stdafx.h" #include "atlbase.h" #include "portabledeviceapi.h" #include "portabledevice.h" HRESULT GetServiceName( LPCWSTR pszPnpServiceID, LPWSTR* ppszServiceName); HRESULT EnumerateServicesForDevice( IPortableDeviceServiceManager* pPortableDeviceServiceManager, LPCWSTR pszPnpDeviceID); int _tmain(int argc, _TCHAR* argv[]) { HRESULT hr = S_OK; DWORD cPnPDeviceIDs = 0; LPWSTR* pPnpDeviceIDs = NULL; CComPtr&lt;IPortableDeviceManager&gt; pPortableDeviceManager; CComPtr&lt;IPortableDeviceServiceManager&gt; pPortableDeviceServiceManager; // Initialize COM for COINIT_MULTITHREADED hr = CoInitializeEx(NULL, COINIT_MULTITHREADED); // CoCreate the IPortableDeviceManager interface to enumerate // portable devices and to get information about them. if (hr == S_OK) { hr = CoCreateInstance(CLSID_PortableDeviceManager, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceManager, (VOID**) &amp;pPortableDeviceManager); } if (hr == S_OK) { // Get the PortableDeviceServiceManager interface // by calling QueryInterface from IPortableDeviceManager hr = pPortableDeviceManager-&gt;QueryInterface (IID_IPortableDeviceServiceManager, (VOID**) &amp;pPortableDeviceServiceManager); } // Get the number of devices on the system if (hr == S_OK) { hr = pPortableDeviceManager-&gt;GetDevices(NULL, &amp;cPnPDeviceIDs); } // If we have at least 1 device, // continue to query the list of services for each device if ((hr == S_OK) &amp;&amp; (cPnPDeviceIDs &gt; 0)) { pPnpDeviceIDs = new LPWSTR[cPnPDeviceIDs]; if (pPnpDeviceIDs != NULL) { hr = pPortableDeviceManager-&gt;GetDevices (pPnpDeviceIDs, &amp;cPnPDeviceIDs); if (SUCCEEDED(hr)) { for (DWORD dwIndex = 0; dwIndex &lt; cPnPDeviceIDs; dwIndex++) { hr = EnumerateServicesForDevice (pPortableDeviceServiceManager, pPnpDeviceIDs[dwIndex]); } } // Free all returned PnPDeviceID strings FreePortableDevicePnPIDs(pPnpDeviceIDs, cPnPDeviceIDs); // Delete the array of LPWSTR pointers delete [] pPnpDeviceIDs; pPnpDeviceIDs = NULL; } } return 0; } HRESULT EnumerateServicesForDevice( IPortableDeviceServiceManager* pPortableDeviceServiceManager, LPCWSTR pszPnpDeviceID) { HRESULT hr = S_OK; DWORD cPnpServiceIDs = 0; LPWSTR* pPnpServiceIDs = NULL; if (pPortableDeviceServiceManager == NULL) { return E_POINTER; } // Get the number of services for the device if (hr == S_OK) { hr = pPortableDeviceServiceManager-&gt;GetDeviceServices( pszPnpDeviceID, GUID_DEVINTERFACE_WPD_SERVICE, NULL, &amp;cPnpServiceIDs); } // If we have at least 1, continue to gather information about // each service and populate the device information array. if ((hr == S_OK) &amp;&amp; (cPnpServiceIDs &gt; 0)) { pPnpServiceIDs = new LPWSTR[cPnpServiceIDs]; if (pPnpServiceIDs != NULL) { // Get a list of all services on the given device. // To query a give type of service (e.g. the Contacts Service), // a service GUID can be provided here instead of // GUID_DEVINTERFACE_WPD_SERVICE which returns all services DWORD dwIndex = 0; hr = pPortableDeviceServiceManager-&gt;GetDeviceServices (pszPnpDeviceID, GUID_DEVINTERFACE_WPD_SERVICE, pPnpServiceIDs, &amp;cPnpServiceIDs); if (SUCCEEDED(hr)) { // For each service found, read the name property for (dwIndex = 0; dwIndex &lt; cPnpServiceIDs &amp;&amp; SUCCEEDED(hr); dwIndex++) { LPWSTR pszServiceName = NULL; hr = GetServiceName(pPnpServiceIDs[dwIndex], &amp;pszServiceName); CoTaskMemFree(pszServiceName); } } FreePortableDevicePnPIDs(pPnpServiceIDs, cPnpServiceIDs); // Delete the array of LPWSTR pointers delete [] pPnpServiceIDs; pPnpServiceIDs = NULL; } } } HRESULT GetServiceName( LPCWSTR pszPnpServiceID, LPWSTR* ppszServiceName) { HRESULT hr = S_OK; LPWSTR pszServiceID = NULL; LPWSTR pszServiceObjectID = NULL; CComPtr&lt;IPortableDeviceValues&gt; pClientInfo; CComPtr&lt;IPortableDeviceValues&gt; pPropertyValues; CComPtr&lt;IPortableDeviceService&gt; pService; CComPtr&lt;IPortableDeviceContent2&gt; pContent; CComPtr&lt;IPortableDeviceProperties&gt;pProperties; CComPtr&lt;IPortableDeviceKeyCollection&gt; pPropertiesToRead; hr = CoCreateInstance(CLSID_PortableDeviceServiceFTM, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceService, (VOID**) &amp;pService); if (hr == S_OK) { // CoCreate an IPortableDeviceValues interface // to hold the client information. hr = CoCreateInstance(CLSID_PortableDeviceValues, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceValues, (VOID**) &amp; pClientInfo); if ((hr == S_OK) &amp;&amp; (pClientInfo!= NULL)) { hr = pClientInfo-&gt;SetStringValue (WPD_CLIENT_NAME, L"Service Sample Application"); if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_MAJOR_VERSION, 1); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_MINOR_VERSION, 0); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_REVISION, 0); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_SECURITY_QUALITY_OF_SERVICE, SECURITY_IMPERSONATION); } if (hr == S_OK) { // Open a connection to the service hr = pService-&gt;Open(pszPnpServiceID, pClientInfo); } if (hr == S_OK) { hr = pService-&gt;GetServiceObjectID(&amp;pszServiceID); } if (hr == S_OK) { hr = pService-&gt;Content(&amp;pContent); } if (hr == S_OK) { hr = pContent-&gt;Properties(&amp;pProperties); } // Create a IPortableDeviceKeyCollection // containing the single PROPERTYKEY if (hr == S_OK) { hr = CoCreateInstance(CLSID_PortableDeviceKeyCollection, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceKeyCollection, (VOID**) &amp;pPropertiesToRead); } // Add our property key if (hr == S_OK) { hr = pPropertiesToRead-&gt;Add(WPD_OBJECT_NAME); } if (hr == S_OK) { hr = pProperties-&gt;GetValues( pszServiceID, pPropertiesToRead, &amp;pPropertyValues); } if (hr == S_OK) { hr = pPropertyValues-&gt;GetStringValue( WPD_OBJECT_NAME, ppszServiceName); } CoTaskMemFree(pszServiceObjectID); return hr; } } }</code>
+		/// <code> #include "stdafx.h" #include "atlbase.h" #include "portabledeviceapi.h" #include "portabledevice.h" HRESULT GetServiceName( LPCWSTR pszPnpServiceID, StrPtrUni* ppszServiceName); HRESULT EnumerateServicesForDevice( IPortableDeviceServiceManager* pPortableDeviceServiceManager, LPCWSTR pszPnpDeviceID); int _tmain(int argc, _TCHAR* argv[]) { HRESULT hr = S_OK; DWORD cPnPDeviceIDs = 0; StrPtrUni* pPnpDeviceIDs = NULL; CComPtr&lt;IPortableDeviceManager&gt; pPortableDeviceManager; CComPtr&lt;IPortableDeviceServiceManager&gt; pPortableDeviceServiceManager; // Initialize COM for COINIT_MULTITHREADED hr = CoInitializeEx(NULL, COINIT_MULTITHREADED); // CoCreate the IPortableDeviceManager interface to enumerate // portable devices and to get information about them. if (hr == S_OK) { hr = CoCreateInstance(CLSID_PortableDeviceManager, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceManager, (VOID**) &amp;pPortableDeviceManager); } if (hr == S_OK) { // Get the PortableDeviceServiceManager interface // by calling QueryInterface from IPortableDeviceManager hr = pPortableDeviceManager-&gt;QueryInterface (IID_IPortableDeviceServiceManager, (VOID**) &amp;pPortableDeviceServiceManager); } // Get the number of devices on the system if (hr == S_OK) { hr = pPortableDeviceManager-&gt;GetDevices(NULL, &amp;cPnPDeviceIDs); } // If we have at least 1 device, // continue to query the list of services for each device if ((hr == S_OK) &amp;&amp; (cPnPDeviceIDs &gt; 0)) { pPnpDeviceIDs = new StrPtrUni[cPnPDeviceIDs]; if (pPnpDeviceIDs != NULL) { hr = pPortableDeviceManager-&gt;GetDevices (pPnpDeviceIDs, &amp;cPnPDeviceIDs); if (SUCCEEDED(hr)) { for (DWORD dwIndex = 0; dwIndex &lt; cPnPDeviceIDs; dwIndex++) { hr = EnumerateServicesForDevice (pPortableDeviceServiceManager, pPnpDeviceIDs[dwIndex]); } } // Free all returned PnPDeviceID strings FreePortableDevicePnPIDs(pPnpDeviceIDs, cPnPDeviceIDs); // Delete the array of StrPtrUni pointers delete [] pPnpDeviceIDs; pPnpDeviceIDs = NULL; } } return 0; } HRESULT EnumerateServicesForDevice( IPortableDeviceServiceManager* pPortableDeviceServiceManager, LPCWSTR pszPnpDeviceID) { HRESULT hr = S_OK; DWORD cPnpServiceIDs = 0; StrPtrUni* pPnpServiceIDs = NULL; if (pPortableDeviceServiceManager == NULL) { return E_POINTER; } // Get the number of services for the device if (hr == S_OK) { hr = pPortableDeviceServiceManager-&gt;GetDeviceServices( pszPnpDeviceID, GUID_DEVINTERFACE_WPD_SERVICE, NULL, &amp;cPnpServiceIDs); } // If we have at least 1, continue to gather information about // each service and populate the device information array. if ((hr == S_OK) &amp;&amp; (cPnpServiceIDs &gt; 0)) { pPnpServiceIDs = new StrPtrUni[cPnpServiceIDs]; if (pPnpServiceIDs != NULL) { // Get a list of all services on the given device. // To query a give type of service (e.g. the Contacts Service), // a service GUID can be provided here instead of // GUID_DEVINTERFACE_WPD_SERVICE which returns all services DWORD dwIndex = 0; hr = pPortableDeviceServiceManager-&gt;GetDeviceServices (pszPnpDeviceID, GUID_DEVINTERFACE_WPD_SERVICE, pPnpServiceIDs, &amp;cPnpServiceIDs); if (SUCCEEDED(hr)) { // For each service found, read the name property for (dwIndex = 0; dwIndex &lt; cPnpServiceIDs &amp;&amp; SUCCEEDED(hr); dwIndex++) { StrPtrUni pszServiceName = NULL; hr = GetServiceName(pPnpServiceIDs[dwIndex], &amp;pszServiceName); CoTaskMemFree(pszServiceName); } } FreePortableDevicePnPIDs(pPnpServiceIDs, cPnpServiceIDs); // Delete the array of StrPtrUni pointers delete [] pPnpServiceIDs; pPnpServiceIDs = NULL; } } } HRESULT GetServiceName( LPCWSTR pszPnpServiceID, StrPtrUni* ppszServiceName) { HRESULT hr = S_OK; StrPtrUni pszServiceID = NULL; StrPtrUni pszServiceObjectID = NULL; CComPtr&lt;IPortableDeviceValues&gt; pClientInfo; CComPtr&lt;IPortableDeviceValues&gt; pPropertyValues; CComPtr&lt;IPortableDeviceService&gt; pService; CComPtr&lt;IPortableDeviceContent2&gt; pContent; CComPtr&lt;IPortableDeviceProperties&gt;pProperties; CComPtr&lt;IPortableDeviceKeyCollection&gt; pPropertiesToRead; hr = CoCreateInstance(CLSID_PortableDeviceServiceFTM, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceService, (VOID**) &amp;pService); if (hr == S_OK) { // CoCreate an IPortableDeviceValues interface // to hold the client information. hr = CoCreateInstance(CLSID_PortableDeviceValues, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceValues, (VOID**) &amp; pClientInfo); if ((hr == S_OK) &amp;&amp; (pClientInfo!= NULL)) { hr = pClientInfo-&gt;SetStringValue (WPD_CLIENT_NAME, L"Service Sample Application"); if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_MAJOR_VERSION, 1); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_MINOR_VERSION, 0); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_REVISION, 0); } if (hr == S_OK) { hr = pClientInfo-&gt;SetUnsignedIntegerValue( WPD_CLIENT_SECURITY_QUALITY_OF_SERVICE, SECURITY_IMPERSONATION); } if (hr == S_OK) { // Open a connection to the service hr = pService-&gt;Open(pszPnpServiceID, pClientInfo); } if (hr == S_OK) { hr = pService-&gt;GetServiceObjectID(&amp;pszServiceID); } if (hr == S_OK) { hr = pService-&gt;Content(&amp;pContent); } if (hr == S_OK) { hr = pContent-&gt;Properties(&amp;pProperties); } // Create a IPortableDeviceKeyCollection // containing the single PROPERTYKEY if (hr == S_OK) { hr = CoCreateInstance(CLSID_PortableDeviceKeyCollection, NULL, CLSCTX_INPROC_SERVER, IID_IPortableDeviceKeyCollection, (VOID**) &amp;pPropertiesToRead); } // Add our property key if (hr == S_OK) { hr = pPropertiesToRead-&gt;Add(WPD_OBJECT_NAME); } if (hr == S_OK) { hr = pProperties-&gt;GetValues( pszServiceID, pPropertiesToRead, &amp;pPropertyValues); } if (hr == S_OK) { hr = pPropertyValues-&gt;GetStringValue( WPD_OBJECT_NAME, ppszServiceName); } CoTaskMemFree(pszServiceObjectID); return hr; } } }</code>
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceservicemanager-getdeviceservices
-		// HRESULT GetDeviceServices( [in] LPCWSTR pszPnPDeviceID, [in] REFGUID guidServiceCategory, [in, out] LPWSTR *pServices, [in,
+		// HRESULT GetDeviceServices( [in] LPCWSTR pszPnPDeviceID, [in] REFGUID guidServiceCategory, [in, out] StrPtrUni *pServices, [in,
 		// out] DWORD *pcServices );
 		void GetDeviceServices([MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, in Guid guidServiceCategory,
-			[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pServices, ref uint pcServices);
+			[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pServices, ref uint pcServices);
 
 		/// <summary>The <c>GetDeviceForService</c> method retrieves the device associated with the specified service.</summary>
 		/// <param name="pszPnPServiceID">The Plug and Play (PnP) identifier of the service.</param>
@@ -2491,7 +2491,7 @@ public static partial class PortableDeviceApi
 		/// <para>An application can retrieve a PnP service identifier by calling the <c>GetDeviceServices</c> method.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceapi/nf-portabledeviceapi-iportabledeviceservicemanager-getdeviceforservice
-		// HRESULT GetDeviceForService( [in] LPCWSTR pszPnPServiceID, [out] LPWSTR *ppszPnPDeviceID );
+		// HRESULT GetDeviceForService( [in] LPCWSTR pszPnPServiceID, [out] StrPtrUni *ppszPnPDeviceID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetDeviceForService([MarshalAs(UnmanagedType.LPWStr)] string pszPnPServiceID);
 	}

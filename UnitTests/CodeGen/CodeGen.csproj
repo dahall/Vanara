@@ -1,14 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.CodeGen</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!--<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>-->
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CodeGen\Vanara.CodeGen.csproj" OutputItemType="Analyzer" /> <!--ReferenceOutputAssembly="false"-->
+    <Compile Remove="PointerGenTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2" />
+    <Compile Include="..\..\Core\Attributes\CorrespondingTypeAttribute.cs" Link="Imports\CorrespondingTypeAttribute.cs" />
+    <Compile Include="..\..\Core\Extensions\EnumExtensions.cs" Link="Imports\EnumExtensions.cs" />
+    <Compile Include="..\..\Core\Marshaler\MarshaledAttribute.cs" Link="Imports\MarshaledAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PointerGenTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
+    <ProjectReference Include="..\..\CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" />
+    <ProjectReference Include="..\..\CodeGen\Generator\Vanara.CodeGen.csproj" OutputItemType="Analyzer" />
+    <!--ReferenceOutputAssembly="false"-->
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" />
   </ItemGroup>
   <ItemGroup>
     <None Update="handles.csv" CopyToOutputDirectory="PreserveNewest" />
@@ -16,5 +37,17 @@
     <None Update="handlesbad2.csv" CopyToOutputDirectory="PreserveNewest" />
     <None Update="handlesbad3.csv" CopyToOutputDirectory="PreserveNewest" />
     <None Update="handlesbad4.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Vanara.Core.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Runtime.InteropServices" />
+    <Using Include="System.Text" />
+    <Using Include="Vanara.Extensions" />
+    <Using Include="Vanara.InteropServices" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using static Vanara.PInvoke.NCrypt;
 
 namespace Vanara.PInvoke;
 
@@ -18,19 +20,19 @@ public static partial class Crypt32
 	public enum ALG_CLASS
 	{
 		/// <summary/>
-		ALG_CLASS_ANY = (0),
+		ALG_CLASS_ANY = 0,
 		/// <summary/>
-		ALG_CLASS_SIGNATURE = (1 << 13),
+		ALG_CLASS_SIGNATURE = 1 << 13,
 		/// <summary/>
-		ALG_CLASS_MSG_ENCRYPT = (2 << 13),
+		ALG_CLASS_MSG_ENCRYPT = 2 << 13,
 		/// <summary/>
-		ALG_CLASS_DATA_ENCRYPT = (3 << 13),
+		ALG_CLASS_DATA_ENCRYPT = 3 << 13,
 		/// <summary/>
-		ALG_CLASS_HASH = (4 << 13),
+		ALG_CLASS_HASH = 4 << 13,
 		/// <summary/>
-		ALG_CLASS_KEY_EXCHANGE = (5 << 13),
+		ALG_CLASS_KEY_EXCHANGE = 5 << 13,
 		/// <summary/>
-		ALG_CLASS_ALL = (7 << 13),
+		ALG_CLASS_ALL = 7 << 13,
 	}
 
 	/// <summary>
@@ -223,6 +225,9 @@ public static partial class Crypt32
 
 		/// <summary>Used by the Schannel.dll operations system. This ALG_ID should not be used by applications.</summary>
 		CALG_TLS1PRF = 0x0000800a,
+
+		/// <summary>Keys used to encrypt/decrypt session keys. The handle to the CSP is contained in the hCryptProv member.</summary>
+		AT_KEYEXCHANGE = CertKeySpec.AT_KEYEXCHANGE,
 	}
 
 	/// <summary>The type of an ALG_ID.</summary>
@@ -230,23 +235,23 @@ public static partial class Crypt32
 	public enum ALG_TYPE
 	{
 		/// <summary/>
-		ALG_TYPE_ANY = (0),
+		ALG_TYPE_ANY = 0,
 		/// <summary/>
-		ALG_TYPE_DSS = (1 << 9),
+		ALG_TYPE_DSS = 1 << 9,
 		/// <summary/>
-		ALG_TYPE_RSA = (2 << 9),
+		ALG_TYPE_RSA = 2 << 9,
 		/// <summary/>
-		ALG_TYPE_BLOCK = (3 << 9),
+		ALG_TYPE_BLOCK = 3 << 9,
 		/// <summary/>
-		ALG_TYPE_STREAM = (4 << 9),
+		ALG_TYPE_STREAM = 4 << 9,
 		/// <summary/>
-		ALG_TYPE_DH = (5 << 9),
+		ALG_TYPE_DH = 5 << 9,
 		/// <summary/>
-		ALG_TYPE_SECURECHANNEL = (6 << 9),
+		ALG_TYPE_SECURECHANNEL = 6 << 9,
 		/// <summary/>
-		ALG_TYPE_ECDH = (7 << 9),
+		ALG_TYPE_ECDH = 7 << 9,
 		/// <summary/>
-		ALG_TYPE_THIRDPARTY = (8 << 9),
+		ALG_TYPE_THIRDPARTY = 8 << 9,
 	}
 
 	/// <summary>Indicates which nested union member of CERT_STRONG_SIGN_PARA points to the strong signature information.</summary>
@@ -667,6 +672,139 @@ public static partial class Crypt32
 		CERT_INFO_EXTENSION_FLAG = 11,
 	}
 
+	/// <summary>Error codes defined for certificates and chains.</summary>
+	[Flags]
+	public enum CERT_TRUST_STATUS_ERR : uint
+	{
+		/// <summary>No error found for this certificate or chain.</summary>
+		CERT_TRUST_NO_ERROR = 0x00000000,
+		/// <summary>This certificate or one of the certificates in the certificate chain is not time valid.</summary>
+		CERT_TRUST_IS_NOT_TIME_VALID = 0x00000001,
+		/// <summary>Trust for this certificate or one of the certificates in the certificate chain has been revoked.</summary>
+		CERT_TRUST_IS_REVOKED = 0x00000004,
+		/// <summary>The certificate or one of the certificates in the certificate chain does not have a valid signature.</summary>
+		CERT_TRUST_IS_NOT_SIGNATURE_VALID = 0x00000008,
+		/// <summary>The certificate or certificate chain is not valid for its proposed usage.</summary>
+		CERT_TRUST_IS_NOT_VALID_FOR_USAGE = 0x00000010,
+		/// <summary>The certificate or certificate chain is based on an untrusted root.</summary>
+		CERT_TRUST_IS_UNTRUSTED_ROOT = 0x00000020,
+		/// <summary>The revocation status of the certificate or one of the certificates in the certificate chain is unknown.</summary>
+		CERT_TRUST_REVOCATION_STATUS_UNKNOWN = 0x00000040,
+		/// <summary>One of the certificates in the chain was issued by a certification authority that the original certificate had certified.</summary>
+		CERT_TRUST_IS_CYCLIC = 0x00000080,
+		/// <summary>One of the certificates has an extension that is not valid.</summary>
+		CERT_TRUST_INVALID_EXTENSION = 0x00000100,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued
+		/// certificates has a disallowed policy mapping extension or does not have a required issuance policies extension.
+		/// </summary>
+		CERT_TRUST_INVALID_POLICY_CONSTRAINTS = 0x00000200,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a basic constraints extension, and either the certificate
+		/// cannot be used to issue other certificates, or the chain path length has been exceeded.
+		/// </summary>
+		CERT_TRUST_INVALID_BASIC_CONSTRAINTS = 0x00000400,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a name constraints extension that is not valid.
+		/// </summary>
+		CERT_TRUST_INVALID_NAME_CONSTRAINTS = 0x00000800,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a name constraints extension that contains unsupported
+		/// fields. The minimum and maximum fields are not supported. Thus minimum must always be zero and maximum must always be absent.
+		/// Only UPN is supported for an Other Name. The following alternative name choices are not supported: X400 Address, EDI Party Name,
+		/// Registered Id
+		/// </summary>
+		CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT = 0x00001000,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is
+		/// missing for one of the name choices in the end certificate.
+		/// </summary>
+		CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT = 0x00002000,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a name constraints extension, and there is not a
+		/// permitted name constraint for one of the name choices in the end certificate.
+		/// </summary>
+		CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT = 0x00004000,
+		/// <summary>
+		/// The certificate or one of the certificates in the certificate chain has a name constraints extension, and one of the name choices
+		/// in the end certificate is explicitly excluded.
+		/// </summary>
+		CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT = 0x00008000,
+		/// <summary>
+		/// The revocation status of the certificate or one of the certificates in the certificate chain is either offline or stale.
+		/// </summary>
+		CERT_TRUST_IS_OFFLINE_REVOCATION = 0x01000000,
+		/// <summary>
+		/// The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates
+		/// has a policy constraints extension requiring it.
+		/// </summary>
+		CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY = 0x02000000,
+		/// <summary>The certificate is explicitly distrusted. Windows Vista and Windows Server 2008: Support for this flag begins.</summary>
+		CERT_TRUST_IS_EXPLICIT_DISTRUST = 0x04000000,
+		/// <summary>
+		/// The certificate does not support a critical extension. Windows Vista and Windows Server 2008: Support for this flag begins.
+		/// </summary>
+		CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT = 0x08000000,
+		/// <summary>
+		/// The certificate has not been strong signed. Typically this indicates that the MD2 or MD5 hashing algorithms were used to create a
+		/// hash of the certificate. Windows 8 and Windows Server 2012: Support for this flag begins.
+		/// </summary>
+		CERT_TRUST_HAS_WEAK_SIGNATURE = 0x00100000,
+		/// <summary>The certificate chain is not complete.</summary>
+		CERT_TRUST_IS_PARTIAL_CHAIN = 0x00010000,
+		/// <summary>A certificate trust list (CTL) used to create this chain was not time valid.</summary>
+		CERT_TRUST_CTL_IS_NOT_TIME_VALID = 0x00020000,
+		/// <summary>A CTL used to create this chain did not have a valid signature.</summary>
+		CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID = 0x00040000,
+		/// <summary>A CTL used to create this chain is not valid for this usage.</summary>
+		CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE = 0x00080000,
+	}
+
+	/// <summary>Informatoin status codes defined for certificates and chains.</summary>
+	[Flags]
+	public enum CERT_TRUST_STATUS_INFO : uint
+	{
+		/// <summary>An exact match issuer certificate has been found for this certificate. This status code applies to certificates only.</summary>
+		CERT_TRUST_HAS_EXACT_MATCH_ISSUER = 0x00000001,
+		/// <summary>A key match issuer certificate has been found for this certificate. This status code applies to certificates only.</summary>
+		CERT_TRUST_HAS_KEY_MATCH_ISSUER = 0x00000002,
+		/// <summary>A name match issuer certificate has been found for this certificate. This status code applies to certificates only.</summary>
+		CERT_TRUST_HAS_NAME_MATCH_ISSUER = 0x00000004,
+		/// <summary>This certificate is self-signed. This status code applies to certificates only.</summary>
+		CERT_TRUST_IS_SELF_SIGNED = 0x00000008,
+		/// <summary>The certificate or chain has a preferred issuer. This status code applies to certificates and chains.</summary>
+		CERT_TRUST_HAS_PREFERRED_ISSUER = 0x00000100,
+		/// <summary>An issuance chain policy exists. This status code applies to certificates and chains.</summary>
+		CERT_TRUST_HAS_ISSUANCE_CHAIN_POLICY = 0x00000400,
+		/// <summary>A valid name constraints for all namespaces, including UPN. This status code applies to certificates and chains.</summary>
+		CERT_TRUST_HAS_VALID_NAME_CONSTRAINTS = 0x00000400,
+		/// <summary>
+		/// This certificate is peer trusted. This status code applies to certificates only. Windows Vista and Windows Server 2008: Support
+		/// for this flag begins.
+		/// </summary>
+		CERT_TRUST_IS_PEER_TRUSTED = 0x00000800,
+		/// <summary>
+		/// This certificate's certificate revocation list (CRL) validity has been extended. This status code applies to certificates only.
+		/// Windows Vista and Windows Server 2008: Support for this flag begins.
+		/// </summary>
+		CERT_TRUST_HAS_CRL_VALIDITY_EXTENDED = 0x00001000,
+		/// <summary>
+		/// The certificate was found in either a store pointed to by the hExclusiveRoot or hExclusiveTrustedPeople member of the
+		/// CERT_CHAIN_ENGINE_CONFIG structure. Windows 7 and Windows Server 2008 R2: Support for this flag begins.
+		/// </summary>
+		CERT_TRUST_IS_FROM_EXCLUSIVE_TRUST_STORE = 0x00002000,
+		/// <summary>The certificate chain created is a complex chain. This status code applies to chains only.</summary>
+		CERT_TRUST_IS_COMPLEX_CHAIN = 0x00010000,
+		/// <summary>
+		/// A non-self-signed intermediate CA certificate was found in the store pointed to by the hExclusiveRoot member of the
+		/// CERT_CHAIN_ENGINE_CONFIG structure. The CA certificate is treated as a trust anchor for the certificate chain. This flag will
+		/// only be set if the CERT_CHAIN_EXCLUSIVE_ENABLE_CA_FLAG value is set in the dwExclusiveFlags member of the
+		/// CERT_CHAIN_ENGINE_CONFIG structure. If this flag is set, the CERT_TRUST_IS_SELF_SIGNED and the
+		/// CERT_TRUST_IS_PARTIAL_CHAINdwErrorStatus flags will not be set. Windows 8 and Windows Server 2012: Support for this flag begins.
+		/// </summary>
+		CERT_TRUST_IS_CA_TRUSTED = 0x00004000,
+	}
+
 	/// <summary>The specification of the private key to retrieve.</summary>
 	public enum CertKeySpec : uint
 	{
@@ -765,7 +903,7 @@ public static partial class Crypt32
 		CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG = 0x00040000,
 	}
 
-	/// <summary>A set of flags that modify the behavior of <see cref="CryptInstallDefaultContext"/>.</summary>
+	/// <summary>A set of flags that modify the behavior of <c>CryptInstallDefaultContext</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "79d121df-0699-424e-a8de-5fc2b396afc2")]
 	[Flags]
 	public enum CryptDefaultContextFlags
@@ -916,7 +1054,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "72ff1bcc-eb94-4d97-89fa-d95ed9eb460e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddEncodedCertificateToSystemStore([MarshalAs(UnmanagedType.LPTStr)] string szCertStoreName, [In] IntPtr pbCertEncoded, uint cbCertEncoded);
+	public static extern bool CertAddEncodedCertificateToSystemStore([MarshalAs(UnmanagedType.LPTStr)] string szCertStoreName,
+		[In, SizeDef(nameof(cbCertEncoded))] IntPtr pbCertEncoded, uint cbCertEncoded);
 
 	/// <summary>
 	/// <para>
@@ -951,7 +1090,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "D8674AD1-0407-4D1E-9E21-60CAC6D01FC5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertResyncCertificateChainEngine(HCERTCHAINENGINE hChainEngine);
+	public static extern bool CertResyncCertificateChainEngine([In, AddAsMember] HCERTCHAINENGINE hChainEngine);
 
 	/// <summary>
 	/// <para>
@@ -1181,7 +1320,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "53c9aec9-701d-4c21-9814-d344a8dde0c1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptAcquireCertificatePrivateKey([In] PCCERT_CONTEXT pCert, CryptAcquireFlags dwFlags, [In, Optional] IntPtr pvParameters, out IntPtr phCryptProvOrNCryptKey,
+	public static extern bool CryptAcquireCertificatePrivateKey([In] PCCERT_CONTEXT pCert, CryptAcquireFlags dwFlags,
+		[In, Optional] IntPtr pvParameters, out HCRYPTPROV_OR_NCRYPT_KEY_HANDLE phCryptProvOrNCryptKey,
 		out CertKeySpec pdwKeySpec, [MarshalAs(UnmanagedType.Bool)] out bool pfCallerFreeProvOrNCryptKey);
 
 	/// <summary>
@@ -1336,7 +1476,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "79d121df-0699-424e-a8de-5fc2b396afc2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptInstallDefaultContext(HCRYPTPROV hCryptProv, CryptDefaultContextType dwDefaultType, [In] IntPtr pvDefaultPara,
-		CryptDefaultContextFlags dwFlags, [Optional] IntPtr pvReserved, out HCRYPTDEFAULTCONTEXT phDefaultContext);
+		CryptDefaultContextFlags dwFlags, [Optional, Ignore] IntPtr pvReserved, [AddAsCtor] out HCRYPTDEFAULTCONTEXT phDefaultContext);
 
 	/// <summary>
 	/// The <c>CryptRetrieveTimeStamp</c> function encodes a time stamp request and retrieves the time stamp token from a location
@@ -1407,8 +1547,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "68ba3d40-08b0-4261-ab2f-6deb1795f830")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptRetrieveTimeStamp([MarshalAs(UnmanagedType.LPWStr)] string wszUrl, TimeStampRetrivalFlags dwRetrievalFlags, uint dwTimeout, SafeOID pszHashId,
-		in CRYPT_TIMESTAMP_PARA pPara, [In] IntPtr pbData, uint cbData, out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
+	public static extern bool CryptRetrieveTimeStamp([MarshalAs(UnmanagedType.LPWStr)] string wszUrl, TimeStampRetrivalFlags dwRetrievalFlags,
+		uint dwTimeout, SafeOID pszHashId, in CRYPT_TIMESTAMP_PARA pPara, [In, SizeDef(nameof(cbData))] IntPtr pbData, uint cbData,
+		out SafeCryptMem ppTsContext, out SafePCCERT_CONTEXT ppTsSigner, out SafeHCERTSTORE phStore);
 
 	/// <summary>
 	/// <para>Handle of the context to be released.</para>
@@ -1427,7 +1568,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad7be5cf-f078-4a9f-81c4-959e4203dba8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUninstallDefaultContext(HCRYPTDEFAULTCONTEXT hDefaultContext, uint dwFlags = 0, IntPtr pvReserved = default);
+	public static extern bool CryptUninstallDefaultContext([In, AddAsMember] HCRYPTDEFAULTCONTEXT hDefaultContext, [Ignore] uint dwFlags = 0, [Ignore] IntPtr pvReserved = default);
 
 	/// <summary>The <c>CryptVerifyTimeStampSignature</c> function validates the time stamp signature on a specified array of bytes.</summary>
 	/// <param name="pbTSContentInfo">A pointer to a buffer that contains time stamp content.</param>
@@ -1478,6 +1619,55 @@ public static partial class Crypt32
 	/// <returns><see langword="true"/> if algorithm is only supported by using the CNG functions; otherwise, <see langword="false"/>.</returns>
 	public static bool IS_SPECIAL_OID_INFO_ALGID(ALG_ID Algid) => Algid >= ALG_ID.CALG_OID_INFO_PARAMETERS;
 
+	/// <summary>Determines whether the specified property identifier corresponds to a certificate hash property.</summary>
+	/// <remarks>
+	/// This method checks for common hash property identifiers such as SHA1, MD5, SHA256, SHA1_SHA256, and signature hash properties. Use
+	/// this method to identify whether a property ID is associated with a certificate hash value.
+	/// </remarks>
+	/// <param name="propId">The property identifier to evaluate.</param>
+	/// <returns>true if the specified property identifier represents a certificate hash property; otherwise, false.</returns>
+	[PInvokeData("wincrypt.h")]
+	public static bool IS_CERT_HASH_PROP_ID(CertPropId propId) => propId is CertPropId.CERT_SHA1_HASH_PROP_ID or
+				CertPropId.CERT_MD5_HASH_PROP_ID or
+				CertPropId.CERT_SHA256_HASH_PROP_ID or
+				CertPropId.CERT_SHA1_SHA256_HASH_PROP_ID or
+				CertPropId.CERT_SIGNATURE_HASH_PROP_ID;
+
+	/// <summary>Determines whether the specified property identifier corresponds to a public key hash property.</summary>
+	/// <remarks>
+	/// This method checks for property identifiers related to issuer or subject public key MD5 hashes and PIN SHA-256 hashes. Use this
+	/// method to identify property IDs that are associated with public key hash values in certificate contexts.
+	/// </remarks>
+	/// <param name="propId">The property identifier to evaluate.</param>
+	/// <returns>true if the property identifier represents a public key hash property; otherwise, false.</returns>
+	[PInvokeData("wincrypt.h")]
+	public static bool IS_PUBKEY_HASH_PROP_ID(CertPropId propId) => propId is CertPropId.CERT_ISSUER_PUBLIC_KEY_MD5_HASH_PROP_ID or
+				CertPropId.CERT_PIN_SHA256_HASH_PROP_ID or
+				CertPropId.CERT_SUBJECT_PUBLIC_KEY_MD5_HASH_PROP_ID;
+
+	/// <summary>
+	/// Determines whether the specified property identifier corresponds to a certificate property that represents an MD5 hash value.
+	/// </summary>
+	/// <remarks>
+	/// This method checks for property identifiers related to issuer or subject public key and serial number MD5 hashes. Use this method to
+	/// identify properties that store MD5 hash values in certificate contexts.
+	/// </remarks>
+	/// <param name="propId">The certificate property identifier to evaluate.</param>
+	/// <returns>true if the property identifier represents an MD5 hash property; otherwise, false.</returns>
+	[PInvokeData("wincrypt.h")]
+	public static bool IS_CHAIN_HASH_PROP_ID(CertPropId propId) => propId is CertPropId.CERT_ISSUER_PUBLIC_KEY_MD5_HASH_PROP_ID or
+				CertPropId.CERT_SUBJECT_PUBLIC_KEY_MD5_HASH_PROP_ID or
+				CertPropId.CERT_ISSUER_SERIAL_NUMBER_MD5_HASH_PROP_ID or
+				CertPropId.CERT_SUBJECT_NAME_MD5_HASH_PROP_ID;
+
+	/// <summary>Determines whether the specified certificate property identifier represents a strong signing property.</summary>
+	/// <param name="propId">The certificate property identifier to evaluate.</param>
+	/// <returns>true if the property identifier corresponds to a strong signing property; otherwise, false.</returns>
+	[PInvokeData("wincrypt.h")]
+	public static bool IS_STRONG_SIGN_PROP_ID(CertPropId propId) => propId is CertPropId.CERT_SIGN_HASH_CNG_ALG_PROP_ID or
+				CertPropId.CERT_SUBJECT_PUB_KEY_BIT_LENGTH_PROP_ID or
+				CertPropId.CERT_PUB_KEY_CNG_ALG_BIT_LENGTH_PROP_ID;
+
 	/// <summary>
 	/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context
 	/// returned by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
@@ -1500,20 +1690,20 @@ public static partial class Crypt32
 		public uint cbCertEncoded;
 
 		/// <summary>The address of a CERT_INFO structure that contains the certificate information.</summary>
-		public IntPtr pCertInfo;
+		public StructPointer<CERT_INFO> pCertInfo;
 
 		/// <summary>A handle to the certificate store that contains the certificate context.</summary>
 		public HCERTSTORE hCertStore;
 
 		/// <summary>The address of a CERT_INFO structure that contains the certificate information.</summary>
-		public unsafe CERT_INFO* pUnsafeCertInfo => (CERT_INFO*)(void*)pCertInfo;
+		public readonly unsafe CERT_INFO* pUnsafeCertInfo => (CERT_INFO*)(void*)pCertInfo;
 	}
 
 	/// <summary>
 	/// The <c>CERT_EXTENSION</c> structure contains the extension information for a certificate, Certificate Revocation List (CRL) or
 	/// Certificate Trust List (CTL).
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extension typedef struct _CERT_EXTENSION { LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extension typedef struct _CERT_EXTENSION { StrPtrAnsi
 	// pszObjId; BOOL fCritical; CRYPT_OBJID_BLOB Value; } CERT_EXTENSION, *PCERT_EXTENSION;
 	[PInvokeData("wincrypt.h", MSDNShortId = "787a4df0-c0e3-46b9-a7e6-eb3bee3ed717")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1549,7 +1739,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>Array of structures, each holding information of type CERT_EXTENSION about a certificate or CRL.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CERT_ID</c> structure is used as a flexible means of uniquely identifying a certificate.</summary>
@@ -1657,7 +1847,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>An array of pointers to CERT_EXTENSION structures, each of which contains extension information about the certificate.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -1697,7 +1887,7 @@ public static partial class Crypt32
 		/// <para>A CNG CSP handle. This member is used when the <c>dwKeySpec</c> member contains <c>CERT_NCRYPT_KEY_SPEC</c>.</para>
 		/// <para><c>Windows Server 2003 and Windows XP:</c> This member is not available.</para>
 		/// </summary>
-		public IntPtr hCryptProv_or_hNCryptKey;
+		public HCRYPTPROV_OR_NCRYPT_KEY_HANDLE hCryptProv_or_hNCryptKey;
 
 		/// <summary>
 		/// <para>The specification of the private key to retrieve.</para>
@@ -1730,7 +1920,7 @@ public static partial class Crypt32
 		public uint cRDNAttr;
 
 		/// <summary>Array of CERT_RDN_ATTR structures.</summary>
-		public IntPtr rgRDNAttr;
+		public ManagedArrayPointer<CERT_RDN_ATTR> rgRDNAttr;
 	}
 
 	/// <summary>
@@ -1738,7 +1928,7 @@ public static partial class Crypt32
 	/// in a CERT_RDN structure that contains an array of <c>CERT_RDN_ATTR</c> structures.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_rdn_attr
-	// typedef struct _CERT_RDN_ATTR { LPSTR pszObjId; DWORD dwValueType; CERT_RDN_VALUE_BLOB Value; } CERT_RDN_ATTR, *PCERT_RDN_ATTR;
+	// typedef struct _CERT_RDN_ATTR { StrPtrAnsi pszObjId; DWORD dwValueType; CERT_RDN_VALUE_BLOB Value; } CERT_RDN_ATTR, *PCERT_RDN_ATTR;
 	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_RDN_ATTR")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CERT_RDN_ATTR
@@ -2154,7 +2344,7 @@ public static partial class Crypt32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_para typedef struct
 	// _CERT_STRONG_SIGN_PARA { DWORD cbSize; DWORD dwInfoChoice; union { void *pvInfo; PCERT_STRONG_SIGN_SERIALIZED_INFO
-	// pSerializedInfo; LPSTR pszOID; } DUMMYUNIONNAME; } CERT_STRONG_SIGN_PARA, *PCERT_STRONG_SIGN_PARA;
+	// pSerializedInfo; StrPtrAnsi pszOID; } DUMMYUNIONNAME; } CERT_STRONG_SIGN_PARA, *PCERT_STRONG_SIGN_PARA;
 	[PInvokeData("wincrypt.h", MSDNShortId = "12D9F82C-F484-43B0-BD55-F07321058671")]
 	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
 	public struct CERT_STRONG_SIGN_PARA
@@ -2189,7 +2379,7 @@ public static partial class Crypt32
 
 		/// <summary>Pointer to a CERT_STRONG_SIGN_SERIALIZED_INFO structure that specifies the parameters.</summary>
 		[FieldOffset(8)]
-		public IntPtr pSerializedInfo;
+		public StructPointer<CERT_STRONG_SIGN_SERIALIZED_INFO> pSerializedInfo;
 
 		/// <summary>
 		/// <para>
@@ -2222,6 +2412,79 @@ public static partial class Crypt32
 		/// </summary>
 		[FieldOffset(8)]
 		public StrPtrAnsi pszOID;
+	}
+
+	/// <summary>Contains the <i>signature algorithm</i>/<i>hash algorithm</i> and <i>public key algorithm</i>/<i>bit length</i> pairs that can be used for strong signing. This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure.</summary>
+	/// <remarks>
+	/// <para>This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure which is directly referenced by the following functions:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><c>CertIsStrongHashToSign</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptMsgControl</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptMsgVerifyCountersignatureEncodedEx</c></description>
+	/// </item>
+	/// </list>
+	/// <para>Also, <c>CERT_STRONG_SIGN_PARA</c> is indirectly referenced by the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><c>CryptDecodeMessage</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptDecryptAndVerifyMessageSignature</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CertGetCertificateChain</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CertSelectCertificateChains</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptVerifyDetachedMessageSignature</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptVerifyMessageSignature</c></description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_serialized_info typedef struct
+	// _CERT_STRONG_SIGN_SERIALIZED_INFO { DWORD dwFlags; StrPtrUni pwszCNGSignHashAlgids; StrPtrUni pwszCNGPubKeyMinBitLengths; }
+	// CERT_STRONG_SIGN_SERIALIZED_INFO, *PCERT_STRONG_SIGN_SERIALIZED_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_STRONG_SIGN_SERIALIZED_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CERT_STRONG_SIGN_SERIALIZED_INFO
+	{
+		/// <summary>
+		///   <para>By default, certificate strong signing parameters do not apply to certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses. You can set one or both of the following values to enable strong signing on CRLs and OCSP responses.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CERT_STRONG_SIGN_ENABLE_CRL_CHECK</b> 0x1</description>
+		///       <description>Enable strong signing of CRLs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CERT_STRONG_SIGN_ENABLE_OCSP_CHECK</b> 0x2</description>
+		///       <description>Enable strong signing of OCSP responses.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public uint dwFlags;
+
+		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>signature algorithm</i>/<i>hash algorithm</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
+		public StrPtrUni pwszCNGSignHashAlgids;
+
+		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>public key algorithm</i>/<i>bit length</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
+		public StrPtrUni pwszCNGPubKeyMinBitLengths;
 	}
 
 	/// <summary>
@@ -2379,7 +2642,7 @@ public static partial class Crypt32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint dwErrorStatus;
+		public CERT_TRUST_STATUS_ERR dwErrorStatus;
 
 		/// <summary>
 		/// <para>The following information status codes are defined.</para>
@@ -2453,7 +2716,7 @@ public static partial class Crypt32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint dwInfoStatus;
+		public CERT_TRUST_STATUS_INFO dwInfoStatus;
 	}
 
 	/// <summary>
@@ -2491,13 +2754,13 @@ public static partial class Crypt32
 		public uint cbCrlEncoded;
 
 		/// <summary>A pointer to CRL_INFO structure containing the CRL information.</summary>
-		public IntPtr pCrlInfo;
+		public StructPointer<CRL_INFO> pCrlInfo;
 
 		/// <summary>A handle to the certificate store.</summary>
 		public HCERTSTORE hCertStore;
 
 		/// <summary>A pointer to CRL_INFO structure containing the CRL information.</summary>
-		public unsafe CRL_INFO* pUnsafeCrlInfo => (CRL_INFO*)(void*)pCrlInfo;
+		public readonly unsafe CRL_INFO* pUnsafeCrlInfo => (CRL_INFO*)(void*)pCrlInfo;
 	}
 
 	/// <summary>
@@ -2525,7 +2788,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>Array of pointers to CERT_EXTENSION structures, each providing information about the revoked certificate.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CRL_INFO</c> structure contains the information of a certificate revocation list (CRL).</summary>
@@ -2582,13 +2845,13 @@ public static partial class Crypt32
 		public uint cCRLEntry;
 
 		/// <summary>Array of pointers to CRL_ENTRY structures. Each of these structures represents a revoked certificate.</summary>
-		public IntPtr rgCRLEntry;
+		public ArrayPointer<CRL_ENTRY> rgCRLEntry;
 
 		/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
 		public uint cExtension;
 
 		/// <summary>Array of pointers to CERT_EXTENSION structures, each holding information about the CRL.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -2611,7 +2874,7 @@ public static partial class Crypt32
 	}
 
 	/// <summary>The <c>CRYPT_ATTRIBUTE</c> structure specifies an attribute that has one or more values.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_attribute typedef struct _CRYPT_ATTRIBUTE { LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_attribute typedef struct _CRYPT_ATTRIBUTE { StrPtrAnsi
 	// pszObjId; DWORD cValue; PCRYPT_ATTR_BLOB rgValue; } CRYPT_ATTRIBUTE, *PCRYPT_ATTRIBUTE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "cdbaf38d-ddbe-4be0-afbc-f8bd76ef4847")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2627,14 +2890,14 @@ public static partial class Crypt32
 		/// Pointer to an array of CRYPT_INTEGER_BLOB structures. The <c>cbData</c> member of the <c>CRYPT_INTEGER_BLOB</c> structure
 		/// indicates the length of the <c>pbData</c> member. The <c>pbData</c> member contains the attribute information.
 		/// </summary>
-		public IntPtr rgValue;
+		public ArrayPointer<CRYPTOAPI_BLOB> rgValue;
 	}
 
 	/// <summary>
 	/// The <c>CRYPT_ATTRIBUTE_TYPE_VALUE</c> structure contains a single attribute value. The <c>Value</c> member's CRYPT_OBJID_BLOB is encoded.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/ns-wincrypt-_crypt_attribute_type_value typedef struct
-	// _CRYPT_ATTRIBUTE_TYPE_VALUE { LPSTR pszObjId; CRYPT_OBJID_BLOB Value; } CRYPT_ATTRIBUTE_TYPE_VALUE, *PCRYPT_ATTRIBUTE_TYPE_VALUE;
+	// _CRYPT_ATTRIBUTE_TYPE_VALUE { StrPtrAnsi pszObjId; CRYPT_OBJID_BLOB Value; } CRYPT_ATTRIBUTE_TYPE_VALUE, *PCRYPT_ATTRIBUTE_TYPE_VALUE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "84057581-d0a9-464a-9399-ba806e37516f")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_ATTRIBUTE_TYPE_VALUE
@@ -2681,7 +2944,7 @@ public static partial class Crypt32
 	/// The <c>CRYPT_KEY_PROV_INFO</c> structure contains information about a key container within a cryptographic service provider (CSP).
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_key_prov_info typedef struct _CRYPT_KEY_PROV_INFO {
-	// LPWSTR pwszContainerName; LPWSTR pwszProvName; DWORD dwProvType; DWORD dwFlags; DWORD cProvParam; PCRYPT_KEY_PROV_PARAM
+	// StrPtrUni pwszContainerName; StrPtrUni pwszProvName; DWORD dwProvType; DWORD dwFlags; DWORD cProvParam; PCRYPT_KEY_PROV_PARAM
 	// rgProvParam; DWORD dwKeySpec; } CRYPT_KEY_PROV_INFO, *PCRYPT_KEY_PROV_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "6aea2f47-9d4a-4069-ac6d-f28907df00be")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2765,7 +3028,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para>When the <c>dwProvType</c> member is zero, this member is not used and must be <c>NULL</c>.</para>
 		/// </summary>
-		public IntPtr rgProvParam;
+		public ArrayPointer<CRYPT_KEY_PROV_PARAM> rgProvParam;
 
 		/// <summary>
 		/// <para>The specification of the private key to retrieve.</para>
@@ -2789,6 +3052,32 @@ public static partial class Crypt32
 		/// </list>
 		/// </summary>
 		public CertKeySpec dwKeySpec;
+	}
+
+	/// <summary>
+	/// The <b>CRYPT_KEY_PROV_PARAM</b> structure contains information about a <c>key container</c> parameter. This structure is used with
+	/// the <c>CRYPT_KEY_PROV_INFO</c> structure.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_key_prov_param typedef struct _CRYPT_KEY_PROV_PARAM {
+	// DWORD dwParam; BYTE *pbData; DWORD cbData; DWORD dwFlags; } CRYPT_KEY_PROV_PARAM, *PCRYPT_KEY_PROV_PARAM;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPT_KEY_PROV_PARAM")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_KEY_PROV_PARAM
+	{
+		/// <summary>Identifies the parameter. For possible values, see the <i>dwParam</i> parameter of the <c>CryptSetProvParam</c> function.</summary>
+		public uint dwParam;
+
+		/// <summary>
+		/// The address of a buffer that contains the parameter data. For more information, see the <i>pbData</i> parameter of the
+		/// <c>CryptSetProvParam</c> function.
+		/// </summary>
+		public IntPtr pbData;
+
+		/// <summary>The size, in bytes, of the <b>pbData</b> buffer.</summary>
+		public uint cbData;
+
+		/// <summary>This member is reserved for future use and is zero.</summary>
+		public uint dwFlags;
 	}
 
 	/// <summary>
@@ -2843,14 +3132,14 @@ public static partial class Crypt32
 		/// <summary>
 		/// A pointer to a CRYPT_TIMESTAMP_INFO structure that contains a signed data content type in Cryptographic Message Syntax (CMS) format.
 		/// </summary>
-		public IntPtr pTimeStamp;
+		public StructPointer<CRYPT_TIMESTAMP_INFO> pTimeStamp;
 	}
 
 	/// <summary>
 	/// The <c>CRYPT_TIMESTAMP_INFO</c> structure contains a signed data content type in Cryptographic Message Syntax (CMS) format.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_info typedef struct _CRYPT_TIMESTAMP_INFO
-	// { DWORD dwVersion; LPSTR pszTSAPolicyId; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm; CRYPT_DER_BLOB HashedMessage;
+	// { DWORD dwVersion; StrPtrAnsi pszTSAPolicyId; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm; CRYPT_DER_BLOB HashedMessage;
 	// CRYPT_INTEGER_BLOB SerialNumber; FILETIME ftTime; PCRYPT_TIMESTAMP_ACCURACY pvAccuracy; BOOL fOrdering; CRYPT_DER_BLOB Nonce;
 	// CRYPT_DER_BLOB Tsa; DWORD cExtension; PCERT_EXTENSION rgExtension; } CRYPT_TIMESTAMP_INFO, *PCRYPT_TIMESTAMP_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "05ca0877-5e9d-4b21-9fca-a1eef2cb4626")]
@@ -2897,7 +3186,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a CRYPT_TIMESTAMP_ACCURACY structure that contains the time deviation around the UTC time at which
 		/// the time stamp token was created by the TSA.
 		/// </summary>
-		public IntPtr pvAccuracy;
+		public StructPointer<CRYPT_TIMESTAMP_ACCURACY> pvAccuracy;
 
 		/// <summary>This member is reserved.</summary>
 		[MarshalAs(UnmanagedType.Bool)] public bool fOrdering;
@@ -2915,7 +3204,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>A pointer to an array of CERT_EXTENSION structures that contain extension information returned from the request.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CRYPT_TIMESTAMP_PARA</c> structure defines additional parameters for the time stamp request.</summary>
@@ -2950,7 +3239,7 @@ public static partial class Crypt32
 		/// <summary>
 		/// A pointer to an array of CERT_EXTENSION structures that contain extension information that is passed in the request.
 		/// </summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -2972,14 +3261,58 @@ public static partial class Crypt32
 		/// <param name="mem">The allocated memory instance.</param>
 		public CRYPTOAPI_BLOB(SafeAllocatedMemoryHandle? mem) { pbData = mem?.DangerousGetHandle() ?? default; cbData = mem?.Size ?? 0; }
 
+		/// <summary>Initializes a new instance of the CRYPTOAPI_BLOB structure using the specified byte data.</summary>
+		/// <remarks>
+		/// The provided span is not copied; the blob references the memory directly. Ensure that the lifetime of the underlying data is
+		/// managed appropriately to avoid accessing invalid memory.
+		/// </remarks>
+		/// <param name="data">
+		/// A span of bytes containing the data to initialize the blob. If the span is empty, the blob will be initialized with no data.
+		/// </param>
+		public CRYPTOAPI_BLOB(Span<byte> data)
+		{
+			if (data.IsEmpty || data.Length == 0)
+			{
+				pbData = IntPtr.Zero;
+				cbData = 0;
+			}
+			else
+			{
+				cbData = (uint)data.Length;
+				pbData = InteropExtensions.UnsafeAddrOfPinnedSpanElement(data);
+			}
+		}
+
 		/// <summary>A DWORD variable that contains the count, in bytes, of data.</summary>
 		public uint cbData;
 
 		/// <summary>A pointer to the data buffer.</summary>
 		public IntPtr pbData;
 
+		/// <summary>Defines an implicit conversion from a span of bytes to a CRYPTOAPI_BLOB structure.</summary>
+		/// <remarks>
+		/// This operator enables seamless conversion when passing byte data to APIs that require a CRYPTOAPI_BLOB. The resulting structure
+		/// references the data in the provided span; callers should ensure the span remains valid for the duration of the blob's use.
+		/// </remarks>
+		/// <param name="data">A span containing the byte data to be represented as a CRYPTOAPI_BLOB.</param>
+		public static implicit operator CRYPTOAPI_BLOB(Span<byte> data) => new(data);
+
+		/// <summary>Converts a SafeAllocatedMemoryHandle instance to a CRYPTOAPI_BLOB structure representing the same memory buffer.</summary>
+		/// <remarks>
+		/// This operator enables seamless conversion when interoperating with native cryptographic APIs that require a CRYPTOAPI_BLOB. The
+		/// resulting structure references the same memory as the original handle; callers are responsible for ensuring the handle remains
+		/// valid for the duration of native use.
+		/// </remarks>
+		/// <param name="data">The SafeAllocatedMemoryHandle containing the memory buffer to convert.</param>
+		public static implicit operator CRYPTOAPI_BLOB(SafeAllocatedMemoryHandle data) => new(data);
+
+		/// <summary>Converts a CRYPTOAPI_BLOB structure to a byte array containing its data.</summary>
+		/// <remarks>If the CRYPTOAPI_BLOB contains no data, the resulting array will be empty.</remarks>
+		/// <param name="data">The CRYPTOAPI_BLOB instance to convert to a byte array.</param>
+		public static implicit operator byte[](CRYPTOAPI_BLOB data) => data.GetBytes() ?? [];
+
 		/// <summary>Gets the bytes associated with this blob.</summary>
-		public byte[]? GetBytes() => pbData.ToByteArray((int)cbData);
+		public readonly byte[]? GetBytes() => pbData.ToByteArray((int)cbData);
 	}
 
 	/// <summary>
@@ -3022,7 +3355,7 @@ public static partial class Crypt32
 		public uint cbCtlEncoded;
 
 		/// <summary>A pointer to CTL_INFO structure contain the CTL information.</summary>
-		public IntPtr pCtlInfo;
+		public StructPointer<CTL_INFO> pCtlInfo;
 
 		/// <summary>A handle to the certificate store.</summary>
 		public HCERTSTORE hCertStore;
@@ -3039,7 +3372,7 @@ public static partial class Crypt32
 		public uint cbCtlContent;
 
 		/// <summary>A pointer to CTL_INFO structure contain the CTL information.</summary>
-		public unsafe CTL_INFO* pUnsafeCtlInfo => (CTL_INFO*)(void*)pCtlInfo;
+		public readonly unsafe CTL_INFO* pUnsafeCtlInfo => (CTL_INFO*)(void*)pCtlInfo;
 	}
 
 	/// <summary>The <c>CTL_ENTRY</c> structure is an element of a certificate trust list (CTL).</summary>
@@ -3056,7 +3389,7 @@ public static partial class Crypt32
 		public uint cAttribute;
 
 		/// <summary>Array of CRYPT_ATTRIBUTE structures, each holding information about the subject.</summary>
-		public IntPtr rgAttribute;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgAttribute;
 	}
 
 	/// <summary>The <c>CTL_INFO</c> structure contains the information stored in a Certificate Trust List (CTL).</summary>
@@ -3122,13 +3455,13 @@ public static partial class Crypt32
 		public uint cCTLEntry;
 
 		/// <summary>Array of CTL_ENTRY structures.</summary>
-		public IntPtr rgCTLEntry;
+		public ArrayPointer<CTL_ENTRY> rgCTLEntry;
 
 		/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
 		public uint cExtension;
 
 		/// <summary>Array of CERT_EXTENSION structures.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -3136,16 +3469,53 @@ public static partial class Crypt32
 	/// <c>CTL_USAGE</c> structures are used in functions that search for CTLs for specific uses.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-ctl_usage typedef struct _CTL_USAGE { DWORD
-	// cUsageIdentifier; LPSTR *rgpszUsageIdentifier; } CTL_USAGE, *PCTL_USAGE, CERT_ENHKEY_USAGE, *PCERT_ENHKEY_USAGE;
+	// cUsageIdentifier; StrPtrAnsi *rgpszUsageIdentifier; } CTL_USAGE, *PCTL_USAGE, CERT_ENHKEY_USAGE, *PCERT_ENHKEY_USAGE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "70ee138a-df94-4fc4-9de5-0d8b7704b890")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CTL_USAGE
+	public struct CTL_USAGE(IntPtr usageIdentifiers = default, uint count = 0)
 	{
 		/// <summary>Number of elements in the <c>rgpszUsageIdentifier</c> member array.</summary>
-		public uint cUsageIdentifier;
+		public uint cUsageIdentifier = count;
 
 		/// <summary>Array of object identifiers (OIDs) of CTL extensions.</summary>
-		public IntPtr rgpszUsageIdentifier;
+		public IntPtr rgpszUsageIdentifier = usageIdentifiers;
+	}
+
+	/// <summary>
+	/// Represents a handle that can be either a legacy Cryptographic Service Provider (CSP) handle (HCRYPTPROV) or a CNG key handle (NCRYPT_KEY_HANDLE).
+	/// </summary>
+	/// <remarks>
+	/// This structure is used in Windows cryptographic APIs that accept either a CSP handle or a CNG key handle. It enables interoperability
+	/// between legacy and modern cryptographic providers. The actual type of handle stored should match the expectations of the API being called.
+	/// </remarks>
+	[AutoHandle]
+	public partial struct HCRYPTPROV_OR_NCRYPT_KEY_HANDLE
+	{
+		/// <summary>Defines an implicit conversion from a HCRYPTPROV_OR_NCRYPT_KEY_HANDLE to a HCRYPTPROV handle.</summary>
+		/// <remarks>
+		/// This conversion allows a HCRYPTPROV_OR_NCRYPT_KEY_HANDLE to be used where a HCRYPTPROV is expected. Use this conversion only when
+		/// the underlying handle represents a valid HCRYPTPROV; otherwise, the result may be invalid.
+		/// </remarks>
+		/// <param name="h">The HCRYPTPROV_OR_NCRYPT_KEY_HANDLE instance to convert.</param>
+		public static implicit operator HCRYPTPROV(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE h) => (HCRYPTPROV)h.handle;
+
+		/// <summary>Defines an implicit conversion from a HCRYPTPROV handle to a HCRYPTPROV_OR_NCRYPT_KEY_HANDLE.</summary>
+		public static implicit operator HCRYPTPROV_OR_NCRYPT_KEY_HANDLE(HCRYPTPROV h) => (HCRYPTPROV_OR_NCRYPT_KEY_HANDLE)h.DangerousGetHandle();
+
+		/// <summary>Defines an implicit conversion from a <see cref="HCRYPTPROV_OR_NCRYPT_KEY_HANDLE"/> to an <see cref="NCRYPT_KEY_HANDLE"/>.</summary>
+		/// <remarks>
+		/// This conversion allows an <see cref="HCRYPTPROV_OR_NCRYPT_KEY_HANDLE"/> to be used where an <see cref="NCRYPT_KEY_HANDLE"/> is
+		/// expected without requiring an explicit cast. Use this operator when interoperating with APIs that accept <see
+		/// cref="NCRYPT_KEY_HANDLE"/> values.
+		/// </remarks>
+		/// <param name="h">The <see cref="HCRYPTPROV_OR_NCRYPT_KEY_HANDLE"/> instance to convert.</param>
+		public static implicit operator NCRYPT_KEY_HANDLE(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE h) => (NCRYPT_KEY_HANDLE)h.handle;
+
+		/// <summary>Defines an implicit conversion from an <see cref="NCRYPT_KEY_HANDLE"/> to a <see cref="HCRYPTPROV_OR_NCRYPT_KEY_HANDLE"/>.</summary>
+		public static implicit operator HCRYPTPROV_OR_NCRYPT_KEY_HANDLE(NCRYPT_KEY_HANDLE h) => (HCRYPTPROV_OR_NCRYPT_KEY_HANDLE)h.DangerousGetHandle();
+
+		/// <summary>Defines an implicit conversion from an <see cref="SafeNCRYPT_KEY_HANDLE"/> to a <see cref="HCRYPTPROV_OR_NCRYPT_KEY_HANDLE"/>.</summary>
+		public static implicit operator HCRYPTPROV_OR_NCRYPT_KEY_HANDLE(SafeNCRYPT_KEY_HANDLE h) => (HCRYPTPROV_OR_NCRYPT_KEY_HANDLE)h.DangerousGetHandle();
 	}
 
 	public partial struct PCCERT_CONTEXT
@@ -3154,6 +3524,14 @@ public static partial class Crypt32
 		/// <param name="h">The <see cref="PCCERT_CONTEXT"/> instance.</param>
 		/// <returns>The resulting <see cref="CERT_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CERT_CONTEXT*(PCCERT_CONTEXT h) => (CERT_CONTEXT*)(void*)h.handle;
+
+		/// <summary>Returns a reference to the underlying CERT_CONTEXT structure represented by this handle.</summary>
+		/// <remarks>
+		/// The returned reference remains valid only as long as the handle is valid and not disposed. Modifying the referenced structure may
+		/// affect the underlying certificate context.
+		/// </remarks>
+		/// <returns>A reference to the CERT_CONTEXT structure associated with this handle.</returns>
+		public ref CERT_CONTEXT AsRef() => ref handle.AsRef<CERT_CONTEXT>();
 	}
 
 	public partial struct PCCRL_CONTEXT
@@ -3162,6 +3540,14 @@ public static partial class Crypt32
 		/// <param name="h">The <see cref="PCCRL_CONTEXT"/> instance.</param>
 		/// <returns>The resulting <see cref="CRL_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CRL_CONTEXT*(PCCRL_CONTEXT h) => (CRL_CONTEXT*)(void*)h.handle;
+
+		/// <summary>Returns a reference to the underlying CRL_CONTEXT structure represented by this handle.</summary>
+		/// <remarks>
+		/// The returned reference remains valid only as long as the underlying handle is valid and not disposed. Modifying the referenced
+		/// structure may affect the state of the handle and any associated resources.
+		/// </remarks>
+		/// <returns>A reference to the CRL_CONTEXT structure associated with this handle.</returns>
+		public ref CRL_CONTEXT AsRef() => ref handle.AsRef<CRL_CONTEXT>();
 	}
 
 	public partial struct PCCTL_CONTEXT
@@ -3170,6 +3556,14 @@ public static partial class Crypt32
 		/// <param name="h">The handle.</param>
 		/// <returns>The resulting <see cref="CTL_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CTL_CONTEXT*(PCCTL_CONTEXT h) => (CTL_CONTEXT*)(void*)h.handle;
+
+		/// <summary>Returns a reference to the underlying CTL_CONTEXT structure represented by this handle.</summary>
+		/// <remarks>
+		/// Modifying the returned reference directly affects the underlying structure. Use caution when manipulating the reference to avoid
+		/// corrupting the handle's state.
+		/// </remarks>
+		/// <returns>A reference to the CTL_CONTEXT structure associated with this handle.</returns>
+		public ref CTL_CONTEXT AsRef() => ref handle.AsRef<CTL_CONTEXT>();
 	}
 
 	/// <summary>

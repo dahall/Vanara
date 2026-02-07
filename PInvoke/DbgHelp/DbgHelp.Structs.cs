@@ -361,11 +361,11 @@ After:
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-image_debug_information typedef struct
 	// _IMAGE_DEBUG_INFORMATION { LIST_ENTRY List; DWORD ReservedSize; PVOID ReservedMappedBase; USHORT ReservedMachine; USHORT
 	// ReservedCharacteristics; DWORD ReservedCheckSum; DWORD ImageBase; DWORD SizeOfImage; DWORD ReservedNumberOfSections;
-	// PIMAGE_SECTION_HEADER ReservedSections; DWORD ReservedExportedNamesSize; PSTR ReservedExportedNames; DWORD
+	// PIMAGE_SECTION_HEADER ReservedSections; DWORD ReservedExportedNamesSize; StrPtrAnsi ReservedExportedNames; DWORD
 	// ReservedNumberOfFunctionTableEntries; PIMAGE_FUNCTION_ENTRY ReservedFunctionTableEntries; DWORD
 	// ReservedLowestFunctionStartingAddress; DWORD ReservedHighestFunctionEndingAddress; DWORD ReservedNumberOfFpoTableEntries;
 	// PFPO_DATA ReservedFpoTableEntries; DWORD SizeOfCoffSymbols; PIMAGE_COFF_SYMBOLS_HEADER CoffSymbols; DWORD
-	// ReservedSizeOfCodeViewSymbols; PVOID ReservedCodeViewSymbols; PSTR ImageFilePath; PSTR ImageFileName; PSTR ReservedDebugFilePath;
+	// ReservedSizeOfCodeViewSymbols; PVOID ReservedCodeViewSymbols; StrPtrAnsi ImageFilePath; StrPtrAnsi ImageFileName; StrPtrAnsi ReservedDebugFilePath;
 	// DWORD ReservedTimeDateStamp; BOOL ReservedRomImage; PIMAGE_DEBUG_DIRECTORY ReservedDebugDirectory; DWORD
 	// ReservedNumberOfDebugDirectories; DWORD ReservedOriginalFunctionTableBaseAddress; DWORD Reserved[2]; } IMAGE_DEBUG_INFORMATION, *PIMAGE_DEBUG_INFORMATION;
 	[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGE_DEBUG_INFORMATION")]
@@ -1714,7 +1714,7 @@ After:
 	/// <code>typedef struct _LIST_ENTRY { struct _LIST_ENTRY *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, *RESTRICTED_POINTER PRLIST_ENTRY;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { StrPtrAnsi
 	// ModuleName; HANDLE hFile; PUCHAR MappedAddress; #if ... PIMAGE_NT_HEADERS64 FileHeader; #else PIMAGE_NT_HEADERS32 FileHeader;
 	// #endif PIMAGE_SECTION_HEADER LastRvaSection; ULONG NumberOfSections; PIMAGE_SECTION_HEADER Sections; ULONG Characteristics;
 	// BOOLEAN fSystemImage; BOOLEAN fDOSImage; BOOLEAN fReadOnly; UCHAR Version; LIST_ENTRY Links; ULONG SizeOfImage; } LOADED_IMAGE, *PLOADED_IMAGE;
@@ -1850,7 +1850,7 @@ After:
 	/// <code>typedef struct _LIST_ENTRY { struct _LIST_ENTRY *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, *RESTRICTED_POINTER PRLIST_ENTRY;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { StrPtrAnsi
 	// ModuleName; HANDLE hFile; PUCHAR MappedAddress; #if ... PIMAGE_NT_HEADERS64 FileHeader; #else PIMAGE_NT_HEADERS32 FileHeader;
 	// #endif PIMAGE_SECTION_HEADER LastRvaSection; ULONG NumberOfSections; PIMAGE_SECTION_HEADER Sections; ULONG Characteristics;
 	// BOOLEAN fSystemImage; BOOLEAN fDOSImage; BOOLEAN fReadOnly; UCHAR Version; LIST_ENTRY Links; ULONG SizeOfImage; } LOADED_IMAGE, *PLOADED_IMAGE;

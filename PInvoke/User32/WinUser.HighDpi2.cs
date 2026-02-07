@@ -218,7 +218,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "77660CAB-97ED-4DAC-A95E-A149F1A479FD")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AreDpiAwarenessContextsEqual(DPI_AWARENESS_CONTEXT dpiContextA, DPI_AWARENESS_CONTEXT dpiContextB);
+	public static extern bool AreDpiAwarenessContextsEqual([In, AddAsMember] DPI_AWARENESS_CONTEXT dpiContextA, DPI_AWARENESS_CONTEXT dpiContextB);
 
 	/// <summary>
 	/// In high-DPI displays, enables automatic display scaling of the non-client area portions of the specified top-level window. Must
@@ -257,7 +257,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "3459B040-B73F-4581-BA29-0B2F0241801E")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnableNonClientDpiScaling(HWND hwnd);
+	public static extern bool EnableNonClientDpiScaling([In, AddAsMember] HWND hwnd);
 
 	/// <summary>Retrieves the DPI_AWARENESS value from a <c>DPI_AWARENESS_CONTEXT</c>.</summary>
 	/// <param name="value">The <c>DPI_AWARENESS_CONTEXT</c> you want to examine.</param>
@@ -270,7 +270,7 @@ public static partial class User32
 	// GetAwarenessFromDpiAwarenessContext( DPI_AWARENESS_CONTEXT value );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "BE4DC6B9-BCD6-4E27-81F8-E3CF054CFBE9")]
-	public static extern DPI_AWARENESS GetAwarenessFromDpiAwarenessContext(DPI_AWARENESS_CONTEXT value);
+	public static extern DPI_AWARENESS GetAwarenessFromDpiAwarenessContext([In, AddAsMember] DPI_AWARENESS_CONTEXT value);
 
 	/// <summary>Retrieves and per-monitor DPI scaling behavior overrides of a child window in a dialog.</summary>
 	/// <param name="hWnd">The handle for the window to examine.</param>
@@ -281,7 +281,7 @@ public static partial class User32
 	// DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS GetDialogControlDpiChangeBehavior( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "1651353F-5823-41B8-AE52-016AEBA6C4F0")]
-	public static extern DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS GetDialogControlDpiChangeBehavior(HWND hWnd);
+	public static extern DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS GetDialogControlDpiChangeBehavior([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Returns the flags that might have been set on a given dialog by an earlier call to SetDialogDpiChangeBehavior.</para>
@@ -299,7 +299,7 @@ public static partial class User32
 	// GetDialogDpiChangeBehavior( HWND hDlg );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "8ED61C77-36C8-453B-BAB1-505CE4974D63")]
-	public static extern DIALOG_DPI_CHANGE_BEHAVIORS GetDialogDpiChangeBehavior(HWND hDlg);
+	public static extern DIALOG_DPI_CHANGE_BEHAVIORS GetDialogDpiChangeBehavior([In, AddAsMember] HWND hDlg);
 
 	/// <summary>Returns the dots per inch (dpi) value for the associated window.</summary>
 	/// <param name="hwnd">The window you want to get information about.</param>
@@ -331,7 +331,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdpiforwindow UINT GetDpiForWindow( HWND hwnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "E9F7BCFA-4215-44C0-95FB-57C28325720C")]
-	public static extern uint GetDpiForWindow(HWND hwnd);
+	public static extern uint GetDpiForWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// Retrieves the DPI from a given DPI_AWARENESS_CONTEXT handle. This enables you to determine the DPI of a thread without needed to
@@ -348,7 +348,7 @@ public static partial class User32
 	// GetDpiFromDpiAwarenessContext( DPI_AWARENESS_CONTEXT value );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "E47A7A12-AE11-4E66-AE49-463C9F4A6330")]
-	public static extern uint GetDpiFromDpiAwarenessContext(DPI_AWARENESS_CONTEXT value);
+	public static extern uint GetDpiFromDpiAwarenessContext([In, AddAsMember] DPI_AWARENESS_CONTEXT value);
 
 	/// <summary>Gets the DPI_AWARENESS_CONTEXT for the current thread.</summary>
 	/// <returns>The current DPI_AWARENESS_CONTEXT for the thread.</returns>
@@ -386,7 +386,7 @@ public static partial class User32
 	// GetWindowDpiAwarenessContext( HWND hwnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "BCBC6EC7-9792-43C0-BE0E-D94F00A7CAFD")]
-	public static extern DPI_AWARENESS_CONTEXT GetWindowDpiAwarenessContext(HWND hwnd);
+	public static extern DPI_AWARENESS_CONTEXT GetWindowDpiAwarenessContext([In, AddAsMember] HWND hwnd);
 
 	/// <summary>Returns the DPI_HOSTING_BEHAVIOR of the specified window.</summary>
 	/// <param name="hwnd">The handle for the window to examine.</param>
@@ -400,7 +400,7 @@ public static partial class User32
 	// GetWindowDpiHostingBehavior( HWND hwnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "BD16F545-54A1-479A-BA4B-F54834043EB2")]
-	public static extern DPI_HOSTING_BEHAVIOR GetWindowDpiHostingBehavior(HWND hwnd);
+	public static extern DPI_HOSTING_BEHAVIOR GetWindowDpiHostingBehavior([In, AddAsMember] HWND hwnd);
 
 	/// <summary>Determines if a specified <c>DPI_AWARENESS_CONTEXT</c> is valid and supported by the current system.</summary>
 	/// <param name="value">The context that you want to determine if it is supported.</param>
@@ -417,7 +417,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "66F48B95-DEF4-4422-BF4F-5EBA3C713A80")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidDpiAwarenessContext(DPI_AWARENESS_CONTEXT value);
+	public static extern bool IsValidDpiAwarenessContext([In, AddAsMember] DPI_AWARENESS_CONTEXT value);
 
 	/// <summary>
 	/// Converts a point in a window from logical coordinates into physical coordinates, regardless of the dots per inch (dpi) awareness
@@ -466,7 +466,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "C9ABDC73-1E96-42F1-B34D-3A649DDF02A6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LogicalToPhysicalPointForPerMonitorDPI(HWND hWnd, ref POINT lpPoint);
+	public static extern bool LogicalToPhysicalPointForPerMonitorDPI([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>
 	/// Converts a point in a window from logical coordinates into physical coordinates, regardless of the dots per inch (dpi) awareness
@@ -512,7 +512,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "DC744BFC-4410-4878-BEA7-382550DDF9E3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PhysicalToLogicalPointForPerMonitorDPI(HWND hWnd, ref POINT lpPoint);
+	public static extern bool PhysicalToLogicalPointForPerMonitorDPI([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>Overrides the default per-monitor DPI scaling behavior of a child window in a dialog.</summary>
 	/// <param name="hWnd">A handle for the window whose behavior will be modified.</param>
@@ -546,7 +546,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "52BB557B-0D70-4189-9BD0-EB94188EA4E7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDialogControlDpiChangeBehavior(HWND hWnd, DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS mask, DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS values);
+	public static extern bool SetDialogControlDpiChangeBehavior([In, AddAsMember] HWND hWnd, DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS mask, DIALOG_CONTROL_DPI_CHANGE_BEHAVIORS values);
 
 	/// <summary>
 	/// <para>Dialogs in Per-Monitor v2 contexts are automatically DPI scaled. This method lets you customize their DPI change behavior.</para>
@@ -585,7 +585,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "48A13F57-9D82-4F79-962B-FBD02FFF9B39")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDialogDpiChangeBehavior(HWND hDlg, DIALOG_DPI_CHANGE_BEHAVIORS mask, DIALOG_DPI_CHANGE_BEHAVIORS values);
+	public static extern bool SetDialogDpiChangeBehavior([In, AddAsMember] HWND hDlg, DIALOG_DPI_CHANGE_BEHAVIORS mask, DIALOG_DPI_CHANGE_BEHAVIORS values);
 
 	/// <summary>
 	/// <para>
@@ -634,7 +634,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "EACD1784-BEFF-46C1-8665-CBC86A65833C")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT value);
+	public static extern bool SetProcessDpiAwarenessContext([In, AddAsMember] DPI_AWARENESS_CONTEXT value);
 
 	/// <summary>Set the DPI awareness for the current thread to the provided value.</summary>
 	/// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
@@ -647,7 +647,7 @@ public static partial class User32
 	// SetThreadDpiAwarenessContext( DPI_AWARENESS_CONTEXT dpiContext );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "95531BDC-3D45-4BB6-8C63-0D845C66B88F")]
-	public static extern DPI_AWARENESS_CONTEXT SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext);
+	public static extern DPI_AWARENESS_CONTEXT SetThreadDpiAwarenessContext([In, AddAsMember] DPI_AWARENESS_CONTEXT dpiContext);
 
 	/// <summary>
 	/// Sets the thread's DPI_HOSTING_BEHAVIOR. This behavior allows windows created in the thread to host child windows with a different <c>DPI_AWARENESS_CONTEXT</c>.

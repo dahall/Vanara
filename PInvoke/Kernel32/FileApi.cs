@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 //using System.IO;
 using System.Linq;
@@ -102,6 +103,14 @@ public static partial class Kernel32
 
 		/// <summary>Undocumented.</summary>
 		DDD_LUID_BROADCAST_DRIVE = 0x00000010
+	}
+
+	/// <summary>Flags used with <c>CreateDirectory2</c>.</summary>
+	[Flags]
+	public enum DIRECTORY_FLAGS
+	{
+		/// <summary>Prevent <c>lpPathName</c> from being redirected by reparse points and/or symbolic links.</summary>
+		DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS = 0x00000001,
 	}
 
 	/// <summary>Specifies the type of drive.</summary>
@@ -317,6 +326,50 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
+	/// Locks the specified file for exclusive access by the calling process. This function can operate either synchronously or
+	/// asynchronously and can request either an exclusive or a shared lock.
+	/// </summary>
+	/// <param name="hFile">
+	/// A handle to the file. The handle must have been created with either the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For
+	/// more information, see File Security and Access Rights.
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>This parameter may be one or more of the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>LOCKFILE_EXCLUSIVE_LOCK = 0x00000002</term>
+	/// <term>The function requests an exclusive lock. Otherwise, it requests a shared lock.</term>
+	/// </item>
+	/// <item>
+	/// <term>LOCKFILE_FAIL_IMMEDIATELY = 0x00000001</term>
+	/// <term>The function returns immediately if it is unable to acquire the requested lock. Otherwise, it waits.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="nNumberOfBytesToLock">The length of the byte range to lock.</param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
+	public static IAsyncResult BeginLockFileEx([In, AddAsMember] HFILE hFile, LOCKFILE dwFlags, ulong nNumberOfBytesToLock, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		unsafe
+		{
+			var ret = LockFileEx(hFile, dwFlags, default, (uint)nNumberOfBytesToLock, (uint)(nNumberOfBytesToLock >> 32), ar.Overlapped);
+			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+		}
+	}
+
+	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
 	/// supported by the device.
 	/// </summary>
@@ -332,12 +385,74 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static unsafe IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginReadFile([In, AddAsMember] HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
-		fixed (byte* pIn = buffer)
+		unsafe
 		{
-			var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
+			fixed (byte* pIn = buffer)
+			{
+				var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
+				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+			}
+		}
+	}
+
+	/// <summary>
+	/// <para>Reads data from a file and stores it in an array of buffers.</para>
+	/// <para>
+	/// The function starts reading data from the file at a position that is specified by an <c>OVERLAPPED</c> structure. The
+	/// <c>ReadFileScatter</c> function operates asynchronously.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>A handle to the file to be read.</para>
+	/// <para>
+	/// The file handle must be created with the <c>GENERIC_READ</c> right, and the <c>FILE_FLAG_OVERLAPPED</c> and
+	/// <c>FILE_FLAG_NO_BUFFERING</c> flags. For more information, see File Security and Access Rights.
+	/// </para>
+	/// </param>
+	/// <param name="aSegmentArray">
+	/// <para>A pointer to an array of <c>FILE_SEGMENT_ELEMENT</c> buffers that receives the data. For a description of this union, see Remarks.</para>
+	/// <para>Each element can receive one page of data.</para>
+	/// <para>
+	/// The array must contain enough elements to store nNumberOfBytesToRead bytes of data, plus one element for the terminating <c>NULL</c>.
+	/// For example, if there are 40 KB to be read and the page size is 4 KB, the array must have 11 elements that includes 10 for the data
+	/// and one for the <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// Each buffer must be at least the size of a system memory page and must be aligned on a system memory page size boundary. The system
+	/// reads one system memory page of data into each buffer.
+	/// </para>
+	/// <para>
+	/// The function stores the data in the buffers in sequential order. For example, it stores data into the first buffer, then into the
+	/// second buffer, and so on until each buffer is filled and all the data is stored, or there are no more buffers.
+	/// </para>
+	/// </param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>
+	/// An IAsyncResult instance that references the asynchronous request.
+	/// <para>
+	/// If <c>ReadFileScatter</c> attempts to read past the end-of-file (EOF), the call to <c>GetOverlappedResult</c> for that operation
+	/// returns <c>FALSE</c> and <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c>.
+	/// </para>
+	/// <para>
+	/// If the function returns before the read operation is complete, the function returns zero (0), and <c>GetLastError</c> returns <c>ERROR_IO_PENDING</c>.
+	/// </para>
+	/// </returns>
+	public static IAsyncResult BeginReadFileScatter([In, AddAsMember] HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
+		var sectorSize = fsi.FileSystemEffectivePhysicalBytesPerSectorForAtomicity;
+		uint toRead = (uint)(aSegmentArray.Length - 1) * sectorSize;
+		unsafe
+		{
+			var ret = ReadFileScatter(hFile, aSegmentArray, toRead, default, ar.Overlapped);
 			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 		}
 	}
@@ -386,12 +501,93 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static unsafe IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginWriteFile([In, AddAsMember] HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
-		fixed (byte* pIn = buffer)
+		unsafe
 		{
-			var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
+			fixed (byte* pIn = buffer)
+			{
+				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
+				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+			}
+		}
+	}
+
+	/// <summary>
+	/// <para>Retrieves data from an array of buffers and writes the data to a file.</para>
+	/// <para>
+	/// The function starts writing data to the file at a position that is specified by an <c>OVERLAPPED</c> structure. The
+	/// <c>WriteFileGather</c> function operates asynchronously.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// A handle to the file. The file handle must be created with the <c>GENERIC_WRITE</c> access right, and the
+	/// <c>FILE_FLAG_OVERLAPPED</c> and <c>FILE_FLAG_NO_BUFFERING</c> flags. For more information, see File Security and Access Rights.
+	/// </para>
+	/// </param>
+	/// <param name="aSegmentArray">
+	/// <para>
+	/// A pointer to an array of <c>FILE_SEGMENT_ELEMENT</c> buffers that contain the data. For a description of this union, see Remarks.
+	/// </para>
+	/// <para>Each element contains the address of one page of data.</para>
+	/// <para>
+	/// Each buffer must be at least the size of a system memory page and must be aligned on a system memory page size boundary. The
+	/// system writes one system memory page of data from each buffer.
+	/// </para>
+	/// <para>
+	/// The function gathers the data from the buffers in a sequential order. For example, it writes data to the file from the first
+	/// buffer, then the second buffer, and so on until there is no more data.
+	/// </para>
+	/// <para>
+	/// Due to the asynchronous operation of this function, precautions must be taken to ensure that this parameter always references
+	/// valid memory for the lifetime of the asynchronous writes. For instance, a common programming error is to use local stack storage
+	/// and then allow execution to run out of scope.
+	/// </para>
+	/// </param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.
+	/// <para>
+	/// If the function returns before the write operation is complete, the function returns zero (0), and the <c>GetLastError</c>
+	/// function returns <c>ERROR_IO_PENDING</c>.
+	/// </para>
+	/// </returns>
+	public static IAsyncResult BeginWriteFileGather([In, AddAsMember] HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
+		var sectorSize = fsi.FileSystemEffectivePhysicalBytesPerSectorForAtomicity;
+		uint toWrite = (uint)(aSegmentArray.Length - 1) * sectorSize;
+		unsafe
+		{
+			var ret = WriteFileGather(hFile, aSegmentArray, toWrite, default, ar.Overlapped);
+			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+		}
+	}
+
+	/// <summary>Unlocks a region in the specified file. This function can operate either synchronously or asynchronously.</summary>
+	/// <param name="hFile">
+	/// A handle to the file. The handle must have been created with either the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For
+	/// more information, see File Security and Access Rights.
+	/// </param>
+	/// <param name="nNumberOfBytesToUnlock">The low-order part of the length of the byte range to unlock.</param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
+	public static IAsyncResult BeginUnlockFileEx([In, AddAsMember] HFILE hFile, ulong nNumberOfBytesToUnlock, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		unsafe
+		{
+			var ret = UnlockFileEx(hFile, default, (uint)nNumberOfBytesToUnlock, (uint)(nNumberOfBytesToUnlock >> 32), ar.Overlapped);
 			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 		}
 	}
@@ -449,6 +645,442 @@ public static partial class Kernel32
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363855")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CreateDirectory(string lpPathName, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
+
+	/// <summary>
+	///   <para>Creates a new directory. If the underlying file system supports security on files and directories, the function applies a specified security descriptor to the new directory.</para>
+	///   <para>To specify a template directory, use the <c>CreateDirectoryEx</c> function.</para>
+	///   <para>To perform this operation as a transacted operation, use the <c>CreateDirectoryTransacted</c> function.</para>
+	/// </summary>
+	/// <param name="lpPathName">
+	///   <para>The path of the directory to be created.</para>
+	///   <para>By default, the name is limited to <b>MAX_PATH</b> characters. To extend this limit to 32,767 wide characters, prepend "\\?\" to the path. For more information, see <c>Naming Files, Paths, and Namespaces</c>.</para>
+	///   <para>
+	///     <para>Tip</para>
+	///     <para>You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</para>
+	///   </para>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	///   <para>The <b>ACCESS_MASK</b> value that expresses the type of access that the caller requires to the directory. The set of system-defined dwDesiredAccess flags determines the following specific access rights directory file objects:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>FILE_LIST_DIRECTORY</b>
+	///       </description>
+	///       <description>Files in the directory can be listed.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_TRAVERSE</b>
+	///       </description>
+	///       <description>The directory can be traversed: that is, it can be part of the pathname of a file.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>SYNCHRONIZE</b>
+	///       </description>
+	///       <description>The returned handle can be waited on to synchronize with the completion of an I/O operation. If the handle was not opened for synchronous I/O, this value is ignored.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="dwShareMode">
+	///   <para>The type of share access that the caller would like to use in the file, as zero, or as one or a combination of the following values:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>0</b><br/><c>0x00000000</c>
+	///       </description>
+	///       <description>Prevents other processes from opening a file or device if they request delete, read, or write access.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_READ</b><br/><c>0x00000001</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the function fails.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a file mapping with write access, the function fails.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the function fails.<b>Note:</b> Delete access allows both delete and rename operations.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="DirectoryFlags">
+	///   <para>This parameter can contain combinations of <c>DIRECTORY_FLAGS</c>.</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b><br/><c>0x00000001</c>
+	///       </description>
+	///       <description>Prevent <c>lpPathName</c> from being redirected by reparse points or symbolic links.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="lpSecurityAttributes">
+	///   <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. The <b>lpSecurityDescriptor</b> member of the structure specifies a security descriptor for the new directory. If lpSecurityAttributes is <c>NULL</c>, the directory gets a default security descriptor. The ACLs in the default security descriptor for a directory are inherited from its parent directory.</para>
+	///   <para>The target file system must support security on files and directories for this parameter to have an effect. (This is indicated when <c>GetVolumeInformation</c> returns <b>FS_PERSISTENT_ACLS</b>.)</para>
+	/// </param>
+	/// <returns>
+	///   <para>If the function succeeds, the return value is nonzero.</para>
+	///   <para>If the function fails, the return value is INVALID_HANDLE_VALUE. To get extended error information, call <c>GetLastError</c>.</para>
+	///   <para>Possible errors include the following:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Return code</term>
+	///       <term>Description</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_ALREADY_EXISTS</b>
+	///       </description>
+	///       <description>The specified directory already exists.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_PATH_NOT_FOUND</b>
+	///       </description>
+	///       <description>One or more intermediate directories do not exist; this function will only create the final directory in the path.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_PATH_REDIRECTED</b>
+	///       </description>
+	///       <description>
+	///         <c>lpNewDirectory</c> was redirected by reparse points and/or symbolic links.</description>
+	///     </item>
+	///   </list>
+	/// </returns>
+	/// <remarks>
+	///   <para>Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes formatted for such a file system, a new directory inherits the compression and encryption attributes of its parent directory.</para>
+	///   <para>An application can obtain a handle to a directory by calling <c>CreateFile</c> with the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag set. For a code example, see <b>CreateFile</b>.</para>
+	///   <para>To support inheritance functions that query the security descriptor of this object may heuristically determine and report that inheritance is in effect. See <c>Automatic Propagation of Inheritable ACEs</c> for more information.</para>
+	///   <para>This function is supported by the following technologies:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Technology</term>
+	///       <term>Supported</term>
+	///     </listheader>
+	///     <item>
+	///       <description>Server Message Block (SMB) 3.0 protocol</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>SMB 3.0 Transparent Failover (TFO)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>Cluster Shared Volume File System (CsvFS)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>Resilient File System (ReFS)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///   </list>
+	///   <note type="">The <c>fileapi.h</c> header defines <b>CreateDirectory2</b> as an alias that automatically selects the ANSI or Unicode version of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that is not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see <c>Conventions for Function Prototypes</c>.</note>
+	/// </remarks>
+	/// <example>
+	///   <para>The following example creates a new directory with the CreateDirectory2 function. The new directory is created with the FILE_LIST_DIRECTORY and SYNCHRONIZE access rights. The new directory is also created with the FILE_SHARE_READ share mode, which allows other processes to open the directory for read access.</para>
+	///   <para>For additional examples, see Retrieving and Changing File Attributes.<br /></para>
+	///   <code language="cpp">// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF 
+	/// // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
+	/// // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A 
+	/// // PARTICULAR PURPOSE. 
+	/// // 
+	/// // Copyright (C) Microsoft. All rights reserved 
+	/// #include &lt;Windows.h&gt;
+	/// #include &lt;stdio.h&gt;
+	/// #include &lt;strsafe.h&gt;
+	///
+	/// int main(int argc, wchar_t* argv[])
+	/// {
+	///     WCHAR filePath[MAX_PATH] = { 0 };
+	///
+	///     // Create a directory to put a file into, that can't be deleted
+	///     // and redirected before this handle is closed.
+	///     HANDLE hDirectory = CreateDirectory2(argv[1],
+	///         FILE_LIST_DIRECTORY | SYNCHRONIZE,
+	///         FILE_SHARE_READ,
+	///         DIRECTORY_FLAGS_NONE,
+	///         NULL,
+	///         NULL);
+	///     if (hDirectory == INVALID_HANDLE_VALUE)
+	///     {
+	///         // Handle the error.
+	///         printf("CreateDirectory2 failed (%d)\n", GetLastError());
+	///         return (1);
+	///     }
+	///
+	///     StringCchPrintf(filePath,
+	///         ARRAYSIZE(filePath),
+	///         L"%ws\\example.test",
+	///         argv[1]);
+	///
+	///     HANDLE hFile = CreateFile3(filePath,
+	///         GENERIC_ALL,
+	///         FILE_SHARE_READ,
+	///         CREATE_ALWAYS,
+	///         NULL);
+	///     if (hFile == INVALID_HANDLE_VALUE)
+	///     {
+	///         // Handle the error.
+	///         CloseHandle(hDirectory);
+	///         printf("CreateFile3 failed (%d)\n", GetLastError());
+	///         return (1);
+	///     }
+	///
+	///     CloseHandle(hFile);
+	///     CloseHandle(hDirectory);
+	///     return (0);
+	/// }</code>
+	/// </example>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createdirectory2a
+	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FileShare dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
+		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
+
+	/// <summary>
+	///   <para>Creates a new directory. If the underlying file system supports security on files and directories, the function applies a specified security descriptor to the new directory.</para>
+	///   <para>To specify a template directory, use the <c>CreateDirectoryEx</c> function.</para>
+	///   <para>To perform this operation as a transacted operation, use the <c>CreateDirectoryTransacted</c> function.</para>
+	/// </summary>
+	/// <param name="lpPathName">
+	///   <para>The path of the directory to be created.</para>
+	///   <para>By default, the name is limited to <b>MAX_PATH</b> characters. To extend this limit to 32,767 wide characters, prepend "\\?\" to the path. For more information, see <c>Naming Files, Paths, and Namespaces</c>.</para>
+	///   <para>
+	///     <para>Tip</para>
+	///     <para>You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</para>
+	///   </para>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	///   <para>The <b>ACCESS_MASK</b> value that expresses the type of access that the caller requires to the directory. The set of system-defined dwDesiredAccess flags determines the following specific access rights directory file objects:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>FILE_LIST_DIRECTORY</b>
+	///       </description>
+	///       <description>Files in the directory can be listed.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_TRAVERSE</b>
+	///       </description>
+	///       <description>The directory can be traversed: that is, it can be part of the pathname of a file.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>SYNCHRONIZE</b>
+	///       </description>
+	///       <description>The returned handle can be waited on to synchronize with the completion of an I/O operation. If the handle was not opened for synchronous I/O, this value is ignored.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="dwShareMode">
+	///   <para>The type of share access that the caller would like to use in the file, as zero, or as one or a combination of the following values:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>0</b><br/><c>0x00000000</c>
+	///       </description>
+	///       <description>Prevents other processes from opening a file or device if they request delete, read, or write access.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_READ</b><br/><c>0x00000001</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the function fails.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a file mapping with write access, the function fails.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c>
+	///       </description>
+	///       <description>Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the function fails.<b>Note:</b> Delete access allows both delete and rename operations.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="DirectoryFlags">
+	///   <para>This parameter can contain combinations of <c>DIRECTORY_FLAGS</c>.</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Value</term>
+	///       <term>Meaning</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b><br/><c>0x00000001</c>
+	///       </description>
+	///       <description>Prevent <c>lpPathName</c> from being redirected by reparse points or symbolic links.</description>
+	///     </item>
+	///   </list>
+	/// </param>
+	/// <param name="lpSecurityAttributes">
+	///   <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. The <b>lpSecurityDescriptor</b> member of the structure specifies a security descriptor for the new directory. If lpSecurityAttributes is <c>NULL</c>, the directory gets a default security descriptor. The ACLs in the default security descriptor for a directory are inherited from its parent directory.</para>
+	///   <para>The target file system must support security on files and directories for this parameter to have an effect. (This is indicated when <c>GetVolumeInformation</c> returns <b>FS_PERSISTENT_ACLS</b>.)</para>
+	/// </param>
+	/// <returns>
+	///   <para>If the function succeeds, the return value is nonzero.</para>
+	///   <para>If the function fails, the return value is INVALID_HANDLE_VALUE. To get extended error information, call <c>GetLastError</c>.</para>
+	///   <para>Possible errors include the following:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Return code</term>
+	///       <term>Description</term>
+	///     </listheader>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_ALREADY_EXISTS</b>
+	///       </description>
+	///       <description>The specified directory already exists.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_PATH_NOT_FOUND</b>
+	///       </description>
+	///       <description>One or more intermediate directories do not exist; this function will only create the final directory in the path.</description>
+	///     </item>
+	///     <item>
+	///       <description>
+	///         <b>ERROR_PATH_REDIRECTED</b>
+	///       </description>
+	///       <description>
+	///         <c>lpNewDirectory</c> was redirected by reparse points and/or symbolic links.</description>
+	///     </item>
+	///   </list>
+	/// </returns>
+	/// <remarks>
+	///   <para>Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes formatted for such a file system, a new directory inherits the compression and encryption attributes of its parent directory.</para>
+	///   <para>An application can obtain a handle to a directory by calling <c>CreateFile</c> with the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag set. For a code example, see <b>CreateFile</b>.</para>
+	///   <para>To support inheritance functions that query the security descriptor of this object may heuristically determine and report that inheritance is in effect. See <c>Automatic Propagation of Inheritable ACEs</c> for more information.</para>
+	///   <para>This function is supported by the following technologies:</para>
+	///   <list type="table">
+	///     <listheader>
+	///       <term>Technology</term>
+	///       <term>Supported</term>
+	///     </listheader>
+	///     <item>
+	///       <description>Server Message Block (SMB) 3.0 protocol</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>SMB 3.0 Transparent Failover (TFO)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>Cluster Shared Volume File System (CsvFS)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///     <item>
+	///       <description>Resilient File System (ReFS)</description>
+	///       <description>Yes</description>
+	///     </item>
+	///   </list>
+	///   <note type="">The <c>fileapi.h</c> header defines <b>CreateDirectory2</b> as an alias that automatically selects the ANSI or Unicode version of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that is not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see <c>Conventions for Function Prototypes</c>.</note>
+	/// </remarks>
+	/// <example>
+	///   <para>The following example creates a new directory with the CreateDirectory2 function. The new directory is created with the FILE_LIST_DIRECTORY and SYNCHRONIZE access rights. The new directory is also created with the FILE_SHARE_READ share mode, which allows other processes to open the directory for read access.</para>
+	///   <para>For additional examples, see Retrieving and Changing File Attributes.<br /></para>
+	///   <code language="cpp">// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF 
+	/// // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
+	/// // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A 
+	/// // PARTICULAR PURPOSE. 
+	/// // 
+	/// // Copyright (C) Microsoft. All rights reserved 
+	/// #include &lt;Windows.h&gt;
+	/// #include &lt;stdio.h&gt;
+	/// #include &lt;strsafe.h&gt;
+	///
+	/// int main(int argc, wchar_t* argv[])
+	/// {
+	///     WCHAR filePath[MAX_PATH] = { 0 };
+	///
+	///     // Create a directory to put a file into, that can't be deleted
+	///     // and redirected before this handle is closed.
+	///     HANDLE hDirectory = CreateDirectory2(argv[1],
+	///         FILE_LIST_DIRECTORY | SYNCHRONIZE,
+	///         FILE_SHARE_READ,
+	///         DIRECTORY_FLAGS_NONE,
+	///         NULL,
+	///         NULL);
+	///     if (hDirectory == INVALID_HANDLE_VALUE)
+	///     {
+	///         // Handle the error.
+	///         printf("CreateDirectory2 failed (%d)\n", GetLastError());
+	///         return (1);
+	///     }
+	///
+	///     StringCchPrintf(filePath,
+	///         ARRAYSIZE(filePath),
+	///         L"%ws\\example.test",
+	///         argv[1]);
+	///
+	///     HANDLE hFile = CreateFile3(filePath,
+	///         GENERIC_ALL,
+	///         FILE_SHARE_READ,
+	///         CREATE_ALWAYS,
+	///         NULL);
+	///     if (hFile == INVALID_HANDLE_VALUE)
+	///     {
+	///         // Handle the error.
+	///         CloseHandle(hDirectory);
+	///         printf("CreateFile3 failed (%d)\n", GetLastError());
+	///         return (1);
+	///     }
+	///
+	///     CloseHandle(hFile);
+	///     CloseHandle(hDirectory);
+	///     return (0);
+	/// }</code>
+	/// </example>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createdirectory2a
+	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
+		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);	
 
 	/// <summary>
 	/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical
@@ -565,6 +1197,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		[Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 		[Optional] HFILE hTemplateFile);
@@ -684,6 +1317,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		[Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, CreationOption dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 		[Optional] HFILE hTemplateFile);
@@ -1207,6 +1841,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, in CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -1729,6 +2364,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, in CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -2251,8 +2887,9 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
-		FileMode dwCreationDisposition, [Optional] IntPtr pCreateExParams);
+		FileMode dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE2_EXTENDED_PARAMETERS> pCreateExParams);
 
 	/// <summary>
 	/// <para>
@@ -2773,8 +3410,2057 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
-		CreationOption dwCreationDisposition, [Optional] IntPtr pCreateExParams);
+		CreationOption dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE2_EXTENDED_PARAMETERS> pCreateExParams);
+
+	/// <summary>
+	/// <para>
+	/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical
+	/// disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used
+	/// to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified.
+	/// </para>
+	/// <para>
+	/// When called from a sandboxed packaged app, <b>CreateFile3</b> is simplified. You can open only files or directories inside the
+	/// <c>ApplicationData.LocalFolder</c> or <c>Package.InstalledLocation</c> directories. You can't open named pipes or mailslots or create
+	/// encrypted files ( <b>FILE_ATTRIBUTE_ENCRYPTED</b>).
+	/// </para>
+	/// <note type="tip">We refer here to the app's local folder and the package's installed location, not additional packages in the package
+	/// graph, like resource packages. <b>CreateFile3</b> doesn't support opening files in additional packages in the package graph. To
+	/// perform this operation as a transacted operation, which results in a handle that can be used for transacted I/O, use the
+	/// <c>CreateFileTransacted</c> function.</note>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file or device to be created or opened.</para>
+	/// <para>For information on special device names, see <c>Defining an MS-DOS Device Name</c>.</para>
+	/// <para>
+	/// To create a file stream, specify the name of the file, a colon, and then the name of the stream. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <note type="tip">You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\?". See the "Maximum Path Length
+	/// Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</note>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	/// <para>The requested access to the file or device, which can be summarized as read, write, both or neither zero.</para>
+	/// <para>
+	/// The most commonly used values are <b>GENERIC_READ</b>, <b>GENERIC_WRITE</b>, or both ( <c>GENERIC_READ | GENERIC_WRITE</c>). For more
+	/// information, see <c>Generic Access Rights</c>, <c>File Security and Access Rights</c>, <c>File Access Rights Constants</c>, and <c>ACCESS_MASK</c>.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero, the application can query certain metadata such as file, directory, or device attributes without accessing
+	/// that file or device, even if <b>GENERIC_READ</b> access would have been denied.
+	/// </para>
+	/// <para>
+	/// You cannot request an access mode that conflicts with the sharing mode that is specified by the dwShareMode parameter in an open
+	/// request that already has an open handle.
+	/// </para>
+	/// <para>For more information, see the <c>Remarks</c> section of this topic and <c>Creating and Opening Files</c>.</para>
+	/// </param>
+	/// <param name="dwShareMode">
+	/// <para>
+	/// The requested sharing mode of the file or device, which can be read, write, both, delete, all of these, or none (refer to the
+	/// following table). Access requests to attributes or extended attributes are not affected by this flag.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero and <b>CreateFile3</b> succeeds, the file or device cannot be shared and cannot be opened again until the
+	/// handle to the file or device is closed. For more information, see the <c>Remarks</c> section.
+	/// </para>
+	/// <para>
+	/// You cannot request a sharing mode that conflicts with the access mode that is specified in an existing request that has an open
+	/// handle. <b>CreateFile3</b> would fail and the <c>GetLastError</c> function would return <b>ERROR_SHARING_VIOLATION</b>.
+	/// </para>
+	/// <para>
+	/// To enable a process to share a file or device while another process has the file or device open, use a compatible combination of one
+	/// or more of the following values. For more information about valid combinations of this parameter with the dwDesiredAccess parameter,
+	/// see <c>Creating and Opening Files</c>.
+	/// </para>
+	/// <note type="">The sharing options for each open handle remain in effect until that handle is closed, regardless of process context.</note>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>0</b><br/><c>0x00000000</c></description>
+	/// <description>
+	/// Prevents other processes from opening a file or device if they request delete, read, or write access. Exclusive access to a file or
+	/// directory is only granted if the application has write access to the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or
+	/// device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the
+	/// function fails. <b>Note:</b> Delete access allows both delete and rename operations.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_READ</b><br/><c>0x00000001</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or
+	/// device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the
+	/// function fails. If a file or directory is being opened and this flag is not specified, and the caller does not have write access to
+	/// the file or directory, the function fails.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or
+	/// device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a
+	/// file mapping with write access, the function fails.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwCreationDisposition">
+	/// <para>An action to take on a file or device that exists or does not exist.</para>
+	/// <para>For devices other than files, this parameter is usually set to <b>OPEN_EXISTING</b>.</para>
+	/// <para>For more information, see the <c>Remarks</c> section.</para>
+	/// <para>This parameter must be one of the following values, which cannot be combined:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>CREATE_ALWAYS</b><br/><c>2</c></description>
+	/// <description>
+	/// Always creates a new file. If the specified file exists and is writable, the function truncates the file, the function succeeds, and
+	/// last-error code is set to <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path, a new file is
+	/// created, the function succeeds, and the last-error code is set to zero. For more information, see the <c>Remarks</c> section of this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>CREATE_NEW</b><br/><c>1</c></description>
+	/// <description>
+	/// Creates a new file, only if it does not already exist. If the specified file exists, the function fails and the last-error code is
+	/// set to <b>ERROR_FILE_EXISTS</b> (80). If the specified file does not exist and is a valid path to a writable location, a new file is created.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_ALWAYS</b><br/><c>4</c></description>
+	/// <description>
+	/// Always opens a file. If the specified file exists, the function succeeds and the last-error code is set to
+	/// <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path to a writable location, the function
+	/// creates a file and the last-error code is set to zero.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_EXISTING</b><br/><c>3</c></description>
+	/// <description>
+	/// Opens a file or device, only if it exists. If the specified file or device does not exist, the function fails and the last-error code
+	/// is set to <b>ERROR_FILE_NOT_FOUND</b> (2). For more information about devices, see the <c>Remarks</c> section.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>TRUNCATE_EXISTING</b><br/><c>5</c></description>
+	/// <description>
+	/// Opens a file and truncates it so that its size is zero bytes, only if it exists. If the specified file does not exist, the function
+	/// fails and the last-error code is set to <b>ERROR_FILE_NOT_FOUND</b> (2). The calling process must open the file with the
+	/// <b>GENERIC_WRITE</b> bit set as part of the <c>dwDesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pCreateExParams">Pointer to an optional <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is an open handle to the specified file, device, named pipe, or mail slot.</para>
+	/// <para>
+	/// If the function fails, the return value is <b>INVALID_HANDLE_VALUE</b>. To get extended error information, call <c>GetLastError</c>.
+	/// Possible errors include the following:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>ERROR_PATH_REDIRECTED</b></description>
+	/// <description><c>lpFileName</c> was redirected by reparse points and/or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreateFile3</b> behaves exactly the same way as <c>CreateFile2</c> with one exception; operations will fail if lpFileName is
+	/// redirected via a reparse point or symbolic link. This behavior can be disabled with a new flag that can be added to the dwFileFlags.
+	/// </para>
+	/// <para>
+	/// To compile an application that uses the <b>CreateFile3</b> function, define the <b>_WIN32_WINNT</b> macro as <c>0x0602</c> or later.
+	/// For more information, see <c>Using the Windows Headers</c>.
+	/// </para>
+	/// <para>
+	/// <b>CreateFile3</b> supports file interaction and most other types of I/O devices and mechanisms available to Windows developers. This
+	/// section attempts to cover the varied issues developers may experience when using <b>CreateFile3</b> in different contexts and with
+	/// different I/O types. The text attempts to use the word file only when referring specifically to data stored in an actual file on a
+	/// file system. However, some uses of file may be referring more generally to an I/O object that supports file-like mechanisms. This
+	/// liberal use of the term file is particularly prevalent in constant names and parameter names because of the previously mentioned
+	/// historical reasons.
+	/// </para>
+	/// <para>
+	/// When an application is finished using the object handle returned by <b>CreateFile3</b>, use the <c>CloseHandle</c> function to close
+	/// the handle. This not only frees up system resources, but can have wider influence on things like sharing the file or device and
+	/// committing data to disk. Specifics are noted within this topic as appropriate.
+	/// </para>
+	/// <para>
+	/// Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes
+	/// that have a mounted file system with this support, a new file inherits the compression and encryption attributes of its directory.
+	/// </para>
+	/// <para>
+	/// You cannot use <b>CreateFile3</b> to control compression, decompression, or decryption on a file or directory. For more information,
+	/// see <c>Creating and Opening Files</c>, <c>File Compression and Decompression</c>, and <c>File Encryption</c>.
+	/// </para>
+	/// <para>
+	/// If the <b>lpSecurityAttributes</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams
+	/// parameter is <c>NULL</c>, the handle returned by <b>CreateFile3</b> cannot be inherited by any child processes your application may
+	/// create. The following information regarding this member also applies:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// If the <b>bInheritHandle</b> member variable is not <c>FALSE</c>, which is any nonzero value, then the handle can be inherited.
+	/// Therefore it is critical this structure member be properly initialized to <c>FALSE</c> if you do not intend the handle to be inheritable.
+	/// </item>
+	/// <item>The access control lists (ACL) in the default security descriptor for a file or directory are inherited from its parent directory.</item>
+	/// <item>
+	/// The target file system must support security on files and directories for the <b>lpSecurityDescriptor</b> member to have an effect on
+	/// them, which can be determined by using <c>GetVolumeInformation</c>.
+	/// </item>
+	/// </list>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <h3>Symbolic Link Behavior</h3>
+	/// <para>
+	/// If the call to this function creates a file, there is no change in behavior. Also, consider the following information regarding
+	/// <b>FILE_FLAG_OPEN_REPARSE_POINT</b> flag for the <b>dwFileFlags</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure
+	/// passed in the pCreateExParams parameter:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the symbolic link.</item>
+	/// <item>If TRUNCATE_EXISTING or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is a symbolic link.</item>
+	/// </list>
+	/// </item>
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is not specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the target.</item>
+	/// <item>If CREATE_ALWAYS, TRUNCATE_EXISTING, or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is the target.</item>
+	/// </list>
+	/// </item>
+	/// </list>
+	/// <h3>Files</h3>
+	/// <para>
+	/// If you rename or delete a file and then restore it shortly afterward, the system searches the cache for file information to restore.
+	/// Cached information includes its short/long name pair and creation time.
+	/// </para>
+	/// <para>
+	/// If you call <b>CreateFile3</b> on a file that is pending deletion as a result of a previous call to <c>DeleteFile</c> or
+	/// <c>DeleteFile2</c>, the function fails. The operating system delays file deletion until all handles to the file are closed.
+	/// <c>GetLastError</c> returns <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>
+	/// The dwDesiredAccess parameter can be zero, allowing the application to query file attributes without accessing the file if the
+	/// application is running with adequate security settings. This is useful to test for the existence of a file without opening it for
+	/// read and/or write access, or to obtain other statistics about the file or directory. See <c>Obtaining and Setting File
+	/// Information</c> and <c>GetFileInformationByHandle</c>.
+	/// </para>
+	/// <para>
+	/// When an application creates a file across a network, it is better to use <c>GENERIC_READ | GENERIC_WRITE</c> for dwDesiredAccess than
+	/// to use <b>GENERIC_WRITE</b> alone. The resulting code is faster, because the redirector can use the cache manager and send fewer SMBs
+	/// with more data. This combination also avoids an issue where writing to a file across a network can occasionally return <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>For more information, see <c>Creating and Opening Files</c>.</para>
+	/// <h3>File Streams</h3>
+	/// <para>
+	/// On NTFS file systems, you can use <b>CreateFile3</b> to create separate streams within a file. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <h3>Directories</h3>
+	/// <para>
+	/// An application cannot create a directory by using <b>CreateFile3</b>, therefore only the <b>OPEN_EXISTING</b> value is valid for
+	/// dwCreationDisposition for this use case. To create a directory, the application must call <c>CreateDirectory</c>,
+	/// <c>CreateDirectoryEx</c>, or <c>CreateDirectory2</c>.
+	/// </para>
+	/// <para>
+	/// To open a directory using <b>CreateFile3</b>, specify the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag as part of <b>dwFileFlags</b> member
+	/// of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter. Appropriate security checks still
+	/// apply when this flag is used without <b>SE_BACKUP_NAME</b> and <b>SE_RESTORE_NAME</b> privileges.
+	/// </para>
+	/// <para>
+	/// When using <b>CreateFile3</b> to open a directory during defragmentation of a FAT or FAT32 file system volume, do not specify the
+	/// <b>MAXIMUM_ALLOWED</b> access right. Access to the directory is denied if this is done. Specify the <b>GENERIC_READ</b> access right instead.
+	/// </para>
+	/// <para>For more information, see <c>About Directory Management</c>.</para>
+	/// <h3>Physical Disks and Volumes</h3>
+	/// <para>Direct access to the disk or to a volume is restricted.</para>
+	/// <para>
+	/// You can use the <b>CreateFile3</b> function to open a physical disk drive or a volume, which returns a direct access storage device
+	/// (DASD) handle that can be used with the <c>DeviceIoControl</c> function. This enables you to access the disk or volume directly, for
+	/// example such disk metadata as the partition table. However, this type of access also exposes the disk drive or volume to potential
+	/// data loss, because an incorrect write to a disk using this mechanism could make its contents inaccessible to the operating system. To
+	/// ensure data integrity, be sure to become familiar with <b>DeviceIoControl</b> and how other APIs behave differently with a direct
+	/// access handle as opposed to a file system handle.
+	/// </para>
+	/// <para>The following requirements must be met for such a call to succeed:</para>
+	/// <list type="bullet">
+	/// <item>The caller must have administrative privileges. For more information, see <c>Running with Special Privileges</c>.</item>
+	/// <item>The dwCreationDisposition parameter must have the <b>OPEN_EXISTING</b> flag.</item>
+	/// <item>When opening a volume or floppy disk, the dwShareMode parameter must have the <b>FILE_SHARE_WRITE</b> flag.</item>
+	/// </list>
+	/// <note>The dwDesiredAccess parameter can be zero, allowing the application to query device attributes without accessing a device. This
+	/// is useful for an application to determine the size of a floppy disk drive and the formats it supports without requiring a floppy disk
+	/// in a drive, for instance. It can also be used for reading statistics without requiring higher-level data read/write permission.</note>
+	/// <para>When opening a physical drive x:, the lpFileName string should be the following form: "\.\PhysicalDrive <i>X</i>".</para>
+	/// <para>Hard disk numbers start at zero. The following table shows some examples of physical drive strings.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\PhysicalDrive0"</description>
+	/// <description>Opens the first physical drive.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\PhysicalDrive2"</description>
+	/// <description>Opens the third physical drive.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// To obtain the physical drive identifier for a volume, open a handle to the volume and call the <c>DeviceIoControl</c> function with
+	/// <c>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</c>. This control code returns the disk number and offset for each of the volume's one or
+	/// more extents; a volume can span multiple physical disks.
+	/// </para>
+	/// <para>For an example of opening a physical drive, see <c>Calling DeviceIoControl</c>.</para>
+	/// <para>
+	/// When opening a volume or removable media drive (for example, a floppy disk drive or flash memory thumb drive), the lpFileName string
+	/// should be the following form: "\\.\ <i>X</i>:". Do not use a trailing backslash (\), which indicates the root directory of a drive.
+	/// </para>
+	/// <para>The following table shows some examples of drive strings:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\A:"</description>
+	/// <description>Opens floppy disk drive A.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the C: volume.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the file system of the C: volume.</description>
+	/// </item>
+	/// </list>
+	/// <para>You can also open a volume by referring to its volume name. For more information, see <c>Naming a Volume</c>.</para>
+	/// <para>
+	/// A volume contains one or more mounted file systems. Volume handles can be opened as noncached at the discretion of the particular
+	/// file system, even when the noncached option is not specified in <b>CreateFile3</b>. You should assume that all Microsoft file systems
+	/// open volume handles as noncached. The restrictions on noncached I/O for files also apply to volumes.
+	/// </para>
+	/// <para>
+	/// A file system may or may not require buffer alignment even though the data is noncached. However, if the noncached option is
+	/// specified when opening a volume, buffer alignment is enforced regardless of the file system on the volume. It is recommended on all
+	/// file systems that you open volume handles as noncached, and follow the noncached I/O restrictions.
+	/// </para>
+	/// <note>To read or write to the last few sectors of the volume, you must call <c>DeviceIoControl</c> and specify
+	/// <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c>. This signals the file system driver not to perform any I/O boundary checks on partition read or
+	/// write calls. Instead, boundary checks are performed by the device driver.</note><h3>Changer Device</h3>
+	/// <para>
+	/// The <b>IOCTL_CHANGER_*</b> control codes for <c>DeviceIoControl</c> accept a handle to a changer device. To open a changer device,
+	/// use a file name of the following form: "\.\Changer <i>x</i>" where x is a number that indicates which device to open, starting with
+	/// zero. To open changer device zero in an application that is written in C or C++, use the following file name: "\\.\Changer0".
+	/// </para>
+	/// <h3>Tape Drives</h3>
+	/// <para>
+	/// You can open tape drives by using a file name of the following form: "\.\TAPE <i>x</i>" where x is a number that indicates which
+	/// drive to open, starting with tape drive zero. To open tape drive zero in an application that is written in C or C++, use the
+	/// following file name: "\\.\TAPE0".
+	/// </para>
+	/// <para>For more information, see <c>Backup</c>.</para>
+	/// <h3>Communications Resources</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to a communications resource, such as the serial port COM1. For communications
+	/// resources, the dwCreationDisposition parameter must be <b>OPEN_EXISTING</b>, the dwShareMode parameter must be zero (exclusive
+	/// access), and the hTemplateFile parameter must be <c>NULL</c>. Read, write, or read/write access can be specified, and the handle can
+	/// be opened for overlapped I/O.
+	/// </para>
+	/// <para>
+	/// To specify a COM port number greater than 9, use the following syntax: "\.\COM10". This syntax works for all port numbers and
+	/// hardware that allows COM port numbers to be specified.
+	/// </para>
+	/// <para>For more information about communications, see <c>Communications</c>.</para>
+	/// <h3>Consoles</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to console input (CONIN$). If the process has an open handle to it as a result of
+	/// inheritance or duplication, it can also create a handle to the active screen buffer (CONOUT$). The calling process must be attached
+	/// to an inherited console or one allocated by the <c>AllocConsole</c> function.
+	/// </para>
+	/// <para>For console handles, set the <b>CreateFile3</b> parameters as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameters</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><c>lpFileName</c></description>
+	/// <description>
+	/// Use the CONIN$ value to specify console input.Use the CONOUT$ value to specify console output.CONIN$ gets a handle to the console
+	/// input buffer, even if the <c>SetStdHandle</c> function redirects the standard input handle. To get the standard input handle, use the
+	/// <c>GetStdHandle</c> function.CONOUT$ gets a handle to the active screen buffer, even if <c>SetStdHandle</c> redirects the standard
+	/// output handle. To get the standard output handle, use <c>GetStdHandle</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwDesiredAccess</c></description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c> is preferred, but either one can limit access.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwShareMode</c></description>
+	/// <description>
+	/// When opening CONIN$, specify <b>FILE_SHARE_READ</b>. When opening CONOUT$, specify <b>FILE_SHARE_WRITE</b>.If the calling process
+	/// inherits the console, or if a child process should be able to access the console, this parameter must be <c>FILE_SHARE_READ | FILE_SHARE_WRITE</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwCreationDisposition</c></description>
+	/// <description>You should specify <b>OPEN_EXISTING</b> when using <b>CreateFile3</b> to open the console.</description>
+	/// </item>
+	/// </list>
+	/// <para>Set the members of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Members</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>lpSecurityAttributes</b></description>
+	/// <description>
+	/// If you want the console to be inherited, the <b>bInheritHandle</b> member of the <c>SECURITY_ATTRIBUTES</c> structure must be <see langword="true"/>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>dwFileAttributes</b><b>dwFileFlags</b><b>dwSecurityQosFlags</b><b>hTemplateFile</b></description>
+	/// <description>Ignored.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table shows various settings of dwDesiredAccess and lpFileName:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>lpFileName</c></term>
+	/// <term><c>dwDesiredAccess</c></term>
+	/// <term>Result</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_READ</b></description>
+	/// <description>Opens console for input.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_WRITE</b></description>
+	/// <description>Opens console for output.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c></description>
+	/// <description>Causes <b>CreateFile3</b> to fail; <c>GetLastError</c> returns <b>ERROR_FILE_NOT_FOUND</b>.</description>
+	/// </item>
+	/// </list>
+	/// <h3>Mailslots</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a mailslot, the function returns <b>INVALID_HANDLE_VALUE</b> if the mailslot client
+	/// attempts to open a local mailslot before the mailslot server has created it with the <c>CreateMailSlot</c> function.
+	/// </para>
+	/// <para>For more information, see <c>Mailslots</c>.</para>
+	/// <h3>Pipes</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a named pipe, the function uses any instance of the named pipe that is in the listening
+	/// state. The opening process can duplicate the handle as many times as required, but after it is opened, the named pipe instance cannot
+	/// be opened by another client. The access that is specified when a pipe is opened must be compatible with the access that is specified
+	/// in the dwOpenMode parameter of the <c>CreateNamedPipe</c> function.
+	/// </para>
+	/// <para>
+	/// If the <c>CreateNamedPipe</c> function was not successfully called on the server prior to this operation, a pipe will not exist and
+	/// <b>CreateFile3</b> will fail with <b>ERROR_FILE_NOT_FOUND</b>.
+	/// </para>
+	/// <para>
+	/// If there is at least one active pipe instance but there are no available listener pipes on the server, which means all pipe instances
+	/// are currently connected, <b>CreateFile3</b> fails with <b>ERROR_PIPE_BUSY</b>.
+	/// </para>
+	/// <para>For more information, see <c>Pipes</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile3
+	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		FileMode dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
+
+	/// <summary>
+	/// <para>
+	/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical
+	/// disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used
+	/// to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified.
+	/// </para>
+	/// <para>
+	/// When called from a sandboxed packaged app, <b>CreateFile3</b> is simplified. You can open only files or directories inside the
+	/// <c>ApplicationData.LocalFolder</c> or <c>Package.InstalledLocation</c> directories. You can't open named pipes or mailslots or create
+	/// encrypted files ( <b>FILE_ATTRIBUTE_ENCRYPTED</b>).
+	/// </para>
+	/// <note type="tip">We refer here to the app's local folder and the package's installed location, not additional packages in the package
+	/// graph, like resource packages. <b>CreateFile3</b> doesn't support opening files in additional packages in the package graph. To
+	/// perform this operation as a transacted operation, which results in a handle that can be used for transacted I/O, use the
+	/// <c>CreateFileTransacted</c> function.</note>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file or device to be created or opened.</para>
+	/// <para>For information on special device names, see <c>Defining an MS-DOS Device Name</c>.</para>
+	/// <para>
+	/// To create a file stream, specify the name of the file, a colon, and then the name of the stream. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <note type="tip">You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\?". See the "Maximum Path Length
+	/// Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</note>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	/// <para>The requested access to the file or device, which can be summarized as read, write, both or neither zero.</para>
+	/// <para>
+	/// The most commonly used values are <b>GENERIC_READ</b>, <b>GENERIC_WRITE</b>, or both ( <c>GENERIC_READ | GENERIC_WRITE</c>). For more
+	/// information, see <c>Generic Access Rights</c>, <c>File Security and Access Rights</c>, <c>File Access Rights Constants</c>, and <c>ACCESS_MASK</c>.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero, the application can query certain metadata such as file, directory, or device attributes without accessing
+	/// that file or device, even if <b>GENERIC_READ</b> access would have been denied.
+	/// </para>
+	/// <para>
+	/// You cannot request an access mode that conflicts with the sharing mode that is specified by the dwShareMode parameter in an open
+	/// request that already has an open handle.
+	/// </para>
+	/// <para>For more information, see the <c>Remarks</c> section of this topic and <c>Creating and Opening Files</c>.</para>
+	/// </param>
+	/// <param name="dwShareMode">
+	/// <para>
+	/// The requested sharing mode of the file or device, which can be read, write, both, delete, all of these, or none (refer to the
+	/// following table). Access requests to attributes or extended attributes are not affected by this flag.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero and <b>CreateFile3</b> succeeds, the file or device cannot be shared and cannot be opened again until the
+	/// handle to the file or device is closed. For more information, see the <c>Remarks</c> section.
+	/// </para>
+	/// <para>
+	/// You cannot request a sharing mode that conflicts with the access mode that is specified in an existing request that has an open
+	/// handle. <b>CreateFile3</b> would fail and the <c>GetLastError</c> function would return <b>ERROR_SHARING_VIOLATION</b>.
+	/// </para>
+	/// <para>
+	/// To enable a process to share a file or device while another process has the file or device open, use a compatible combination of one
+	/// or more of the following values. For more information about valid combinations of this parameter with the dwDesiredAccess parameter,
+	/// see <c>Creating and Opening Files</c>.
+	/// </para>
+	/// <note type="">The sharing options for each open handle remain in effect until that handle is closed, regardless of process context.</note>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>0</b><br/><c>0x00000000</c></description>
+	/// <description>
+	/// Prevents other processes from opening a file or device if they request delete, read, or write access. Exclusive access to a file or
+	/// directory is only granted if the application has write access to the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or
+	/// device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the
+	/// function fails. <b>Note:</b> Delete access allows both delete and rename operations.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_READ</b><br/><c>0x00000001</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or
+	/// device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the
+	/// function fails. If a file or directory is being opened and this flag is not specified, and the caller does not have write access to
+	/// the file or directory, the function fails.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or
+	/// device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a
+	/// file mapping with write access, the function fails.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwCreationDisposition">
+	/// <para>An action to take on a file or device that exists or does not exist.</para>
+	/// <para>For devices other than files, this parameter is usually set to <b>OPEN_EXISTING</b>.</para>
+	/// <para>For more information, see the <c>Remarks</c> section.</para>
+	/// <para>This parameter must be one of the following values, which cannot be combined:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>CREATE_ALWAYS</b><br/><c>2</c></description>
+	/// <description>
+	/// Always creates a new file. If the specified file exists and is writable, the function truncates the file, the function succeeds, and
+	/// last-error code is set to <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path, a new file is
+	/// created, the function succeeds, and the last-error code is set to zero. For more information, see the <c>Remarks</c> section of this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>CREATE_NEW</b><br/><c>1</c></description>
+	/// <description>
+	/// Creates a new file, only if it does not already exist. If the specified file exists, the function fails and the last-error code is
+	/// set to <b>ERROR_FILE_EXISTS</b> (80). If the specified file does not exist and is a valid path to a writable location, a new file is created.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_ALWAYS</b><br/><c>4</c></description>
+	/// <description>
+	/// Always opens a file. If the specified file exists, the function succeeds and the last-error code is set to
+	/// <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path to a writable location, the function
+	/// creates a file and the last-error code is set to zero.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_EXISTING</b><br/><c>3</c></description>
+	/// <description>
+	/// Opens a file or device, only if it exists. If the specified file or device does not exist, the function fails and the last-error code
+	/// is set to <b>ERROR_FILE_NOT_FOUND</b> (2). For more information about devices, see the <c>Remarks</c> section.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>TRUNCATE_EXISTING</b><br/><c>5</c></description>
+	/// <description>
+	/// Opens a file and truncates it so that its size is zero bytes, only if it exists. If the specified file does not exist, the function
+	/// fails and the last-error code is set to <b>ERROR_FILE_NOT_FOUND</b> (2). The calling process must open the file with the
+	/// <b>GENERIC_WRITE</b> bit set as part of the <c>dwDesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pCreateExParams">Pointer to an optional <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is an open handle to the specified file, device, named pipe, or mail slot.</para>
+	/// <para>
+	/// If the function fails, the return value is <b>INVALID_HANDLE_VALUE</b>. To get extended error information, call <c>GetLastError</c>.
+	/// Possible errors include the following:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>ERROR_PATH_REDIRECTED</b></description>
+	/// <description><c>lpFileName</c> was redirected by reparse points and/or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreateFile3</b> behaves exactly the same way as <c>CreateFile2</c> with one exception; operations will fail if lpFileName is
+	/// redirected via a reparse point or symbolic link. This behavior can be disabled with a new flag that can be added to the dwFileFlags.
+	/// </para>
+	/// <para>
+	/// To compile an application that uses the <b>CreateFile3</b> function, define the <b>_WIN32_WINNT</b> macro as <c>0x0602</c> or later.
+	/// For more information, see <c>Using the Windows Headers</c>.
+	/// </para>
+	/// <para>
+	/// <b>CreateFile3</b> supports file interaction and most other types of I/O devices and mechanisms available to Windows developers. This
+	/// section attempts to cover the varied issues developers may experience when using <b>CreateFile3</b> in different contexts and with
+	/// different I/O types. The text attempts to use the word file only when referring specifically to data stored in an actual file on a
+	/// file system. However, some uses of file may be referring more generally to an I/O object that supports file-like mechanisms. This
+	/// liberal use of the term file is particularly prevalent in constant names and parameter names because of the previously mentioned
+	/// historical reasons.
+	/// </para>
+	/// <para>
+	/// When an application is finished using the object handle returned by <b>CreateFile3</b>, use the <c>CloseHandle</c> function to close
+	/// the handle. This not only frees up system resources, but can have wider influence on things like sharing the file or device and
+	/// committing data to disk. Specifics are noted within this topic as appropriate.
+	/// </para>
+	/// <para>
+	/// Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes
+	/// that have a mounted file system with this support, a new file inherits the compression and encryption attributes of its directory.
+	/// </para>
+	/// <para>
+	/// You cannot use <b>CreateFile3</b> to control compression, decompression, or decryption on a file or directory. For more information,
+	/// see <c>Creating and Opening Files</c>, <c>File Compression and Decompression</c>, and <c>File Encryption</c>.
+	/// </para>
+	/// <para>
+	/// If the <b>lpSecurityAttributes</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams
+	/// parameter is <c>NULL</c>, the handle returned by <b>CreateFile3</b> cannot be inherited by any child processes your application may
+	/// create. The following information regarding this member also applies:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// If the <b>bInheritHandle</b> member variable is not <c>FALSE</c>, which is any nonzero value, then the handle can be inherited.
+	/// Therefore it is critical this structure member be properly initialized to <c>FALSE</c> if you do not intend the handle to be inheritable.
+	/// </item>
+	/// <item>The access control lists (ACL) in the default security descriptor for a file or directory are inherited from its parent directory.</item>
+	/// <item>
+	/// The target file system must support security on files and directories for the <b>lpSecurityDescriptor</b> member to have an effect on
+	/// them, which can be determined by using <c>GetVolumeInformation</c>.
+	/// </item>
+	/// </list>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <h3>Symbolic Link Behavior</h3>
+	/// <para>
+	/// If the call to this function creates a file, there is no change in behavior. Also, consider the following information regarding
+	/// <b>FILE_FLAG_OPEN_REPARSE_POINT</b> flag for the <b>dwFileFlags</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure
+	/// passed in the pCreateExParams parameter:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the symbolic link.</item>
+	/// <item>If TRUNCATE_EXISTING or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is a symbolic link.</item>
+	/// </list>
+	/// </item>
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is not specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the target.</item>
+	/// <item>If CREATE_ALWAYS, TRUNCATE_EXISTING, or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is the target.</item>
+	/// </list>
+	/// </item>
+	/// </list>
+	/// <h3>Files</h3>
+	/// <para>
+	/// If you rename or delete a file and then restore it shortly afterward, the system searches the cache for file information to restore.
+	/// Cached information includes its short/long name pair and creation time.
+	/// </para>
+	/// <para>
+	/// If you call <b>CreateFile3</b> on a file that is pending deletion as a result of a previous call to <c>DeleteFile</c> or
+	/// <c>DeleteFile2</c>, the function fails. The operating system delays file deletion until all handles to the file are closed.
+	/// <c>GetLastError</c> returns <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>
+	/// The dwDesiredAccess parameter can be zero, allowing the application to query file attributes without accessing the file if the
+	/// application is running with adequate security settings. This is useful to test for the existence of a file without opening it for
+	/// read and/or write access, or to obtain other statistics about the file or directory. See <c>Obtaining and Setting File
+	/// Information</c> and <c>GetFileInformationByHandle</c>.
+	/// </para>
+	/// <para>
+	/// When an application creates a file across a network, it is better to use <c>GENERIC_READ | GENERIC_WRITE</c> for dwDesiredAccess than
+	/// to use <b>GENERIC_WRITE</b> alone. The resulting code is faster, because the redirector can use the cache manager and send fewer SMBs
+	/// with more data. This combination also avoids an issue where writing to a file across a network can occasionally return <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>For more information, see <c>Creating and Opening Files</c>.</para>
+	/// <h3>File Streams</h3>
+	/// <para>
+	/// On NTFS file systems, you can use <b>CreateFile3</b> to create separate streams within a file. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <h3>Directories</h3>
+	/// <para>
+	/// An application cannot create a directory by using <b>CreateFile3</b>, therefore only the <b>OPEN_EXISTING</b> value is valid for
+	/// dwCreationDisposition for this use case. To create a directory, the application must call <c>CreateDirectory</c>,
+	/// <c>CreateDirectoryEx</c>, or <c>CreateDirectory2</c>.
+	/// </para>
+	/// <para>
+	/// To open a directory using <b>CreateFile3</b>, specify the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag as part of <b>dwFileFlags</b> member
+	/// of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter. Appropriate security checks still
+	/// apply when this flag is used without <b>SE_BACKUP_NAME</b> and <b>SE_RESTORE_NAME</b> privileges.
+	/// </para>
+	/// <para>
+	/// When using <b>CreateFile3</b> to open a directory during defragmentation of a FAT or FAT32 file system volume, do not specify the
+	/// <b>MAXIMUM_ALLOWED</b> access right. Access to the directory is denied if this is done. Specify the <b>GENERIC_READ</b> access right instead.
+	/// </para>
+	/// <para>For more information, see <c>About Directory Management</c>.</para>
+	/// <h3>Physical Disks and Volumes</h3>
+	/// <para>Direct access to the disk or to a volume is restricted.</para>
+	/// <para>
+	/// You can use the <b>CreateFile3</b> function to open a physical disk drive or a volume, which returns a direct access storage device
+	/// (DASD) handle that can be used with the <c>DeviceIoControl</c> function. This enables you to access the disk or volume directly, for
+	/// example such disk metadata as the partition table. However, this type of access also exposes the disk drive or volume to potential
+	/// data loss, because an incorrect write to a disk using this mechanism could make its contents inaccessible to the operating system. To
+	/// ensure data integrity, be sure to become familiar with <b>DeviceIoControl</b> and how other APIs behave differently with a direct
+	/// access handle as opposed to a file system handle.
+	/// </para>
+	/// <para>The following requirements must be met for such a call to succeed:</para>
+	/// <list type="bullet">
+	/// <item>The caller must have administrative privileges. For more information, see <c>Running with Special Privileges</c>.</item>
+	/// <item>The dwCreationDisposition parameter must have the <b>OPEN_EXISTING</b> flag.</item>
+	/// <item>When opening a volume or floppy disk, the dwShareMode parameter must have the <b>FILE_SHARE_WRITE</b> flag.</item>
+	/// </list>
+	/// <note>The dwDesiredAccess parameter can be zero, allowing the application to query device attributes without accessing a device. This
+	/// is useful for an application to determine the size of a floppy disk drive and the formats it supports without requiring a floppy disk
+	/// in a drive, for instance. It can also be used for reading statistics without requiring higher-level data read/write permission.</note>
+	/// <para>When opening a physical drive x:, the lpFileName string should be the following form: "\.\PhysicalDrive <i>X</i>".</para>
+	/// <para>Hard disk numbers start at zero. The following table shows some examples of physical drive strings.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\PhysicalDrive0"</description>
+	/// <description>Opens the first physical drive.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\PhysicalDrive2"</description>
+	/// <description>Opens the third physical drive.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// To obtain the physical drive identifier for a volume, open a handle to the volume and call the <c>DeviceIoControl</c> function with
+	/// <c>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</c>. This control code returns the disk number and offset for each of the volume's one or
+	/// more extents; a volume can span multiple physical disks.
+	/// </para>
+	/// <para>For an example of opening a physical drive, see <c>Calling DeviceIoControl</c>.</para>
+	/// <para>
+	/// When opening a volume or removable media drive (for example, a floppy disk drive or flash memory thumb drive), the lpFileName string
+	/// should be the following form: "\\.\ <i>X</i>:". Do not use a trailing backslash (\), which indicates the root directory of a drive.
+	/// </para>
+	/// <para>The following table shows some examples of drive strings:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\A:"</description>
+	/// <description>Opens floppy disk drive A.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the C: volume.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the file system of the C: volume.</description>
+	/// </item>
+	/// </list>
+	/// <para>You can also open a volume by referring to its volume name. For more information, see <c>Naming a Volume</c>.</para>
+	/// <para>
+	/// A volume contains one or more mounted file systems. Volume handles can be opened as noncached at the discretion of the particular
+	/// file system, even when the noncached option is not specified in <b>CreateFile3</b>. You should assume that all Microsoft file systems
+	/// open volume handles as noncached. The restrictions on noncached I/O for files also apply to volumes.
+	/// </para>
+	/// <para>
+	/// A file system may or may not require buffer alignment even though the data is noncached. However, if the noncached option is
+	/// specified when opening a volume, buffer alignment is enforced regardless of the file system on the volume. It is recommended on all
+	/// file systems that you open volume handles as noncached, and follow the noncached I/O restrictions.
+	/// </para>
+	/// <note>To read or write to the last few sectors of the volume, you must call <c>DeviceIoControl</c> and specify
+	/// <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c>. This signals the file system driver not to perform any I/O boundary checks on partition read or
+	/// write calls. Instead, boundary checks are performed by the device driver.</note><h3>Changer Device</h3>
+	/// <para>
+	/// The <b>IOCTL_CHANGER_*</b> control codes for <c>DeviceIoControl</c> accept a handle to a changer device. To open a changer device,
+	/// use a file name of the following form: "\.\Changer <i>x</i>" where x is a number that indicates which device to open, starting with
+	/// zero. To open changer device zero in an application that is written in C or C++, use the following file name: "\\.\Changer0".
+	/// </para>
+	/// <h3>Tape Drives</h3>
+	/// <para>
+	/// You can open tape drives by using a file name of the following form: "\.\TAPE <i>x</i>" where x is a number that indicates which
+	/// drive to open, starting with tape drive zero. To open tape drive zero in an application that is written in C or C++, use the
+	/// following file name: "\\.\TAPE0".
+	/// </para>
+	/// <para>For more information, see <c>Backup</c>.</para>
+	/// <h3>Communications Resources</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to a communications resource, such as the serial port COM1. For communications
+	/// resources, the dwCreationDisposition parameter must be <b>OPEN_EXISTING</b>, the dwShareMode parameter must be zero (exclusive
+	/// access), and the hTemplateFile parameter must be <c>NULL</c>. Read, write, or read/write access can be specified, and the handle can
+	/// be opened for overlapped I/O.
+	/// </para>
+	/// <para>
+	/// To specify a COM port number greater than 9, use the following syntax: "\.\COM10". This syntax works for all port numbers and
+	/// hardware that allows COM port numbers to be specified.
+	/// </para>
+	/// <para>For more information about communications, see <c>Communications</c>.</para>
+	/// <h3>Consoles</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to console input (CONIN$). If the process has an open handle to it as a result of
+	/// inheritance or duplication, it can also create a handle to the active screen buffer (CONOUT$). The calling process must be attached
+	/// to an inherited console or one allocated by the <c>AllocConsole</c> function.
+	/// </para>
+	/// <para>For console handles, set the <b>CreateFile3</b> parameters as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameters</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><c>lpFileName</c></description>
+	/// <description>
+	/// Use the CONIN$ value to specify console input.Use the CONOUT$ value to specify console output.CONIN$ gets a handle to the console
+	/// input buffer, even if the <c>SetStdHandle</c> function redirects the standard input handle. To get the standard input handle, use the
+	/// <c>GetStdHandle</c> function.CONOUT$ gets a handle to the active screen buffer, even if <c>SetStdHandle</c> redirects the standard
+	/// output handle. To get the standard output handle, use <c>GetStdHandle</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwDesiredAccess</c></description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c> is preferred, but either one can limit access.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwShareMode</c></description>
+	/// <description>
+	/// When opening CONIN$, specify <b>FILE_SHARE_READ</b>. When opening CONOUT$, specify <b>FILE_SHARE_WRITE</b>.If the calling process
+	/// inherits the console, or if a child process should be able to access the console, this parameter must be <c>FILE_SHARE_READ | FILE_SHARE_WRITE</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwCreationDisposition</c></description>
+	/// <description>You should specify <b>OPEN_EXISTING</b> when using <b>CreateFile3</b> to open the console.</description>
+	/// </item>
+	/// </list>
+	/// <para>Set the members of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Members</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>lpSecurityAttributes</b></description>
+	/// <description>
+	/// If you want the console to be inherited, the <b>bInheritHandle</b> member of the <c>SECURITY_ATTRIBUTES</c> structure must be <see langword="true"/>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>dwFileAttributes</b><b>dwFileFlags</b><b>dwSecurityQosFlags</b><b>hTemplateFile</b></description>
+	/// <description>Ignored.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table shows various settings of dwDesiredAccess and lpFileName:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>lpFileName</c></term>
+	/// <term><c>dwDesiredAccess</c></term>
+	/// <term>Result</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_READ</b></description>
+	/// <description>Opens console for input.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_WRITE</b></description>
+	/// <description>Opens console for output.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c></description>
+	/// <description>Causes <b>CreateFile3</b> to fail; <c>GetLastError</c> returns <b>ERROR_FILE_NOT_FOUND</b>.</description>
+	/// </item>
+	/// </list>
+	/// <h3>Mailslots</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a mailslot, the function returns <b>INVALID_HANDLE_VALUE</b> if the mailslot client
+	/// attempts to open a local mailslot before the mailslot server has created it with the <c>CreateMailSlot</c> function.
+	/// </para>
+	/// <para>For more information, see <c>Mailslots</c>.</para>
+	/// <h3>Pipes</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a named pipe, the function uses any instance of the named pipe that is in the listening
+	/// state. The opening process can duplicate the handle as many times as required, but after it is opened, the named pipe instance cannot
+	/// be opened by another client. The access that is specified when a pipe is opened must be compatible with the access that is specified
+	/// in the dwOpenMode parameter of the <c>CreateNamedPipe</c> function.
+	/// </para>
+	/// <para>
+	/// If the <c>CreateNamedPipe</c> function was not successfully called on the server prior to this operation, a pipe will not exist and
+	/// <b>CreateFile3</b> will fail with <b>ERROR_FILE_NOT_FOUND</b>.
+	/// </para>
+	/// <para>
+	/// If there is at least one active pipe instance but there are no available listener pipes on the server, which means all pipe instances
+	/// are currently connected, <b>CreateFile3</b> fails with <b>ERROR_PIPE_BUSY</b>.
+	/// </para>
+	/// <para>For more information, see <c>Pipes</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile3
+	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
+		CreationOption dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
+
+	/// <summary>
+	/// <para>
+	/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical
+	/// disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used
+	/// to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified.
+	/// </para>
+	/// <para>
+	/// When called from a sandboxed packaged app, <b>CreateFile3</b> is simplified. You can open only files or directories inside the
+	/// <c>ApplicationData.LocalFolder</c> or <c>Package.InstalledLocation</c> directories. You can't open named pipes or mailslots or create
+	/// encrypted files ( <b>FILE_ATTRIBUTE_ENCRYPTED</b>).
+	/// </para>
+	/// <note type="tip">We refer here to the app's local folder and the package's installed location, not additional packages in the package
+	/// graph, like resource packages. <b>CreateFile3</b> doesn't support opening files in additional packages in the package graph. To
+	/// perform this operation as a transacted operation, which results in a handle that can be used for transacted I/O, use the
+	/// <c>CreateFileTransacted</c> function.</note>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file or device to be created or opened.</para>
+	/// <para>For information on special device names, see <c>Defining an MS-DOS Device Name</c>.</para>
+	/// <para>
+	/// To create a file stream, specify the name of the file, a colon, and then the name of the stream. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <note type="tip">You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\?". See the "Maximum Path Length
+	/// Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</note>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	/// <para>The requested access to the file or device, which can be summarized as read, write, both or neither zero.</para>
+	/// <para>
+	/// The most commonly used values are <b>GENERIC_READ</b>, <b>GENERIC_WRITE</b>, or both ( <c>GENERIC_READ | GENERIC_WRITE</c>). For more
+	/// information, see <c>Generic Access Rights</c>, <c>File Security and Access Rights</c>, <c>File Access Rights Constants</c>, and <c>ACCESS_MASK</c>.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero, the application can query certain metadata such as file, directory, or device attributes without accessing
+	/// that file or device, even if <b>GENERIC_READ</b> access would have been denied.
+	/// </para>
+	/// <para>
+	/// You cannot request an access mode that conflicts with the sharing mode that is specified by the dwShareMode parameter in an open
+	/// request that already has an open handle.
+	/// </para>
+	/// <para>For more information, see the <c>Remarks</c> section of this topic and <c>Creating and Opening Files</c>.</para>
+	/// </param>
+	/// <param name="dwShareMode">
+	/// <para>
+	/// The requested sharing mode of the file or device, which can be read, write, both, delete, all of these, or none (refer to the
+	/// following table). Access requests to attributes or extended attributes are not affected by this flag.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero and <b>CreateFile3</b> succeeds, the file or device cannot be shared and cannot be opened again until the
+	/// handle to the file or device is closed. For more information, see the <c>Remarks</c> section.
+	/// </para>
+	/// <para>
+	/// You cannot request a sharing mode that conflicts with the access mode that is specified in an existing request that has an open
+	/// handle. <b>CreateFile3</b> would fail and the <c>GetLastError</c> function would return <b>ERROR_SHARING_VIOLATION</b>.
+	/// </para>
+	/// <para>
+	/// To enable a process to share a file or device while another process has the file or device open, use a compatible combination of one
+	/// or more of the following values. For more information about valid combinations of this parameter with the dwDesiredAccess parameter,
+	/// see <c>Creating and Opening Files</c>.
+	/// </para>
+	/// <note type="">The sharing options for each open handle remain in effect until that handle is closed, regardless of process context.</note>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>0</b><br/><c>0x00000000</c></description>
+	/// <description>
+	/// Prevents other processes from opening a file or device if they request delete, read, or write access. Exclusive access to a file or
+	/// directory is only granted if the application has write access to the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or
+	/// device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the
+	/// function fails. <b>Note:</b> Delete access allows both delete and rename operations.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_READ</b><br/><c>0x00000001</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or
+	/// device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the
+	/// function fails. If a file or directory is being opened and this flag is not specified, and the caller does not have write access to
+	/// the file or directory, the function fails.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or
+	/// device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a
+	/// file mapping with write access, the function fails.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwCreationDisposition">
+	/// <para>An action to take on a file or device that exists or does not exist.</para>
+	/// <para>For devices other than files, this parameter is usually set to <b>OPEN_EXISTING</b>.</para>
+	/// <para>For more information, see the <c>Remarks</c> section.</para>
+	/// <para>This parameter must be one of the following values, which cannot be combined:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>CREATE_ALWAYS</b><br/><c>2</c></description>
+	/// <description>
+	/// Always creates a new file. If the specified file exists and is writable, the function truncates the file, the function succeeds, and
+	/// last-error code is set to <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path, a new file is
+	/// created, the function succeeds, and the last-error code is set to zero. For more information, see the <c>Remarks</c> section of this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>CREATE_NEW</b><br/><c>1</c></description>
+	/// <description>
+	/// Creates a new file, only if it does not already exist. If the specified file exists, the function fails and the last-error code is
+	/// set to <b>ERROR_FILE_EXISTS</b> (80). If the specified file does not exist and is a valid path to a writable location, a new file is created.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_ALWAYS</b><br/><c>4</c></description>
+	/// <description>
+	/// Always opens a file. If the specified file exists, the function succeeds and the last-error code is set to
+	/// <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path to a writable location, the function
+	/// creates a file and the last-error code is set to zero.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_EXISTING</b><br/><c>3</c></description>
+	/// <description>
+	/// Opens a file or device, only if it exists. If the specified file or device does not exist, the function fails and the last-error code
+	/// is set to <b>ERROR_FILE_NOT_FOUND</b> (2). For more information about devices, see the <c>Remarks</c> section.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>TRUNCATE_EXISTING</b><br/><c>5</c></description>
+	/// <description>
+	/// Opens a file and truncates it so that its size is zero bytes, only if it exists. If the specified file does not exist, the function
+	/// fails and the last-error code is set to <b>ERROR_FILE_NOT_FOUND</b> (2). The calling process must open the file with the
+	/// <b>GENERIC_WRITE</b> bit set as part of the <c>dwDesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pCreateExParams">Pointer to an optional <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is an open handle to the specified file, device, named pipe, or mail slot.</para>
+	/// <para>
+	/// If the function fails, the return value is <b>INVALID_HANDLE_VALUE</b>. To get extended error information, call <c>GetLastError</c>.
+	/// Possible errors include the following:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>ERROR_PATH_REDIRECTED</b></description>
+	/// <description><c>lpFileName</c> was redirected by reparse points and/or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreateFile3</b> behaves exactly the same way as <c>CreateFile2</c> with one exception; operations will fail if lpFileName is
+	/// redirected via a reparse point or symbolic link. This behavior can be disabled with a new flag that can be added to the dwFileFlags.
+	/// </para>
+	/// <para>
+	/// To compile an application that uses the <b>CreateFile3</b> function, define the <b>_WIN32_WINNT</b> macro as <c>0x0602</c> or later.
+	/// For more information, see <c>Using the Windows Headers</c>.
+	/// </para>
+	/// <para>
+	/// <b>CreateFile3</b> supports file interaction and most other types of I/O devices and mechanisms available to Windows developers. This
+	/// section attempts to cover the varied issues developers may experience when using <b>CreateFile3</b> in different contexts and with
+	/// different I/O types. The text attempts to use the word file only when referring specifically to data stored in an actual file on a
+	/// file system. However, some uses of file may be referring more generally to an I/O object that supports file-like mechanisms. This
+	/// liberal use of the term file is particularly prevalent in constant names and parameter names because of the previously mentioned
+	/// historical reasons.
+	/// </para>
+	/// <para>
+	/// When an application is finished using the object handle returned by <b>CreateFile3</b>, use the <c>CloseHandle</c> function to close
+	/// the handle. This not only frees up system resources, but can have wider influence on things like sharing the file or device and
+	/// committing data to disk. Specifics are noted within this topic as appropriate.
+	/// </para>
+	/// <para>
+	/// Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes
+	/// that have a mounted file system with this support, a new file inherits the compression and encryption attributes of its directory.
+	/// </para>
+	/// <para>
+	/// You cannot use <b>CreateFile3</b> to control compression, decompression, or decryption on a file or directory. For more information,
+	/// see <c>Creating and Opening Files</c>, <c>File Compression and Decompression</c>, and <c>File Encryption</c>.
+	/// </para>
+	/// <para>
+	/// If the <b>lpSecurityAttributes</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams
+	/// parameter is <c>NULL</c>, the handle returned by <b>CreateFile3</b> cannot be inherited by any child processes your application may
+	/// create. The following information regarding this member also applies:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// If the <b>bInheritHandle</b> member variable is not <c>FALSE</c>, which is any nonzero value, then the handle can be inherited.
+	/// Therefore it is critical this structure member be properly initialized to <c>FALSE</c> if you do not intend the handle to be inheritable.
+	/// </item>
+	/// <item>The access control lists (ACL) in the default security descriptor for a file or directory are inherited from its parent directory.</item>
+	/// <item>
+	/// The target file system must support security on files and directories for the <b>lpSecurityDescriptor</b> member to have an effect on
+	/// them, which can be determined by using <c>GetVolumeInformation</c>.
+	/// </item>
+	/// </list>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <h3>Symbolic Link Behavior</h3>
+	/// <para>
+	/// If the call to this function creates a file, there is no change in behavior. Also, consider the following information regarding
+	/// <b>FILE_FLAG_OPEN_REPARSE_POINT</b> flag for the <b>dwFileFlags</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure
+	/// passed in the pCreateExParams parameter:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the symbolic link.</item>
+	/// <item>If TRUNCATE_EXISTING or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is a symbolic link.</item>
+	/// </list>
+	/// </item>
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is not specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the target.</item>
+	/// <item>If CREATE_ALWAYS, TRUNCATE_EXISTING, or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is the target.</item>
+	/// </list>
+	/// </item>
+	/// </list>
+	/// <h3>Files</h3>
+	/// <para>
+	/// If you rename or delete a file and then restore it shortly afterward, the system searches the cache for file information to restore.
+	/// Cached information includes its short/long name pair and creation time.
+	/// </para>
+	/// <para>
+	/// If you call <b>CreateFile3</b> on a file that is pending deletion as a result of a previous call to <c>DeleteFile</c> or
+	/// <c>DeleteFile2</c>, the function fails. The operating system delays file deletion until all handles to the file are closed.
+	/// <c>GetLastError</c> returns <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>
+	/// The dwDesiredAccess parameter can be zero, allowing the application to query file attributes without accessing the file if the
+	/// application is running with adequate security settings. This is useful to test for the existence of a file without opening it for
+	/// read and/or write access, or to obtain other statistics about the file or directory. See <c>Obtaining and Setting File
+	/// Information</c> and <c>GetFileInformationByHandle</c>.
+	/// </para>
+	/// <para>
+	/// When an application creates a file across a network, it is better to use <c>GENERIC_READ | GENERIC_WRITE</c> for dwDesiredAccess than
+	/// to use <b>GENERIC_WRITE</b> alone. The resulting code is faster, because the redirector can use the cache manager and send fewer SMBs
+	/// with more data. This combination also avoids an issue where writing to a file across a network can occasionally return <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>For more information, see <c>Creating and Opening Files</c>.</para>
+	/// <h3>File Streams</h3>
+	/// <para>
+	/// On NTFS file systems, you can use <b>CreateFile3</b> to create separate streams within a file. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <h3>Directories</h3>
+	/// <para>
+	/// An application cannot create a directory by using <b>CreateFile3</b>, therefore only the <b>OPEN_EXISTING</b> value is valid for
+	/// dwCreationDisposition for this use case. To create a directory, the application must call <c>CreateDirectory</c>,
+	/// <c>CreateDirectoryEx</c>, or <c>CreateDirectory2</c>.
+	/// </para>
+	/// <para>
+	/// To open a directory using <b>CreateFile3</b>, specify the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag as part of <b>dwFileFlags</b> member
+	/// of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter. Appropriate security checks still
+	/// apply when this flag is used without <b>SE_BACKUP_NAME</b> and <b>SE_RESTORE_NAME</b> privileges.
+	/// </para>
+	/// <para>
+	/// When using <b>CreateFile3</b> to open a directory during defragmentation of a FAT or FAT32 file system volume, do not specify the
+	/// <b>MAXIMUM_ALLOWED</b> access right. Access to the directory is denied if this is done. Specify the <b>GENERIC_READ</b> access right instead.
+	/// </para>
+	/// <para>For more information, see <c>About Directory Management</c>.</para>
+	/// <h3>Physical Disks and Volumes</h3>
+	/// <para>Direct access to the disk or to a volume is restricted.</para>
+	/// <para>
+	/// You can use the <b>CreateFile3</b> function to open a physical disk drive or a volume, which returns a direct access storage device
+	/// (DASD) handle that can be used with the <c>DeviceIoControl</c> function. This enables you to access the disk or volume directly, for
+	/// example such disk metadata as the partition table. However, this type of access also exposes the disk drive or volume to potential
+	/// data loss, because an incorrect write to a disk using this mechanism could make its contents inaccessible to the operating system. To
+	/// ensure data integrity, be sure to become familiar with <b>DeviceIoControl</b> and how other APIs behave differently with a direct
+	/// access handle as opposed to a file system handle.
+	/// </para>
+	/// <para>The following requirements must be met for such a call to succeed:</para>
+	/// <list type="bullet">
+	/// <item>The caller must have administrative privileges. For more information, see <c>Running with Special Privileges</c>.</item>
+	/// <item>The dwCreationDisposition parameter must have the <b>OPEN_EXISTING</b> flag.</item>
+	/// <item>When opening a volume or floppy disk, the dwShareMode parameter must have the <b>FILE_SHARE_WRITE</b> flag.</item>
+	/// </list>
+	/// <note>The dwDesiredAccess parameter can be zero, allowing the application to query device attributes without accessing a device. This
+	/// is useful for an application to determine the size of a floppy disk drive and the formats it supports without requiring a floppy disk
+	/// in a drive, for instance. It can also be used for reading statistics without requiring higher-level data read/write permission.</note>
+	/// <para>When opening a physical drive x:, the lpFileName string should be the following form: "\.\PhysicalDrive <i>X</i>".</para>
+	/// <para>Hard disk numbers start at zero. The following table shows some examples of physical drive strings.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\PhysicalDrive0"</description>
+	/// <description>Opens the first physical drive.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\PhysicalDrive2"</description>
+	/// <description>Opens the third physical drive.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// To obtain the physical drive identifier for a volume, open a handle to the volume and call the <c>DeviceIoControl</c> function with
+	/// <c>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</c>. This control code returns the disk number and offset for each of the volume's one or
+	/// more extents; a volume can span multiple physical disks.
+	/// </para>
+	/// <para>For an example of opening a physical drive, see <c>Calling DeviceIoControl</c>.</para>
+	/// <para>
+	/// When opening a volume or removable media drive (for example, a floppy disk drive or flash memory thumb drive), the lpFileName string
+	/// should be the following form: "\\.\ <i>X</i>:". Do not use a trailing backslash (\), which indicates the root directory of a drive.
+	/// </para>
+	/// <para>The following table shows some examples of drive strings:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\A:"</description>
+	/// <description>Opens floppy disk drive A.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the C: volume.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the file system of the C: volume.</description>
+	/// </item>
+	/// </list>
+	/// <para>You can also open a volume by referring to its volume name. For more information, see <c>Naming a Volume</c>.</para>
+	/// <para>
+	/// A volume contains one or more mounted file systems. Volume handles can be opened as noncached at the discretion of the particular
+	/// file system, even when the noncached option is not specified in <b>CreateFile3</b>. You should assume that all Microsoft file systems
+	/// open volume handles as noncached. The restrictions on noncached I/O for files also apply to volumes.
+	/// </para>
+	/// <para>
+	/// A file system may or may not require buffer alignment even though the data is noncached. However, if the noncached option is
+	/// specified when opening a volume, buffer alignment is enforced regardless of the file system on the volume. It is recommended on all
+	/// file systems that you open volume handles as noncached, and follow the noncached I/O restrictions.
+	/// </para>
+	/// <note>To read or write to the last few sectors of the volume, you must call <c>DeviceIoControl</c> and specify
+	/// <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c>. This signals the file system driver not to perform any I/O boundary checks on partition read or
+	/// write calls. Instead, boundary checks are performed by the device driver.</note><h3>Changer Device</h3>
+	/// <para>
+	/// The <b>IOCTL_CHANGER_*</b> control codes for <c>DeviceIoControl</c> accept a handle to a changer device. To open a changer device,
+	/// use a file name of the following form: "\.\Changer <i>x</i>" where x is a number that indicates which device to open, starting with
+	/// zero. To open changer device zero in an application that is written in C or C++, use the following file name: "\\.\Changer0".
+	/// </para>
+	/// <h3>Tape Drives</h3>
+	/// <para>
+	/// You can open tape drives by using a file name of the following form: "\.\TAPE <i>x</i>" where x is a number that indicates which
+	/// drive to open, starting with tape drive zero. To open tape drive zero in an application that is written in C or C++, use the
+	/// following file name: "\\.\TAPE0".
+	/// </para>
+	/// <para>For more information, see <c>Backup</c>.</para>
+	/// <h3>Communications Resources</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to a communications resource, such as the serial port COM1. For communications
+	/// resources, the dwCreationDisposition parameter must be <b>OPEN_EXISTING</b>, the dwShareMode parameter must be zero (exclusive
+	/// access), and the hTemplateFile parameter must be <c>NULL</c>. Read, write, or read/write access can be specified, and the handle can
+	/// be opened for overlapped I/O.
+	/// </para>
+	/// <para>
+	/// To specify a COM port number greater than 9, use the following syntax: "\.\COM10". This syntax works for all port numbers and
+	/// hardware that allows COM port numbers to be specified.
+	/// </para>
+	/// <para>For more information about communications, see <c>Communications</c>.</para>
+	/// <h3>Consoles</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to console input (CONIN$). If the process has an open handle to it as a result of
+	/// inheritance or duplication, it can also create a handle to the active screen buffer (CONOUT$). The calling process must be attached
+	/// to an inherited console or one allocated by the <c>AllocConsole</c> function.
+	/// </para>
+	/// <para>For console handles, set the <b>CreateFile3</b> parameters as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameters</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><c>lpFileName</c></description>
+	/// <description>
+	/// Use the CONIN$ value to specify console input.Use the CONOUT$ value to specify console output.CONIN$ gets a handle to the console
+	/// input buffer, even if the <c>SetStdHandle</c> function redirects the standard input handle. To get the standard input handle, use the
+	/// <c>GetStdHandle</c> function.CONOUT$ gets a handle to the active screen buffer, even if <c>SetStdHandle</c> redirects the standard
+	/// output handle. To get the standard output handle, use <c>GetStdHandle</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwDesiredAccess</c></description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c> is preferred, but either one can limit access.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwShareMode</c></description>
+	/// <description>
+	/// When opening CONIN$, specify <b>FILE_SHARE_READ</b>. When opening CONOUT$, specify <b>FILE_SHARE_WRITE</b>.If the calling process
+	/// inherits the console, or if a child process should be able to access the console, this parameter must be <c>FILE_SHARE_READ | FILE_SHARE_WRITE</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwCreationDisposition</c></description>
+	/// <description>You should specify <b>OPEN_EXISTING</b> when using <b>CreateFile3</b> to open the console.</description>
+	/// </item>
+	/// </list>
+	/// <para>Set the members of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Members</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>lpSecurityAttributes</b></description>
+	/// <description>
+	/// If you want the console to be inherited, the <b>bInheritHandle</b> member of the <c>SECURITY_ATTRIBUTES</c> structure must be <see langword="true"/>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>dwFileAttributes</b><b>dwFileFlags</b><b>dwSecurityQosFlags</b><b>hTemplateFile</b></description>
+	/// <description>Ignored.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table shows various settings of dwDesiredAccess and lpFileName:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>lpFileName</c></term>
+	/// <term><c>dwDesiredAccess</c></term>
+	/// <term>Result</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_READ</b></description>
+	/// <description>Opens console for input.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_WRITE</b></description>
+	/// <description>Opens console for output.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c></description>
+	/// <description>Causes <b>CreateFile3</b> to fail; <c>GetLastError</c> returns <b>ERROR_FILE_NOT_FOUND</b>.</description>
+	/// </item>
+	/// </list>
+	/// <h3>Mailslots</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a mailslot, the function returns <b>INVALID_HANDLE_VALUE</b> if the mailslot client
+	/// attempts to open a local mailslot before the mailslot server has created it with the <c>CreateMailSlot</c> function.
+	/// </para>
+	/// <para>For more information, see <c>Mailslots</c>.</para>
+	/// <h3>Pipes</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a named pipe, the function uses any instance of the named pipe that is in the listening
+	/// state. The opening process can duplicate the handle as many times as required, but after it is opened, the named pipe instance cannot
+	/// be opened by another client. The access that is specified when a pipe is opened must be compatible with the access that is specified
+	/// in the dwOpenMode parameter of the <c>CreateNamedPipe</c> function.
+	/// </para>
+	/// <para>
+	/// If the <c>CreateNamedPipe</c> function was not successfully called on the server prior to this operation, a pipe will not exist and
+	/// <b>CreateFile3</b> will fail with <b>ERROR_FILE_NOT_FOUND</b>.
+	/// </para>
+	/// <para>
+	/// If there is at least one active pipe instance but there are no available listener pipes on the server, which means all pipe instances
+	/// are currently connected, <b>CreateFile3</b> fails with <b>ERROR_PIPE_BUSY</b>.
+	/// </para>
+	/// <para>For more information, see <c>Pipes</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile3
+	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		FileMode dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
+
+	/// <summary>
+	/// <para>
+	/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical
+	/// disk, volume, console buffer, tape drive, communications resource, mailslot, and pipe. The function returns a handle that can be used
+	/// to access the file or device for various types of I/O depending on the file or device and the flags and attributes specified.
+	/// </para>
+	/// <para>
+	/// When called from a sandboxed packaged app, <b>CreateFile3</b> is simplified. You can open only files or directories inside the
+	/// <c>ApplicationData.LocalFolder</c> or <c>Package.InstalledLocation</c> directories. You can't open named pipes or mailslots or create
+	/// encrypted files ( <b>FILE_ATTRIBUTE_ENCRYPTED</b>).
+	/// </para>
+	/// <note type="tip">We refer here to the app's local folder and the package's installed location, not additional packages in the package
+	/// graph, like resource packages. <b>CreateFile3</b> doesn't support opening files in additional packages in the package graph. To
+	/// perform this operation as a transacted operation, which results in a handle that can be used for transacted I/O, use the
+	/// <c>CreateFileTransacted</c> function.</note>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file or device to be created or opened.</para>
+	/// <para>For information on special device names, see <c>Defining an MS-DOS Device Name</c>.</para>
+	/// <para>
+	/// To create a file stream, specify the name of the file, a colon, and then the name of the stream. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <note type="tip">You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\?". See the "Maximum Path Length
+	/// Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</note>
+	/// </param>
+	/// <param name="dwDesiredAccess">
+	/// <para>The requested access to the file or device, which can be summarized as read, write, both or neither zero.</para>
+	/// <para>
+	/// The most commonly used values are <b>GENERIC_READ</b>, <b>GENERIC_WRITE</b>, or both ( <c>GENERIC_READ | GENERIC_WRITE</c>). For more
+	/// information, see <c>Generic Access Rights</c>, <c>File Security and Access Rights</c>, <c>File Access Rights Constants</c>, and <c>ACCESS_MASK</c>.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero, the application can query certain metadata such as file, directory, or device attributes without accessing
+	/// that file or device, even if <b>GENERIC_READ</b> access would have been denied.
+	/// </para>
+	/// <para>
+	/// You cannot request an access mode that conflicts with the sharing mode that is specified by the dwShareMode parameter in an open
+	/// request that already has an open handle.
+	/// </para>
+	/// <para>For more information, see the <c>Remarks</c> section of this topic and <c>Creating and Opening Files</c>.</para>
+	/// </param>
+	/// <param name="dwShareMode">
+	/// <para>
+	/// The requested sharing mode of the file or device, which can be read, write, both, delete, all of these, or none (refer to the
+	/// following table). Access requests to attributes or extended attributes are not affected by this flag.
+	/// </para>
+	/// <para>
+	/// If this parameter is zero and <b>CreateFile3</b> succeeds, the file or device cannot be shared and cannot be opened again until the
+	/// handle to the file or device is closed. For more information, see the <c>Remarks</c> section.
+	/// </para>
+	/// <para>
+	/// You cannot request a sharing mode that conflicts with the access mode that is specified in an existing request that has an open
+	/// handle. <b>CreateFile3</b> would fail and the <c>GetLastError</c> function would return <b>ERROR_SHARING_VIOLATION</b>.
+	/// </para>
+	/// <para>
+	/// To enable a process to share a file or device while another process has the file or device open, use a compatible combination of one
+	/// or more of the following values. For more information about valid combinations of this parameter with the dwDesiredAccess parameter,
+	/// see <c>Creating and Opening Files</c>.
+	/// </para>
+	/// <note type="">The sharing options for each open handle remain in effect until that handle is closed, regardless of process context.</note>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>0</b><br/><c>0x00000000</c></description>
+	/// <description>
+	/// Prevents other processes from opening a file or device if they request delete, read, or write access. Exclusive access to a file or
+	/// directory is only granted if the application has write access to the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or
+	/// device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the
+	/// function fails. <b>Note:</b> Delete access allows both delete and rename operations.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_READ</b><br/><c>0x00000001</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or
+	/// device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the
+	/// function fails. If a file or directory is being opened and this flag is not specified, and the caller does not have write access to
+	/// the file or directory, the function fails.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c></description>
+	/// <description>
+	/// Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or
+	/// device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a
+	/// file mapping with write access, the function fails.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwCreationDisposition">
+	/// <para>An action to take on a file or device that exists or does not exist.</para>
+	/// <para>For devices other than files, this parameter is usually set to <b>OPEN_EXISTING</b>.</para>
+	/// <para>For more information, see the <c>Remarks</c> section.</para>
+	/// <para>This parameter must be one of the following values, which cannot be combined:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>CREATE_ALWAYS</b><br/><c>2</c></description>
+	/// <description>
+	/// Always creates a new file. If the specified file exists and is writable, the function truncates the file, the function succeeds, and
+	/// last-error code is set to <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path, a new file is
+	/// created, the function succeeds, and the last-error code is set to zero. For more information, see the <c>Remarks</c> section of this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>CREATE_NEW</b><br/><c>1</c></description>
+	/// <description>
+	/// Creates a new file, only if it does not already exist. If the specified file exists, the function fails and the last-error code is
+	/// set to <b>ERROR_FILE_EXISTS</b> (80). If the specified file does not exist and is a valid path to a writable location, a new file is created.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_ALWAYS</b><br/><c>4</c></description>
+	/// <description>
+	/// Always opens a file. If the specified file exists, the function succeeds and the last-error code is set to
+	/// <b>ERROR_ALREADY_EXISTS</b> (183). If the specified file does not exist and is a valid path to a writable location, the function
+	/// creates a file and the last-error code is set to zero.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>OPEN_EXISTING</b><br/><c>3</c></description>
+	/// <description>
+	/// Opens a file or device, only if it exists. If the specified file or device does not exist, the function fails and the last-error code
+	/// is set to <b>ERROR_FILE_NOT_FOUND</b> (2). For more information about devices, see the <c>Remarks</c> section.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>TRUNCATE_EXISTING</b><br/><c>5</c></description>
+	/// <description>
+	/// Opens a file and truncates it so that its size is zero bytes, only if it exists. If the specified file does not exist, the function
+	/// fails and the last-error code is set to <b>ERROR_FILE_NOT_FOUND</b> (2). The calling process must open the file with the
+	/// <b>GENERIC_WRITE</b> bit set as part of the <c>dwDesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pCreateExParams">Pointer to an optional <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is an open handle to the specified file, device, named pipe, or mail slot.</para>
+	/// <para>
+	/// If the function fails, the return value is <b>INVALID_HANDLE_VALUE</b>. To get extended error information, call <c>GetLastError</c>.
+	/// Possible errors include the following:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>ERROR_PATH_REDIRECTED</b></description>
+	/// <description><c>lpFileName</c> was redirected by reparse points and/or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreateFile3</b> behaves exactly the same way as <c>CreateFile2</c> with one exception; operations will fail if lpFileName is
+	/// redirected via a reparse point or symbolic link. This behavior can be disabled with a new flag that can be added to the dwFileFlags.
+	/// </para>
+	/// <para>
+	/// To compile an application that uses the <b>CreateFile3</b> function, define the <b>_WIN32_WINNT</b> macro as <c>0x0602</c> or later.
+	/// For more information, see <c>Using the Windows Headers</c>.
+	/// </para>
+	/// <para>
+	/// <b>CreateFile3</b> supports file interaction and most other types of I/O devices and mechanisms available to Windows developers. This
+	/// section attempts to cover the varied issues developers may experience when using <b>CreateFile3</b> in different contexts and with
+	/// different I/O types. The text attempts to use the word file only when referring specifically to data stored in an actual file on a
+	/// file system. However, some uses of file may be referring more generally to an I/O object that supports file-like mechanisms. This
+	/// liberal use of the term file is particularly prevalent in constant names and parameter names because of the previously mentioned
+	/// historical reasons.
+	/// </para>
+	/// <para>
+	/// When an application is finished using the object handle returned by <b>CreateFile3</b>, use the <c>CloseHandle</c> function to close
+	/// the handle. This not only frees up system resources, but can have wider influence on things like sharing the file or device and
+	/// committing data to disk. Specifics are noted within this topic as appropriate.
+	/// </para>
+	/// <para>
+	/// Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On volumes
+	/// that have a mounted file system with this support, a new file inherits the compression and encryption attributes of its directory.
+	/// </para>
+	/// <para>
+	/// You cannot use <b>CreateFile3</b> to control compression, decompression, or decryption on a file or directory. For more information,
+	/// see <c>Creating and Opening Files</c>, <c>File Compression and Decompression</c>, and <c>File Encryption</c>.
+	/// </para>
+	/// <para>
+	/// If the <b>lpSecurityAttributes</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams
+	/// parameter is <c>NULL</c>, the handle returned by <b>CreateFile3</b> cannot be inherited by any child processes your application may
+	/// create. The following information regarding this member also applies:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// If the <b>bInheritHandle</b> member variable is not <c>FALSE</c>, which is any nonzero value, then the handle can be inherited.
+	/// Therefore it is critical this structure member be properly initialized to <c>FALSE</c> if you do not intend the handle to be inheritable.
+	/// </item>
+	/// <item>The access control lists (ACL) in the default security descriptor for a file or directory are inherited from its parent directory.</item>
+	/// <item>
+	/// The target file system must support security on files and directories for the <b>lpSecurityDescriptor</b> member to have an effect on
+	/// them, which can be determined by using <c>GetVolumeInformation</c>.
+	/// </item>
+	/// </list>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>No</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <h3>Symbolic Link Behavior</h3>
+	/// <para>
+	/// If the call to this function creates a file, there is no change in behavior. Also, consider the following information regarding
+	/// <b>FILE_FLAG_OPEN_REPARSE_POINT</b> flag for the <b>dwFileFlags</b> member of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure
+	/// passed in the pCreateExParams parameter:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the symbolic link.</item>
+	/// <item>If TRUNCATE_EXISTING or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is a symbolic link.</item>
+	/// </list>
+	/// </item>
+	/// <item>If <b>FILE_FLAG_OPEN_REPARSE_POINT</b> is not specified:
+	/// <list type="bullet">
+	/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the target.</item>
+	/// <item>If CREATE_ALWAYS, TRUNCATE_EXISTING, or FILE_FLAG_DELETE_ON_CLOSE are specified, the file affected is the target.</item>
+	/// </list>
+	/// </item>
+	/// </list>
+	/// <h3>Files</h3>
+	/// <para>
+	/// If you rename or delete a file and then restore it shortly afterward, the system searches the cache for file information to restore.
+	/// Cached information includes its short/long name pair and creation time.
+	/// </para>
+	/// <para>
+	/// If you call <b>CreateFile3</b> on a file that is pending deletion as a result of a previous call to <c>DeleteFile</c> or
+	/// <c>DeleteFile2</c>, the function fails. The operating system delays file deletion until all handles to the file are closed.
+	/// <c>GetLastError</c> returns <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>
+	/// The dwDesiredAccess parameter can be zero, allowing the application to query file attributes without accessing the file if the
+	/// application is running with adequate security settings. This is useful to test for the existence of a file without opening it for
+	/// read and/or write access, or to obtain other statistics about the file or directory. See <c>Obtaining and Setting File
+	/// Information</c> and <c>GetFileInformationByHandle</c>.
+	/// </para>
+	/// <para>
+	/// When an application creates a file across a network, it is better to use <c>GENERIC_READ | GENERIC_WRITE</c> for dwDesiredAccess than
+	/// to use <b>GENERIC_WRITE</b> alone. The resulting code is faster, because the redirector can use the cache manager and send fewer SMBs
+	/// with more data. This combination also avoids an issue where writing to a file across a network can occasionally return <b>ERROR_ACCESS_DENIED</b>.
+	/// </para>
+	/// <para>For more information, see <c>Creating and Opening Files</c>.</para>
+	/// <h3>File Streams</h3>
+	/// <para>
+	/// On NTFS file systems, you can use <b>CreateFile3</b> to create separate streams within a file. For more information, see <c>File Streams</c>.
+	/// </para>
+	/// <h3>Directories</h3>
+	/// <para>
+	/// An application cannot create a directory by using <b>CreateFile3</b>, therefore only the <b>OPEN_EXISTING</b> value is valid for
+	/// dwCreationDisposition for this use case. To create a directory, the application must call <c>CreateDirectory</c>,
+	/// <c>CreateDirectoryEx</c>, or <c>CreateDirectory2</c>.
+	/// </para>
+	/// <para>
+	/// To open a directory using <b>CreateFile3</b>, specify the <b>FILE_FLAG_BACKUP_SEMANTICS</b> flag as part of <b>dwFileFlags</b> member
+	/// of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter. Appropriate security checks still
+	/// apply when this flag is used without <b>SE_BACKUP_NAME</b> and <b>SE_RESTORE_NAME</b> privileges.
+	/// </para>
+	/// <para>
+	/// When using <b>CreateFile3</b> to open a directory during defragmentation of a FAT or FAT32 file system volume, do not specify the
+	/// <b>MAXIMUM_ALLOWED</b> access right. Access to the directory is denied if this is done. Specify the <b>GENERIC_READ</b> access right instead.
+	/// </para>
+	/// <para>For more information, see <c>About Directory Management</c>.</para>
+	/// <h3>Physical Disks and Volumes</h3>
+	/// <para>Direct access to the disk or to a volume is restricted.</para>
+	/// <para>
+	/// You can use the <b>CreateFile3</b> function to open a physical disk drive or a volume, which returns a direct access storage device
+	/// (DASD) handle that can be used with the <c>DeviceIoControl</c> function. This enables you to access the disk or volume directly, for
+	/// example such disk metadata as the partition table. However, this type of access also exposes the disk drive or volume to potential
+	/// data loss, because an incorrect write to a disk using this mechanism could make its contents inaccessible to the operating system. To
+	/// ensure data integrity, be sure to become familiar with <b>DeviceIoControl</b> and how other APIs behave differently with a direct
+	/// access handle as opposed to a file system handle.
+	/// </para>
+	/// <para>The following requirements must be met for such a call to succeed:</para>
+	/// <list type="bullet">
+	/// <item>The caller must have administrative privileges. For more information, see <c>Running with Special Privileges</c>.</item>
+	/// <item>The dwCreationDisposition parameter must have the <b>OPEN_EXISTING</b> flag.</item>
+	/// <item>When opening a volume or floppy disk, the dwShareMode parameter must have the <b>FILE_SHARE_WRITE</b> flag.</item>
+	/// </list>
+	/// <note>The dwDesiredAccess parameter can be zero, allowing the application to query device attributes without accessing a device. This
+	/// is useful for an application to determine the size of a floppy disk drive and the formats it supports without requiring a floppy disk
+	/// in a drive, for instance. It can also be used for reading statistics without requiring higher-level data read/write permission.</note>
+	/// <para>When opening a physical drive x:, the lpFileName string should be the following form: "\.\PhysicalDrive <i>X</i>".</para>
+	/// <para>Hard disk numbers start at zero. The following table shows some examples of physical drive strings.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\PhysicalDrive0"</description>
+	/// <description>Opens the first physical drive.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\PhysicalDrive2"</description>
+	/// <description>Opens the third physical drive.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// To obtain the physical drive identifier for a volume, open a handle to the volume and call the <c>DeviceIoControl</c> function with
+	/// <c>IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS</c>. This control code returns the disk number and offset for each of the volume's one or
+	/// more extents; a volume can span multiple physical disks.
+	/// </para>
+	/// <para>For an example of opening a physical drive, see <c>Calling DeviceIoControl</c>.</para>
+	/// <para>
+	/// When opening a volume or removable media drive (for example, a floppy disk drive or flash memory thumb drive), the lpFileName string
+	/// should be the following form: "\\.\ <i>X</i>:". Do not use a trailing backslash (\), which indicates the root directory of a drive.
+	/// </para>
+	/// <para>The following table shows some examples of drive strings:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>String</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"\.\A:"</description>
+	/// <description>Opens floppy disk drive A.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the C: volume.</description>
+	/// </item>
+	/// <item>
+	/// <description>"\.\C:"</description>
+	/// <description>Opens the file system of the C: volume.</description>
+	/// </item>
+	/// </list>
+	/// <para>You can also open a volume by referring to its volume name. For more information, see <c>Naming a Volume</c>.</para>
+	/// <para>
+	/// A volume contains one or more mounted file systems. Volume handles can be opened as noncached at the discretion of the particular
+	/// file system, even when the noncached option is not specified in <b>CreateFile3</b>. You should assume that all Microsoft file systems
+	/// open volume handles as noncached. The restrictions on noncached I/O for files also apply to volumes.
+	/// </para>
+	/// <para>
+	/// A file system may or may not require buffer alignment even though the data is noncached. However, if the noncached option is
+	/// specified when opening a volume, buffer alignment is enforced regardless of the file system on the volume. It is recommended on all
+	/// file systems that you open volume handles as noncached, and follow the noncached I/O restrictions.
+	/// </para>
+	/// <note>To read or write to the last few sectors of the volume, you must call <c>DeviceIoControl</c> and specify
+	/// <c>FSCTL_ALLOW_EXTENDED_DASD_IO</c>. This signals the file system driver not to perform any I/O boundary checks on partition read or
+	/// write calls. Instead, boundary checks are performed by the device driver.</note><h3>Changer Device</h3>
+	/// <para>
+	/// The <b>IOCTL_CHANGER_*</b> control codes for <c>DeviceIoControl</c> accept a handle to a changer device. To open a changer device,
+	/// use a file name of the following form: "\.\Changer <i>x</i>" where x is a number that indicates which device to open, starting with
+	/// zero. To open changer device zero in an application that is written in C or C++, use the following file name: "\\.\Changer0".
+	/// </para>
+	/// <h3>Tape Drives</h3>
+	/// <para>
+	/// You can open tape drives by using a file name of the following form: "\.\TAPE <i>x</i>" where x is a number that indicates which
+	/// drive to open, starting with tape drive zero. To open tape drive zero in an application that is written in C or C++, use the
+	/// following file name: "\\.\TAPE0".
+	/// </para>
+	/// <para>For more information, see <c>Backup</c>.</para>
+	/// <h3>Communications Resources</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to a communications resource, such as the serial port COM1. For communications
+	/// resources, the dwCreationDisposition parameter must be <b>OPEN_EXISTING</b>, the dwShareMode parameter must be zero (exclusive
+	/// access), and the hTemplateFile parameter must be <c>NULL</c>. Read, write, or read/write access can be specified, and the handle can
+	/// be opened for overlapped I/O.
+	/// </para>
+	/// <para>
+	/// To specify a COM port number greater than 9, use the following syntax: "\.\COM10". This syntax works for all port numbers and
+	/// hardware that allows COM port numbers to be specified.
+	/// </para>
+	/// <para>For more information about communications, see <c>Communications</c>.</para>
+	/// <h3>Consoles</h3>
+	/// <para>
+	/// The <b>CreateFile3</b> function can create a handle to console input (CONIN$). If the process has an open handle to it as a result of
+	/// inheritance or duplication, it can also create a handle to the active screen buffer (CONOUT$). The calling process must be attached
+	/// to an inherited console or one allocated by the <c>AllocConsole</c> function.
+	/// </para>
+	/// <para>For console handles, set the <b>CreateFile3</b> parameters as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameters</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><c>lpFileName</c></description>
+	/// <description>
+	/// Use the CONIN$ value to specify console input.Use the CONOUT$ value to specify console output.CONIN$ gets a handle to the console
+	/// input buffer, even if the <c>SetStdHandle</c> function redirects the standard input handle. To get the standard input handle, use the
+	/// <c>GetStdHandle</c> function.CONOUT$ gets a handle to the active screen buffer, even if <c>SetStdHandle</c> redirects the standard
+	/// output handle. To get the standard output handle, use <c>GetStdHandle</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwDesiredAccess</c></description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c> is preferred, but either one can limit access.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwShareMode</c></description>
+	/// <description>
+	/// When opening CONIN$, specify <b>FILE_SHARE_READ</b>. When opening CONOUT$, specify <b>FILE_SHARE_WRITE</b>.If the calling process
+	/// inherits the console, or if a child process should be able to access the console, this parameter must be <c>FILE_SHARE_READ | FILE_SHARE_WRITE</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><c>dwCreationDisposition</c></description>
+	/// <description>You should specify <b>OPEN_EXISTING</b> when using <b>CreateFile3</b> to open the console.</description>
+	/// </item>
+	/// </list>
+	/// <para>Set the members of the <c>CREATEFILE3_EXTENDED_PARAMETERS</c> structure passed in the pCreateExParams parameter as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Members</term>
+	/// <term>Value</term>
+	/// </listheader>
+	/// <item>
+	/// <description><b>lpSecurityAttributes</b></description>
+	/// <description>
+	/// If you want the console to be inherited, the <b>bInheritHandle</b> member of the <c>SECURITY_ATTRIBUTES</c> structure must be <see langword="true"/>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>dwFileAttributes</b><b>dwFileFlags</b><b>dwSecurityQosFlags</b><b>hTemplateFile</b></description>
+	/// <description>Ignored.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table shows various settings of dwDesiredAccess and lpFileName:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term><c>lpFileName</c></term>
+	/// <term><c>dwDesiredAccess</c></term>
+	/// <term>Result</term>
+	/// </listheader>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_READ</b></description>
+	/// <description>Opens console for input.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><b>GENERIC_WRITE</b></description>
+	/// <description>Opens console for output.</description>
+	/// </item>
+	/// <item>
+	/// <description>"CON"</description>
+	/// <description><c>GENERIC_READ | GENERIC_WRITE</c></description>
+	/// <description>Causes <b>CreateFile3</b> to fail; <c>GetLastError</c> returns <b>ERROR_FILE_NOT_FOUND</b>.</description>
+	/// </item>
+	/// </list>
+	/// <h3>Mailslots</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a mailslot, the function returns <b>INVALID_HANDLE_VALUE</b> if the mailslot client
+	/// attempts to open a local mailslot before the mailslot server has created it with the <c>CreateMailSlot</c> function.
+	/// </para>
+	/// <para>For more information, see <c>Mailslots</c>.</para>
+	/// <h3>Pipes</h3>
+	/// <para>
+	/// If <b>CreateFile3</b> opens the client end of a named pipe, the function uses any instance of the named pipe that is in the listening
+	/// state. The opening process can duplicate the handle as many times as required, but after it is opened, the named pipe instance cannot
+	/// be opened by another client. The access that is specified when a pipe is opened must be compatible with the access that is specified
+	/// in the dwOpenMode parameter of the <c>CreateNamedPipe</c> function.
+	/// </para>
+	/// <para>
+	/// If the <c>CreateNamedPipe</c> function was not successfully called on the server prior to this operation, a pipe will not exist and
+	/// <b>CreateFile3</b> will fail with <b>ERROR_FILE_NOT_FOUND</b>.
+	/// </para>
+	/// <para>
+	/// If there is at least one active pipe instance but there are no available listener pipes on the server, which means all pipe instances
+	/// are currently connected, <b>CreateFile3</b> fails with <b>ERROR_PIPE_BUSY</b>.
+	/// </para>
+	/// <para>For more information, see <c>Pipes</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile3
+	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
+		CreationOption dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
 
 	/// <summary>Defines, redefines, or deletes MS-DOS device names.</summary>
 	/// <param name="dwFlags">
@@ -2888,7 +5574,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "924b1456-b2c5-4d52-aacf-6172608c73ea")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DefineDosDevice(DDD dwFlags, string lpDeviceName, string lpTargetPath);
+	public static extern bool DefineDosDevice(DDD dwFlags, string lpDeviceName, [Optional] string? lpTargetPath);
 
 	/// <summary>Deletes an existing file.</summary>
 	/// <param name="lpFileName">The name of the file to be deleted.</param>
@@ -2900,6 +5586,107 @@ public static partial class Kernel32
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363915")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool DeleteFile(string lpFileName);
+
+	/// <summary>
+	/// <para>Deletes an existing file. This function will fail if any part of lpFileName is redirected via a reparse point or symbolic link.</para>
+	/// <para>To perform this operation as a transacted operation, use the <c>DeleteFileTransacted</c> function.</para>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file to be deleted.</para>
+	/// <para>By default, the name is limited to <b>MAX_PATH</b> characters. To extend this limit to 32,767 wide characters, prepend "\\?\" to the path. For more information, see <c>Naming Files, Paths, and Namespaces</c>.</para>
+	/// <para><para>Tip</para> <para>You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</para></para>
+	/// </param>
+	/// <param name="Flags">
+	/// <para>Flags to specify how to treat the file that is being deleted. This parameter can be a combination one the following values:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>FILE_FLAGS_DISALLOW_PATH_REDIRECTS</b><code>0x00000001</code></description>
+	/// <description>Prevent <c>lpFileName</c> from being redirected by reparse points or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero (<c>0</c>). To get extended error information, call <c>GetLastError</c>. Possible errors include the following:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>ERROR_PATH_REDIRECTED</b></description>
+	/// <description><c>lpFileName</c> was redirected by reparse points and/or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>If an application attempts to delete a file that does not exist, the <b>DeleteFile2</b> function fails with <b>ERROR_FILE_NOT_FOUND</b>. If the file is a read-only file, the function fails with <b>ERROR_ACCESS_DENIED</b>.</para>
+	/// <para>The following list identifies some tips for deleting, removing, or closing files:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>To delete a read-only file, first you must remove the read-only attribute.</description>
+	/// </item>
+	/// <item>
+	/// <description>To delete or rename a file, you must have either delete permission on the file, or delete child permission in the parent directory.</description>
+	/// </item>
+	/// <item>
+	/// <description>To recursively delete the files in a directory, use the <c>SHFileOperation</c> function.</description>
+	/// </item>
+	/// <item>
+	/// <description>To remove an empty directory, use the <c>RemoveDirectory</c> function.</description>
+	/// </item>
+	/// <item>
+	/// <description>To close an open file, use the <c>CloseHandle</c> function.</description>
+	/// </item>
+	/// </list>
+	/// <para>If you set up a directory with all access except delete and delete child, and the access control lists (ACL) of new files are inherited, then you can create a file without being able to delete it. However, then you can create a file, and then get all the access you request on the handle that is returned to you at the time you create the file.</para>
+	/// <para>If you request delete permission at the time you create a file, you can delete or rename the file with that handle, but not with any other handle. For more information, see <c>File Security and Access Rights</c>.</para>
+	/// <para>The <b>DeleteFile2</b> function fails if an application attempts to delete a file that has other handles open for normal I/O or as a memory-mapped file (<b>FILE_SHARE_DELETE</b> must have been specified when other handles were opened).</para>
+	/// <para>The <b>DeleteFile2</b> function marks a file for deletion on close. Therefore, the file deletion does not occur until the last handle to the file is closed. Subsequent calls to <c>CreateFile</c>, <c>CreateFile2</c>, or <c>CreateFile3</c> to open the file fail with <b>ERROR_ACCESS_DENIED</b>.</para>
+	/// <para>The use of POSIX delete causes the file to be deleted while handles remain open. Subsequent calls to <c>CreateFile</c> to open the file fail with <b>ERROR_FILE_NOT_FOUND</b>.</para>
+	/// <para>Symbolic link behavior</para>
+	/// <para>If the path points to a symbolic link, the symbolic link is deleted, not the target. To delete a target, you must call <c>CreateFile</c> and specify <b>FILE_FLAG_DELETE_ON_CLOSE</b>.</para>
+	/// <para>This function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Technology</description>
+	/// <description>Supported</description>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <para><para>Note</para> <para>The <c>fileapi.h</c> header defines <b>DeleteFile2</b> as an alias that automatically selects the ANSI or Unicode version of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that is not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see <c>Conventions for Function Prototypes</c>.</para></para>
+	/// <para>Examples</para>
+	/// <para>For an example, see <c>Locking and Unlocking Byte Ranges in Files</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-deletefile2a
+	// BOOL DeleteFile2A( LPCSTR lpFileName, DWORD Flags );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.DeleteFile2A")]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool DeleteFile2(string lpFileName, FileFlagsAndAttributes Flags);
 
 	/// <summary>Deletes a drive letter or mounted folder.</summary>
 	/// <param name="lpszVolumeMountPoint">
@@ -2987,7 +5774,7 @@ public static partial class Kernel32
 		static void ThrowIfNotNoMore() => Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);
 	}
 
-	/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume"/> and <see cref="FindNextVolume"/>.</summary>
+	/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume(StringBuilder, uint)"/> and <see cref="FindNextVolume(SafeVolumeSearchHandle, StringBuilder, uint)"/>.</summary>
 	/// <returns>An enumeration of the volume names.</returns>
 	public static IEnumerable<string> EnumVolumes()
 	{
@@ -3100,6 +5887,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364417")]
+	[return: AddAsCtor]
 	public static extern SafeFindChangeNotificationHandle FindFirstChangeNotification(
 		string lpPathName, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter);
 
@@ -3131,6 +5919,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364418")]
+	[return: AddAsCtor]
 	public static extern SafeSearchHandle FindFirstFile(string lpFileName, out WIN32_FIND_DATA lpFindFileData);
 
 	/// <summary>
@@ -3332,8 +6121,9 @@ public static partial class Kernel32
 	// dwAdditionalFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "9f40e98f-153f-4b65-afd9-06742684c100")]
+	[return: AddAsCtor]
 	public static extern SafeSearchHandle FindFirstFileEx(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp,
-		[Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags);
+		[Optional, Ignore] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags);
 
 	/// <summary>Retrieves the name of a volume on a computer. FindFirstVolume is used to begin scanning the volumes of a computer.</summary>
 	/// <param name="lpszVolumeName">
@@ -3349,7 +6139,8 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364419")]
-	public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out] StringBuilder lpszVolumeName, uint cchBufferLength);
+	[return: AddAsCtor]
+	public static extern SafeVolumeSearchHandle FindFirstVolume([Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>Requests that the operating system signal a change notification handle the next time it detects an appropriate change.</summary>
 	/// <param name="hChangeHandle">A handle to a change notification handle created by the <c>FindFirstChangeNotification</c> function.</param>
@@ -3361,7 +6152,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364427")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextChangeNotification([In] SafeFindChangeNotificationHandle hChangeHandle);
+	public static extern bool FindNextChangeNotification([In, AddAsMember] SafeFindChangeNotificationHandle hChangeHandle);
 
 	/// <summary>Continues a file search from a previous call to the FindFirstFile, FindFirstFileEx, or FindFirstFileTransacted functions.</summary>
 	/// <param name="hFindFile">The search handle returned by a previous call to the FindFirstFile or FindFirstFileEx function.</param>
@@ -3378,7 +6169,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364428")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextFile([In] SafeSearchHandle hFindFile, out WIN32_FIND_DATA lpFindFileData);
+	public static extern bool FindNextFile([In, AddAsMember] SafeSearchHandle hFindFile, out WIN32_FIND_DATA lpFindFileData);
 
 	/// <summary>
 	/// Continues a volume search started by a call to the FindFirstVolume function. FindNextVolume finds one volume per call.
@@ -3394,7 +6185,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364431")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextVolume(SafeVolumeSearchHandle hFindVolume, [In, Out] StringBuilder lpszVolumeName, uint cchBufferLength);
+	public static extern bool FindNextVolume([In, AddAsMember] SafeVolumeSearchHandle hFindVolume, [Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>
 	/// Closes the specified volume search handle. The FindFirstVolume and FindNextVolume functions use this search handle to locate volumes.
@@ -3432,7 +6223,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364433")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlushFileBuffers([In] HFILE hFile);
+	public static extern bool FlushFileBuffers([In, AddAsMember] HFILE hFile);
 
 	/// <summary>Retrieves information about the specified disk, including the amount of free space on the disk.</summary>
 	/// <param name="lpRootPathName">
@@ -3559,7 +6350,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364952")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileInformationByHandle([In] HFILE hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
+	public static extern bool GetFileInformationByHandle([In, AddAsMember] HFILE hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
 
 	/// <summary>
 	/// <para>Retrieves the size of the specified file, in bytes.</para>
@@ -3615,7 +6406,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364957")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileSizeEx([In] HFILE hFile, out long lpFileSize);
+	public static extern bool GetFileSizeEx([In, AddAsMember] HFILE hFile, out long lpFileSize);
 
 	/// <summary>
 	/// <para>Retrieves the date and time that a file or directory was created, last accessed, and last modified.</para>
@@ -3655,7 +6446,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "ms724320")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileTime([In] HFILE hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
+	public static extern bool GetFileTime([In, AddAsMember] HFILE hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
 
 	/// <summary>
 	/// <para>Retrieves the file type of the specified file.</para>
@@ -3706,7 +6497,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFileType( _In_ HANDLE hFile);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364960")]
-	public static extern FileType GetFileType([In] HFILE hFile);
+	public static extern FileType GetFileType([In, AddAsMember] HFILE hFile);
 
 	/// <summary>
 	/// <para>Retrieves the final path for the specified file.</para>
@@ -3805,10 +6596,11 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
+	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ StrPtrAuto lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
-	public static extern uint GetFinalPathNameByHandle([In] HFILE hFile, StringBuilder? lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
+	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, [SizeDef(nameof(cchFilePath), SizingMethod.QueryResultInReturn)] StringBuilder? lpszFilePath,
+		uint cchFilePath, FinalPathNameOptions dwFlags);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the specified file.</para>
@@ -3846,10 +6638,40 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails for any other reason, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer, _Out_ LPTSTR *lpFilePart);
+	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ StrPtrAuto lpBuffer, _Out_ StrPtrAuto *lpFilePart);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetFullPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
-	public static extern uint GetFullPathName(string lpFileName, uint nBufferLength, StringBuilder? lpBuffer, out IntPtr lpFilePart);
+	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] StrPtrUni lpBuffer, out StrPtrUni lpFilePart);
+
+	/// <summary>
+	/// <para>Retrieves the full path and file name of the specified file.</para>
+	/// <para>To perform this operation as a transacted operation, use the <c>GetFullPathNameTransacted</c> function.</para>
+	/// <para>For more information about file and path names, see File Names, Paths, and Namespaces.</para>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file.</para>
+	/// <para>This parameter can be a short (the 8.3 form) or long file name. This string can also be a share or volume name.</para>
+	/// <para>
+	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
+	/// characters, call the Unicode version of the function ( <c>GetFullPathNameW</c>), and prepend "\\?\" to the path. For more
+	/// information, see Naming a File.
+	/// </para>
+	/// </param>
+	/// <param name="lpFileIndex">
+	/// <para>The index of the final file name component in the path.</para>
+	/// <para>If lpBuffer refers to a directory and not a file, lpFilePart receives zero.</para>
+	/// </param>
+	/// <returns>The string for the drive and path.</returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
+	public static string? GetFullPathName(string lpFileName, out int lpFileIndex)
+	{
+		var len = GetFullPathName(lpFileName, 0, default, out _);
+		if (len == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
+		SafeCoTaskMemString sb = new((int)len + 1, CharSet.Unicode);
+		len = GetFullPathName(lpFileName, (uint)sb.Capacity, (IntPtr)sb, out var filePart);
+		lpFileIndex = filePart.IsNull ? 0 : (int)((nint)filePart - sb.DangerousGetHandle());
+		return (string?)sb;
+	}
 
 	/// <summary>
 	/// <para>Retrieves a bitmask representing the currently available disk drives.</para>
@@ -3927,7 +6749,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Obtaining a File Name From a File Handle.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getlogicaldrivestringsw
-	// DWORD GetLogicalDriveStringsW( DWORD nBufferLength, LPWSTR lpBuffer );
+	// DWORD GetLogicalDriveStringsW( DWORD nBufferLength, StrPtrUni lpBuffer );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetLogicalDriveStrings")]
 	public static extern uint GetLogicalDriveStrings(uint nBufferLength, IntPtr lpBuffer);
@@ -3977,10 +6799,11 @@ public static partial class Kernel32
 	/// information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ LPTSTR lpszLongPath, _In_ DWORD cchBuffer);
+	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ StrPtrAuto lpszLongPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetLongPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364980")]
-	public static extern uint GetLongPathName(string lpszShortPath, StringBuilder? lpszLongPath, uint cchBuffer);
+	public static extern uint GetLongPathName(string lpszShortPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszLongPath,
+		[Optional] uint cchBuffer);
 
 	/// <summary>
 	/// <para>Retrieves the short path form of the specified path.</para>
@@ -4015,10 +6838,11 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails for any other reason, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ LPTSTR lpszShortPath, _In_ DWORD cchBuffer);
+	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ StrPtrAuto lpszShortPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetShortPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364989")]
-	public static extern uint GetShortPathName(string lpszLongPath, StringBuilder? lpszShortPath, uint cchBuffer);
+	public static extern uint GetShortPathName([MaxLength(MAX_PATH - 14)] string lpszLongPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszShortPath,
+		[Optional] uint cchBuffer);
 
 	/// <summary>
 	/// Creates a name for a temporary file. If a unique file name is generated, an empty file is created and the handle to it is
@@ -4136,10 +6960,11 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating and Using a Temporary File.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettempfilenamea UINT GetTempFileNameA( LPCSTR lpPathName,
-	// LPCSTR lpPrefixString, UINT uUnique, LPSTR lpTempFileName );
+	// LPCSTR lpPrefixString, UINT uUnique, StrPtrAnsi lpTempFileName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "0a30055f-a3b9-439f-9304-40ee8a07b967")]
-	public static extern uint GetTempFileName(string lpPathName, string lpPrefixString, uint uUnique, [Out] StringBuilder lpTempFileName);
+	public static extern uint GetTempFileName([MaxLength(MAX_PATH - 14)] string lpPathName, [MaxLength(3)] string lpPrefixString,
+		uint uUnique, [Out, SizeDef(MAX_PATH)] StringBuilder lpTempFileName);
 
 	/// <summary>
 	/// <para>Retrieves the path of the directory designated for temporary files.</para>
@@ -4162,10 +6987,11 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>The maximum possible return value is <c>MAX_PATH</c>+1 (261).</para>
 	/// </returns>
-	// DWORD WINAPI GetTempPath( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer);
+	// DWORD WINAPI GetTempPath( _In_ DWORD nBufferLength, _Out_ StrPtrAuto lpBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
-	public static extern uint GetTempPath(uint nBufferLength, StringBuilder? lpBuffer);
+	public static extern uint GetTempPath([Optional, Range(0, MAX_PATH + 1)] uint nBufferLength,
+		[Optional, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the path of the directory designated for temporary files, based on the privileges of the calling process.</summary>
 	/// <param name="BufferLength">The size of the string buffer identified by lpBuffer, in <c>TCHARs</c>.</param>
@@ -4252,10 +7078,11 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-gettemppath2w
-	// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] LPWSTR Buffer );
+	// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] StrPtrUni Buffer );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
-	public static extern uint GetTempPath2(uint BufferLength, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? Buffer);
+	public static extern uint GetTempPath2([Optional, Range(0, MAX_PATH + 1)] uint BufferLength,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(BufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? Buffer);
 
 	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 	/// <param name="lpRootPathName">
@@ -4339,87 +7166,9 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364993")]
-	public static extern bool GetVolumeInformation([Optional] string? lpRootPathName, StringBuilder? lpVolumeNameBuffer, int nVolumeNameSize,
-		out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, StringBuilder? lpFileSystemNameBuffer, int nFileSystemNameSize);
-
-	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
-	/// <param name="rootPathName">
-	/// A string that contains the root directory of the volume to be described.
-	/// <para>
-	/// If this parameter is NULL, the root of the current directory is used. A trailing backslash is required. For example, you specify
-	/// \\MyServer\MyShare as "\\MyServer\MyShare\", or the C drive as "C:\".
-	/// </para>
-	/// </param>
-	/// <param name="volumeName">Receives the name of a specified volume.</param>
-	/// <param name="volumeSerialNumber">
-	/// Receives the volume serial number.
-	/// <para>
-	/// This function returns the volume serial number that the operating system assigns when a hard disk is formatted. To
-	/// programmatically obtain the hard disk's serial number that the manufacturer assigns, use the Windows Management Instrumentation
-	/// (WMI) Win32_PhysicalMedia property SerialNumber.
-	/// </para>
-	/// </param>
-	/// <param name="maximumComponentLength">
-	/// Receives the maximum length, in characters, of a file name component that a specified file system supports.
-	/// <para>A file name component is the portion of a file name between backslashes.</para>
-	/// <para>
-	/// The value that is stored in the variable that <paramref name="maximumComponentLength"/> returns is used to indicate that a
-	/// specified file system supports long names. For example, for a FAT file system that supports long names, the function stores the
-	/// value 255, rather than the previous 8.3 indicator. Long names can also be supported on systems that use the NTFS file system.
-	/// </para>
-	/// </param>
-	/// <param name="fileSystemFlags">
-	/// Receives the flags associated with the specified file system.
-	/// <para>
-	/// This parameter can be one or more of the <c>FileSystemFlags</c> values. However, FILE_FILE_COMPRESSION and FILE_VOL_IS_COMPRESSED
-	/// are mutually exclusive.
-	/// </para>
-	/// </param>
-	/// <param name="fileSystemName">Receives the name of the file system, for example, the FAT file system or the NTFS file system.</param>
-	/// <returns>
-	/// If all the requested information is retrieved, the return value is nonzero.
-	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// When a user attempts to get information about a floppy drive that does not have a floppy disk, or a CD-ROM drive that does not
-	/// have a compact disc, the system displays a message box for the user to insert a floppy disk or a compact disc, respectively. To
-	/// prevent the system from displaying this message box, call the SetErrorMode function with SEM_FAILCRITICALERRORS.
-	/// <para>
-	/// The FILE_VOL_IS_COMPRESSED flag is the only indicator of volume-based compression. The file system name is not altered to
-	/// indicate compression, for example, this flag is returned set on a DoubleSpace volume. When compression is volume-based, an entire
-	/// volume is compressed or not compressed.
-	/// </para>
-	/// <para>
-	/// The FILE_FILE_COMPRESSION flag indicates whether a file system supports file-based compression. When compression is file-based,
-	/// individual files can be compressed or not compressed.
-	/// </para>
-	/// <para>The FILE_FILE_COMPRESSION and FILE_VOL_IS_COMPRESSED flags are mutually exclusive. Both bits cannot be returned set.</para>
-	/// <para>
-	/// The maximum component length value that is stored in lpMaximumComponentLength is the only indicator that a volume supports
-	/// longer-than-normal FAT file system (or other file system) file names. The file system name is not altered to indicate support for
-	/// long file names.
-	/// </para>
-	/// <para>
-	/// The GetCompressedFileSize function obtains the compressed size of a file. The GetFileAttributes function can determine whether an
-	/// individual file is compressed.
-	/// </para>
-	/// <para>Symbolic link behavior—</para>
-	/// <para>If the path points to a symbolic link, the function returns volume information for the target.</para>
-	/// </remarks>
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa364993")]
-	public static bool GetVolumeInformation([Optional] string? rootPathName, out string volumeName, out uint volumeSerialNumber,
-		out uint maximumComponentLength, out FileSystemFlags fileSystemFlags, out string fileSystemName)
-	{
-		var sb1 = new StringBuilder(MAX_PATH + 1);
-		var sb2 = new StringBuilder(MAX_PATH + 1);
-		var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out FileSystemFlags flags, sb2, sb2.Capacity);
-		volumeName = sb1.ToString();
-		volumeSerialNumber = sn;
-		maximumComponentLength = cl;
-		fileSystemFlags = flags;
-		fileSystemName = sb2.ToString();
-		return ret;
-	}
+	public static extern bool GetVolumeInformation([Optional] string? lpRootPathName, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
+		[Range(0, MAX_PATH + 1)] int nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
+		[SizeDef(nameof(nFileSystemNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] int nFileSystemNameSize);
 
 	/// <summary>
 	/// <para>Retrieves information about the file system and volume associated with the specified file.</para>
@@ -4576,14 +7325,15 @@ public static partial class Kernel32
 	/// <para>If all the requested information is retrieved, the return value is nonzero.</para>
 	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ LPWSTR lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
+	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ StrPtrUni lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
 	// _Out_opt_ LPDWORD lpVolumeSerialNumber, _Out_opt_ LPDWORD lpMaximumComponentLength, _Out_opt_ LPDWORD lpFileSystemFlags, _Out_opt_
-	// LPWSTR lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
+	// StrPtrUni lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumeInformationByHandleW([In] HFILE hFile, StringBuilder? lpVolumeNameBuffer, uint nVolumeNameSize,
-		out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, StringBuilder? lpFileSystemNameBuffer, uint nFileSystemNameSize);
+	public static extern bool GetVolumeInformationByHandleW([In, AddAsMember] HFILE hFile, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
+		[Range(0, MAX_PATH + 1)] uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
+		[SizeDef(nameof(nFileSystemNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] uint nFileSystemNameSize);
 
 	/// <summary>
 	/// <para>
@@ -4614,11 +7364,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumeNameForVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _Out_ LPTSTR lpszVolumeName, _In_ DWORD cchBufferLength);
+	// BOOL WINAPI GetVolumeNameForVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _Out_ StrPtrAuto lpszVolumeName, _In_ DWORD cchBufferLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364994")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumeNameForVolumeMountPoint(string lpszVolumeMountPoint, StringBuilder? lpszVolumeName, uint cchBufferLength);
+	public static extern bool GetVolumeNameForVolumeMountPoint(string lpszVolumeMountPoint, [SizeDef(nameof(cchBufferLength))] StringBuilder? lpszVolumeName, [Range(0, 50)] uint cchBufferLength);
 
 	/// <summary>
 	/// <para>Retrieves the volume mount point where the specified path is mounted.</para>
@@ -4643,11 +7393,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumePathName( _In_ LPCTSTR lpszFileName, _Out_ LPTSTR lpszVolumePathName, _In_ DWORD cchBufferLength);
+	// BOOL WINAPI GetVolumePathName( _In_ LPCTSTR lpszFileName, _Out_ StrPtrAuto lpszVolumePathName, _In_ DWORD cchBufferLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364996")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumePathName(string lpszFileName, StringBuilder? lpszVolumePathName, uint cchBufferLength);
+	public static extern bool GetVolumePathName(string lpszFileName, [SizeDef(nameof(cchBufferLength))] StringBuilder? lpszVolumePathName, uint cchBufferLength);
 
 	/// <summary>
 	/// <para>Retrieves a list of drive letters and mounted folder paths for the specified volume.</para>
@@ -4679,49 +7429,33 @@ public static partial class Kernel32
 	/// the required buffer size.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ LPTSTR lpszVolumePathNames, _In_ DWORD
-	// cchBufferLength, _Out_ PDWORD lpcchReturnLength);
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, StringBuilder? lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
-
-	/// <summary>
-	/// <para>Retrieves a list of drive letters and mounted folder paths for the specified volume.</para>
-	/// </summary>
-	/// <param name="lpszVolumeName">
-	/// <para>A volume <c>GUID</c> path for the volume. A volume <c>GUID</c> path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</para>
-	/// </param>
-	/// <param name="lpszVolumePathNames">
-	/// <para>
-	/// A pointer to a buffer that receives the list of drive letters and mounted folder paths. The list is an array of null-terminated
-	/// strings terminated by an additional <c>NULL</c> character. If the buffer is not large enough to hold the complete list, the
-	/// buffer holds as much of the list as possible.
-	/// </para>
-	/// </param>
-	/// <param name="cchBufferLength">
-	/// <para>The length of the lpszVolumePathNames buffer, in <c>TCHARs</c>, including all <c>NULL</c> characters.</para>
-	/// </param>
-	/// <param name="lpcchReturnLength">
-	/// <para>
-	/// If the call is successful, this parameter is the number of <c>TCHARs</c> copied to the lpszVolumePathNames buffer. Otherwise,
-	/// this parameter is the size of the buffer required to hold the complete list, in <c>TCHARs</c>.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. If the buffer is
-	/// not large enough to hold the complete list, the error code is <c>ERROR_MORE_DATA</c> and the lpcchReturnLength parameter receives
-	/// the required buffer size.
-	/// </para>
-	/// </returns>
-	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ LPTSTR lpszVolumePathNames, _In_ DWORD
+	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ StrPtrAuto lpszVolumePathNames, _In_ DWORD
 	// cchBufferLength, _Out_ PDWORD lpcchReturnLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, [Out, Optional] IntPtr lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
+
+	/// <summary>Retrieves a list of drive letters and mounted folder paths for the specified volume.</summary>
+	/// <param name="lpszVolumeName">A volume <c>GUID</c> path for the volume. A volume <c>GUID</c> path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</param>
+	/// <param name="lpszVolumePathNames">The list of drive letters and mounted folder paths.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static bool GetVolumePathNamesForVolumeName(string lpszVolumeName, out string[] lpszVolumePathNames)
+	{
+		lpszVolumePathNames = [];
+		if (!GetVolumePathNamesForVolumeName(lpszVolumeName, IntPtr.Zero, 0, out uint requiredLength) && GetLastError() != Win32Error.ERROR_MORE_DATA)
+			return false;
+		using SafeCoTaskMemString buffer = new((int)requiredLength + 1, CharSet.Auto);
+		if (!GetVolumePathNamesForVolumeName(lpszVolumeName, buffer, requiredLength, out requiredLength))
+			return false;
+		lpszVolumePathNames = [.. buffer.DangerousGetHandle().ToStringEnum(CharSet.Auto, 0, buffer.Size)];
+		return true;
+	}
 
 	/// <summary>
 	/// <para>Converts a local file time to a file time based on the Coordinated Universal Time (UTC).</para>
@@ -4880,7 +7614,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365203")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool LockFileEx([In] HFILE hFile, LOCKFILE dwFlags, [Optional] uint dwReserved, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool LockFileEx([In, AddAsMember] HFILE hFile, LOCKFILE dwFlags, [Optional] uint dwReserved, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// Retrieves information about MS-DOS device names. The function can obtain the current mapping for a particular MS-DOS device name.
@@ -4966,7 +7700,7 @@ public static partial class Kernel32
 	public static IEnumerable<string> QueryDosDevice([Optional] string? deviceName)
 	{
 		deviceName = deviceName?.TrimEnd('\\');
-		var bytes = 16;
+		var bytes = 65; // MAX_PATH / 4
 		uint retLen;
 		using var mem = new SafeHGlobalHandle(0);
 		do
@@ -4974,8 +7708,13 @@ public static partial class Kernel32
 			mem.Size = bytes *= 4;
 			retLen = QueryDosDevice(deviceName, mem, mem.Size / Marshal.SystemDefaultCharSize);
 		} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (retLen == 0) throw new Win32Exception();
-		return mem.ToStringEnum().ToArray();
+		if (deviceName is not null && retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_FILE_NOT_FOUND)
+			return [];
+		Win32Error.ThrowLastErrorIfFalse(retLen != 0);
+		return [.. mem.ToStringEnum()];
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		static extern uint QueryDosDevice(string? lpDeviceName, IntPtr lpTargetPath, int ucchMax);
 	}
 
 	/// <summary>
@@ -5017,7 +7756,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -5058,7 +7797,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -5099,7 +7838,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern unsafe bool ReadFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool ReadFile([In, AddAsMember] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>
@@ -5357,7 +8096,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.ReadFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadFile(HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -5398,7 +8137,288 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
+
+	/// <summary>
+	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+	/// supported by the device.
+	/// </summary>
+	/// <param name="hFile">
+	/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket,
+	/// communications resource, mailslot, or pipe). The hFile parameter must have been created with read access.
+	/// </param>
+	/// <param name="lpBuffer">A pointer to the buffer that receives the data read from a file or device.</param>
+	/// <returns>
+	/// If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return
+	/// value is zero(FALSE). To get extended error information, call the GetLastError function.
+	/// </returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
+	public static bool ReadFile<T>([In, AddAsMember] HFILE hFile, out T lpBuffer) where T : struct
+	{
+		var size = Vanara.Extensions.InteropExtensions.SizeOf<T>();
+		using SafeCoTaskMemHandle buffer = new(size);
+		if (!ReadFile(hFile, buffer, size, out var bytesRead, IntPtr.Zero))
+		{
+			lpBuffer = default;
+			return false;
+		}
+		lpBuffer = buffer.ToStructure<T>();
+		return true;
+	}
+
+	/// <summary>
+	/// <para>
+	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+	/// supported by the device.
+	/// </para>
+	/// <para>
+	/// This function is designed for both synchronous and asynchronous operations. For a similar function designed solely for asynchronous
+	/// operation, see ReadFileEx.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket, communications
+	/// resource, mailslot, or pipe).
+	/// </para>
+	/// <para>
+	/// The <c>hFile</c> parameter must have been created with read access. For more information, see Generic Access Rights and File Security
+	/// and Access Rights.
+	/// </para>
+	/// <para>
+	/// For asynchronous read operations, <c>hFile</c> can be any handle that is opened with the <c>FILE_FLAG_OVERLAPPED</c> flag by the
+	/// CreateFile function, or a socket handle returned by the socket or accept function.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">
+	/// <para>A pointer to the buffer that receives the data read from a file or device.</para>
+	/// <para>
+	/// This buffer must remain valid for the duration of the read operation. The caller must not use this buffer until the read operation is completed.
+	/// </para>
+	/// </param>
+	/// <param name="lpNumberOfBytesRead">
+	/// <para>
+	/// A pointer to the variable that receives the number of bytes read when using a synchronous <c>hFile</c> parameter. <c>ReadFile</c>
+	/// sets this value to zero before doing any work or error checking. Use <c>NULL</c> for this parameter if this is an asynchronous
+	/// operation to avoid potentially erroneous results.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> only when the <c>lpOverlapped</c> parameter is not <c>NULL</c>.</para>
+	/// <para>For more information, see the Remarks section.</para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>
+	/// A pointer to an OVERLAPPED structure is required if the <c>hFile</c> parameter was opened with <c>FILE_FLAG_OVERLAPPED</c>, otherwise
+	/// it can be <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, the <c>lpOverlapped</c> parameter must point to a valid and unique
+	/// OVERLAPPED structure, otherwise the function can incorrectly report that the read operation is complete.
+	/// </para>
+	/// <para>
+	/// For an <c>hFile</c> that supports byte offsets, if you use this parameter you must specify a byte offset at which to start reading
+	/// from the file or device. This offset is specified by setting the <c>Offset</c> and <c>OffsetHigh</c> members of the OVERLAPPED
+	/// structure. For an <c>hFile</c> that does not support byte offsets, <c>Offset</c> and <c>OffsetHigh</c> are ignored.
+	/// </para>
+	/// <para>
+	/// For more information about different combinations of <c>lpOverlapped</c> and <c>FILE_FLAG_OVERLAPPED</c>, see the Remarks section and
+	/// the <c>Synchronization and File Position</c> section.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+	/// <para>
+	/// If the function fails, or is completing asynchronously, the return value is zero ( <c>FALSE</c>). To get extended error information,
+	/// call the GetLastError function.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>ReadFile</c> function returns when one of the following conditions occur:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>The number of bytes requested is read.</term>
+	/// </item>
+	/// <item>
+	/// <term>A write operation completes on the write end of the pipe.</term>
+	/// </item>
+	/// <item>
+	/// <term>An asynchronous handle is being used and the read is occurring asynchronously.</term>
+	/// </item>
+	/// <item>
+	/// <term>An error occurs.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The <c>ReadFile</c> function may fail with <c>ERROR_INVALID_USER_BUFFER</c> or <c>ERROR_NOT_ENOUGH_MEMORY</c> whenever there are too
+	/// many outstanding asynchronous I/O requests.
+	/// </para>
+	/// <para>To cancel all pending asynchronous I/O operations, use either:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CancelIo—this function only cancels operations issued by the calling thread for the specified file handle.</term>
+	/// </item>
+	/// <item>
+	/// <term>CancelIoEx—this function cancels all operations issued by the threads for the specified file handle.</term>
+	/// </item>
+	/// </list>
+	/// <para>Use CancelSynchronousIo to cancel pending synchronous I/O operations.</para>
+	/// <para>I/O operations that are canceled complete with the error <c>ERROR_OPERATION_ABORTED</c>.</para>
+	/// <para>
+	/// The <c>ReadFile</c> function may fail with <c>ERROR_NOT_ENOUGH_QUOTA</c>, which means the calling process's buffer could not be
+	/// page-locked. For additional information, see SetProcessWorkingSetSize.
+	/// </para>
+	/// <para>If part of a file is locked by another process and the read operation overlaps the locked portion, this function fails.</para>
+	/// <para>
+	/// Accessing the input buffer while a read operation is using the buffer may lead to corruption of the data read into that buffer.
+	/// Applications must not read from, write to, reallocate, or free the input buffer that a read operation is using until the read
+	/// operation completes. This can be particularly problematic when using an asynchronous file handle. Additional information regarding
+	/// synchronous versus asynchronous file handles can be found in the Synchronization and File Position section and in the CreateFile
+	/// reference topic.
+	/// </para>
+	/// <para>
+	/// Characters can be read from the console input buffer by using <c>ReadFile</c> with a handle to console input. The console mode
+	/// determines the exact behavior of the <c>ReadFile</c> function. By default, the console mode is <c>ENABLE_LINE_INPUT</c>, which
+	/// indicates that <c>ReadFile</c> should read until it reaches a carriage return. If you press Ctrl+C, the call succeeds, but
+	/// GetLastError returns <c>ERROR_OPERATION_ABORTED</c>. For more information, see CreateFile.
+	/// </para>
+	/// <para>
+	/// When reading from a communications device, the behavior of <c>ReadFile</c> is determined by the current communication time-out as set
+	/// and retrieved by using the SetCommTimeouts and GetCommTimeouts functions. Unpredictable results can occur if you fail to set the
+	/// time-out values. For more information about communication time-outs, see COMMTIMEOUTS.
+	/// </para>
+	/// <para>
+	/// If <c>ReadFile</c> attempts to read from a mailslot that has a buffer that is too small, the function returns <c>FALSE</c> and
+	/// GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>.
+	/// </para>
+	/// <para>
+	/// There are strict requirements for successfully working with files opened with CreateFile using the <c>FILE_FLAG_NO_BUFFERING</c>
+	/// flag. For details see File Buffering.
+	/// </para>
+	/// <para>If <c>hFile</c> was opened with <c>FILE_FLAG_OVERLAPPED</c>, the following conditions are in effect:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// The <c>lpOverlapped</c> parameter must point to a valid and unique OVERLAPPED structure, otherwise the function can incorrectly
+	/// report that the read operation is complete.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>lpNumberOfBytesRead</c> parameter should be set to <c>NULL</c>. Use the GetOverlappedResult function to get the actual number
+	/// of bytes read. If the <c>hFile</c> parameter is associated with an I/O completion port, you can also get the number of bytes read by
+	/// calling the GetQueuedCompletionStatus function.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>Synchronization and File Position</para>
+	/// <para>
+	/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, it is an asynchronous file handle; otherwise it is synchronous. The rules
+	/// for using the OVERLAPPED structure are slightly different for each, as previously noted.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> If a file or device is opened for asynchronous I/O, subsequent calls to functions such as <c>ReadFile</c> using that
+	/// handle generally return immediately, but can also behave synchronously with respect to blocked execution. For more information see http://support.microsoft.com/kb/156932.
+	/// </para>
+	/// <para>Considerations for working with asynchronous file handles:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// <c>ReadFile</c> may return before the read operation is complete. In this scenario, <c>ReadFile</c> returns <c>FALSE</c> and the
+	/// GetLastError function returns <c>ERROR_IO_PENDING</c>, which allows the calling process to continue while the system completes the
+	/// read operation.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>The <c>lpOverlapped</c> parameter must not be <c>NULL</c> and should be used with the following facts in mind:</term>
+	/// </item>
+	/// </list>
+	/// <para>Considerations for working with synchronous file handles:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is <c>NULL</c>, the read operation starts at the current file position and <c>ReadFile</c> does not return
+	/// until the operation is complete, and the system updates the file pointer before <c>ReadFile</c> returns.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is not <c>NULL</c>, the read operation starts at the offset that is specified in the OVERLAPPED structure and
+	/// <c>ReadFile</c> does not return until the read operation is complete. The system updates the <c>OVERLAPPED</c> offset before
+	/// <c>ReadFile</c> returns.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+	/// <c>TRUE</c> and sets
+	/// <code>*lpNumberOfBytesRead</code>
+	/// to zero.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is not <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+	/// <c>FALSE</c> and GetLastError returns <c>ERROR_HANDLE_EOF</c>.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see CreateFile and Synchronous and Asynchronous I/O.</para>
+	/// <para>Pipes</para>
+	/// <para>
+	/// If an anonymous pipe is being used and the write handle has been closed, when <c>ReadFile</c> attempts to read using the pipe's
+	/// corresponding read handle, the function returns <c>FALSE</c> and GetLastError returns <c>ERROR_BROKEN_PIPE</c>.
+	/// </para>
+	/// <para>
+	/// If a named pipe is being read in message mode and the next message is longer than the <c>nNumberOfBytesToRead</c> parameter
+	/// specifies, <c>ReadFile</c> returns <c>FALSE</c> and GetLastError returns <c>ERROR_MORE_DATA</c>. The remainder of the message can be
+	/// read by a subsequent call to the <c>ReadFile</c> or PeekNamedPipe function.
+	/// </para>
+	/// <para>
+	/// If the <c>lpNumberOfBytesRead</c> parameter is zero when <c>ReadFile</c> returns <c>TRUE</c> on a pipe, the other end of the pipe
+	/// called the WriteFile function with <c>nNumberOfBytesToWrite</c> set to zero.
+	/// </para>
+	/// <para>For more information about pipes, see Pipes.</para>
+	/// <para>Transacted Operations</para>
+	/// <para>
+	/// If there is a transaction bound to the file handle, then the function returns data from the transacted view of the file. A transacted
+	/// read handle is guaranteed to show the same view of a file for the duration of the handle. For more information, see About
+	/// Transactional NTFS.
+	/// </para>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <term>Server Message Block (SMB) 3.0 protocol</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>Cluster Shared Volume File System (CsvFS)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>Resilient File System (ReFS)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// </list>
+	/// <para>Examples</para>
+	/// <para>
+	/// For a code example that shows you how to test for end-of-file, see Testing for the End of a File. For other examples, see Creating
+	/// and Using a Temporary File and Opening a File for Reading or Writing.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
+	public static bool ReadFile([In, AddAsMember] HFILE hFile, ISafeMemoryHandle lpBuffer, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped) =>
+		ReadFile(hFile, lpBuffer.DangerousGetHandle(), lpBuffer.Size, out lpNumberOfBytesRead, lpOverlapped);
 
 	/// <summary>
 	/// <para>
@@ -5563,7 +8583,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365469")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool ReadFileScatter([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToRead, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool ReadFileScatter([In, AddAsMember] HFILE hFile, [In, Out, MarshalAs(UnmanagedType.LPArray)] FILE_SEGMENT_ELEMENT[] aSegmentArray,
+		uint nNumberOfBytesToRead, [Optional] IntPtr lpReserved, [In, Out] NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>Deletes an existing empty directory.</para>
@@ -5590,6 +8611,98 @@ public static partial class Kernel32
 	public static extern bool RemoveDirectory(string lpPathName);
 
 	/// <summary>
+	/// <para>
+	/// Deletes an existing empty directory. This function will fail if any part of lpPathName is redirected via a reparse point or symbolic link.
+	/// </para>
+	/// <para>To perform this operation as a transacted operation, use the <c>RemoveDirectoryTransacted</c> function.</para>
+	/// </summary>
+	/// <param name="lpPathName">
+	/// <para>
+	/// The path of the directory to be removed. This path must specify an empty directory, and the calling process must have delete access
+	/// to the directory.
+	/// </para>
+	/// <para>
+	/// By default, the name is limited to <b>MAX_PATH</b> characters. To extend this limit to 32,767 wide characters, prepend "\\?\" to the
+	/// path. For more information, see <c>Naming Files, Paths, and Namespaces</c>.
+	/// </para>
+	/// <note type="tip">You can opt-in to remove the <b>MAX_PATH</b> limitation without prepending "\\?\". See the "Maximum Path Length
+	/// Limitation" section of <c>Naming Files, Paths, and Namespaces</c> for details.</note>
+	/// </param>
+	/// <param name="DirectoryFlags">
+	/// <para>Flags that specify how the directory is to be deleted. This parameter can be a combination of the following values:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b>
+	/// <code>0x00000001</code>
+	/// </description>
+	/// <description>Prevent <c>lpPathName</c> from being redirected by reparse points or symbolic links.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <b>RemoveDirectory2</b> function marks a directory for deletion on close. Therefore, the directory is not removed until the last
+	/// handle to the directory is closed.
+	/// </para>
+	/// <para>To recursively delete the files in a directory, use the <c>SHFileOperation</c> function.</para>
+	/// <para>
+	/// <b>RemoveDirectory2</b> can be used to remove a directory junction. Since the target directory and its contents will remain
+	/// accessible through its canonical path, the target directory itself is not affected by removing a junction which targets it. For this
+	/// reason, when lpPathName refers to a directory junction, <b>RemoveDirectory2</b> will remove the specified link regardless of whether
+	/// the target directory is empty or not. For more information on junctions, see <c>Hard Links and Junctions</c>.
+	/// </para>
+	/// <para>
+	/// The use of POSIX delete causes the directory to be deleted while handles remain open. Subsequent calls to <c>CreateDirectory</c> or
+	/// <c>CreateDirectory2</c> to open the directory fail with <b>ERROR_FILE_NOT_FOUND</b>.
+	/// </para>
+	/// <para>This function is supported by the following technologies:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Technology</description>
+	/// <description>Supported</description>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// <note>The <c>fileapi.h</c> header defines <b>RemoveDirectory2</b> as an alias that automatically selects the ANSI or Unicode version
+	/// of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code
+	/// that is not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see
+	/// <c>Conventions for Function Prototypes</c>.</note>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-removedirectory2a
+	// BOOL RemoveDirectory2A( LPCSTR lpPathName, DIRECTORY_FLAGS DirectoryFlags );
+	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.RemoveDirectory2A")]
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool RemoveDirectory2(string lpPathName, DIRECTORY_FLAGS DirectoryFlags);
+
+	/// <summary>
 	/// <para>Sets the physical file size for the specified file to the current position of the file pointer.</para>
 	/// <para>
 	/// The physical file size is also referred to as the end of the file. The <c>SetEndOfFile</c> function can be used to truncate or
@@ -5610,7 +8723,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365531")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetEndOfFile([In] HFILE hFile);
+	public static extern bool SetEndOfFile([In, AddAsMember] HFILE hFile);
 
 	/// <summary>
 	/// <para>Sets the attributes for a file or directory.</para>
@@ -5729,7 +8842,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365539")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileInformationByHandle([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, SafeAllocatedMemoryHandle lpFileInformation, uint dwBufferSize);
+	public static extern bool SetFileInformationByHandle([In, AddAsMember] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, SafeAllocatedMemoryHandle lpFileInformation, uint dwBufferSize);
 
 	/// <summary>
 	/// <para>Sets the file information for the specified file.</para>
@@ -5758,7 +8871,7 @@ public static partial class Kernel32
 	/// <para>Returns <see langword="true"/> if successful or <see langword="false"/> otherwise.</para>
 	/// <para>To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	public static bool SetFileInformationByHandle<T>([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
+	public static bool SetFileInformationByHandle<T>([In, AddAsMember] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
 		using var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation);
@@ -6150,7 +9263,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
+	public static extern bool SetFilePointerEx([In, AddAsMember] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 	/// <summary>
 	/// <para>Moves the file pointer of the specified file.</para>
@@ -6205,7 +9318,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, [In, Optional] IntPtr lpNewFilePointer, SeekOrigin dwMoveMethod);
+	public static extern bool SetFilePointerEx([In, AddAsMember] HFILE hFile, long liDistanceToMove, [In, Optional] IntPtr lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 	/// <summary>
 	/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -6257,7 +9370,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileTime([In] HFILE hFile, [In, Optional] PFILETIME lpCreationTime, [In, Optional] PFILETIME lpLastAccessTime, [In, Optional] PFILETIME lpLastWriteTime);
+	public static extern bool SetFileTime([In, AddAsMember] HFILE hFile, [In, Optional] PFILETIME? lpCreationTime, [In, Optional] PFILETIME? lpLastAccessTime, [In, Optional] PFILETIME? lpLastWriteTime);
 
 	/// <summary>
 	/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -6445,7 +9558,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "c6ded2d7-270a-4b75-b2d4-1007a92fe831")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileValidData([In] HFILE hFile, long ValidDataLength);
+	public static extern bool SetFileValidData([In, AddAsMember] HFILE hFile, long ValidDataLength);
 
 	/// <summary>
 	/// <para>Unlocks a region in an open file. Unlocking a region enables other processes to access the region.</para>
@@ -6478,7 +9591,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365715")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnlockFile([In] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
+	public static extern bool UnlockFile([In, AddAsMember] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
 
 	/// <summary>
 	/// <para>Unlocks a region in the specified file. This function can operate either synchronously or asynchronously.</para>
@@ -6514,7 +9627,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365716")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool UnlockFileEx([In] HFILE hFile, uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool UnlockFileEx([In] HFILE hFile, [Optional, Ignore] uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -6585,7 +9698,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern bool WriteFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -6656,7 +9769,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool WriteFile([In, AddAsMember] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>Writes data to the specified file or input/output (I/O) device.</para>
@@ -6935,7 +10048,7 @@ public static partial class Kernel32
 	/// data block you are interested in writing to the file. For additional rules regarding unbuffered file I/O, see File Buffering.
 	/// </para>
 	/// <para>
-	/// <code>#include &lt;windows.h&gt; #define ROUND_UP_SIZE(Value,Pow2) ((SIZE_T) ((((ULONG)(Value)) + (Pow2) - 1) &amp; (~(((LONG)(Pow2)) - 1)))) #define ROUND_UP_PTR(Ptr,Pow2) ((void *) ((((ULONG_PTR)(Ptr)) + (Pow2) - 1) &amp; (~(((LONG_PTR)(Pow2)) - 1)))) int main() { // Sample data unsigned long bytesPerSector = 65536; // obtained from the GetFreeDiskSpace function. unsigned long size = 15536; // Buffer size of your data to write. // Ensure you have one more sector than Size would require. size_t sizeNeeded = bytesPerSector + ROUND_UP_SIZE(size, bytesPerSector); // Replace this statement with any allocation routine. auto buffer = new uint8_t[SizeNeeded]; // Actual alignment happens here. auto bufferAligned = ROUND_UP_PTR(buffer, bytesPerSector); // ... Add code using bufferAligned here. // Replace with corresponding free routine. delete buffer; }</code>
+	/// <code>#include &lt;windows.h&gt; #define ROUND_UP_SIZE(Value,Pow2) ((SizeT) ((((ULONG)(Value)) + (Pow2) - 1) &amp; (~(((LONG)(Pow2)) - 1)))) #define ROUND_UP_PTR(Ptr,Pow2) ((void *) ((((ULONG_PTR)(Ptr)) + (Pow2) - 1) &amp; (~(((LONG_PTR)(Pow2)) - 1)))) int main() { // Sample data unsigned long bytesPerSector = 65536; // obtained from the GetFreeDiskSpace function. unsigned long size = 15536; // Buffer size of your data to write. // Ensure you have one more sector than Size would require. size_t sizeNeeded = bytesPerSector + ROUND_UP_SIZE(size, bytesPerSector); // Replace this statement with any allocation routine. auto buffer = new uint8_t[SizeNeeded]; // Actual alignment happens here. auto bufferAligned = ROUND_UP_PTR(buffer, bytesPerSector); // ... Add code using bufferAligned here. // Replace with corresponding free routine. delete buffer; }</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile
@@ -6943,7 +10056,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.WriteFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteFile(HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -7014,7 +10127,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern bool WriteFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// <para>
@@ -7189,56 +10302,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365749")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool WriteFileGather([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToWrite, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
-
-	/// <summary>
-	/// <para>
-	/// Retrieves information about MS-DOS device names. The function can obtain the current mapping for a particular MS-DOS device name.
-	/// The function can also obtain a list of all existing MS-DOS device names.
-	/// </para>
-	/// <para>
-	/// MS-DOS device names are stored as junctions in the object namespace. The code that converts an MS-DOS path into a corresponding
-	/// path uses these junctions to map MS-DOS devices and drive letters. The <c>QueryDosDevice</c> function enables an application to
-	/// query the names of the junctions used to implement the MS-DOS device namespace as well as the value of each specific junction.
-	/// </para>
-	/// </summary>
-	/// <param name="lpDeviceName">
-	/// <para>
-	/// An MS-DOS device name string specifying the target of the query. The device name cannot have a trailing backslash; for example,
-	/// use "C:", not "C:\".
-	/// </para>
-	/// <para>
-	/// This parameter can be <c>NULL</c>. In that case, the <c>QueryDosDevice</c> function will store a list of all existing MS-DOS
-	/// device names into the buffer pointed to by lpTargetPath.
-	/// </para>
-	/// </param>
-	/// <param name="lpTargetPath">
-	/// <para>
-	/// A pointer to a buffer that will receive the result of the query. The function fills this buffer with one or more null-terminated
-	/// strings. The final null-terminated string is followed by an additional <c>NULL</c>.
-	/// </para>
-	/// <para>
-	/// If lpDeviceName is non- <c>NULL</c>, the function retrieves information about the particular MS-DOS device specified by
-	/// lpDeviceName. The first null-terminated string stored into the buffer is the current mapping for the device. The other
-	/// null-terminated strings represent undeleted prior mappings for the device.
-	/// </para>
-	/// <para>
-	/// If lpDeviceName is <c>NULL</c>, the function retrieves a list of all existing MS-DOS device names. Each null-terminated string
-	/// stored into the buffer is the name of an existing MS-DOS device, for example, \Device\HarddiskVolume1 or \Device\Floppy0.
-	/// </para>
-	/// </param>
-	/// <param name="ucchMax">
-	/// <para>The maximum number of <c>TCHARs</c> that can be stored into the buffer pointed to by lpTargetPath.</para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is the number of <c>TCHARs</c> stored into the buffer pointed to by lpTargetPath.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// <para>If the buffer is too small, the function fails and the last error code is <c>ERROR_INSUFFICIENT_BUFFER</c>.</para>
-	/// </returns>
-	// DWORD WINAPI QueryDosDevice( _In_opt_ LPCTSTR lpDeviceName, _Out_ LPTSTR lpTargetPath, _In_ DWORD ucchMax);
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa365461")]
-	private static extern uint QueryDosDevice(string? lpDeviceName, IntPtr lpTargetPath, int ucchMax);
+	public static extern unsafe bool WriteFileGather([In, AddAsMember] HFILE hFile, [In, Out, MarshalAs(UnmanagedType.LPArray)] FILE_SEGMENT_ELEMENT[] aSegmentArray,
+		uint nNumberOfBytesToWrite, [Optional] IntPtr lpReserved, NativeOverlapped* lpOverlapped);
 
 	/// <summary>Contains information that the GetFileInformationByHandle function retrieves.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -7311,12 +10376,12 @@ public static partial class Kernel32
 	// *PCREATEFILE2_EXTENDED_PARAMETERS, *LPCREATEFILE2_EXTENDED_PARAMETERS;
 	[PInvokeData("FileAPI.h", MSDNShortId = "hh449426")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CREATEFILE2_EXTENDED_PARAMETERS
+	public struct CREATEFILE2_EXTENDED_PARAMETERS()
 	{
 		/// <summary>
 		/// <para>Contains the size of this structure, .</para>
 		/// </summary>
-		public uint dwSize;
+		public uint dwSize = (uint)Marshal.SizeOf<CREATEFILE2_EXTENDED_PARAMETERS>();
 
 		/// <summary>
 		/// <para>The file or device attributes and flags, <c>FILE_ATTRIBUTE_NORMAL</c> being the most common default value for files.</para>
@@ -7590,12 +10655,396 @@ public static partial class Kernel32
 		public HFILE hTemplateFile;
 	}
 
+	/// <summary>Contains optional extended parameters for <c>CreateFile3</c>.</summary>
+	/// <remarks>
+	/// <para>
+	/// To compile an application that uses the <b>CREATEFILE3_EXTENDED_PARAMETERS</b> structure, define the <b>_WIN32_WINNT</b> macro as
+	/// <c>0x0602</c> or later. For more information, see <c>Using the Windows Headers</c>.
+	/// </para>
+	/// <para>Caching Behavior</para>
+	/// <para>
+	/// Several of the possible values for the <b>dwFileFlags</b> member are used to control or affect how the data associated with the
+	/// handle is cached by the system. They are:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><b>FILE_FLAG_NO_BUFFERING</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_FLAG_RANDOM_ACCESS</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_FLAG_SEQUENTIAL_SCAN</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_FLAG_WRITE_THROUGH</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FILE_ATTRIBUTE_TEMPORARY</b></description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If none of these flags is specified, the system uses a default general-purpose caching scheme. Otherwise, the system caching behaves
+	/// as specified for each flag.
+	/// </para>
+	/// <para>
+	/// Some of these flags should not be combined. For instance, combining <b>FILE_FLAG_RANDOM_ACCESS</b> with
+	/// <b>FILE_FLAG_SEQUENTIAL_SCAN</b> is self-defeating.
+	/// </para>
+	/// <para>
+	/// Specifying the <b>FILE_FLAG_SEQUENTIAL_SCAN</b> flag can increase performance for applications that read large files using sequential
+	/// access. Performance gains can be even more noticeable for applications that read large files mostly sequentially, but occasionally
+	/// skip forward over small ranges of bytes. If an application moves the file pointer for random access, optimum caching performance most
+	/// likely will not occur. However, correct operation is still guaranteed.
+	/// </para>
+	/// <para>The flags <b>FILE_FLAG_WRITE_THROUGH</b> and <b>FILE_FLAG_NO_BUFFERING</b> are independent and may be combined.</para>
+	/// <para>
+	/// If <b>FILE_FLAG_WRITE_THROUGH</b> is used but <b>FILE_FLAG_NO_BUFFERING</b> is not also specified, so that system caching is in
+	/// effect, then the data is written to the system cache but is flushed to disk without delay.
+	/// </para>
+	/// <para>
+	/// If <b>FILE_FLAG_WRITE_THROUGH</b> and <b>FILE_FLAG_NO_BUFFERING</b> are both specified, so that system caching is not in effect, then
+	/// the data is immediately flushed to disk without going through the Windows system cache. The operating system also requests a
+	/// write-through of the hard disk's local hardware cache to persistent media.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>Not all hard disk hardware supports this write-through capability.</para>
+	/// </para>
+	/// <para>
+	/// Proper use of the <b>FILE_FLAG_NO_BUFFERING</b> flag requires special application considerations. For more information, see <c>File Buffering</c>.
+	/// </para>
+	/// <para>
+	/// A write-through request via <b>FILE_FLAG_WRITE_THROUGH</b> also causes NTFS to flush any metadata changes, such as a time stamp
+	/// update or a rename operation, that result from processing the request. For this reason, the <b>FILE_FLAG_WRITE_THROUGH</b> flag is
+	/// often used with the <b>FILE_FLAG_NO_BUFFERING</b> flag as a replacement for calling the <c>FlushFileBuffers</c> function after each
+	/// write, which can cause unnecessary performance penalties. Using these flags together avoids those penalties. For general information
+	/// about the caching of files and metadata, see <c>File Caching</c>.
+	/// </para>
+	/// <para>
+	/// When <b>FILE_FLAG_NO_BUFFERING</b> is combined with <b>FILE_FLAG_OVERLAPPED</b>, the flags give maximum asynchronous performance,
+	/// because the I/O does not rely on the synchronous operations of the memory manager. However, some I/O operations take more time,
+	/// because data is not being held in the cache. Also, the file metadata may still be cached (for example, when creating an empty file).
+	/// To ensure that the metadata is flushed to disk, use the <c>FlushFileBuffers</c> function.
+	/// </para>
+	/// <para>
+	/// Specifying the <b>FILE_ATTRIBUTE_TEMPORARY</b> attribute causes file systems to avoid writing data back to mass storage if sufficient
+	/// cache memory is available, because an application deletes a temporary file after a handle is closed. In that case, the system can
+	/// entirely avoid writing the data. Although it does not directly control data caching in the same way as the previously mentioned
+	/// flags, the <b>FILE_ATTRIBUTE_TEMPORARY</b> attribute does tell the system to hold as much as possible in the system cache without
+	/// writing and therefore may be of concern for certain applications.
+	/// </para>
+	/// <para>Synchronous and Asynchronous I/O Handles</para>
+	/// <para>
+	/// <c>CreateFile3</c> provides for creating a file or device handle that is either synchronous or asynchronous. A synchronous handle
+	/// behaves such that I/O function calls using that handle are blocked until they complete, while an asynchronous file handle makes it
+	/// possible for the system to return immediately from I/O function calls, whether they completed the I/O operation or not. As stated
+	/// previously, this synchronous versus asynchronous behavior is determined by specifying <b>FILE_FLAG_OVERLAPPED</b> within the
+	/// <b>dwFileFlags</b> member of the <b>CREATEFILE3_EXTENDED_PARAMETERS</b> structure passed in the lpCreateExParams parameter. There are
+	/// several complexities and potential pitfalls when using asynchronous I/O; for more information, see <c>Synchronous and Asynchronous I/O</c>.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/ns-fileapi-createfile3_extended_parameters typedef struct
+	// _CREATEFILE3_EXTENDED_PARAMETERS { DWORD dwSize; DWORD dwFileAttributes; DWORD dwFileFlags; DWORD dwSecurityQosFlags;
+	// LPSECURITY_ATTRIBUTES lpSecurityAttributes; HANDLE hTemplateFile; } CREATEFILE3_EXTENDED_PARAMETERS,
+	// *PCREATEFILE3_EXTENDED_PARAMETERS, *LPCREATEFILE3_EXTENDED_PARAMETERS;
+	[PInvokeData("fileapi.h", MSDNShortId = "NS:fileapi._CREATEFILE3_EXTENDED_PARAMETERS")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct CREATEFILE3_EXTENDED_PARAMETERS()
+	{
+		/// <summary>Contains the size of this structure, <c>sizeof(CREATEFILE3_EXTENDED_PARAMETERS)</c>.</summary>
+		public uint dwSize = (uint)Marshal.SizeOf<CREATEFILE3_EXTENDED_PARAMETERS>();
+
+		/// <summary>
+		///   <para>The file or device attributes and flags, <b>FILE_ATTRIBUTE_NORMAL</b> being the most common default value for files.</para>
+		///   <para>This parameter can include any combination of the available file attributes (<b>FILE_ATTRIBUTE_*</b>). All other file attributes override <b>FILE_ATTRIBUTE_NORMAL</b>.</para>
+		///   <para>
+		///     <para>Note</para> <para>When <c>CreateFile3</c> opens an existing file, it generally combines the file flags with the file attributes of the existing file, and ignores any file attributes supplied as part of dwFlagsAndAttributes. Special cases are detailed in <c>Creating and Opening Files</c>.</para></para>
+		///   <para>Some of the following file attributes and flags may only apply to files and not necessarily all other types of devices that <c>CreateFile3</c> can open. For additional information, see the <b>Remarks</b> section of the <b>CreateFile3</b> reference page and <c>Creating and Opening Files</c>.</para>
+		///   <para>For more advanced access to file attributes, see <c>SetFileAttributes</c>. For a complete list of all file attributes with their values and descriptions, see <c>File Attribute Constants</c>.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Attribute</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_ARCHIVE</b>
+		///         <code>32 (0x20)</code>
+		///       </description>
+		///       <description>The file should be archived. Applications use this attribute to mark files for backup or removal.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_ENCRYPTED</b>
+		///         <code>16384 (0x4000)</code>
+		///       </description>
+		///       <description>The file or directory is encrypted. For a file, this means that all data in the file is encrypted. For a directory, this means that encryption is the default for newly created files and subdirectories. For more information, see <c>File Encryption</c>.This flag has no effect if <b>FILE_ATTRIBUTE_SYSTEM</b> is also specified.This flag is not supported on Home, Home Premium, Starter, or ARM editions of Windows.This flag is not supported when called from a Windows Store app.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_HIDDEN</b>
+		///         <code>2 (0x2)</code>
+		///       </description>
+		///       <description>The file is hidden. Do not include it in an ordinary directory listing.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_INTEGRITY_STREAM</b>
+		///         <code>32768 (0x8000)</code>
+		///       </description>
+		///       <description>A file or directory that is configured with integrity. For a file, all data streams in the file have integrity. For a directory, integrity is the default for newly created files and subdirectories, unless the caller specifies otherwise.This flag is only supported on the ReFS file system.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_NORMAL</b>
+		///         <code>128 (0x80)</code>
+		///       </description>
+		///       <description>The file does not have other attributes set. This attribute is valid only if used alone.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_OFFLINE</b>
+		///         <code>4096 (0x1000)</code>
+		///       </description>
+		///       <description>The data of a file is not immediately available. This attribute indicates that file data is physically moved to offline storage. This attribute is used by Remote Storage, the hierarchical storage management software. Applications should not arbitrarily change this attribute.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_READONLY</b>
+		///         <code>1 (0x1)</code>
+		///       </description>
+		///       <description>The file is read only. Applications can read the file, but cannot write to or delete it.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_SYSTEM</b>
+		///         <code>4 (0x4)</code>
+		///       </description>
+		///       <description>The file is part of or used exclusively by an operating system.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_ATTRIBUTE_TEMPORARY</b>
+		///         <code>256 (0x100)</code>
+		///       </description>
+		///       <description>The file is being used for temporary storage.For more information, see the <b>Caching Behavior</b> section of this topic.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public FileFlagsAndAttributes dwFileAttributes;
+
+		/// <summary>
+		///   <para>This parameter can contain combinations of flags (<b>FILE_FLAG_*</b>) for control of file or device caching behavior, access modes, and other special-purpose flags.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Flag</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAGS_DISALLOW_PATH_REDIRECTS</b>
+		///         <code>0x00000001</code>
+		///       </description>
+		///       <description>Prevent paths from being redirected by reparse points or symbolic links.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_BACKUP_SEMANTICS</b>
+		///         <code>0x02000000</code>
+		///       </description>
+		///       <description>The file is being opened or created for a backup or restore operation. The system ensures that the calling process overrides file security checks when the process has <b>SE_BACKUP_NAME</b> and <b>SE_RESTORE_NAME</b> privileges. For more information, see <c>Changing Privileges in a Token</c>.You must set this flag to obtain a handle to a directory. A directory handle can be passed to some functions instead of a file handle. For more information, see the <c>Remarks</c> section.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_DELETE_ON_CLOSE</b>
+		///         <code>0x04000000</code>
+		///       </description>
+		///       <description>The file is to be deleted immediately after all of its handles are closed, which includes the specified handle and any other open or duplicated handles.If there are existing open handles to a file, the call fails unless they were all opened with the <b>FILE_SHARE_DELETE</b> share mode.Subsequent open requests for the file fail, unless the <b>FILE_SHARE_DELETE</b> share mode is specified.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_IGNORE_IMPERSONATED_DEVICEMAP</b>
+		///         <code>0x00020000</code>
+		///       </description>
+		///       <description>A device map is a mapping between DOS device names and devices in the system, and is used when resolving DOS names. Separate device maps exists for each user in the system, and users can manage their own device maps. Typically during impersonation, the impersonated user's device map would be used. However, when this flag is set, the process user's device map is used instead.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_NO_BUFFERING</b>
+		///         <code>0x20000000</code>
+		///       </description>
+		///       <description>The file or device is being opened with no system caching for data reads and writes. This flag does not affect hard disk caching or memory mapped files.There are strict requirements for successfully working with files opened with <c>CreateFile3</c> using the <b>FILE_FLAG_NO_BUFFERING</b> flag, for details see <c>File Buffering</c>.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_OPEN_NO_RECALL</b>
+		///         <code>0x00100000</code>
+		///       </description>
+		///       <description>The file data is requested, but it should continue to be located in remote storage. It should not be transported back to local storage. This flag is for use by remote storage systems.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_OPEN_REPARSE_POINT</b>
+		///         <code>0x00200000</code>
+		///       </description>
+		///       <description>Normal <c>reparse point</c> processing will not occur; <c>CreateFile3</c> will attempt to open the reparse point. When a file is opened, a file handle is returned, whether or not the filter that controls the reparse point is operational.This flag cannot be used with the <b>CREATE_ALWAYS</b> flag.If the file is not a reparse point, then this flag is ignored.For more information, see the <c>Remarks</c> section.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_OPEN_REQUIRING_OPLOCK</b>
+		///         <code>0x00040000</code>
+		///       </description>
+		///       <description>The file is being opened and an opportunistic lock (oplock) on the file is being requested as a single atomic operation. The file system checks for oplocks before it performs the create operation, and will fail the create with a last error code of <b>ERROR_CANNOT_BREAK_OPLOCK</b> if the result would be to break an existing oplock.If you use this flag and your call to the <c>CreateFile3</c> function successfully returns, the first operation you should perform on the file handle is to request an oplock by calling the <c>DeviceIOControl</c> function and then pass in <c>FSCTL_REQUEST_OPLOCK</c> or one of the other <c>Opportunistic Lock Operations</c>. If you perform other file system operations with the file handle before requesting an oplock, a deadlock might occur.<b>Note:</b> You can safely call the <c>CloseHandle</c> function on the file handle without first requesting an oplock.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_OVERLAPPED</b>
+		///         <code>0x40000000</code>
+		///       </description>
+		///       <description>The file or device is being opened or created for asynchronous I/O.When subsequent I/O operations are completed on this handle, the event specified in the <c>OVERLAPPED</c> structure will be set to the signaled state.If this flag is specified, the file can be used for simultaneous read and write operations.If this flag is not specified, then I/O operations are serialized, even if the calls to the read and write functions specify an <c>OVERLAPPED</c> structure.For information about considerations when using a file handle created with this flag, see the <c>Synchronous and Asynchronous I/O Handles</c> section of this topic.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_POSIX_SEMANTICS</b>
+		///         <code>0x01000000</code>
+		///       </description>
+		///       <description>Access will occur according to POSIX rules. This includes allowing multiple files with names, differing only in case, for file systems that support that naming. Use care when using this option, because files created with this flag may not be accessible by applications that are written for MS-DOS or 16-bit Windows.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_RANDOM_ACCESS</b>
+		///         <code>0x10000000</code>
+		///       </description>
+		///       <description>Access is intended to be random. The system can use this as a hint to optimize file caching.This flag has no effect if the file system does not support cached I/O and <b>FILE_FLAG_NO_BUFFERING</b>.For more information, see the <b>Caching Behavior</b> section of this topic.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_SESSION_AWARE</b>
+		///         <code>0x00800000</code>
+		///       </description>
+		///       <description>The file or device is being opened with session awareness. If this flag is not specified, then per-session devices (such as a device using RemoteFX USB Redirection) cannot be opened by processes running in session 0. This flag has no effect for callers not in session 0. This flag is supported only on server editions of Windows.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_SEQUENTIAL_SCAN</b>
+		///         <code>0x08000000</code>
+		///       </description>
+		///       <description>Access is intended to be sequential from beginning to end. The system can use this as a hint to optimize file caching.This flag should not be used if read-behind (that is, backwards scans) will be used.This flag has no effect if the file system does not support cached I/O and <b>FILE_FLAG_NO_BUFFERING</b>.For more information, see the <b>Caching Behavior</b> section of this topic.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>FILE_FLAG_WRITE_THROUGH</b>
+		///         <code>0x80000000</code>
+		///       </description>
+		///       <description>Write operations will not go through any intermediate cache, they will go directly to disk.For additional information, see the <c>Caching Behavior</c> section of this topic.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public FileFlagsAndAttributes dwFileFlags;
+
+		/// <summary>
+		///   <para>The dwSecurityQosFlags parameter specifies SQOS information. For more information, see <c>Impersonation Levels</c>.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Security flag</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_ANONYMOUS</b>
+		///       </description>
+		///       <description>Impersonates a client at the Anonymous impersonation level.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_CONTEXT_TRACKING</b>
+		///       </description>
+		///       <description>The security tracking mode is dynamic. If this flag is not specified, the security tracking mode is static.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_DELEGATION</b>
+		///       </description>
+		///       <description>Impersonates a client at the Delegation impersonation level.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_EFFECTIVE_ONLY</b>
+		///       </description>
+		///       <description>Only the enabled aspects of the client's security context are available to the server. If you do not specify this flag, all aspects of the client's security context are available.This allows the client to limit the groups and privileges that a server can use while impersonating the client.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_IDENTIFICATION</b>
+		///       </description>
+		///       <description>Impersonates a client at the Identification impersonation level.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <b>SECURITY_IMPERSONATION</b>
+		///       </description>
+		///       <description>Impersonate a client at the impersonation level. This is the default behavior if no other flags are specified.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public FileFlagsAndAttributes dwSecurityQosFlags;
+
+		/// <summary>
+		///   <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that contains two separate but related data members: an optional security descriptor, and a Boolean value that determines whether the returned handle can be inherited by child processes.</para>
+		///   <para>This parameter can be <c>NULL</c>.</para>
+		///   <para>If this parameter is <c>NULL</c>, the handle returned by <c>CreateFile3</c> cannot be inherited by any child processes the application may create and the file or device associated with the returned handle gets a default security descriptor.</para>
+		///   <para>The <b>lpSecurityDescriptor</b> member of the structure specifies a <c>SECURITY_DESCRIPTOR</c> for a file or device. If this member is <c>NULL</c>, the file or device associated with the returned handle is assigned a default security descriptor.</para>
+		///   <para>
+		///     <c>CreateFile3</c> ignores the <b>lpSecurityDescriptor</b> member when opening an existing file or device, but continues to use the <b>bInheritHandle</b> member.</para>
+		///   <para>The <b>bInheritHandle</b> member of the structure specifies whether the returned handle can be inherited.</para>
+		///   <para>For more information, see the Remarks section of the <c>CreateFile3</c> topic.</para>
+		/// </summary>
+		public IntPtr lpSecurityAttributes;
+
+		/// <summary>
+		///   <para>A valid handle to a template file with the <b>GENERIC_READ</b> access right. The template file supplies file attributes and extended attributes for the file that is being created.</para>
+		///   <para>This parameter can be <c>NULL</c>.</para>
+		///   <para>When opening an existing file, <c>CreateFile3</c> ignores this parameter.</para>
+		///   <para>When opening a new encrypted file, the file inherits the discretionary access control list from its parent directory. For additional information, see <c>File Encryption</c>.</para>
+		/// </summary>
+		public HFILE hTemplateFile;
+	}
+
+	/// <summary>Represents a segment of an I/O buffer for scatter/gather read/write actions.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-file_segment_element
+	// typedef union _FILE_SEGMENT_ELEMENT { PVOID64 Buffer; ULONGLONG Alignment; } FILE_SEGMENT_ELEMENT, *PFILE_SEGMENT_ELEMENT;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._FILE_SEGMENT_ELEMENT")]
+	[StructLayout(LayoutKind.Explicit)]
+	public struct FILE_SEGMENT_ELEMENT
+	{
+		/// <summary>
+		/// A pointer to the data for the scatter/gather read/write action.
+		/// <para>
+		/// Assigning a pointer to the Buffer member will sign-extend the value if the code is compiled as 32-bits; this can break
+		/// large-address aware applications running on systems configured with 4-Gigabyte Tuning or running under WOW64 on 64-bit
+		/// Windows.Therefore, use the PtrToPtr64 macro when assigning pointers to Buffer.
+		/// </para>
+		/// </summary>
+		[FieldOffset(0)]
+		public IntPtr Buffer;
+
+		/// <summary>
+		/// An integer representation of the Buffer. The system uses this member to validate that the buffer is properly aligned.
+		/// Applications typically operate on the Buffer member.
+		/// </summary>
+		[FieldOffset(0)]
+		public ulong Alignment;
+	}
+
 	/// <summary>Represents a self-closing change notification handle created by the FindFirstChangeNotification function.</summary>
 	[AutoSafeHandle("FindCloseChangeNotification(handle)", null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"ChangeNotification", "")]
 	public partial class SafeFindChangeNotificationHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HFILE), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"File(?!Type)|ExW\b|Ex\b|W?\b", "")]
 	public partial class SafeHFILE
 	{
 		/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
@@ -7609,10 +11058,12 @@ public static partial class Kernel32
 	/// FindFirstFileNameTransactedW, FindFirstFileTransacted, FindFirstStreamTransactedW, or FindFirstStreamW functions.
 	/// </summary>
 	[AutoSafeHandle("FindClose(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"ChangeNotification|Ex\b", "")]
 	public partial class SafeSearchHandle { }
 
 	/// <summary>Represents a self-closing volume search handle opened by the FindFirstVolume.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
 	[AutoSafeHandle("FindVolumeClose(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"Volume", "")]
 	public partial class SafeVolumeSearchHandle { }
 }

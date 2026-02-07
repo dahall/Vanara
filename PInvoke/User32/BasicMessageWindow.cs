@@ -31,7 +31,7 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	public BasicMessageWindow(BasicMessageWindowFilter? callback = null)
 	{
 		MessageFilter = callback;
-		weakSelfRef = new WeakReference(this);
+		weakSelfRef = new(this);
 		hwnd = CreateWindow();
 	}
 
@@ -42,6 +42,9 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	/// <value>The handle.</value>
 	public HWND Handle => hwnd ?? HWND.NULL;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => hwnd?.IsInvalid ?? true;
+
 	/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 	/// <value>The callback method.</value>
 	public BasicMessageWindowFilter? MessageFilter { get; set; }
@@ -49,6 +52,10 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	/// <summary>Gets the name of the class.</summary>
 	/// <value>The name of the class.</value>
 	public string? ClassName => wCls?.ClassName;
+
+	/// <summary>Gets the window class registered for this window.</summary>
+	/// <value>The window class.</value>
+	public WindowClass? WindowClass => wCls;
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()
@@ -70,7 +77,7 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 		{
 			if (!Handle.IsNull)
 				throw new InvalidOperationException("Window handle already exists.");
-			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", default, WndProc, hbrBkgd: WindowClass.NullBrush);
+			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid():N}", default, WndProc, hbrBkgd: WindowClass.NullBrush);
 			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.ClassName, hWndParent: HWND.HWND_MESSAGE, hInstance: wCls.wc.hInstance));
 		}
 	}

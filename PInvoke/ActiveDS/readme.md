@@ -23,7 +23,7 @@ Native Method | Header | Managed Method
 [FreeADsStr](https://www.google.com/search?num=5&q=FreeADsStr+site%3Alearn.microsoft.com) | adshlp.h | [Vanara.PInvoke.ActiveDS.FreeADsStr](https://github.com/dahall/Vanara/search?l=C%23&q=FreeADsStr)  
 [ReallocADsMem](https://www.google.com/search?num=5&q=ReallocADsMem+site%3Alearn.microsoft.com) | adshlp.h | [Vanara.PInvoke.ActiveDS.ReallocADsMem](https://github.com/dahall/Vanara/search?l=C%23&q=ReallocADsMem)  
 [ReallocADsStr](https://www.google.com/search?num=5&q=ReallocADsStr+site%3Alearn.microsoft.com) | adshlp.h | [Vanara.PInvoke.ActiveDS.ReallocADsStr](https://github.com/dahall/Vanara/search?l=C%23&q=ReallocADsStr)  
-[SecurityDescriptorToBinarySD](https://www.google.com/search?num=5&q=SecurityDescriptorToBinarySD+site%3Alearn.microsoft.com) | adshlp.h | [Vanara.PInvoke.ActiveDS.SecurityDescriptorToBinarySD](https://github.com/dahall/Vanara/search?l=C%23&q=SecurityDescriptorToBinarySD)  
+[SecurityDescriptorToBinarySD](https://www.google.com/search?num=5&q=SecurityDescriptorToBinarySD+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ActiveDS.SecurityDescriptorToBinarySD](https://github.com/dahall/Vanara/search?l=C%23&q=SecurityDescriptorToBinarySD)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

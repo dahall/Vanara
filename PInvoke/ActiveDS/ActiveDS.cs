@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.OleAut32;
 
@@ -89,7 +90,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADsBuildVarArrayStr</c> function builds a variant array from an array of Unicode strings.</summary>
 	/// <param name="lppPathNames">
-	/// <para>Type: <c>LPWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>Array of null-terminated Unicode strings.</para>
 	/// </param>
 	/// <param name="dwPathNames">
@@ -113,7 +114,7 @@ public static partial class ActiveDS
 	/// strings to a variant array of strings.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsbuildvararraystr HRESULT ADsBuildVarArrayStr( [in] LPWSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsbuildvararraystr HRESULT ADsBuildVarArrayStr( [in] StrPtrUni
 	// *lppPathNames, [in] DWORD dwPathNames, [out] VARIANT *pVar );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsBuildVarArrayStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
@@ -133,8 +134,8 @@ public static partial class ActiveDS
 	/// <para>Size, in bytes, of the BLOB.</para>
 	/// </param>
 	/// <param name="ppszDestData">
-	/// <para>Type: <c>LPWSTR*</c></para>
-	/// <para>Pointer to a null-terminated Unicode string that receives the converted data.</para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
+	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
@@ -144,8 +145,7 @@ public static partial class ActiveDS
 	/// <para>
 	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
 	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
-	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format. When the data is
-	/// no longer required, call the FreeADsMem function to free the converted Unicode string; that is, <c>ppszDestData</c>.
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format.
 	/// </para>
 	/// <para>
 	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
@@ -153,14 +153,12 @@ public static partial class ActiveDS
 	/// characters. For example, if the binary data is 0x05|0x1A|0x1B|0x43|0x32, the encoded string will contain "\05\1A\1BC2". This has no
 	/// effect on the filter and the search filters will work correctly with these types of strings.
 	/// </para>
-	/// <para>Examples</para>
-	/// <para>The following code example shows how to use this function.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
-	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
+	// pbSrcData, [in] DWORD dwSrcLen, [out] StrPtrUni *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
@@ -175,8 +173,8 @@ public static partial class ActiveDS
 	/// <para>Size, in bytes, of the BLOB.</para>
 	/// </param>
 	/// <param name="ppszDestData">
-	/// <para>Type: <c>LPWSTR*</c></para>
-	/// <para>Pointer to a null-terminated Unicode string that receives the converted data.</para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
+	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
@@ -186,8 +184,7 @@ public static partial class ActiveDS
 	/// <para>
 	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
 	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
-	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format. When the data is
-	/// no longer required, call the FreeADsMem function to free the converted Unicode string; that is, <c>ppszDestData</c>.
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format.
 	/// </para>
 	/// <para>
 	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
@@ -199,10 +196,10 @@ public static partial class ActiveDS
 	/// <para>The following code example shows how to use this function.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
-	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
+	// pbSrcData, [in] DWORD dwSrcLen, [out] StrPtrUni *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
@@ -225,13 +222,8 @@ public static partial class ActiveDS
 	/// </para>
 	/// </remarks>
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
-	public static HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, out string? ppszDestData)
-	{
-		var hr = ADsEncodeBinaryData(pbSrcData, (uint)pbSrcData.Length, out var ppsz);
-		ppszDestData = hr.Succeeded ? Marshal.PtrToStringUni(ppsz) : null;
-		if (hr.Succeeded) FreeADsMem(ppsz);
-		return hr;
-	}
+	public static HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, out string? ppszDestData) =>
+		ADsEncodeBinaryData(pbSrcData, (uint)pbSrcData.Length, out ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEnumerateNext</c> function enumerates through a specified number of elements from the current cursor position of the
@@ -303,7 +295,7 @@ public static partial class ActiveDS
 	/// <para>Pointer to the location that receives the error code.</para>
 	/// </param>
 	/// <param name="lpErrorBuf">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to the location that receives the null-terminated Unicode string that describes the error.</para>
 	/// </param>
 	/// <param name="dwErrorBufLen">
@@ -314,7 +306,7 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="lpNameBuf">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// Pointer to the location that receives the null-terminated Unicode string that describes the name of the provider that raised the error.
 	/// </para>
@@ -345,11 +337,11 @@ public static partial class ActiveDS
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsgetlasterror HRESULT ADsGetLastError( [out] LPDWORD lpError,
-	// [out] LPWSTR lpErrorBuf, [in] DWORD dwErrorBufLen, [out] LPWSTR lpNameBuf, [in] DWORD dwNameBufLen );
+	// [out] StrPtrUni lpErrorBuf, [in] DWORD dwErrorBufLen, [out] StrPtrUni lpNameBuf, [in] DWORD dwNameBufLen );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetLastError")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT ADsGetLastError(out Win32Error lpError, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpErrorBuf, int dwErrorBufLen,
-		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpNameBuf, int dwNameBufLen);
+	public static extern HRESULT ADsGetLastError(out Win32Error lpError, [Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(dwErrorBufLen))] StringBuilder? lpErrorBuf, [Range(0, Kernel32.MAX_PATH)] int dwErrorBufLen,
+		[Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(dwNameBufLen))] StringBuilder? lpNameBuf, [Range(0, Kernel32.MAX_PATH)] int dwNameBufLen);
 
 	/// <summary>The <c>ADsGetObject</c> function binds to an object given its path and a specified interface identifier.</summary>
 	/// <param name="lpszPathName">
@@ -391,42 +383,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetObject")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsGetObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, in Guid riid,
-		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppObject);
-
-	/// <summary>The <c>ADsGetObject</c> function binds to an object given its path and a specified interface identifier.</summary>
-	/// <typeparam name="T">The type of the interface to retrieve.</typeparam>
-	/// <param name="lpszPathName">
-	/// The null-terminated Unicode string that specifies the path used to bind to the object in the underlying directory service. For more
-	/// information and code examples for binding strings for this parameter, see LDAP ADsPath and WinNT ADsPath.
-	/// </param>
-	/// <param name="ppObject">The requested Interface.</param>
-	/// <returns>
-	/// <para>Type: <c>HRESULT</c></para>
-	/// <para>This method supports the standard <c>HRESULT</c> return values, as well as the following.</para>
-	/// <para>For more information about other return values, see ADSI Error Codes.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// A C/C++ client calls the <c>ADsGetObject</c> helper function to bind to an ADSI object. It is equivalent to a Visual Basic client
-	/// calling the GetObject function. They both take an ADsPath as input and returns a pointer to the requested interface. By default the
-	/// binding uses ADS_SECURE_AUTHENTICATION option with the security context of the calling thread. However, if the authentication fails,
-	/// the secure bind is downgraded to an anonymous bind, for example, a simple bind without user credentials. To securely bind to an ADSI
-	/// object, use the ADsOpenObject function instead of the <c>ADsGetObject</c> function.
-	/// </para>
-	/// <para>
-	/// It is possible to bind to an ADSI object with a user credential different from that of the currently logged-on user. To perform this
-	/// operation, use the ADsOpenObject function.
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsgetobject HRESULT ADsGetObject( [in] LPCWSTR lpszPathName,
-	// [in] REFIID riid, [out] VOID **ppObject );
-	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetObject")]
-	public static HRESULT ADsGetObject<T>(string lpszPathName, out T? ppObject) where T : class
-	{
-		var hr = ADsGetObject(lpszPathName, typeof(T).GUID, out var o);
-		ppObject = hr.Succeeded ? (T)o! : null;
-		return hr;
-	}
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppObject);
 
 	/// <summary>
 	/// The <c>ADsOpenObject</c> function binds to an ADSI object using explicit user name and password credentials. <c>ADsOpenObject</c> is
@@ -529,98 +486,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsOpenObject")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsOpenObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszUserName,
-		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszPassword, [Optional] ADS_AUTHENTICATION dwReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppObject);
-
-	/// <summary>
-	/// The <c>ADsOpenObject</c> function binds to an ADSI object using explicit user name and password credentials. <c>ADsOpenObject</c> is
-	/// a wrapper function for IADsOpenDSObject and is equivalent to the IADsOpenDSObject::OpenDsObject method.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to retrieve.</typeparam>
-	/// <param name="lpszPathName">
-	/// The null-terminated Unicode string that specifies the ADsPath of the ADSI object. For more information and code examples of binding
-	/// strings for this parameter, see LDAP ADsPath and WinNT ADsPath.
-	/// </param>
-	/// <param name="lpszUserName">
-	/// The null-terminated Unicode string that specifies the user name to supply to the directory service to use for credentials. This
-	/// string should always be in the format "&lt;domain\&gt;&lt;user name&gt;" to avoid ambiguity. For example, if DomainA and DomainB have
-	/// a trust relationship and both domains have a user with the name "user1", it is not possible to predict which domain
-	/// <c>ADsOpenObject</c> will use to validate "user1".
-	/// </param>
-	/// <param name="lpszPassword">
-	/// The null-terminated Unicode string that specifies the password to supply to the directory service to use for credentials.
-	/// </param>
-	/// <param name="ppObject">The requested interface.</param>
-	/// <param name="dwReserved">Provider-specific authentication flags used to define the binding options. For more information, see ADS_AUTHENTICATION_ENUM.</param>
-	/// <returns>
-	/// <para>Type: <c>HRESULT</c></para>
-	/// <para>This method supports the standard <c>HRESULT</c> return values, including the following.</para>
-	/// <para>For more information, see ADSI Error Codes.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>This function should not be used just to validate user credentials.</para>
-	/// <para>
-	/// A C/C++ client calls the <c>ADsOpenObject</c> helper function to bind to an ADSI object, using the user name and password supplied as
-	/// credentials for the appropriate directory service. If <c>lpszUsername</c> and <c>lpszPassword</c> are <c>NULL</c> and
-	/// <c>ADS_SECURE_AUTHENTICATION</c> is set, ADSI binds to the object using the security context of the calling thread, which is either
-	/// the security context of the user account under which the application is running or of the client user account that the calling thread impersonates.
-	/// </para>
-	/// <para>
-	/// The credentials passed to the <c>ADsOpenObject</c> function are used only with the particular object bound to and do not affect the
-	/// security context of the calling thread. This means that, in the example below, the call to <c>ADsOpenObject</c> will use different
-	/// credentials than the call to ADsGetObject.
-	/// </para>
-	/// <para>To work with the WinNT: provider, you can pass in <c>lpszUsername</c> as one of the following strings:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>The name of a user account, that is, "jeffsmith".</description>
-	/// </item>
-	/// <item>
-	/// <description>The Windows style user name, that is, "Fabrikam\jeffsmith".</description>
-	/// </item>
-	/// </list>
-	/// <para>With the LDAP provider for Active Directory, you may pass in <c>lpszUsername</c> as one of the following strings:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>
-	/// The name of a user account, such as "jeffsmith". To use a user name by itself, you must set only the <c>ADS_SECURE_AUTHENTICATION</c>
-	/// flag in the <c>dwReserved</c> parameter.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>The user path from a previous version of Windows, such as "Fabrikam\jeffsmith".</description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// Distinguished Name, such as "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=Com". To use a DN, the <c>dwReserved</c> parameter must be zero or
-	/// it must include the <c>ADS_USE_SSL</c> flag.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// User Principal Name (UPN), such as "jeffsmith@Fabrikam.com". To use a UPN, assign the appropriate UPN value for the
-	/// <c>userPrincipalName</c> attribute of the target user object.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// If Kerberos authentication is required for the successful completion of a specific directory request using the LDAP provider, the
-	/// <c>lpszPathName</c> binding string must use either a serverless ADsPath, such as "LDAP://CN=Jeff Smith,CN=admin,DC=Fabrikam,DC=com",
-	/// or it must use an ADsPath with a fully qualified DNS server name, such as "LDAP://central3.corp.Fabrikam.com/CN=Jeff
-	/// Smith,CN=admin,DC=Fabrikam,DC=com". Binding to the server using a flat NETBIOS name or a short DNS name, for example, using the short
-	/// name "central3" instead of "central3.corp.Fabrikam.com", may or may not yield Kerberos authentication.
-	/// </para>
-	/// <para>The following code example shows how to bind to a directory service object with the requested user credentials.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsopenobject HRESULT ADsOpenObject( [in] LPCWSTR lpszPathName,
-	// [in] LPCWSTR lpszUserName, [in] LPCWSTR lpszPassword, [in] DWORD dwReserved, [in] REFIID riid, [out] void **ppObject );
-	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsOpenObject")]
-	public static HRESULT ADsOpenObject<T>(string lpszPathName, out T? ppObject, [Optional] ADS_AUTHENTICATION dwReserved, [Optional] string? lpszUserName,
-		[Optional] string? lpszPassword) where T : class
-	{
-		var hr = ADsOpenObject(lpszPathName, lpszUserName, lpszPassword, dwReserved, typeof(T).GUID, out var o);
-		ppObject = hr.Succeeded ? (T)o! : null;
-		return hr;
-	}
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszPassword, [Optional] ADS_AUTHENTICATION dwReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppObject);
 
 	/// <summary>
 	/// The <c>ADsSetLastError</c> sets the last-error code value for the calling thread. Directory service providers can use this function
@@ -635,11 +501,11 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="pszError">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The null-terminated Unicode string that describes the network-specific error.</para>
 	/// </param>
 	/// <param name="pszProvider">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The null-terminated Unicode string that names the ADSI provider that raised the error.</para>
 	/// </param>
 	/// <returns>None</returns>
@@ -685,11 +551,11 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>AllocADsStr</c> function allocates memory for and copies a specified string.</summary>
 	/// <param name="pStr">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to a null-terminated Unicode string to be copied.</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// When successful, the function returns a non- <c>NULL</c> pointer to the allocated memory. The string in <c>pStr</c> is copied to this
 	/// buffer and null-terminated. The caller must free this memory when it is no longer required by passing the returned pointer to FreeADsStr.
@@ -700,7 +566,7 @@ public static partial class ActiveDS
 	/// </para>
 	/// </returns>
 	/// <remarks>For more information and a code example that shows how to use the <c>AllocADsStr</c> function, see ReallocADsStr.</remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-allocadsstr LPWSTR AllocADsStr( [in] LPCWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-allocadsstr StrPtrUni AllocADsStr( [in] LPCWSTR pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.AllocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
 	public static extern StrPtrUni AllocADsStr([MarshalAs(UnmanagedType.LPWStr)] string pStr);
@@ -788,7 +654,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>FreeADsStr</c> function frees the memory of a string allocated by AllocADsStr or ReallocADsStr.</summary>
 	/// <param name="pStr">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to the string to be freed. This string must have been allocated with the AllocADsStr or ReallocADsStr function.</para>
 	/// </param>
 	/// <returns>
@@ -802,7 +668,7 @@ public static partial class ActiveDS
 	/// </para>
 	/// <para>For more information and a code example that shows how to use the <c>FreeADsStr</c> function, see ReallocADsStr.</para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-freeadsstr BOOL FreeADsStr( [in] LPWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-freeadsstr BOOL FreeADsStr( [in] StrPtrUni pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.FreeADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -843,7 +709,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ReallocADsStr</c> function creates a copy of a Unicode string.</summary>
 	/// <param name="ppStr">
-	/// <para>Type: <c>LPWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// Pointer to null-terminated Unicode string pointer that receives the allocated string. <c>ReallocADsStr</c> will attempt to free this
 	/// memory with FreeADsStr before reallocating the string, so this parameter should be initialized to <c>NULL</c> if the memory should
@@ -852,15 +718,15 @@ public static partial class ActiveDS
 	/// <para>The caller must free this memory when it is no longer required by passing this pointer to FreeADsStr.</para>
 	/// </param>
 	/// <param name="pStr">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to a null-terminated Unicode string that contains the string to copy.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>The function returns <c>TRUE</c> if successful, otherwise <c>FALSE</c> is returned.</para>
 	/// </returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-reallocadsstr BOOL ReallocADsStr( [out] LPWSTR *ppStr, [in]
-	// LPWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-reallocadsstr BOOL ReallocADsStr( [out] StrPtrUni *ppStr, [in]
+	// StrPtrUni pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ReallocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -877,15 +743,10 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="ppSecurityDescriptor">
-	/// <para>Type: <c>PSECURITY_DESCRIPTOR*</c></para>
+	/// <para>Type: <c>SafePSECURITY_DESCRIPTOR</c></para>
 	/// <para>
-	/// Address of a SECURITY_DESCRIPTOR pointer that receives the binary security descriptor data. The caller must free this memory by
-	/// passing this pointer to the FreeADsMem function.
+	/// A SECURITY_DESCRIPTOR that receives the binary security descriptor data. This memory does not need to be freed.
 	/// </para>
-	/// </param>
-	/// <param name="pdwSDLength">
-	/// <para>Type: <c>PDWORD</c></para>
-	/// <para>Address of a <c>DWORD</c> value that receives the length, in bytes of the binary security descriptor data.</para>
 	/// </param>
 	/// <param name="pszServerName">
 	/// <para>Type: <c>LPCWSTR</c></para>
@@ -927,9 +788,36 @@ public static partial class ActiveDS
 	// SecurityDescriptorToBinarySD( [in] VARIANT vVarSecDes, [out] PSECURITY_DESCRIPTOR *ppSecurityDescriptor, [out] PDWORD pdwSDLength,
 	// [in] LPCWSTR pszServerName, [in] LPCWSTR userName, [in] LPCWSTR passWord, [in] DWORD dwFlags );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.SecurityDescriptorToBinarySD")]
+	public static HRESULT SecurityDescriptorToBinarySD([In] object? vVarSecDes, out AdvApi32.SafePSECURITY_DESCRIPTOR? ppSecurityDescriptor,
+		[Optional] string? pszServerName, [Optional] string? userName, [Optional] string? passWord, [Optional] ADS_AUTHENTICATION dwFlags)
+	{
+		var hr = SecurityDescriptorToBinarySD(vVarSecDes, out var p, out var l, pszServerName, userName, passWord, dwFlags);
+		ppSecurityDescriptor = hr.Succeeded ? new AdvApi32.SafePSECURITY_DESCRIPTOR(p.AsReadOnlySpan<byte>(l).ToArray()) : null;
+		if (hr.Succeeded) FreeADsMem(p);
+		return hr;
+	}
+
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT SecurityDescriptorToBinarySD([In, MarshalAs(UnmanagedType.Struct)] object? vVarSecDes,
-		out PSECURITY_DESCRIPTOR ppSecurityDescriptor, out uint pdwSDLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszServerName,
+	private static extern HRESULT SecurityDescriptorToBinarySD([In, MarshalAs(UnmanagedType.Struct)] object? vVarSecDes,
+		out IntPtr ppSecurityDescriptor, out uint pdwSDLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszServerName,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? userName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? passWord,
 		[Optional] ADS_AUTHENTICATION dwFlags);
+
+	/// <summary>A custom marshaler for functions using <see cref="AllocADsMem"/> and <see cref="FreeADsMem"/> so that managed strings can be used.</summary>
+	/// <seealso cref="ICustomMarshaler"/>
+	internal class AdsUnicodeStringMarshaler : ICustomMarshaler
+	{
+		public static ICustomMarshaler GetInstance(string _) => new AdsUnicodeStringMarshaler();
+
+		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
+
+		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) { if (pNativeData != IntPtr.Zero) Marshal.FreeCoTaskMem(pNativeData); }
+
+		int ICustomMarshaler.GetNativeDataSize() => IntPtr.Size;
+
+		IntPtr ICustomMarshaler.MarshalManagedToNative(object? ManagedObj) =>
+			ManagedObj is string s ? StringHelper.AllocString(s, CharSet.Unicode, i => AllocADsMem((uint)i), out _) : IntPtr.Zero;
+
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) { try { return StringHelper.GetString(pNativeData, CharSet.Unicode)!; } finally { FreeADsMem(pNativeData); } }
+	}
 }

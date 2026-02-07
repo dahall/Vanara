@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -40,7 +42,7 @@ public static partial class User32
 		GC_ROLLOVER = GC_PRESSANDTAP,
 	}
 
-	/// <summary>Flags for <see cref="GetGestureConfig"/>.</summary>
+	/// <summary>Flags for <c>GetGestureConfig</c>.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "8b7a594c-e9e4-4215-8946-da170c957a2b")]
 	[Flags]
 	public enum GCF
@@ -286,7 +288,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "443d12f2-9f26-4e1e-9bf3-cd97b4026399")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EvaluateProximityToPolygon(uint numVertices, [In] POINT[] controlPolygon, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
+	public static extern bool EvaluateProximityToPolygon(uint numVertices, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINT[] controlPolygon,
+		in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
 
 	/// <summary>
 	/// Returns the score of a rectangle as the probable touch target, compared to all other rectangles that intersect the touch contact
@@ -330,7 +333,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "269ef4c1-9c9f-4bd7-9852-e82c4a707d3c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EvaluateProximityToRect(in RECT controlBoundingBox, in TOUCH_HIT_TESTING_INPUT pHitTestingInput, out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
+	public static extern bool EvaluateProximityToRect(in RECT controlBoundingBox, in TOUCH_HIT_TESTING_INPUT pHitTestingInput,
+		out TOUCH_HIT_TESTING_PROXIMITY_EVALUATION pProximityEval);
 
 	/// <summary>Retrieves the configuration for which Windows Touch gesture messages are sent from a window.</summary>
 	/// <param name="hwnd">A handle to the window to get the gesture configuration from.</param>
@@ -371,7 +375,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "8b7a594c-e9e4-4215-8946-da170c957a2b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetGestureConfig(HWND hwnd, [Optional] uint dwReserved, GCF dwFlags, ref uint pcIDs, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GESTURECONFIG[] pGestureConfig, [In] uint cbSize);
+	public static extern bool GetGestureConfig([In, AddAsMember] HWND hwnd, [Optional, Ignore] uint dwReserved, GCF dwFlags, ref uint pcIDs,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pcIDs), SizingMethod.Query)] GESTURECONFIG[]? pGestureConfig, [In] uint cbSize);
 
 	/// <summary>Retrieves additional information about a gesture from its GESTUREINFO handle.</summary>
 	/// <param name="hGestureInfo">The handle to the gesture information that is passed in the lParam of a WM_GESTURE message.</param>
@@ -389,7 +394,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "f7775d88-6a5b-4283-ab40-65c2da218f81")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetGestureExtraArgs(HGESTUREINFO hGestureInfo, uint cbExtraArgs, IntPtr pExtraArgs);
+	public static extern bool GetGestureExtraArgs([In, AddAsMember] HGESTUREINFO hGestureInfo, [Range(0, 4096)] uint cbExtraArgs, [Out, SizeDef(nameof(cbExtraArgs))] IntPtr pExtraArgs);
 
 	/// <summary>Retrieves a GESTUREINFO structure given a handle to the gesture information.</summary>
 	/// <param name="hGestureInfo">The gesture information handle.</param>
@@ -416,7 +421,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "407ed585-09aa-4174-8907-8bb9590f1795")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetGestureInfo(HGESTUREINFO hGestureInfo, ref GESTUREINFO pGestureInfo);
+	public static extern bool GetGestureInfo([In, AddAsMember] HGESTUREINFO hGestureInfo, ref GESTUREINFO pGestureInfo);
 
 	/// <summary>Retrieves detailed information about touch inputs associated with a particular touch input handle.</summary>
 	/// <param name="hTouchInput">
@@ -449,7 +454,8 @@ public static partial class User32
 	// hTouchInput, UINT cInputs, PTOUCHINPUT pInputs, int cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "18caab11-9c22-46ac-b89f-dd3e662bea1e")]
-	[return: MarshalAs(UnmanagedType.Bool)] public static extern bool GetTouchInputInfo(HTOUCHINPUT hTouchInput, uint cInputs, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TOUCHINPUT[] pInputs, int cbSize);
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetTouchInputInfo([In, AddAsMember] HTOUCHINPUT hTouchInput, uint cInputs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TOUCHINPUT[] pInputs, int cbSize);
 
 	/// <summary>
 	/// The <c>GID_ROTATE_ANGLE_FROM_ARGUMENT</c> macro is used to interpret the <c>GID_ROTATE</c> ullArgument value when receiving the
@@ -615,7 +621,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c3c1425e-2af6-4ecb-a0b2-a456654f7a53")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InjectTouchInput(uint count, [In] POINTER_TOUCH_INFO[] contacts);
+	public static extern bool InjectTouchInput(uint count, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINTER_TOUCH_INFO[] contacts);
 
 	/// <summary>
 	/// Checks whether a specified window is touch-capable and, optionally, retrieves the modifier flags set for the window's touch capability.
@@ -657,7 +663,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "080b9d18-5975-4d38-ae3b-151f74120bb3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsTouchWindow(HWND hwnd, out TWF pulFlags);
+	public static extern bool IsTouchWindow([In, AddAsMember] HWND hwnd, out TWF pulFlags);
 
 	/// <summary>
 	/// Returns the proximity evaluation score and the adjusted touch-point coordinates as a packed value for the WM_TOUCHHITTESTING callback.
@@ -709,7 +715,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "52e48cea-b5c7-405f-8df6-26052304b62c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterTouchHitTestingWindow(HWND hwnd, TOUCH_HIT_TESTING value);
+	public static extern bool RegisterTouchHitTestingWindow([In, AddAsMember] HWND hwnd, TOUCH_HIT_TESTING value);
 
 	/// <summary>Registers a window as being touch-capable.</summary>
 	/// <param name="hwnd">
@@ -762,7 +768,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a70a7418-f79d-40c8-9219-3ce38a74da9f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterTouchWindow(HWND hwnd, TWF ulFlags);
+	public static extern bool RegisterTouchWindow([In, AddAsMember] HWND hwnd, TWF ulFlags);
 
 	/// <summary>Configures the messages that are sent from a window for Windows Touch gestures.</summary>
 	/// <param name="hwnd">A handle to the window to set the gesture configuration on.</param>
@@ -951,7 +957,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "7df5a18e-5e65-4dd5-a59d-853a91ead710")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetGestureConfig(HWND hwnd, [Optional] uint dwReserved, uint cIDs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GESTURECONFIG[] pGestureConfig, uint cbSize);
+	public static extern bool SetGestureConfig([In, AddAsMember] HWND hwnd, [Optional, Ignore] uint dwReserved, uint cIDs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GESTURECONFIG[] pGestureConfig, uint cbSize);
 
 	/// <summary>Converts touch coordinates to pixels.</summary>
 	/// <param name="l">The value to be converted from touch coordinates to pixels.</param>
@@ -984,7 +990,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "19b83312-b52b-45a5-9595-23d4621c4342")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterTouchWindow(HWND hwnd);
+	public static extern bool UnregisterTouchWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>Gets and sets the configuration for enabling gesture messages and the type of this configuration.</summary>
 	/// <remarks>
@@ -1261,10 +1267,10 @@ public static partial class User32
 	// ullArguments; UINT cbExtraArgs; } GESTUREINFO, *PGESTUREINFO;
 	[PInvokeData("winuser.h", MSDNShortId = "f5b8b530-ff1e-4d78-a12f-86990fe9ac88")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct GESTUREINFO
+	public struct GESTUREINFO()
 	{
 		/// <summary>The size of the structure, in bytes. The caller must set this to .</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<GESTUREINFO>();
 
 		/// <summary>The state of the gesture. For additional information, see Remarks.</summary>
 		public GF dwFlags;
@@ -1294,7 +1300,7 @@ public static partial class User32
 		public uint cbExtraArgs;
 
 		/// <summary>A default value for <see cref="GESTUREINFO"/> with the <see cref="cbSize"/> field value set correctly.</summary>
-		public static readonly GESTUREINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(GESTUREINFO)) };
+		public static readonly GESTUREINFO Default = new();
 	}
 
 	/// <summary>When transmitted with WM_GESTURENOTIFY messages, passes information about a gesture.</summary>
@@ -1303,10 +1309,10 @@ public static partial class User32
 	// GESTURENOTIFYSTRUCT, *PGESTURENOTIFYSTRUCT;
 	[PInvokeData("winuser.h", MSDNShortId = "e887c026-9300-4d20-8925-9939a664cd53")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct GESTURENOTIFYSTRUCT
+	public struct GESTURENOTIFYSTRUCT()
 	{
 		/// <summary>The size of the structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<GESTURENOTIFYSTRUCT>();
 
 		/// <summary>Reserved for future use.</summary>
 		public uint dwFlags;
@@ -1321,7 +1327,7 @@ public static partial class User32
 		public uint dwInstanceID;
 
 		/// <summary>A default value for <see cref="GESTURENOTIFYSTRUCT"/> with the <see cref="cbSize"/> field value set correctly.</summary>
-		public static readonly GESTURENOTIFYSTRUCT Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(GESTURENOTIFYSTRUCT)) };
+		public static readonly GESTURENOTIFYSTRUCT Default = new();
 	}
 
 	/// <summary>Contains information about the touch contact area reported by the touch digitizer.</summary>

@@ -3144,7 +3144,7 @@ public static partial class ComCtl32
 	/// <para>Window handle (HWND) of the wizard property sheet.</para>
 	/// </param>
 	/// <param name="lpszText">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to the new text for the Finish button.</para>
 	/// </param>
 	/// <returns>None</returns>
@@ -3215,7 +3215,7 @@ public static partial class ComCtl32
 	/// <para>Handle to the wizard.</para>
 	/// </param>
 	/// <param name="lpszText">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to a buffer that contains the text.</para>
 	/// </param>
 	/// <returns>None</returns>
@@ -3237,7 +3237,7 @@ public static partial class ComCtl32
 	/// </para>
 	/// </param>
 	/// <param name="lpszText">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Pointer to a buffer that contains the title string. If the HIWORD of this parameter is <c>NULL</c>, the property sheet loads the
 	/// string resource specified in the LOWORD.

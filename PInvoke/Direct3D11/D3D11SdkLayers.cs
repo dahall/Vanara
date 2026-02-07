@@ -5390,7 +5390,7 @@ public static partial class D3D11
 		/// <para>Returned message (see D3D11_MESSAGE).</para>
 		/// </param>
 		/// <param name="pMessageByteLength">
-		/// <para>Type: <c>SIZE_T*</c></para>
+		/// <para>Type: <c>SizeT*</c></para>
 		/// <para>Size of pMessage in bytes, including the size of the message string that the pMessage points to.</para>
 		/// </param>
 		/// <returns>
@@ -5407,7 +5407,7 @@ public static partial class D3D11
 		/// <para>For an overview see Information Queue Overview.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getmessage HRESULT
-		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D11_MESSAGE *pMessage, [in, out] SIZE_T *pMessageByteLength );
+		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D11_MESSAGE *pMessage, [in, out] SizeT *pMessageByteLength );
 		[PreserveSig]
 		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] StructPointer<D3D11_MESSAGE> pMessage, ref SizeT pMessageByteLength);
 
@@ -5495,7 +5495,7 @@ public static partial class D3D11
 		/// <para>Storage filter at the top of the storage-filter stack.</para>
 		/// </param>
 		/// <param name="pFilterByteLength">
-		/// <para>Type: <c>SIZE_T*</c></para>
+		/// <para>Type: <c>SizeT*</c></para>
 		/// <para>
 		/// Size of the storage filter in bytes. If pFilter is <c>NULL</c>, the size of the storage filter will be output to this parameter.
 		/// </para>
@@ -5505,7 +5505,7 @@ public static partial class D3D11
 		/// <para>This method returns one of the following Direct3D 11 Return Codes.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getstoragefilter HRESULT
-		// GetStorageFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
+		// GetStorageFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
 		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
 
@@ -5587,7 +5587,7 @@ public static partial class D3D11
 		/// <para>Retrieval filter at the top of the retrieval-filter stack.</para>
 		/// </param>
 		/// <param name="pFilterByteLength">
-		/// <para>Type: <c>SIZE_T*</c></para>
+		/// <para>Type: <c>SizeT*</c></para>
 		/// <para>
 		/// Size of the retrieval filter in bytes. If pFilter is <c>NULL</c>, the size of the retrieval filter will be output to this parameter.
 		/// </para>
@@ -5597,7 +5597,7 @@ public static partial class D3D11
 		/// <para>This method returns one of the following Direct3D 11 Return Codes.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getretrievalfilter HRESULT
-		// GetRetrievalFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
+		// GetRetrievalFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
 		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
 
@@ -6028,7 +6028,7 @@ public static partial class D3D11
 	/// This structure is returned from ID3D11InfoQueue::GetMessage as part of the Information Queue feature (see ID3D11InfoQueue Interface).
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/ns-d3d11sdklayers-d3d11_message typedef struct D3D11_MESSAGE {
-	// D3D11_MESSAGE_CATEGORY Category; D3D11_MESSAGE_SEVERITY Severity; D3D11_MESSAGE_ID ID; const char *pDescription; SIZE_T
+	// D3D11_MESSAGE_CATEGORY Category; D3D11_MESSAGE_SEVERITY Severity; D3D11_MESSAGE_ID ID; const char *pDescription; SizeT
 	// DescriptionByteLength; } D3D11_MESSAGE;
 	[PInvokeData("d3d11sdklayers.h", MSDNShortId = "NS:d3d11sdklayers.D3D11_MESSAGE")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -6059,7 +6059,7 @@ public static partial class D3D11
 		public StrPtrAnsi pDescription;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The length of pDescription in bytes.</para>
 		/// </summary>
 		public SizeT DescriptionByteLength;

@@ -49,10 +49,7 @@ public partial class WinBaseTests_ProcessThread
 	}
 
 	[Test]
-	public void GetCurrentProcessTest()
-	{
-		Assert.That(GetCurrentProcess(), ResultIs.ValidHandle);
-	}
+	public void GetCurrentProcessTest() => Assert.That(GetCurrentProcess(), Is.Not.EqualTo(HPROCESS.NULL));
 
 	[Test]
 	public void GetNumaAvailableMemoryNodeExTest()
@@ -137,21 +134,11 @@ public partial class WinBaseTests_ProcessThread
 	}
 
 	[Test]
-	public void SetThreadAffinityMaskTest()
-	{
-		Assert.That(SetThreadAffinityMask(GetCurrentThread(), 1), Is.Not.Zero);
-		//Assert.That(SetThreadAffinityMask(GetCurrentThread(), (UIntPtr)0).ToUInt64(), Is.Not.Zero);
-	}
+	public void SetThreadAffinityMaskTest() => Assert.That(SetThreadAffinityMask(GetCurrentThread(), 1), Is.Not.Zero);//Assert.That(SetThreadAffinityMask(GetCurrentThread(), (UIntPtr)0).ToUInt64(), Is.Not.Zero);
 
 	[Test]
-	public void SetThreadExecutionStateTest()
-	{
-		Assert.That((int)SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED), Is.Not.Zero);
-	}
+	public void SetThreadExecutionStateTest() => Assert.That((int)SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED), Is.Not.Zero);
 
 	[Test]
-	public void WinExecTest()
-	{
-		Assert.That(WinExec("notepad.exe", ShowWindowCommand.SW_NORMAL), Is.GreaterThan(31));
-	}
+	public void WinExecTest() => Assert.That(WinExec("notepad.exe", ShowWindowCommand.SW_NORMAL), Is.GreaterThan(31));
 }

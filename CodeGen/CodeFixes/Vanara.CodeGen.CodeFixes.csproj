@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <IncludeAssembly />
+  </ProjectExtensions>
+  <PropertyGroup>
+    <TargetFrameworks />
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>$(AssemblyName)</PackageId>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Vanara.Generators</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="C:\Users\dahal\Documents\GitHubRepos\Vanara\AsmDef.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
+  </ItemGroup>
+</Project>

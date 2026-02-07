@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -71,7 +73,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "6e77b793-a82e-4e23-8c8b-7aff79d69346")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateUmsCompletionList(out SafePUMS_COMPLETION_LIST UmsCompletionList);
+	public static extern bool CreateUmsCompletionList([AddAsCtor] out SafePUMS_COMPLETION_LIST UmsCompletionList);
 
 	/// <summary>
 	/// <para>Creates a user-mode scheduling (UMS) thread context to represent a UMS worker thread.</para>
@@ -116,7 +118,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "b27ce81a-8463-46af-8acf-2de091f625df")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateUmsThreadContext(out SafePUMS_CONTEXT lpUmsThread);
+	public static extern bool CreateUmsThreadContext([AddAsCtor] out SafePUMS_CONTEXT lpUmsThread);
 
 	/// <summary>
 	/// <para>Deletes the specified user-mode scheduling (UMS) completion list. The list must be empty.</para>
@@ -236,7 +238,48 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "91499eb9-9fc5-4135-95f6-1bced78f1e07")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DequeueUmsCompletionListItems(PUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut, out PUMS_CONTEXT UmsThreadList);
+	public static extern bool DequeueUmsCompletionListItems([In, AddAsMember] PUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut, out PUMS_CONTEXT UmsThreadList);
+
+	/// <summary>Retrieves user-mode scheduling (UMS) worker threads from the specified scheduling (UMS) completion list.</summary>
+	/// <param name="UmsCompletionList">The completion list to query.</param>
+	/// <param name="WaitTimeOut">
+	/// <para>
+	/// The time-out interval for the retrieval operation, in milliseconds. The function returns if the interval elapses, even if no worker
+	/// threads are queued to the completion list.
+	/// </para>
+	/// <para>
+	/// If the WaitTimeOut parameter is zero, the completion list is checked for available worker threads without waiting for worker threads
+	/// to become available. If the WaitTimeOut parameter is INFINITE, the function's time-out interval never elapses. This is not
+	/// recommended, however, because it causes the function to block until one or more worker threads become available.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// A sequence of <see cref="PUMS_CONTEXT"/> values for each thread context using <see cref="DequeueUmsCompletionListItems"/> and <see cref="GetNextUmsListItem"/>.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The system queues a UMS worker thread to a completion list when the worker thread is created or when a previously blocked worker
+	/// thread becomes unblocked. The <c>DequeueUmsCompletionListItems</c> function retrieves a pointer to a list of all thread contexts in
+	/// the specified completion list. The GetNextUmsListItem function can be used to pop UMS thread contexts off the list into the
+	/// scheduler's own ready thread queue. The scheduler is responsible for selecting threads to run based on priorities chosen by the application.
+	/// </para>
+	/// <para>
+	/// Do not run UMS threads directly from the list provided by <c>DequeueUmsCompletionListItems</c>, or run a thread transferred from the
+	/// list to the ready thread queue before the list is completely empty. This can cause unpredictable behavior in the application.
+	/// </para>
+	/// <para>
+	/// If more than one caller attempts to retrieve threads from a shared completion list, only the first caller retrieves the threads. For
+	/// subsequent callers, the <c>DequeueUmsCompletionListItems</c> function returns success but the UmsThreadList parameter is set to NULL.
+	/// </para>
+	/// </remarks>
+	public static IEnumerable<PUMS_CONTEXT> EnumUmsCompletionListItems([In, AddAsMember] PUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut = 0)
+	{
+		if (DequeueUmsCompletionListItems(UmsCompletionList, WaitTimeOut, out var pctx) && !pctx.IsNull)
+		{
+			for (var ctx = pctx; !ctx.IsNull; ctx = GetNextUmsListItem(ctx))
+				yield return ctx;
+		}
+	}
 
 	/// <summary>
 	/// <para>Converts the calling thread into a user-mode scheduling (UMS) scheduler thread.</para>
@@ -329,7 +372,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "e4265351-e8e9-4878-bd42-93258b4cd1a0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ExecuteUmsThread(PUMS_CONTEXT UmsThread);
+	public static extern bool ExecuteUmsThread([In, AddAsMember] PUMS_CONTEXT UmsThread);
 
 	/// <summary>
 	/// <para>Returns the user-mode scheduling (UMS) thread context of the calling UMS thread.</para>
@@ -396,7 +439,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "393f6e0a-fbea-4aa0-9c18-f96da18e61e9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUmsCompletionListEvent(PUMS_COMPLETION_LIST UmsCompletionList, out SafeEventHandle UmsCompletionEvent);
+	public static extern bool GetUmsCompletionListEvent([In, AddAsMember] PUMS_COMPLETION_LIST UmsCompletionList, out SafeEventHandle UmsCompletionEvent);
 
 	/// <summary>
 	/// <para>Queries whether the specified thread is a UMS scheduler thread, a UMS worker thread, or a non-UMS thread.</para>
@@ -431,7 +474,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "7c8347b6-6546-4ea9-9b2a-11794782f482")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUmsSystemThreadInformation(HTHREAD ThreadHandle, ref UMS_SYSTEM_THREAD_INFORMATION SystemThreadInfo);
+	public static extern bool GetUmsSystemThreadInformation([In, AddAsMember] HTHREAD ThreadHandle, ref UMS_SYSTEM_THREAD_INFORMATION SystemThreadInfo);
 
 	/// <summary>Retrieves information about the specified user-mode scheduling (UMS) worker thread.</summary>
 	/// <param name="UmsThread">A pointer to a UMS thread context.</param>
@@ -501,7 +544,7 @@ public static partial class Kernel32
 	/// <c>QueryUmsThreadInformation</c> should be considered reserved.
 	/// </para>
 	/// </remarks>
-	public static T QueryUmsThreadInformation<T>(PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass) where T : struct
+	public static T QueryUmsThreadInformation<T>([In, AddAsMember] PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(UmsThreadInfoClass, typeof(T))) throw new ArgumentException($"Cannot use {UmsThreadInfoClass} to retrieve a value of {typeof(T).Name}.");
 		if (!QueryUmsThreadInformation(UmsThread, UmsThreadInfoClass, IntPtr.Zero, 0, out var sz) && sz == 0)
@@ -557,7 +600,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "19f190fd-1f78-4bb6-93eb-73a5c522b44d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetUmsThreadInformation(PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
+	public static extern bool SetUmsThreadInformation([In, AddAsMember] PUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
 
 	/// <summary>
 	/// <para>Yields control to the user-mode scheduling (UMS) scheduler thread on which the calling UMS worker thread is running.</para>
@@ -591,50 +634,42 @@ public static partial class Kernel32
 	{
 		/// <summary>Gets a value indicating whether this instance is suspended.</summary>
 		/// <value><c>true</c> if this instance is suspended; otherwise, <c>false</c>.</value>
-		public bool IsSuspended => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsSuspended);
+		public bool IsSuspended => QueryUmsThreadInformation<BOOL>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsSuspended);
 
 		/// <summary>Gets a value indicating whether this instance is terminated.</summary>
 		/// <value><c>true</c> if this instance is terminated; otherwise, <c>false</c>.</value>
-		public bool IsTerminated => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsTerminated);
+		public bool IsTerminated => QueryUmsThreadInformation<BOOL>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsTerminated);
 	}
 
 	/// <summary>
 	/// Specifies attributes for a user-mode scheduling (UMS) scheduler thread. The EnterUmsSchedulingMode function uses this structure.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="UMS_SCHEDULER_STARTUP_INFO"/> struct.</remarks>
+	/// <param name="schedulerProc">A pointer to an application-defined UmsSchedulerProc entry point function.</param>
+	/// <param name="param">An application-defined parameter to pass to the specified UmsSchedulerProc function.</param>
+	/// <param name="completionList">A pointer to a UMS completion list to associate with the calling thread.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_ums_scheduler_startup_info typedef struct
 	// _UMS_SCHEDULER_STARTUP_INFO { ULONG UmsVersion; PUMS_COMPLETION_LIST CompletionList; PUMS_SCHEDULER_ENTRY_POINT SchedulerProc;
 	// PVOID SchedulerParam; } UMS_SCHEDULER_STARTUP_INFO, *PUMS_SCHEDULER_STARTUP_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "e3f7b1b7-d2b8-432d-bce7-3633292e855b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct UMS_SCHEDULER_STARTUP_INFO
+	public struct UMS_SCHEDULER_STARTUP_INFO(RtlUmsSchedulerEntryPoint schedulerProc, [Optional] IntPtr param, [Optional] PUMS_COMPLETION_LIST completionList)
 	{
 		/// <summary>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION (0x0100)</c>.</summary>
-		public uint UmsVersion;
+		public uint UmsVersion = UMS_VERSION;
 
 		/// <summary>A pointer to a UMS completion list to associate with the calling thread.</summary>
-		public PUMS_COMPLETION_LIST CompletionList;
+		public PUMS_COMPLETION_LIST CompletionList = completionList;
 
 		/// <summary>
 		/// A pointer to an application-defined UmsSchedulerProc entry point function. The system calls this function when the calling
 		/// thread has been converted to UMS and is ready to run UMS worker threads. Subsequently, it calls this function when a UMS
 		/// worker thread running on the calling thread yields or blocks.
 		/// </summary>
-		public RtlUmsSchedulerEntryPoint SchedulerProc;
+		public RtlUmsSchedulerEntryPoint SchedulerProc = schedulerProc;
 
 		/// <summary>An application-defined parameter to pass to the specified UmsSchedulerProc function.</summary>
-		public IntPtr SchedulerParam;
-
-		/// <summary>Initializes a new instance of the <see cref="UMS_SCHEDULER_STARTUP_INFO"/> struct.</summary>
-		/// <param name="schedulerProc">A pointer to an application-defined UmsSchedulerProc entry point function.</param>
-		/// <param name="param">An application-defined parameter to pass to the specified UmsSchedulerProc function.</param>
-		/// <param name="completionList">A pointer to a UMS completion list to associate with the calling thread.</param>
-		public UMS_SCHEDULER_STARTUP_INFO(RtlUmsSchedulerEntryPoint schedulerProc, [Optional] IntPtr param, [Optional] PUMS_COMPLETION_LIST completionList)
-		{
-			UmsVersion = UMS_VERSION;
-			CompletionList = completionList;
-			SchedulerProc = schedulerProc;
-			SchedulerParam = param;
-		}
+		public IntPtr SchedulerParam = param;
 	}
 
 	/// <summary>
@@ -648,17 +683,15 @@ public static partial class Kernel32
 	// DUMMYSTRUCTNAME; ULONG ThreadUmsFlags; } DUMMYUNIONNAME; } UMS_SYSTEM_THREAD_INFORMATION, *PUMS_SYSTEM_THREAD_INFORMATION;
 	[PInvokeData("winbase.h", MSDNShortId = "eecdc592-5046-47c3-a4c6-ecb10899db3c")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct UMS_SYSTEM_THREAD_INFORMATION
+	public struct UMS_SYSTEM_THREAD_INFORMATION()
 	{
-		/// <summary>
-		/// <para>The UMS version. This member must be UMS_VERSION.</para>
-		/// </summary>
-		public uint UmsVersion;
+		/// <summary>The UMS version. This member must be UMS_VERSION.</summary>
+		public uint UmsVersion = UMS_VERSION;
 
 		/// <summary>A bitfield that specifies a UMS thread type.</summary>
 		public ThreadUmsFlags ThreadUmsFlags;
 
 		/// <summary>Gets a default instance of this structure with the fields pre-set to default values.</summary>
-		public static readonly UMS_SYSTEM_THREAD_INFORMATION Default = new() { UmsVersion = UMS_VERSION };
+		public static readonly UMS_SYSTEM_THREAD_INFORMATION Default = new();
 	}
 }

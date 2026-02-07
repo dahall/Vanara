@@ -43,7 +43,7 @@ public static class Utils
 	{
 		StringCollection sc = new();
 		if (e != null)
-			sc.AddRange(e.ToArray());
+			sc.AddRange([.. e]);
 		return sc;
 	}
 }

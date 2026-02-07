@@ -726,7 +726,7 @@ public static partial class DOSvc
 	}
 
 	/// <summary>Contains fields for download and upload statistics for a file.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/delivery_optimization/doswarmstats typedef struct _DOSwarmStats { LPWSTR fileId; LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/delivery_optimization/doswarmstats typedef struct _DOSwarmStats { StrPtrUni fileId; StrPtrUni
 	// sourceURL; UINT64 fileSize; UINT64 totalBytesDownloaded; UINT64 bytesFromLanPeers; UINT64 bytesFromGroupPeers; UINT64
 	// bytesFromInternetPeers; UINT64 bytesFromHttp; UINT64 bytesFromDoinc; UINT64 bytesToLanPeers; UINT64 bytesToGroupPeers; UINT64
 	// bytesToInternetPeers; UINT httpConnectionCount; UINT doincConnectionCount; UINT lanConnectionCount; UINT groupConnectionCount; UINT

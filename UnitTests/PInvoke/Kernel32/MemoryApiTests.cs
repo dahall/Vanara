@@ -8,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class MemoryApiTests
 {
 	// From https://docs.microsoft.com/en-us/windows/desktop/Memory/awe-example
-	[Test]
+	[TestWhenElevated]
 	public void AWETest()
 	{
 		const uint MEMORY_REQUESTED = 1024 * 1024;
@@ -47,10 +47,10 @@ public class MemoryApiTests
 				Assert.That(MapUserPhysicalPages(lpMemReserved, NumberOfPages, null), ResultIs.Successful);
 
 				// Map the physical memory into the window scattered.
-				Assert.That(MapUserPhysicalPagesScatter(lpMemReserved, NumberOfPages, aPFNs), ResultIs.Successful);
+				Assert.That(MapUserPhysicalPagesScatter([lpMemReserved], NumberOfPages, aPFNs), ResultIs.Successful);
 
 				// unmap
-				Assert.That(MapUserPhysicalPagesScatter(lpMemReserved, NumberOfPages, null), ResultIs.Successful);
+				Assert.That(MapUserPhysicalPagesScatter([lpMemReserved], NumberOfPages, null), ResultIs.Successful);
 
 				// Free the physical pages.
 				Assert.That(FreeUserPhysicalPages(hProc, ref NumberOfPages, aPFNs), ResultIs.Successful);
@@ -77,7 +77,7 @@ public class MemoryApiTests
 	[Test]
 	public void GetMemoryErrorHandlingCapabilitiesTest()
 	{
-		Assert.That(GetMemoryErrorHandlingCapabilities(out uint cap), Is.True);
+		Assert.That(GetMemoryErrorHandlingCapabilities(out var cap), Is.True);
 		TestContext.WriteLine(cap);
 	}
 
@@ -114,7 +114,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalCreateFromStringListTest()
 	{
-		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = ["AAAA", "BBBB", "CCCC"];
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStringList(strings);
 		CollectionAssert.AreEqual(strings, h.ToStringEnum());
 	}
@@ -140,7 +140,7 @@ public class MemoryApiTests
 	{
 		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStructure(val);
-		HGLOBAL myh = h.TakeOwnership();
+		HGLOBAL myh = h.ReleaseOwnership();
 		try
 		{
 			IntPtr p = GlobalLock(myh);
@@ -162,7 +162,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalWriteStringListTest()
 	{
-		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = ["AAAA", "BBBB", "CCCC"];
 		using SafeMoveableHGlobalHandle h = new(256);
 		h.CallLocked(p => p.Write(strings, StringListPackMethod.Concatenated, offset: 64, allocatedBytes: h.Size));
 		CollectionAssert.AreEqual(strings, h.ToStringEnum(prefixBytes: 64));

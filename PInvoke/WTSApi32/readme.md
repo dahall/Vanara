@@ -3,9 +3,10 @@ PInvoke API (methods, structures and constants) imported from Windows WTSApi32.d
 
 - Includes methods from wtsapi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WTSApi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WTSApi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WTSApi32)  
-### Methods - 100% API coverage (44 of 44 functions)  
+### Methods - 97% API coverage (44 of 45 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
+[WTSActiveSessionExists](https://www.google.com/search?num=5&q=WTSActiveSessionExists+site%3Alearn.microsoft.com) |  |   
 [WTSCloseServer](https://www.google.com/search?num=5&q=WTSCloseServer+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSCloseServer](https://github.com/dahall/Vanara/search?l=C%23&q=WTSCloseServer)  
 [WTSConnectSession](https://www.google.com/search?num=5&q=WTSConnectSessionA+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSConnectSession](https://github.com/dahall/Vanara/search?l=C%23&q=WTSConnectSession)  
 [WTSCreateListener](https://www.google.com/search?num=5&q=WTSCreateListenerA+site%3Alearn.microsoft.com) | wtsapi32.h | [Vanara.PInvoke.WTSApi32.WTSCreateListener](https://github.com/dahall/Vanara/search?l=C%23&q=WTSCreateListener)  

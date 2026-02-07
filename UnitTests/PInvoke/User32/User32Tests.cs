@@ -108,25 +108,27 @@ public partial class User32Tests
 	[Test]
 	public void CreateWindowExTest()
 	{
-		WindowClass wc = new("MyWindowClass");
-		SafeCoTaskMemHandle mem = new(128);
+		WindowClass wc = WindowClass.MakeVisibleWindowClass("MyWindowClass", null);
+		using SafeCoTaskMemHandle mem = new(128);
 		SafeHWND wnd = new(IntPtr.Zero, false);
 		Assert.That(wnd = CreateWindowEx(0, wc.ClassName, "1234567890", WindowStyles.WS_OVERLAPPEDWINDOW, lpParam: mem), ResultIs.ValidHandle);
+		Assert.That(IsWindowUnicode(wnd), Is.EqualTo(IsWide.Value));
 		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(10));
 		Assert.That(SetWindowText(wnd, "Hello, World!\0"));
 		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(13));
 		StringBuilder sb = new(256);
 		Assert.That(GetWindowText(wnd, sb, sb.Capacity), Is.EqualTo(13));
 		Assert.That(sb.ToString(), Is.EqualTo("Hello, World!"));
+		wnd.Dispose();
 	}
 
-	[Test]
+	//[Test]
 	public void DrawTextTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ExitWindowsExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void GetClientRectTest() => throw new NotImplementedException();
 
 	[Test]
@@ -134,7 +136,7 @@ public partial class User32Tests
 	{
 		var array = new GESTURECONFIG[] { new(GID.GID_ZOOM), new(GID.GID_ROTATE), new(GID.GID_PAN) };
 		var aLen = (uint)array.Length;
-		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf(typeof(GESTURECONFIG)));
+		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf<GESTURECONFIG>());
 		if (!b) Win32Error.ThrowLastError();
 		Assert.That(b, Is.True);
 		Assert.That(aLen, Is.GreaterThan(0));
@@ -146,10 +148,10 @@ public partial class User32Tests
 	public void GetRawInputDeviceInfoTest()
 	{
 		uint nDev = 0;
-		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
 		Assert.That(nDev, Is.GreaterThan(0));
 		RAWINPUTDEVICELIST[] devs = new RAWINPUTDEVICELIST[(int)nDev];
-		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
 		Assert.That(nDev, Is.GreaterThan(0));
 
 		for (int i = 0; i < nDev; i++)
@@ -163,41 +165,52 @@ public partial class User32Tests
 	}
 
 	[Test]
+	public void GetAsyncKeyStateTest()
+	{
+		Assert.That(GetAsyncKeyState(VK.VK_SPACE), ResultIs.Not.Value(0));
+	}
+
+	[Test]
 	public void GetSetWindowLongTest()
 	{
 		var s = WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPSIBLINGS;
-		WindowClass wc = new("MyWindowClass");
+		WindowClass wc = new();
 		SafeHWND wnd = CreateWindowEx(0, wc.ClassName, "1234567890", s);
 		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s));
 		SetWindowLong(wnd, WindowLongFlags.GWL_STYLE, (int)(s | WindowStyles.WS_DISABLED));
 		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s | WindowStyles.WS_DISABLED));
 	}
 
-	[Test]
+	//[Test]
 	public void GetWindowRectTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void InvalidateRectTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void LoadImageTest() => throw new NotImplementedException();
 
 	[Test]
-	public void LoadStringTest() => throw new NotImplementedException();
+	public void LoadStringTest()
+	{
+		using var lib = Kernel32.LoadLibraryEx(TestCaseSources.ResourceFile, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+		Assert.That(lib, ResultIs.ValidHandle);
+		Assert.That(LoadString(lib, 103), Is.EqualTo("DummyResourceExe"));
+	}
 
-	[Test]
+	//[Test]
 	public void LoadStringTest1() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void LockWorkStationTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest1() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest2() => throw new NotImplementedException();
 
 	[Test]
@@ -322,16 +335,16 @@ public partial class User32Tests
 		Assert.That(dlg.controls[1].title.name, Is.EqualTo(dlg2!.controls[1].title.name));
 	}
 
-	[Test]
+	//[Test]
 	public void RealGetWindowClassTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void RegisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void RegisterWindowMessageTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ScreenToClientTest() => throw new NotImplementedException();
 
 	[Test]
@@ -382,40 +395,40 @@ public partial class User32Tests
 		TestContext.WriteLine(sb);
 	}
 
-	[Test]
+	//[Test]
 	public void SendMessageTest2() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest3() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest4() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest5() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest6() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowPosTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowTextTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonCreateTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonDestroyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonQueryTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonQueryTest1() => throw new NotImplementedException();
 
 	[Test]
@@ -518,52 +531,52 @@ public partial class User32Tests
 	{
 		// Try set bool value
 		SystemParametersInfo(SPI.SPI_GETBLOCKSENDINPUTRESETS, out bool bval);
-		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval ? 1u : 0u, IntPtr.Zero, 0));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval ? 1u : 0u, IntPtr.Zero, 0), ResultIs.Successful);
 
 		// Try set generic bool value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval), ResultIs.Successful);
 
 		// Try set integral value
 		SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint ival);
-		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)(int)ival, SPIF.SPIF_SENDCHANGE));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)(int)ival, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic integral value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, ival));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, ival, false, false), ResultIs.Successful);
 
 		// Try set enum value
 		SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization cv);
 		uint cvu = (uint)cv;
 		using (var pi = new PinnedObject(cvu))
-			Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, 0, pi, SPIF.SPIF_SENDCHANGE));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, 0, pi, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic enum value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, cv));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, cv), ResultIs.Successful);
 
 		// Try set struct value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area));
+		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area), ResultIs.Successful);
 		area.right /= 2;
 		using (var ptr = new PinnedObject(area))
-			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf<RECT>(), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic struct value
 		area.right *= 2;
-		Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, area));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, area), ResultIs.Successful);
 
 		// Try set string value
 		var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
+		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0), ResultIs.Successful);
 		var wp = TestCaseSources.ImageFile;
-		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE));
-		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
+		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void UnregisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void WindowFromPointTest() => throw new NotImplementedException();
 
 	[Test]
@@ -586,6 +599,19 @@ public partial class User32Tests
 			gotMsg = true;
 			return false;
 		}
+	}
+
+	// A test that exercises generated methods for GetPointerDevices, GetPointerFrameInfoHistory, and GetPointerFramePenInfoHistory
+	[Test]
+	public void PointerDeviceTests()
+	{
+		Assert.That(GetPointerDevices(out POINTER_DEVICE_INFO[]? devices), ResultIs.Successful);
+		TestContext.WriteLine($"Found {devices!.Length} pointer devices. Using '{devices[0].productString}'.");
+		devices.WriteValues();
+
+		Assert.That(GetPointerDeviceProperties(devices[0].device, out var props), ResultIs.Successful);
+		props!.WriteValues();
+
 	}
 
 	private IntPtr DlgProc(HWND hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam)

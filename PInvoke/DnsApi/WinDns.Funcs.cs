@@ -270,7 +270,7 @@ public static partial class DnsApi
 	/// </summary>
 	/// <param name="proxyName">A pointer to the <c>proxyName</c> string to be freed.</param>
 	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsfreeproxyname void DnsFreeProxyName( _Frees_ptr_opt_ PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsfreeproxyname void DnsFreeProxyName( _Frees_ptr_opt_ StrPtrUni
 	// proxyName );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "4c69d548-3bb5-4609-9fc5-3a829a285956")]
@@ -1285,8 +1285,8 @@ public static partial class DnsApi
 	[PInvokeData("windns.h")]
 	public static extern SafePDNS_SERVICE_INSTANCE DnsServiceConstructInstance([MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pHostName, in IP4_ADDRESS pIp4, in IP6_ADDRESS pIp6, ushort wPort, [Optional] ushort wPriority,
-		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? keys,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? values);
+		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 7)] string[]? keys,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 7)] string[]? values);
 
 	/// <summary>Used to build a DNS_SERVICE_INSTANCE structure from data that describes it.</summary>
 	/// <param name="pServiceName">A string that represents the name of the service.</param>
@@ -1311,8 +1311,8 @@ public static partial class DnsApi
 	[PInvokeData("windns.h")]
 	public static extern SafePDNS_SERVICE_INSTANCE DnsServiceConstructInstance([MarshalAs(UnmanagedType.LPWStr)] string pServiceName,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pHostName, [In, Optional] IntPtr pIp4, [In, Optional] IntPtr pIp6, ushort wPort, [Optional] ushort wPriority,
-		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? keys,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? values);
+		[Optional] ushort wWeight, [Optional] uint dwPropertiesCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 7)] string[]? keys,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 7)] string[]? values);
 
 	/// <summary>Used to copy a DNS_SERVICE_INSTANCE structure.</summary>
 	/// <param name="pOrig">A pointer to the DNS_SERVICE_INSTANCE structure that is to be copied.</param>

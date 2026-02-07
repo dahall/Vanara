@@ -729,7 +729,7 @@ public static partial class D3D11
 	/// <para>A pointer to compiled shader data.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size, in bytes, of the block of memory that pSrcData points to.</para>
 	/// </param>
 	/// <param name="pTrace">
@@ -804,7 +804,7 @@ public static partial class D3D11
 	/// performs, D3DDisassemble11Trace provides an execution trace that is based on the shader trace information.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11shadertracing/nf-d3d11shadertracing-d3ddisassemble11trace HRESULT
-	// D3DDisassemble11Trace( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] ID3D11ShaderTrace *pTrace, [in] UINT StartStep, [in] UINT
+	// D3DDisassemble11Trace( [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] ID3D11ShaderTrace *pTrace, [in] UINT StartStep, [in] UINT
 	// NumSteps, [in] UINT Flags, [out] ID3D10Blob **ppDisassembly );
 	[PInvokeData("d3d11shadertracing.h", MSDNShortId = "NF:d3d11shadertracing.D3DDisassemble11Trace")]
 	[DllImport("d3dcompiler_47.dll", SetLastError = false, ExactSpelling = true)]

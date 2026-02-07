@@ -3,17 +3,15 @@
     <AssemblyName>UnitTests.Shared</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <!--<Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />-->
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="9.0.0.7889" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.12.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ICSharpCode.Decompiler" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 </Project>

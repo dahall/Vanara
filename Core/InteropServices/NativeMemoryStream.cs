@@ -191,7 +191,7 @@ public class NativeMemoryStream : Stream
 	/// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not
 	/// currently available, or zero (0) if the end of the stream has been reached.
 	/// </returns>
-	public virtual int Read(byte[] buffer) => Read(buffer, 0, buffer.Length);
+	public virtual int Read(byte[] buffer) => Read(buffer, 0, buffer?.Length ?? 0);
 
 	/// <summary>
 	/// Reads a blittable type from the current stream and advances the position within the stream by the number of bytes read.
@@ -549,14 +549,9 @@ public class NativeMemoryStream : Stream
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private T ThrowIfDisposed<T>(T value) => !IsDisposed ? value : throw new ObjectDisposedException(nameof(NativeMemoryStream));
 
-	private class Reference
+	private class Reference(long offset, object? val)
 	{
-		public long Offset, WriteOffset;
-		public object? Value;
-
-		public Reference(long offset, object? val)
-		{
-			Offset = offset; Value = val;
-		}
+		public long Offset = offset, WriteOffset;
+		public object? Value = val;
 	}
 }

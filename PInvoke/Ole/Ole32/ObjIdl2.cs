@@ -220,7 +220,7 @@ public static partial class Ole32
 		/// </para>
 		/// <para>The call to <c>PreAlloc</c> through the return from PostAlloc is guaranteed to be thread-safe.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prealloc SIZE_T PreAlloc( SIZE_T cbRequest );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prealloc SizeT PreAlloc( SizeT cbRequest );
 		[PreserveSig]
 		SizeT PreAlloc(SizeT cbRequest);
 
@@ -294,8 +294,8 @@ public static partial class Ole32
 		/// failure is effective only if cbRequest is not equal to 0.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prerealloc SIZE_T PreRealloc( void *pRequest,
-		// SIZE_T cbRequest, void **ppNewRequest, BOOL fSpyed );
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prerealloc SizeT PreRealloc( void *pRequest,
+		// SizeT cbRequest, void **ppNewRequest, BOOL fSpyed );
 		[PreserveSig]
 		SizeT PreRealloc(IntPtr pRequest, SizeT cbRequest, out IntPtr ppNewRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
 
@@ -345,7 +345,7 @@ public static partial class Ole32
 		/// The size determined by GetSize is the value returned by the HeapSize function. This is the size originally requested. For
 		/// example, a memory allocation request of 27 bytes returns an allocation of 32 bytes and <c>GetSize</c> returns 27.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postgetsize SIZE_T PostGetSize( SIZE_T
+		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postgetsize SizeT PostGetSize( SizeT
 		// cbActual, BOOL fSpyed );
 		[PreserveSig]
 		SizeT PostGetSize(SizeT cbActual, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);

@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -49,7 +50,7 @@ public static partial class Ole32
 		/// </param>
 		public CLIPDATA(int clipFmt, IntPtr dataPtr, int dataLength)
 		{
-			cbSize = dataLength + Marshal.SizeOf(typeof(int));
+			cbSize = dataLength + Marshal.SizeOf<int>();
 			ulClipFmt = clipFmt;
 			pClipData = dataPtr;
 		}
@@ -60,20 +61,20 @@ public static partial class Ole32
 		{
 			pClipData = Marshal.StringToHGlobalAuto(clipFmt);
 			ulClipFmt = clipFmt.Length + 1;
-			cbSize = ulClipFmt * Marshal.SystemDefaultCharSize + Marshal.SizeOf(typeof(int));
+			cbSize = ulClipFmt * Marshal.SystemDefaultCharSize + Marshal.SizeOf<int>();
 		}
 
 		/// <summary>The clipboard format.</summary>
-		public uint ClipboardFormat => ulClipFmt is (-1) or (-2) ? (uint)Marshal.ReadInt32(pClipData) : 0;
+		public readonly uint ClipboardFormat => ulClipFmt is (-1) or (-2) ? (uint)Marshal.ReadInt32(pClipData) : 0;
 
 		/// <summary>The clipboard name.</summary>
-		public string? ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
+		public readonly string? ClipboardFormatName => ulClipFmt > 0 ? Marshal.PtrToStringUni(pClipData) : null;
 
 		/// <summary>The clipboard format id.</summary>
-		public Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
+		public readonly Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
 
 		/// <inheritdoc/>
-		public override string ToString() => ulClipFmt switch
+		public override readonly string ToString() => ulClipFmt switch
 		{
 			0 => "[No data]",
 			-1 or -2 => $"CF={ClipboardFormat}",
@@ -462,11 +463,12 @@ public static partial class Ole32
 		/// <summary>Gets the VARTYPE for a provided type.</summary>
 		/// <param name="type">The type to analyze.</param>
 		/// <returns>A best fit <see cref="VARTYPE"/> for the provided type.</returns>
-		public static VARTYPE GetVarType(Type? type)
+		[RequiresUnreferencedCode("Uses reflection when passing COM objects.")]
+		public static VARTYPE GetVarType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] Type? type)
 		{
 			if (type == null)
 				return VARTYPE.VT_NULL;
-			var elemtype = type.GetElementType() ?? type;
+			Type elemtype = type.GetElementType() ?? type;
 
 			if (type.IsArray && elemtype == typeof(object)) return VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 
@@ -503,9 +505,7 @@ public static partial class Ole32
 				return ret | VARTYPE.VT_HRESULT;
 			if (elemtype.IsCOMObject)
 			{
-#pragma warning disable IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
-				Type[] intf = elemtype!.GetInterfaces();
-#pragma warning restore IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
+				Type[] intf = elemtype.GetInterfaces();
 				if (intf.Contains(typeof(IStream))) return ret | VARTYPE.VT_STREAM;
 				if (intf.Contains(typeof(IStorage))) return ret | VARTYPE.VT_STORAGE;
 				return ret | VARTYPE.VT_UNKNOWN;
@@ -647,7 +647,7 @@ public static partial class Ole32
 		{
 			string s = "";
 			if (IsVector && Value is IEnumerable ie)
-				s = string.Join(",", ie.Cast<object>().Select(o => o.ToString()).ToArray());
+				s = string.Join(",", [.. ie.Cast<object>().Select(o => o.ToString())]);
 			else if (PropVariantToStringAlloc(this, out var str).Succeeded)
 				s = str;
 			return $"{vt}={s ?? "null"}";
@@ -672,7 +672,7 @@ public static partial class Ole32
 
 		private static IEnumerable<T> ConvertToEnum<T>(object array, Func<object, T>? conv = null)
 		{
-			if (array is null) return new T[0];
+			if (array is null) return [];
 
 			if (array is IEnumerable<T> iet) return iet;
 
@@ -681,11 +681,11 @@ public static partial class Ole32
 			try
 			{
 				var ie = array as IEnumerable;
-				return ie?.Cast<object>().Select(conv) ?? new[] { conv(array) };
+				return ie?.Cast<object>().Select(conv) ?? [conv(array)];
 			}
 			catch
 			{
-				return new T[0];
+				return [];
 			}
 		}
 
@@ -727,9 +727,9 @@ public static partial class Ole32
 			return _ptr.ToNullableStructure<T>();
 		}
 
-		private IEnumerable<object?> GetSafeArray()
+		private object?[] GetSafeArray()
 		{
-			if (_ptr == IntPtr.Zero) return new object[0];
+			if (_ptr == IntPtr.Zero) return [];
 			var sa = new SafeSAFEARRAY(_ptr, false);
 			var dims = SafeArrayGetDim(sa);
 			if (dims != 1) throw new NotSupportedException("Only single-dimensional arrays are supported");
@@ -769,7 +769,7 @@ public static partial class Ole32
 		{
 			var ve = (VarEnum)((int)vt & 0x0FFF);
 			if (ve == VarEnum.VT_LPSTR)
-				return _blob.pBlobData.ToStringEnum((int)_blob.cbSize, CharSet.Ansi).ToArray();
+				return [.. _blob.pBlobData.ToStringEnum((int)_blob.cbSize, CharSet.Ansi)];
 			PropVariantToStringVector(this, out var vals).ThrowIfFailed();
 			return vals;
 		}
@@ -815,7 +815,7 @@ public static partial class Ole32
 			};
 		}
 
-		private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize))! : throw new InvalidCastException();
+		private T[] GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? [] : _blob.pBlobData.ToArray<T>((int)_blob.cbSize))! : throw new InvalidCastException();
 
 		private void SetSafeArray(IList<object> array)
 		{
@@ -836,8 +836,7 @@ public static partial class Ole32
 		private void SetSafeArray(SafeSAFEARRAY array)
 		{
 			SafeArrayCopy(array, out var myArray).ThrowIfFailed();
-			_ptr = myArray.DangerousGetHandle();
-			myArray.SetHandleAsInvalid();
+			_ptr = myArray.ReleaseOwnership();
 		}
 
 		[SecurityCritical, SecuritySafeCritical]
@@ -914,7 +913,7 @@ public static partial class Ole32
 				}
 				else
 				{
-					SetSafeArray(ConvertToEnum<object>(value!).ToList());
+					SetSafeArray([.. ConvertToEnum<object>(value!)]);
 					vt = VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 				}
 				return;
@@ -1119,7 +1118,7 @@ public static partial class Ole32
 				case VARTYPE.VT_VOID:
 				case VARTYPE.VT_PTR:
 				default:
-					throw new ArgumentOutOfRangeException(nameof(Value), $"{vt}={value}");
+					throw new ArgumentOutOfRangeException(nameof(value), $"{vt}={value}");
 			}
 
 			HRESULT AllocVector<T>(T[] vector, uint vsz, PROPVARIANT? pv = null)

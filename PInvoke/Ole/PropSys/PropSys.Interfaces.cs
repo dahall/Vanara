@@ -547,7 +547,7 @@ public static partial class PropSys
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject(
 		// REFCLSID clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
 		[PInvokeData("propsys.h", MSDNShortId = "72c56de7-4c04-4bcf-b6bb-6e41d12b68a3")]
-		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 	}
 
 	/// <summary>
@@ -919,15 +919,42 @@ public static partial class PropSys
 		/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 		/// <param name="pdfFlags">
-		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property
-		/// string format.
+		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.
 		/// </param>
+		/// <param name="ppszDisplay">When this method returns, contains the formatted value.</param>
 		/// <returns>
-		/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
-		/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return Code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The string was copied and null-terminated without truncation. This string may be returned empty due to an empty input string or
+		/// from a non-empty value that was formatted as an empty string.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <description>The empty string resulted from a VT_EMPTY.</description>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <description>The pszText parameter is NULL.</description>
+		/// </item>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The copy operation failed due to insufficient space. The destination buffer is modified to contain a truncated version of the
+		/// ideal result and is null-terminated.
+		/// </description>
+		/// </item>
+		/// </list>
 		/// </returns>
-		[return: MarshalAs(UnmanagedType.LPWStr)]
-		string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
+		[PreserveSig]
+		HRESULT FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
 
 		/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -1073,15 +1100,42 @@ public static partial class PropSys
 		/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 		/// <param name="pdfFlags">
-		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property
-		/// string format.
+		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.
 		/// </param>
+		/// <param name="ppszDisplay">When this method returns, contains the formatted value.</param>
 		/// <returns>
-		/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
-		/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return Code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The string was copied and null-terminated without truncation. This string may be returned empty due to an empty input string or
+		/// from a non-empty value that was formatted as an empty string.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <description>The empty string resulted from a VT_EMPTY.</description>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <description>The pszText parameter is NULL.</description>
+		/// </item>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The copy operation failed due to insufficient space. The destination buffer is modified to contain a truncated version of the
+		/// ideal result and is null-terminated.
+		/// </description>
+		/// </item>
+		/// </list>
 		/// </returns>
-		[return: MarshalAs(UnmanagedType.LPWStr)]
-		new string FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
+		[PreserveSig]
+		new HRESULT FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
 
 		/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -1502,7 +1556,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystore HRESULT
 		// GetPropertyStore( GETPROPERTYSTOREFLAGS flags, IUnknown *pUnkFactory, REFIID riid, void **ppv );
-		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
+		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>
@@ -1780,7 +1834,7 @@ public static partial class PropSys
 		/// <para>The format of the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
 		/// </param>
 		/// <param name="pszText">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Receives the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer.
 		/// </para>
@@ -1915,7 +1969,7 @@ public static partial class PropSys
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplay HRESULT
-		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR pszText, DWORD cchText );
+		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni pszText, DWORD cchText );
 		void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, uint cchText);
 
 		/// <summary>Gets a string representation of a property value to an allocated memory buffer.</summary>
@@ -1932,7 +1986,7 @@ public static partial class PropSys
 		/// <para>The format of the property string. See PROPDESC_FORMAT_FLAGS.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>When this method returns, contains a pointer to the formatted value as a null-terminated, Unicode string.</para>
 		/// </returns>
 		/// <remarks>
@@ -2062,7 +2116,7 @@ public static partial class PropSys
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplayalloc HRESULT
-		// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
+		// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni *ppszDisplay );
 		string FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
 
 		/// <summary>Informs the schema subsystem of the addition of a property description schema file.</summary>
@@ -2140,10 +2194,10 @@ public static partial class PropSys
 	/// <remarks>This method can be used with GetPropertyStoreWithCreateObject.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject( REFCLSID
 	// clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
-	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter) where T : class
+	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, Optional] object? pUnkOuter) where T : class
 	{
 		co.CreateObject(clsid, pUnkOuter, typeof(T).GUID, out var ppv);
-		return (T)ppv;
+		return (T)ppv!;
 	}
 }
 

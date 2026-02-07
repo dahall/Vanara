@@ -775,8 +775,7 @@ public static partial class D2d1
 		/// </returns>
 		/// <remarks>A DIP is 1/96 of an inch. To retrieve the size in device pixels, use the ID2D1Bitmap::GetPixelSizemethod.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getsize D2D1_SIZE_F GetSize();
-		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size, in device-dependent units (pixels), of the bitmap.</summary>
 		/// <returns>
@@ -785,7 +784,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the bitmap.</summary>
 		/// <returns>
@@ -794,7 +793,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Return the dots per inch (DPI) of the bitmap.</summary>
 		/// <param name="dpiX">
@@ -2403,7 +2402,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, [Optional] D2D1_GAMMA colorInterpolationGamma, [Optional] D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -3498,7 +3497,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -3507,7 +3507,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -3557,12 +3557,12 @@ public static partial class D2d1
 
 		/// <summary>Returns the size of the render target in device-independent pixels.</summary>
 		/// <returns>
-		/// <para>Type: <c>D2D1_SIZE_F</c></para>
+		/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
 		/// <para>The current size of the render target in device-independent pixels.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size of the render target in device pixels.</summary>
 		/// <returns>
@@ -3571,7 +3571,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
 		/// <returns>
@@ -4778,7 +4778,7 @@ public static partial class D2d1
 		/// <para>The index of the property for which the name is being returned.</para>
 		/// </param>
 		/// <param name="name">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains the name being retrieved.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -4790,7 +4790,7 @@ public static partial class D2d1
 		/// <c>RESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER)</c>, name will still be filled and truncated.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-		// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+		// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 		new void GetPropertyName(uint index, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
 		/// <summary>Gets the number of characters for the given property name. This is a template overload. See Remarks.</summary>
@@ -5620,7 +5620,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -6291,7 +6291,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getbounds(constd2d1_matrix_3x2_f_d2d1_rect_f)
 		// HRESULT GetBounds( const D2D1_MATRIX_3X2_F *worldTransform, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetBounds([In, Optional] PD2D_RECT_F? worldTransform);
+		new D2D_RECT_F GetBounds([In, Optional] StructPointer<D2D_MATRIX_3X2_F> worldTransform);
 
 		/// <summary>
 		/// Gets the bounds of the geometry after it has been widened by the specified stroke width and style and transformed by the
@@ -6324,7 +6324,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -6363,7 +6363,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -6394,7 +6394,7 @@ public static partial class D2d1
 		// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
 		// *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Describes the intersection between this geometry and the specified geometry. The comparison is performed by using the specified
@@ -6434,7 +6434,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-comparewithgeometry%28id2d1geometry_constd2d1_matrix_3x2_f_float_d2d1_geometry_relation%29
 		// HRESULT CompareWithGeometry( ID2D1Geometry *inputGeometry, const D2D1_MATRIX_3X2_F *inputGeometryTransform, FLOAT
 		// flatteningTolerance, D2D1_GEOMETRY_RELATION *relation );
-		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance);
+		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Creates a simplified version of the geometry that contains only lines and (optionally) cubic Bezier curves and writes the result
@@ -6467,7 +6467,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-simplify%28d2d1_geometry_simplification_option_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Simplify( D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix and
@@ -6492,7 +6492,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-tessellate%28constd2d1_matrix_3x2_f_float_id2d1tessellationsink%29
 		// HRESULT Tessellate( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1TessellationSink
 		// *tessellationSink );
-		new void Tessellate([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1TessellationSink tessellationSink);
+		new void Tessellate([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null);
 
 		/// <summary>Combines this geometry with the specified geometry and stores the result in an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="inputGeometry">
@@ -6522,7 +6522,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-combinewithgeometry(id2d1geometry_d2d1_combine_mode_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT CombineWithGeometry( ID2D1Geometry *inputGeometry, D2D1_COMBINE_MODE combineMode, const D2D1_MATRIX_3X2_F &amp;
 		// inputGeometryTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Computes the outline of the geometry and writes the result to an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="worldTransform">
@@ -6568,7 +6568,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-outline%28constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Outline( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink
 		// *geometrySink );
-		new void Outline([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Outline([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Computes the area of the geometry after it has been transformed by the specified matrix and flattened using the specified tolerance.
@@ -6594,7 +6594,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computearea(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeArea( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *area );
-		new float ComputeArea([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		new float ComputeArea([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>Calculates the length of the geometry as though each segment were unrolled into a line.</summary>
 		/// <param name="worldTransform">
@@ -6618,7 +6618,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computelength(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeLength( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *length );
-		new float ComputeLength([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		new float ComputeLength([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
@@ -6693,7 +6693,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Retrieves the geometry sink that is used to populate the path geometry with figures and segments.</summary>
 		/// <returns>
@@ -6847,7 +6847,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1pathgeometry1-computepointandsegmentatlength(float_uint32_constd2d1_matrix_3x2_f_float_d2d1_point_description)
 		// HRESULT ComputePointAndSegmentAtLength( FLOAT length, UINT32 startSegment, [in, optional] const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, [out] D2D1_POINT_DESCRIPTION *pointDescription );
-		D2D1_POINT_DESCRIPTION ComputePointAndSegmentAtLength(float length, uint startSegment, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
+		D2D1_POINT_DESCRIPTION ComputePointAndSegmentAtLength(float length, uint startSegment, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 	}
 
 	/// <summary>
@@ -7102,7 +7102,7 @@ public static partial class D2d1
 		/// <para>The index of the property for which the name is being returned.</para>
 		/// </param>
 		/// <param name="name">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains the name being retrieved.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -7114,7 +7114,7 @@ public static partial class D2d1
 		/// <c>RESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER)</c>, name will still be filled and truncated.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-		// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+		// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 		void GetPropertyName(uint index, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
 		/// <summary>Gets the number of characters for the given property name. This is a template overload. See Remarks.</summary>
@@ -7617,7 +7617,7 @@ public static partial class D2d1
 	/// </item>
 	/// </list>
 	/// </remarks>
-	public static D2D1_POINT_DESCRIPTION ComputePointAndSegmentAtLength(this ID2D1PathGeometry1 pathgeo, float length, uint startSegment, float flatteningTolerance, [In, Optional] D2D1_MATRIX_3X2_F? worldTransform)
+	public static D2D1_POINT_DESCRIPTION ComputePointAndSegmentAtLength(this ID2D1PathGeometry1 pathgeo, float length, uint startSegment, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] D2D1_MATRIX_3X2_F? worldTransform = null)
 	{
 		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> mem = worldTransform;
 		return pathgeo.ComputePointAndSegmentAtLength(length, startSegment, mem, flatteningTolerance);
@@ -7785,7 +7785,7 @@ public static partial class D2d1
 	/// <returns>When this method returns, contains the name being retrieved.</returns>
 	/// <remarks>This method returns an empty string if index is invalid.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-	// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+	// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 	public static string GetPropertyName(this ID2D1Properties props, uint index)
 	{
 		var len = props.GetPropertyNameLength(index);
@@ -8399,7 +8399,7 @@ public static partial class D2d1
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh404326(v=vs.85) typedef struct D2D1_RESOURCE_USAGE {
-	// SIZE_T workingTextureAreaMemory; SIZE_T cachingTextureAreaMemory; SIZE_T shaderCacheMemory; } D2D1_RESOURCE_USAGE, *PD2D1_RESOURCE_USAGE;
+	// SizeT workingTextureAreaMemory; SizeT cachingTextureAreaMemory; SizeT shaderCacheMemory; } D2D1_RESOURCE_USAGE, *PD2D1_RESOURCE_USAGE;
 	[PInvokeData("D2D1.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D2D1_RESOURCE_USAGE

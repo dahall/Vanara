@@ -431,7 +431,7 @@ public static partial class Shell32
 		/// Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)]
-		void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Copies an item or items to a folder.</summary>
 		/// <param name="vItem">
@@ -444,7 +444,7 @@ public static partial class Shell32
 		/// defined by name for Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)]
-		void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Retrieves details about an item in a folder. For example, its size, type, or the time of its last modification.</summary>
 		/// <param name="vItem">The item for which to retrieve the information. This must be a FolderItem object.</param>
@@ -533,7 +533,7 @@ public static partial class Shell32
 		/// Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)]
-		new void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		new void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Copies an item or items to a folder.</summary>
 		/// <param name="vItem">
@@ -546,7 +546,7 @@ public static partial class Shell32
 		/// defined by name for Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)]
-		new void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		new void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Retrieves details about an item in a folder. For example, its size, type, or the time of its last modification.</summary>
 		/// <param name="vItem">The item for which to retrieve the information. This must be a FolderItem object.</param>
@@ -658,7 +658,7 @@ public static partial class Shell32
 		/// Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020007)]
-		new void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		new void MoveHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Copies an item or items to a folder.</summary>
 		/// <param name="vItem">
@@ -671,7 +671,7 @@ public static partial class Shell32
 		/// defined by name for Visual Basic, VBScript, or JScript, so you must define them yourself or use their numeric equivalents.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020008)]
-		new void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] FILEOP_FLAGS vOptions);
+		new void CopyHere([In, MarshalAs(UnmanagedType.Struct)] object vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vOptions);
 
 		/// <summary>Retrieves details about an item in a folder. For example, its size, type, or the time of its last modification.</summary>
 		/// <param name="vItem">The item for which to retrieve the information. This must be a FolderItem object.</param>
@@ -822,7 +822,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020010)]
-		void InvokeVerb([In, Optional, MarshalAs(UnmanagedType.Struct)] string? vVerb);
+		void InvokeVerb([In, Optional, MarshalAs(UnmanagedType.Struct)] object? vVerb);
 	}
 
 	/// <summary>Extends the FolderItems object. It supports one additional method.</summary>
@@ -932,7 +932,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020010)]
-		new void InvokeVerb([In, Optional, MarshalAs(UnmanagedType.Struct)] string? vVerb);
+		new void InvokeVerb([In, Optional, MarshalAs(UnmanagedType.Struct)] object? vVerb);
 
 		/// <summary>
 		/// Executes a verb on a collection of FolderItem objects. This method is an extension of the InvokeVerb method, allowing
@@ -946,7 +946,7 @@ public static partial class Shell32
 		/// depends on the particular verb.
 		/// </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)]
-		void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] string? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] string? vArgs);
+		void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] object? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArgs);
 
 		/// <summary>Access an extended property</summary>
 		/// <param name="bstrPropName">Name of the property.</param>
@@ -983,7 +983,7 @@ public static partial class Shell32
 		/// <returns>An object reference to the FolderItem object.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] int index);
+		FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object index);
 
 		/// <summary>Creates and returns a new FolderItems object that is a copy of this FolderItemsss object.</summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -1016,7 +1016,7 @@ public static partial class Shell32
 		/// <returns>An object reference to the FolderItem object.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] int index);
+		new FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object index);
 
 		/// <summary>Creates and returns a new FolderItems object that is a copy of this FolderItemsss object.</summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -1040,7 +1040,7 @@ public static partial class Shell32
 		/// editor, usually Microsoft Notepad. For further discussion of verbs, see Launching Applications.
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)]
-		void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] string? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] string? vArgs);
+		void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] object? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArgs);
 	}
 
 	/// <summary>Extends the FolderItems2 object. This object supports an additional method and property.</summary>
@@ -1068,7 +1068,7 @@ public static partial class Shell32
 		/// <returns>An object reference to the FolderItem object.</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		new FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] int index);
+		new FolderItem Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object index);
 
 		/// <summary>Creates and returns a new FolderItems object that is a copy of this FolderItemsss object.</summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -1092,7 +1092,7 @@ public static partial class Shell32
 		/// editor, usually Microsoft Notepad. For further discussion of verbs, see Launching Applications.
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60030000)]
-		new void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] string? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] string? vArgs);
+		new void InvokeVerbEx([In, Optional, MarshalAs(UnmanagedType.Struct)] object? vVerb, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vArgs);
 
 		/// <summary>Sets a wildcard filter to apply to the items returned.</summary>
 		/// <param name="grfFlags">This parameter can be one of the flags listed in SHCONTF.</param>
@@ -1178,7 +1178,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/folderitemverbs-item
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-		FolderItemVerb Item([In, Optional, MarshalAs(UnmanagedType.Struct)] int index);
+		FolderItemVerb Item([In, Optional, MarshalAs(UnmanagedType.Struct)] object index);
 
 		/// <summary>Creates and returns a new FolderItemVerbs object that is a copy of this FolderItemVerbs object.</summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -6041,6 +6041,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-popupitemmenu
 		[return: MarshalAs(UnmanagedType.BStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
+		[SuppressAutoGen]
 		string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vy);
 
 		/// <summary>

@@ -312,7 +312,7 @@ public static partial class PropSys
 	// PSCreateAdapterFromPropertyStore( IPropertyStore *pps, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "a3489f95-e790-481a-af6e-f30527dc476c")]
-	public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Creates a read-only, delayed-binding property store that contains multiple property stores.</para>
@@ -433,7 +433,7 @@ public static partial class PropSys
 	// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
-	public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 	/// <summary>Creates an in-memory property store.</summary>
 	/// <typeparam name="TIntf">The type of the interface.</typeparam>
@@ -457,7 +457,7 @@ public static partial class PropSys
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatememorypropertystore PSSTDAPI
 	// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
 	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
-	public static TIntf? PSCreateMemoryPropertyStore<TIntf>() where TIntf : class => FunctionHelper.IidGetObj<TIntf, HRESULT>(PSCreateMemoryPropertyStore);
+	public static TIntf? PSCreateMemoryPropertyStore<TIntf>() where TIntf : class { PSCreateMemoryPropertyStore(out TIntf? ppv).ThrowIfFailed(); return ppv; }
 
 	/// <summary>
 	/// <para>
@@ -523,7 +523,7 @@ public static partial class PropSys
 	// PSCreateMultiplexPropertyStore( IUnknown **prgpunkStores, DWORD cStores, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "4a6b5a10-5ef2-42c7-bf3b-dfa743be252f")]
-	public static extern HRESULT PSCreateMultiplexPropertyStore([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
+	public static extern HRESULT PSCreateMultiplexPropertyStore([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
 		uint cStores, in Guid riid, out IPropertyStore ppv);
 
 	/// <summary>
@@ -611,7 +611,7 @@ public static partial class PropSys
 	// PSCreatePropertyStoreFromPropertySetStorage( IPropertySetStorage *ppss, DWORD grfMode, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "efba5a2a-df26-4f7e-9ddf-ec471e3d547c")]
-	public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -681,7 +681,7 @@ public static partial class PropSys
 	/// <para>A flag that specifies the format to apply to the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
 	/// </param>
 	/// <param name="pwszText">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string. The calling
 	/// application is responsible for allocating memory for the buffer before it calls PSFormatForDisplay.
@@ -888,7 +888,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatfordisplay PSSTDAPI PSFormatForDisplay(
-	// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, LPWSTR pwszText, DWORD cchText );
+	// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, StrPtrUni pwszText, DWORD cchText );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "71442967-ee8a-448c-83cf-949934ddd152")]
 	public static extern HRESULT PSFormatForDisplay(in PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
@@ -913,7 +913,7 @@ public static partial class PropSys
 	/// <para>One or more flags that specify the format to apply to the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
 	/// </param>
 	/// <param name="ppszDisplay">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// When the function returns, contains a pointer to a null-terminated, Unicode string representation of the requested property value.
 	/// </para>
@@ -1098,7 +1098,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatfordisplayalloc PSSTDAPI PSFormatForDisplayAlloc(
-	// REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, PWSTR *ppszDisplay );
+	// REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni *ppszDisplay );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "d411ea72-fb29-47b6-a7f6-0839b3e2caf2")]
 	public static extern HRESULT PSFormatForDisplayAlloc(in PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff,
@@ -1126,7 +1126,7 @@ public static partial class PropSys
 	/// </para>
 	/// </param>
 	/// <param name="ppszDisplay">
-	/// <para>Type: <c>LPWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string.</para>
 	/// </param>
 	/// <returns>
@@ -1283,7 +1283,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatpropertyvalue PSSTDAPI PSFormatPropertyValue(
-	// IPropertyStore *pps, IPropertyDescription *ppd, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
+	// IPropertyStore *pps, IPropertyDescription *ppd, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni *ppszDisplay );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "35c2b424-05bd-4d7d-8365-5900e165e2e2")]
 	public static extern HRESULT PSFormatPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPDESC_FORMAT_FLAGS pdff,
@@ -1326,7 +1326,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetimagereferenceforvalue PSSTDAPI
-	// PSGetImageReferenceForValue( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PWSTR *ppszImageRes );
+	// PSGetImageReferenceForValue( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, StrPtrUni *ppszImageRes );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "E37AF2ED-E3F9-4e50-9317-9DAF03AC543F")]
 	public static extern HRESULT PSGetImageReferenceForValue(in PROPERTYKEY propkey, PROPVARIANT propvar,
@@ -1385,7 +1385,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "7b7fd260-c863-41f7-8594-4ee435090228")]
 	public static extern HRESULT PSGetItemPropertyHandler([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-		in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>Retrieves a property handler for a Shell item.</para>
@@ -1449,7 +1449,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "82e0aa15-b67c-4c0a-bafb-f1dc5f822aec")]
 	public static extern HRESULT PSGetItemPropertyHandlerWithCreateObject([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-		[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets a value from serialized property storage by property name.</para>
@@ -1526,7 +1526,7 @@ public static partial class PropSys
 	/// <returns>The result of the operation. S_OK indicates success.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
-	public static extern HRESULT PSGetPropertyDescription(in PROPERTYKEY propkey, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT PSGetPropertyDescription(in PROPERTYKEY propkey, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets an instance of a property description interface for a specified property name.</para>
@@ -2080,7 +2080,7 @@ public static partial class PropSys
 	// PSGetPropertyDescriptionByName( LPCWSTR pszCanonicalName, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "181ebbfb-66ed-4763-ad2d-acf3c800f9d2")]
-	public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+	public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets an instance of a property description list interface for a specified property list.</para>
@@ -2482,7 +2482,7 @@ public static partial class PropSys
 	/// <para>Reference to a PROPERTYKEY structure that identifies a property.</para>
 	/// </param>
 	/// <param name="psz">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to a buffer that receives the output string. The buffer should be large enough to contain PKEYSTR_MAX <c>WCHAR</c><c>s</c>.</para>
 	/// </param>
 	/// <param name="cch">
@@ -2499,7 +2499,7 @@ public static partial class PropSys
 	/// <para>The following example, to be included as part of a larger program, demonstrates the use of PSPropertyKeyFromString.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psstringfrompropertykey PSSTDAPI PSStringFromPropertyKey(
-	// REFPROPERTYKEY pkey, LPWSTR psz, UINT cch );
+	// REFPROPERTYKEY pkey, StrPtrUni psz, UINT cch );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "081f8e6d-9189-44f9-9b27-e85f4793da48")]
 	public static extern HRESULT PSStringFromPropertyKey(in PROPERTYKEY pkey, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);

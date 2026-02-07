@@ -2088,7 +2088,7 @@ public static partial class OleDb
 		[PreserveSig]
 		HRESULT GetColumnsRowset([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, DBORDINAL cOptColumns,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DBID[] rgOptColumns, in Guid riid, uint cPropertySets,
-			[In, Out] SafeDBPROPSETListHandle rgPropertySets, [MarshalAs(UnmanagedType.IUnknown)] out object? ppColRowset);
+			[In, Out] SafeDBPROPSETListHandle rgPropertySets, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppColRowset);
 	}
 
 	/// <summary>
@@ -2434,7 +2434,7 @@ public static partial class OleDb
 		// REFIID riid, DBPARAMS *pParams, DBROWCOUNT *pcRowsAffected, IUnknown **ppRowset);
 		[PreserveSig]
 		HRESULT Execute([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [In, Out, Optional] DBPARAMS? pParams,
-			out DBROWCOUNT pcRowsAffected, [MarshalAs(UnmanagedType.IUnknown)] out object? ppRowset);
+			out DBROWCOUNT pcRowsAffected, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppRowset);
 
 		/// <summary>Returns an interface pointer to the session that created the command.</summary>
 		/// <param name="riid">[in] The IID of the interface on which to return a pointer.</param>
@@ -2474,7 +2474,7 @@ public static partial class OleDb
 		/// </returns>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms719622(v=vs.85) HRESULT GetDBSession ( REFIID riid, IUnknown **ppSession);
 		[PreserveSig]
-		HRESULT GetDBSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppSession);
+		HRESULT GetDBSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppSession);
 	}
 
 	/// <summary>
@@ -3108,7 +3108,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms724347(v=vs.85) HRESULT GetCommandStream ( IID *piid, GUID
 		// *pguidDialect, IUnknown **ppCommandStream);
 		[PreserveSig]
-		HRESULT GetCommandStream(out Guid piid, [In, Out, Optional] GuidPtr pguidDialect, [MarshalAs(UnmanagedType.IUnknown)] out object? ppCommandStream);
+		HRESULT GetCommandStream(out Guid piid, [In, Out, Optional] GuidPtr pguidDialect, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppCommandStream);
 
 		/// <summary>Sets the interface pointer of a stream object containing a command.</summary>
 		/// <param name="riid">
@@ -4560,7 +4560,7 @@ public static partial class OleDb
 		HRESULT CreateRow([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
 			DBBINDURLFLAG dwBindURLFlags, in Guid rguid, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pAuthenticate,
 			[In, Out, Optional] IntPtr pImplSession, out DBBINDURLSTATUS pdwBindStatus, out SafeIMallocHandle ppwszNewURL,
-			[Optional, MarshalAs(UnmanagedType.IUnknown)] out object? ppUnk);
+			[Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppUnk);
 	}
 
 	/// <summary>Creates and binds to an object named by a URL and returns the requested interface pointer.</summary>

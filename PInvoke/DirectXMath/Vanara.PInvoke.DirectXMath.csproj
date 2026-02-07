@@ -21,9 +21,6 @@ Structures
 </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
-    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
+    <PackageReference Include="CommunityToolkit.HighPerformance" />
   </ItemGroup>
 </Project>

@@ -812,7 +812,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-enumdirtree BOOL IMAGEAPI EnumDirTree( HANDLE hProcess,
-	// PCSTR RootPath, PCSTR InputPathName, PSTR OutputPathBuffer, PENUMDIRTREE_CALLBACK cb, PVOID data );
+	// PCSTR RootPath, PCSTR InputPathName, StrPtrAnsi OutputPathBuffer, PENUMDIRTREE_CALLBACK cb, PVOID data );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.EnumDirTree")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -970,7 +970,7 @@ public static partial class DbgHelp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-finddebuginfofile HANDLE IMAGEAPI FindDebugInfoFile( PCSTR
-	// FileName, PCSTR SymbolPath, PSTR DebugFilePath );
+	// FileName, PCSTR SymbolPath, StrPtrAnsi DebugFilePath );
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindDebugInfoFile")]
 	public static extern SafeHFILE FindDebugInfoFile([MarshalAs(UnmanagedType.LPStr)] string FileName, [MarshalAs(UnmanagedType.LPStr)] string SymbolPath,
@@ -1027,7 +1027,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-finddebuginfofileex HANDLE IMAGEAPI FindDebugInfoFileEx(
-	// PCSTR FileName, PCSTR SymbolPath, PSTR DebugFilePath, PFIND_DEBUG_FILE_CALLBACK Callback, PVOID CallerData );
+	// PCSTR FileName, PCSTR SymbolPath, StrPtrAnsi DebugFilePath, PFIND_DEBUG_FILE_CALLBACK Callback, PVOID CallerData );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindDebugInfoFileEx")]
 	public static extern SafeHFILE FindDebugInfoFileEx([MarshalAs(UnmanagedType.LPTStr)] string FileName, [MarshalAs(UnmanagedType.LPTStr)] string SymbolPath,
@@ -1061,7 +1061,7 @@ public static partial class DbgHelp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-findexecutableimage HANDLE IMAGEAPI FindExecutableImage(
-	// PCSTR FileName, PCSTR SymbolPath, PSTR ImageFilePath );
+	// PCSTR FileName, PCSTR SymbolPath, StrPtrAnsi ImageFilePath );
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindExecutableImage")]
 	public static extern SafeHFILE FindExecutableImage([MarshalAs(UnmanagedType.LPStr)] string FileName, [MarshalAs(UnmanagedType.LPStr)] string SymbolPath,
@@ -1101,7 +1101,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-findexecutableimageex HANDLE IMAGEAPI
-	// FindExecutableImageEx( PCSTR FileName, PCSTR SymbolPath, PSTR ImageFilePath, PFIND_EXE_FILE_CALLBACK Callback, PVOID CallerData );
+	// FindExecutableImageEx( PCSTR FileName, PCSTR SymbolPath, StrPtrAnsi ImageFilePath, PFIND_EXE_FILE_CALLBACK Callback, PVOID CallerData );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.FindExecutableImageEx")]
 	public static extern SafeHFILE FindExecutableImageEx([MarshalAs(UnmanagedType.LPTStr)] string FileName, [MarshalAs(UnmanagedType.LPTStr)] string SymbolPath,
@@ -1681,7 +1681,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-searchtreeforfile BOOL IMAGEAPI SearchTreeForFile( PCSTR
-	// RootPath, PCSTR InputPathName, PSTR OutputPathBuffer );
+	// RootPath, PCSTR InputPathName, StrPtrAnsi OutputPathBuffer );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SearchTreeForFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2111,7 +2111,7 @@ public static partial class DbgHelp
 	/// <para>For an example, see Retrieving Undecorated Symbol Names.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-undecoratesymbolname DWORD IMAGEAPI UnDecorateSymbolName(
-	// PCSTR name, PSTR outputString, DWORD maxStringLength, DWORD flags );
+	// PCSTR name, StrPtrAnsi outputString, DWORD maxStringLength, DWORD flags );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.UnDecorateSymbolName")]
 	public static extern uint UnDecorateSymbolName([MarshalAs(UnmanagedType.LPTStr)] string name, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder outputString,

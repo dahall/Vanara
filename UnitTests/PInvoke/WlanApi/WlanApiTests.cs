@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using static Vanara.PInvoke.WlanApi;
@@ -67,6 +67,18 @@ public class WlanApiTests
 
 	[OneTimeTearDown]
 	public void _TearDown() => hWlan?.Dispose();
+
+	[Test]
+	public void DOT11_SSIDEncodingTest()
+	{
+		const string ssidStr = "₩ ¶頻xt52~$&-/@ш저反O し";
+		DOT11_SSID ssid = new(ssidStr);
+		var utf8 = Encoding.UTF8.GetBytes(ssidStr);
+		Assert.That(ssid.ucSSID, Is.EqualTo(utf8));
+		Assert.That(ssid.ucSSID.Length, Is.EqualTo(32));
+		Assert.That(ssid.uSSIDLength, Is.EqualTo(utf8.Length));
+		Assert.That(ssid.ToString(), Is.EqualTo(ssidStr));
+	}
 
 	[Test]
 	public void WlanAllocateMemoryTest()
@@ -138,8 +150,10 @@ public class WlanApiTests
 	public void WlanGetNetworkBssListTest()
 	{
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, IntPtr.Zero, DOT11_BSS_TYPE.dot11_BSS_type_any, true, default, out var mem), ResultIs.Successful);
-		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
-		TestContext.WriteLine($"Size: {list.dwTotalSize}");
+		var totalSize = mem.DangerousGetHandle().ToStructure<uint>();
+		Assert.That(totalSize, Is.GreaterThanOrEqualTo((uint)Marshal.SizeOf<WLAN_BSS_LIST>()));
+		TestContext.WriteLine($"Size: {totalSize}");
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>(totalSize)!;
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
 		TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
@@ -152,8 +166,10 @@ public class WlanApiTests
 		var connectionAttributes = data.DangerousGetHandle().ToStructure<WLAN_CONNECTION_ATTRIBUTES>();
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, connectionAttributes.wlanAssociationAttributes.dot11Ssid, connectionAttributes.wlanAssociationAttributes.dot11BssType,
 			connectionAttributes.wlanSecurityAttributes.bSecurityEnabled, default, out var mem), ResultIs.Successful);
-		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
-		TestContext.WriteLine($"Size: {list.dwTotalSize}");
+		var totalSize = mem.DangerousGetHandle().ToStructure<uint>();
+		TestContext.WriteLine($"Size: {totalSize}");
+		Assert.That(totalSize, Is.GreaterThanOrEqualTo((uint)Marshal.SizeOf<WLAN_BSS_LIST>()));
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>(totalSize)!;
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
 		TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
@@ -253,9 +269,9 @@ public class WlanApiTests
 	public void WlanHostedNetworkSetSecondaryKeyTest()
 	{
 		const string ssid = "NZ@McD";
-		WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS s = new() { dwMaxNumberOfPeers = 20, hostedNetworkSSID = new() { ucSSID = ssid, uSSIDLength = (uint)StringHelper.GetByteCount(ssid) } };
+		WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS s = new() { dwMaxNumberOfPeers = 20, hostedNetworkSSID = new(ssid) };
 		Assert.That(WlanHostedNetworkSetProperty(hWlan, WLAN_HOSTED_NETWORK_OPCODE.wlan_hosted_network_opcode_connection_settings, (uint)Marshal.SizeOf<WLAN_HOSTED_NETWORK_CONNECTION_SETTINGS>(), SafeHGlobalHandle.CreateFromStructure(s), out _), ResultIs.Successful);
-		using var mem = new SafeCoTaskMemHandle(new byte[] { 0x1E, 0xD7, 0xD2, 0x39, 0X0E, 0x76, 0x67, 0xA4, 0xAE, 0xE1, 0xF4, 0xAB, 0x3B, 0x16, 0x45, 0x02, 0x8D, 0x04, 0x10, 0xEE, 0x80, 0x53, 0xCF, 0xDB, 0x71, 0x2D, 0x7C, 0x30, 0x00, 0x46, 0xDD, 0xF6 });
+		using var mem = new SafeCoTaskMemHandle([0x1E, 0xD7, 0xD2, 0x39, 0X0E, 0x76, 0x67, 0xA4, 0xAE, 0xE1, 0xF4, 0xAB, 0x3B, 0x16, 0x45, 0x02, 0x8D, 0x04, 0x10, 0xEE, 0x80, 0x53, 0xCF, 0xDB, 0x71, 0x2D, 0x7C, 0x30, 0x00, 0x46, 0xDD, 0xF6]);
 		Assert.That(WlanHostedNetworkSetSecondaryKey(hWlan, mem.Size, mem, false, false, out _), ResultIs.Successful);
 	}
 
@@ -355,12 +371,12 @@ public class WlanApiTests
 		Assert.That(WlanGetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, default, out var clearedfilters), ResultIs.Successful);
 		Assert.That(clearedfilters.dwNumberOfItems, Is.EqualTo(0U));
 
-		DOT11_NETWORK_LIST allow_filters = new(new DOT11_NETWORK[]
-		{
+		DOT11_NETWORK_LIST allow_filters = new(
+		[
 			new("TestFilter1", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
 			new("TestFilter2", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
 			new("TestFilter3", DOT11_BSS_TYPE.dot11_BSS_type_infrastructure),
-		});
+		]);
 		Assert.That(WlanSetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, allow_filters), ResultIs.Successful);
 
 		Assert.That(WlanGetFilterList(hWlan, WLAN_FILTER_LIST_TYPE.wlan_filter_list_type_user_permit, default, out var addedfilters), ResultIs.Successful);

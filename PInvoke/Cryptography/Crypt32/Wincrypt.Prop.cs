@@ -539,6 +539,18 @@ public static partial class Crypt32
 		/// <summary>This property sets the MD5 hash of this certificate's public key.</summary>
 		[CorrespondingType(typeof(CRYPTOAPI_BLOB), CorrespondingAction.GetSet)]
 		CERT_SUBJECT_PUBLIC_KEY_MD5_HASH_PROP_ID = 25,
+
+		/// <summary>
+		/// Specifies the property identifier for the file time when a certificate authority (CA) was added to the disallowed
+		/// certificate store.
+		/// </summary>
+		CERT_DISALLOWED_CA_FILETIME_PROP_ID    = 128,
+
+		/// <summary>
+		/// Data type of pvData: A pointer to an array of BYTE values. The size of this array is 52 bytes, 20 bytes for the SHA1 hash and 32 bytes for the SHA256 hash.
+		/// <para>Returns a combination of the SHA1 hash and the SHA256 hash. If the hash does not exist, it is computed by using the CryptHashCertificate function.</para>
+		/// </summary>
+		CERT_SHA1_SHA256_HASH_PROP_ID = 129,
 	}
 
 	/// <summary>
@@ -1029,7 +1041,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "f766db64-3121-4f70-ac83-ce25ee634efa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// The <c>CertGetCRLContextProperty</c> function gets an extended property for the specified certificate revocation list (CRL) context.
@@ -1248,7 +1261,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "16c2cc06-28fd-42d9-a377-0df2eaeeae56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>The <c>CertGetCTLContextProperty</c> function retrieves an extended property of a certificate trust list (CTL) context.</summary>
 	/// <param name="pCtlContext">A pointer to the CTL_CONTEXT structure.</param>
@@ -1437,7 +1451,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "16e45fe1-2710-4fa1-82da-c298645d7379")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId, [In, Out, Optional] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>The <c>CertSetCertificateContextProperty</c> function sets an extended property for a specified certificate context.</summary>
 	/// <param name="pCertContext">A pointer to a CERT_CONTEXT structure.</param>
@@ -1815,7 +1830,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b4a0c66d-997f-49cb-935a-9187320037f1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId, uint dwFlags, [In, Optional] IntPtr pvData);
+	public static extern bool CertSetCertificateContextProperty([In] PCCERT_CONTEXT pCertContext, CertPropId dwPropId, CertStoreFlags dwFlags,
+		[In, Optional] IntPtr pvData);
 
 	/// <summary>
 	/// The <c>CertSetCRLContextProperty</c> function sets an extended property for the specified certificate revocation list (CRL) context.
@@ -2035,7 +2051,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7e4a0a39-ce55-4171-9b66-31c1c28d895f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId, uint dwFlags, [In, Optional] IntPtr pvData);
+	public static extern bool CertSetCRLContextProperty([In] PCCRL_CONTEXT pCrlContext, CertPropId dwPropId, CertStoreFlags dwFlags, [In, Optional] IntPtr pvData);
 
 	/// <summary>
 	/// The <c>CertSetCTLContextProperty</c> function sets an extended property for the specified certificate trust list (CTL) context.
@@ -2211,5 +2227,5 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3af01ca6-6fa1-4510-872a-b5e13e07f49f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId, uint dwFlags, [In, Optional] IntPtr pvData);
+	public static extern bool CertSetCTLContextProperty([In] PCCTL_CONTEXT pCtlContext, CertPropId dwPropId, CertStoreFlags dwFlags, [In, Optional] IntPtr pvData);
 }

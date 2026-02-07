@@ -959,7 +959,7 @@ public static partial class Vfw32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-capgetdriverdescriptiona BOOL VFWAPI capGetDriverDescriptionA( UINT
-	// wDriverIndex, LPSTR lpszName, int cbName, LPSTR lpszVer, int cbVer );
+	// wDriverIndex, StrPtrAnsi lpszName, int cbName, StrPtrAnsi lpszVer, int cbVer );
 	[DllImport(Lib_Avicap32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.capGetDriverDescriptionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]

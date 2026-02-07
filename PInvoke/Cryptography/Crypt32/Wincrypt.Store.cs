@@ -905,8 +905,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2726cd34-51ba-4f68-9a3c-7cd505eb32a1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddSerializedElementToStore([Optional] HCERTSTORE hCertStore, [In] IntPtr pbElement, uint cbElement,
-		CertStoreAdd dwAddDisposition, [Optional] uint dwFlags, CertStoreContextFlags dwContextTypeFlags, out CertStoreContextType pdwContextType, out IntPtr ppvContext);
+	public static extern bool CertAddSerializedElementToStore([Optional] HCERTSTORE hCertStore, [In, SizeDef(nameof(cbElement))] IntPtr pbElement, uint cbElement,
+		CertStoreAdd dwAddDisposition, [Optional, Ignore] uint dwFlags, CertStoreContextFlags dwContextTypeFlags, out CertStoreContextType pdwContextType, out IntPtr ppvContext);
 
 	/// <summary>
 	/// The <c>CertAddSerializedElementToStore</c> function adds a serialized certificate, certificate revocation list (CRL), or
@@ -1136,7 +1136,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ea848d74-c3ec-4166-90ea-121b33f7f318")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddStoreToCollection(HCERTSTORE hCollectionStore, HCERTSTORE hSiblingStore, CertPhysicalStoreFlags dwUpdateFlags, uint dwPriority);
+	public static extern bool CertAddStoreToCollection([In, AddAsMember] HCERTSTORE hCollectionStore, [In] HCERTSTORE hSiblingStore, CertPhysicalStoreFlags dwUpdateFlags, uint dwPriority);
 
 	/// <summary>
 	/// The <c>CertCloseStore</c> function closes a certificate store handle and reduces the reference count on the store. There needs
@@ -1365,7 +1365,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "04cd9349-50c1-44b4-b080-631a24a80d70")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertControlStore(HCERTSTORE hCertStore, CertStoreControlFlags dwFlags, CertStoreControlType dwCtrlType, [In, Optional] IntPtr pvCtrlPara);
+	public static extern bool CertControlStore([In, AddAsMember] HCERTSTORE hCertStore, CertStoreControlFlags dwFlags, CertStoreControlType dwCtrlType,
+		[In, Optional] IntPtr pvCtrlPara);
 
 	/// <summary>
 	/// The <c>CertCreateContext</c> function creates the specified context from the encoded bytes. The context created does not include
@@ -1461,8 +1462,8 @@ public static partial class Crypt32
 	// dwContextType, DWORD dwEncodingType, const BYTE *pbEncoded, DWORD cbEncoded, DWORD dwFlags, PCERT_CREATE_CONTEXT_PARA pCreatePara );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "0911054b-a47a-4046-b121-a236fc4b018b")]
-	public static extern IntPtr CertCreateContext(CertStoreContextType dwContextType, CertEncodingType dwEncodingType, [In] IntPtr pbEncoded, uint cbEncoded,
-		CertCreateContextFlags dwFlags, in CERT_CREATE_CONTEXT_PARA pCreatePara);
+	public static extern IntPtr CertCreateContext(CertStoreContextType dwContextType, CertEncodingType dwEncodingType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CertCreateContextFlags dwFlags, in CERT_CREATE_CONTEXT_PARA pCreatePara);
 
 	/// <summary>The <c>CertDuplicateStore</c> function duplicates a store handle by incrementing the store's reference count.</summary>
 	/// <param name="hCertStore">A handle of the certificate store for which the reference count is being incremented.</param>
@@ -1551,7 +1552,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5804d565-5129-4e6d-8b3d-9bd938807740")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, CertSystemStore dwFlags, [In, Optional] IntPtr pvArg, CertEnumPhysicalStoreCallback pfnEnum);
+	public static extern bool CertEnumPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, CertSystemStore dwFlags,
+		[In, Optional] IntPtr pvArg, CertEnumPhysicalStoreCallback pfnEnum);
 
 	/// <summary>
 	/// The <c>CertEnumPhysicalStore</c> function retrieves the physical stores on a computer. The function calls the provided callback
@@ -1628,7 +1630,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5804d565-5129-4e6d-8b3d-9bd938807740")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, CertSystemStore dwFlags, [In, Optional] IntPtr pvArg, CertEnumPhysicalStoreCallback pfnEnum);
+	public static extern bool CertEnumPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, CertSystemStore dwFlags,
+		[In, Optional] IntPtr pvArg, CertEnumPhysicalStoreCallback pfnEnum);
 
 	/// <summary>
 	/// The <c>CertEnumSubjectInSortedCTL</c> function retrieves the first or next TrustedSubject in a sorted certificate trust list
@@ -1672,7 +1675,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b37cff03-5e9c-4e6c-b46e-d3f02dbf8783")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumSubjectInSortedCTL([In] PCCTL_CONTEXT pCtlContext, ref IntPtr ppvNextSubject, out CRYPTOAPI_BLOB pSubjectIdentifier, out CRYPTOAPI_BLOB pEncodedAttributes);
+	public static extern bool CertEnumSubjectInSortedCTL([In] PCCTL_CONTEXT pCtlContext, ref IntPtr ppvNextSubject, out CRYPTOAPI_BLOB pSubjectIdentifier,
+		out CRYPTOAPI_BLOB pEncodedAttributes);
 
 	/// <summary>
 	/// The <c>CertEnumSystemStore</c> function retrieves the system stores available. The function calls the provided callback function
@@ -1757,7 +1761,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStoreLocationPara, [In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
+	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStoreLocationPara,
+		[In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
 
 	/// <summary>
 	/// The <c>CertEnumSystemStore</c> function retrieves the system stores available. The function calls the provided callback function
@@ -1842,7 +1847,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fd9cb23b-e4a3-41cb-8f0a-30f4e813c6ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvSystemStoreLocationPara, [In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
+	public static extern bool CertEnumSystemStore(CertSystemStore dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvSystemStoreLocationPara,
+		[In, Optional] IntPtr pvArg, CertEnumSystemStoreCallback pfnEnum);
 
 	/// <summary>
 	/// The <c>CertEnumSystemStoreLocation</c> function retrieves all of the system store locations. The function calls the provided
@@ -1954,7 +1960,8 @@ public static partial class Crypt32
 	// DWORD dwEncodingType, DWORD dwSubjectType, void *pvSubject, PCCTL_CONTEXT pCtlContext, DWORD dwFlags );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e0c81531-e649-45bb-bafe-bced00c7b16a")]
-	public static extern IntPtr CertFindSubjectInCTL(CertEncodingType dwEncodingType, CtlCertSubject dwSubjectType, [In] IntPtr pvSubject, [In] PCCTL_CONTEXT pCtlContext, uint dwFlags = 0);
+	public static extern IntPtr CertFindSubjectInCTL(CertEncodingType dwEncodingType, CtlCertSubject dwSubjectType, [In] IntPtr pvSubject,
+		[In] PCCTL_CONTEXT pCtlContext, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>CertFindSubjectInSortedCTL</c> function attempts to find the specified subject in a sorted certificate trust list (CTL).
@@ -1981,7 +1988,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "027e89e6-3de0-440d-be70-2281778f9a1e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertFindSubjectInSortedCTL(in CRYPTOAPI_BLOB pSubjectIdentifier, [In] PCCTL_CONTEXT pCtlContext, [Optional] uint dwFlags, [Optional] IntPtr pvReserved, out CRYPTOAPI_BLOB pEncodedAttributes);
+	public static extern bool CertFindSubjectInSortedCTL(in CRYPTOAPI_BLOB pSubjectIdentifier, [In] PCCTL_CONTEXT pCtlContext,
+		[Optional] uint dwFlags, [Optional] IntPtr pvReserved, out CRYPTOAPI_BLOB pEncodedAttributes);
 
 	/// <summary>The <c>CertGetStoreProperty</c> function retrieves a store property.</summary>
 	/// <param name="hCertStore">A handle of an open certificate store.</param>
@@ -2035,7 +2043,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "0df4f18b-3b0f-498e-90a5-74d686af83e0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetStoreProperty(HCERTSTORE hCertStore, uint dwPropId, [Optional] IntPtr pvData, ref uint pcbData);
+	public static extern bool CertGetStoreProperty(HCERTSTORE hCertStore, uint dwPropId,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// The <c>CertOpenStore</c> function opens a certificate store by using a specified store provider type. While this function can
@@ -2546,7 +2555,9 @@ public static partial class Crypt32
 	// lpszStoreProvider, DWORD dwEncodingType, HCRYPTPROV_LEGACY hCryptProv, DWORD dwFlags, const void *pvPara );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4edccbfe-c0a8-442b-b6b7-51ef598e7c90")]
-	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [Optional] IntPtr pvPara);
+	[return: AddAsCtor]
+	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType,
+		[Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [Optional] IntPtr pvPara);
 
 	/// <summary>
 	/// The <c>CertOpenStore</c> function opens a certificate store by using a specified store provider type. While this function can
@@ -3057,7 +3068,9 @@ public static partial class Crypt32
 	// lpszStoreProvider, DWORD dwEncodingType, HCRYPTPROV_LEGACY hCryptProv, DWORD dwFlags, const void *pvPara );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4edccbfe-c0a8-442b-b6b7-51ef598e7c90")]
-	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType, [Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvPara);
+	[return: AddAsCtor]
+	public static extern SafeHCERTSTORE CertOpenStore([In] SafeOID lpszStoreProvider, CertEncodingType dwEncodingType,
+		[Optional] HCRYPTPROV hCryptProv, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string? pvPara);
 
 	/// <summary>
 	/// The <c>CertOpenSystemStore</c> function is a simplified function that opens the most common system certificate store. To open
@@ -3120,7 +3133,8 @@ public static partial class Crypt32
 	// HCRYPTPROV_LEGACY hProv, LPCSTR szSubsystemProtocol );
 	[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "23699439-1a6c-4907-93fa-651024856be7")]
-	public static extern SafeHCERTSTORE CertOpenSystemStore([Optional] IntPtr hProv, string szSubsystemProtocol);
+	[return: AddAsCtor]
+	public static extern SafeHCERTSTORE CertOpenSystemStore([Optional, Ignore] IntPtr hProv, string szSubsystemProtocol);
 
 	/// <summary>The <c>CertRegisterPhysicalStore</c> function adds a physical store to a registry system store collection.</summary>
 	/// <param name="pvSystemStore">
@@ -3169,7 +3183,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e301c76d-cacd-441a-b925-754b07e4bfa9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertRegisterPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName, in CERT_PHYSICAL_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
+	public static extern bool CertRegisterPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, uint dwFlags,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName, in CERT_PHYSICAL_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
 
 	/// <summary>The <c>CertRegisterPhysicalStore</c> function adds a physical store to a registry system store collection.</summary>
 	/// <param name="pvSystemStore">
@@ -3218,7 +3233,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e301c76d-cacd-441a-b925-754b07e4bfa9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertRegisterPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, uint dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName, in CERT_PHYSICAL_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
+	public static extern bool CertRegisterPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, uint dwFlags,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName, in CERT_PHYSICAL_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
 
 	/// <summary>The <c>CertRegisterSystemStore</c> function registers a system store.</summary>
 	/// <param name="pvSystemStore">
@@ -3311,7 +3327,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b6f72826-92ab-4e21-8db9-eb053663148b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertRegisterSystemStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, uint dwFlags, in CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
+	public static extern bool CertRegisterSystemStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, uint dwFlags,
+		in CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
 
 	/// <summary>The <c>CertRegisterSystemStore</c> function registers a system store.</summary>
 	/// <param name="pvSystemStore">
@@ -3404,7 +3421,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b6f72826-92ab-4e21-8db9-eb053663148b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertRegisterSystemStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, uint dwFlags, in CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
+	public static extern bool CertRegisterSystemStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, uint dwFlags,
+		in CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved = default);
 
 	/// <summary>The <c>CertRemoveStoreFromCollection</c> function removes a sibling certificate store from a collection store.</summary>
 	/// <param name="hCollectionStore">A handle of the collection certificate store.</param>
@@ -3414,7 +3432,7 @@ public static partial class Crypt32
 	// CertRemoveStoreFromCollection( HCERTSTORE hCollectionStore, HCERTSTORE hSiblingStore );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e1564848-8b39-4ea9-9148-142ceaaaed15")]
-	public static extern void CertRemoveStoreFromCollection(HCERTSTORE hCollectionStore, HCERTSTORE hSiblingStore);
+	public static extern void CertRemoveStoreFromCollection([In, AddAsMember] HCERTSTORE hCollectionStore, HCERTSTORE hSiblingStore);
 
 	/// <summary>The <c>CertSaveStore</c> function saves the certificate store to a file or to a memory BLOB.</summary>
 	/// <param name="hCertStore">The handle of the certificate store to be saved.</param>
@@ -3531,7 +3549,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5cc818d7-b079-4962-aabc-fc512d4e92ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSaveStore(HCERTSTORE hCertStore, CertEncodingType dwEncodingType, CertStoreSaveAs dwSaveAs, CertStoreSaveTo dwSaveTo, IntPtr pvSaveToPara, uint dwFlags = 0);
+	public static extern bool CertSaveStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwEncodingType, CertStoreSaveAs dwSaveAs, CertStoreSaveTo dwSaveTo, IntPtr pvSaveToPara, uint dwFlags = 0);
 
 	/// <summary>The <c>CertSetStoreProperty</c> function sets a store property.</summary>
 	/// <param name="hCertStore">Handle for the certificate store.</param>
@@ -3569,7 +3587,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e043486d-9a6e-46c0-b258-6f8d463bf6fe")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSetStoreProperty(HCERTSTORE hCertStore, uint dwPropId, [Optional] uint dwFlags, [Optional] IntPtr pvData);
+	public static extern bool CertSetStoreProperty([In, AddAsMember] HCERTSTORE hCertStore, uint dwPropId, [Optional, Ignore] uint dwFlags,
+		[Optional] IntPtr pvData);
 
 	/// <summary>
 	/// The <c>CertUnregisterPhysicalStore</c> function removes a physical store from a specified system store collection.
@@ -3616,7 +3635,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "06480a2f-5a94-4cf5-9774-ceb9499e1d44")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertUnregisterPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName);
+	public static extern bool CertUnregisterPhysicalStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, CertStoreFlags dwFlags,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName);
 
 	/// <summary>
 	/// The <c>CertUnregisterPhysicalStore</c> function removes a physical store from a specified system store collection.
@@ -3663,7 +3683,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "06480a2f-5a94-4cf5-9774-ceb9499e1d44")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertUnregisterPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, CertStoreFlags dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName);
+	public static extern bool CertUnregisterPhysicalStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, CertStoreFlags dwFlags,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszStoreName);
 
 	/// <summary>The <c>CertUnregisterSystemStore</c> function unregisters a specified system store.</summary>
 	/// <param name="pvSystemStore">
@@ -3704,7 +3725,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "958e4185-4c37-450c-abfc-91b95593227e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertUnregisterSystemStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, uint dwFlags);
+	public static extern bool CertUnregisterSystemStore([MarshalAs(UnmanagedType.LPWStr)] string pvSystemStore, CertStoreFlags dwFlags);
 
 	/// <summary>The <c>CertUnregisterSystemStore</c> function unregisters a specified system store.</summary>
 	/// <param name="pvSystemStore">
@@ -3745,7 +3766,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "958e4185-4c37-450c-abfc-91b95593227e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertUnregisterSystemStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, uint dwFlags);
+	public static extern bool CertUnregisterSystemStore(in CERT_SYSTEM_STORE_RELOCATE_PARA pvSystemStore, CertStoreFlags dwFlags);
 
 	/// <summary>
 	/// The <c>CERT_CREATE_CONTEXT_PARA</c> structure defines additional values that can be used when calling the CertCreateContext function.
@@ -3803,7 +3824,7 @@ public static partial class Crypt32
 	/// structures are passed directly to system calls of CertOpenStore to open the physical store.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_physical_store_info typedef struct
-	// _CERT_PHYSICAL_STORE_INFO { DWORD cbSize; LPSTR pszOpenStoreProvider; DWORD dwOpenEncodingType; DWORD dwOpenFlags;
+	// _CERT_PHYSICAL_STORE_INFO { DWORD cbSize; StrPtrAnsi pszOpenStoreProvider; DWORD dwOpenEncodingType; DWORD dwOpenFlags;
 	// CRYPT_DATA_BLOB OpenParameters; DWORD dwFlags; DWORD dwPriority; } CERT_PHYSICAL_STORE_INFO, *PCERT_PHYSICAL_STORE_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad86f388-27af-442a-a76f-f386f66296ac")]
 	[StructLayout(LayoutKind.Sequential)]

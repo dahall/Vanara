@@ -1662,7 +1662,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -1694,7 +1694,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -1726,7 +1726,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -1791,7 +1791,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -1970,7 +1970,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -2006,10 +2006,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -2394,7 +2394,7 @@ public static partial class D3D12
 		// D3D12_RESOURCE_DESC *pResourceDescs );
 		[PreserveSig]
 		D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo(uint visibleMask, int numResourceDescs,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_RESOURCE_DESC[] pResourceDescs);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs);
 
 		/// <summary>
 		/// Divulges the equivalent custom heap properties that are used for non-custom heap types, based on the adapter's architectural properties.
@@ -2569,7 +2569,7 @@ public static partial class D3D12
 		// CreateCommittedResource( [in] const D3D12_HEAP_PROPERTIES *pHeapProperties, [in] D3D12_HEAP_FLAGS HeapFlags, [in] const
 		// D3D12_RESOURCE_DESC *pDesc, [in] D3D12_RESOURCE_STATES InitialResourceState, [in, optional] const D3D12_CLEAR_VALUE
 		// *pOptimizedClearValue, [in] REFIID riidResource, [out, optional] void **ppvResource );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT CreateCommittedResource(in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
 			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riidResource,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
@@ -3190,7 +3190,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -3701,7 +3701,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -3733,7 +3733,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -3765,7 +3765,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -3830,7 +3830,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -4009,7 +4009,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -4045,10 +4045,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -4433,7 +4433,7 @@ public static partial class D3D12
 		// D3D12_RESOURCE_DESC *pResourceDescs );
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo(uint visibleMask, int numResourceDescs,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_RESOURCE_DESC[] pResourceDescs);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs);
 
 		/// <summary>
 		/// Divulges the equivalent custom heap properties that are used for non-custom heap types, based on the adapter's architectural properties.
@@ -5229,7 +5229,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -5559,7 +5559,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="BlobLength">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>Specifies the length of pLibraryBlob in bytes.</para>
 		/// </param>
 		/// <param name="riid">
@@ -5616,10 +5616,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
-		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
+		// CreatePipelineLibrary( const void *pLibraryBlob, SizeT BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
 		HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineLibrary);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
 		/// <param name="ppFences">
@@ -5803,36 +5803,6 @@ public static partial class D3D12
 		return ppv!;
 	}
 
-	/// <summary>Creates a command allocator object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="type">
-	/// A <c>D3D12_COMMAND_LIST_TYPE</c>-typed value that specifies the type of command allocator to create. The type of command allocator
-	/// can be the type that records either direct command lists or bundles.
-	/// </param>
-	/// <param name="ppCommandAllocator">
-	/// A pointer to a memory block that receives a pointer to the <c>ID3D12CommandAllocator</c> interface for the command allocator.
-	/// </param>
-	/// <returns>
-	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command allocator. See <c>Direct3D 12 Return
-	/// Codes</c> for other possible return values.
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The device creates command lists from the command allocator. Examples The <c>D3D12Bundles</c> sample uses
-	/// <b>ID3D12Device::CreateCommandAllocator</b> as follows:
-	/// </para>
-	/// <para>
-	/// <c>ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&amp;m_commandAllocator)));
-	/// ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&amp;m_bundleAllocator)));</c>
-	/// </para>
-	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
-	// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
-	public static HRESULT CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type, out T? ppCommandAllocator) where T : class =>
-		FunctionHelper.IidGetObj(device.CreateCommandAllocator, type, out ppCommandAllocator);
-
 	/// <summary>Creates a command list.</summary>
 	/// <typeparam name="T">The type of the interface to return.</typeparam>
 	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
@@ -5873,71 +5843,6 @@ public static partial class D3D12
 	{
 		device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, out T? ppv).ThrowIfFailed();
 		return ppv!;
-	}
-
-	/// <summary>Creates a command list.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="nodeMask">
-	/// <para>Type: <b><c>UINT</c></b></para>
-	/// <para>
-	/// For single-GPU operation, set this to zero. If there are multiple GPU nodes, then set a bit to identify the node (the device's
-	/// physical adapter) for which to create the command list. Each bit in the mask corresponds to a single node. Only one bit must be
-	/// set. Also see <c>Multi-adapter systems</c>.
-	/// </para>
-	/// </param>
-	/// <param name="type">
-	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
-	/// <para>Specifies the type of command list to create.</para>
-	/// </param>
-	/// <param name="pCommandAllocator">
-	/// <para>Type: <b><c>ID3D12CommandAllocator</c>*</b></para>
-	/// <para>A pointer to the command allocator object from which the device creates command lists.</para>
-	/// </param>
-	/// <param name="pInitialState">
-	/// <para>Type: <b><c>ID3D12PipelineState</c>*</b></para>
-	/// <para>
-	/// An optional pointer to the pipeline state object that contains the initial pipeline state for the command list. If it is
-	/// <c>nullptr</c>, then the runtime sets a dummy initial pipeline state, so that drivers don't have to deal with undefined state.
-	/// The overhead for this is low, particularly for a command list, for which the overall cost of recording the command list likely
-	/// dwarfs the cost of a single initial state setting. So there's little cost in not setting the initial pipeline state parameter,
-	/// if doing so is inconvenient.
-	/// </para>
-	/// <para>
-	/// For bundles, on the other hand, it might make more sense to try to set the initial state parameter (since bundles are likely
-	/// smaller overall, and can be reused frequently).
-	/// </para>
-	/// </param>
-	/// <param name="ppCommandList">
-	/// <para>Type: <b>void**</b></para>
-	/// <para>
-	/// A pointer to a memory block that receives a pointer to the <c>ID3D12CommandList</c> or <c>ID3D12GraphicsCommandList</c>
-	/// interface for the command list.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_OUTOFMEMORY</description>
-	/// <description>There is insufficient memory to create the command list.</description>
-	/// </item>
-	/// </list>
-	/// <para>See <c>Direct3D 12 return codes</c> for other possible return values.</para>
-	/// </returns>
-	/// <remarks>The device creates command lists from the command allocator.</remarks>
-	public static HRESULT CreateCommandList<T>(this ID3D12Device device, uint nodeMask, D3D12_COMMAND_LIST_TYPE type,
-		[In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-		out T? ppCommandList) where T : class
-	{
-		var hr = device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, typeof(T).GUID, out var ppv);
-		ppCommandList = (T)ppv!;
-		return hr;
 	}
 
 	/// <summary>
@@ -6234,37 +6139,6 @@ public static partial class D3D12
 	{
 		device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
-	}
-
-	/// <summary>Creates a fence object.</summary>
-	/// <typeparam name="T">
-	/// The type of the interface to return.
-	/// <para>The fence interface (<c>ID3D12Fence</c>).</para>
-	/// </typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="InitialValue">
-	/// <para>Type: <b><c>UINT64</c></b></para>
-	/// <para>The initial value for the fence.</para>
-	/// </param>
-	/// <param name="Flags">
-	/// <para>Type: <b><c>D3D12_FENCE_FLAGS</c></b></para>
-	/// <para>
-	/// A combination of <c>D3D12_FENCE_FLAGS</c>-typed values that are combined by using a bitwise OR operation. The resulting value
-	/// specifies options for the fence.
-	/// </para>
-	/// </param>
-	/// <param name="ppFence">
-	/// <para>A <c>ID3D12Fence</c> interface that is used to access the fence.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
-	/// </returns>
-	public static HRESULT CreateFence<T>(this ID3D12Device device, ulong InitialValue, D3D12_FENCE_FLAGS Flags, out T? ppFence) where T : class
-	{
-		var hr = device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv);
-		ppFence = (T?)ppv;
-		return hr;
 	}
 
 	/// <summary>Creates a graphics pipeline state object.</summary>

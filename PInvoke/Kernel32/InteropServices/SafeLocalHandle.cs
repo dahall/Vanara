@@ -36,7 +36,7 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
+public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, ISafeMemoryHandleFactory
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -65,7 +65,7 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <returns>SafeLocalHandle object to an native (unmanaged) array of pointers</returns>
 	public SafeLocalHandle(IntPtr[] values) : base(values) { }
 
-	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 	/// <param name="s">The string value.</param>
 	/// <returns>SafeLocalHandle object to an native (unmanaged) Unicode string</returns>
 	public SafeLocalHandle(string s) : base(s) { }
@@ -76,6 +76,27 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeLocalHandle Null { get; } = new SafeLocalHandle(IntPtr.Zero, 0, false);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeLocalHandle(handle, size, ownsHandle);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeLocalHandle(bytes);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
+
+	/// <summary>Creates a <see cref="SafeLocalHandle"/> instance from a specified memory pointer.</summary>
+	/// <remarks>
+	/// The returned <see cref="SafeLocalHandle"/><i>does not</i> take ownership of the memory block to ensure it is properly released when
+	/// no longer in use.
+	/// </remarks>
+	/// <param name="pMem">A pointer to the first byte of the local memory object. This pointer is returned by the <c>LocalLock</c> function.</param>
+	/// <returns>
+	/// A <see cref="SafeLocalHandle"/> that manages the specified memory block or <see cref="Null"/> if <paramref name="pMem"/> was not
+	/// allocated and locked using <c>Local</c> memory functions.
+	/// </returns>
+	public static SafeLocalHandle CreateFromPointer(IntPtr pMem) => new(LocalHandle(pMem), LocalSize(LocalHandle(pMem)), false);
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

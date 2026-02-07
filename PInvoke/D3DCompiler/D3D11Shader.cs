@@ -172,7 +172,7 @@ public static partial class D3DCompiler
 		// HRESULT SetInputSignature( [in] const D3D11_PARAMETER_DESC *pInputParameters, [in] UINT cInputParameters, [out] ID3D11LinkingNode
 		// **ppInputNode );
 		[PreserveSig]
-		HRESULT SetInputSignature([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D11_PARAMETER_DESC[] pInputParameters, int cInputParameters,
+		HRESULT SetInputSignature([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D11_PARAMETER_DESC[] pInputParameters, int cInputParameters,
 			out ID3D11LinkingNode ppInputNode);
 
 		/// <summary>Sets the output signature of the function-linking-graph.</summary>
@@ -198,7 +198,7 @@ public static partial class D3DCompiler
 		// HRESULT SetOutputSignature( [in] const D3D11_PARAMETER_DESC *pOutputParameters, [in] UINT cOutputParameters, [out]
 		// ID3D11LinkingNode **ppOutputNode );
 		[PreserveSig]
-		HRESULT SetOutputSignature([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D11_PARAMETER_DESC[] pOutputParameters, int cOutputParameters,
+		HRESULT SetOutputSignature([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D11_PARAMETER_DESC[] pOutputParameters, int cOutputParameters,
 			out ID3D11LinkingNode ppOutputNode);
 
 		/// <summary>Creates a call-function linking node to use in the function-linking-graph.</summary>

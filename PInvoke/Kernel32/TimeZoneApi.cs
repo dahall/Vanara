@@ -224,7 +224,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("timezoneapi.h", MSDNShortId = "5bd29a25-98f0-439e-be88-8011bbf98926")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTimeZoneInformationForYear(ushort wYear, [Optional] IntPtr pdtzi, out TIME_ZONE_INFORMATION ptzi);
+	public static extern bool GetTimeZoneInformationForYear(ushort wYear, [Optional] ManagedStructPointer<DYNAMIC_TIME_ZONE_INFORMATION> pdtzi, out TIME_ZONE_INFORMATION ptzi);
 
 	/// <summary>
 	/// Sets the current time zone and dynamic daylight saving time settings. These settings control translations from Coordinated
@@ -315,7 +315,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
+	public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
 
 	/// <summary>Converts a time in Coordinated Universal Time (UTC) to a specified time zone's corresponding local time.</summary>
 	/// <param name="lpTimeZoneInformation">
@@ -357,7 +357,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SystemTimeToTzSpecificLocalTime([Optional] IntPtr lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
+	public static extern bool SystemTimeToTzSpecificLocalTime([Optional] ManagedStructPointer<TIME_ZONE_INFORMATION> lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
 
 	/// <summary>
 	/// Converts a time in Coordinated Universal Time (UTC) with dynamic daylight saving time settings to a specified time zone's
@@ -407,7 +407,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms725485")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TzSpecificLocalTimeToSystemTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, [Out] out SYSTEMTIME lpUniversalTime);
+	public static extern bool TzSpecificLocalTimeToSystemTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
 
 	/// <summary>
 	/// <para>Converts a local time to a time in Coordinated Universal Time (UTC).</para>
@@ -437,7 +437,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms725485")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TzSpecificLocalTimeToSystemTime([Optional] IntPtr lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, [Out] out SYSTEMTIME lpUniversalTime);
+	public static extern bool TzSpecificLocalTimeToSystemTime([Optional] ManagedStructPointer<DYNAMIC_TIME_ZONE_INFORMATION> lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
 
 	/// <summary>Converts a local time to a time with dynamic daylight saving time settings to Coordinated Universal Time (UTC).</summary>
 	/// <param name="lpTimeZoneInformation">

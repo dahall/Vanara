@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using Accessibility;
+using System.ComponentModel.DataAnnotations;
 
 namespace Vanara.PInvoke;
 
@@ -352,7 +353,7 @@ public static partial class Oleacc
 	// *paccContainer, LONG iChildStart, LONG cChildren, VARIANT *rgvarChildren, LONG *pcObtained );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "dc9262d8-f57f-41f8-8945-d95f38d197e9")]
-	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
+	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
 
 	/// <summary>
 	/// Retrieves the address of the IAccessible interface for the object that generated the event that is currently being processed by the
@@ -581,7 +582,7 @@ public static partial class Oleacc
 	// HWND hwnd, DWORD dwId, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "297ac50f-2a58-477b-ba57-5d1416c191b3")]
-	public static extern HRESULT AccessibleObjectFromWindow(HWND hwnd, uint dwId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObject);
+	public static extern HRESULT AccessibleObjectFromWindow(HWND hwnd, uint dwId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObject);
 
 	/// <summary>
 	/// Allows an assistive technology (AT) application to notify the system that it is interacting with UI through a Windows Automation API
@@ -733,7 +734,7 @@ public static partial class Oleacc
 	// HWND hwnd, LONG idObject, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "50b6f391-98a4-4276-840f-028cc18e99ef")]
-	public static extern HRESULT CreateStdAccessibleObject(HWND hwnd, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObject);
+	public static extern HRESULT CreateStdAccessibleObject(HWND hwnd, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObject);
 
 	/// <summary>
 	/// Creates an accessible object that has the properties and methods of the specified class of system-provided user interface element.
@@ -796,7 +797,7 @@ public static partial class Oleacc
 	// HWND hwnd, LPCSTR pClassName, LONG idObject, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "724b2a38-f7ca-4423-acd4-0871623d1201")]
-	public static extern HRESULT CreateStdAccessibleProxy(HWND hwnd, [MarshalAs(UnmanagedType.LPTStr)] string pClassName, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvObject);
+	public static extern HRESULT CreateStdAccessibleProxy(HWND hwnd, [MarshalAs(UnmanagedType.LPTStr)] string pClassName, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvObject);
 
 	/// <summary>Retrieves the version number and build number of the Microsoft Active Accessibility file Oleacc.dll.</summary>
 	/// <param name="pVer">
@@ -862,7 +863,7 @@ public static partial class Oleacc
 	/// <para>One of the object role constants.</para>
 	/// </param>
 	/// <param name="lpszRole">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Address of a buffer that receives the role text string. If this parameter is <c>NULL</c>, the function returns the role string's
 	/// length, not including the null character.
@@ -887,11 +888,12 @@ public static partial class Oleacc
 	/// extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getroletexta UINT GetRoleTextA( DWORD lRole, LPSTR lpszRole,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getroletexta UINT GetRoleTextA( DWORD lRole, StrPtrAnsi lpszRole,
 	// UINT cchRoleMax );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "58436001-92d7-4afa-af07-169c8bbda9ba")]
-	public static extern uint GetRoleText(AccessibilityRole lRole, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszRole, uint cchRoleMax);
+	public static extern uint GetRoleText(AccessibilityRole lRole, [MarshalAs(UnmanagedType.LPTStr),
+		SizeDef(nameof(cchRoleMax), SizingMethod.QueryResultInReturn)] StringBuilder? lpszRole, [Range(0, 1024)] uint cchRoleMax);
 
 	/// <summary>
 	/// Retrieves a localized string that describes an object's state for a single predefined state bit flag. Because state values are a
@@ -902,7 +904,7 @@ public static partial class Oleacc
 	/// <para>One of the object state constants.</para>
 	/// </param>
 	/// <param name="lpszState">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Address of a buffer that receives the state text string. If this parameter is <c>NULL</c>, the function returns the state string's
 	/// length, not including the null character.
@@ -928,11 +930,11 @@ public static partial class Oleacc
 	/// </para>
 	/// </returns>
 	/// <remarks>This function accepts only one state bit at a time, not a bitmask.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getstatetexta UINT GetStateTextA( DWORD lStateBit, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getstatetexta UINT GetStateTextA( DWORD lStateBit, StrPtrAnsi
 	// lpszState, UINT cchState );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "2a136883-870e-48c3-b182-1cdc64768894")]
-	public static extern uint GetStateText(AccessibilityState lStateBit, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszState, uint cchState);
+	public static extern uint GetStateText(AccessibilityState lStateBit, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchState), SizingMethod.QueryResultInReturn)] StringBuilder? lpszState, [Range(0, 1024)] uint cchState);
 
 	/// <summary>Returns a reference, similar to a handle, to the specified object. Servers return this reference when handling WM_GETOBJECT.</summary>
 	/// <param name="riid">
@@ -1055,7 +1057,7 @@ public static partial class Oleacc
 	// REFIID riid, WPARAM wParam, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "97e766fd-e142-40d1-aba7-408b45d33426")]
-	public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+	public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
 
 	/// <summary>Retrieves the window handle that corresponds to a particular instance of an IAccessible interface.</summary>
 	/// <param name="arg1">

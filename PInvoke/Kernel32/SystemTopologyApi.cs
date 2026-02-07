@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -54,7 +55,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[]? ProcessorMasks,
+	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, Optional, MarshalAs(UnmanagedType.LPArray),
+		SizeDef(nameof(ProcessorMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
 		ushort ProcessorMaskCount, out ushort RequiredMaskCount);
 
 	/// <summary>Retrieves the multi-group processor mask of the specified node.</summary>
@@ -77,7 +79,7 @@ public static partial class Kernel32
 	{
 		if (!GetNumaNodeProcessorMask2(NodeNumber, null, 0, out var c))
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		GROUP_AFFINITY[] result = new GROUP_AFFINITY[c];
+		var result = new GROUP_AFFINITY[c];
 		if (c > 0)
 			Win32Error.ThrowLastErrorIfFalse(GetNumaNodeProcessorMask2(NodeNumber, result, c, out _));
 		return result;
@@ -136,27 +138,12 @@ public static partial class Kernel32
 		/// <summary>This member is reserved.</summary>
 		private readonly ushort Reserved3;
 
-		/// <summary>Gets or sets the affinitized processors in the <see cref="Mask"/> field as their indexed values.</summary>
+		/// <summary>Gets or sets the affinitized processors in the <see cref="Mask"/> field as their indexed hitIndices.</summary>
 		/// <value>The affinitized processors.</value>
 		public IEnumerable<uint> AffinitizedProcessors
 		{
-			get
-			{
-				ulong v = Mask;
-				for (uint i = 0; i < UIntPtr.Size * 8; i++)
-				{
-					if ((v & 0x1UL) == 1)
-						yield return i;
-					v >>= 1;
-				}
-			}
-			set
-			{
-				var v = 0UL;
-				foreach (var i in value)
-					v |= 1UL << (int)i;
-				Mask = (nuint)v;
-			}
+			readonly get => BitHelper.BitMaskToHitList((uint)Mask);
+			set => Mask = BitHelper.HitListToBitMask<uint>(value);
 		}
 	}
 }

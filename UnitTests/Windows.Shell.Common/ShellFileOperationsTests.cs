@@ -10,7 +10,7 @@ using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell.Tests;
 
-[TestFixture]
+[TestFixture, Apartment(ApartmentState.STA)]
 public class ShellFileOperationsTests
 {
 	[Test]
@@ -112,26 +112,24 @@ public class ShellFileOperationsTests
 	public void MultOpsTest()
 	{
 		const string newLargeFile = "MuchLongerNameForTheFile.bin";
-		using (var op = new ShellFileOperations())
-		{
-			op.Options |= ShellFileOperations.OperationFlags.NoMinimizeBox;
-			var shi = new ShellItem(TestCaseSources.LargeFile);
-			op.PostCopyItem += HandleEvent;
-			op.QueueCopyOperation(shi, ShellFolder.Desktop);
-			var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
-			shi = new ShellItem(dest);
-			op.QueueMoveOperation(shi, new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents));
-			op.PostMoveItem += HandleEvent;
-			dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(TestCaseSources.LargeFile));
-			shi = new ShellItem(dest);
-			op.QueueRenameOperation(shi, newLargeFile);
-			op.PostRenameItem += HandleEvent;
-			dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), newLargeFile);
-			shi = new ShellItem(dest);
-			op.QueueDeleteOperation(shi);
-			op.PostDeleteItem += HandleEvent;
-			op.PerformOperations();
-		}
+		using var op = new ShellFileOperations();
+		op.Options |= ShellFileOperations.OperationFlags.NoMinimizeBox;
+		var shi = new ShellItem(TestCaseSources.LargeFile);
+		op.PostCopyItem += HandleEvent;
+		op.QueueCopyOperation(shi, ShellFolder.Desktop);
+		var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
+		shi = new ShellItem(dest, true);
+		op.QueueMoveOperation(shi, new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents));
+		op.PostMoveItem += HandleEvent;
+		dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(TestCaseSources.LargeFile));
+		shi = new ShellItem(dest, true);
+		op.QueueRenameOperation(shi, newLargeFile);
+		op.PostRenameItem += HandleEvent;
+		dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), newLargeFile);
+		shi = new ShellItem(dest, true);
+		op.QueueDeleteOperation(shi);
+		op.PostDeleteItem += HandleEvent;
+		op.PerformOperations();
 
 		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
 		{
@@ -169,22 +167,41 @@ public class ShellFileOperationsTests
 	public void SetPropsTest2()
 	{
 		const string fn = "test.docx";
-		var fp = Path.Combine(ShellFolder.Desktop.FileSystemPath!, fn);
-		var authors = new[] { "David" };
-		using (var p = new ShellItemPropertyUpdates { { PROPERTYKEY.System.Author, authors } })
-		using (var op = new ShellFileOperations())
+		var tci = TestContext.Out;
+		ShellItem? destItem = null;
+		AutoResetEvent evt = new(false);
+		using (ShellFileOperations op = new() { Options = ShellFileOperations.OperationFlags.NoUI })
 		{
 			op.PostNewItem += HandleEvent;
+			op.FinishOperations += FinishEvent;
 			op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
-			op.QueueApplyPropertiesOperation(new ShellItem(fp), p);
 			op.PerformOperations();
 		}
-		Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
-		File.Delete(fp);
+		evt.WaitOne();
+		Assert.That(destItem, Is.Not.Null);
+		evt.Reset();
 
-		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
+		var authors = new string[] { "David" };
+		ShellItemPropertyUpdates p = new() { { PROPERTYKEY.System.Author, authors } };
+		using (ShellFileOperations op = new() { Options = ShellFileOperations.OperationFlags.NoUI })
 		{
-			Debug.WriteLine(args);
+			op.PostNewItem += HandleEvent;
+			op.FinishOperations += FinishEvent;
+			op.QueueApplyPropertiesOperation(destItem!, p);
+			op.QueueDeleteOperation(destItem!);
+			op.PerformOperations();
+		}
+
+		void FinishEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs e)
+		{
+			tci.WriteLine("Finished operations.");
+			evt.Set();
+		}
+		void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
+		{
+			if (args.Flags.IsFlagSet(ShellFileOperations.TransferFlags.CopyLocalizedName))
+				destItem = args.DestItem;
+			tci.WriteLine($"{args.Flags} - {args.SourceItem}=>{args.DestItem} = {args.Result}");
 			Assert.That(args.Result.Succeeded, Is.True);
 		}
 	}

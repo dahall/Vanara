@@ -580,7 +580,7 @@ public static partial class FwpUClnt
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
 
-		private IEnumerable<T> Enumerate() => byRef ? handle.ToIEnum<IntPtr>(Count).Select(p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : handle.ToIEnum<T>(Count);
+		private IEnumerable<T> Enumerate() => byRef ? this.ToIEnum<IntPtr>(Count).Select(p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)) : this.ToIEnum<T>(Count);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
@@ -600,7 +600,7 @@ public static partial class FwpUClnt
 		/// of elements.
 		/// </param>
 		/// <returns>An array of type <typeparamref name="T"/> of length <paramref name="elemCount"/>.</returns>
-		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? new IntPtr[0], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)!) : handle.ToArray<T>(elemCount) ?? new T[0];
+		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? [], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)!) : handle.ToArray<T>(elemCount) ?? [];
 
 		/// <summary>Extracts a structure from this memory.</summary>
 		/// <typeparam name="T">The type of the structure to extract.</typeparam>

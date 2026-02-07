@@ -983,7 +983,7 @@ public static partial class Ole32
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, in Guid pClsid,
 		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] MULTI_QI[] pResults);
 
 	/// <summary>Creates a new object and initializes it from a storage object through an internal call to IPersistFile::Load.</summary>
 	/// <param name="pServerInfo">
@@ -1060,7 +1060,7 @@ public static partial class Ole32
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, [Optional] IntPtr pClsid,
 		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] MULTI_QI[] pResults);
 
 	/// <summary>
 	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
@@ -1416,9 +1416,9 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity(PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
-		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, IntPtr pReserved3 = default);
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, [Optional, Ignore] IntPtr pReserved3);
 
 	/// <summary>Registers security and sets the default security values for the process.</summary>
 	/// <param name="pSecDesc">
@@ -1504,7 +1504,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity([Optional] IAccessControl? pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_ACCESS_CONTROL, IntPtr pReserved3 = default);
 
@@ -1592,7 +1592,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity(in Guid pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_APPID, IntPtr pReserved3 = default);
 
@@ -2752,7 +2752,7 @@ public static partial class Ole32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-_coserverinfo typedef struct _COSERVERINFO { DWORD
-	// dwReserved1; LPWSTR pwszName; COAUTHINFO *pAuthInfo; DWORD dwReserved2; } COSERVERINFO;
+	// dwReserved1; StrPtrUni pwszName; COAUTHINFO *pAuthInfo; DWORD dwReserved2; } COSERVERINFO;
 	[PInvokeData("objidl.h", MSDNShortId = "88c94a7f-5cf0-4d61-833f-91cba45d8624")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class COSERVERINFO

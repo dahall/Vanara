@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Linq;
+using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests;
@@ -96,8 +97,30 @@ public class Shell32Methods
 	public void IShellMenuTest()
 	{
 		Ole32.CoCreateInstance(typeof(MenuBand).GUID, default, Ole32.CLSCTX.CLSCTX_INPROC_SERVER, typeof(IShellMenu).GUID, out var ppv).ThrowIfFailed();
-		using var ishmenu = ComReleaserFactory.Create((IShellMenu)ppv);
+		using var ishmenu = ComReleaserFactory.Create((IShellMenu)ppv!);
 		Assert.That(ishmenu.Item, Is.Not.Null);
+	}
+
+	[Test]
+	public void GetSetShellItemPropertyTest()
+	{
+		Assert.That(SHCreateItemFromParsingName(TestCaseSources.WordDoc, null, out IShellItem2? si), ResultIs.Successful);
+		Assert.That(si, Is.Not.Null);
+
+		IPropertyStore? ps = null;
+		Assert.That(() => ps = si!.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_DEFAULT, typeof(IPropertyStore).GUID), Throws.Nothing);
+		Assert.That(ps, Is.Not.Null);
+		string[]? author = null;
+		Assert.That(() => author = ps!.GetValue(Ole32.PROPERTYKEY.System.Author) as string[], Throws.Nothing);
+		TestContext.WriteLine("Original Author: " + string.Join(",", author ?? []));
+		Assert.That(() => Marshal.FinalReleaseComObject(ps!), Throws.Nothing);
+
+		Assert.That(() => ps = si!.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_READWRITE, typeof(IPropertyStore).GUID), Throws.Nothing);
+		Assert.That(ps, Is.Not.Null);
+		Assert.That(() => ps!.SetValue(Ole32.PROPERTYKEY.System.Author, new string[] { "TestAuthor" }, true), Throws.Nothing);
+		Assert.That(() => Marshal.FinalReleaseComObject(ps!), Throws.Nothing);
+
+		Assert.That(() => Marshal.FinalReleaseComObject(si!), Throws.Nothing);
 	}
 
 	/*

@@ -479,10 +479,10 @@ public static partial class AdvApi32
 	/// <para>For an example, see Writing a ServiceMain Function.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nc-winsvc-lpservice_main_functiona LPSERVICE_MAIN_FUNCTIONA
-	// LpserviceMainFunctiona; void LpserviceMainFunctiona( DWORD dwNumServicesArgs, LPSTR *lpServiceArgVectors ) {...}
+	// LpserviceMainFunctiona; void LpserviceMainFunctiona( DWORD dwNumServicesArgs, StrPtrAnsi *lpServiceArgVectors ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "d7f3235e-91bd-4107-a30c-4a8f9a6c731e")]
-	public delegate void ServiceMain(uint dwNumServicesArgs, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 0)] string[] lpServiceArgVectors);
+	public delegate void ServiceMain(uint dwNumServicesArgs, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 0)] string[] lpServiceArgVectors);
 
 	/// <summary>Defines the action to be performed in a <see cref="SC_ACTION"/>.</summary>
 	[PInvokeData("winsvc.h", MSDNShortId = "e2c355a6-affe-46bf-a3e6-f8c420422d46")]
@@ -3311,7 +3311,7 @@ public static partial class AdvApi32
 	/// the display name to the service name, use the GetServiceKeyName function.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-getservicedisplaynamea BOOL GetServiceDisplayNameA(
-	// SC_HANDLE hSCManager, LPCSTR lpServiceName, LPSTR lpDisplayName, LPDWORD lpcchBuffer );
+	// SC_HANDLE hSCManager, LPCSTR lpServiceName, StrPtrAnsi lpDisplayName, LPDWORD lpcchBuffer );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "704812f3-134c-4161-b3b4-a955d87ff563")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3356,7 +3356,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-getservicekeynamea BOOL GetServiceKeyNameA( SC_HANDLE
-	// hSCManager, LPCSTR lpDisplayName, LPSTR lpServiceName, LPDWORD lpcchBuffer );
+	// hSCManager, LPCSTR lpDisplayName, StrPtrAnsi lpServiceName, LPDWORD lpcchBuffer );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "d2421566-de4a-49e5-bb41-ea98c6f6d19d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4877,7 +4877,7 @@ public static partial class AdvApi32
 	/// EnumDependentServices and EnumServicesStatus functions.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_enum_service_statusa typedef struct _ENUM_SERVICE_STATUSA {
-	// LPSTR lpServiceName; LPSTR lpDisplayName; SERVICE_STATUS ServiceStatus; } ENUM_SERVICE_STATUSA, *LPENUM_SERVICE_STATUSA;
+	// StrPtrAnsi lpServiceName; StrPtrAnsi lpDisplayName; SERVICE_STATUS ServiceStatus; } ENUM_SERVICE_STATUSA, *LPENUM_SERVICE_STATUSA;
 	[PInvokeData("winsvc.h", MSDNShortId = "b088bd94-5d25-44a7-93c0-80ce6588b811")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct ENUM_SERVICE_STATUS
@@ -4907,7 +4907,7 @@ public static partial class AdvApi32
 	/// EnumServicesStatusEx function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_enum_service_status_processa typedef struct
-	// _ENUM_SERVICE_STATUS_PROCESSA { LPSTR lpServiceName; LPSTR lpDisplayName; SERVICE_STATUS_PROCESS ServiceStatusProcess; }
+	// _ENUM_SERVICE_STATUS_PROCESSA { StrPtrAnsi lpServiceName; StrPtrAnsi lpDisplayName; SERVICE_STATUS_PROCESS ServiceStatusProcess; }
 	// ENUM_SERVICE_STATUS_PROCESSA, *LPENUM_SERVICE_STATUS_PROCESSA;
 	[PInvokeData("winsvc.h", MSDNShortId = "6a683cc8-c2ac-4093-aed7-33e6bdd02d79")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -5020,7 +5020,7 @@ public static partial class AdvApi32
 	/// Contains information about the lock status of a service control manager database. It is used by the QueryServiceLockStatus function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-query_service_lock_statusw typedef struct
-	// _QUERY_SERVICE_LOCK_STATUSW { DWORD fIsLocked; LPWSTR lpLockOwner; DWORD dwLockDuration; } QUERY_SERVICE_LOCK_STATUSW, *LPQUERY_SERVICE_LOCK_STATUSW;
+	// _QUERY_SERVICE_LOCK_STATUSW { DWORD fIsLocked; StrPtrUni lpLockOwner; DWORD dwLockDuration; } QUERY_SERVICE_LOCK_STATUSW, *LPQUERY_SERVICE_LOCK_STATUSW;
 	[PInvokeData("winsvc.h", MSDNShortId = "de9797b7-02b0-43cb-bed3-50b7e8676f36")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct QUERY_SERVICE_LOCK_STATUS
@@ -5091,7 +5091,7 @@ public static partial class AdvApi32
 
 	/// <summary>Contains service control parameters.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-service_control_status_reason_paramsa typedef struct
-	// _SERVICE_CONTROL_STATUS_REASON_PARAMSA { DWORD dwReason; LPSTR pszComment; SERVICE_STATUS_PROCESS ServiceStatus; }
+	// _SERVICE_CONTROL_STATUS_REASON_PARAMSA { DWORD dwReason; StrPtrAnsi pszComment; SERVICE_STATUS_PROCESS ServiceStatus; }
 	// SERVICE_CONTROL_STATUS_REASON_PARAMSA, *PSERVICE_CONTROL_STATUS_REASON_PARAMSA;
 	[PInvokeData("winsvc.h", MSDNShortId = "f7213cbb-255f-4ce3-93c9-5537256e078f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -5363,7 +5363,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_failure_actionsa typedef struct
-	// _SERVICE_FAILURE_ACTIONSA { DWORD dwResetPeriod; LPSTR lpRebootMsg; LPSTR lpCommand; DWORD cActions; SC_ACTION *lpsaActions; }
+	// _SERVICE_FAILURE_ACTIONSA { DWORD dwResetPeriod; StrPtrAnsi lpRebootMsg; StrPtrAnsi lpCommand; DWORD cActions; SC_ACTION *lpsaActions; }
 	// SERVICE_FAILURE_ACTIONSA, *LPSERVICE_FAILURE_ACTIONSA;
 	[PInvokeData("winsvc.h", MSDNShortId = "180ca6d9-f2c3-4ea1-b2c6-319d08ef88ee")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -5519,7 +5519,7 @@ public static partial class AdvApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_notify_2a typedef struct _SERVICE_NOTIFY_2A { DWORD
 	// dwVersion; PFN_SC_NOTIFY_CALLBACK pfnNotifyCallback; PVOID pContext; DWORD dwNotificationStatus; SERVICE_STATUS_PROCESS
-	// ServiceStatus; DWORD dwNotificationTriggered; LPSTR pszServiceNames; } SERVICE_NOTIFY_2A, *PSERVICE_NOTIFY_2A;
+	// ServiceStatus; DWORD dwNotificationTriggered; StrPtrAnsi pszServiceNames; } SERVICE_NOTIFY_2A, *PSERVICE_NOTIFY_2A;
 	[PInvokeData("winsvc.h", MSDNShortId = "52ede72e-eb50-48e2-b5c1-125816f6fe57")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct SERVICE_NOTIFY_2
@@ -5627,7 +5627,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_required_privileges_infoa typedef struct
-	// _SERVICE_REQUIRED_PRIVILEGES_INFOA { LPSTR pmszRequiredPrivileges; } SERVICE_REQUIRED_PRIVILEGES_INFOA, *LPSERVICE_REQUIRED_PRIVILEGES_INFOA;
+	// _SERVICE_REQUIRED_PRIVILEGES_INFOA { StrPtrAnsi pmszRequiredPrivileges; } SERVICE_REQUIRED_PRIVILEGES_INFOA, *LPSERVICE_REQUIRED_PRIVILEGES_INFOA;
 	[PInvokeData("winsvc.h", MSDNShortId = "15a2e042-cfd5-443e-a3b8-822f48eb9654")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct SERVICE_REQUIRED_PRIVILEGES_INFO
@@ -6254,7 +6254,7 @@ public static partial class AdvApi32
 	/// StartServiceCtrlDispatcher function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_table_entrya typedef struct _SERVICE_TABLE_ENTRYA {
-	// LPSTR lpServiceName; LPSERVICE_MAIN_FUNCTIONA lpServiceProc; } SERVICE_TABLE_ENTRYA, *LPSERVICE_TABLE_ENTRYA;
+	// StrPtrAnsi lpServiceName; LPSERVICE_MAIN_FUNCTIONA lpServiceProc; } SERVICE_TABLE_ENTRYA, *LPSERVICE_TABLE_ENTRYA;
 	[PInvokeData("winsvc.h", MSDNShortId = "dd40c4f0-cbbe-429f-91c0-3ba141dab702")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct SERVICE_TABLE_ENTRY

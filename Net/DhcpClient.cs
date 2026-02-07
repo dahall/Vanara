@@ -16,7 +16,7 @@ public class DhcpClient : IDisposable
 	private static readonly DhcpInit init = new();
 #pragma warning restore IDE0052 // Remove unread private members
 
-	private readonly SafeEventHandle closing = CreateEvent(default, false, false), updateList = CreateEvent(default, false, false);
+	private SafeEventHandle closing = CreateEvent(), updateList = CreateEvent();
 	private readonly SafeHTHREAD hThread;
 	private readonly Dictionary<HEVENT, DHCP_OPTION_ID> paramChgEvents = new();
 

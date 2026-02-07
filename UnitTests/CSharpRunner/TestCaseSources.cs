@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -15,13 +16,13 @@ public static class TestCaseSources
 	private const string svrfn = @"C:\Temp\ServerConnectionTestCases.txt";
 
 	// Header: Server IP User Domain Pwd ValidSvr ValidCred UserIsAdmin Local Internet Name
-	private static readonly string[] svrhdr = { "Server", "IP", "User", "Domain", "Pwd", "ValidSvr", "ValidCred", "UserIsAdmin", "Local", "Internet", "Name" };
-	private static Dictionary<string, string?> lookup;
+	private static readonly string[] svrhdr = ["Server", "IP", "User", "Domain", "Pwd", "ValidSvr", "ValidCred", "UserIsAdmin", "Local", "Internet", "Name"];
+	private static readonly Dictionary<string, string?> lookup;
 
 	static TestCaseSources()
 	{
 		// Read in test case sources from file
-		lookup = new Dictionary<string, string?>();
+		lookup = [];
 		if (File.Exists(sourceFile))
 		{
 			var lines = File.ReadAllLines(sourceFile);
@@ -38,7 +39,7 @@ public static class TestCaseSources
 			}
 		}
 		else
-			lookup = new Dictionary<string, string?>(0);
+			lookup = [];
 	}
 
 	public static object[] AuthCasesFromFile
@@ -61,26 +62,32 @@ public static class TestCaseSources
 		}
 	}
 
-	public static string BmpFile => (lookup.TryGetValue(nameof(BmpFile), out var value) ? value : null) ?? @"C:\Temp\Vanara.bmp";
-	public static string DummyFile => (lookup.TryGetValue(nameof(DummyFile), out var value) ? value : null) ?? @"C:\Temp\test.dmy";
-	public static string EventFile => (lookup.TryGetValue(nameof(EventFile), out var value) ? value : null) ?? @"C:\Temp\TestLogFile.etl";
-	public static string IcoFile => (lookup.TryGetValue(nameof(IcoFile), out var value) ? value : null) ?? @"C:\Temp\Vanara.ico";
-	public static string Image2File => (lookup.TryGetValue(nameof(Image2File), out var value) ? value : null) ?? @"C:\Temp\X.png";
-	public static string ImageFile => (lookup.TryGetValue(nameof(ImageFile), out var value) ? value : null) ?? @"C:\Temp\Vanara.png";
-	public static string LargeFile => (lookup.TryGetValue(nameof(LargeFile), out var value) ? value : null) ?? @"C:\Temp\Holes.mp4";
-	public static string LogFile => (lookup.TryGetValue(nameof(LogFile), out var value) ? value : null) ?? @"C:\Temp\Test.log";
+	public static string BmpFile => GetLookupValue(@"test.bmp");
+	public static string DummyFile => GetLookupValue(@"test.dmy");
+	public static string EventFile => GetLookupValue(@"TestLogFile.etl");
+	public static string IcoFile => GetLookupValue(@"Vanara.ico");
+	public static string Image2File => GetLookupValue(@"X.png");
+	public static string ImageFile => GetLookupValue(@"Vanara.png");
+	public static string LargeFile => GetLookupValue(@"Holes.mp4");
+	public static string LogFile => GetLookupValue(@"Test.log");
 	public static IDictionary<string, string?> Lookup => lookup;
-	public static string ResourceFile => (lookup.TryGetValue(nameof(ResourceFile), out var value) ? value : null) ?? @"C:\Temp\DummyResourceExe.exe";
+	public static string ResourceFile => GetLookupValue(@"DummyResourceExe.exe");
 	public static string SmallFile => (lookup.TryGetValue(nameof(SmallFile), out var value) ? value : null) ?? Image2File;
 	public static string TempChildDir => (lookup.TryGetValue(nameof(TempChildDir), out var value) ? value : null) ?? @"C:\Temp\Temp";
 	public static string TempChildDirWhack => (lookup.TryGetValue(nameof(TempChildDirWhack), out var value) ? value : null) ?? TempChildDir + "\\";
 	public static string TempDir => (lookup.TryGetValue(nameof(TempDir), out var value) ? value : null) ?? @"C:\Temp";
 	public static string TempDirWhack => (lookup.TryGetValue(nameof(TempDirWhack), out var value) ? value : null) ?? TempDir + "\\";
-	public static string VirtualDisk => (lookup.TryGetValue(nameof(VirtualDisk), out var value) ? value : null) ?? @"C:\Temp\Test.vhdx";
-	public static string WordDoc => (lookup.TryGetValue(nameof(WordDoc), out var value) ? value : null) ?? @"C:\Temp\Test.docx";
-	public static string WordDocLink => (lookup.TryGetValue(nameof(WordDocLink), out var value) ? value : null) ?? @"C:\Temp\Test.lnk";
+	public static string VirtualDisk => GetLookupValue(@"Test.vhdx");
+	public static string WordDoc => GetLookupValue(@"Test.docx");
+	public static string WordDocLink => GetLookupValue("Test.lnk");
 
 	public static object[] GetAuthCasesFromFile(bool validUser, bool validCred) => AuthCasesFromFile.Where(objs => ((object[])objs)[0].Equals(validUser) && ((object[])objs)[1].Equals(validCred)).ToArray();
+
+	/// <summary>Gets the full file path of a file in the Temp directory.</summary>
+	/// <param name="fn">The file name.</param>
+	/// <returns>The full path to the file.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static string GetFilePath(string fn) => Path.Combine(TempDir, fn);
 
 	/// <summary>Gets the value from a key or retuns a default value.</summary>
 	/// <param name="key">The key.</param>
@@ -117,7 +124,7 @@ public static class TestCaseSources
 	private static IEnumerable<string[]> GetFileItems(string fn, string[]? cols = null, Func<IReadOnlyDictionary<string, string>, bool>? filter = null)
 	{
 		var first = true;
-		string[] hdr = new string[0];
+		string[] hdr = [];
 		int[]? idxs = null;
 		foreach (var ln in File.ReadLines(fn))
 		{
@@ -150,10 +157,13 @@ public static class TestCaseSources
 		}
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static string GetLookupValue(string fn, [CallerMemberName] string? key = null) => (lookup.TryGetValue(key!, out var value) ? value : null) ?? GetFilePath(fn);
+
 	private class StrArrDict : IReadOnlyDictionary<string, string>
 	{
-		private string[] keys;
-		private string[] values;
+		private readonly string[] keys;
+		private readonly string[] values;
 
 		public StrArrDict(string[] k, string[] v)
 		{
@@ -187,7 +197,7 @@ public static class TestCaseSources
 		private class DEnum : IEnumerator<KeyValuePair<string, string>>
 		{
 			private int c = -1;
-			private StrArrDict p;
+			private readonly StrArrDict p;
 
 			public DEnum(StrArrDict parent) => p = parent;
 

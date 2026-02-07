@@ -20,6 +20,8 @@ public class PropertyDescription : IDisposable
 	/// <summary>Gets the type list.</summary>
 	protected PropertyTypeList? typeList;
 
+	private bool disposed = false;
+
 	/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 	/// <param name="propertyDescription">The property description.</param>
 	/// <param name="pkey">The associated property key.</param>
@@ -33,8 +35,7 @@ public class PropertyDescription : IDisposable
 	/// <param name="propkey">The property key.</param>
 	public PropertyDescription(PROPERTYKEY propkey)
 	{
-		PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
-		iDesc = (IPropertyDescription)ppv;
+		PSGetPropertyDescription(propkey, out iDesc!).ThrowIfFailed();
 		key = propkey;
 	}
 
@@ -42,20 +43,19 @@ public class PropertyDescription : IDisposable
 	/// <param name="name">A string that identifies the property.</param>
 	public PropertyDescription(string name)
 	{
-		PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
-		iDesc = (IPropertyDescription)ppv;
+		PSGetPropertyDescriptionByName(name, out iDesc!).ThrowIfFailed();
 		key = iDesc.GetPropertyKey();
 	}
 
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv, propkey) : null;
+	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, out IPropertyDescription? ppv).Succeeded ? new PropertyDescription(ppv!, propkey) : null;
 
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a property key name.</summary>
 	/// <param name="name">A string that identifies the property.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-	public static PropertyDescription? Create(string name) => PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv) : null;
+	public static PropertyDescription? Create(string name) => PSGetPropertyDescriptionByName(name, out IPropertyDescription? ppv).Succeeded ? new PropertyDescription(ppv!) : null;
 
 	/// <summary>Tries to create a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
@@ -66,9 +66,9 @@ public class PropertyDescription : IDisposable
 	/// <returns><see langword="true"/> if the supplied property key exists; otherwise <see langword="false"/>.</returns>
 	public static bool TryCreate(PROPERTYKEY propkey, [NotNullWhen(true)] out PropertyDescription? desc)
 	{
-		if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
+		if (PSGetPropertyDescription(propkey, out IPropertyDescription? ppv).Succeeded)
 		{
-			desc = new PropertyDescription((IPropertyDescription)ppv, propkey);
+			desc = new PropertyDescription(ppv!, propkey);
 			return true;
 		}
 
@@ -150,25 +150,34 @@ public class PropertyDescription : IDisposable
 	/// <param name="propvar">On entry, contains a PROPVARIANT that contains the original value. When this method returns, contains the canonical value.</param>
 	public bool CoerceToCanonicalValue(PROPVARIANT propvar) => iDesc?.CoerceToCanonicalValue(propvar).Succeeded ?? false;
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
+	/// <inheritdoc/>
+	public void Dispose()
 	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (disposed) return;
 		iDesc2 = null;
 		Marshal.FinalReleaseComObject(iDesc);
-		GC.SuppressFinalize(this);
+		disposed = true;
 	}
 
 	/// <summary>Gets a formatted string representation of a property value.</summary>
 	/// <param name="obj">A object that contains the type and value of the property.</param>
 	/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 	/// <returns>The formatted value.</returns>
-	public string FormatForDisplay(object obj, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(new PROPVARIANT(obj), pdfFlags);
+	public string FormatForDisplay(object obj, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(new PROPVARIANT(obj), pdfFlags, out var sz).Succeeded ? sz! : "";
 
 	/// <summary>Gets a formatted string representation of a property value.</summary>
 	/// <param name="pv">A object that contains the type and value of the property.</param>
 	/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 	/// <returns>The formatted value.</returns>
-	internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags);
+	internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags, out var sz).Succeeded ? sz! : "";
 
 	/// <summary>Gets the image location for a value.</summary>
 	/// <param name="obj">The value.</param>
@@ -214,6 +223,8 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <summary>The IPropertyDescriptionList instance.</summary>
 	protected IPropertyDescriptionList? iList;
 
+	private bool disposed = false;
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PropertyDescriptionList"/> class from a string.
 	/// </summary>
@@ -223,6 +234,9 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <summary>Initializes a new instance of the <see cref="PropertyDescriptionList"/> class.</summary>
 	/// <param name="list">The COM interface pointer.</param>
 	protected internal PropertyDescriptionList(IPropertyDescriptionList? list) => iList = list;
+
+	/// <summary>Finalizes an instance of the <see cref="PropertyDescriptionList"/> class.</summary>
+	~PropertyDescriptionList() => Dispose(false);
 
 	/// <inheritdoc />
 	public virtual int Count => (int)(iList?.GetCount() ?? 0);
@@ -238,7 +252,21 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	public virtual PropertyDescription? this[PROPERTYKEY propkey] => PropertyDescription.Create(propkey);
 
 	/// <inheritdoc />
-	public virtual void Dispose() => GC.SuppressFinalize(this);
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		if (iList is not null) Marshal.FinalReleaseComObject(iList);
+		iList = null;
+		disposed = true;
+	}
 
 	/// <inheritdoc />
 	public IEnumerator<PropertyDescription> GetEnumerator() => Enum().GetEnumerator();
@@ -246,7 +274,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <summary>Gets the values for each property defined by this list for a specified shell item.</summary>
 	/// <param name="shellItem">The shell item used to retrieve property values.</param>
 	/// <returns>A list of property values.</returns>
-	public object?[] GetValuesForShellItem(ShellItem shellItem) => Enum().Select(pd => shellItem.Properties[pd.PropertyKey]).ToArray();
+	public object?[] GetValuesForShellItem(ShellItem shellItem) => [.. Enum().Select(pd => shellItem.Properties[pd.PropertyKey])];
 
 	/// <inheritdoc />
 	public override string ToString() => "prop:" + string.Join(";", this.Select(d => $"{GetPrefixForViewFlags(d.ViewFlags)}{d.CanonicalName}").ToArray());

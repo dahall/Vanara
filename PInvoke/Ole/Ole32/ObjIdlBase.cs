@@ -387,7 +387,7 @@ public static partial class Ole32
 		// IUnknown *pCtrlUnk, REFIID riid2, IUnknown **ppv );
 		[PreserveSig]
 		HRESULT CreateCall(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pCtrlUnk,
-			in Guid riid2, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
+			in Guid riid2, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 	}
 
 	/// <summary>
@@ -1036,7 +1036,7 @@ public static partial class Ole32
 	}
 
 	/// <summary>
-	/// Enumerate strings. <c>LPWSTR</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
+	/// Enumerate strings. <c>StrPtrUni</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-ienumstring
 	[PInvokeData("objidl.h", MSDNShortId = "NN:objidl.IEnumString")]
@@ -1062,7 +1062,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ienumstring-next HRESULT Next( ULONG celt, LPOLESTR
 		// *rgelt, ULONG *pceltFetched );
 		[PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 		/// <param name="celt">The number of items to be skipped.</param>
@@ -1352,7 +1352,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iglobalinterfacetable-getinterfacefromglobal HRESULT
 		// GetInterfaceFromGlobal( DWORD dwCookie, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetInterfaceFromGlobal([In] uint dwCookie, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		HRESULT GetInterfaceFromGlobal([In] uint dwCookie, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 	}
 
 	/// <summary>
@@ -1424,7 +1424,7 @@ public static partial class Ole32
 		/// memory available, <c>Alloc</c> returns <c>NULL</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-alloc void * Alloc( SIZE_T cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-alloc void * Alloc( SizeT cb );
 		[PreserveSig]
 		IntPtr Alloc(SizeT cb);
 
@@ -1462,7 +1462,7 @@ public static partial class Ole32
 		/// get a pointer to a type other than <c>void</c>, use a type cast on the return value.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-realloc void * Realloc( void *pv, SIZE_T cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-realloc void * Realloc( void *pv, SizeT cb );
 		[PreserveSig]
 		IntPtr Realloc([In, Optional] IntPtr pv, SizeT cb);
 
@@ -1485,7 +1485,7 @@ public static partial class Ole32
 		/// IMalloc::Realloc. The size returned is the actual size of the allocation, which may be greater than the size requested when
 		/// the allocation was made.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-getsize SIZE_T GetSize( void *pv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-getsize SizeT GetSize( void *pv );
 		[PreserveSig]
 		SizeT GetSize([In, Optional] IntPtr pv);
 
@@ -2572,7 +2572,7 @@ public static partial class Ole32
 		// IUnknown *pUnkOuter, REFIID riid, IRpcProxyBuffer **ppProxy, void **ppv );
 		[PreserveSig]
 		HRESULT CreateProxy([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, out IRpcProxyBuffer ppProxy,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Creates a stub for the remote use of the specified interface.</summary>
 		/// <param name="riid">The identifier of the interface for which a stub is to be created.</param>
@@ -3940,7 +3940,7 @@ public static partial class Ole32
 		/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 		public SafeIMallocHandle(byte[] bytes) : base(bytes) { }
 
-		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>

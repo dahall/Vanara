@@ -358,7 +358,7 @@ public static partial class Dwrite
 		// DWRITE_FONT_FACE_TYPE fontFaceType, UINT32 numberOfFiles, IDWriteFontFile * const *fontFiles, UINT32 faceIndex,
 		// DWRITE_FONT_SIMULATIONS fontFaceSimulationFlags, IDWriteFontFace **fontFace );
 		IDWriteFontFace CreateFontFace(DWRITE_FONT_FACE_TYPE fontFaceType, uint numberOfFiles,
-			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface)] IDWriteFontFile[] fontFiles,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] IDWriteFontFile[] fontFiles,
 			uint faceIndex, DWRITE_FONT_SIMULATIONS fontFaceSimulationFlags);
 
 		/// <summary>
@@ -1059,7 +1059,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontface-getfiles HRESULT GetFiles( UINT32
 		// *numberOfFiles, IDWriteFontFile **fontFiles );
-		void GetFiles(ref uint numberOfFiles, [Out, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface)] IDWriteFontFile[]? fontFiles);
+		void GetFiles(ref uint numberOfFiles, [Out, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IDWriteFontFile[]? fontFiles);
 
 		/// <summary>Obtains the index of a font face in the context of its font files.</summary>
 		/// <returns>
@@ -3105,10 +3105,12 @@ public static partial class Dwrite
 		void GetGlyphs([MarshalAs(UnmanagedType.LPWStr)] string textString, uint textLength, [In] IDWriteFontFace fontFace,
 			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft,
 			in DWRITE_SCRIPT_ANALYSIS scriptAnalysis, [MarshalAs(UnmanagedType.LPWStr)] string localeName,
-			[In, Optional] IDWriteNumberSubstitution? numberSubstitution, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DWRITE_TYPOGRAPHIC_FEATURES[]? features,
-			[In, Optional] uint[]? featureRangeLengths, uint featureRanges, uint maxGlyphCount, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] clusterMap,
-			[Out, MarshalAs(UnmanagedType.LPArray)] DWRITE_SHAPING_TEXT_PROPERTIES[] textProps, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] glyphIndices,
-			[Out, MarshalAs(UnmanagedType.LPArray)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProps, out uint actualGlyphCount);
+			[In, Optional] IDWriteNumberSubstitution? numberSubstitution, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 10)] DWRITE_TYPOGRAPHIC_FEATURES[]? features,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 10)] uint[]? featureRangeLengths, uint featureRanges, uint maxGlyphCount,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] ushort[] clusterMap,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] DWRITE_SHAPING_TEXT_PROPERTIES[] textProps,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] ushort[] glyphIndices,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProps, out uint actualGlyphCount);
 
 		/// <summary>Places glyphs output from the GetGlyphs method according to the font and the writing system's rendering rules.</summary>
 		/// <param name="textString">
@@ -4599,7 +4601,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-getlinemetrics HRESULT GetLineMetrics(
 		// DWRITE_LINE_METRICS *lineMetrics, UINT32 maxLineCount, UINT32 *actualLineCount );
-		void GetLineMetrics([Out, Optional, MarshalAs(UnmanagedType.LPArray)] DWRITE_LINE_METRICS[]? lineMetrics, uint maxLineCount, out uint actualLineCount);
+		void GetLineMetrics([Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DWRITE_LINE_METRICS[]? lineMetrics, uint maxLineCount, out uint actualLineCount);
 
 		/// <summary>Retrieves overall metrics for the formatted string.</summary>
 		/// <returns>

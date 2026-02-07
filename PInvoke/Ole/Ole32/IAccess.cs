@@ -141,7 +141,7 @@ public static partial class Ole32
 		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 		/// <remarks>Even after removing explicit entries, the trustees might still have access entries due to group inclusion.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nf-iaccess-iaccesscontrol-revokeaccessrights HRESULT
-		// RevokeAccessRights( LPWSTR lpProperty, ULONG cTrustees, TRUSTEEW [] prgTrustees );
+		// RevokeAccessRights( StrPtrUni lpProperty, ULONG cTrustees, TRUSTEEW [] prgTrustees );
 		[PreserveSig]
 		HRESULT RevokeAccessRights([MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, uint cTrustees,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TRUSTEE[] prgTrustees);
@@ -170,7 +170,7 @@ public static partial class Ole32
 		/// </param>
 		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nf-iaccess-iaccesscontrol-getallaccessrights HRESULT
-		// GetAllAccessRights( LPWSTR lpProperty, PACTRL_ACCESSW_ALLOCATE_ALL_NODES *ppAccessList, PTRUSTEEW *ppOwner, PTRUSTEEW
+		// GetAllAccessRights( StrPtrUni lpProperty, PACTRL_ACCESSW_ALLOCATE_ALL_NODES *ppAccessList, PTRUSTEEW *ppOwner, PTRUSTEEW
 		// *ppGroup );
 		[PreserveSig]
 		HRESULT GetAllAccessRights([MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, out SafeCoTaskMemHandle ppAccessList,
@@ -513,7 +513,7 @@ public static partial class Ole32
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/iaccess/nf-iaccess-iaccesscontrol-isaccessallowed HRESULT IsAccessAllowed(
-		// PTRUSTEEW pTrustee, LPWSTR lpProperty, ACCESS_RIGHTS AccessRights, BOOL *pfAccessAllowed );
+		// PTRUSTEEW pTrustee, StrPtrUni lpProperty, ACCESS_RIGHTS AccessRights, BOOL *pfAccessAllowed );
 		[PreserveSig]
 		HRESULT IsAccessAllowed(in TRUSTEE pTrustee, [MarshalAs(UnmanagedType.LPWStr)] string? lpProperty, COM_RIGHTS AccessRights,
 			[MarshalAs(UnmanagedType.Bool)] out bool pfAccessAllowed);

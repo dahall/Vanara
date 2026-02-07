@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -58,33 +59,119 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 	IntPtr ReAllocMem(IntPtr hMem, int size);
 }
 
-/// <summary>Interface for classes that support safe memory pointers.</summary>
-public interface ISafeMemoryHandle : IDisposable
+/// <summary>Defines the base functionality for a safe memory handle, providing methods and properties for managing allocated memory.</summary>
+/// <remarks>
+/// This interface represents a safe memory handle that supports operations such as copying memory, retrieving bytes, locking, and unlocking.
+/// It is designed to abstract memory management in scenarios where direct memory manipulation is required. Implementations of this interface
+/// may provide additional functionality, such as span-based access or event handling.
+/// </remarks>
+public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[]>, IComparable<IReadOnlyList<byte>>
 {
-	/// <summary>Gets a value indicating whether the handle value is invalid.</summary>
-	bool IsInvalid { get; }
+#if DEBUG
+	/// <summary>Dumps memory to byte string.</summary>
+	[ExcludeFromCodeCoverage]
+	string Dump { get; }
+#endif
 
-	/// <summary>Gets the size of the allocated memory block.</summary>
-	/// <value>The size of the allocated memory block.</value>
+	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+	bool Lockable { get; }
+
+	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
+	/// <value>The size in bytes of the allocated memory block.</value>
 	SizeT Size { get; set; }
 
+	/// <summary>Occurs when the handle has changed.</summary>
+	event EventHandler<IntPtr>? HandleChanged;
+
+#if ALLOWSPAN
+	/// <summary>Casts this allocated memory to a <c>Span&lt;Byte&gt;</c>.</summary>
+	/// <returns>A span of type <see cref="byte"/>.</returns>
+	Span<byte> AsBytes();
+
+	/// <summary>Creates a new span over this allocated memory.</summary>
+	/// <returns>The span representation of the structure.</returns>
+	ReadOnlySpan<T> AsReadOnlySpan<T>(int length);
+
+	/// <summary>Creates a new span over this allocated memory.</summary>
+	/// <returns>The span representation of the structure.</returns>
+	Span<T> AsSpan<T>(int length);
+#endif
+
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	void CopyTo(IntPtr dest, SizeT length);
+
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	void CopyTo(SizeT start, IntPtr dest, SizeT length);
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
+	void CopyTo(ISafeMemoryHandleBase dest);
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
+	void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default);
+
+	/// <summary>
+	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
+	/// is returned from a P/Invoke call and no size has been set in a constructor.
+	/// </summary>
+	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
+	void DangerousOverrideSize(SizeT newSize);
+
+	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+	/// <returns>A byte array with the copied bytes.</returns>
+	byte[] GetBytes();
+
+	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+	/// <param name="startIndex">The start index.</param>
+	/// <param name="count">The number of bytes to retrieve.</param>
+	/// <returns>A byte array with the copied bytes.</returns>
+	byte[] GetBytes(int startIndex, int count);
+
+	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
+	/// <returns>A hash code.</returns>
+	int GetContentHashCode();
+
+	/// <summary>Locks this instance.</summary>
+	void Lock();
+
+	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+	IntPtr TakeOwnership();
+
+	/// <summary>Decrements the lock count.</summary>
+	/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+	bool Unlock();
+}
+
+/// <summary>Interface for classes that support safe memory pointers.</summary>
+public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
+{
 	/// <summary>
 	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
 	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children);
+	void AddSubReference(params IDisposable[] children);
 
-	/// <summary>Returns the instance as an <see cref="IntPtr"/>. This is a dangerous call as the value is mutable.</summary>
-	/// <returns>An <see cref="IntPtr"/> to the internally held memory.</returns>
-	IntPtr DangerousGetHandle();
-
-	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
-	/// <param name="startIndex">The start index.</param>
-	/// <param name="count">The number of bytes to retrieve.</param>
-	/// <returns>A byte array with the copied bytes.</returns>
-	public byte[] GetBytes(int startIndex, int count);
+	/// <summary>Fills the allocated memory with a specific byte value.</summary>
+	/// <param name="value">The byte value.</param>
+	/// <param name="length">The number of bytes in the block of memory to be filled.</param>
+	void Fill(byte value, int length);
 
 	/// <summary>
 	/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
@@ -145,6 +232,31 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
 	T? ToStructure<T>(SizeT prefixBytes = default);
+}
+
+/// <summary>
+/// Extension interface for <see cref="SafeAllocatedMemoryHandleBase"/> that allows the creation of a new instance of the memory handle.
+/// </summary>
+public partial interface ISafeMemoryHandleFactory : ISafeMemoryHandle
+{
+#if NET7_0_OR_GREATER
+	/// <summary>Creates an instance of the memory handle from an existing handle and size.</summary>
+	/// <param name="handle">The handle to memory allocated in the same manner as the implementer.</param>
+	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true);
+
+	/// <summary>Creates an instance of the memory handle and copies the contents of the specified array to unmanaged memory.</summary>
+	/// <param name="bytes">Array of bytes used to initialize allocated memory.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(byte[] bytes);
+
+	/// <summary>Creates an instance of the memory handle allocating the specified size.</summary>
+	/// <param name="size">The number of bytes to allocate.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(SizeT size);
+#endif
 }
 
 /// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
@@ -258,27 +370,27 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle" />
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IEquatable{T}" />
-/// <seealso cref="SafeHandle" />
-public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
-	IEquatable<SafeAllocatedMemoryHandleBase>, IHandle
+/// <seealso cref="SafeHANDLE" />
+/// <remarks>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</remarks>
+/// <param name="handle">The handle.</param>
+/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+public abstract class SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : SafeHANDLE(handle, ownsHandle), ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
+	IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Occurs when the handle has changed.</summary>
 	public event EventHandler<IntPtr>? HandleChanged;
-
-	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
-	/// <param name="handle">The handle.</param>
-	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle) => SetHandle(handle);
 
 #if DEBUG
 	/// <summary>Dumps memory to byte string.</summary>
 	[ExcludeFromCodeCoverage]
 	public string Dump => Size == 0 ? "" : string.Join(" ", GetBytes(0, Size).Select(b => b.ToString("X2")).ToArray());
 #endif
+
+	/// <inheritdoc/>
+	public override bool IsInvalid => handle == IntPtr.Zero;
 
 	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
@@ -293,32 +405,15 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <returns>The result of the conversion.</returns>
 	public static unsafe explicit operator byte*(SafeAllocatedMemoryHandleBase hMem) => (byte*)hMem.handle;
 
+	/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="h">The safe handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase h) => h.DangerousGetHandle();
+
 	/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="SafeBuffer"/>.</summary>
 	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator SafeBuffer(SafeAllocatedMemoryHandleBase hMem) => new SafeBufferImpl(hMem);
-
-	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="IntPtr"/>.</summary>
-	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase hMem) => hMem.handle;
-
-	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
-	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator !(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
-
-#if !NETSTANDARD
-	/// <summary>Implements the operator <see langword="true"/>.</summary>
-	/// <param name="hMem">The value.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator true(SafeAllocatedMemoryHandleBase hMem) => !hMem.IsInvalid;
-
-	/// <summary>Implements the operator <see langword="false"/>.</summary>
-	/// <param name="hMem">The value.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator false(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
-#endif
 
 #if ALLOWSPAN
 	/// <summary>Creates a new span over this allocated memory.</summary>
@@ -383,44 +478,36 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		return ret;
 	}
 
-	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
-	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
-	/// <param name="length">The number of bytes to copy.</param>
-	public void CopyTo(IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(dest, length));
-
-	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
-	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
-	public void CopyTo(SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
-	{
-		if (dest is null) throw new ArgumentNullException(nameof(dest));
-		if (dest.Size < destOffset + Size) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(dest.handle, Size));
-	}
-
-	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
-	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
-	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
-	/// <param name="length">The number of bytes to copy.</param>
-	public void CopyTo(SizeT start, IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(start, dest, length));
-
-	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
-	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
-	/// <param name="length">The number of bytes to copy.</param>
-	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
-	public void CopyTo(SizeT start, SizeT length, SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
-	{
-		if (dest is null) throw new ArgumentNullException(nameof(dest));
-		if (dest.Size < destOffset + length - start) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(start, dest.handle.Offset(destOffset), length));
-	}
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void CopyTo(IntPtr dest, SizeT length) => CopyTo(0, dest, length);
 
 	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void CopyTo(SizeT start, IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(start, dest, length));
+
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void CopyTo(ISafeMemoryHandleBase dest) => CopyTo(0, Size, dest);
+
+	/// <inheritdoc/>
+	public void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default)
+	{
+		if (dest is null) throw new ArgumentNullException(nameof(dest));
+		if (start + length > Size) throw new ArgumentOutOfRangeException(nameof(start), "The start offset and length exceed the size of the memory block.");
+		if (dest.Size < destOffset + length) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
+		CopyTo(start, dest.DangerousGetHandle().Offset(destOffset), length);
+	}
+
+	/// <summary>
+	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
+	/// is returned from a P/Invoke call and no size has been set in a constructor.
+	/// </summary>
+	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
+	public abstract void DangerousOverrideSize(SizeT newSize);
+
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool Equals(SafeAllocatedMemoryHandleBase? other) => CompareTo(other) == 0;
 
 	/// <inheritdoc/>
@@ -428,10 +515,9 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	{
 		null => false,
 		SafeAllocatedMemoryHandleBase m => Equals(m),
-		IntPtr p => handle.Equals(p),
 		byte[] b => CompareTo(Array.AsReadOnly(b)) == 0,
 		IReadOnlyList<byte> e => CompareTo(e) == 0,
-		_ => throw new ArgumentException("Unable to compare type.", nameof(obj)),
+		_ => base.Equals(obj),
 	};
 
 	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
@@ -449,7 +535,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	}
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => handle.GetHashCode();
+	public override int GetHashCode() => base.GetHashCode();
 
 	/// <summary>Locks this instance.</summary>
 	public virtual void Lock()
@@ -460,9 +546,8 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 	public virtual bool Unlock() => false;
 
-	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
-	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
-	public virtual IntPtr TakeOwnership()
+	/// <inheritdoc/>
+	public override IntPtr ReleaseOwnership()
 	{
 		while (Unlock()) ;
 		var h = handle;
@@ -471,6 +556,11 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		Size = 0;
 		return h;
 	}
+
+	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+	[Obsolete("Use 'ReleaseOwnership' instead of 'TakeOwnership' to relinquish ownership. This method will be removed in a future release.")]
+	public virtual IntPtr TakeOwnership() => ReleaseOwnership();
 
 	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 	/// <returns>A byte array with the copied bytes.</returns>
@@ -530,12 +620,40 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 
 /// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
 /// <seealso cref="SafeHandle"/>
-public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
+/// <remarks>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</remarks>
+/// <param name="handle">The handle.</param>
+/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+public abstract class SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : SafeAllocatedMemoryHandleBase(handle, ownsHandle)
 {
-	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
-	/// <param name="handle">The handle.</param>
-	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
+	/// <summary>
+	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
+	/// that such objects being referred to wouldn't be unreferenced until this object is active.
+	/// </summary>
+	private List<IDisposable>? references;
+
+	/// <summary>
+	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
+	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
+	/// pointers to other objects
+	/// </summary>
+	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+	public void AddSubReference(IEnumerable<IDisposable> children)
+	{
+		references ??= [];
+		references.AddRange(children);
+	}
+
+	/// <summary>
+	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
+	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
+	/// pointers to other objects
+	/// </summary>
+	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+	public void AddSubReference(params IDisposable[] children)
+	{
+		references ??= [];
+		references.AddRange(children);
+	}
 
 	/// <summary>Fills the allocated memory with a specific byte value.</summary>
 	/// <param name="value">The byte value.</param>
@@ -552,6 +670,17 @@ public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
 
 	/// <summary>Zero out all allocated memory.</summary>
 	public virtual void Zero() => Fill(0, Size);
+
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposing && references is not null)
+		{
+			foreach (var d in references) d.Dispose();
+			references = null;
+		}
+		base.Dispose(disposing);
+	}
 }
 
 /// <summary>Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.</summary>
@@ -583,17 +712,47 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	protected SafeMemoryHandle(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
 
-	/// <summary>
-	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-	/// array equivalent.
-	/// </summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	protected SafeMemoryHandle(byte[] bytes) : base(IntPtr.Zero, true)
 	{
 		if (bytes is null || bytes.Length == 0) return;
 		InitFromSize(bytes.Length);
 		CallLocked(p => Marshal.Copy(bytes, 0, p, bytes.Length));
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	protected SafeMemoryHandle(Span<byte> bytes) : base(IntPtr.Zero, true)
+	{
+		if (bytes.Length == 0) return;
+		InitFromSize(bytes.Length);
+		if (!Lockable)
+			CopySpanToPtr(bytes, handle);
+		else
+		{
+			try { Lock(); CopySpanToPtr(bytes, handle); }
+			finally { Unlock(); }
+		}
+
+		static void CopySpanToPtr(Span<byte> source, IntPtr dest)
+		{
+			unsafe
+			{
+				var pSource = Unsafe.AsPointer(ref MemoryMarshal.GetReference(source));
+				Buffer.MemoryCopy(pSource, (void*)dest, source.Length, source.Length);
+			}
+		}
 	}
 
 	/// <summary>
@@ -642,7 +801,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// is returned from a P/Invoke call and no size has been set in a constructor.
 	/// </summary>
 	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
-	public void DangerousOverrideSize(SizeT newSize) => sz = newSize;
+	public override void DangerousOverrideSize(SizeT newSize) => sz = newSize;
 
 	/// <summary>Locks this instance.</summary>
 	public override void Lock()
@@ -677,6 +836,13 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	}
 
 	/// <summary>
+	/// Performs an implicit conversion from <see cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/> to <see cref="Span{T}"/> of bytes.
+	/// </summary>
+	/// <param name="h">The safe memory handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator Span<byte>(SafeMemoryHandle<TMem> h) { unsafe { return new Span<byte>((void*)h.handle, h.Size); }; }
+
+	/// <summary>
 	/// Clones the memory tied to this instance using <see cref="ISimpleMemoryMethods.AllocMem(int)"/> and returns a pointer to the
 	/// copied memory.
 	/// </summary>
@@ -697,7 +863,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it
 	/// generates a releaseHandleFailed MDA Managed Debugging Assistant.
 	/// </returns>
-	protected override bool ReleaseHandle()
+	protected override bool InternalReleaseHandle()
 	{
 		while (Unlock()) ;
 		mm.FreeMem(handle);
@@ -717,12 +883,6 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 /// <seealso cref="SafeHandle"/>
 public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeMemoryHandle where TMem : IMemoryMethods, new()
 {
-	/// <summary>
-	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
-	/// that such objects being referred to wouldn't be unreferenced until this object is active.
-	/// </summary>
-	private List<SafeAllocatedMemoryHandle>? references;
-
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
@@ -734,13 +894,23 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	protected SafeMemoryHandleExt(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
-	/// <summary>
-	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-	/// array equivalent.
-	/// </summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	protected SafeMemoryHandleExt(byte[] bytes) : base(bytes) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	protected SafeMemoryHandleExt(Span<byte> bytes) : base(bytes) { }
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -750,7 +920,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <returns>SafeMemoryHandleExt object to an native (unmanaged) array of pointers</returns>
 	protected SafeMemoryHandleExt(IntPtr[] values) : this(IntPtr.Size * values.Length) => CallLocked(p => Marshal.Copy(values, 0, p, values.Length));
 
-	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
@@ -768,30 +938,6 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	protected SafeMemoryHandleExt(SafeAllocatedMemoryHandle source) : base(source) { }
 
 	/// <summary>
-	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
-	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
-	/// pointers to other objects
-	/// </summary>
-	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children)
-	{
-		references ??= [];
-		references.AddRange(children);
-	}
-
-	/// <summary>
-	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
-	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
-	/// pointers to other objects
-	/// </summary>
-	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(params SafeAllocatedMemoryHandle[] children)
-	{
-		references ??= [];
-		references.AddRange(children);
-	}
-
-	/// <summary>
 	/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 	/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
 	/// </summary>
@@ -802,7 +948,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	public T[] ToArray<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) return [];
-		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
@@ -820,14 +966,14 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	public IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) yield break;
-		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
 		try
 		{
 			Lock();
-			foreach (T? i in handle.ToIEnum<T>(count, prefixBytes, sz))
+			foreach (T? i in this.ToIEnum<T>(count, prefixBytes, sz))
 				yield return i!;
 		}
 		finally

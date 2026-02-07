@@ -260,7 +260,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Returns the adapter for the specified device.</summary>
 		/// <returns>
@@ -523,7 +523,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgidevice2-offerresources HRESULT OfferResources( [in]
 		// UINT NumResources, [in] IDXGIResource * const *ppResources, [in] DXGI_OFFER_RESOURCE_PRIORITY Priority );
 		[PreserveSig]
-		new HRESULT OfferResources(int NumResources, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IDXGIResource[] ppResources,
+		new HRESULT OfferResources(int NumResources, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IDXGIResource[] ppResources,
 			DXGI_OFFER_RESOURCE_PRIORITY Priority);
 
 		/// <summary>Restores access to resources that were previously offered by calling <c>IDXGIDevice2::OfferResources</c>.</summary>
@@ -566,7 +566,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgidevice2-reclaimresources HRESULT ReclaimResources(
 		// [in] UINT NumResources, [in] IDXGIResource * const *ppResources, [out, optional] BOOL *pDiscarded );
 		[PreserveSig]
-		new HRESULT ReclaimResources(int NumResources, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IDXGIResource[] ppResources,
+		new HRESULT ReclaimResources(int NumResources, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IDXGIResource[] ppResources,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] bool[] pDiscarded);
 
 		/// <summary>
@@ -934,7 +934,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerates the adapters (video cards).</summary>
 		/// <param name="Adapter">
@@ -1646,7 +1646,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumadapterbyluid HRESULT EnumAdapterByLuid(
 		// [in] LUID AdapterLuid, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>Provides an adapter which can be provided to D3D12CreateDevice to use the WARP renderer.</summary>
 		/// <param name="riid">
@@ -1668,7 +1668,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumwarpadapter HRESULT EnumWarpAdapter(
 		// [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvAdapter);
+		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvAdapter);
 
 		/// <summary>Used to check for hardware feature support.</summary>
 		/// <param name="Feature">
@@ -1837,7 +1837,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Get a description of the output.</summary>
 		/// <returns>
@@ -2654,7 +2654,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Retrieves the device.</summary>
 		/// <param name="riid">

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading;
 
 namespace Vanara.PInvoke;
 
@@ -185,8 +186,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365144")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CallNamedPipe(string lpNamedPipeName, [In] IntPtr lpInBuffer, uint nInBufferSize, [Out] IntPtr lpOutBuffer, uint nOutBufferSize,
-		out uint lpBytesRead, uint nTimeOut);
+	public static extern bool CallNamedPipe([MaxLength(256)] string lpNamedPipeName, [In, SizeDef(nameof(nInBufferSize))] IntPtr lpInBuffer, uint nInBufferSize,
+		[Out, SizeDef(nameof(nOutBufferSize), SizingMethod.CheckLastError)] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, uint nTimeOut);
 
 	/// <summary>
 	/// Enables a named pipe server process to wait for a client process to connect to an instance of a named pipe. A client process
@@ -234,7 +235,55 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365146")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool ConnectNamedPipe([In] HPIPE hNamedPipe, [Optional] NativeOverlapped* lpOverlapped);
+	public static extern bool ConnectNamedPipe([In, AddAsMember] HPIPE hNamedPipe, [Optional] StructPointer<NativeOverlapped> lpOverlapped);
+
+	/// <summary>
+	/// Enables a named pipe server process to wait for a client process to connect to an instance of a named pipe. A client process
+	/// connects by calling either the <c>CreateFile</c> or <c>CallNamedPipe</c> function.
+	/// </summary>
+	/// <param name="hNamedPipe">
+	/// A handle to the server end of a named pipe instance. This handle is returned by the <c>CreateNamedPipe</c> function.
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>A pointer to an <c>OVERLAPPED</c> structure.</para>
+	/// <para>
+	/// If hNamedPipe was opened with FILE_FLAG_OVERLAPPED, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a valid
+	/// <c>OVERLAPPED</c> structure. If hNamedPipe was opened with FILE_FLAG_OVERLAPPED and lpOverlapped is <c>NULL</c>, the function can
+	/// incorrectly report that the connect operation is complete.
+	/// </para>
+	/// <para>
+	/// If hNamedPipe was created with FILE_FLAG_OVERLAPPED and lpOverlapped is not <c>NULL</c>, the <c>OVERLAPPED</c> structure should
+	/// contain a handle to a manual-reset event object (which the server can create by using the <c>CreateEvent</c> function).
+	/// </para>
+	/// <para>
+	/// If hNamedPipe was not opened with FILE_FLAG_OVERLAPPED, the function does not return until a client is connected or an error
+	/// occurs. Successful synchronous operations result in the function returning a nonzero value if a client connects after the
+	/// function is called.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the operation is synchronous, <c>ConnectNamedPipe</c> does not return until the operation has completed. If the function
+	/// succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.
+	/// </para>
+	/// <para>
+	/// If the operation is asynchronous, <c>ConnectNamedPipe</c> returns immediately. If the operation is still pending, the return
+	/// value is zero and <c>GetLastError</c> returns ERROR_IO_PENDING. (You can use the <c>HasOverlappedIoCompleted</c> macro to
+	/// determine when the operation has finished.) If the function fails, the return value is zero and <c>GetLastError</c> returns a
+	/// value other than ERROR_IO_PENDING or ERROR_PIPE_CONNECTED.
+	/// </para>
+	/// <para>
+	/// If a client connects before the function is called, the function returns zero and <c>GetLastError</c> returns
+	/// ERROR_PIPE_CONNECTED. This can happen if a client connects in the interval between the call to <c>CreateNamedPipe</c> and the
+	/// call to <c>ConnectNamedPipe</c>. In this situation, there is a good connection between client and server, even though the
+	/// function returns zero.
+	/// </para>
+	/// </returns>
+	// BOOL WINAPI ConnectNamedPipe( _In_ HANDLE hNamedPipe, _Inout_opt_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365146(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365146")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern unsafe bool ConnectNamedPipe([In] HPIPE hNamedPipe, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// Creates an instance of a named pipe and returns a handle for subsequent pipe operations. A named pipe server process uses this
@@ -529,7 +578,8 @@ public static partial class Kernel32
 	// DWORD nDefaultTimeOut, [in, optional] LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.CreateNamedPipeA")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern SafeHPIPE CreateNamedPipe(string lpName, PIPE_ACCESS dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize,
+	[return: AddAsCtor]
+	public static extern SafeHPIPE CreateNamedPipe([MaxLength(256)] string lpName, PIPE_ACCESS dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize,
 		uint nInBufferSize, uint nDefaultTimeOut, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
 
 	/// <summary>Creates an anonymous pipe, and returns handles to the read and write ends of the pipe.</summary>
@@ -588,11 +638,11 @@ public static partial class Kernel32
 	/// that's part of the same app. Also, named pipes must use the syntax for the pipe name.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientcomputernamea BOOL
-	// GetNamedPipeClientComputerNameA( [in] HANDLE Pipe, [out] LPSTR ClientComputerName, [in] ULONG ClientComputerNameLength );
+	// GetNamedPipeClientComputerNameA( [in] HANDLE Pipe, [out] StrPtrAnsi ClientComputerName, [in] ULONG ClientComputerNameLength );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetNamedPipeClientComputerNameA")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeClientComputerName(HPIPE Pipe, [Out] StringBuilder ClientComputerName, uint ClientComputerNameLength);
+	public static extern bool GetNamedPipeClientComputerName(HPIPE Pipe, [Out, SizeDef(nameof(ClientComputerNameLength))] StringBuilder ClientComputerName, [Range(0, 256)] uint ClientComputerNameLength);
 
 	/// <summary>
 	/// <para>Retrieves the client process identifier for the specified named pipe.</para>
@@ -618,7 +668,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "7001eb89-3d91-44e3-b245-b19e8ab5f9fe")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeClientProcessId(HPIPE Pipe, out uint ClientProcessId);
+	public static extern bool GetNamedPipeClientProcessId([In, AddAsMember] HPIPE Pipe, out uint ClientProcessId);
 
 	/// <summary>
 	/// <para>Retrieves the client session identifier for the specified named pipe.</para>
@@ -644,7 +694,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "b3ea0b7f-fead-4369-b87a-2f522a2a1984")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeClientSessionId(HPIPE Pipe, out uint ClientSessionId);
+	public static extern bool GetNamedPipeClientSessionId([In, AddAsMember] HPIPE Pipe, out uint ClientSessionId);
 
 	/// <summary>
 	/// Retrieves information about a specified named pipe. The information returned can vary during the lifetime of an instance of the
@@ -711,13 +761,13 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI GetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpState, _Out_opt_ LPDWORD lpCurInstances,
-	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ LPTSTR lpUserName, _In_ DWORD
+	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ StrPtrAuto lpUserName, _In_ DWORD
 	// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional] IntPtr lpMaxCollectionCount,
-		[Optional] IntPtr lpCollectDataTimeout, [Optional] StringBuilder? lpUserName, [Optional] uint nMaxUserNameSize);
+	public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional, Out] StructPointer<uint> lpMaxCollectionCount,
+		[Optional, Out] StructPointer<uint> lpCollectDataTimeout, [Optional] StringBuilder? lpUserName, [Optional] uint nMaxUserNameSize);
 
 	/// <summary>
 	/// Retrieves information about a specified named pipe. The information returned can vary during the lifetime of an instance of the
@@ -784,7 +834,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI GetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpState, _Out_opt_ LPDWORD lpCurInstances,
-	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ LPTSTR lpUserName, _In_ DWORD
+	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ StrPtrAuto lpUserName, _In_ DWORD
 	// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365443")]
@@ -855,7 +905,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365445")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeInfo([In] HPIPE hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
+	public static extern bool GetNamedPipeInfo([In, AddAsMember] HPIPE hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
 
 	/// <summary>
 	/// <para>Retrieves the server process identifier for the specified named pipe.</para>
@@ -881,7 +931,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "1ee33a66-a71c-4c34-b907-aab7860294c4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeServerProcessId([In] HPIPE Pipe, out uint ServerProcessId);
+	public static extern bool GetNamedPipeServerProcessId([In, AddAsMember] HPIPE Pipe, out uint ServerProcessId);
 
 	/// <summary>
 	/// <para>Retrieves the server session identifier for the specified named pipe.</para>
@@ -907,7 +957,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "cd628d6d-aa13-4762-893b-42f6cf7a2ba6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeServerSessionId([In] HPIPE Pipe, out uint ServerSessionId);
+	public static extern bool GetNamedPipeServerSessionId([In, AddAsMember] HPIPE Pipe, out uint ServerSessionId);
 
 	/// <summary>
 	/// Copies data from a named or anonymous pipe into a buffer without removing it from the pipe. It also returns information about
@@ -945,7 +995,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365779")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PeekNamedPipe([In] HPIPE hNamedPipe, [Out, Optional] IntPtr lpBuffer, [Optional] uint nBufferSize,
+	public static extern bool PeekNamedPipe([In, AddAsMember] HPIPE hNamedPipe, [Out, Optional] IntPtr lpBuffer, [Optional] uint nBufferSize,
 		out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
 
 	/// <summary>
@@ -1068,7 +1118,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365787")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetNamedPipeHandleState([In] HPIPE hNamedPipe, in uint lpMode, in uint lpMaxCollectionCount, in uint lpCollectDataTimeout);
+	public static extern bool SetNamedPipeHandleState([In, AddAsMember] HPIPE hNamedPipe, in uint lpMode, in uint lpMaxCollectionCount, in uint lpCollectDataTimeout);
 
 	/// <summary>
 	/// Sets the read mode and the blocking mode of the specified named pipe. If the specified handle is to the client end of a named
@@ -1210,8 +1260,67 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365790")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool TransactNamedPipe([In] HPIPE hNamedPipe, [In] IntPtr lpInBuffer, uint nInBufferSize, [Out] IntPtr lpOutBuffer,
-		uint nOutBufferSize, out uint lpBytesRead, [Optional] NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool TransactNamedPipe([In] HPIPE hNamedPipe, [In, SizeDef(nameof(nInBufferSize))] IntPtr lpInBuffer,
+		uint nInBufferSize, [Out, SizeDef(nameof(nOutBufferSize))] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, [Optional] NativeOverlapped* lpOverlapped);
+
+	/// <summary>
+	/// Combines the functions that write a message to and read a message from the specified named pipe into a single network operation.
+	/// </summary>
+	/// <param name="hNamedPipe">
+	/// <para>A handle to the named pipe returned by the <c>CreateNamedPipe</c> or <c>CreateFile</c> function.</para>
+	/// <para>This parameter can also be a handle to an anonymous pipe, as returned by the <c>CreatePipe</c> function.</para>
+	/// </param>
+	/// <param name="lpInBuffer">A pointer to the buffer containing the data to be written to the pipe.</param>
+	/// <param name="nInBufferSize">The size of the input buffer, in bytes.</param>
+	/// <param name="lpOutBuffer">A pointer to the buffer that receives the data read from the pipe.</param>
+	/// <param name="nOutBufferSize">The size of the output buffer, in bytes.</param>
+	/// <param name="lpBytesRead">
+	/// <para>A pointer to the variable that receives the number of bytes read from the pipe.</para>
+	/// <para>If lpOverlapped is <c>NULL</c>, lpBytesRead cannot be <c>NULL</c>.</para>
+	/// <para>
+	/// If lpOverlapped is not <c>NULL</c>, lpBytesRead can be <c>NULL</c>. If this is an overlapped read operation, you can get the
+	/// number of bytes read by calling <c>GetOverlappedResult</c>. If hNamedPipe is associated with an I/O completion port, you can get
+	/// the number of bytes read by calling <c>GetQueuedCompletionStatus</c>.
+	/// </para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>A pointer to an <c>OVERLAPPED</c> structure. This structure is required if hNamedPipe was opened with FILE_FLAG_OVERLAPPED.</para>
+	/// <para>
+	/// If hNamedPipe was opened with FILE_FLAG_OVERLAPPED, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a valid
+	/// <c>OVERLAPPED</c> structure. If hNamedPipe was created with FILE_FLAG_OVERLAPPED and lpOverlapped is <c>NULL</c>, the function
+	/// can incorrectly report that the operation is complete.
+	/// </para>
+	/// <para>
+	/// If hNamedPipe was opened with FILE_FLAG_OVERLAPPED and lpOverlapped is not <c>NULL</c>, <c>TransactNamedPipe</c> is executed as
+	/// an overlapped operation. The <c>OVERLAPPED</c> structure should contain a manual-reset event object (which can be created by
+	/// using the <c>CreateEvent</c> function). If the operation cannot be completed immediately, <c>TransactNamedPipe</c> returns
+	/// <c>FALSE</c> and <c>GetLastError</c> returns ERROR_IO_PENDING. In this situation, the event object is set to the nonsignaled
+	/// state before <c>TransactNamedPipe</c> returns, and it is set to the signaled state when the transaction has finished. Also, you
+	/// can be notified when an overlapped operation completes by using the <c>GetQueuedCompletionStatus</c> or
+	/// <c>GetQueuedCompletionStatusEx</c> functions. In this case, you do not need to assign the manual-reset event in the
+	/// <c>OVERLAPPED</c> structure, and the completion happens against hNamedPipe in the same way as an asynchronous read or write
+	/// operation. For more information about overlapped operations, see Pipes.
+	/// </para>
+	/// <para>
+	/// If hNamedPipe was not opened with FILE_FLAG_OVERLAPPED, <c>TransactNamedPipe</c> does not return until the operation is complete.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// <para>
+	/// If the message to be read is longer than the buffer specified by the nOutBufferSize parameter, <c>TransactNamedPipe</c> returns
+	/// <c>FALSE</c> and the <c>GetLastError</c> function returns ERROR_MORE_DATA. The remainder of the message can be read by a
+	/// subsequent call to <c>ReadFile</c>, <c>ReadFileEx</c>, or <c>PeekNamedPipe</c>.
+	/// </para>
+	/// </returns>
+	// BOOL WINAPI TransactNamedPipe( _In_ HANDLE hNamedPipe, _In_ LPVOID lpInBuffer, _In_ DWORD nInBufferSize, _Out_ LPVOID lpOutBuffer,
+	// _In_ DWORD nOutBufferSize, _Out_ LPDWORD lpBytesRead, _Inout_opt_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365790(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("Winbase.h", MSDNShortId = "aa365790")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool TransactNamedPipe([In] HPIPE hNamedPipe, [In, SizeDef(nameof(nInBufferSize))] IntPtr lpInBuffer,
+		uint nInBufferSize, [Out, SizeDef(nameof(nOutBufferSize))] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Waits until either a time-out interval elapses or an instance of the specified named pipe is available for connection (that is,
@@ -1257,5 +1366,5 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365800")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WaitNamedPipe(string lpNamedPipeName, uint nTimeOut);
+	public static extern bool WaitNamedPipe([MaxLength(256)] string lpNamedPipeName, uint nTimeOut);
 }

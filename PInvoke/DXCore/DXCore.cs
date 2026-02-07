@@ -947,7 +947,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory ) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory(_COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 	}
 
 	/// <summary>
@@ -1352,7 +1352,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory ) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory(_COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		new HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		new HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 
 		/// <summary>TBD</summary>
 		/// <param name="property">TBD</param>
@@ -1446,7 +1446,7 @@ public static partial class DXCore
 		// CreateAdapterList( uint32_t numAttributes, _In_reads_(numAttributes) const GUID *filterAttributes, _COM_Outptr_ T **ppvAdapterList);
 		[PreserveSig]
 		HRESULT CreateAdapterList(int numAttributes, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] filterAttributes,
-			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppvAdapterList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvAdapterList);
 
 		/// <summary>
 		/// Retrieves the DXCore adapter object ( <c>IDXCoreAdapter</c>) for a specified LUID, if available. For programming guidance, and
@@ -1498,7 +1498,7 @@ public static partial class DXCore
 		// virtual HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, REFIID riid, _COM_Outptr_ void **ppvAdapter) =
 		// 0; template&lt;class T&gt; HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Determines whether a specified notification type is supported by the operating system (OS). For programming guidance, and code
@@ -1768,7 +1768,7 @@ public static partial class DXCore
 		// CreateAdapterList( uint32_t numAttributes, _In_reads_(numAttributes) const GUID *filterAttributes, _COM_Outptr_ T **ppvAdapterList);
 		[PreserveSig]
 		new HRESULT CreateAdapterList(int numAttributes, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] filterAttributes,
-			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppvAdapterList);
+			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppvAdapterList);
 
 		/// <summary>
 		/// Retrieves the DXCore adapter object ( <c>IDXCoreAdapter</c>) for a specified LUID, if available. For programming guidance, and
@@ -1820,7 +1820,7 @@ public static partial class DXCore
 		// virtual HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, REFIID riid, _COM_Outptr_ void **ppvAdapter) =
 		// 0; template&lt;class T&gt; HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		new HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		new HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Determines whether a specified notification type is supported by the operating system (OS). For programming guidance, and code
@@ -2094,7 +2094,7 @@ public static partial class DXCore
 		[PreserveSig]
 		HRESULT CreateAdapterListByWorkload(DXCoreWorkload workload, DXCoreRuntimeFilterFlags runtimeFilter,
 			DXCoreHardwareTypeFilterFlags hardwareTypeFilter, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvAdapterList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvAdapterList);
 	}
 
 	/// <summary>
@@ -2158,7 +2158,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetAdapter( uint32_t index, REFIID riid, _COM_Outptr_ void **ppvAdapter) = 0; template&lt;class T&gt;
 		// HRESULT STDMETHODCALLTYPE GetAdapter( uint32_t index, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		HRESULT GetAdapter(uint index, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		HRESULT GetAdapter(uint index, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Retrieves the number of adapters in a DXCore adapter list object. For programming guidance, and code examples, see <c>Using
@@ -2239,7 +2239,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory( _COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 
 		/// <summary>
 		/// Sorts a DXCore adapter list object based on a provided input array of sort criteria, where array items earlier in the array of
@@ -2284,7 +2284,7 @@ public static partial class DXCore
 		// https://learn.microsoft.com/en-us/windows/win32/dxcore/dxcore_interface/nf-dxcore_interface-idxcoreadapterlist-sort HRESULT Sort(
 		// uint32_t numPreferences, _In_reads_(numPreferences) const DXCoreAdapterPreference* preferences );
 		[PreserveSig]
-		HRESULT Sort(int numPreferences, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DXCoreAdapterPreference[] preferences);
+		HRESULT Sort(int numPreferences, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DXCoreAdapterPreference[] preferences);
 
 		/// <summary>
 		/// Determines whether a specified <c>DXCoreAdapterPreference</c> value is understood by the current operating system (OS). You can
@@ -2299,139 +2299,6 @@ public static partial class DXCore
 		// bool IsAdapterPreferenceSupported( DXCoreAdapterPreference preference );
 		[PreserveSig]
 		bool IsAdapterPreferenceSupported(DXCoreAdapterPreference preference);
-	}
-
-	/// <summary>
-	/// Generates a list of adapter objects representing the current adapter state of the system, and meeting the criteria specified. For
-	/// programming guidance, and code examples, see <c>Using DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvAdapterList. This is expected to be IDXCoreAdapterList.</typeparam>
-	/// <param name="factory">The <see cref="IDXCoreAdapterFactory"/> instance.</param>
-	/// <param name="filterAttributes">
-	/// An array of adapter attribute GUIDs. For a list of attribute GUIDs, see DXCore adapter attribute GUIDs. At least one GUID must be
-	/// provided. In the case that more than one GUID is provided in the array, only adapters that meet all of the requested attributes will
-	/// be included in the returned list.
-	/// </param>
-	/// <param name="ppvAdapterList">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvAdapterList (the
-	/// dereferenced address) contains a pointer to the adapter list created.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_INVALIDARG</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>filterAttributes</c>, or 0 was provided for <c>numAttributes</c>.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvAdapterList</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// Even if no adapters are found, as long as the arguments are valid, <b>CreateAdapterList</b> creates a valid
-	/// <c>IDXCoreAdapterList</c> object, and returns <b>S_OK</b>. Once generated, the adapters in this specific list won't change. But the
-	/// list will be considered stale if one of the adapters later becomes invalid, or if a new adapter arrives that meets the provided
-	/// filter criteria. The list returned by <b>CreateAdapterList</b> is not ordered in any particular way, but the ordering of a list is
-	/// consistent across multiple calls, and even across operating system restarts. The ordering may change upon system configuration
-	/// changes, including the addition or removal of an adapter, or a driver update on an existing adapter. You can register for these
-	/// changes with <c>IDXCoreAdapterFactory::RegisterEventNotification</c> using the notification type <b>DXCoreNotificationType.AdapterListStale</b>.
-	/// </remarks>
-	public static HRESULT CreateAdapterList<T>(this IDXCoreAdapterFactory factory, Guid[] filterAttributes, out T ppvAdapterList) where T : class
-	{
-		var hr = factory.CreateAdapterList(filterAttributes.Length, filterAttributes, typeof(T).GUID, out var ppv);
-		ppvAdapterList = (T)ppv;
-		return hr;
-	}
-
-	/// <summary>
-	/// <para>
-	/// Generates a list of adapter objects representing the current adapter state of the system, and meeting the workload and hardware type
-	/// criteria specified. For programming guidance, and code examples, see <c>Using DXCore to enumerate adapters</c>. With
-	/// <b>CreateAdapterListByWorkload</b>, DXCore supports neural processing units (NPUs), which process machine-learning (ML) workloads,
-	/// and media accelerators, for video encode/decode/processing workloads.
-	/// </para>
-	/// <para>
-	/// You can retrieve MCDM NPUs and media accelerators by calling <c>CreateAdapterList</c>, but the default sorting for that method is
-	/// based on runtime capabilities and device performance. <b>CreateAdapterListByWorkload</b> allows DXCore to provide an adapter list
-	/// sorted by what works best for a given workload, based on operating system (OS) policy, that you can easily narrow down by the type
-	/// of hardware and level of Direct 3D runtime support. The default sorting in <b>CreateAdapterListByWorkload</b> can be thought of as
-	/// the opposite of <b>CreateAdapterList</b>, where more specialized hardware is prioritized in the ordering that may be less generally
-	/// capable than a full GPU.
-	/// </para>
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvAdapterList. This is expected to be IDXCoreAdapterList.</typeparam>
-	/// <param name="factory">The <see cref="IDXCoreAdapterFactory1"/> instance.</param>
-	/// <param name="workload">TBD</param>
-	/// <param name="runtimeFilter">TBD</param>
-	/// <param name="hardwareTypeFilter">TBD</param>
-	/// <param name="ppvAdapterList">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvAdapterList (the
-	/// dereferenced address) contains a pointer to the adapter list created.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_INVALIDARG</description>
-	/// <description>
-	/// A value was provided outside of the range of the <c>workload</c>, <c>runtimeFilter</c>, or <c>hardwareTypeFilter</c> parameters.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvAdapterList</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// Even if no adapters are found, as long as the arguments are valid, <b>CreateAdapterListByWorkload</b> creates a valid
-	/// <c>IDXCoreAdapterList</c> object, and returns <b>S_OK</b>. Once generated, the adapters in this specific list won't change. But the
-	/// list will be considered stale if one of the adapters later becomes invalid, or if a new adapter arrives that meets the provided
-	/// filter criteria. The list returned by <b>CreateAdapterList</b> is not ordered in any particular way, and multiple calls to
-	/// <b>CreateAdapterList</b> may produce differently ordered lists.
-	/// </para>
-	/// <para>
-	/// The resulting list is not ordered in any particular way, but the ordering of a list is consistent across multiple calls, and even
-	/// across operating system restarts. The ordering may change upon system configuration changes, including the addition or removal of an
-	/// adapter, or a driver update on an existing adapter.
-	/// </para>
-	/// </remarks>
-	public static HRESULT CreateAdapterListByWorkload<T>(this IDXCoreAdapterFactory1 factory, DXCoreWorkload workload, DXCoreRuntimeFilterFlags runtimeFilter,
-		DXCoreHardwareTypeFilterFlags hardwareTypeFilter, out T ppvAdapterList) where T : class
-	{
-		var hr = factory.CreateAdapterListByWorkload(workload, runtimeFilter, hardwareTypeFilter, typeof(T).GUID, out var ppv);
-		ppvAdapterList = (T)ppv;
-		return hr;
 	}
 
 	/// <summary>
@@ -2483,199 +2350,7 @@ public static partial class DXCore
 	// REFIID riid, [out] void **ppvFactory );
 	[PInvokeData("dxcore.h", MSDNShortId = "NF:dxcore.DXCoreCreateAdapterFactory")]
 	[DllImport(Lib_dxcore, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DXCoreCreateAdapterFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppvFactory);
-
-	/// <summary>
-	/// Retrieves a specific adapter by index from a DXCore adapter list object. For programming guidance, and code examples, see <c>Using
-	/// DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvAdapter. This is expected to be IDXCoreAdapter.</typeparam>
-	/// <param name="list">The <see cref="IDXCoreAdapterList"/> instance.</param>
-	/// <param name="index">A zero-based index, identifying an adapter instance within the DXCore adapter list.</param>
-	/// <param name="ppvAdapter">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvAdapter (the
-	/// dereferenced address) contains a pointer to the DXCore adapter created.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>DXGI_ERROR_DEVICE_REMOVED</description>
-	/// <description>The <c>index</c> is valid, but the adapter is no longer in a valid state.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_INVALIDARG</description>
-	/// <description>The provided <c>index</c> is not valid.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvAdapter</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// Multiple calls passing an index that represents the same adapter return identical interface pointers, even across different adapter
-	/// lists. As a result, it's safe to compare interface pointers to determine whether multiple pointers refer to the same adapter object.
-	/// </remarks>
-	public static HRESULT GetAdapter<T>(this IDXCoreAdapterList list, uint index, out T ppvAdapter) where T : class
-	{
-		var hr = list.GetAdapter(index, typeof(T).GUID, out var ppv);
-		ppvAdapter = (T)ppv;
-		return hr;
-	}
-
-	/// <summary>
-	/// Retrieves the DXCore adapter object ( <c>IDXCoreAdapter</c>) for a specified LUID, if available. For programming guidance, and code
-	/// examples, see <c>Using DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvAdapter. This is expected to be IDXCoreAdapter.</typeparam>
-	/// <param name="factory">The <see cref="IDXCoreAdapterFactory"/> instance.</param>
-	/// <param name="adapterLUID">The locally unique value that identifies the adapter instance.</param>
-	/// <param name="ppvAdapter">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvAdapter (the
-	/// dereferenced address) contains a pointer to the DXCore adapter created.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>DXGI_ERROR_DEVICE_REMOVED</description>
-	/// <description>The adapter LUID passed in <c>adapterLUID</c> is recognized, but the adapter is no longer in a valid state.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_INVALIDARG</description>
-	/// <description>No such adapter LUID as the value passed in <c>adapterLUID</c> is available through DXCore.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvAdapter</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// Multiple calls passing the same <c>LUID</c> return identical interface pointers. As a result, it's safe to compare interface
-	/// pointers to determine whether multiple pointers refer to the same adapter object.
-	/// </remarks>
-	public static HRESULT GetAdapterByLuid<T>(this IDXCoreAdapterFactory factory, in LUID adapterLUID, out T ppvAdapter) where T : class
-	{
-		var hr = factory.GetAdapterByLuid(adapterLUID, typeof(T).GUID, out var ppv);
-		ppvAdapter = (T)ppv;
-		return hr;
-	}
-
-	/// <summary>
-	/// Retrieves an <c>IDXCoreAdapterFactory</c> interface pointer to the DXCore adapter factory object. For programming guidance, and code
-	/// examples, see <c>Using DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvFactory. This is expected to be IDXCoreAdapterFactory.</typeparam>
-	/// <param name="adp">The <see cref="IDXCoreAdapter"/> instance.</param>
-	/// <param name="ppvFactory">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvFactory (the
-	/// dereferenced address) contains a pointer to the existing DXCore adapter factory object. Before returning, the function increments
-	/// the reference count on the factory object's IDXCoreAdapterFactory interface.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvFactory</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// For the duration of time that a reference exists on an <c>IDXCoreAdapterFactory</c> interface, an <c>IDXCoreAdapterList</c>
-	/// interface, or an <c>IDXCoreAdapter</c> interface, additional calls to <c>DXCoreCreateAdapterFactory</c>,
-	/// <c>IDXCoreAdapterList::GetFactory</c>, or <b>IDXCoreAdapter::GetFactory</b> will return pointers to the same object, increasing the
-	/// reference count of the <b>IDXCoreAdapterFactory</b> interface.
-	/// </remarks>
-	public static HRESULT GetFactory<T>(this IDXCoreAdapter adp, out T ppvFactory) where T : class
-	{
-		var hr = adp.GetFactory(typeof(T).GUID, out object obj);
-		ppvFactory = (T)obj;
-		return hr;
-	}
-
-	/// <summary>
-	/// Retrieves an <c>IDXCoreAdapterFactory</c> interface pointer to the DXCore adapter factory object. For programming guidance, and code
-	/// examples, see <c>Using DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvFactory. This is expected to be IDXCoreAdapterFactory.</typeparam>
-	/// <param name="list">The <see cref="IDXCoreAdapterList"/> instance.</param>
-	/// <param name="ppvFactory">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvFactory (the
-	/// dereferenced address) contains a pointer to the existing DXCore adapter factory object. Before returning, the function increments
-	/// the reference count on the factory object's IDXCoreAdapterFactory interface.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvFactory</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// For the duration of time that a reference exists on an <c>IDXCoreAdapterFactory</c> interface, an <c>IDXCoreAdapterList</c>
-	/// interface, or an <c>IDXCoreAdapter</c> interface, additional calls to <c>DXCoreCreateAdapterFactory</c>,
-	/// <c>IDXCoreAdapterList::GetFactory</c>, or <c>IDXCoreAdapter::GetFactory</c> will return pointers to the same object, increasing the
-	/// reference count of the <b>IDXCoreAdapterFactory</b> interface.
-	/// </remarks>
-	public static HRESULT GetFactory<T>(this IDXCoreAdapterList list, out T ppvFactory) where T : class
-	{
-		var hr = list.GetFactory(typeof(T).GUID, out var ppv);
-		ppvFactory = (T)ppv;
-		return hr;
-	}
+	public static extern HRESULT DXCoreCreateAdapterFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppvFactory);
 
 	/// <summary>
 	/// Retrieves the value of the specified adapter property. Before calling <b>GetProperty</b> for a property type, call

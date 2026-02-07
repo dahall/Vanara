@@ -277,7 +277,7 @@ public static partial class DXGI
 		/// typical example:
 		/// </para>
 		/// <para>
-		/// <c>// Get the size of the message. SIZE_T messageLength = 0; HRESULT hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, NULL,
+		/// <c>// Get the size of the message. SizeT messageLength = 0; HRESULT hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, NULL,
 		/// &amp;messageLength); if(hr == S_FALSE){ // Allocate space and get the message. DXGI_INFO_QUEUE_MESSAGE * pMessage =
 		/// (DXGI_INFO_QUEUE_MESSAGE*)malloc(messageLength); hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, pMessage,
 		/// &amp;messageLength); // Do something with the message and free it if(hr == S_OK){ // ... // ... // ... free(pMessage); } }</c>
@@ -286,7 +286,7 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getmessage HRESULT GetMessage( [in]
-		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SIZE_T
+		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SizeT
 		// *pMessageByteLength );
 		[PreserveSig]
 		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SizeT pMessageByteLength);
@@ -394,7 +394,7 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getstoragefilter HRESULT
-		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
+		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
 		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
@@ -514,7 +514,7 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getretrievalfilter HRESULT
-		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
+		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
 		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
@@ -785,7 +785,7 @@ public static partial class DXGI
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-dxgigetdebuginterface HRESULT DXGIGetDebugInterface(
 	// REFIID riid, void **ppDebug );
 	[PInvokeData("dxgidebug.h", MSDNShortId = "NF:dxgidebug.DXGIGetDebugInterface"), DllImport("dxgidebug.dll", SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppDebug);
+	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppDebug);
 
 	/// <summary>Describes a debug message filter, which contains lists of message types to allow and deny.</summary>
 	/// <remarks>
@@ -851,7 +851,7 @@ public static partial class DXGI
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/ns-dxgidebug-dxgi_info_queue_message typedef struct
 	// DXGI_INFO_QUEUE_MESSAGE { DXGI_DEBUG_ID Producer; DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category; DXGI_INFO_QUEUE_MESSAGE_SEVERITY
-	// Severity; DXGI_INFO_QUEUE_MESSAGE_ID ID; const char *pDescription; SIZE_T DescriptionByteLength; } DXGI_INFO_QUEUE_MESSAGE;
+	// Severity; DXGI_INFO_QUEUE_MESSAGE_ID ID; const char *pDescription; SizeT DescriptionByteLength; } DXGI_INFO_QUEUE_MESSAGE;
 	[PInvokeData("dxgidebug.h", MSDNShortId = "NS:dxgidebug.DXGI_INFO_QUEUE_MESSAGE"), StructLayout(LayoutKind.Sequential)]
 	public struct DXGI_INFO_QUEUE_MESSAGE
 	{

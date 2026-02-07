@@ -496,7 +496,7 @@ public static partial class AdvApi32
 
 	/// <summary>Contains a certificate hash and display information for the certificate.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winefs/ns-winefs-_encryption_certificate_hash typedef struct
-	// _ENCRYPTION_CERTIFICATE_HASH { DWORD cbTotalLength; SID *pUserSid; PEFS_HASH_BLOB pHash; LPWSTR lpDisplayInformation; }
+	// _ENCRYPTION_CERTIFICATE_HASH { DWORD cbTotalLength; SID *pUserSid; PEFS_HASH_BLOB pHash; StrPtrUni lpDisplayInformation; }
 	// ENCRYPTION_CERTIFICATE_HASH, *PENCRYPTION_CERTIFICATE_HASH;
 	[PInvokeData("winefs.h", MSDNShortId = "6930446c-5338-4ff9-a662-791fc9e7cefe")]
 	[StructLayout(LayoutKind.Sequential)]

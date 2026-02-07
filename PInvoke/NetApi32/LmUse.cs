@@ -203,7 +203,7 @@ public static partial class NetApi32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmuse/nf-lmuse-netuseadd NET_API_STATUS NET_API_FUNCTION NetUseAdd( LPTSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmuse/nf-lmuse-netuseadd NET_API_STATUS NET_API_FUNCTION NetUseAdd( StrPtrAuto
 	// servername, DWORD LevelFlags, LPBYTE buf, LPDWORD parm_err );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Auto)]
 	[PInvokeData("lmuse.h", MSDNShortId = "22550c17-003a-4f59-80f0-58fa3e286844")]
@@ -738,7 +738,7 @@ public static partial class NetApi32
 		public uint ui2_usecount;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a string that contains the name of the user who initiated the connection.</para>
 		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> are defined.</para>
 		/// </summary>

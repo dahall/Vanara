@@ -2760,7 +2760,7 @@ public static partial class ComCtl32
 	/// <para>Handle to the tree-view control.</para>
 	/// </param>
 	/// <param name="lpsz">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to the buffer that receives the incremental search string.</para>
 	/// </param>
 	/// <returns>None</returns>

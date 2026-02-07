@@ -118,6 +118,7 @@ public class RegistryEventMonitor : Component, ISupportInitialize
 	/// Gets or sets the root registry key. Events will be watched in this key and optionally below (set <see cref="IncludeSubKeys"/> to
 	/// <see langword="true"/>).
 	/// </summary>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	[Browsable(false)]
 	public RegistryKey? RegistryKey
 	{

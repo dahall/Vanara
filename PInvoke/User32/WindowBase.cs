@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using static Vanara.PInvoke.User32;
 
@@ -17,20 +18,24 @@ public interface IWindowHandle : IHandle
 /// <seealso cref="MarshalByRefObject"/>
 /// <seealso cref="IDisposable"/>
 /// <seealso cref="IHandle"/>
-public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWindowInit, IWindowHandle
+public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWndProcProvider, IWindowHandle
 {
+	/// <summary><see langword="false"/> value to be used for WndProc returns.</summary>
+	public static readonly IntPtr FALSE = IntPtr.Zero;
+	/// <summary><see langword="true"/> value to be used for WndProc returns.</summary>
+	public static readonly IntPtr TRUE = new(1);
+
 	/// <summary>A window procedure override delegate.</summary>
-	protected WindowProc? customWndProc;
+	protected readonly WindowProc? customWndProc;
 
 	private static readonly object createWindowSyncObject = new();
 	private readonly WeakReference weakThisPtr;
 	private bool createdClass = false;
+	private GCHandle gcWnd;
 	private SafeHWND? hwnd;
 	private bool isDisposed;
 	private ParamIndexer? paramIndexer;
-	private IntPtr prevWndProcPtr, defWndProc;
 	private WindowClass? wCls;
-	private WindowProc? wndProc, userDefWndProc;
 
 	/// <summary>Initializes a new instance of the <see cref="WindowBase"/> class without creating the window.</summary>
 	public WindowBase() => weakThisPtr = new(this);
@@ -39,9 +44,9 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <param name="wndProcOverride">The window procedure override delegate.</param>
 	public WindowBase(WindowProc wndProcOverride) : this() => customWndProc = wndProcOverride;
 
-	internal WindowBase(HWND hwnd) : this() => wCls = WindowClass.GetInstanceFromWindow(hwnd) ?? throw Win32Error.GetLastError().GetException()!;
+	internal WindowBase(HWND hwnd) : this() => wCls = Win32Error.ThrowLastErrorIfNull(WindowClass.GetInstanceFromWindow(this.hwnd = new(hwnd, false)));
 
-	/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
+	/// <summary>Finalizes an instance of the <see cref="WindowBase"/> class.</summary>
 	~WindowBase() => Dispose(false);
 
 	/// <summary>Occurs when the window is created and has a valid handle.</summary>
@@ -56,15 +61,68 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 
 	/// <summary>Gets a <see cref="CREATESTRUCT"/> structure with all creation parameters.</summary>
 	/// <value>The <see cref="CREATESTRUCT"/> structure with all creation parameters.</value>
-	public CREATESTRUCT CreateParam { get; internal set; }
+	public CREATESTRUCT CreateParam { get; internal set; } = default;
 
 	/// <summary>Gets the window handle.</summary>
 	/// <value>The window handle.</value>
 	public HWND Handle => hwnd ?? HWND.NULL;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => hwnd?.IsInvalid ?? true;
+
 	/// <summary>Gets or sets information about the window.</summary>
 	/// <value>The information indexer.</value>
 	public ISupportIndexer<WindowLongFlags, IntPtr> Param => paramIndexer ??= new ParamIndexer(this);
+
+	/// <summary>Gets or sets the value of the style bit for the window.</summary>
+	/// <value>The styles value.</value>
+	public WindowStyles Styles
+	{
+		get => (WindowStyles)Param[WindowLongFlags.GWL_STYLE].ToInt32();
+		set => Param[WindowLongFlags.GWL_STYLE] = (IntPtr)(int)value;
+	}
+
+	/// <summary>Gets or sets the value of the extended style bit for the window.</summary>
+	/// <value>The extended styles value.</value>
+	public WindowStylesEx StylesEx
+	{
+		get => (WindowStylesEx)Param[WindowLongFlags.GWL_EXSTYLE].ToInt32();
+		set => Param[WindowLongFlags.GWL_EXSTYLE] = (IntPtr)(int)value;
+	}
+
+	/// <summary>Gets or sets the text of the window's title bar (if it has one).</summary>
+	/// <value>The text of the title bar.</value>
+	public string Text
+	{
+		get
+		{
+			if (!Handle.IsNull)
+			{
+				int len = GetWindowTextLength(Handle);
+				if (len > 0)
+				{
+					StringBuilder sb = new(len + 1);
+					if (GetWindowText(Handle, sb, sb.Capacity) > 0)
+					{
+						return sb.ToString();
+					}
+				}
+			}
+			return string.Empty;
+		}
+		set => Win32Error.ThrowLastErrorIfFalse(SetWindowText(Handle, value));
+	}
+
+	/// <summary>Gets the window class registered for this window.</summary>
+	/// <value>The window class.</value>
+	public WindowClass? WindowClass => wCls;
+
+	WindowProc IWndProcProvider.WndProc => InternalWndProc;
+
+	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
+	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator HWND(WindowBase? w) => w?.Handle ?? HWND.NULL;
 
 	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
 	/// <param name="wc">The window class. If <see langword="null"/>, a new window class is created that is unique to this window.</param>
@@ -125,6 +183,19 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	public virtual void CreateHandle(WindowClass? wc = null, string? text = null, SIZE? size = default, POINT? position = default,
 		WindowStyles style = 0, WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default)
 	{
+		if (wc is null)
+		{
+			createdClass = true;
+			wc = WindowClass.MakeVisibleWindowClass(MakeClassName(), null);
+		}
+		CreateWindowParams cp = new(wc, text ?? "", size, position, style, exStyle, parent, hMenu);
+		CreateHandle(cp);
+	}
+
+	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
+	/// <param name="cp">The parameters to use to create the window.</param>
+	public virtual void CreateHandle(CreateWindowParams cp)
+	{
 		lock (this)
 		{
 			CheckDetached();
@@ -132,28 +203,36 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 			{
 				if (hwnd is not null)
 					return;
-
-				if ((wCls = wc) is null)
-				{
-					wCls = WindowClass.MakeVisibleWindowClass($"{GetType().Name}+{Guid.NewGuid()}", null);
-					createdClass = true;
-				}
-				size ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
-				position ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
-				GCHandle gcWnd = GCHandle.Alloc(this);
-				try
-				{
-					if (text?.Length > short.MaxValue)
-						text = text.Substring(0, short.MaxValue);
-					hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(exStyle, wCls.ClassName, text, style, position.Value.X,
-						position.Value.Y, size.Value.Width, size.Value.Height, parent, hMenu, wCls.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
-				}
-				finally
-				{
-					gcWnd.Free();
-				}
+				wCls = cp.Class;
+				gcWnd = GCHandle.Alloc(this);
+				if (cp.Text.Length >= short.MaxValue)
+					cp.Text = cp.Text.Substring(0, short.MaxValue - 1); // Ensure text is not too long for Win32 API.
+				hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(cp.ExStyle, cp.Class.ClassName, cp.Text, cp.Style, cp.Position.X,
+					cp.Position.Y, cp.Size.Width, cp.Size.Height, cp.Parent, cp.Menu, cp.Class.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
 			}
 		}
+	}
+
+	/// <summary>Creates and runs a window of the specified type, using the provided creation parameters and an optional message pump.</summary>
+	/// <typeparam name="T">The type of the window to create. Must derive from <see cref="WindowBase"/> and have a parameterless constructor.</typeparam>
+	/// <param name="cp">The parameters used to create the window. These define properties such as size, position, and style.</param>
+	/// <param name="getPump">
+	/// An optional delegate to get the <see cref="MessagePump"/> instance to process window messages. If not provided, a default message
+	/// pump is used.
+	/// </param>
+	/// <param name="show">The show command. If this value is <c>-1</c>, then <see cref="ShowWindow"/> is not called.</param>
+	/// <returns>The exit code returned by the message pump after the window is closed.</returns>
+	/// <exception cref="Win32Exception">Thrown if the window fails to be created.</exception>
+	public static int Run<T>(CreateWindowParams cp, Func<T, MessagePump>? getPump = null, ShowWindowCommand show = (ShowWindowCommand)(-1)) where T : WindowBase, new()
+	{
+		using var win = new T();
+		win.CreateHandle(cp);
+		if (win.Handle.IsNull)
+			throw new Win32Exception("Failed to create window.");
+		if ((int)show != -1)
+			Win32Error.ThrowLastErrorIfFalse(ShowWindow(win.Handle, show));
+		MessagePump pump = getPump?.Invoke(win) ?? new MessagePump();
+		return pump.Run(win);
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -165,14 +244,6 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 
 	/// <inhertdoc/>
 	IntPtr IHandle.DangerousGetHandle() => hwnd?.DangerousGetHandle() ?? IntPtr.Zero;
-
-	/// <inheritdoc/>
-	IntPtr IWindowInit.InitWndProcOnNCCreate(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
-	{
-		lock (this)
-			Attach(hwnd, true);
-		return InternalWndProc(hwnd, msg, IntPtr.Zero, lParam);
-	}
 
 	/// <summary>Writes message information to the debugger.</summary>
 	/// <param name="msg">The message code.</param>
@@ -194,61 +265,11 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	internal static void DebugWriteMethod([CallerFilePath] string sourceFilePath = "", [CallerMemberName] string? caller = "") =>
 			Debug.WriteLine($"{caller} ({sourceFilePath})");
 
-	/// <summary>
-	/// Attaches the specified window handle to this instance and associates this instance's <see cref="WindowProc"/> handlers using GWL_WNDPROC.
-	/// </summary>
-	/// <param name="hwnd">The window handle.</param>
-	/// <param name="own">if set to <see langword="true"/>, the window will be destroyed and handle released on disposal.</param>
-	protected virtual void Attach(HWND hwnd, bool own)
+	/// <summary>If this object is disposed, throws <see cref="ObjectDisposedException"/>.</summary>
+	[DebuggerStepThrough]
+	protected virtual void CheckDisposed()
 	{
-		CheckDisposed();
-		Debug.Assert(!hwnd.IsNull, "Attempt assigning invalid handle.");
-		CheckDetached();
-
-		// Set handle
-		this.hwnd = new((IntPtr)hwnd, own);
-
-		// Set handle's WNDPROC to this class'
-		userDefWndProc ??= DefWindowProc;
-		defWndProc = Param[WindowLongFlags.GWLP_WNDPROC];
-		wndProc = InternalWndProc;
-		Param[WindowLongFlags.GWLP_WNDPROC] = Marshal.GetFunctionPointerForDelegate(wndProc);
-		Debug.Assert(defWndProc != Param[WindowLongFlags.GWLP_WNDPROC], "Subclassed ourself!");
-
-		OnHandleChanged(hwnd);
-	}
-
-	/// <summary>Invokes the default window procedure associated with this window.</summary>
-	/// <param name="hwnd">A handle to the window procedure that received the message.</param>
-	/// <param name="msg">The message.</param>
-	/// <param name="wParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <param name="lParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
-	protected virtual IntPtr DefWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) =>
-		defWndProc == default ? DefWindowProc(hwnd, msg, wParam, lParam) : CallWindowProc(defWndProc, hwnd, msg, wParam, lParam);
-
-	/// <summary>
-	/// Detaches this instance's <see cref="WindowProc"/> handlers using GWL_WNDPROC, restoring previous assignment, and destroys the window
-	/// and closes the handle if owned.
-	/// </summary>
-	protected virtual void Detach()
-	{
-		if (hwnd is null) return;
-
-		if (!hwnd.IsInvalid && prevWndProcPtr != IntPtr.Zero)
-		{
-			Param[WindowLongFlags.GWLP_WNDPROC] = prevWndProcPtr;
-			prevWndProcPtr = IntPtr.Zero;
-		}
-
-		hwnd.Dispose();
-		hwnd = null;
-
-		OnHandleChanged(HWND.NULL);
+		if (isDisposed) throw new ObjectDisposedException(nameof(WindowBase));
 	}
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -260,13 +281,15 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 		if (isDisposed)
 			return;
 		lock (this)
-			Detach();
+		{
+			hwnd?.Dispose();
+			hwnd = null;
+		}
+
 		if (createdClass) wCls?.Unregister();
+		gcWnd.Free();
 		isDisposed = true;
 	}
-
-	/// <summary>Called when this classes <see cref="InternalWndProc"/> method becomes primary.</summary>
-	protected virtual void OnHandleChanged(HWND newHandle) => DebugWriteMethod();
 
 	/// <summary>Called when the <see cref="WindowProc"/> call throws an exception.</summary>
 	/// <param name="ex">The exception.</param>
@@ -286,67 +309,48 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
 	/// </param>
 	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
-	protected virtual IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) => DefWndProc(hwnd, msg, wParam, lParam);
+	protected virtual IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) => DefWindowProc(hwnd, msg, wParam, lParam);
 
-	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
-	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HWND(WindowBase? w) => w?.Handle ?? HWND.NULL;
+	/// <summary>Generates a unique class name for the window.</summary>
+	protected internal string MakeClassName() => MakeClassName(GetType());
+
+	/// <summary>Generates a unique class name for the window.</summary>
+	protected internal static string MakeClassName<TWin>() => MakeClassName(typeof(TWin));
+
+	private static string MakeClassName(Type t) => $"{t.GetType().Name}+{Guid.NewGuid():N}";
 
 	[DebuggerStepThrough]
 	private void CheckDetached()
 	{
-		if (hwnd is not null)
+		if (hwnd is not null && !hwnd.IsNull)
 			throw new InvalidOperationException("Attempt to overwrite existing window handle.");
 	}
 
-	[DebuggerStepThrough]
-	private void CheckDisposed()
-	{
-		if (isDisposed) throw new ObjectDisposedException(nameof(WindowBase));
-	}
-
-	/// <summary>
-	/// This is the real <see cref="WindowProc"/> instance for the window. It calls either <see cref="WndProc(HWND, uint, IntPtr, IntPtr)"/>
-	/// or <see cref="DefWndProc(HWND, uint, IntPtr, IntPtr)"/> depending on status.
-	/// <para>It is responsible for setting <see cref="CreateParam"/> and calling <see cref="Created"/> and <see cref="Destroyed"/>.</para>
-	/// </summary>
-	/// <param name="hwnd">A handle to the window procedure that received the message.</param>
-	/// <param name="msg">The message.</param>
-	/// <param name="wParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <param name="lParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
 	private IntPtr InternalWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 	{
 		DebugWriteMessageInfo(msg);
 		if (msg == (uint)WindowMessage.WM_NCCREATE)
 		{
 			CreateParam = lParam.ToStructure<CREATESTRUCT>();
-			return (IntPtr)1;
+			return DefWindowProc(hwnd, msg, wParam, lParam);
 		}
 
 		try
 		{
-			if (weakThisPtr.IsAlive && weakThisPtr.Target != null)
-				return (customWndProc ?? WndProc)(hwnd, msg, wParam, lParam);
-			else
-				return DefWndProc(hwnd, msg, wParam, lParam);
+			if (!isDisposed && weakThisPtr.IsAlive && weakThisPtr.Target != null)
+				return (customWndProc ?? WndProc).Invoke(hwnd, msg, wParam, lParam);
 		}
 		catch (Exception ex)
 		{
 			if (!OnWndProcException(ex))
 				throw;
-			return IntPtr.Zero;
 		}
 		finally
 		{
 			switch ((WindowMessage)msg)
 			{
 				case WindowMessage.WM_CREATE:
+					this.hwnd = new(hwnd, false);
 					Created?.Invoke();
 					break;
 				case WindowMessage.WM_NCDESTROY:
@@ -355,18 +359,77 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 					break;
 			}
 		}
+		return FALSE;
 	}
 
-	private class ParamIndexer : ISupportIndexer<WindowLongFlags, IntPtr>
+	private class ParamIndexer(IWindowInstance win) : ISupportIndexer<WindowLongFlags, IntPtr>
 	{
-		private readonly IWindowInstance win;
-
-		public ParamIndexer(IWindowInstance win) => this.win = win;
-
 		public IntPtr this[WindowLongFlags flag]
 		{
 			get => win.Handle != HWND.NULL ? GetWindowLongAuto(win.Handle, flag) : throw new ObjectDisposedException(nameof(IWindowInstance));
 			set { if (win.Handle != HWND.NULL) SetWindowLong(win.Handle, flag, value); else throw new ObjectDisposedException(nameof(IWindowInstance)); }
 		}
 	}
+}
+
+/// <summary>
+/// Represents the parameters used to create a window in a Windows-based application.
+/// </summary>
+/// <remarks>This class encapsulates the various attributes required to define a window, such as its size,
+/// position, style,  and parent relationships. It is typically used when calling window creation functions, such as
+/// <c>CreateWindowEx</c>. Each property corresponds to a specific parameter in the underlying Windows API.</remarks>
+/// <param name="winClass">The window class to be used for the new window.</param>
+/// <param name="text">The text to be displayed in the window's title bar.</param>
+/// <param name="size">The size of the window, specified as a <see cref="SIZE"/> structure. If <c>null</c>, the default size is used.</param>
+/// <param name="position">The position of the window, specified as a <see cref="POINT"/> structure. If <c>null</c>, the default position is
+/// used.</param>
+/// <param name="style">The style flags for the window, specified as a combination of <see cref="WindowStyles"/> values.</param>
+/// <param name="exStyle">The extended style flags for the window, specified as a combination of <see cref="WindowStylesEx"/> values.</param>
+/// <param name="parent">The handle to the parent window, specified as an <see cref="HWND"/>. If <c>default</c>, the window will have no
+/// parent.</param>
+/// <param name="menu">The handle to the menu associated with the window, specified as an <see cref="HMENU"/>. If <c>default</c>, the
+/// window will have no menu.</param>
+public class CreateWindowParams(WindowClass winClass, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
+	WindowStylesEx exStyle = 0, HWND parent = default, HMENU menu = default)
+{
+	/// <summary>
+	/// Initializes a new instance of the <see cref="CreateWindowParams"/> class with the specified parameters for creating a
+	/// window.
+	/// </summary>
+	/// <remarks>This constructor allows you to specify detailed parameters for creating a window, including its
+	/// class, text, size, position, styles, parent, and menu. Use this overload when you need precise control over the
+	/// window's creation parameters.</remarks>
+	/// <param name="className">The name of the window class to be used for the new window.</param>
+	/// <param name="text">The text to be displayed in the window's title bar.</param>
+	/// <param name="size">The size of the window, specified as a <see cref="SIZE"/> structure. If <c>null</c>, the default size is used.</param>
+	/// <param name="position">The position of the window, specified as a <see cref="POINT"/> structure. If <c>null</c>, the default position is
+	/// used.</param>
+	/// <param name="style">The style flags for the window, specified as a combination of <see cref="WindowStyles"/> values.</param>
+	/// <param name="exStyle">The extended style flags for the window, specified as a combination of <see cref="WindowStylesEx"/> values.</param>
+	/// <param name="parent">The handle to the parent window, specified as an <see cref="HWND"/>. If <c>default</c>, the window will have no
+	/// parent.</param>
+	/// <param name="menu">The handle to the menu associated with the window, specified as an <see cref="HMENU"/>. If <c>default</c>, the
+	/// window will have no menu.</param>
+	public CreateWindowParams(string className, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU menu = default) :
+		this(WindowClass.MakeVisibleWindowClass(className!, null), text, size, position, style, exStyle, parent, menu) { }
+
+	/// <summary>Gets or sets the window class.</summary>
+	public WindowClass Class { get; set; } = winClass;
+	/// <summary>Gets or sets the window text.</summary>
+	public string Text { get; set; } = text;
+	/// <summary>Gets or sets the size of the window.</summary>
+	public SIZE Size { get; set; } = size ?? new(CW_USEDEFAULT, CW_USEDEFAULT);
+	/// <summary>Gets or sets the position of the window.</summary>
+	public POINT Position { get; set; } = position ?? new(CW_USEDEFAULT, CW_USEDEFAULT);
+	/// <summary>Gets or sets the window style.</summary>
+	public WindowStyles Style { get; set; } = style;
+	/// <summary>Gets or sets the extended window style.</summary>
+	public WindowStylesEx ExStyle { get; set; } = exStyle;
+	/// <summary>Gets or sets the parent window handle.</summary>
+	public HWND Parent { get; set; } = parent;
+	/// <summary>Gets or sets the menu handle.</summary>
+	public HMENU Menu { get; set; } = menu;
+	/// <summary>Gets or sets the accelerator table handle.</summary>
+	public HACCEL Accelerator { get; set; } = default;
 }

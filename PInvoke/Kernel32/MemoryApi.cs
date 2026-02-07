@@ -127,6 +127,15 @@ public static partial class Kernel32
 		FILE_MAP_LARGE_PAGES = 0x20000000,
 	}
 
+	/// <summary>
+	/// Capabilities of the memory error handling capabilities of the system. This is used by the <c>GetMemoryErrorHandlingCapabilities</c> method.
+	/// </summary>
+	public enum MEHC : uint
+	{
+		/// <summary>The hardware can detect and report failed memory.</summary>
+		MEHC_PATROL_SCRUBBER_PRESENT = 1,
+	}
+
 	/// <summary>The type of memory allocation.</summary>
 	[PInvokeData("WinNT.h")]
 	[Flags]
@@ -520,10 +529,11 @@ public static partial class Kernel32
 		SEC_WRITECOMBINE = 0x40000000,
 	}
 
-	/// <summary>Used by <see cref="QueryVirtualMemoryInformation"/>.</summary>
+	/// <summary>Used by <see cref="QueryVirtualMemoryInformation(HPROCESS, IntPtr, WIN32_MEMORY_INFORMATION_CLASS, IntPtr, SizeT, out SizeT)"/>.</summary>
 	public enum WIN32_MEMORY_INFORMATION_CLASS
 	{
 		/// <summary>This parameter must point to a <c>WIN32_MEMORY_REGION_INFORMATION</c> structure.</summary>
+		[CorrespondingType(typeof(WIN32_MEMORY_REGION_INFORMATION))]
 		MemoryRegionInfo
 	}
 
@@ -847,6 +857,7 @@ public static partial class Kernel32
 	// dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366537")]
+	[return: AddAsCtor]
 	public static extern SafeHSECTION CreateFileMapping([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES? lpAttributes, MEM_PROTECTION flProtect,
 		[Optional] uint dwMaximumSizeHigh, [Optional] uint dwMaximumSizeLow, [Optional] string? lpName);
 
@@ -1023,6 +1034,7 @@ public static partial class Kernel32
 	// PageProtection, _In_ ULONG64 MaximumSize, _In_opt_ PCWSTR Name);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
+	[return: AddAsCtor]
 	public static extern SafeHSECTION CreateFileMappingFromApp([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES? SecurityAttributes,
 		MEM_PROTECTION PageProtection, ulong MaximumSize, [Optional] string? Name);
 
@@ -1242,6 +1254,7 @@ public static partial class Kernel32
 	// flProtect, _In_ DWORD dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName, _In_ DWORD nndPreferred);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
+	[return: AddAsCtor]
 	public static extern SafeHSECTION CreateFileMappingNuma([In] HFILE hFile, [In, Optional] SECURITY_ATTRIBUTES? lpFileMappingAttributes, MEM_PROTECTION flProtect,
 		[Optional] uint dwMaximumSizeHigh, [Optional] uint dwMaximumSizeLow, [Optional] string? lpName, uint nndPreferred);
 
@@ -1286,7 +1299,7 @@ public static partial class Kernel32
 	/// <param name="VirtualAddress">Page-aligned starting address of the memory to discard.</param>
 	/// <param name="Size">Size, in bytes, of the memory region to discard. Size must be an integer multiple of the system page size.</param>
 	/// <returns>ERROR_SUCCESS if successful; a System Error Code otherwise.</returns>
-	// DWORD WINAPI DiscardVirtualMemory( _In_ PVOID VirtualAddress, _In_ SIZE_T Size);
+	// DWORD WINAPI DiscardVirtualMemory( _In_ PVOID VirtualAddress, _In_ SizeT Size);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dn781432")]
 	public static extern uint DiscardVirtualMemory(IntPtr VirtualAddress, SizeT Size);
@@ -1297,7 +1310,7 @@ public static partial class Kernel32
 	/// The size of the block of memory to fill, in bytes. This value must be less than the size of the Destination buffer.
 	/// </param>
 	/// <param name="Fill">The byte value with which to fill the memory block.</param>
-	// void FillMemory( [out] PVOID Destination, [in] SIZE_T Length, [in] BYTE Fill); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366561(v=vs.85).aspx
+	// void FillMemory( [out] PVOID Destination, [in] SizeT Length, [in] BYTE Fill); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366561(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366561")]
 	[DllImport(Lib.Kernel32, EntryPoint = "RtlFillMemory", SetLastError = false)]
 	public static extern void FillMemory(IntPtr Destination, SizeT Length, byte Fill);
@@ -1313,7 +1326,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI FlushViewOfFile( _In_ LPCVOID lpBaseAddress, _In_ SIZE_T dwNumberOfBytesToFlush);
+	// BOOL WINAPI FlushViewOfFile( _In_ LPCVOID lpBaseAddress, _In_ SizeT dwNumberOfBytesToFlush);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366563")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1358,7 +1371,7 @@ public static partial class Kernel32
 	/// <para>If the processor supports large pages, the return value is the minimum size of a large page.</para>
 	/// <para>If the processor does not support large pages, the return value is zero.</para>
 	/// </returns>
-	// SIZE_T WINAPI GetLargePageMinimum(void);
+	// SizeT WINAPI GetLargePageMinimum(void);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366568")]
 	public static extern SizeT GetLargePageMinimum();
@@ -1387,7 +1400,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "hh691012")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMemoryErrorHandlingCapabilities(out uint Capabilities);
+	public static extern bool GetMemoryErrorHandlingCapabilities(out MEHC Capabilities);
 
 	/// <summary>Retrieves the minimum and maximum working set sizes of the specified process.</summary>
 	/// <param name="hProcess">
@@ -1490,11 +1503,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is 0 (zero).</para>
 	/// <para>If the function fails, the return value is a nonzero value.</para>
 	/// </returns>
-	// UINT WINAPI GetWriteWatch( _In_ DWORD dwFlags, _In_ PVOID lpBaseAddress, _In_ SIZE_T dwRegionSize, _Out_ PVOID *lpAddresses,
+	// UINT WINAPI GetWriteWatch( _In_ DWORD dwFlags, _In_ PVOID lpBaseAddress, _In_ SizeT dwRegionSize, _Out_ PVOID *lpAddresses,
 	// _Inout_ PULONG_PTR lpdwCount, _Out_ PULONG lpdwGranularity);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366573")]
-	public static extern uint GetWriteWatch(WRITE_WATCH dwFlags, [In] IntPtr lpBaseAddress, SizeT dwRegionSize, out IntPtr lpAddresses, ref SizeT lpdwCount, [Out] out uint lpdwGranularity);
+	public static extern uint GetWriteWatch(WRITE_WATCH dwFlags, [In] IntPtr lpBaseAddress, SizeT dwRegionSize,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] lpAddresses, ref SizeT lpdwCount, [Out] out uint lpdwGranularity);
 
 	/// <summary>
 	/// <para>Maps previously allocated physical memory pages at a specified address in an Address Windowing Extensions (AWE) region.</para>
@@ -1583,7 +1597,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366755")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapUserPhysicalPagesScatter([In] IntPtr VirtualAddresses, SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? PageArray);
+	public static extern bool MapUserPhysicalPagesScatter([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] VirtualAddresses,
+		SizeT NumberOfPages, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? PageArray);
 
 	/// <summary>
 	/// <para>Maps a view of a file mapping into the address space of a calling process.</para>
@@ -1680,7 +1695,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// LPVOID WINAPI MapViewOfFile( _In_ HANDLE hFileMappingObject, _In_ DWORD dwDesiredAccess, _In_ DWORD dwFileOffsetHigh, _In_ DWORD
-	// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap);
+	// dwFileOffsetLow, _In_ SizeT dwNumberOfBytesToMap);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366761")]
 	public static extern IntPtr MapViewOfFile([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap);
@@ -1761,11 +1776,11 @@ public static partial class Kernel32
 	/// <para>For a code example, see Scenario 1 in Virtual2Alloc.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-mapviewoffile3
-	// PVOID MapViewOfFile3( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
+	// PVOID MapViewOfFile3( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SizeT ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "585D7BA1-688F-4F24-8D8D-46A2FC137193")]
-	public static extern IntPtr MapViewOfFile3([In] HSECTION FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
-		MEM_PROTECTION PageProtection, [In, Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
+	public static extern IntPtr MapViewOfFile3([In, AddAsMember] HSECTION FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
+		MEM_PROTECTION PageProtection, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 8)] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
 	/// <summary>
 	/// <para>
@@ -1880,7 +1895,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// LPVOID WINAPI MapViewOfFileEx( _In_ HANDLE hFileMappingObject, _In_ DWORD dwDesiredAccess, _In_ DWORD dwFileOffsetHigh, _In_ DWORD
-	// dwFileOffsetLow, _In_ SIZE_T dwNumberOfBytesToMap, _In_opt_ LPVOID lpBaseAddress);
+	// dwFileOffsetLow, _In_ SizeT dwNumberOfBytesToMap, _In_opt_ LPVOID lpBaseAddress);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366763")]
 	public static extern IntPtr MapViewOfFileEx([In] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap,
@@ -1952,7 +1967,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the starting address of the mapped view.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// PVOID WINAPI MapViewOfFileFromApp( _In_ HANDLE hFileMappingObject, _In_ ULONG DesiredAccess, _In_ ULONG64 FileOffset, _In_ SIZE_T NumberOfBytesToMap);
+	// PVOID WINAPI MapViewOfFileFromApp( _In_ HANDLE hFileMappingObject, _In_ ULONG DesiredAccess, _In_ ULONG64 FileOffset, _In_ SizeT NumberOfBytesToMap);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "hh994454")]
 	public static extern IntPtr MapViewOfFileFromApp([In] HSECTION hFileMappingObject, FILE_MAP DesiredAccess, ulong FileOffset, SizeT NumberOfBytesToMap);
@@ -2043,10 +2058,10 @@ public static partial class Kernel32
 	/// <para>For a code example, see Scenario 1 in Virtual2Alloc.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-mapviewoffile3fromapp
-	// PVOID MapViewOfFile3FromApp( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
+	// PVOID MapViewOfFile3FromApp( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SizeT ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED")]
-	public static extern IntPtr MapViewOfFile3FromApp([In] HSECTION FileMapping, [In] HPROCESS Process, [In, Optional] IntPtr BaseAddress, ulong Offset,
+	public static extern IntPtr MapViewOfFile3FromApp([In, AddAsMember] HSECTION FileMapping, [In] HPROCESS Process, [In, Optional] IntPtr BaseAddress, ulong Offset,
 		[Optional] SizeT ViewSize, [Optional] MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection,
 		[In, Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
@@ -2067,10 +2082,10 @@ public static partial class Kernel32
 	/// using <c>GetLastError</c>.
 	/// </returns>
 	// PVOID WINAPI MapViewOfFileNuma2( _In_ HANDLE FileMappingHandle, _In_ HANDLE ProcessHandle, _In_ ULONG64 Offset, _In_opt_ PVOID
-	// BaseAddress, _In_ SIZE_T ViewSize, _In_ ULONG AllocationType, _In_ ULONG PageProtection, _In_ ULONG PreferredNode);
+	// BaseAddress, _In_ SizeT ViewSize, _In_ ULONG AllocationType, _In_ ULONG PageProtection, _In_ ULONG PreferredNode);
 	[DllImport("Api-ms-win-core-memory-l1-1-5.dll", SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "mt492558")]
-	public static extern IntPtr MapViewOfFileNuma2([In] HSECTION FileMappingHandle, [In] HPROCESS ProcessHandle, ulong Offset, [In, Optional] IntPtr BaseAddress,
+	public static extern IntPtr MapViewOfFileNuma2([In, AddAsMember] HSECTION FileMappingHandle, [In] HPROCESS ProcessHandle, ulong Offset, [In, Optional] IntPtr BaseAddress,
 		[In, Optional] SizeT ViewSize, [Optional] MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, uint PreferredNode);
 
 	/// <summary>
@@ -2117,7 +2132,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>ERROR_SUCCESS if successful; a System Error Code otherwise.</returns>
-	// DWORD WINAPI OfferVirtualMemory( _In_ PVOID VirtualAddress, _In_ SIZE_T Size, _In_ OFFER_PRIORITY Priority);
+	// DWORD WINAPI OfferVirtualMemory( _In_ PVOID VirtualAddress, _In_ SizeT Size, _In_ OFFER_PRIORITY Priority);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dn781436")]
 	public static extern uint OfferVirtualMemory(IntPtr VirtualAddress, SizeT Size, OFFER_PRIORITY Priority);
@@ -2147,6 +2162,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenFileMapping( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366791")]
+	[return: AddAsCtor]
 	public static extern SafeHSECTION OpenFileMapping(FILE_MAP dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 	/// <summary>Opens a named file mapping object.</summary>
@@ -2175,6 +2191,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenFileMappingFromApp( _In_ ULONG DesiredAccess, _In_ BOOL InheritHandle, _In_ PCWSTR Name);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt169844")]
+	[return: AddAsCtor]
 	public static extern SafeHSECTION OpenFileMappingFromApp(FILE_MAP DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool InheritHandle, string Name);
 
 	/// <summary>
@@ -2200,7 +2217,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "hh780543")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrefetchVirtualMemory(HPROCESS hProcess, SizeT NumberOfEntries,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WIN32_MEMORY_RANGE_ENTRY[] VirtualAddresses, uint Flags = 0);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WIN32_MEMORY_RANGE_ENTRY[] VirtualAddresses, [Optional, Ignore] uint Flags);
 
 	/// <summary>Retrieves the state of the specified memory resource object.</summary>
 	/// <param name="ResourceNotificationHandle">
@@ -2246,12 +2263,12 @@ public static partial class Kernel32
 	/// <returns>Returns <c>TRUE</c> on success. Returns <c>FALSE</c> for failure. To get extended error information, call <c>GetLastError</c>.</returns>
 	// BOOL WINAPI QueryVirtualMemoryInformation( _In_ HANDLE Process, _In_ const VOID *VirtualAddress, _In_
 	// WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass, _Out_ _writes_bytes_(MemoryInformationSize) PVOID MemoryInformation, _In_
-	// SIZE_T MemoryInformationSize, _Out_opt_ PSIZE_T ReturnSize);
+	// SizeT MemoryInformationSize, _Out_opt_ PSIZE_T ReturnSize);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt845761")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryVirtualMemoryInformation([In] HPROCESS Process, IntPtr VirtualAddress, WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass, IntPtr MemoryInformation,
-		SizeT MemoryInformationSize, out SizeT ReturnSize);
+	public static extern bool QueryVirtualMemoryInformation([In] HPROCESS Process, IntPtr VirtualAddress, WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass,
+		[SizeDef(nameof(MemoryInformationSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(ReturnSize))] IntPtr MemoryInformation, SizeT MemoryInformationSize, out SizeT ReturnSize);
 
 	/// <summary>
 	/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
@@ -2275,12 +2292,13 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>The function fails if the requested read operation crosses into an area of the process that is inaccessible.</para>
 	/// </returns>
-	// BOOL WINAPI ReadProcessMemory( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _Out_ LPVOID lpBuffer, _In_ SIZE_T nSize, _Out_
-	// SIZE_T *lpNumberOfBytesRead);
+	// BOOL WINAPI ReadProcessMemory( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _Out_ LPVOID lpBuffer, _In_ SizeT nSize, _Out_
+	// SizeT *lpNumberOfBytesRead);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms680553")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
+	public static extern bool ReadProcessMemory([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpBaseAddress,
+		[SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(lpNumberOfBytesRead))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
 
 	/// <summary>
 	/// <para>Reclaims a range of memory pages that were offered to the system with <c>OfferVirtualMemory</c>.</para>
@@ -2299,7 +2317,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>Returns a System Error Code otherwise.</para>
 	/// </returns>
-	// DWORD WINAPI ReclaimVirtualMemory( _In_ PVOID VirtualAddress, _In_ SIZE_T Size);
+	// DWORD WINAPI ReclaimVirtualMemory( _In_ PVOID VirtualAddress, _In_ SizeT Size);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dn781437")]
 	public static extern uint ReclaimVirtualMemory(IntPtr VirtualAddress, SizeT Size);
@@ -2337,7 +2355,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is 0 (zero).</para>
 	/// <para>If the function fails, the return value is a nonzero value.</para>
 	/// </returns>
-	// UINT WINAPI ResetWriteWatch( _In_ LPVOID lpBaseAddress, _In_ SIZE_T dwRegionSize);
+	// UINT WINAPI ResetWriteWatch( _In_ LPVOID lpBaseAddress, _In_ SizeT dwRegionSize);
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366874")]
 	public static extern uint ResetWriteWatch([In] IntPtr lpBaseAddress, SizeT dwRegionSize);
@@ -2361,12 +2379,12 @@ public static partial class Kernel32
 	/// <returns>
 	/// <c>TRUE</c> if the operation was successful; otherwise, <c>FALSE</c>. To retrieve error values for this function, call <c>GetLastError</c>.
 	/// </returns>
-	// WINAPI SetProcessValidCallTargets( _In_ HANDLE hProcess, _In_ PVOID VirtualAddress, _In_ SIZE_T RegionSize, _In_ ULONG
+	// WINAPI SetProcessValidCallTargets( _In_ HANDLE hProcess, _In_ PVOID VirtualAddress, _In_ SizeT RegionSize, _In_ ULONG
 	// NumberOfOffsets, _Inout_ PCFG_CALL_TARGET_INFO OffsetInformation);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dn934202")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessValidCallTargets(HPROCESS hProcess, [In] IntPtr VirtualAddress, SizeT RegionSize, uint NumberOfOffsets,
+	public static extern bool SetProcessValidCallTargets([In, AddAsMember] HPROCESS hProcess, [In] IntPtr VirtualAddress, SizeT RegionSize, uint NumberOfOffsets,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CFG_CALL_TARGET_INFO[] OffsetInformation);
 
 	/// <summary>Sets the minimum and maximum working set sizes for the specified process.</summary>
@@ -2385,7 +2403,7 @@ public static partial class Kernel32
 	/// the minimum value is set to 20 pages.
 	/// </para>
 	/// <para>
-	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SIZE_T</c>)–1, the function removes as many pages
+	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SizeT</c>)–1, the function removes as many pages
 	/// as possible from the working set of the specified process.
 	/// </para>
 	/// </param>
@@ -2400,7 +2418,7 @@ public static partial class Kernel32
 	/// bytes on systems with a 4K page size).
 	/// </para>
 	/// <para>
-	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SIZE_T</c>)–1, the function removes as many pages
+	/// If both dwMinimumWorkingSetSize and dwMaximumWorkingSetSize have the value ( <c>SizeT</c>)–1, the function removes as many pages
 	/// as possible from the working set of the specified process. For details, see Remarks.
 	/// </para>
 	/// </param>
@@ -2440,12 +2458,12 @@ public static partial class Kernel32
 	/// fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI SetProcessWorkingSetSizeEx( _In_ HANDLE hProcess, _In_ SIZE_T dwMinimumWorkingSetSize, _In_ SIZE_T
+	// BOOL WINAPI SetProcessWorkingSetSizeEx( _In_ HANDLE hProcess, _In_ SizeT dwMinimumWorkingSetSize, _In_ SizeT
 	// dwMaximumWorkingSetSize, _In_ DWORD Flags);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686237")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessWorkingSetSizeEx([In] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize, QUOTA_LIMITS_HARDWS Flags);
+	public static extern bool SetProcessWorkingSetSizeEx([In, AddAsMember] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize, QUOTA_LIMITS_HARDWS Flags);
 
 	/// <summary>Limits the size of the working set for the file system cache.</summary>
 	/// <param name="MinimumFileCacheSize">
@@ -2496,7 +2514,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a nonzero value.</para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI SetSystemFileCacheSize( _In_ SIZE_T MinimumFileCacheSize, _In_ SIZE_T MaximumFileCacheSize, _In_ DWORD Flags);
+	// BOOL WINAPI SetSystemFileCacheSize( _In_ SizeT MinimumFileCacheSize, _In_ SizeT MaximumFileCacheSize, _In_ DWORD Flags);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa965240")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2531,7 +2549,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt492559")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnmapViewOfFile2([In] HPROCESS ProcessHandle, [In] IntPtr BaseAddress, uint UnmapFlags);
+	public static extern bool UnmapViewOfFile2([In, AddAsMember] HPROCESS ProcessHandle, [In] IntPtr BaseAddress, uint UnmapFlags);
 
 	/// <summary>This is an extended version of UnmapViewOfFile that takes an additional flags parameter.</summary>
 	/// <param name="BaseAddress">
@@ -2700,7 +2718,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the base address of the allocated region of pages.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// LPVOID WINAPI VirtualAlloc( _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flAllocationType, _In_ DWORD flProtect);
+	// LPVOID WINAPI VirtualAlloc( _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD flAllocationType, _In_ DWORD flProtect);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366887")]
 	public static extern IntPtr VirtualAlloc([In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
@@ -2944,12 +2962,12 @@ public static partial class Kernel32
 	/// <para>Scenario 3. Allocate memory in a specific virtual address range (below 4GB, in this example) and with specific alignment.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-virtualalloc2 PVOID VirtualAlloc2( HANDLE Process,
-	// PVOID BaseAddress, SIZE_T Size, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG
+	// PVOID BaseAddress, SizeT Size, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG
 	// ParameterCount );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "5021062F-E414-49A1-8B70-BE2A57A90E54")]
-	public static extern IntPtr VirtualAlloc2(SafeHANDLE Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
-		MEM_PROTECTION PageProtection, [MarshalAs(UnmanagedType.LPArray), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
+	public static extern IntPtr VirtualAlloc2([In] HPROCESS Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
+		MEM_PROTECTION PageProtection, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
 	/// <summary>
 	/// <para>
@@ -3186,12 +3204,12 @@ public static partial class Kernel32
 	/// <para>For code examples, see Virtual2Alloc.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-virtualalloc2fromapp PVOID VirtualAlloc2FromApp(
-	// HANDLE Process, PVOID BaseAddress, SIZE_T Size, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER
+	// HANDLE Process, PVOID BaseAddress, SizeT Size, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER
 	// *ExtendedParameters, ULONG ParameterCount );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "84896A75-A917-4CA1-A417-650428E1FBFD")]
-	public static extern IntPtr VirtualAlloc2FromApp(SafeHANDLE Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
-		MEM_PROTECTION PageProtection, [MarshalAs(UnmanagedType.LPArray), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
+	public static extern IntPtr VirtualAlloc2FromApp([In, AddAsMember] HPROCESS Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
+		MEM_PROTECTION PageProtection, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
 	/// <summary>
 	/// <para>
@@ -3331,11 +3349,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the base address of the allocated region of pages.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// LPVOID WINAPI VirtualAllocEx( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flAllocationType,
+	// LPVOID WINAPI VirtualAllocEx( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD flAllocationType,
 	// _In_ DWORD flProtect);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366890")]
-	public static extern IntPtr VirtualAllocEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
+	public static extern IntPtr VirtualAllocEx([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
 
 	/// <summary>
 	/// Reserves, commits, or changes the state of a region of memory within the virtual address space of the specified process, and
@@ -3466,11 +3484,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the base address of the allocated region of pages.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// LPVOID WINAPI VirtualAllocExNuma( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD
+	// LPVOID WINAPI VirtualAllocExNuma( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD
 	// flAllocationType, _In_ DWORD flProtect, _In_ DWORD nndPreferred);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366891")]
-	public static extern IntPtr VirtualAllocExNuma([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect, uint nndPreferred);
+	public static extern IntPtr VirtualAllocExNuma([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect, uint nndPreferred);
 
 	/// <summary>
 	/// Reserves, commits, or changes the state of a region of pages in the virtual address space of the calling process. Memory
@@ -3589,7 +3607,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the base address of the allocated region of pages.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// PVOID WINAPI VirtualAllocFromApp( _In_opt_ PVOID BaseAddress, _In_ SIZE_T Size, _In_ ULONG AllocationType, _In_ ULONG Protection);
+	// PVOID WINAPI VirtualAllocFromApp( _In_opt_ PVOID BaseAddress, _In_ SizeT Size, _In_ ULONG AllocationType, _In_ ULONG Protection);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt169845")]
 	public static extern IntPtr VirtualAllocFromApp([In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION Protection);
@@ -3653,7 +3671,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualFree( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD dwFreeType);
+	// BOOL WINAPI VirtualFree( _In_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD dwFreeType);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366892")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3723,11 +3741,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a nonzero value.</para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualFreeEx( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD dwFreeType);
+	// BOOL WINAPI VirtualFreeEx( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD dwFreeType);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366894")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool VirtualFreeEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE dwFreeType);
+	public static extern bool VirtualFreeEx([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE dwFreeType);
 
 	/// <summary>
 	/// Locks the specified region of the process's virtual address space into physical memory, ensuring that subsequent access to the
@@ -3742,7 +3760,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualLock( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize);
+	// BOOL WINAPI VirtualLock( _In_ LPVOID lpAddress, _In_ SizeT dwSize);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366895")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3782,7 +3800,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualProtect( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flNewProtect, _Out_ PDWORD lpflOldProtect);
+	// BOOL WINAPI VirtualProtect( _In_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD flNewProtect, _Out_ PDWORD lpflOldProtect);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366898")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3821,12 +3839,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualProtectEx( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flNewProtect, _Out_
+	// BOOL WINAPI VirtualProtectEx( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ DWORD flNewProtect, _Out_
 	// PDWORD lpflOldProtect);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366899")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool VirtualProtectEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_PROTECTION flNewProtect, [Out] out MEM_PROTECTION lpflOldProtect);
+	public static extern bool VirtualProtectEx([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_PROTECTION flNewProtect, [Out] out MEM_PROTECTION lpflOldProtect);
 
 	/// <summary>Changes the protection on a region of committed pages in the virtual address space of the calling process.</summary>
 	/// <param name="Address">
@@ -3861,7 +3879,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualProtectFromApp( _In_ PVOID Address, _In_ SIZE_T Size, _In_ ULONG NewProtection, _Out_ PULONG OldProtection);
+	// BOOL WINAPI VirtualProtectFromApp( _In_ PVOID Address, _In_ SizeT Size, _In_ ULONG NewProtection, _Out_ PULONG OldProtection);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt169846")]
 	public static extern bool VirtualProtectFromApp([In] IntPtr Address, SizeT Size, MEM_PROTECTION NewProtection, [Out] out MEM_PROTECTION OldProtection);
@@ -3892,10 +3910,10 @@ public static partial class Kernel32
 	/// values include <c>ERROR_INVALID_PARAMETER</c>.
 	/// </para>
 	/// </returns>
-	// SIZE_T WINAPI VirtualQuery( _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_ SIZE_T dwLength);
+	// SizeT WINAPI VirtualQuery( _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_ SizeT dwLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366902")]
-	public static extern SizeT VirtualQuery([In] IntPtr lpAddress, [Out, MarshalAs(UnmanagedType.LPArray)] MEMORY_BASIC_INFORMATION[] lpBuffer, SizeT dwLength);
+	public static extern SizeT VirtualQuery([In] IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, SizeT dwLength);
 
 	/// <summary>Retrieves information about a range of pages within the virtual address space of a specified process.</summary>
 	/// <param name="hProcess">
@@ -3923,11 +3941,12 @@ public static partial class Kernel32
 	/// values include <c>ERROR_INVALID_PARAMETER</c>.
 	/// </para>
 	/// </returns>
-	// SIZE_T WINAPI VirtualQueryEx( _In_ HANDLE hProcess, _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_
-	// SIZE_T dwLength);
+	// SizeT WINAPI VirtualQueryEx( _In_ HANDLE hProcess, _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_
+	// SizeT dwLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366907")]
-	public static extern SizeT VirtualQueryEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, [In] IntPtr lpBuffer, SizeT dwLength);
+	public static extern SizeT VirtualQueryEx([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress,
+		out MEMORY_BASIC_INFORMATION lpBuffer, SizeT dwLength);
 
 	/// <summary>
 	/// Unlocks a specified range of pages in the virtual address space of a process, enabling the system to swap the pages out to the
@@ -3942,7 +3961,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI VirtualUnlock( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366910(v=vs.85).aspx
+	// BOOL WINAPI VirtualUnlock( _In_ LPVOID lpAddress, _In_ SizeT dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366910(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366910")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3972,12 +3991,13 @@ public static partial class Kernel32
 	/// fails if the requested write operation crosses into an area of the process that is inaccessible.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI WriteProcessMemory( _In_ HANDLE hProcess, _In_ LPVOID lpBaseAddress, _In_ LPCVOID lpBuffer, _In_ SIZE_T nSize, _Out_
-	// SIZE_T *lpNumberOfBytesWritten);
+	// BOOL WINAPI WriteProcessMemory( _In_ HANDLE hProcess, _In_ LPVOID lpBaseAddress, _In_ LPCVOID lpBuffer, _In_ SizeT nSize, _Out_
+	// SizeT *lpNumberOfBytesWritten);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, [In] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
+	public static extern bool WriteProcessMemory([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpBaseAddress,
+		[In, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(lpNumberOfBytesWritten))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
 
 	/// <summary>
 	/// Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.
@@ -4003,12 +4023,13 @@ public static partial class Kernel32
 	/// fails if the requested write operation crosses into an area of the process that is inaccessible.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI WriteProcessMemory( _In_ HANDLE hProcess, _In_ LPVOID lpBaseAddress, _In_ LPCVOID lpBuffer, _In_ SIZE_T nSize, _Out_
-	// SIZE_T *lpNumberOfBytesWritten);
+	// BOOL WINAPI WriteProcessMemory( _In_ HANDLE hProcess, _In_ LPVOID lpBaseAddress, _In_ LPCVOID lpBuffer, _In_ SizeT nSize, _Out_
+	// SizeT *lpNumberOfBytesWritten);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, [In] byte[] lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
+	public static extern bool WriteProcessMemory([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpBaseAddress,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
 
 	/// <summary>Represents information about call targets for Control Flow Guard (CFG).</summary>
 	// typedef struct _CFG_CALL_TARGET_INFO { ULONG_PTR Offset; ULONG_PTR Flags;} CFG_CALL_TARGET_INFO, *PCFG_CALL_TARGET_INFO;
@@ -4037,7 +4058,7 @@ public static partial class Kernel32
 	/// <para>Specifying a <c>MEM_ADDRESS_REQUIREMENTS</c> structure with all fields set to 0 is the same as not specifying one at all.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_mem_address_requirements typedef struct
-	// _MEM_ADDRESS_REQUIREMENTS { PVOID LowestStartingAddress; PVOID HighestEndingAddress; SIZE_T Alignment; } MEM_ADDRESS_REQUIREMENTS, *PMEM_ADDRESS_REQUIREMENTS;
+	// _MEM_ADDRESS_REQUIREMENTS { PVOID LowestStartingAddress; PVOID HighestEndingAddress; SizeT Alignment; } MEM_ADDRESS_REQUIREMENTS, *PMEM_ADDRESS_REQUIREMENTS;
 	[PInvokeData("winnt.h", MSDNShortId = "1CAB4942-F0D2-4A60-9472-4EDF2FC9FA7A")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct MEM_ADDRESS_REQUIREMENTS
@@ -4068,7 +4089,7 @@ public static partial class Kernel32
 	/// <summary>Represents an extended parameter for a function that manages virtual memory.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-mem_extended_parameter typedef struct MEM_EXTENDED_PARAMETER {
 	// struct { DWORD64 Type : MEM_EXTENDED_PARAMETER_TYPE_BITS; DWORD64 Reserved : 64 - MEM_EXTENDED_PARAMETER_TYPE_BITS; }
-	// DUMMYSTRUCTNAME; union { DWORD64 ULong64; PVOID Pointer; SIZE_T Size; HANDLE Handle; DWORD ULong; } DUMMYUNIONNAME; }
+	// DUMMYSTRUCTNAME; union { DWORD64 ULong64; PVOID Pointer; SizeT Size; HANDLE Handle; DWORD ULong; } DUMMYUNIONNAME; }
 	// MEM_EXTENDED_PARAMETER, *PMEM_EXTENDED_PARAMETER;
 	[PInvokeData("winnt.h", MSDNShortId = "8D189F7E-83E7-4AF3-9E25-928C66666887")]
 	[StructLayout(LayoutKind.Explicit, Pack = 8, Size = 16)]
@@ -4094,7 +4115,7 @@ public static partial class Kernel32
 		/// </summary>
 		[FieldOffset(8)] public IntPtr Pointer;
 
-		/// <summary>A SIZE_T value.</summary>
+		/// <summary>A SizeT value.</summary>
 		[FieldOffset(8)] public SizeT Size;
 
 		/// <summary>A HANDLE value.</summary>
@@ -4105,7 +4126,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Specifies a range of memory. This structure is used by the <c>PrefetchVirtualMemory</c> function.</summary>
-	// typedef struct _WIN32_MEMORY_RANGE_ENTRY { PVOID VirtualAddress; SIZE_T NumberOfBytes;} WIN32_MEMORY_RANGE_ENTRY, *PWIN32_MEMORY_RANGE_ENTRY;
+	// typedef struct _WIN32_MEMORY_RANGE_ENTRY { PVOID VirtualAddress; SizeT NumberOfBytes;} WIN32_MEMORY_RANGE_ENTRY, *PWIN32_MEMORY_RANGE_ENTRY;
 	[PInvokeData("WinBase.h", MSDNShortId = "hh780544")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WIN32_MEMORY_RANGE_ENTRY
@@ -4117,22 +4138,83 @@ public static partial class Kernel32
 		public SizeT NumberOfBytes;
 	}
 
+	/// <summary>Contains information about a memory region. A memory region is a single allocation that is created using a memory allocation function, such as <c>VirtualAlloc</c> or <c>MapViewOfFile</c>.</summary>
+	/// <remarks>
+	/// <para>The <b>WIN32_MEMORY_REGION_INFORMATION</b> structure contains information about a single memory allocation. In contrast, the <c>MEMORY_BASIC_INFORMATION</c> structure that is returned by the <c>VirtualQuery</c> function describes a contiguous run of pages within a single allocation that all have the same type, state, and protection. The mapping between <b>WIN32_MEMORY_REGION_INFORMATION</b> fields and memory type values returned by <b>VirtualQuery</b> is as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>WIN32_MEMORY_REGION_INFORMATION</description>
+	/// <description>MEMORY_BASIC_INFORMATION::Type</description>
+	/// </listheader>
+	/// <item>
+	/// <description>Private</description>
+	/// <description>MEM_PRIVATE</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedDataFile</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedImage</description>
+	/// <description>MEM_IMAGE</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedPageFile</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedPhysical</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/ns-memoryapi-win32_memory_region_information
+	// typedef struct WIN32_MEMORY_REGION_INFORMATION { PVOID AllocationBase; ULONG AllocationProtect; union { ULONG Flags; struct { ULONG Private : 1; ULONG MappedDataFile : 1; ULONG MappedImage : 1; ULONG MappedPageFile : 1; ULONG MappedPhysical : 1; ULONG DirectMapped : 1; ULONG Reserved : 26; } DUMMYSTRUCTNAME; } DUMMYUNIONNAME; SizeT RegionSize; SizeT CommitSize; } WIN32_MEMORY_REGION_INFORMATION;
+	[PInvokeData("memoryapi.h", MSDNShortId = "NS:memoryapi.WIN32_MEMORY_REGION_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct WIN32_MEMORY_REGION_INFORMATION
+	{
+		/// <summary>The base address of the allocation.</summary>
+		public IntPtr AllocationBase;
+		/// <summary>The page protection value that was specified when the allocation was created. Protections of individual pages within the allocation can be different from this value. To query protection values of individual pages, use the <c>VirtualQuery</c> function.</summary>
+		public uint AllocationProtect;
+		/// <summary>Represents all memory region flags as a single ULONG value. Applications should not use this field. Instead, test the individual bit field flags defined below.</summary>
+		public BitField<uint> Flags;
+		/// <summary>A value of 1 indicates that the allocation is private to the process.</summary>
+		public bool Private { get => Flags[0]; set => Flags[0] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a data file.</summary>
+		public bool MappedDataFile { get => Flags[1]; set => Flags[1] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of an executable image.</summary>
+		public bool MappedImage { get => Flags[2]; set => Flags[2] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a pagefile-backed section.</summary>
+		public bool MappedPageFile { get => Flags[3]; set => Flags[3] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a view of the <b>\Device\PhysicalMemory</b> section.</summary>
+		public bool MappedPhysical { get => Flags[4]; set => Flags[4] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a direct-mapped file.</summary>
+		public bool DirectMapped { get => Flags[5]; set => Flags[5] = value; }
+		/// <summary>Reserved.</summary>
+		public bool Reserved { get => Flags[6]; set => Flags[6] = value; }
+		/// <summary>The size of the allocation.</summary>
+		public SizeT RegionSize;
+		/// <summary>The commit charge associated with the allocation. For private allocations, this is the combined size of pages in the region that are committed, as opposed to reserved. For mapped views, this is the combined size of pages that have copy-on-write protection, or have been made private as a result of copy-on-write.</summary>
+		public SizeT CommitSize;
+	}
+
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSECTION"/> that is disposed using <see cref="CloseHandle"/>.</summary>
-	[AutoSafeHandle(null, typeof(HSECTION), typeof(SafeKernelHandle))]
+	[AutoSafeHandle(null, typeof(HSECTION), typeof(SafeKernelHandle)), AdjustAutoMethodNamePattern("2|3|Ex", "")]
 	public partial class SafeHSECTION { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a memory resource notification object that releases its instance at disposal using CloseHandle.
 	/// </summary>
-	public class SafeMemoryResourceNotification : SafeSyncHandle
+	/// <remarks>
+	/// Initializes a new instance of the <see cref="SafeMemoryResourceNotification"/> class and assigns an existing handle.
+	/// </remarks>
+	/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+	/// <param name="ownsHandle">
+	/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+	/// </param>
+	public class SafeMemoryResourceNotification(IntPtr preexistingHandle, bool ownsHandle = true) : SafeSyncHandle(preexistingHandle, ownsHandle)
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeMemoryResourceNotification"/> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeMemoryResourceNotification(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 	}
 }

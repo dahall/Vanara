@@ -71,7 +71,7 @@ public static partial class Shell32
 		/// <para>Retrieves a file type handler's explicit Application User Model ID (AppUserModelID), if one has been declared.</para>
 		/// </summary>
 		/// <param name="ppszAppID">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>When this method returns, contains the address of the AppUserModelID string assigned to the object.</para>
 		/// </param>
 		/// <returns>
@@ -186,7 +186,7 @@ public static partial class Shell32
 		/// <para>Retrieves the ProgID associated with an object.</para>
 		/// </summary>
 		/// <param name="ppszProgID">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a string that, when this method returns successfully, contains the ProgID.</para>
 		/// </param>
 		/// <returns>
@@ -249,6 +249,6 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iobjectwithselection-getselection HRESULT
 		// GetSelection( REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetSelection(in Guid riid, [MaybeNull, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		HRESULT GetSelection(in Guid riid, [MaybeNull, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 	}
 }

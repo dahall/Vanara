@@ -408,7 +408,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pspropertybag_readstr PSSTDAPI PSPropertyBag_ReadStr(
-	// IPropertyBag *propBag, LPCWSTR propName, LPWSTR value, int characterCount );
+	// IPropertyBag *propBag, LPCWSTR propName, StrPtrUni value, int characterCount );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "2E3E86D6-B070-49fc-AAF0-D6DCF0EA16B7")]
 	public static extern HRESULT PSPropertyBag_ReadStr(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder value, int characterCount);
@@ -425,7 +425,7 @@ public static partial class PropSys
 	/// <para>A pointer to a null-terminated property name string.</para>
 	/// </param>
 	/// <param name="value">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// When this function returns, contains a pointer to a string data value from a property in a property bag and allocates memory for
 	/// the string that is read. The caller of the PSPropertyBag_ReadStrAlloc function needs to call a CoTaskMemFree function on this parameter.
@@ -442,7 +442,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pspropertybag_readstralloc PSSTDAPI
-	// PSPropertyBag_ReadStrAlloc( IPropertyBag *propBag, LPCWSTR propName, PWSTR *value );
+	// PSPropertyBag_ReadStrAlloc( IPropertyBag *propBag, LPCWSTR propName, StrPtrUni *value );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "2F58A6DB-3563-42fa-9B6F-327D0A87AE81")]
 	public static extern HRESULT PSPropertyBag_ReadStrAlloc(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string value);

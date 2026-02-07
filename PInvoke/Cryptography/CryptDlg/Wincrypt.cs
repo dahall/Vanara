@@ -202,7 +202,7 @@ public static partial class CryptDlg
 	// PCCERT_CONTEXT pccertSigner );
 	[DllImport(Lib.CryptDlg, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a23d968e-113f-470e-a629-18c22882c77f")]
-	public static extern HRESULT CertModifyCertificatesToTrust(int cCerts, [MarshalAs(UnmanagedType.LPArray)] CTL_MODIFY_REQUEST[] rgCerts, SafeOID szPurpose,
+	public static extern HRESULT CertModifyCertificatesToTrust(int cCerts, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] CTL_MODIFY_REQUEST[] rgCerts, SafeOID szPurpose,
 		[Optional] HWND hwnd, HCERTSTORE hcertstoreTrust, PCCERT_CONTEXT pccertSigner);
 
 	/// <summary>
@@ -274,10 +274,11 @@ public static partial class CryptDlg
 	/// The return value is the number of characters, including the terminating <c>NULL</c> character, in the returned display name.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/nf-cryptdlg-getfriendlynameofcerta CRYPTDLGAPI DWORD
-	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, LPSTR pch, DWORD cch );
+	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, StrPtrAnsi pch, DWORD cch );
 	[DllImport(Lib.CryptDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a66a8573-b234-4d5d-bd38-72a3a44a0419")]
-	public static extern uint GetFriendlyNameOfCert(PCCERT_CONTEXT pccert, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pch, uint cch);
+	public static extern uint GetFriendlyNameOfCert(PCCERT_CONTEXT pccert,
+		[MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cch), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pch, uint cch);
 
 	/// <summary>
 	/// <para>
@@ -298,7 +299,7 @@ public static partial class CryptDlg
 	/// The return value is the number of characters, including the terminating <c>NULL</c> character, in the returned display name.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/nf-cryptdlg-getfriendlynameofcerta CRYPTDLGAPI DWORD
-	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, LPSTR pch, DWORD cch );
+	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, StrPtrAnsi pch, DWORD cch );
 	[DllImport(Lib.CryptDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a66a8573-b234-4d5d-bd38-72a3a44a0419")]
 	public static extern uint GetFriendlyNameOfCert(PCCERT_CONTEXT pccert, IntPtr pch, uint cch);
@@ -393,13 +394,13 @@ public static partial class CryptDlg
 		/// A pointer to the array of certificate stores that the dialog box enumerates and displays the certificates from. The
 		/// <c>cCertStore</c> member contains the number of elements in this array.
 		/// </summary>
-		public IntPtr arrayCertStore;
+		public ArrayPointer<HCERTSTORE> arrayCertStore;
 
 		/// <summary>
 		/// A pointer to a string representation of an object identifier (OID) for an enhanced key usage (EKU). If an OID is provided,
 		/// only certificates that include this EKU will be displayed.
 		/// </summary>
-		public IntPtr szPurposeOid;
+		public StrPtrAnsi szPurposeOid;
 
 		/// <summary>
 		/// The number of elements in the <c>arrayCertContext</c> array. After the CertSelectCertificate function returns, this member
@@ -423,7 +424,7 @@ public static partial class CryptDlg
 		/// Currently, only one certificate can be selected by the user.
 		/// </para>
 		/// </summary>
-		public IntPtr arrayCertContext;
+		public ArrayPointer<PCCERT_CONTEXT> arrayCertContext;
 
 		/// <summary>
 		/// A pointer to an array of byte values that hold custom data that is passed through to the filter procedure referenced by
@@ -466,7 +467,7 @@ public static partial class CryptDlg
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/ns-cryptdlg-cert_viewproperties_struct_a typedef struct
 	// tagCERT_VIEWPROPERTIES_STRUCT_A { DWORD dwSize; HWND hwndParent; HINSTANCE hInstance; DWORD dwFlags; LPCSTR szTitle;
-	// PCCERT_CONTEXT pCertContext; LPSTR *arrayPurposes; DWORD cArrayPurposes; DWORD cRootStores; HCERTSTORE *rghstoreRoots; DWORD
+	// PCCERT_CONTEXT pCertContext; StrPtrAnsi *arrayPurposes; DWORD cArrayPurposes; DWORD cRootStores; HCERTSTORE *rghstoreRoots; DWORD
 	// cStores; HCERTSTORE *rghstoreCAs; DWORD cTrustStores; HCERTSTORE *rghstoreTrust; HCRYPTPROV hprov; LPARAM lCustData; DWORD dwPad;
 	// LPCSTR szHelpFileName; DWORD dwHelpId; DWORD nStartPage; DWORD cArrayPropSheetPages; PROPSHEETPAGE *arrayPropSheetPages; }
 	// CERT_VIEWPROPERTIES_STRUCT_A, *PCERT_VIEWPROPERTIES_STRUCT_A;
@@ -542,7 +543,7 @@ public static partial class CryptDlg
 		public PCCERT_CONTEXT pCertContext;
 
 		/// <summary>A pointer to an array of null-terminated strings that specify the certificate purposes.</summary>
-		public IntPtr arrayPurposes;
+		public StrPtrAuto arrayPurposes;
 
 		/// <summary>Number of elements in the <c>arrayPurposes</c> array. If this value is zero, then no trust status is displayed.</summary>
 		public uint cArrayPurposes;
@@ -551,19 +552,19 @@ public static partial class CryptDlg
 		public uint cRootStores;
 
 		/// <summary>Array of Root certificate store handles.</summary>
-		public IntPtr rghstoreRoots;
+		public ArrayPointer<HCERTSTORE> rghstoreRoots;
 
 		/// <summary>Number of elements in the <c>rghstoreCAs</c> array.</summary>
 		public uint cStores;
 
 		/// <summary>Array of other certificate store handles.</summary>
-		public IntPtr rghstoreCAs;
+		public ArrayPointer<HCERTSTORE> rghstoreCAs;
 
 		/// <summary>Number of elements in the <c>rghstoreTrust</c> array.</summary>
 		public uint cTrustStores;
 
 		/// <summary>Array of trust certificate store handles.</summary>
-		public IntPtr rghstoreTrust;
+		public ArrayPointer<HCERTSTORE> rghstoreTrust;
 
 		/// <summary>A handle to the cryptographic service provider (CSP) to use for verification.</summary>
 		public HCRYPTPROV hprov;

@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <DocumentationFile/>
+    <DocumentationFile />
     <IsPackable>false</IsPackable>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -13,11 +13,11 @@
     <SupportedPlatform Include="windows" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="NUnit" Version="4.3.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Condition="!$(MSBuildProjectDirectory.EndsWith('CSharpRunner'))" Include="$(MSBuildThisFileDirectory)CSharpRunner\Shared.csproj" />
+    <ProjectReference Condition="!$(MSBuildProjectDirectory.EndsWith('CSharpRunner')) AND !$(MSBuildProjectDirectory.Contains('CodeGen'))" Include="$(MSBuildThisFileDirectory)CSharpRunner\Shared.csproj" />
   </ItemGroup>
 </Project>

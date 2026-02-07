@@ -466,7 +466,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ienumfsiitems-next HRESULT Next( ULONG celt, IFsiItem
 		// **rgelt, ULONG *pceltFetched );
 		[PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IFsiItem[] rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IFsiItem[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips a specified number of items in the enumeration sequence.</summary>
 		/// <param name="celt">Number of items to skip.</param>
@@ -562,7 +562,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2fs/nf-imapi2fs-ienumprogressitems-next HRESULT Next( ULONG celt,
 		// IProgressItem **rgelt, ULONG *pceltFetched );
 		[PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IProgressItem[] rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IProgressItem[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips a specified number of items in the enumeration sequence.</summary>
 		/// <param name="celt">Number of items to skip.</param>

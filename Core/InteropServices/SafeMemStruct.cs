@@ -12,26 +12,29 @@ namespace Vanara.InteropServices;
 /// <typeparam name="TStruct">The type of the structure.</typeparam>
 /// <typeparam name="TMem">The type of the memory.</typeparam>
 /// <seealso cref="SafeMemoryHandle{TMem}"/>
-public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
+public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
 {
 	/// <summary>The structure size, in bytes, of TStruct.</summary>
 	protected static readonly SizeT BaseStructSize = InteropExtensions.SizeOf<TStruct>();
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
+	public SafeMemStruct() : base(IntPtr.Zero, 0, false) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 	/// <param name="s">The TStruct value.</param>
 	/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-	protected SafeMemStruct(in TStruct s, SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) => handle.Write(s);
+	public SafeMemStruct(in TStruct s, SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) => handle.Write(s);
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 	/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-	protected SafeMemStruct(SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) { }
+	public SafeMemStruct(SizeT capacity = default) : base(Math.Max(BaseStructSize, (ulong)capacity)) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemStruct{TStruct, TMem}"/> class.</summary>
 	/// <param name="ptr">The PTR.</param>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	protected SafeMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) { }
+	public SafeMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) { }
 
 	/// <summary>Gets a value indicating whether the current memory has a valid value of its underlying type.</summary>
 	/// <value><see langword="true"/> if this instance has a value; otherwise, <see langword="false"/>.</value>
@@ -142,6 +145,22 @@ public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEq
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 	public override int GetHashCode() => handle.ToInt32();
 
+	/// <summary>Retrieves a string from the current memory block at the specified offset, using the given character encoding.</summary>
+	/// <param name="offsetFromStart">
+	/// The offset, in bytes, from the start of the memory block at which to begin reading the string. Must not exceed the size of the memory block.
+	/// </param>
+	/// <param name="charSet">The character encoding to use when interpreting the string. The default is CharSet.Auto.</param>
+	/// <returns>A string read from the specified offset, or null if the memory block has no value.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">Thrown if offsetFromStart is greater than the size of the memory block.</exception>
+	public virtual string? GetStringAtOffset(long offsetFromStart, CharSet charSet = CharSet.Auto)
+	{
+		if (!HasValue)
+			return null;
+		if (offsetFromStart > Size)
+			throw new ArgumentOutOfRangeException(nameof(offsetFromStart));
+		return StringHelper.GetString(handle.Offset(offsetFromStart), charSet, Size - offsetFromStart);
+	}
+
 	/// <summary>Retrieves the value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object, or the specified default value.</summary>
 	/// <param name="defaultValue">A value to return if the <see cref="HasValue"/> property is <see langword="false"/>.</param>
 	/// <returns>
@@ -161,7 +180,7 @@ public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEq
 	/// <summary>Returns the addresss of the named field.</summary>
 	/// <param name="name">The field address.</param>
 	/// <returns>The address of the field within the structure.</returns>
-	protected static IntPtr FieldAddress(string name) => Marshal.OffsetOf(typeof(TStruct), name);
+	protected static IntPtr FieldAddress(string name) => Marshal.OffsetOf<TStruct>(name);
 
 	/// <summary>Returns the field offset of the named field.</summary>
 	/// <param name="name">The field name.</param>

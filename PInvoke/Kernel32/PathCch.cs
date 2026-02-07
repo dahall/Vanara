@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Vanara.PInvoke;
 
 public static partial class Kernel32
@@ -136,7 +138,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathalloccanonicalize HRESULT PathAllocCanonicalize(
-	// PCWSTR pszPathIn, ULONG dwFlags, PWSTR *ppszPathOut );
+	// PCWSTR pszPathIn, ULONG dwFlags, StrPtrUni *ppszPathOut );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "3179fe78-a969-4ee2-a50b-5f4f7d4dad71")]
 	public static extern HRESULT PathAllocCanonicalize(string pszPathIn, PATHCCH_OPTIONS dwFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszPathOut);
@@ -241,7 +243,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathalloccombine HRESULT PathAllocCombine( PCWSTR
-	// pszPathIn, PCWSTR pszMore, ULONG dwFlags, PWSTR *ppszPathOut );
+	// pszPathIn, PCWSTR pszMore, ULONG dwFlags, StrPtrUni *ppszPathOut );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "dd619138-f867-4517-bc67-a52c598efad0")]
 	public static extern HRESULT PathAllocCombine(string pszPathIn, string pszMore, PATHCCH_OPTIONS dwFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszPathOut);
@@ -273,11 +275,12 @@ public static partial class Kernel32
 	/// code otherwise.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslash HRESULT PathCchAddBackslash( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslash HRESULT PathCchAddBackslash( StrPtrUni
 	// pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "b50677cd-8815-4d84-b70a-c83863378c56")]
-	public static extern HRESULT PathCchAddBackslash([In, Out] StringBuilder pszPath, SizeT cchPath);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAddBackslash([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, SizeT cchPath);
 
 	/// <summary>
 	/// <para>
@@ -321,11 +324,12 @@ public static partial class Kernel32
 	/// code otherwise.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslashex HRESULT PathCchAddBackslashEx( PWSTR
-	// pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslashex HRESULT PathCchAddBackslashEx( StrPtrUni
+	// pszPath, SizeT cchPath, StrPtrUni *ppszEnd, SizeT *pcchRemaining );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "89adf45f-f16d-49d1-9e76-b57b73b4d4c3")]
-	public static extern HRESULT PathCchAddBackslashEx([In, Out] StringBuilder pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAddBackslashEx([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
 
 	/// <summary>
 	/// <para>
@@ -369,11 +373,12 @@ public static partial class Kernel32
 	/// code otherwise.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslashex HRESULT PathCchAddBackslashEx( PWSTR
-	// pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddbackslashex HRESULT PathCchAddBackslashEx( StrPtrUni
+	// pszPath, SizeT cchPath, StrPtrUni *ppszEnd, SizeT *pcchRemaining );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "89adf45f-f16d-49d1-9e76-b57b73b4d4c3")]
-	public static extern HRESULT PathCchAddBackslashEx([In, Out] IntPtr pszPath, SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAddBackslashEx([In, Out, SizeDef(nameof(cchPath))] StrPtrUni pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
 
 	/// <summary>
 	/// <para>Adds a file name extension to a path string.</para>
@@ -429,11 +434,12 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddextension HRESULT PathCchAddExtension( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchaddextension HRESULT PathCchAddExtension( StrPtrUni
 	// pszPath, SizeT cchPath, PCWSTR pszExt );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "c37b438b-39e7-4f24-b076-2401900dab71")]
-	public static extern HRESULT PathCchAddExtension([In, Out] StringBuilder pszPath, SizeT cchPath, string pszExt);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAddExtension([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, string pszExt);
 
 	/// <summary>
 	/// <para>Appends one path to the end of another.</para>
@@ -483,11 +489,12 @@ public static partial class Kernel32
 	/// <remarks>
 	/// <para>This function inserts a backslash between the two strings, if one is not already present.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchappend HRESULT PathCchAppend( PWSTR pszPath, SizeT
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchappend HRESULT PathCchAppend( StrPtrUni pszPath, SizeT
 	// cchPath, PCWSTR pszMore );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "b64884ad-15c7-495e-8037-34daf68f8cf7")]
-	public static extern HRESULT PathCchAppend([In, Out] StringBuilder pszPath, SizeT cchPath, string pszMore);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAppend([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(1, MAX_PATH)] SizeT cchPath, string pszMore);
 
 	/// <summary>
 	/// <para>Appends one path to the end of another.</para>
@@ -582,11 +589,12 @@ public static partial class Kernel32
 	/// <remarks>
 	/// <para>This function inserts a backslash between the two strings, if one is not already present.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchappendex HRESULT PathCchAppendEx( PWSTR pszPath,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchappendex HRESULT PathCchAppendEx( StrPtrUni pszPath,
 	// SizeT cchPath, PCWSTR pszMore, ULONG dwFlags );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "5421c666-1c8a-4ae8-baba-9e6f69c877df")]
-	public static extern HRESULT PathCchAppendEx([In, Out] StringBuilder pszPath, SizeT cchPath, string pszMore, PATHCCH_OPTIONS dwFlags);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchAppendEx([In, Out] StringBuilder pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, string pszMore, PATHCCH_OPTIONS dwFlags);
 
 	/// <summary>
 	/// <para>Converts a path string into a canonical form.</para>
@@ -678,11 +686,12 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcanonicalize HRESULT PathCchCanonicalize( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcanonicalize HRESULT PathCchCanonicalize( StrPtrUni
 	// pszPathOut, SizeT cchPathOut, PCWSTR pszPathIn );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "25ff08b2-5978-4d44-9877-ba4230ef7d12")]
-	public static extern HRESULT PathCchCanonicalize([In, Out] StringBuilder pszPathOut, SizeT cchPathOut, string pszPathIn);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchCanonicalize([In, Out, SizeDef(nameof(cchPathOut))] StringBuilder pszPathOut, [Range(0, MAX_PATH)] SizeT cchPathOut, [MaxLength(MAX_PATH)] string pszPathIn);
 
 	/// <summary>
 	/// <para>Simplifies a path by removing navigation elements such as "." and ".." to produce a direct, well-formed path.</para>
@@ -834,11 +843,13 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcanonicalizeex HRESULT PathCchCanonicalizeEx( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcanonicalizeex HRESULT PathCchCanonicalizeEx( StrPtrUni
 	// pszPathOut, SizeT cchPathOut, PCWSTR pszPathIn, ULONG dwFlags );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "fd7b8ce0-3c67-48fb-8e7e-521a6b438676")]
-	public static extern HRESULT PathCchCanonicalizeEx([In, Out] StringBuilder pszPathOut, SizeT cchPathOut, string pszPathIn, PATHCCH_OPTIONS dwFlags);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchCanonicalizeEx([In, Out, SizeDef(nameof(cchPathOut))] StringBuilder pszPathOut, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPathOut,
+		[MaxLength((int)PATHCCH_MAX_CCH)] string pszPathIn, PATHCCH_OPTIONS dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -911,11 +922,13 @@ public static partial class Kernel32
 	/// If both pszPathIn and pszMore are <c>NULL</c> or point to empty strings, a single backslash is copied to the buffer pointed to by pszPathOut.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcombine HRESULT PathCchCombine( PWSTR pszPathOut,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcombine HRESULT PathCchCombine( StrPtrUni pszPathOut,
 	// SizeT cchPathOut, PCWSTR pszPathIn, PCWSTR pszMore );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "506a4165-f572-4521-958f-56a0296f9c05")]
-	public static extern HRESULT PathCchCombine([In, Out] StringBuilder pszPathOut, SizeT cchPathOut, string pszPathIn, [Optional] string? pszMore);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchCombine([In, Out, SizeDef(nameof(cchPathOut))] StringBuilder pszPathOut, [Range(0, MAX_PATH)] SizeT cchPathOut,
+		[MaxLength(MAX_PATH)] string pszPathIn, [Optional] string? pszMore);
 
 	/// <summary>
 	/// <para>
@@ -1036,11 +1049,13 @@ public static partial class Kernel32
 	/// If both pszPathIn and pszMore are <c>NULL</c> or point to empty strings, a single backslash is copied to the buffer pointed to by pszPathOut.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcombineex HRESULT PathCchCombineEx( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchcombineex HRESULT PathCchCombineEx( StrPtrUni
 	// pszPathOut, SizeT cchPathOut, PCWSTR pszPathIn, PCWSTR pszMore, ULONG dwFlags );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "798c2e49-04a5-4270-b584-41faf1519e4b")]
-	public static extern HRESULT PathCchCombineEx([In, Out] StringBuilder pszPathOut, SizeT cchPathOut, string pszPathIn, [Optional] string? pszMore, PATHCCH_OPTIONS dwFlags);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchCombineEx([In, Out, SizeDef(nameof(cchPathOut))] StringBuilder pszPathOut, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPathOut,
+		[MaxLength((int)PATHCCH_MAX_CCH)] string pszPathIn, [Optional] string? pszMore, PATHCCH_OPTIONS dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1256,9 +1271,10 @@ public static partial class Kernel32
 	/// <para>This function will not remove the backslash from a root path string, such as "C:".</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovebackslash HRESULT PathCchRemoveBackslash(
-	// PWSTR pszPath, SizeT cchPath );
+	// StrPtrUni pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "61afc20e-ee6c-46ad-a058-64c57de41ba4")]
+	[SuppressAutoGen]
 	public static extern HRESULT PathCchRemoveBackslash([In, Out] StringBuilder pszPath, SizeT cchPath);
 
 	/// <summary>
@@ -1305,10 +1321,12 @@ public static partial class Kernel32
 	/// <para>This function will not remove the backslash from a root path string, such as "C:".</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovebackslashex HRESULT PathCchRemoveBackslashEx(
-	// PWSTR pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+	// StrPtrUni pszPath, SizeT cchPath, StrPtrUni *ppszEnd, SizeT *pcchRemaining );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "250c2faa-94bb-42c1-97d4-37f8f59dbde6")]
-	public static extern HRESULT PathCchRemoveBackslashEx([In, Out] StringBuilder pszPath, SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchRemoveBackslashEx([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath,
+		[Range(0, PATHCCH_MAX_CCH)] SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
 
 	/// <summary>
 	/// <para>Removes the trailing backslash from the end of a path string.</para>
@@ -1354,10 +1372,11 @@ public static partial class Kernel32
 	/// <para>This function will not remove the backslash from a root path string, such as "C:".</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovebackslashex HRESULT PathCchRemoveBackslashEx(
-	// PWSTR pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
+	// StrPtrUni pszPath, SizeT cchPath, StrPtrUni *ppszEnd, SizeT *pcchRemaining );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "250c2faa-94bb-42c1-97d4-37f8f59dbde6")]
-	public static extern HRESULT PathCchRemoveBackslashEx([In, Out] StrPtrUni pszPath, SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
+	public static extern HRESULT PathCchRemoveBackslashEx([In, Out, SizeDef(nameof(cchPath))] StrPtrUni pszPath,
+		[Range(0, PATHCCH_MAX_CCH)] SizeT cchPath, out StrPtrUni ppszEnd, out SizeT pcchRemaining);
 
 	/// <summary>
 	/// <para>Removes the file name extension from a path, if one is present.</para>
@@ -1377,10 +1396,11 @@ public static partial class Kernel32
 	/// <para>This function returns S_OK if the function was successful, S_FALSE if no extension was found, or an error code otherwise.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremoveextension HRESULT PathCchRemoveExtension(
-	// PWSTR pszPath, SizeT cchPath );
+	// StrPtrUni pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "9adfb054-6d62-41bb-9036-0bf670ea24b2")]
-	public static extern HRESULT PathCchRemoveExtension([In, Out] StringBuilder pszPath, SizeT cchPath);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchRemoveExtension([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPath);
 
 	/// <summary>
 	/// <para>
@@ -1432,11 +1452,12 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovefilespec HRESULT PathCchRemoveFileSpec( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchremovefilespec HRESULT PathCchRemoveFileSpec( StrPtrUni
 	// pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "c37aeddc-ed24-4828-b92b-bce0e6384726")]
-	public static extern HRESULT PathCchRemoveFileSpec([In, Out] StringBuilder pszPath, SizeT cchPath);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchRemoveFileSpec([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPath);
 
 	/// <summary>
 	/// <para>
@@ -1465,10 +1486,11 @@ public static partial class Kernel32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchrenameextension HRESULT PathCchRenameExtension(
-	// PWSTR pszPath, SizeT cchPath, PCWSTR pszExt );
+	// StrPtrUni pszPath, SizeT cchPath, PCWSTR pszExt );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "79cd9499-03b7-4482-abd3-a42edd1b2b67")]
-	public static extern HRESULT PathCchRenameExtension([In, Out] StringBuilder pszPath, SizeT cchPath, string pszExt);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchRenameExtension([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPath, string pszExt);
 
 	/// <summary>
 	/// <para>
@@ -1539,11 +1561,12 @@ public static partial class Kernel32
 	/// This function returns S_OK if the prefix was removed, S_FALSE if the path did not have a prefix to remove, or an HRESULT failure code.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchstripprefix HRESULT PathCchStripPrefix( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchstripprefix HRESULT PathCchStripPrefix( StrPtrUni
 	// pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "2e50b23e-2725-4200-bd5e-845ff3458026")]
-	public static extern HRESULT PathCchStripPrefix([In, Out] StringBuilder pszPath, SizeT cchPath);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchStripPrefix([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPath);
 
 	/// <summary>
 	/// <para>Removes all file and directory elements in a path except for the root information.</para>
@@ -1585,11 +1608,12 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchstriptoroot HRESULT PathCchStripToRoot( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/pathcch/nf-pathcch-pathcchstriptoroot HRESULT PathCchStripToRoot( StrPtrUni
 	// pszPath, SizeT cchPath );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "e0539478-8c64-4445-ab99-22f1df70afe8")]
-	public static extern HRESULT PathCchStripToRoot([In, Out] StringBuilder pszPath, SizeT cchPath);
+	[SuppressAutoGen]
+	public static extern HRESULT PathCchStripToRoot([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(0, PATHCCH_MAX_CCH)] SizeT cchPath);
 
 	/// <summary>
 	/// <para>Determines if a path string is a valid Universal Naming Convention (UNC) path, as opposed to a path based on a drive letter.</para>

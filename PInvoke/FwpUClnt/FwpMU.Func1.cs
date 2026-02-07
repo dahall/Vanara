@@ -1297,6 +1297,111 @@ public static partial class FwpUClnt
 		out PSID sidOwner, out PSID sidGroup, out PACL dacl, out PACL sacl, out SafeFwpmMem securityDescriptor);
 
 	/// <summary>
+	/// The TCP/IP stack supports destination address-based routing for outbound connections. <b>FwpmConnectionPolicyAdd0API</b> allows you
+	/// to configure more expressive routing policies for outbound connections, and thereby to enable more complex scenarios such as source
+	/// address-based routing, process-based routing, port-based routing, and others. A connection policy consists of an array of match
+	/// conditions, an array of route settings, and an associated weight. You can configure multiple policies, and they are evaluated based
+	/// on their configured weights for an outbound connection (a higher weight takes precedence). The route setting of the first policy
+	/// whose conditions (ANDed) matches the outbound connection is applied.
+	/// </summary>
+	/// <param name="engineHandle">
+	/// <para>Type: _In_ <b><c>HANDLE</c></b></para>
+	/// <para>A handle to an open session with the filter engine. To open a session with the filter engine, call <c>FwpmEngineOpen0</c>.</para>
+	/// </param>
+	/// <param name="connectionPolicy">
+	/// <para>Type: _In_ <b>const <c>FWPM_PROVIDER_CONTEXT3</c>*</b></para>
+	/// <para>The state associated with a provider context.</para>
+	/// </param>
+	/// <param name="ipVersion">
+	/// <para>Type: _In_ <b><c>FWP_IP_VERSION</c></b></para>
+	/// <para>IP version of the traffic.</para>
+	/// </param>
+	/// <param name="weight">
+	/// <para>Type: _In_ <b><c>UINT64</c></b></para>
+	/// <para>Specifies the weight that this Trusted Intermediary Agent (TIA) should be given compared to any peers.</para>
+	/// </param>
+	/// <param name="numFilterConditions">
+	/// <para>Type: _In_ <b><c>UINT32</c></b></para>
+	/// <para>The number of elements in filterConditions.</para>
+	/// </param>
+	/// <param name="filterConditions">
+	/// <para>Type: _In_reads_(numFilterConditions) <b>const <c>FWPM_FILTER_CONDITION0</c>*</b></para>
+	/// <para>A filter condition that must be true for the action to be taken.</para>
+	/// <para>
+	/// Of the possible match conditions (see <c>Filtering condition identifiers</c>), the ones in the following list are supported by
+	/// <b>FwpmConnectionPolicyAdd0</b>. Set these values in <b>FWPM_FILTER_CONDITION0::fieldKey</b>.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><b>FWPM_CONDITION_ALE_APP_ID</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_ALE_USER_ID</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_LOCAL_ADDRESS</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_LOCAL_ADDRESS_TYPE</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_LOCAL_PORT</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_PROTOCOL</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_REMOTE_ADDRESS</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_DESTINATION_ADDRESS_TYPE</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_IP_REMOTE_PORT</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_FLAGS</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_ALE_ORIGINAL_APP_ID</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_ALE_PACKAGE_ID</b></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FWPM_CONDITION_COMPARTMENT_ID</b></description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="sd">
+	/// <para>Type: _In_opt_ <b><c>PSECURITY_DESCRIPTOR</c></b></para>
+	/// <para>The security information.</para>
+	/// </param>
+	/// <remarks>
+	/// <para>These are the supported route settings (see <c>FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE</c>):</para>
+	/// <para>
+	/// <b>FWP_NETWORK_CONNECTION_POLICY_SOURCE_ADDRESS</b>. The source address to use for the connection. The value should be a
+	/// <b>FWP_UINT32</b> for an IPv4 address, and a <b>FWP_BYTE_ARRAY16_TYPE</b> for an IPv6 address.
+	/// </para>
+	/// <para>
+	/// <b>FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP_INTERFACE</b>. The LUID of the outgoing interface to use for the connection. The value
+	/// should be a <b>FWP_UINT64</b>.
+	/// </para>
+	/// <para>
+	/// <b>FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP</b>. The nexthop address (or gateway) to use for the connection. The value should be a
+	/// <b>FWP_UINT32</b> for an IPv4 address, and a <b>FWP_BYTE_ARRAY16_TYPE</b> for an IPv6 address.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fwpmu/nf-fwpmu-fwpmconnectionpolicyadd0 DWORD FwpmConnectionPolicyAdd0( HANDLE
+	// engineHandle, const FWPM_PROVIDER_CONTEXT3 *connectionPolicy, FWP_IP_VERSION ipVersion, UINT64 weight, UINT32 numFilterConditions,
+	// const FWPM_FILTER_CONDITION0 *filterConditions, PSECURITY_DESCRIPTOR sd );
+	[PInvokeData("fwpmu.h", MSDNShortId = "NF:fwpmu.FwpmConnectionPolicyAdd0")]
+	[DllImport(Lib_Fwpuclnt, SetLastError = false, ExactSpelling = true)]
+	public static extern Win32Error FwpmConnectionPolicyAdd0([In] HFWPENG engineHandle, in FWPM_PROVIDER_CONTEXT3 connectionPolicy, FWP_IP_VERSION ipVersion,
+		ulong weight, uint numFilterConditions, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] FWPM_FILTER_CONDITION0[] filterConditions,
+		[In, Optional] PSECURITY_DESCRIPTOR sd);
+
+	/// <summary>
 	/// The <c>FwpmConnectionSetSecurityInfo0</c> function sets specified security information in the security descriptor for a connection
 	/// object change event.
 	/// </summary>

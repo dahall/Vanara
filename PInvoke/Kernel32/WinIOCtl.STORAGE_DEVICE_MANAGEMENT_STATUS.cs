@@ -247,7 +247,7 @@ public static partial class Kernel32
 
 	private class STORAGE_DEVICE_UNIQUE_IDENTIFIER_Marshaler : IVanaraMarshaler
 	{
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_UNIQUE_IDENTIFIER>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
 

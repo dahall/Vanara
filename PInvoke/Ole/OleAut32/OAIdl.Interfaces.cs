@@ -698,7 +698,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setfuncandparamnames HRESULT
 		// SetFuncAndParamNames(UINT index, LPOLESTR *rgszNames, UINT cNames);
 		[PreserveSig]
-		HRESULT SetFuncAndParamNames(uint index, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames, uint cNames);
+		HRESULT SetFuncAndParamNames(uint index, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames, uint cNames);
 
 		/// <summary>Sets the name of a variable.</summary>
 		/// <param name="index">The index of the variable.</param>
@@ -1646,7 +1646,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oaidl/nf-oaidl-icreatetypeinfo-setfuncandparamnames HRESULT
 		// SetFuncAndParamNames(UINT index, LPOLESTR *rgszNames, UINT cNames);
 		[PreserveSig]
-		new HRESULT SetFuncAndParamNames(uint index, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames, uint cNames);
+		new HRESULT SetFuncAndParamNames(uint index, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames, uint cNames);
 
 		/// <summary>Sets the name of a variable.</summary>
 		/// <param name="index">The index of the variable.</param>
@@ -3787,7 +3787,7 @@ public static partial class OleAut32
 		// Convert parameters to VARIANTs in reverse order and store in array.
 		if (args.Length > 0)
 		{
-			dp.rgvarg = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(VARIANT)) * args.Length);
+			dp.rgvarg = Marshal.AllocCoTaskMem(Marshal.SizeOf<VARIANT>() * args.Length);
 			dp.cArgs = args.Length;
 			unsafe
 			{

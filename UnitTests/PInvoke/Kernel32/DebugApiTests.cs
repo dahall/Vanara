@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.IO;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
@@ -14,22 +15,16 @@ public class DebugApiTests
 	}
 
 	[Test]
-	public void IsDebuggerPresentTest()
-	{
-		Assert.That(IsDebuggerPresent(), Is.False);
-	}
+	public void IsDebuggerPresentTest() => Assert.That(IsDebuggerPresent(), Is.False);
 
 	[Test]
-	public void OutputDebugStringTest()
-	{
-		OutputDebugString("Hello");
-	}
+	public void OutputDebugStringTest() => OutputDebugString("Hello");
 
 	// TODO: Figure out how WaitForDebugEvent works
 	// [Test]
 	public void TestMethod()
 	{
-		System.Diagnostics.Process p = CSharpRunner.RunProcess(typeof(DebugProcess), null, "MyMain");
+		var p = CSharpRunner.RunProcess(typeof(DebugProcess), null, "MyMain");
 		uint pid = (uint)p.Id;
 		Assert.That(DebugActiveProcess(pid), ResultIs.Successful);
 		//Assert.That(ContinueDebugEvent(pid, ))

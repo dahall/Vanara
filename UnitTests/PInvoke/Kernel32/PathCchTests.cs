@@ -52,7 +52,7 @@ public class PathCchTests
 	public void PathCchAddBackslashExTest()
 	{
 		StringBuilder sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out IntPtr end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
+		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out var end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.Not.EqualTo(IntPtr.Zero));
 		Assert.That(rem, Is.LessThan(60));
@@ -66,13 +66,13 @@ public class PathCchTests
 	[Test]
 	public void PathCchAddBackslashExTest2()
 	{
-		SafeCoTaskMemString sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchAddBackslashEx((IntPtr)sb, sb.Capacity, out IntPtr end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
+		SafeLPWSTR sb = new(TestCaseSources.TempDirWhack, 64);
+		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out StrPtrUni end, out _), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
 
-		sb = new SafeCoTaskMemString(TestCaseSources.TempDir, 64);
-		Assert.That(PathCchAddBackslashEx((IntPtr)sb, sb.Size, out end, out rem), Is.EqualTo((HRESULT)0));
+		sb = new SafeLPWSTR(TestCaseSources.TempDir, 64);
+		Assert.That(PathCchAddBackslashEx(sb, sb.Size, out end, out _), Is.EqualTo((HRESULT)0));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
 	}
@@ -142,10 +142,7 @@ public class PathCchTests
 	}
 
 	[Test]
-	public void PathCchIsRootTest()
-	{
-		Assert.That(PathCchIsRoot(@"C:\"), Is.True);
-	}
+	public void PathCchIsRootTest() => Assert.That(PathCchIsRoot(@"C:\"), Is.True);
 
 	[Test]
 	public void PathCchRemoveBackslashTest()

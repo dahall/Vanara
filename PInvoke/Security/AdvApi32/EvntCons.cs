@@ -1062,8 +1062,8 @@ public static partial class AdvApi32
 	/// <para>Consumers pass this structure to the <c>OpenTrace</c> function.</para>
 	/// <para>When ETW flushes a buffer, it passes the structure to the consumer's <c>BufferCallback</c> function.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/etw/event-trace-logfile typedef struct _EVENT_TRACE_LOGFILE { LPTSTR LogFileName;
-	// LPTSTR LoggerName; LONGLONG CurrentTime; ULONG BuffersRead; union { ULONG LogFileMode; ULONG ProcessTraceMode; }; EVENT_TRACE
+	// https://docs.microsoft.com/en-us/windows/win32/etw/event-trace-logfile typedef struct _EVENT_TRACE_LOGFILE { StrPtrAuto LogFileName;
+	// StrPtrAuto LoggerName; LONGLONG CurrentTime; ULONG BuffersRead; union { ULONG LogFileMode; ULONG ProcessTraceMode; }; EVENT_TRACE
 	// CurrentEvent; TRACE_LOGFILE_HEADER LogfileHeader; PEVENT_TRACE_BUFFER_CALLBACK BufferCallback; ULONG BufferSize; ULONG Filled; ULONG
 	// EventsLost; union { PEVENT_CALLBACK EventCallback; PEVENT_RECORD_CALLBACK EventRecordCallback; }; ULONG IsKernelTrace; PVOID Context;
 	// } EVENT_TRACE_LOGFILE, *PEVENT_TRACE_LOGFILE;

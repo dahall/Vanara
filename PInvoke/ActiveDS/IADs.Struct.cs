@@ -13,7 +13,7 @@ public static partial class ActiveDS
 	/// </summary>
 	/// <remarks>In ADSI, attributes and properties are used interchangeably.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_attr_def
-	// typedef struct _ads_attr_def { LPWSTR pszAttrName; ADSTYPE dwADsType; DWORD dwMinRange; DWORD dwMaxRange; BOOL fMultiValued; } ADS_ATTR_DEF, *PADS_ATTR_DEF;
+	// typedef struct _ads_attr_def { StrPtrUni pszAttrName; ADSTYPE dwADsType; DWORD dwMinRange; DWORD dwMaxRange; BOOL fMultiValued; } ADS_ATTR_DEF, *PADS_ATTR_DEF;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_attr_def")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_ATTR_DEF
@@ -47,7 +47,7 @@ public static partial class ActiveDS
 	/// <param name="dataType">Data type of the attribute.</param>
 	/// <param name="dataValues">The value(s) for the attribute.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_attr_info
-	// typedef struct _ads_attr_info { LPWSTR pszAttrName; DWORD dwControlCode; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; } ADS_ATTR_INFO, *PADS_ATTR_INFO;
+	// typedef struct _ads_attr_info { StrPtrUni pszAttrName; DWORD dwControlCode; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; } ADS_ATTR_INFO, *PADS_ATTR_INFO;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_attr_info")]
 	[VanaraMarshaler(typeof(ADS_ATTR_INFO_UNMGD))]
 	public struct ADS_ATTR_INFO(string attrName, ADS_ATTR op, ADSTYPE dataType, params object?[] dataValues)
@@ -132,7 +132,7 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_BACKLINK</c> structure is an ADSI representation of the <c>Back Link</c> attribute syntax.</summary>
 	/// <remarks>A <c>Back Link</c> attribute contains one or more servers that hold an external reference to the attached object.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_backlink
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0008 { DWORD RemoteID; LPWSTR ObjectName; } ADS_BACKLINK, *PADS_BACKLINK;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0008 { DWORD RemoteID; StrPtrUni ObjectName; } ADS_BACKLINK, *PADS_BACKLINK;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0008")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_BACKLINK
@@ -148,13 +148,13 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_CASEIGNORE_LIST</c> structure is an ADSI representation of the <c>Case Ignore List</c> attribute syntax.</summary>
 	/// <remarks>A <c>Case Ignore List</c> attribute represents an ordered sequence of case insensitive strings.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_caseignore_list
-	// typedef struct _ADS_CASEIGNORE_LIST { struct _ADS_CASEIGNORE_LIST *Next; LPWSTR String; } ADS_CASEIGNORE_LIST, *PADS_CASEIGNORE_LIST;
+	// typedef struct _ADS_CASEIGNORE_LIST { struct _ADS_CASEIGNORE_LIST *Next; StrPtrUni String; } ADS_CASEIGNORE_LIST, *PADS_CASEIGNORE_LIST;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ADS_CASEIGNORE_LIST")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_CASEIGNORE_LIST
 	{
 		/// <summary>Pointer to the next <c>ADS_CASEIGNORE_LIST</c> in the list of case-insensitive strings.</summary>
-		public IntPtr Next;
+		public ManagedStructPointer<ADS_CASEIGNORE_LIST> Next;
 
 		/// <summary>The null-terminated Unicode string value of the current entry of the list.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -166,7 +166,7 @@ public static partial class ActiveDS
 	/// <para>The <c>ADS_CLASS_DEF</c> structure holds the definitions of an object class.</para>
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_class_def
-	// typedef struct _ads_class_def { LPWSTR pszClassName; DWORD dwMandatoryAttrs; LPWSTR *ppszMandatoryAttrs; DWORD optionalAttrs; LPWSTR **ppszOptionalAttrs; DWORD dwNamingAttrs; LPWSTR **ppszNamingAttrs; DWORD dwSuperClasses; LPWSTR **ppszSuperClasses; BOOL fIsContainer; } ADS_CLASS_DEF, *PADS_CLASS_DEF;
+	// typedef struct _ads_class_def { StrPtrUni pszClassName; DWORD dwMandatoryAttrs; StrPtrUni *ppszMandatoryAttrs; DWORD optionalAttrs; StrPtrUni **ppszOptionalAttrs; DWORD dwNamingAttrs; StrPtrUni **ppszNamingAttrs; DWORD dwSuperClasses; StrPtrUni **ppszSuperClasses; BOOL fIsContainer; } ADS_CLASS_DEF, *PADS_CLASS_DEF;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_class_def")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_CLASS_DEF
@@ -206,7 +206,7 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_DN_WITH_BINARY</c> structure is used with the ADSVALUE structure to contain a distinguished name attribute value that also contains binary data.</summary>
 	/// <remarks>When extending the active directory schema to add <c>ADS_DN_WITH_BINARY</c>, you must also specify the otherWellKnownGuid attribute definition. Add the following to the ldf file attribute definition: omObjectClass:: KoZIhvcUAQEBCw==</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_dn_with_binary
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0015 { DWORD dwLength; LPBYTE lpBinaryValue; LPWSTR pszDNString; } ADS_DN_WITH_BINARY, *PADS_DN_WITH_BINARY;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0015 { DWORD dwLength; LPBYTE lpBinaryValue; StrPtrUni pszDNString; } ADS_DN_WITH_BINARY, *PADS_DN_WITH_BINARY;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0015")]
 	[StructLayout(LayoutKind.Sequential), VanaraMarshaler(typeof(ADS_DN_WITH_BINARY_UNMGD))]
 	public struct ADS_DN_WITH_BINARY
@@ -261,7 +261,7 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_DN_WITH_STRING</c> structure is used with the ADSVALUE structure to contain a distinguished name attribute value that also contains string data.</summary>
 	/// <remarks>When extending the active directory schema to add <c>ADS_DN_WITH_STRING</c>, you must also specify the otherWellKnownGuid attribute definition. Add the following to the ldf file attribute definition: omObjectClass:: KoZIhvcUAQEBDA==</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_dn_with_string
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0016 { LPWSTR pszStringValue; LPWSTR pszDNString; } ADS_DN_WITH_STRING, *PADS_DN_WITH_STRING;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0016 { StrPtrUni pszStringValue; StrPtrUni pszDNString; } ADS_DN_WITH_STRING, *PADS_DN_WITH_STRING;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0016")]
 	[StructLayout(LayoutKind.Sequential), VanaraMarshaler(typeof(ADS_DN_WITH_STRING_UNMGD))]
 	public struct ADS_DN_WITH_STRING
@@ -315,7 +315,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_EMAIL</c> structure is an ADSI representation of the <c>EMail Address</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_email
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0014 { LPWSTR Address; DWORD Type; } ADS_EMAIL, *PADS_EMAIL;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0014 { StrPtrUni Address; DWORD Type; } ADS_EMAIL, *PADS_EMAIL;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0014")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_EMAIL
@@ -335,7 +335,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_EMAIL</c> structure is an ADSI representation of the <c>EMail Address</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_email
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0014 { LPWSTR Address; DWORD Type; } ADS_EMAIL, *PADS_EMAIL;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0014 { StrPtrUni Address; DWORD Type; } ADS_EMAIL, *PADS_EMAIL;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0014")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_EMAIL_UNMGD
@@ -349,7 +349,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_FAXNUMBER</c> structure is an ADSI representation of the <c>Facsimile Telephone Number</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_faxnumber
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0013 { LPWSTR TelephoneNumber; DWORD NumberOfBits; LPBYTE Parameters; } ADS_FAXNUMBER, *PADS_FAXNUMBER;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0013 { StrPtrUni TelephoneNumber; DWORD NumberOfBits; LPBYTE Parameters; } ADS_FAXNUMBER, *PADS_FAXNUMBER;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0013")]
 	[StructLayout(LayoutKind.Sequential), VanaraMarshaler(typeof(ADS_FAXNUMBER_UNMGD))]
 	public struct ADS_FAXNUMBER
@@ -404,7 +404,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_HOLD</c> structure is an ADSI representation of the <c>Hold</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_hold
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0010 { LPWSTR ObjectName; DWORD Amount; } ADS_HOLD, *PADS_HOLD;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0010 { StrPtrUni ObjectName; DWORD Amount; } ADS_HOLD, *PADS_HOLD;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0010")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_HOLD
@@ -424,7 +424,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_HOLD</c> structure is an ADSI representation of the <c>Hold</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_hold
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0010 { LPWSTR ObjectName; DWORD Amount; } ADS_HOLD, *PADS_HOLD;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0010 { StrPtrUni ObjectName; DWORD Amount; } ADS_HOLD, *PADS_HOLD;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0010")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_HOLD_UNMGD
@@ -520,7 +520,7 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_OBJECT_INFO</c> structure specifies the data, including the identity and location, of a directory service object.</summary>
 	/// <remarks>To obtain the object data, non-Automation clients call the IDirectoryObject::GetObjectInformation method, which takes an out parameter, a pointer to an <c>ADS_OBJECT_INFO</c> structure allocated in the heap. Automation clients can accomplish the same task by calling IADs::GetInfo.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_object_info
-	// typedef struct _ads_object_info { LPWSTR pszRDN; LPWSTR pszObjectDN; LPWSTR pszParentDN; LPWSTR pszSchemaDN; LPWSTR pszClassName; } ADS_OBJECT_INFO, *PADS_OBJECT_INFO;
+	// typedef struct _ads_object_info { StrPtrUni pszRDN; StrPtrUni pszObjectDN; StrPtrUni pszParentDN; StrPtrUni pszSchemaDN; StrPtrUni pszClassName; } ADS_OBJECT_INFO, *PADS_OBJECT_INFO;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_object_info")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_OBJECT_INFO
@@ -555,7 +555,7 @@ public static partial class ActiveDS
 	public struct ADS_OCTET_LIST
 	{
 		/// <summary>Pointer to the next <c>ADS_OCTET_LIST</c> entry in the list.</summary>
-		public IntPtr Next;
+		public StructPointer<ADS_OCTET_LIST> Next;
 
 		/// <summary>Contains the length, in bytes, of the list.</summary>
 		public uint Length;
@@ -582,7 +582,7 @@ public static partial class ActiveDS
 	/// <summary>The <c>ADS_PATH</c> structure is an ADSI representation of the <c>Path</c> attribute syntax.</summary>
 	/// <remarks>The <c>Path</c> attribute in represents a file system path.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_path
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0005 { DWORD Type; LPWSTR VolumeName; LPWSTR Path; } ADS_PATH, *PADS_PATH;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0005 { DWORD Type; StrPtrUni VolumeName; StrPtrUni Path; } ADS_PATH, *PADS_PATH;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0005")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_PATH
@@ -601,7 +601,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_POSTALADDRESS</c> structure is an ADSI representation of the <c>Postal Address</c> attribute.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_postaladdress
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0006 { LPWSTR PostalAddress[6]; } ADS_POSTALADDRESS, *PADS_POSTALADDRESS;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0006 { StrPtrUni PostalAddress[6]; } ADS_POSTALADDRESS, *PADS_POSTALADDRESS;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0006")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct ADS_POSTALADDRESS
@@ -631,7 +631,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_REPLICAPOINTER</c> structure represents an ADSI representation of the Replica Pointer attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_replicapointer typedef struct
-	// __MIDL___MIDL_itf_ads_0000_0000_0012 { LPWSTR ServerName; DWORD ReplicaType; DWORD ReplicaNumber; DWORD Count; PADS_NETADDRESS
+	// __MIDL___MIDL_itf_ads_0000_0000_0012 { StrPtrUni ServerName; DWORD ReplicaType; DWORD ReplicaNumber; DWORD Count; PADS_NETADDRESS
 	// ReplicaAddressHints; } ADS_REPLICAPOINTER, *PADS_REPLICAPOINTER;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0012")]
 	[VanaraMarshaler(typeof(ADS_REPLICAPOINTER_UNMGD))]
@@ -709,7 +709,7 @@ public static partial class ActiveDS
 	/// <para>For more information about <c>ADS_SEARCH_COLUMN</c>, see IDirectorySearch::GetColumn.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_search_column
-	// typedef struct ads_search_column { LPWSTR pszAttrName; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; HANDLE hReserved; } ADS_SEARCH_COLUMN, *PADS_SEARCH_COLUMN;
+	// typedef struct ads_search_column { StrPtrUni pszAttrName; ADSTYPE dwADsType; PADSVALUE pADsValues; DWORD dwNumValues; HANDLE hReserved; } ADS_SEARCH_COLUMN, *PADS_SEARCH_COLUMN;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.ads_search_column")]
 	[VanaraMarshaler(typeof(ADS_SEARCH_COLUMN_UNMGD))]
 	public struct ADS_SEARCH_COLUMN
@@ -933,7 +933,7 @@ public static partial class ActiveDS
 	/// <para>When using the LDAP system provider, the <c>pszReserved</c> member corresponds to the <c>sk_matchruleoid</c> of the LDAPSortKey structure and may be set to a NULL-terminated string that specifies the object identifier (OID) of the matching rule for the sort. For more information, see <c>LDAPSortKey</c>.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_sortkey
-	// typedef struct _ads_sortkey { LPWSTR pszAttrType; LPWSTR pszReserved; BOOLEAN fReverseorder; } ADS_SORTKEY, *PADS_SORTKEY;
+	// typedef struct _ads_sortkey { StrPtrUni pszAttrType; StrPtrUni pszReserved; BOOLEAN fReverseorder; } ADS_SORTKEY, *PADS_SORTKEY;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_sortkey")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_SORTKEY(string attrType, bool reverseOrder = false, string? reserved = null)
@@ -977,7 +977,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADS_TYPEDNAME</c> structure represents an ADSI representation of <c>Typed Name</c> attribute syntax.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_typedname
-	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0009 { LPWSTR ObjectName; DWORD Level; DWORD Interval; } ADS_TYPEDNAME, *PADS_TYPEDNAME;
+	// typedef struct __MIDL___MIDL_itf_ads_0000_0000_0009 { StrPtrUni ObjectName; DWORD Level; DWORD Interval; } ADS_TYPEDNAME, *PADS_TYPEDNAME;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads.__MIDL___MIDL_itf_ads_0000_0000_0009")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_TYPEDNAME
@@ -1175,8 +1175,8 @@ public static partial class ActiveDS
 			ADSTYPE.ADSTYPE_UTC_TIME => UTCTime.ToDateTime(DateTimeKind.Utc),
 			ADSTYPE.ADSTYPE_LARGE_INTEGER => LargeInteger,
 			ADSTYPE.ADSTYPE_PROV_SPECIFIC => ProviderSpecific.lpValue.ToByteArray((int)ProviderSpecific.dwLength),
-			ADSTYPE.ADSTYPE_CASEIGNORE_LIST => pCaseIgnoreList.LinkedListToIEnum<ADS_CASEIGNORE_LIST>(l => l.Next).Select(i => i.String).ToArray(),
-			ADSTYPE.ADSTYPE_OCTET_LIST => pOctetList.LinkedListToIEnum<ADS_OCTET_LIST>(l => l.Next).Select(i => i.Data.ToByteArray((int)i.Length)).ToArray(),
+			ADSTYPE.ADSTYPE_CASEIGNORE_LIST => pCaseIgnoreList.LinkedListToIEnum<ADS_CASEIGNORE_LIST>(l => (IntPtr)l.Next).Select(i => i.String).ToArray(),
+			ADSTYPE.ADSTYPE_OCTET_LIST => pOctetList.LinkedListToIEnum<ADS_OCTET_LIST>(l => (IntPtr)l.Next).Select(i => i.Data.ToByteArray((int)i.Length)).ToArray(),
 			ADSTYPE.ADSTYPE_PATH => pPath.ToNullableStructure<ADS_PATH>(),
 			ADSTYPE.ADSTYPE_POSTALADDRESS => pPostalAddress.ToNullableStructure<ADS_POSTALADDRESS>()?.PostalAddress,
 			ADSTYPE.ADSTYPE_TIMESTAMP => Timestamp,
@@ -1283,7 +1283,7 @@ public static partial class ActiveDS
 						{
 							ADS_OCTET_LIST oli = new() { Data = xptr, Length = (uint)ola[idx].Length, Next = iptr.Offset(ssz) };
 							iptr.Write(oli);
-							iptr = oli.Next;
+							iptr = (IntPtr)oli.Next;
 							xptr = xptr.Offset(xptr.Write(ola[idx]));
 						}
 						pOctetList = mem = pola;
@@ -1385,7 +1385,7 @@ public static partial class ActiveDS
 	/// <para> </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/iads/ns-iads-ads_vlv
-	// typedef struct _ads_vlv { DWORD dwBeforeCount; DWORD dwAfterCount; DWORD dwOffset; DWORD dwContentCount; LPWSTR pszTarget; DWORD dwContextIDLength; LPBYTE lpContextID; } ADS_VLV, *PADS_VLV;
+	// typedef struct _ads_vlv { DWORD dwBeforeCount; DWORD dwAfterCount; DWORD dwOffset; DWORD dwContentCount; StrPtrUni pszTarget; DWORD dwContextIDLength; LPBYTE lpContextID; } ADS_VLV, *PADS_VLV;
 	[PInvokeData("iads.h", MSDNShortId = "NS:iads._ads_vlv")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADS_VLV

@@ -659,7 +659,7 @@ public static partial class SetupAPI
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupcopyerrora WINSETUPAPI UINT SetupCopyErrorA( HWND
 	// hwndParent, PCSTR DialogTitle, PCSTR DiskName, PCSTR PathToSource, PCSTR SourceFile, PCSTR TargetPathFile, UINT Win32ErrorCode,
-	// DWORD Style, PSTR PathBuffer, DWORD PathBufferSize, PDWORD PathRequiredSize );
+	// DWORD Style, StrPtrAnsi PathBuffer, DWORD PathBufferSize, PDWORD PathRequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupCopyErrorA")]
 	public static extern uint SetupCopyError(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DialogTitle,
@@ -808,8 +808,8 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupcopyoeminfa WINSETUPAPI BOOL SetupCopyOEMInfA( PCSTR
-	// SourceInfFileName, PCSTR OEMSourceMediaLocation, DWORD OEMSourceMediaType, DWORD CopyStyle, PSTR DestinationInfFileName, DWORD
-	// DestinationInfFileNameSize, PDWORD RequiredSize, PSTR *DestinationInfFileNameComponent );
+	// SourceInfFileName, PCSTR OEMSourceMediaLocation, DWORD OEMSourceMediaType, DWORD CopyStyle, StrPtrAnsi DestinationInfFileName, DWORD
+	// DestinationInfFileNameSize, PDWORD RequiredSize, StrPtrAnsi *DestinationInfFileNameComponent );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupCopyOEMInfA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1212,7 +1212,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupenuminfsectionsa WINSETUPAPI BOOL
-	// SetupEnumInfSectionsA( HINF InfHandle, UINT Index, PSTR Buffer, UINT Size, UINT *SizeNeeded );
+	// SetupEnumInfSectionsA( HINF InfHandle, UINT Index, StrPtrAnsi Buffer, UINT Size, UINT *SizeNeeded );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupEnumInfSectionsA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1545,14 +1545,14 @@ public static partial class SetupAPI
 	/// ...
 	/// other code here to prepare file queue
 	/// ...
-	/// PTSTR lpActualSourceFileName;
+	/// StrPtrAuto lpActualSourceFileName;
 	/// SetupGetFileCompressionInfo(...,&amp;lpActualSourceFileName,...,...,...);
 	/// ...
 	/// MyFree(lpActualSourceFileName);</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilecompressioninfoa WINSETUPAPI DWORD
-	// SetupGetFileCompressionInfoA( PCSTR SourceFileName, PSTR *ActualSourceFileName, PDWORD SourceFileSize, PDWORD TargetFileSize,
+	// SetupGetFileCompressionInfoA( PCSTR SourceFileName, StrPtrAnsi *ActualSourceFileName, PDWORD SourceFileSize, PDWORD TargetFileSize,
 	// PUINT CompressionType );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileCompressionInfoA")]
@@ -1643,7 +1643,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetfilecompressioninfoexa WINSETUPAPI BOOL
-	// SetupGetFileCompressionInfoExA( PCSTR SourceFileName, PSTR ActualSourceFileNameBuffer, DWORD ActualSourceFileNameBufferLen,
+	// SetupGetFileCompressionInfoExA( PCSTR SourceFileName, StrPtrAnsi ActualSourceFileNameBuffer, DWORD ActualSourceFileNameBufferLen,
 	// PDWORD RequiredBufferLen, PDWORD SourceFileSize, PDWORD TargetFileSize, PUINT CompressionType );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetFileCompressionInfoExA")]
@@ -1834,7 +1834,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfdriverstorelocationa WINSETUPAPI BOOL
-	// SetupGetInfDriverStoreLocationA( PCSTR FileName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PCSTR LocaleName, PSTR ReturnBuffer,
+	// SetupGetInfDriverStoreLocationA( PCSTR FileName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PCSTR LocaleName, StrPtrAnsi ReturnBuffer,
 	// DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfDriverStoreLocationA")]
@@ -1905,7 +1905,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinffilelista WINSETUPAPI BOOL
-	// SetupGetInfFileListA( PCSTR DirectoryPath, DWORD InfStyle, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// SetupGetInfFileListA( PCSTR DirectoryPath, DWORD InfStyle, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfFileListA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2135,7 +2135,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetinfpublishednamea WINSETUPAPI BOOL
-	// SetupGetInfPublishedNameA( PCSTR DriverStoreLocation, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// SetupGetInfPublishedNameA( PCSTR DriverStoreLocation, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetInfPublishedNameA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2326,7 +2326,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinetexta WINSETUPAPI BOOL SetupGetLineTextA(
-	// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2410,7 +2410,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetlinetexta WINSETUPAPI BOOL SetupGetLineTextA(
-	// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// PINFCONTEXT Context, HINF InfHandle, PCSTR Section, PCSTR Key, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetLineTextA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2477,7 +2477,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetmultiszfielda WINSETUPAPI BOOL
-	// SetupGetMultiSzFieldA( PINFCONTEXT Context, DWORD FieldIndex, PSTR ReturnBuffer, DWORD ReturnBufferSize, LPDWORD RequiredSize );
+	// SetupGetMultiSzFieldA( PINFCONTEXT Context, DWORD FieldIndex, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, LPDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetMultiSzFieldA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2572,7 +2572,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilelocationa WINSETUPAPI BOOL
-	// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, PSTR ReturnBuffer, DWORD
+	// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, StrPtrAnsi ReturnBuffer, DWORD
 	// ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
@@ -2642,7 +2642,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourcefilelocationa WINSETUPAPI BOOL
-	// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, PSTR ReturnBuffer, DWORD
+	// SetupGetSourceFileLocationA( HINF InfHandle, PINFCONTEXT InfContext, PCSTR FileName, PUINT SourceId, StrPtrAnsi ReturnBuffer, DWORD
 	// ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceFileLocationA")]
@@ -2827,7 +2827,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetsourceinfoa WINSETUPAPI BOOL SetupGetSourceInfoA(
-	// HINF InfHandle, UINT SourceId, UINT InfoDesired, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// HINF InfHandle, UINT SourceId, UINT InfoDesired, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetSourceInfoA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2891,7 +2891,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgetstringfielda WINSETUPAPI BOOL
-	// SetupGetStringFieldA( PINFCONTEXT Context, DWORD FieldIndex, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// SetupGetStringFieldA( PINFCONTEXT Context, DWORD FieldIndex, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetStringFieldA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2956,7 +2956,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgettargetpatha WINSETUPAPI BOOL SetupGetTargetPathA(
-	// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetTargetPathA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3021,7 +3021,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupgettargetpatha WINSETUPAPI BOOL SetupGetTargetPathA(
-	// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// HINF InfHandle, PINFCONTEXT InfContext, PCSTR Section, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupGetTargetPathA")]
 	[return: MarshalAs(UnmanagedType.Bool)]

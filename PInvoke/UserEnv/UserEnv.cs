@@ -251,7 +251,7 @@ public static partial class UserEnv
 	/// <para>The user name of the new user. This name is used as the base name for the profile directory.</para>
 	/// </param>
 	/// <param name="pszProfilePath">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>When this function returns, contains a pointer to the full path of the profile.</para>
 	/// </param>
 	/// <param name="cchProfilePath">
@@ -278,7 +278,7 @@ public static partial class UserEnv
 	/// </returns>
 	/// <remarks>The caller must have administrator privileges to call this function.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-createprofile USERENVAPI HRESULT CreateProfile( LPCWSTR
-	// pszUserSid, LPCWSTR pszUserName, LPWSTR pszProfilePath, DWORD cchProfilePath );
+	// pszUserSid, LPCWSTR pszUserName, StrPtrUni pszProfilePath, DWORD cchProfilePath );
 	[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "cab9e20b-d94c-42e5-ada9-27194f398bb3")]
 	public static extern HRESULT CreateProfile([MarshalAs(UnmanagedType.LPWStr)] string pszUserSid, [MarshalAs(UnmanagedType.LPWStr)] string pszUserName,
@@ -462,7 +462,7 @@ public static partial class UserEnv
 	/// <para>Pointer to the null-terminated source string to be expanded.</para>
 	/// </param>
 	/// <param name="lpDest">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to a buffer that receives the expanded strings.</para>
 	/// </param>
 	/// <param name="dwSize">
@@ -478,7 +478,7 @@ public static partial class UserEnv
 	/// <para>When <c>ExpandEnvironmentStringsForUser</c> returns, the destination string expands as follows:</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-expandenvironmentstringsforusera USERENVAPI BOOL
-	// ExpandEnvironmentStringsForUserA( HANDLE hToken, LPCSTR lpSrc, LPSTR lpDest, DWORD dwSize );
+	// ExpandEnvironmentStringsForUserA( HANDLE hToken, LPCSTR lpSrc, StrPtrAnsi lpDest, DWORD dwSize );
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "d32fa6c8-035a-4c84-b210-5366f21b6c17")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -502,7 +502,7 @@ public static partial class UserEnv
 
 	/// <summary>Retrieves the path to the root of the directory that contains program data shared by all users.</summary>
 	/// <param name="lpProfileDir">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the path. Set this value to <c>NULL</c> to
 	/// determine the required size of the buffer, including the terminating null character.
@@ -529,7 +529,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-getallusersprofiledirectorya USERENVAPI BOOL
-	// GetAllUsersProfileDirectoryA( LPSTR lpProfileDir, LPDWORD lpcchSize );
+	// GetAllUsersProfileDirectoryA( StrPtrAnsi lpProfileDir, LPDWORD lpcchSize );
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "bd08947a-df57-4dd9-b9ba-a01b315bfdf1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -567,7 +567,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-getappcontainerfolderpath USERENVAPI HRESULT
-	// GetAppContainerFolderPath( PCWSTR pszAppContainerSid, PWSTR *ppszPath );
+	// GetAppContainerFolderPath( PCWSTR pszAppContainerSid, StrPtrUni *ppszPath );
 	[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "7D3AB78D-C094-4F89-8032-13F3C137E910")]
 	public static extern HRESULT GetAppContainerFolderPath([MarshalAs(UnmanagedType.LPWStr)] string pszAppContainerSid, [MarshalAs(UnmanagedType.LPWStr)] out string ppszPath);
@@ -684,7 +684,7 @@ public static partial class UserEnv
 
 	/// <summary>Retrieves the path to the root of the default user's profile.</summary>
 	/// <param name="lpProfileDir">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the path to the default user's profile directory.
 	/// Set this value to <c>NULL</c> to determine the required size of the buffer.
@@ -711,7 +711,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-getdefaultuserprofiledirectorya USERENVAPI BOOL
-	// GetDefaultUserProfileDirectoryA( LPSTR lpProfileDir, LPDWORD lpcchSize );
+	// GetDefaultUserProfileDirectoryA( StrPtrAnsi lpProfileDir, LPDWORD lpcchSize );
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "14ff99cb-838a-442b-9f51-414bd7c0a2ef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -882,7 +882,7 @@ public static partial class UserEnv
 
 	/// <summary>Retrieves the path to the root directory where user profiles are stored.</summary>
 	/// <param name="lpProfileDir">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the path to the profiles directory. Set this value
 	/// to <c>NULL</c> to determine the required size of the buffer.
@@ -909,7 +909,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-getprofilesdirectorya USERENVAPI BOOL
-	// GetProfilesDirectoryA( LPSTR lpProfileDir, LPDWORD lpcchSize );
+	// GetProfilesDirectoryA( StrPtrAnsi lpProfileDir, LPDWORD lpcchSize );
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "e21411fa-f7e1-4944-93ce-7d9314d79fbf")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -961,7 +961,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </param>
 	/// <param name="lpProfileDir">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the path to the specified user's profile directory.
 	/// </para>
@@ -987,7 +987,7 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-getuserprofiledirectorya USERENVAPI BOOL
-	// GetUserProfileDirectoryA( HANDLE hToken, LPSTR lpProfileDir, LPDWORD lpcchSize );
+	// GetUserProfileDirectoryA( HANDLE hToken, StrPtrAnsi lpProfileDir, LPDWORD lpcchSize );
 	[DllImport(Lib.Userenv, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("userenv.h", MSDNShortId = "b5de762d-c9ee-42b0-bce0-e74bcc9c78f0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1306,7 +1306,7 @@ public static partial class UserEnv
 	/// client identified by the <c>RSOPTOKEN</c>. If access is granted, the requested access mask becomes the object's granted access mask.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/nf-userenv-rsopfileaccesscheck USERENVAPI HRESULT RsopFileAccessCheck(
-	// LPWSTR pszFileName, PRSOPTOKEN pRsopToken, DWORD dwDesiredAccessMask, LPDWORD pdwGrantedAccessMask, LPBOOL pbAccessStatus );
+	// StrPtrUni pszFileName, PRSOPTOKEN pRsopToken, DWORD dwDesiredAccessMask, LPDWORD pdwGrantedAccessMask, LPBOOL pbAccessStatus );
 	[DllImport(Lib.Userenv, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("userenv.h", MSDNShortId = "dfdf14ee-fee1-4e96-9955-7f24dfe39487")]
 	public static extern HRESULT RsopFileAccessCheck([MarshalAs(UnmanagedType.LPWStr)] string pszFileName, PRSOPTOKEN pRsopToken, ACCESS_MASK dwDesiredAccessMask,
@@ -1440,9 +1440,9 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/userenv/ns-userenv-group_policy_objecta typedef struct _GROUP_POLICY_OBJECTA {
-	// DWORD dwOptions; DWORD dwVersion; LPSTR lpDSPath; LPSTR lpFileSysPath; LPSTR lpDisplayName; CHAR szGPOName[50]; GPO_LINK GPOLink;
-	// LPARAM lParam; struct _GROUP_POLICY_OBJECTA *pNext; struct _GROUP_POLICY_OBJECTA *pPrev; LPSTR lpExtensions; LPARAM lParam2;
-	// LPSTR lpLink; } GROUP_POLICY_OBJECTA, *PGROUP_POLICY_OBJECTA;
+	// DWORD dwOptions; DWORD dwVersion; StrPtrAnsi lpDSPath; StrPtrAnsi lpFileSysPath; StrPtrAnsi lpDisplayName; CHAR szGPOName[50]; GPO_LINK GPOLink;
+	// LPARAM lParam; struct _GROUP_POLICY_OBJECTA *pNext; struct _GROUP_POLICY_OBJECTA *pPrev; StrPtrAnsi lpExtensions; LPARAM lParam2;
+	// StrPtrAnsi lpLink; } GROUP_POLICY_OBJECTA, *PGROUP_POLICY_OBJECTA;
 	[PInvokeData("userenv.h", MSDNShortId = "7275a3cd-6b19-4eb9-9481-b73bd5af5753")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct GROUP_POLICY_OBJECT
@@ -1534,8 +1534,8 @@ public static partial class UserEnv
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/profinfo/ns-profinfo-profileinfoa typedef struct _PROFILEINFOA { DWORD dwSize;
-	// DWORD dwFlags; MIDL_STRING LPSTR lpUserName; MIDL_STRING LPSTR lpProfilePath; MIDL_STRING LPSTR lpDefaultPath; MIDL_STRING LPSTR
-	// lpServerName; MIDL_STRING LPSTR lpPolicyPath; #if ... ULONG_PTR hProfile; #else HANDLE hProfile; #endif } PROFILEINFOA, *LPPROFILEINFOA;
+	// DWORD dwFlags; MIDL_STRING StrPtrAnsi lpUserName; MIDL_STRING StrPtrAnsi lpProfilePath; MIDL_STRING StrPtrAnsi lpDefaultPath; MIDL_STRING StrPtrAnsi
+	// lpServerName; MIDL_STRING StrPtrAnsi lpPolicyPath; #if ... ULONG_PTR hProfile; #else HANDLE hProfile; #endif } PROFILEINFOA, *LPPROFILEINFOA;
 	[PInvokeData("profinfo.h", MSDNShortId = "09dae38c-3b2b-4f12-9c1e-90737cf0c7cc")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PROFILEINFO
@@ -1557,14 +1557,14 @@ public static partial class UserEnv
 		public ProfileInfoFlags dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to the name of the user. This member is used as the base name of the directory in which to store a new profile.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
 		public string? lpUserName;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to the roaming user profile path. If the user does not have a roaming profile, this member can be <c>NULL</c>. To
 		/// retrieve the user's roaming profile path, call the NetUserGetInfo function, specifying information level 3 or 4. For more
@@ -1575,21 +1575,21 @@ public static partial class UserEnv
 		public string? lpProfilePath;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to the default user profile path. This member can be <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
 		public string? lpDefaultPath;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to the name of the validating domain controller, in NetBIOS format.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
 		public string lpServerName;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>Not used, set to <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]

@@ -29,7 +29,7 @@ public class SafeMemoryHandleTests
 
 		// Null and invalid
 		Assert.That(!a.Equals(null));
-		Assert.That(() => a!.Equals(0), Throws.Exception);
+		Assert.That(() => !a!.Equals(0));
 
 		// byte[]
 		Assert.That(a!.Equals(bytes));

@@ -253,7 +253,7 @@ public class AuthzTests
 		const string eventFile = "Some random string";
 		const string eventSource = "TestAddEventSource";
 
-		using (new ElevPriv("SeAuditPrivilege"))
+		using (new ElevPriv(["SeAuditPrivilege", "SeSecurityPrivilege"]))
 		{
 			AUTHZ_SOURCE_SCHEMA_REGISTRATION srcReg = new()
 			{
@@ -262,7 +262,8 @@ public class AuthzTests
 				szEventMessageFile = eventFile,
 				szEventAccessStringsFile = eventFile,
 			};
-			Assert.That(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
+			if (!AuthzInstallSecurityEventSource(0, srcReg))
+				Assert.That(Win32Error.GetLastError(), Is.EqualTo((Win32Error)Win32Error.ERROR_OBJECT_ALREADY_EXISTS));
 
 			Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
 			try
@@ -287,7 +288,7 @@ public class AuthzTests
 		const string eventFile = "Some random string";
 		const string eventSource = "TestAddEventSource";
 
-		using (new ElevPriv("SeAuditPrivilege"))
+		using (new ElevPriv(["SeAuditPrivilege", "SeSecurityPrivilege"]))
 		{
 			AUTHZ_SOURCE_SCHEMA_REGISTRATION srcReg = new()
 			{
@@ -302,10 +303,10 @@ public class AuthzTests
 			try
 			{
 				using SafeCoTaskMemString data = new("Testing");
-				using SafeNativeArray<AUDIT_PARAM> mem = new(new[] {
-					new AUDIT_PARAM(AUDIT_PARAM_TYPE.APT_String, data),
-					new AUDIT_PARAM(AUDIT_PARAM_TYPE.APT_Ulong, new IntPtr(123)),
-				});
+				using SafeNativeArray<AUDIT_PARAM> mem = new([
+					new(AUDIT_PARAM_TYPE.APT_String, data),
+					new(AUDIT_PARAM_TYPE.APT_Ulong, new IntPtr(123)),
+				]);
 				AUDIT_PARAMS ap = new() { Count = (ushort)mem.Count, Parameters = mem };
 				Assert.That(AuthzReportSecurityEventFromParams(0, hEvtProv, eventId, PSID.NULL, ap), ResultIs.Successful);
 			}

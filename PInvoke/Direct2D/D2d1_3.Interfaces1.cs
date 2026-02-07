@@ -4652,7 +4652,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, [Optional] D2D1_GAMMA colorInterpolationGamma, [Optional] D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -5747,7 +5747,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -5756,7 +5757,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -5806,12 +5807,12 @@ public static partial class D2d1
 
 		/// <summary>Returns the size of the render target in device-independent pixels.</summary>
 		/// <returns>
-		/// <para>Type: <c>D2D1_SIZE_F</c></para>
+		/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
 		/// <para>The current size of the render target in device-independent pixels.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size of the render target in device pixels.</summary>
 		/// <returns>
@@ -5820,7 +5821,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
 		/// <returns>
@@ -7109,7 +7110,7 @@ public static partial class D2d1
 		// const UINT32 *strides, [out] ID2D1LookupTable3D **lookupTable );
 		void CreateLookupTable3D(D2D1_BUFFER_PRECISION precision, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] uint[] extents,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint dataCount,
-			[MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
 
 		/// <summary>
 		/// Creates an image source from a set of DXGI surface(s). The YCbCr surface(s) are converted to RGBA automatically during
@@ -7512,7 +7513,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, [Optional] D2D1_GAMMA colorInterpolationGamma, [Optional] D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -8607,7 +8608,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -8616,7 +8618,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -8666,12 +8668,12 @@ public static partial class D2d1
 
 		/// <summary>Returns the size of the render target in device-independent pixels.</summary>
 		/// <returns>
-		/// <para>Type: <c>D2D1_SIZE_F</c></para>
+		/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
 		/// <para>The current size of the render target in device-independent pixels.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size of the render target in device pixels.</summary>
 		/// <returns>
@@ -8680,7 +8682,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
 		/// <returns>
@@ -9969,7 +9971,7 @@ public static partial class D2d1
 		// const UINT32 *strides, [out] ID2D1LookupTable3D **lookupTable );
 		new void CreateLookupTable3D(D2D1_BUFFER_PRECISION precision, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] uint[] extents,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint dataCount,
-			[MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
 
 		/// <summary>
 		/// Creates an image source from a set of DXGI surface(s). The YCbCr surface(s) are converted to RGBA automatically during

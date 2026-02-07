@@ -23,7 +23,7 @@ public class OleAut32Tests
 	[Test]
 	public void SafeArrayCreateTest()
 	{
-		using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(4, 0) }))
+		using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, [new SAFEARRAYBOUND(4, 0)]))
 			SafeArrayMethodTest<long>(psa, 5);
 	}
 
@@ -41,7 +41,7 @@ public class OleAut32Tests
 	[Test]
 	public void SafeArrayCreateExTest()
 	{
-		using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new[] { new SAFEARRAYBOUND(4, 0) }, IntPtr.Zero))
+		using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, [new SAFEARRAYBOUND(4, 0)], IntPtr.Zero))
 			SafeArrayMethodTest<long>(psa, 5);
 	}
 
@@ -60,12 +60,12 @@ public class OleAut32Tests
 			for (var i = 0; i < 5; i++)
 			{
 				var p = SafeCoTaskMemHandle.CreateFromStructure(i);
-				Assert.That(SafeArrayPutElement(psa, new[] { i }, (IntPtr)p).Succeeded);
+				Assert.That(SafeArrayPutElement(psa, [i], (IntPtr)p).Succeeded);
 			}
 			for (var i = 0; i < 5; i++)
 			{
 				var p = SafeCoTaskMemHandle.CreateFromStructure<int>();
-				Assert.That(SafeArrayGetElement(psa, new[] { i }, (IntPtr)p).Succeeded);
+				Assert.That(SafeArrayGetElement(psa, [i], (IntPtr)p).Succeeded);
 				var oi = p.ToStructure<int>();
 				Assert.That(oi, Is.EqualTo(i));
 			}
@@ -92,7 +92,7 @@ public class OleAut32Tests
 			for (var i = 0; i < 5; i++)
 			{
 				var p = new SafeCoTaskMemHandle(16);
-				Assert.That(SafeArrayGetElement(psa, new[] { i }, (IntPtr)p).Succeeded);
+				Assert.That(SafeArrayGetElement(psa, [i], (IntPtr)p).Succeeded);
 				var oi = p.ToStructure<int>();
 				Assert.That(oi, Is.EqualTo(i));
 			}

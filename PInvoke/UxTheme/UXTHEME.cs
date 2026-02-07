@@ -1033,7 +1033,7 @@ public static partial class UxTheme
 
 	/// <summary>Retrieves the name of the current visual style, and optionally retrieves the color scheme name and size name.</summary>
 	/// <param name="pszThemeFileName">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a string that receives the theme path and file name.</para>
 	/// </param>
 	/// <param name="dwMaxNameChars">
@@ -1041,7 +1041,7 @@ public static partial class UxTheme
 	/// <para>Value of type <c>int</c> that contains the maximum number of characters allowed in the theme file name.</para>
 	/// </param>
 	/// <param name="pszColorBuff">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a string that receives the color scheme name. This parameter may be set to <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="cchMaxColorChars">
@@ -1049,7 +1049,7 @@ public static partial class UxTheme
 	/// <para>Value of type <c>int</c> that contains the maximum number of characters allowed in the color scheme name.</para>
 	/// </param>
 	/// <param name="pszSizeBuff">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a string that receives the size name. This parameter may be set to <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="cchMaxSizeChars">
@@ -1060,8 +1060,8 @@ public static partial class UxTheme
 	/// <para>Type: <c><c>HRESULT</c></c></para>
 	/// <para>Returns S_OK if successful, otherwise an error code.</para>
 	/// </returns>
-	// HRESULT GetCurrentThemeName( _Out_ LPWSTR pszThemeFileName, _In_ int dwMaxNameChars, _Out_ LPWSTR pszColorBuff, _In_ int
-	// cchMaxColorChars, _Out_ LPWSTR pszSizeBuff, _In_ int cchMaxSizeChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773365(v=vs.85).aspx
+	// HRESULT GetCurrentThemeName( _Out_ StrPtrUni pszThemeFileName, _In_ int dwMaxNameChars, _Out_ StrPtrUni pszColorBuff, _In_ int
+	// cchMaxColorChars, _Out_ StrPtrUni pszSizeBuff, _In_ int cchMaxSizeChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773365(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773365")]
 	public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pszColorBuff,
@@ -1569,7 +1569,7 @@ public static partial class UxTheme
 	/// </para>
 	/// </param>
 	/// <param name="pszValueBuff">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a string buffer that receives the property string value.</para>
 	/// </param>
 	/// <param name="cchMaxValChars">
@@ -1580,7 +1580,7 @@ public static partial class UxTheme
 	/// <para>Type: <c><c>HRESULT</c></c></para>
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
-	// HRESULT GetThemeDocumentationProperty( _In_ LPCWSTR pszThemeName, _In_ LPCWSTR pszPropertyName, _Out_ LPWSTR pszValueBuff, _In_
+	// HRESULT GetThemeDocumentationProperty( _In_ LPCWSTR pszThemeName, _In_ LPCWSTR pszPropertyName, _Out_ StrPtrUni pszValueBuff, _In_
 	// int cchMaxValChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773402(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb773402")]
@@ -1634,7 +1634,7 @@ public static partial class UxTheme
 	/// <para>Value of type <c>int</c> that specifies the property to retrieve. For a list of possible values, see Property Identifiers.</para>
 	/// </param>
 	/// <param name="pszThemeFilename">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a buffer that receives the retrieved file name.</para>
 	/// </param>
 	/// <param name="cchMaxBuffChars">
@@ -1645,7 +1645,7 @@ public static partial class UxTheme
 	/// <para>Type: <c><c>HRESULT</c></c></para>
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
-	// HRESULT GetThemeFilename( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR
+	// HRESULT GetThemeFilename( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ StrPtrUni
 	// pszThemeFilename, _In_ int cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759743(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759743")]
@@ -2157,7 +2157,7 @@ public static partial class UxTheme
 	/// <para>Value of type <c>int</c> that specifies the property to retrieve. For a list of possible values, see Property Identifiers.</para>
 	/// </param>
 	/// <param name="pszBuff">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to a buffer that receives the string value.</para>
 	/// </param>
 	/// <param name="cchMaxBuffChars">
@@ -2168,7 +2168,7 @@ public static partial class UxTheme
 	/// <para>Type: <c><c>HRESULT</c></c></para>
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
-	// HRESULT GetThemeString( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR pszBuff, _In_ int
+	// HRESULT GetThemeString( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ StrPtrUni pszBuff, _In_ int
 	// cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759770(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759770")]
@@ -2497,7 +2497,7 @@ public static partial class UxTheme
 	/// </para>
 	/// </param>
 	/// <param name="pszStringBuff">
-	/// <para>Type: <c><c>LPWSTR</c></c></para>
+	/// <para>Type: <c><c>StrPtrUni</c></c></para>
 	/// <para>Pointer to the buffer that receives the string value from this function.</para>
 	/// </param>
 	/// <param name="cchMaxStringChars">
@@ -2508,7 +2508,7 @@ public static partial class UxTheme
 	/// <para>Type: <c><c>HRESULT</c></c></para>
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
-	// HRESULT GetThemeSysString( _In_ HTHEME hTheme, _In_ int iStringID, _Out_ LPWSTR pszStringBuff, _In_ int cchMaxStringChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759793(v=vs.85).aspx
+	// HRESULT GetThemeSysString( _In_ HTHEME hTheme, _In_ int iStringID, _Out_ StrPtrUni pszStringBuff, _In_ int cchMaxStringChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759793(v=vs.85).aspx
 	[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Uxtheme.h", MSDNShortId = "bb759793")]
 	public static extern HRESULT GetThemeSysString(HTHEME hTheme, int iStringID, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStringBuff, int cchMaxStringChars);

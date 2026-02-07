@@ -76,7 +76,7 @@ public sealed class HGlobalMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
+public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>, ISafeMemoryHandleFactory
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -94,17 +94,30 @@ public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeHGlobalHandle(SizeT size) : base(size) { }
 
-	/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	public SafeHGlobalHandle(byte[] bytes) : base(bytes) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	public SafeHGlobalHandle(Span<byte> bytes) : base(bytes) { }
 
 	/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 	/// <param name="values">Array of unmanaged pointers</param>
 	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 	public SafeHGlobalHandle(IntPtr[] values) : base(values) { }
 
-	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 	/// <param name="s">The string value.</param>
 	/// <returns>SafeHGlobalHandle object to an native (unmanaged) Unicode string</returns>
 	public SafeHGlobalHandle(string s) : base(s) { }
@@ -120,6 +133,15 @@ public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 	/// <param name="ptr">The <see cref="IntPtr"/>.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SafeHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeHGlobalHandle(handle, size, ownsHandle);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeHGlobalHandle(bytes);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeHGlobalHandle(size);
 
 	/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 	/// <typeparam name="T">Native type</typeparam>

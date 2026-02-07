@@ -1506,7 +1506,7 @@ public static partial class WsmSvc
 	/// </param>
 	/// <returns>This method returns zero on success. Otherwise, this method returns an error code.</returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmangeterrormessage DWORD WSManGetErrorMessage(
-	// WSMAN_API_HANDLE apiHandle, DWORD flags, PCWSTR languageCode, DWORD errorCode, DWORD messageLength, PWSTR message, DWORD
+	// WSMAN_API_HANDLE apiHandle, DWORD flags, PCWSTR languageCode, DWORD errorCode, DWORD messageLength, StrPtrUni message, DWORD
 	// *messageLengthUsed );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManGetErrorMessage")]
@@ -1538,7 +1538,7 @@ public static partial class WsmSvc
 	/// <param name="stringLengthUsed">Specifies the length of the string returned in the string parameter.</param>
 	/// <returns>This method returns zero on success. Otherwise, this method returns an error code.</returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/nf-wsman-wsmangetsessionoptionasstring DWORD
-	// WSManGetSessionOptionAsString( WSMAN_SESSION_HANDLE session, WSManSessionOption option, DWORD stringLength, PWSTR string, DWORD
+	// WSManGetSessionOptionAsString( WSMAN_SESSION_HANDLE session, WSManSessionOption option, DWORD stringLength, StrPtrUni string, DWORD
 	// *stringLengthUsed );
 	[DllImport(Lib_WsmSvc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wsman.h", MSDNShortId = "NF:wsman.WSManGetSessionOptionAsString")]

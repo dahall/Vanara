@@ -23,7 +23,7 @@ public class ComDlg32Tests
 	{
 		var cc = new CHOOSECOLOR
 		{
-			lStructSize = (uint)Marshal.SizeOf(typeof(CHOOSECOLOR)),
+			lStructSize = (uint)Marshal.SizeOf<CHOOSECOLOR>(),
 			rgbResult = System.Drawing.Color.Red,
 			Flags = CC.CC_RGBINIT,
 			hwndOwner = GetDesktopWindow()
@@ -37,7 +37,7 @@ public class ComDlg32Tests
 		using var fn = new SafeCoTaskMemString(261);
 		var ofn = new OPENFILENAME
 		{
-			lStructSize = (uint)Marshal.SizeOf(typeof(OPENFILENAME)),
+			lStructSize = (uint)Marshal.SizeOf<OPENFILENAME>(),
 			lpstrFile = (IntPtr)fn,
 			nMaxFile = (uint)fn.Capacity,
 			lpstrFilter = "All\0*.*\0Text\0*.txt\0",
@@ -55,7 +55,7 @@ public class ComDlg32Tests
 		var fw = new SafeCoTaskMemString(261);
 		var fr = new FINDREPLACE
 		{
-			lStructSize = (uint)Marshal.SizeOf(typeof(FINDREPLACE)),
+			lStructSize = (uint)Marshal.SizeOf<FINDREPLACE>(),
 			hwndOwner = wnd.MessageWindowHandle,
 			lpstrFindWhat = (IntPtr)fw,
 			wFindWhatLen = (ushort)fw.Length,

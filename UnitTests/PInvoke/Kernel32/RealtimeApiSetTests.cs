@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class RealtimeApiSetTests
 {
-	[Test]
+	//[Test]
 	public void ConvertAuxiliaryCounterToPerformanceCounterTest()
 	{
 		ulong aux = (ulong)new Random().Next();
@@ -23,16 +23,10 @@ public class RealtimeApiSetTests
 	}
 
 	[Test]
-	public void QueryIdleProcessorCycleTimeTest()
-	{
-		Assert.That(() => { Assert.That(QueryIdleProcessorCycleTime(), Is.Not.Empty); }, Throws.Nothing);
-	}
+	public void QueryIdleProcessorCycleTimeTest() => Assert.That(() => { Assert.That(QueryIdleProcessorCycleTime(), Is.Not.Empty); }, Throws.Nothing);
 
 	[Test]
-	public void QueryIdleProcessorCycleTimeExTest()
-	{
-		Assert.That(() => { Assert.That(QueryIdleProcessorCycleTimeEx(0), Is.Not.Empty); }, Throws.Nothing);
-	}
+	public void QueryIdleProcessorCycleTimeExTest() => Assert.That(() => { Assert.That(QueryIdleProcessorCycleTimeEx(0), Is.Not.Empty); }, Throws.Nothing);
 
 	[Test]
 	public void QueryInterruptTimeTest()

@@ -7,10 +7,7 @@ namespace Vanara.PInvoke.Tests;
 public class VersionHelpersTests
 {
 	[Test]
-	public void IsActiveSessionCountLimitedTest()
-	{
-		Assert.That(IsActiveSessionCountLimited(), Is.True);
-	}
+	public void IsActiveSessionCountLimitedTest() => Assert.That(IsActiveSessionCountLimited(), Is.True);
 
 	[Test]
 	public void IsWindowsTests()

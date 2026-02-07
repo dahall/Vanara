@@ -1582,7 +1582,7 @@ public static partial class NetApi32
 		public uint sv402_alist_mtime;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the list of user names on the server. Spaces separate the names.</para>
 		/// </summary>
 		public string sv402_alerts;
@@ -1623,7 +1623,7 @@ public static partial class NetApi32
 		public uint sv402_lanmask;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of a reserved account for guest users on the server. The constant UNLEN
 		/// specifies the maximum number of characters in the string.
@@ -1770,7 +1770,7 @@ public static partial class NetApi32
 		public uint sv402_maxauditsz;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string containing flags that control operations on a server.</para>
 		/// </summary>
 		public string sv402_srvheuristics;
@@ -1819,7 +1819,7 @@ public static partial class NetApi32
 		public uint sv403_alist_mtime;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the list of user names on the server. Spaces separate the names.</para>
 		/// </summary>
 		public string sv403_alerts;
@@ -1860,7 +1860,7 @@ public static partial class NetApi32
 		public uint sv403_lanmask;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of a reserved account for guest users on the server. The constant UNLEN
 		/// specifies the maximum number of characters in the string.
@@ -2007,7 +2007,7 @@ public static partial class NetApi32
 		public uint sv403_maxauditsz;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string containing flags that control operations on a server.</para>
 		/// </summary>
 		public string sv403_srvheuristics;
@@ -2039,7 +2039,7 @@ public static partial class NetApi32
 		public uint sv403_autoprofile;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that contains the path for the profile.</para>
 		/// </summary>
 		public string sv403_autopath;

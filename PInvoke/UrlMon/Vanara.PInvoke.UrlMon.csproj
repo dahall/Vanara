@@ -18,7 +18,7 @@ Structures
 AUTHENTICATEINFO BINDINFO
 
 Interfaces
-IAuthenticate IAuthenticateEx IBindHost IBinding IBindStatusCallback IInternetSession IPersistMoniker IUri IUriBuilder
+IAuthenticate IAuthenticateEx IBindHost IBinding IBindStatusCallback IInternetSecurityManager IInternetSecurityMgrSite IInternetSession IPersistMoniker IUri IUriBuilder
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>

@@ -2123,7 +2123,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symfinddebuginfofile HANDLE IMAGEAPI SymFindDebugInfoFile(
-	// HANDLE hProcess, PCSTR FileName, PSTR DebugFilePath, PFIND_DEBUG_FILE_CALLBACK Callback, PVOID CallerData );
+	// HANDLE hProcess, PCSTR FileName, StrPtrAnsi DebugFilePath, PFIND_DEBUG_FILE_CALLBACK Callback, PVOID CallerData );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFindDebugInfoFile")]
 	public static extern HFILE SymFindDebugInfoFile(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
@@ -2158,7 +2158,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symfindexecutableimage HANDLE IMAGEAPI
-	// SymFindExecutableImage( HANDLE hProcess, PCSTR FileName, PSTR ImageFilePath, PFIND_EXE_FILE_CALLBACK Callback, PVOID CallerData );
+	// SymFindExecutableImage( HANDLE hProcess, PCSTR FileName, StrPtrAnsi ImageFilePath, PFIND_EXE_FILE_CALLBACK Callback, PVOID CallerData );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFindExecutableImage")]
 	public static extern HFILE SymFindExecutableImage(HPROCESS hProcess, [MarshalAs(UnmanagedType.LPTStr)] string FileName,
@@ -2237,7 +2237,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symfindfileinpath BOOL IMAGEAPI SymFindFileInPath( HANDLE
-	// hprocess, PCSTR SearchPath, PCSTR FileName, PVOID id, DWORD two, DWORD three, DWORD flags, PSTR FoundFile,
+	// hprocess, PCSTR SearchPath, PCSTR FileName, PVOID id, DWORD two, DWORD three, DWORD flags, StrPtrAnsi FoundFile,
 	// PFINDFILEINPATHCALLBACK callback, PVOID context );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymFindFileInPath")]
@@ -2542,7 +2542,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgethomedirectory PCHAR IMAGEAPI SymGetHomeDirectory(
-	// DWORD type, PSTR dir, size_t size );
+	// DWORD type, StrPtrAnsi dir, size_t size );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetHomeDirectory")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
@@ -3572,7 +3572,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgetsearchpath BOOL IMAGEAPI SymGetSearchPath( HANDLE
-	// hProcess, PSTR SearchPath, DWORD SearchPathLength );
+	// hProcess, StrPtrAnsi SearchPath, DWORD SearchPathLength );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetSearchPath")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3599,7 +3599,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgetsourcefile BOOL IMAGEAPI SymGetSourceFile( HANDLE
-	// hProcess, ULONG64 Base, PCSTR Params, PCSTR FileSpec, PSTR FilePath, DWORD Size );
+	// hProcess, ULONG64 Base, PCSTR Params, PCSTR FileSpec, StrPtrAnsi FilePath, DWORD Size );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetSourceFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3649,7 +3649,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgetsourcefilefromtoken BOOL IMAGEAPI
-	// SymGetSourceFileFromToken( HANDLE hProcess, PVOID Token, PCSTR Params, PSTR FilePath, DWORD Size );
+	// SymGetSourceFileFromToken( HANDLE hProcess, PVOID Token, PCSTR Params, StrPtrAnsi FilePath, DWORD Size );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetSourceFileFromToken")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3703,7 +3703,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgetsourcevarfromtoken BOOL IMAGEAPI
-	// SymGetSourceVarFromToken( HANDLE hProcess, PVOID Token, PCSTR Params, PCSTR VarName, PSTR Value, DWORD Size );
+	// SymGetSourceVarFromToken( HANDLE hProcess, PVOID Token, PCSTR Params, PCSTR VarName, StrPtrAnsi Value, DWORD Size );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetSourceVarFromToken")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3766,7 +3766,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symgetsymbolfile BOOL IMAGEAPI SymGetSymbolFile( HANDLE
-	// hProcess, PCSTR SymPath, PCSTR ImageFile, DWORD Type, PSTR SymbolFile, size_t cSymbolFile, PSTR DbgFile, size_t cDbgFile );
+	// hProcess, PCSTR SymPath, PCSTR ImageFile, DWORD Type, StrPtrAnsi SymbolFile, size_t cSymbolFile, StrPtrAnsi DbgFile, size_t cDbgFile );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetSymbolFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4693,7 +4693,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symmatchfilename BOOL IMAGEAPI SymMatchFileName( PCSTR
-	// FileName, PCSTR Match, PSTR *FileNameStop, PSTR *MatchStop );
+	// FileName, PCSTR Match, StrPtrAnsi *FileNameStop, StrPtrAnsi *MatchStop );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymMatchFileName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5593,7 +5593,7 @@ public static partial class DbgHelp
 	/// <para>To call the Unicode version of this function, define DBGHELP_TRANSLATE_TCHAR.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symsrvgetfileindexstring BOOL IMAGEAPI
-	// SymSrvGetFileIndexString( HANDLE hProcess, PCSTR SrvPath, PCSTR File, PSTR Index, size_t Size, DWORD Flags );
+	// SymSrvGetFileIndexString( HANDLE hProcess, PCSTR SrvPath, PCSTR File, StrPtrAnsi Index, size_t Size, DWORD Flags );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSrvGetFileIndexString")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5796,11 +5796,11 @@ public static partial class DbgHelp
 	/// is defined as follows in Dbghelp.h.
 	/// </para>
 	/// <para>
-	/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymUnDName SymUnDName64 #else BOOL IMAGEAPI SymUnDName( __in PIMAGEHLP_SYMBOL sym, __out_ecount(UnDecNameLength) PSTR UnDecName, __in DWORD UnDecNameLength ); #endif</code>
+	/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymUnDName SymUnDName64 #else BOOL IMAGEAPI SymUnDName( __in PIMAGEHLP_SYMBOL sym, __out_ecount(UnDecNameLength) StrPtrAnsi UnDecName, __in DWORD UnDecNameLength ); #endif</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symundname BOOL IMAGEAPI SymUnDName( PIMAGEHLP_SYMBOL sym,
-	// PSTR UnDecName, DWORD UnDecNameLength );
+	// StrPtrAnsi UnDecName, DWORD UnDecNameLength );
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymUnDName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5828,11 +5828,11 @@ public static partial class DbgHelp
 	/// is defined as follows in Dbghelp.h.
 	/// </para>
 	/// <para>
-	/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymUnDName SymUnDName64 #else BOOL IMAGEAPI SymUnDName( __in PIMAGEHLP_SYMBOL sym, __out_ecount(UnDecNameLength) PSTR UnDecName, __in DWORD UnDecNameLength ); #endif</code>
+	/// <code>#if !defined(_IMAGEHLP_SOURCE_) &amp;&amp; defined(_IMAGEHLP64) #define SymUnDName SymUnDName64 #else BOOL IMAGEAPI SymUnDName( __in PIMAGEHLP_SYMBOL sym, __out_ecount(UnDecNameLength) StrPtrAnsi UnDecName, __in DWORD UnDecNameLength ); #endif</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symundname64 BOOL IMAGEAPI SymUnDName64( PIMAGEHLP_SYMBOL64
-	// sym, PSTR UnDecName, DWORD UnDecNameLength );
+	// sym, StrPtrAnsi UnDecName, DWORD UnDecNameLength );
 	[DllImport(Lib_DbgHelp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymUnDName64")]
 	[return: MarshalAs(UnmanagedType.Bool)]

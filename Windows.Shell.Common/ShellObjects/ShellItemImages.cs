@@ -12,7 +12,6 @@ namespace Vanara.Windows.Shell;
 /// <param name="shellItem">The <see cref="ShellItem"/> instance.</param>
 public class ShellItemImages(ShellItem shellItem)
 {
-
 	/// <summary>
 	/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
 	/// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.

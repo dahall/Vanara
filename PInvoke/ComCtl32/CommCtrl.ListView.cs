@@ -28,7 +28,7 @@ public static partial class ComCtl32
 
 	private const uint LVM_FIRST = 0x1000;
 
-	private const int LVN_FIRST = -0x100;
+	private const int LVN_FIRST = -100;
 
 	/// <summary>
 	/// The <c>LVGroupCompare</c> function is an application-defined callback function used with the LVM_INSERTGROUPSORTED and LVM_SORTGROUPS
@@ -5744,7 +5744,7 @@ public static partial class ComCtl32
 	/// <para>The creation of footers in list-view controls is currently not supported.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooterinfo typedef struct tagLVFOOTERINFO { UINT mask;
-	// LPWSTR pszText; int cchTextMax; UINT cItems; } LVFOOTERINFO, *LPLVFOOTERINFO;
+	// StrPtrUni pszText; int cchTextMax; UINT cItems; } LVFOOTERINFO, *LPLVFOOTERINFO;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERINFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct LVFOOTERINFO
@@ -5759,7 +5759,7 @@ public static partial class ComCtl32
 		public LVFF mask;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>Not supported. Must be set to zero.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -5791,7 +5791,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information on a footer item.</summary>
 	/// <remarks>This structure is used with the ListView_GetFooterItem macro and the LVM_GETFOOTERITEM message.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooteritem typedef struct tagLVFOOTERITEM { UINT mask; int
-	// iItem; LPWSTR pszText; int cchTextMax; UINT state; UINT stateMask; } LVFOOTERITEM, *LPLVFOOTERITEM;
+	// iItem; StrPtrUni pszText; int cchTextMax; UINT state; UINT stateMask; } LVFOOTERITEM, *LPLVFOOTERITEM;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERITEM")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct LVFOOTERITEM
@@ -5826,7 +5826,7 @@ public static partial class ComCtl32
 		public int iItem;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a null-terminated, Unicode buffer. The calling process is responsible for allocating the buffer.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -5924,7 +5924,7 @@ public static partial class ComCtl32
 		/// <param name="mask">The mask.</param>
 		public LVGROUPMETRICS(ListViewGroupMetricsMask mask = ListViewGroupMetricsMask.LVGMF_NONE) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVGROUPMETRICS));
+			cbSize = (uint)Marshal.SizeOf<LVGROUPMETRICS>();
 			this.mask = mask;
 		}
 
@@ -5935,7 +5935,7 @@ public static partial class ComCtl32
 		/// <param name="bottom">The width of the bottom border.</param>
 		public LVGROUPMETRICS(int left, int top, int right, int bottom) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVGROUPMETRICS));
+			cbSize = (uint)Marshal.SizeOf<LVGROUPMETRICS>();
 			SetBorderSize(left, top, right, bottom);
 		}
 
@@ -6047,7 +6047,7 @@ public static partial class ComCtl32
 		/// <param name="insertAfter">if set to <c>true</c> the insertion point appears after the item specified.</param>
 		public LVINSERTMARK(int insertAtItem, bool insertAfter = false) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVINSERTMARK));
+			cbSize = (uint)Marshal.SizeOf<LVINSERTMARK>();
 			dwFlags = insertAfter ? ListViewInsertMarkFlag.LVIM_AFTER : ListViewInsertMarkFlag.LVIM_BEFORE;
 			iItem = insertAtItem;
 		}
@@ -6115,7 +6115,7 @@ public static partial class ComCtl32
 		/// <param name="mask">The mask.</param>
 		public LVTILEVIEWINFO(ListViewTileViewMask mask) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVTILEVIEWINFO));
+			cbSize = (uint)Marshal.SizeOf<LVTILEVIEWINFO>();
 			dwMask = mask;
 		}
 
@@ -6476,7 +6476,7 @@ public static partial class ComCtl32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvgetinfotipa typedef struct tagNMLVGETINFOTIPA { NMHDR
-	// hdr; DWORD dwFlags; LPSTR pszText; int cchTextMax; int iItem; int iSubItem; LPARAM lParam; } NMLVGETINFOTIPA, *LPNMLVGETINFOTIPA;
+	// hdr; DWORD dwFlags; StrPtrAnsi pszText; int cchTextMax; int iItem; int iSubItem; LPARAM lParam; } NMLVGETINFOTIPA, *LPNMLVGETINFOTIPA;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVGETINFOTIPA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct NMLVGETINFOTIP : INotificationInfo
@@ -6494,7 +6494,7 @@ public static partial class ComCtl32
 		public LVGIT dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// Address of a string buffer that receives any additional text information. If <c>dwFlags</c> is zero, this member will contain the
 		/// existing item text. In this case, you should append any additional text onto the end of this string. The size of this buffer is
@@ -6914,7 +6914,7 @@ public static partial class ComCtl32
 	public sealed class LVGROUP : IDisposable
 	{
 		/// <summary>Size of this structure, in bytes.</summary>
-		public int cbSize = Marshal.SizeOf(typeof(LVGROUP));
+		public int cbSize = Marshal.SizeOf<LVGROUP>();
 
 		/// <summary>Mask that specifies which members of the structure are valid input.</summary>
 		public ListViewGroupMask mask;
@@ -7323,9 +7323,9 @@ public static partial class ComCtl32
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_TEXT))
 				pszText = new StrPtrAuto(cchTextMax = 1024);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLUMNS))
-				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MAX_COLS);
+				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLFMT))
-				piColFmt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MAX_COLS);
+				piColFmt = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			iItem = item;
 			iSubItem = subitem;
 			this.stateMask = stateMask;
@@ -7571,7 +7571,7 @@ public static partial class ComCtl32
 		/// <param name="columnFormats">A dictionary of column indicies and their associated formats.</param>
 		public LVTILEINFO(int item, IReadOnlyDictionary<int, ListViewColumnFormat> columnFormats)
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVTILEINFO));
+			cbSize = (uint)Marshal.SizeOf<LVTILEINFO>();
 			iItem = item;
 			ColumnFormats = columnFormats;
 		}

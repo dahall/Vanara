@@ -726,7 +726,7 @@ public static partial class D3D12
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_cached_pipeline_state typedef struct
-	// D3D12_CACHED_PIPELINE_STATE { const void *pCachedBlob; SIZE_T CachedBlobSizeInBytes; } D3D12_CACHED_PIPELINE_STATE;
+	// D3D12_CACHED_PIPELINE_STATE { const void *pCachedBlob; SizeT CachedBlobSizeInBytes; } D3D12_CACHED_PIPELINE_STATE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_CACHED_PIPELINE_STATE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_CACHED_PIPELINE_STATE
@@ -1001,7 +1001,7 @@ public static partial class D3D12
 	/// <para>To get the handle increment size use <c>ID3D12Device.GetDescriptorHandleIncrementSize</c></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_cpu_descriptor_handle typedef struct
-	// D3D12_CPU_DESCRIPTOR_HANDLE { SIZE_T ptr; } D3D12_CPU_DESCRIPTOR_HANDLE;
+	// D3D12_CPU_DESCRIPTOR_HANDLE { SizeT ptr; } D3D12_CPU_DESCRIPTOR_HANDLE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_CPU_DESCRIPTOR_HANDLE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_CPU_DESCRIPTOR_HANDLE : IEquatable<D3D12_CPU_DESCRIPTOR_HANDLE>
@@ -3433,8 +3433,8 @@ public static partial class D3D12
 
 	/// <summary>Indicates the level of support that the adapter provides for metacommands.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_feature_data_query_meta_command typedef struct
-	// D3D12_FEATURE_DATA_QUERY_META_COMMAND { GUID CommandId; UINT NodeMask; const void *pQueryInputData; SIZE_T QueryInputDataSizeInBytes;
-	// void *pQueryOutputData; SIZE_T QueryOutputDataSizeInBytes; } D3D12_FEATURE_DATA_QUERY_META_COMMAND;
+	// D3D12_FEATURE_DATA_QUERY_META_COMMAND { GUID CommandId; UINT NodeMask; const void *pQueryInputData; SizeT QueryInputDataSizeInBytes;
+	// void *pQueryOutputData; SizeT QueryOutputDataSizeInBytes; } D3D12_FEATURE_DATA_QUERY_META_COMMAND;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_FEATURE_DATA_QUERY_META_COMMAND")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_FEATURE_DATA_QUERY_META_COMMAND
@@ -3461,7 +3461,7 @@ public static partial class D3D12
 		public IntPtr pQueryInputData;
 
 		/// <summary>
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size of the buffer pointed to by pQueryInputData, in bytes.</para>
 		/// </summary>
 		public SizeT QueryInputDataSizeInBytes;
@@ -3473,7 +3473,7 @@ public static partial class D3D12
 		public IntPtr pQueryOutputData;
 
 		/// <summary>
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size of the buffer pointed to by pQueryOutputData, in bytes.</para>
 		/// </summary>
 		public SizeT QueryOutputDataSizeInBytes;
@@ -4424,7 +4424,7 @@ public static partial class D3D12
 	public struct D3D12_INPUT_LAYOUT_DESC
 	{
 		/// <summary>An array of <c>D3D12_INPUT_ELEMENT_DESC</c> structures that describe the data types of the input-assembler stage.</summary>
-		[SizeFieldName(nameof(NumElements))]
+		[SizeDef(nameof(NumElements))]
 		public ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> pInputElementDescs;
 
 		/// <summary>The number of input-data types in the array of input elements that the <b>pInputElementDescs</b> member points to.</summary>
@@ -4478,7 +4478,7 @@ public static partial class D3D12
 	/// <summary>Describes the destination of a memory copy operation.</summary>
 	/// <remarks>This structure is used by a number of helper methods, refer to <c>Helper Structures and Functions for D3D12</c>.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_memcpy_dest typedef struct D3D12_MEMCPY_DEST { void *pData;
-	// SIZE_T RowPitch; SIZE_T SlicePitch; } D3D12_MEMCPY_DEST;
+	// SizeT RowPitch; SizeT SlicePitch; } D3D12_MEMCPY_DEST;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_MEMCPY_DEST")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_MEMCPY_DEST
@@ -4716,7 +4716,7 @@ public static partial class D3D12
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_pipeline_state_stream_desc typedef struct
-	// D3D12_PIPELINE_STATE_STREAM_DESC { SIZE_T SizeInBytes; void *pPipelineStateSubobjectStream; } D3D12_PIPELINE_STATE_STREAM_DESC;
+	// D3D12_PIPELINE_STATE_STREAM_DESC { SizeT SizeInBytes; void *pPipelineStateSubobjectStream; } D3D12_PIPELINE_STATE_STREAM_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_PIPELINE_STATE_STREAM_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_PIPELINE_STATE_STREAM_DESC
@@ -4987,7 +4987,7 @@ public static partial class D3D12
 	/// </para>
 	/// <para>This structure is used by the <c>Map</c> and <c>Unmap</c> methods.</para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_range typedef struct D3D12_RANGE { SIZE_T Begin; SIZE_T End;
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_range typedef struct D3D12_RANGE { SizeT Begin; SizeT End;
 	// } D3D12_RANGE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_RANGE")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -7756,7 +7756,7 @@ public static partial class D3D12
 	/// <para>When loading a shader from FXC/DXC, this may be the entire compiled blob as is loaded from disk.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_shader_bytecode typedef struct D3D12_SHADER_BYTECODE { const
-	// void *pShaderBytecode; SIZE_T BytecodeLength; } D3D12_SHADER_BYTECODE;
+	// void *pShaderBytecode; SizeT BytecodeLength; } D3D12_SHADER_BYTECODE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SHADER_BYTECODE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_SHADER_BYTECODE(IntPtr pShaderBytecode, SizeT bytecodeLength)
@@ -8048,7 +8048,7 @@ public static partial class D3D12
 			return mem.DangerousGetHandle().ToStructure<D3D12_STATE_OBJECT_DESC>();
 		}
 
-		private int[] GetSizes() => [ Marshal.SizeOf(typeof(D3D12_STATE_OBJECT_DESC)), pSubobjects.Count * Marshal.SizeOf(typeof(D3D12_STATE_SUBOBJECT)),
+		private int[] GetSizes() => [ Marshal.SizeOf<D3D12_STATE_OBJECT_DESC>(), pSubobjects.Count * Marshal.SizeOf<D3D12_STATE_SUBOBJECT>(),
 			pSubobjects.Sum(o => Marshal.SizeOf(o.desc)) ];
 
 		/// <inheritdoc/>

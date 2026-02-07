@@ -9,15 +9,18 @@ using namespace System::Runtime::InteropServices;
 ref class Utils sealed
 {
 public:
+
+	[System::Runtime::CompilerServices::MethodImpl(System::Runtime::CompilerServices::MethodImplOptions::AggressiveInlining)]
 	static void ThrowIfFailed(::HRESULT hr)
 	{
-		if (SUCCEEDED(hr)) return;
-		auto exceptionForHR = Marshal::GetExceptionForHR(hr);
-		if (exceptionForHR->GetType() == COMException::typeid && HRESULT_FACILITY(hr) == FACILITY_WIN32)
-			exceptionForHR = gcnew Win32Exception(HRESULT_CODE(hr));
-		throw exceptionForHR;
+		if (FAILED(hr))
+		{
+			auto ex = Marshal::GetExceptionForHR(hr);
+			throw (HRESULT_FACILITY(hr) == FACILITY_WIN32) && ex->GetType() == COMException::typeid ? gcnew Win32Exception(HRESULT_CODE(hr)) : ex;
+		}
 	}
 
+	[System::Runtime::CompilerServices::MethodImpl(System::Runtime::CompilerServices::MethodImplOptions::AggressiveInlining)]
 	static Guid FromGUID(_GUID& guid) {
 		return Guid(guid.Data1, guid.Data2, guid.Data3, guid.Data4[0], guid.Data4[1], guid.Data4[2],
 			guid.Data4[3], guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);

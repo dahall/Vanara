@@ -2376,7 +2376,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframeencode-initialize HRESULT Initialize(
 		// IPropertyBag2 *pIEncoderOptions );
-		void Initialize(IPropertyBag2 pIEncoderOptions);
+		void Initialize([Optional] IPropertyBag2? pIEncoderOptions);
 
 		/// <summary>Sets the output image dimensions for the frame.</summary>
 		/// <param name="uiWidth">
@@ -3778,7 +3778,7 @@ public static partial class WindowsCodecs
 		/// <remarks>Other values may be available for both guidContainerFormat and pguidVendor depending on the installed WIC-enabled encoders. The values listed are those that are natively supported by the operating system.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicimagingfactory-createencoder
 		// HRESULT CreateEncoder( REFGUID guidContainerFormat, const GUID *pguidVendor, IWICBitmapEncoder **ppIEncoder );
-		new IWICBitmapDecoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
+		new IWICBitmapEncoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
 
 		/// <summary>Creates a new instance of the IWICPalette class.</summary>
 		/// <returns>

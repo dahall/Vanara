@@ -8,14 +8,14 @@ public class WinNetWkTests
 {
 	const string ldev = "S:";
 	const string prov = "Microsoft Windows Network";
-	const string remSh = @"\\hallan-svr\share";
+	static readonly string remSh = TestCaseSources.GetValueOrDefault("RemoteShare", $"\\\\{Environment.MachineName}\\Users")!;
 	const string shDir = @"\Music";
 
 	[OneTimeSetUp]
 	public void FixtureSetup()
 	{
 		FixtureTeardown();
-		WNetAddConnection(remSh, null, ldev).ThrowIfFailed();
+		Assert.That(WNetAddConnection(remSh, null, ldev), ResultIs.Successful);
 	}
 
 	[OneTimeTearDown]
@@ -52,7 +52,7 @@ public class WinNetWkTests
 	[Test]
 	public void WNetEnumResourceTest()
 	{
-		var ne = WNetEnumResources(recurseContainers: true);
+		var ne = WNetEnumResources(dwScope: NETRESOURCEScope.RESOURCE_REMEMBERED, recurseContainers: true);
 		Assert.That(ne, Is.Not.Empty);
 		foreach (var net in ne)
 			TestContext.WriteLine($"Type:{net.dwDisplayType}; Prov:{net.lpProvider}; Loc:{net.lpLocalName}; Rem:{net.lpRemoteName}");

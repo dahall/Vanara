@@ -10,6 +10,8 @@ namespace Vanara.PInvoke;
 public static partial class AdvApi32
 {
 	/// <summary/>
+	public const ushort CLAIM_SECURITY_ATTRIBUTES_INFORMATION_VERSION_V1 = 1;
+	/// <summary/>
 	public const uint SECURITY_DESCRIPTOR_REVISION = 1;
 	/// <summary/>
 	public const uint SECURITY_DESCRIPTOR_REVISION1 = 1;
@@ -2679,7 +2681,7 @@ public static partial class AdvApi32
 
 	/// <summary>The <c>CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE</c> structure specifies the fully qualified binary name.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_fqbn_value typedef struct
-	// _CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE { DWORD64 Version; PWSTR Name; } CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE;
+	// _CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE { DWORD64 Version; StrPtrUni Name; } CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE;
 	[PInvokeData("winnt.h", MSDNShortId = "1FD9A519-40EA-4780-90F5-C9DF4ADAE72C")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE
@@ -2717,8 +2719,8 @@ public static partial class AdvApi32
 	/// authorization context.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_v1 typedef struct
-	// _CLAIM_SECURITY_ATTRIBUTE_V1 { PWSTR Name; WORD ValueType; WORD Reserved; DWORD Flags; DWORD ValueCount; union { PLONG64 pInt64;
-	// PDWORD64 pUint64; PWSTR *ppString; PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn; PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
+	// _CLAIM_SECURITY_ATTRIBUTE_V1 { StrPtrUni Name; WORD ValueType; WORD Reserved; DWORD Flags; DWORD ValueCount; union { PLONG64 pInt64;
+	// PDWORD64 pUint64; StrPtrUni *ppString; PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn; PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
 	// pOctetString; } Values; } CLAIM_SECURITY_ATTRIBUTE_V1, *PCLAIM_SECURITY_ATTRIBUTE_V1;
 	[PInvokeData("winnt.h", MSDNShortId = "FDBB9B00-01C3-474A-81FF-97C5CBA3261B")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2728,8 +2730,7 @@ public static partial class AdvApi32
 		/// A pointer to a string of Unicode characters that contains the name of the security attribute. This string must be at least 4
 		/// bytes in length.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string Name;
+		public StrPtrUni Name;
 
 		/// <summary>
 		/// <para>
@@ -2830,27 +2831,27 @@ public static partial class AdvApi32
 		[StructLayout(LayoutKind.Explicit)]
 		public struct VALUESUNION
 		{
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>LONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>LONG64</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pInt64;
+			public ArrayPointer<long> pInt64;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pUint64;
+			public ArrayPointer<ulong> pUint64;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>StrPtrUni</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr ppString;
+			public ArrayPointer<StrPtrUni> ppString;
 
 			/// <summary>
-			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE.
+			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type <see cref="CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE"/>.
 			/// </summary>
 			[FieldOffset(0)]
-			public IntPtr pFqbn;
+			public ArrayPointer<ManagedStructPointer<CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE>> pFqbn;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is an octet string of type CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is an octet string of type <see cref="CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pOctetString;
+			public ArrayPointer<StructPointer<CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>> pOctetString;
 		}
 	}
 
@@ -2860,7 +2861,7 @@ public static partial class AdvApi32
 	public struct CLAIM_SECURITY_ATTRIBUTES_INFORMATION
 	{
 		/// <summary>A default instance which sets the <see cref="Version"/> field.</summary>
-		public static readonly CLAIM_SECURITY_ATTRIBUTES_INFORMATION Default = new() { Version = 1 };
+		public static readonly CLAIM_SECURITY_ATTRIBUTES_INFORMATION Default = new() { Version = CLAIM_SECURITY_ATTRIBUTES_INFORMATION_VERSION_V1 };
 
 		/// <summary>The version of the security attribute. This must be 1.</summary>
 		public ushort Version;
@@ -2883,7 +2884,7 @@ public static partial class AdvApi32
 		{
 			/// <summary>Pointer to an array that contains the AttributeCount member of the CLAIM_SECURITY_ATTRIBUTE_V1 structure.</summary>
 			[FieldOffset(0)]
-			public IntPtr pAttributeV1;
+			public ManagedArrayPointer<CLAIM_SECURITY_ATTRIBUTE_V1> pAttributeV1;
 		}
 	}
 
@@ -3394,6 +3395,30 @@ public static partial class AdvApi32
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => $"{(Sid.IsValidSid() ? Sid.ToString("N") : "")}:{Attributes}";
+	}
+
+	/// <summary>The <b>SID_AND_ATTRIBUTES_HASH</b> structure specifies a hash values for the specified array of <c>security identifiers</c> (SIDs).</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-sid_and_attributes_hash
+	// typedef struct _SID_AND_ATTRIBUTES_HASH { DWORD SidCount; PSID_AND_ATTRIBUTES SidAttr; SID_HASH_ENTRY Hash[SID_HASH_SIZE]; } SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SID_AND_ATTRIBUTES_HASH")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SID_AND_ATTRIBUTES_HASH
+	{
+		const int SID_HASH_SIZE = 32;
+
+		/// <summary>The number of SIDs pointed to by the <i>SidAttr</i> parameter.</summary>
+		public uint SidCount;
+
+		/// <summary>A pointer to an array of <c>SID_AND_ATTRIBUTES</c> structures that represent SIDs and their attributes.</summary>
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> SidAttr;
+
+		/// <summary>
+		///   <para>An array of pointers to hash values. These values correspond to the <c>SID_AND_ATTRIBUTES</c> structures pointed to by the <i>SidAttr</i> parameter.</para>
+		///   <para>The <b>SID_HASH_ENTRY</b> data type is defined in Winnt.h as a <b>ULONG_PTR</b>.</para>
+		///   <para>The <b>SID_HASH_SIZE</b> array dimension is defined in Winnt.h as 32.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = SID_HASH_SIZE)]
+		public UIntPtr[] Hash;
 	}
 
 	/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
@@ -4190,13 +4215,13 @@ public static partial class AdvApi32
 	public struct TOKEN_ACCESS_INFORMATION
 	{
 		/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's security identifier (SID).</summary>
-		public IntPtr SidHash;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES_HASH> SidHash;
 
 		/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's restricted SID.</summary>
-		public IntPtr RestrictedSidHash;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES_HASH> RestrictedSidHash;
 
 		/// <summary>A pointer to a TOKEN_PRIVILEGES structure that specifies information about the token's privileges.</summary>
-		public IntPtr Privileges;
+		public ManagedStructPointer<TOKEN_PRIVILEGES> Privileges;
 
 		/// <summary>A LUID structure that specifies the token's identity.</summary>
 		public LUID AuthenticationId;
@@ -4229,7 +4254,7 @@ public static partial class AdvApi32
 		/// Pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's capability SIDs.
 		/// <para><c>Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:</c> This member is not available.</para>
 		/// </summary>
-		public IntPtr CapabilitiesHash;
+		public ManagedStructPointer<SID_AND_ATTRIBUTES_HASH> CapabilitiesHash;
 
 		/// <summary>The protected process trust level of the token.</summary>
 		public PSID TrustLevelSid;
@@ -4272,37 +4297,26 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>The TOKEN_GROUPS structure contains information about the group security identifiers (SIDs) in an access token.</summary>
+	/// <param name="groups">An array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</param>
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<TOKEN_GROUPS>), nameof(GroupCount))]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct TOKEN_GROUPS
+	public struct TOKEN_GROUPS(SID_AND_ATTRIBUTES[] groups)
 	{
 		/// <summary>Specifies the number of groups in the access token.</summary>
-		public uint GroupCount;
+		public uint GroupCount = (uint)(groups?.Length ?? 0);
 
 		/// <summary>Specifies an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public SID_AND_ATTRIBUTES[] Groups;
+		public SID_AND_ATTRIBUTES[] Groups = groups ?? [];
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
 		/// <param name="count">The number of groups.</param>
-		public TOKEN_GROUPS(uint count = 0)
-		{
-			GroupCount = count;
-			Groups = new SID_AND_ATTRIBUTES[count];
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with and array of SIDs and attributes.</summary>
-		/// <param name="groups">An array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</param>
-		public TOKEN_GROUPS(SID_AND_ATTRIBUTES[] groups)
-		{
-			Groups = groups;
-			GroupCount = (uint)(groups?.Length ?? 0);
-		}
+		public TOKEN_GROUPS(uint count = 0) : this(new SID_AND_ATTRIBUTES[count]) { }
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with a single SID and attribute.</summary>
 		/// <param name="sid">The SID.</param>
 		/// <param name="attributes">The attributes of the SID.</param>
-		public TOKEN_GROUPS(PSID sid, uint attributes = 0) : this(1U) => Groups[0] = new SID_AND_ATTRIBUTES(sid, attributes);
+		public TOKEN_GROUPS(PSID sid, uint attributes = 0) : this([new SID_AND_ATTRIBUTES(sid, attributes)]) { }
 	}
 
 	/// <summary>
@@ -4320,7 +4334,7 @@ public static partial class AdvApi32
 		public uint SidLength;
 
 		/// <summary>A pointer to an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
-		public IntPtr Sids;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> Sids;
 
 		/// <summary>Number of restricted SIDs.</summary>
 		public uint RestrictedSidCount;
@@ -4334,7 +4348,7 @@ public static partial class AdvApi32
 		/// The Attributes members of the SID_AND_ATTRIBUTES structures can have the same values as those listed for the preceding Sids member.
 		/// </para>
 		/// </summary>
-		public IntPtr RestrictedSids;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> RestrictedSids;
 
 		/// <summary>Number of privileges.</summary>
 		public uint PrivilegeCount;
@@ -4343,7 +4357,7 @@ public static partial class AdvApi32
 		public uint PrivilegeLength;
 
 		/// <summary>Array of privileges.</summary>
-		public IntPtr Privileges;
+		public ArrayPointer<LUID_AND_ATTRIBUTES> Privileges;
 
 		/// <summary>Locally unique identifier (LUID) of the authenticator of the token.</summary>
 		public LUID AuthenticationId;
@@ -4780,7 +4794,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets the size in bytes of this instance.</summary>
 		/// <value>The size in bytes.</value>
-		public uint SizeInBytes => (uint)Marshal.SizeOf(typeof(uint)) * 2 + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
+		public uint SizeInBytes => (uint)Marshal.SizeOf<uint>() * 2 + (uint)(Marshal.SizeOf<LUID_AND_ATTRIBUTES>() * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -4810,8 +4824,8 @@ public static partial class AdvApi32
 				if (ps.Privilege.Length != ps.PrivilegeCount)
 					ptr.FillMemory(0, (int)ps.SizeInBytes);
 				Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
-				Marshal.WriteInt32(ptr, Marshal.SizeOf(typeof(int)), (int)ps.Control);
-				ptr.Write(ps.Privilege, Marshal.SizeOf(typeof(int)) * 2);
+				Marshal.WriteInt32(ptr, Marshal.SizeOf<int>(), (int)ps.Control);
+				ptr.Write(ps.Privilege, Marshal.SizeOf<int>() * 2);
 				return ptr;
 			}
 
@@ -4886,7 +4900,7 @@ public static partial class AdvApi32
 
 		internal PSID_IDENTIFIER_AUTHORITY(IntPtr existingPtr)
 		{
-			if (existingPtr == IntPtr.Zero)
+			if (existingPtr != IntPtr.Zero)
 				Value = existingPtr.ToByteArray(6)!;
 		}
 
@@ -4983,8 +4997,8 @@ public static partial class AdvApi32
 	[DebuggerDisplay("{DebugString}")]
 	public class SafePACE : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IComparable<SafePACE>, IComparable<PACE>, IEquatable<SafePACE>, IEquatable<PACE>
 	{
-		private static readonly int hdrSz = Marshal.SizeOf(typeof(ACE_HEADER));
-		private static readonly int structSize = Marshal.SizeOf(typeof(ACCESS_ALLOWED_ACE));
+		private static readonly int hdrSz = Marshal.SizeOf<ACE_HEADER>();
+		private static readonly int structSize = Marshal.SizeOf<ACCESS_ALLOWED_ACE>();
 
 		/// <summary>The null value for a SafePACE.</summary>
 		public static readonly SafePACE Null = new();
@@ -5249,7 +5263,7 @@ public static partial class AdvApi32
 		/// <value>The comparer.</value>
 		public static IComparer<SafePACE> Comparer => AceComparer.Instance;
 
-		private int SidOffset => hdrSz + sizeof(uint) + (IsObjectAce ? sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2 : 0);
+		private int SidOffset => hdrSz + sizeof(uint) + (IsObjectAce ? sizeof(uint) + Marshal.SizeOf<Guid>() * 2 : 0);
 
 		internal string DebugString => IsInvalid ? "NULL" : $"Principal: {TrusteeSid:N}, Type: {AceType}, Access: {Mask}, Flags: {Header.AceFlags}, Size:{Length}";
 
@@ -5299,7 +5313,7 @@ public static partial class AdvApi32
 	[DebuggerDisplay("{DebugString}")]
 	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IComparable<SafePACL>, IComparable<PACL>, IEquatable<SafePACL>, IEquatable<PACL>
 	{
-		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
+		private static readonly int AclStructSize = Marshal.SizeOf<ACL>();
 
 		/// <summary>The null value for a SafePACL.</summary>
 		public static readonly SafePACL Null = new();
@@ -5550,7 +5564,7 @@ public static partial class AdvApi32
 		{
 			if (typeof(TAce).Name.Contains("ALERT"))
 				throw new ArgumentException("Alert ACEs cannot be added with just a SID.", nameof(ace));
-			using SafeCoTaskMemStruct<TAce> pAce = new(ace, Marshal.SizeOf(typeof(TAce)) + sid.Length() - sizeof(uint));
+			using SafeCoTaskMemStruct<TAce> pAce = new(ace, Marshal.SizeOf<TAce>() + sid.Length() - sizeof(uint));
 			pAce.GetFieldAddress("SidStart").Write(sid.GetBinaryForm());
 			Insert(index, (PACE)pAce.DangerousGetHandle());
 		}
@@ -5569,14 +5583,9 @@ public static partial class AdvApi32
 		private void AddAceInOrder(PACE ace)
 		{
 			// Find ACE insert position.
-			for (int i = 0; i < AceCount; i++)
-			{
-				var cmp = ace.CompareTo(this[i]);
-				if (cmp < 0) continue;
-				if (cmp > 0)
-					Insert(i, ace);
-				return;
-			}
+			int i = 0;
+			for (; i < AceCount && ace.CompareTo(this[i]) <= 0; i++) ;
+			Insert(i, ace);
 		}
 
 		private bool EnsureCapacity(uint addCap)

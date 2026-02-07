@@ -138,11 +138,11 @@ public static partial class Shell32
 		/// <para>A pointer to a SHELL_ITEM_RESOURCE resource.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a resource description as a Unicode string.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitemresources-getresourcedescription
-		// HRESULT GetResourceDescription( const SHELL_ITEM_RESOURCE *pcsir, LPWSTR *ppszDescription );
+		// HRESULT GetResourceDescription( const SHELL_ITEM_RESOURCE *pcsir, StrPtrUni *ppszDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetResourceDescription(in SHELL_ITEM_RESOURCE pcsir);
 
@@ -176,7 +176,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitemresources-openresource HRESULT
 		// OpenResource( const SHELL_ITEM_RESOURCE *pcsir, REFIID riid, void **ppv );
-		void OpenResource(in SHELL_ITEM_RESOURCE pcsir, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		void OpenResource(in SHELL_ITEM_RESOURCE pcsir, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Creates a specified resource.</summary>
 		/// <param name="pcsir">
@@ -193,7 +193,7 @@ public static partial class Shell32
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitemresources-createresource HRESULT
 		// CreateResource( const SHELL_ITEM_RESOURCE *pcsir, REFIID riid, void **ppv );
-		void CreateResource(in SHELL_ITEM_RESOURCE pcsir, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		void CreateResource(in SHELL_ITEM_RESOURCE pcsir, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Marks for delete.</summary>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitemresources-markfordelete HRESULT MarkForDelete();

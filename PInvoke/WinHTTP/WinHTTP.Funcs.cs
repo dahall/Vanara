@@ -28,12 +28,12 @@ public static partial class WinHTTP
 	/// <para>Closing the connection to the server. The <c>lpvStatusInformation</c> parameter is <c>NULL</c>.</para>
 	/// <para>WINHTTP_CALLBACK_STATUS_CONNECTED_TO_SERVER</para>
 	/// <para>
-	/// Successfully connected to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>LPWSTR</c> that
+	/// Successfully connected to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>StrPtrUni</c> that
 	/// indicates the IP address of the server in dotted notation.
 	/// </para>
 	/// <para>WINHTTP_CALLBACK_STATUS_CONNECTING_TO_SERVER</para>
 	/// <para>
-	/// Connecting to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>LPWSTR</c> that indicates the IP
+	/// Connecting to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>StrPtrUni</c> that indicates the IP
 	/// address of the server in dotted notation.
 	/// </para>
 	/// <para>WINHTTP_CALLBACK_STATUS_CONNECTION_CLOSED</para>
@@ -61,7 +61,7 @@ public static partial class WinHTTP
 	/// </para>
 	/// <para>WINHTTP_CALLBACK_STATUS_NAME_RESOLVED</para>
 	/// <para>
-	/// Successfully found the IP address of the server. The <c>lpvStatusInformation</c> parameter contains a pointer to a <c>LPWSTR</c>
+	/// Successfully found the IP address of the server. The <c>lpvStatusInformation</c> parameter contains a pointer to a <c>StrPtrUni</c>
 	/// that indicates the name that was resolved.
 	/// </para>
 	/// <para>WINHTTP_CALLBACK_STATUS_READ_COMPLETE</para>
@@ -78,7 +78,7 @@ public static partial class WinHTTP
 	/// <para>WINHTTP_CALLBACK_STATUS_REDIRECT</para>
 	/// <para>
 	/// An HTTP request is about to automatically redirect the request. The <c>lpvStatusInformation</c> parameter contains a pointer to
-	/// an <c>LPWSTR</c> indicating the new URL. At this point, the application can read any data returned by the server with the
+	/// an <c>StrPtrUni</c> indicating the new URL. At this point, the application can read any data returned by the server with the
 	/// redirect response and can query the response headers. It can also cancel the operation by closing the handle.
 	/// </para>
 	/// <para>WINHTTP_CALLBACK_STATUS_REQUEST_ERROR</para>
@@ -178,7 +178,7 @@ public static partial class WinHTTP
 	/// </param>
 	/// <param name="dwStatusInformationLength">
 	/// <c>WINHTTP_CALLBACK_STATUS_REDIRECT</c> status callbacks provide a <c>dwStatusInformationLength</c> value that corresponds to the
-	/// character count of the <c>LPWSTR</c> pointed to by <c>lpvStatusInformation</c>.
+	/// character count of the <c>StrPtrUni</c> pointed to by <c>lpvStatusInformation</c>.
 	/// </param>
 	/// <returns>None</returns>
 	/// <remarks>
@@ -896,7 +896,7 @@ public static partial class WinHTTP
 	/// <para>Examples</para>
 	/// <para>This example shows how to break a URL into its components, update a component, then reconstruct the URL.</para>
 	/// <para>
-	/// <code> URL_COMPONENTS urlComp; LPCWSTR pwszUrl1 = L"http://search.msn.com/results.asp?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=wininet"; DWORD dwUrlLen = 0; // Initialize the URL_COMPONENTS structure. ZeroMemory(&amp;urlComp, sizeof(urlComp)); urlComp.dwStructSize = sizeof(urlComp); // Set required component lengths to non-zero // so that they are cracked. urlComp.dwSchemeLength = (DWORD)-1; urlComp.dwHostNameLength = (DWORD)-1; urlComp.dwUrlPathLength = (DWORD)-1; urlComp.dwExtraInfoLength = (DWORD)-1; // Crack the URL. if (!WinHttpCrackUrl( pwszUrl1, (DWORD)wcslen(pwszUrl1), 0, &amp;urlComp)) { printf("Error %u in WinHttpCrackUrl.\n", GetLastError()); } else { // Change the search information. // New info is the same length. urlComp.lpszExtraInfo = L"?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=winhttp"; // Obtain the size of the new URL and allocate memory. WinHttpCreateUrl( &amp;urlComp, 0, NULL, &amp;dwUrlLen); LPWSTR pwszUrl2 = new WCHAR[dwUrlLen]; // Create a new URL. if(!WinHttpCreateUrl( &amp;urlComp, 0, pwszUrl2, &amp;dwUrlLen)) { printf("Error %u in WinHttpCreateUrl.\n", GetLastError()); } else { // Show both URLs. printf("Old URL: %S\nNew URL: %S\n", pwszUrl1, pwszUrl2); } // Free allocated memory. delete [] pwszUrl2; }</code>
+	/// <code> URL_COMPONENTS urlComp; LPCWSTR pwszUrl1 = L"http://search.msn.com/results.asp?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=wininet"; DWORD dwUrlLen = 0; // Initialize the URL_COMPONENTS structure. ZeroMemory(&amp;urlComp, sizeof(urlComp)); urlComp.dwStructSize = sizeof(urlComp); // Set required component lengths to non-zero // so that they are cracked. urlComp.dwSchemeLength = (DWORD)-1; urlComp.dwHostNameLength = (DWORD)-1; urlComp.dwUrlPathLength = (DWORD)-1; urlComp.dwExtraInfoLength = (DWORD)-1; // Crack the URL. if (!WinHttpCrackUrl( pwszUrl1, (DWORD)wcslen(pwszUrl1), 0, &amp;urlComp)) { printf("Error %u in WinHttpCrackUrl.\n", GetLastError()); } else { // Change the search information. // New info is the same length. urlComp.lpszExtraInfo = L"?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=winhttp"; // Obtain the size of the new URL and allocate memory. WinHttpCreateUrl( &amp;urlComp, 0, NULL, &amp;dwUrlLen); StrPtrUni pwszUrl2 = new WCHAR[dwUrlLen]; // Create a new URL. if(!WinHttpCreateUrl( &amp;urlComp, 0, pwszUrl2, &amp;dwUrlLen)) { printf("Error %u in WinHttpCreateUrl.\n", GetLastError()); } else { // Show both URLs. printf("Old URL: %S\nNew URL: %S\n", pwszUrl1, pwszUrl2); } // Free allocated memory. delete [] pwszUrl2; }</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpcrackurl BOOL WinHttpCrackUrl( [in] LPCWSTR pwszUrl,
@@ -1005,11 +1005,11 @@ public static partial class WinHTTP
 	/// The following example shows how to decompile, or crack, a URL into its subcomponents, update a component, then reconstruct the URL.
 	/// </para>
 	/// <para>
-	/// <code> URL_COMPONENTS urlComp; LPCWSTR pwszUrl1 = L"http://search.msn.com/results.asp?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=wininet"; DWORD dwUrlLen = 0; // Initialize the URL_COMPONENTS structure. ZeroMemory(&amp;urlComp, sizeof(urlComp)); urlComp.dwStructSize = sizeof(urlComp); // Set required component lengths to non-zero, // so that they are cracked. urlComp.dwSchemeLength = (DWORD)-1; urlComp.dwHostNameLength = (DWORD)-1; urlComp.dwUrlPathLength = (DWORD)-1; urlComp.dwExtraInfoLength = (DWORD)-1; // Crack the URL. if (!WinHttpCrackUrl( pwszUrl1, (DWORD)wcslen(pwszUrl1), 0, &amp;urlComp)) { printf("Error %u in WinHttpCrackUrl.\n", GetLastError()); } else { // Change the search data. New data is the same length. urlComp.lpszExtraInfo = L"?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=winhttp"; // Obtain the size of the new URL and allocate memory. WinHttpCreateUrl( &amp;urlComp, 0, NULL, &amp;dwUrlLen); LPWSTR pwszUrl2 = new WCHAR[dwUrlLen]; // Create a new URL. if(!WinHttpCreateUrl( &amp;urlComp, 0, pwszUrl2, &amp;dwUrlLen)) { printf( "Error %u in WinHttpCreateUrl.\n", GetLastError()); } else { // Show both URLs. printf( "Old URL: %S\nNew URL: %S\n", pwszUrl1, pwszUrl2); } // Free allocated memory. delete [] pwszUrl2; }</code>
+	/// <code> URL_COMPONENTS urlComp; LPCWSTR pwszUrl1 = L"http://search.msn.com/results.asp?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=wininet"; DWORD dwUrlLen = 0; // Initialize the URL_COMPONENTS structure. ZeroMemory(&amp;urlComp, sizeof(urlComp)); urlComp.dwStructSize = sizeof(urlComp); // Set required component lengths to non-zero, // so that they are cracked. urlComp.dwSchemeLength = (DWORD)-1; urlComp.dwHostNameLength = (DWORD)-1; urlComp.dwUrlPathLength = (DWORD)-1; urlComp.dwExtraInfoLength = (DWORD)-1; // Crack the URL. if (!WinHttpCrackUrl( pwszUrl1, (DWORD)wcslen(pwszUrl1), 0, &amp;urlComp)) { printf("Error %u in WinHttpCrackUrl.\n", GetLastError()); } else { // Change the search data. New data is the same length. urlComp.lpszExtraInfo = L"?RS=CHECKED&amp;FORM=MSNH&amp;v=1&amp;q=winhttp"; // Obtain the size of the new URL and allocate memory. WinHttpCreateUrl( &amp;urlComp, 0, NULL, &amp;dwUrlLen); StrPtrUni pwszUrl2 = new WCHAR[dwUrlLen]; // Create a new URL. if(!WinHttpCreateUrl( &amp;urlComp, 0, pwszUrl2, &amp;dwUrlLen)) { printf( "Error %u in WinHttpCreateUrl.\n", GetLastError()); } else { // Show both URLs. printf( "Old URL: %S\nNew URL: %S\n", pwszUrl1, pwszUrl2); } // Free allocated memory. delete [] pwszUrl2; }</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpcreateurl BOOL WinHttpCreateUrl( [in]
-	// LPURL_COMPONENTS lpUrlComponents, [in] DWORD dwFlags, [out] LPWSTR pwszUrl, [in, out] LPDWORD pdwUrlLength );
+	// LPURL_COMPONENTS lpUrlComponents, [in] DWORD dwFlags, [out] StrPtrUni pwszUrl, [in, out] LPDWORD pdwUrlLength );
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpCreateUrl")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1079,7 +1079,7 @@ public static partial class WinHTTP
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/nf-winhttp-winhttpdetectautoproxyconfigurl BOOL
-	// WinHttpDetectAutoProxyConfigUrl( [in] DWORD dwAutoDetectFlags, [out] LPWSTR *ppwstrAutoConfigUrl );
+	// WinHttpDetectAutoProxyConfigUrl( [in] DWORD dwAutoDetectFlags, [out] StrPtrUni *ppwstrAutoConfigUrl );
 	[DllImport(Lib_Winhttp, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winhttp.h", MSDNShortId = "NF:winhttp.WinHttpDetectAutoProxyConfigUrl")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1653,7 +1653,7 @@ public static partial class WinHTTP
 	/// <item>
 	/// <term><c>WINHTTP_FLAG_ESCAPE_PERCENT</c></term>
 	/// <term>
-	/// The string passed in for <c>pwszObjectName</c> is converted from an <c>LPCWSTR</c> to an <c>LPSTR</c>. All unsafe characters are
+	/// The string passed in for <c>pwszObjectName</c> is converted from an <c>LPCWSTR</c> to an <c>StrPtrAnsi</c>. All unsafe characters are
 	/// converted to an escape sequence including the percent symbol. By default, all unsafe characters except the percent symbol are
 	/// converted to an escape sequence.
 	/// </term>

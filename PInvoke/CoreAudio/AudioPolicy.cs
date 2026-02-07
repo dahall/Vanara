@@ -98,7 +98,7 @@ public static partial class CoreAudio
 		/// control for the audio session.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-getdisplayname HRESULT
-		// GetDisplayName( LPWSTR *pRetVal );
+		// GetDisplayName( StrPtrUni *pRetVal );
 		SafeCoTaskMemString GetDisplayName();
 
 		/// <summary>The <c>SetDisplayName</c> method assigns a display name to the current session.</summary>
@@ -151,7 +151,7 @@ public static partial class CoreAudio
 		/// volume control for the audio session.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-geticonpath HRESULT
-		// GetIconPath( LPWSTR *pRetVal );
+		// GetIconPath( StrPtrUni *pRetVal );
 		SafeCoTaskMemString GetIconPath();
 
 		/// <summary>The <c>SetIconPath</c> method assigns a display icon to the current session.</summary>
@@ -445,7 +445,7 @@ public static partial class CoreAudio
 		/// control for the audio session.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-getdisplayname HRESULT
-		// GetDisplayName( LPWSTR *pRetVal );
+		// GetDisplayName( StrPtrUni *pRetVal );
 		new SafeCoTaskMemString GetDisplayName();
 
 		/// <summary>The <c>SetDisplayName</c> method assigns a display name to the current session.</summary>
@@ -498,7 +498,7 @@ public static partial class CoreAudio
 		/// volume control for the audio session.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-geticonpath HRESULT
-		// GetIconPath( LPWSTR *pRetVal );
+		// GetIconPath( StrPtrUni *pRetVal );
 		new SafeCoTaskMemString GetIconPath();
 
 		/// <summary>The <c>SetIconPath</c> method assigns a display icon to the current session.</summary>
@@ -708,7 +708,7 @@ public static partial class CoreAudio
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessionidentifier
-		// HRESULT GetSessionIdentifier( LPWSTR *pRetVal );
+		// HRESULT GetSessionIdentifier( StrPtrUni *pRetVal );
 		SafeCoTaskMemString GetSessionIdentifier();
 
 		/// <summary>The <c>GetSessionInstanceIdentifier</c> method retrieves the identifier of the audio session instance.</summary>
@@ -729,7 +729,7 @@ public static partial class CoreAudio
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessioninstanceidentifier
-		// HRESULT GetSessionInstanceIdentifier( LPWSTR *pRetVal );
+		// HRESULT GetSessionInstanceIdentifier( StrPtrUni *pRetVal );
 		SafeCoTaskMemString GetSessionInstanceIdentifier();
 
 		/// <summary>The <c>GetProcessId</c> method retrieves the process identifier of the audio session.</summary>

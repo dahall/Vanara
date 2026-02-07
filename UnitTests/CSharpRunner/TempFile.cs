@@ -16,7 +16,7 @@ public class TempFile : IDisposable
 	/// <param name="dwCreationDisposition">The creation disposition.</param>
 	/// <param name="dwFlagsAndAttributes">The flags and attributes.</param>
 	public TempFile(Kernel32.FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition = FileMode.OpenOrCreate,
-		FileFlagsAndAttributes dwFlagsAndAttributes = FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL) : this(string.Empty) =>
+		FileFlagsAndAttributes dwFlagsAndAttributes = FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, string? contents = tmpstr) : this(contents) =>
 		hFile = CreateFile(FullName, dwDesiredAccess, dwShareMode, null, dwCreationDisposition, dwFlagsAndAttributes, IntPtr.Zero);
 
 	/// <summary>Initializes a new instance of the <see cref="TempFile"/> class with the specified contents.</summary>

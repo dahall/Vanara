@@ -1,0 +1,9 @@
+﻿<Project xmlns="http://schemas.microsoft.com">
+  <!-- Condition to apply only for Windows x64 targets -->
+  <ItemGroup Condition="('$(Platform)' == 'x64' OR '$(RuntimeIdentifier)' == 'win-x64') AND '$(OS)' == 'Windows_NT'">
+    <Reference Include="Vanara.PInvoke.VssApiMgd">
+      <HintPath>$(MSBuildThisFileDirectory)..\runtimes\win-x64\lib\net8.0-windows7.0\Vanara.PInvoke.VssApiMgd.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

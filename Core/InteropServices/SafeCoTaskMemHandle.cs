@@ -76,7 +76,7 @@ public sealed class CoTaskMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
+public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>, ISafeMemoryHandleFactory
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -89,13 +89,23 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeCoTaskMemHandle(SizeT size) : base(size) { }
 
-	/// <summary>
-	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-	/// array equivalent.
-	/// </summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeCoTaskMemHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	public SafeCoTaskMemHandle(byte[] bytes) : base(bytes) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	public SafeCoTaskMemHandle(Span<byte> bytes) : base(bytes) { }
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -105,7 +115,7 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 	/// <returns>SafeCoTaskMemHandle object to an native (unmanaged) array of pointers</returns>
 	public SafeCoTaskMemHandle(IntPtr[] values) : base(values) { }
 
-	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 	/// <param name="s">The string value.</param>
 	/// <returns>SafeCoTaskMemHandle object to an native (unmanaged) Unicode string</returns>
 	public SafeCoTaskMemHandle(string s) : base(s) { }
@@ -116,6 +126,15 @@ public class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
 
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeCoTaskMemHandle Null => new(IntPtr.Zero, 0, false);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCoTaskMemHandle(handle, size, ownsHandle);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCoTaskMemHandle(bytes);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeCoTaskMemHandle(size);
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

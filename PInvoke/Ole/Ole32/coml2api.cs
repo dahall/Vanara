@@ -836,11 +836,11 @@ public static partial class Ole32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgcreatestorageex HRESULT StgCreateStorageEx( const
 	// WCHAR *pwcsName, DWORD grfMode, DWORD stgfmt, DWORD grfAttrs, STGOPTIONS *pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor,
 	// REFIID riid, void **ppObjectOpen );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
 	[PInvokeData("coml2api.h", MSDNShortId = "6442977d-e980-419e-abe9-9d15dbb045c1")]
 	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
 		FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppObjectOpen);
 
 	/// <summary>
 	/// <para>
@@ -987,7 +987,7 @@ public static partial class Ole32
 	[PInvokeData("coml2api.h", MSDNShortId = "6442977d-e980-419e-abe9-9d15dbb045c1")]
 	public static extern HRESULT StgCreateStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
 		FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppObjectOpen);
 
 	/// <summary>The <c>StgIsStorageFile</c> function indicates whether a particular disk file contains a storage object.</summary>
 	/// <param name="pwcsName">
@@ -1294,11 +1294,11 @@ public static partial class Ole32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/coml2api/nf-coml2api-stgopenstorageex HRESULT StgOpenStorageEx( const WCHAR
 	// *pwcsName, DWORD grfMode, DWORD stgfmt, DWORD grfAttrs, STGOPTIONS *pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor, REFIID
 	// riid, void **ppObjectOpen );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
 	[PInvokeData("coml2api.h", MSDNShortId = "4f2138fb-1f80-4345-a3cb-9c11023457b1")]
 	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
 		FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppObjectOpen);
 
 	/// <summary>
 	/// <para>
@@ -1422,7 +1422,7 @@ public static partial class Ole32
 	[PInvokeData("coml2api.h", MSDNShortId = "4f2138fb-1f80-4345-a3cb-9c11023457b1")]
 	public static extern HRESULT StgOpenStorageEx([In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwcsName, STGM grfMode, STGFMT stgfmt,
 		FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppObjectOpen);
 
 	/// <summary>
 	/// The <c>StgOpenStorageOnILockBytes</c> function opens an existing storage object that does not reside in a disk file, but instead

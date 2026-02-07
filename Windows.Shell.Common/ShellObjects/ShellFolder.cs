@@ -127,6 +127,10 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		}
 	}
 
+	/// <inheritdoc/>
+	public override ShellContextMenu ContextMenu =>
+		menu ??= AddDisposable(new ShellContextMenu(IShellFolder.CreateViewObject<IContextMenu>(HWND.NULL)!));
+
 	/// <summary>Gets the underlying <see cref="IShellFolder"/> instance.</summary>
 	/// <value>The underlying <see cref="IShellFolder"/> instance.</value>
 	public IShellFolder IShellFolder => iShellFolder;
@@ -163,15 +167,6 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// </param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 	public T? BindToStorage<T>(PIDL relativePidl, IBindCtx? bindCtx = null) where T : class => iShellFolder.BindToStorage<T>(relativePidl, bindCtx);
-
-	/// <summary>
-	/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-	/// </summary>
-	public override void Dispose()
-	{
-		GC.SuppressFinalize(this);
-		base.Dispose();
-	}
 
 	/// <summary>Gets the registered categorizers.</summary>
 	/// <value>The categorizers.</value>
@@ -256,9 +251,30 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		return this[newPidl];
 	}
 
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		if (iShellFolder is not null)
+		{
+			Marshal.FinalReleaseComObject(iShellFolder);
+			iShellFolder = null!;
+		}
+		categories?.Dispose();
+		categories = null;
+		base.Dispose(disposing);
+	}
+
+	/// <inheritdoc/>
+	protected override void Init(IShellItem? si)
+	{
+		base.Init(si);
+		iShellFolder = GetInstance();
+	}
+
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
+	IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
 }

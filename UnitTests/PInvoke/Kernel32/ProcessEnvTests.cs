@@ -9,9 +9,8 @@ public class ProcessEnvTests
 	[Test]
 	public void ExpandEnvironmentStringsTest()
 	{
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(ExpandEnvironmentStrings("%USERDOMAIN%", sb, MAX_PATH), Is.Not.Zero);
-		Assert.That(sb.ToString(), Is.EqualTo("AMERICAS"));
+		Assert.That(ExpandEnvironmentStrings("%USERDOMAIN%", out var sb), Is.Not.Zero);
+		Assert.That(sb, Is.EqualTo(Environment.UserDomainName));
 	}
 
 	[Test]
@@ -33,18 +32,16 @@ public class ProcessEnvTests
 	[Test]
 	public void GetSetCurrentDirectoryTest()
 	{
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(GetCurrentDirectory((uint)sb.Capacity, sb), Is.GreaterThan(0));
-		Assert.That(sb.ToString().StartsWith("C:"));
+		Assert.That(GetCurrentDirectory(out var sb), Is.GreaterThan(0));
+		Assert.That(sb!.StartsWith("C:"));
 		TestContext.WriteLine(sb);
 
 		Assert.That(SetCurrentDirectory(TestCaseSources.TempDir), Is.True);
 
-		StringBuilder sb2 = new(MAX_PATH);
-		Assert.That(GetCurrentDirectory((uint)sb2.Capacity, sb2), Is.GreaterThan(0));
-		Assert.That(sb2.ToString(), Is.EqualTo(TestCaseSources.TempDir));
+		Assert.That(GetCurrentDirectory(out var sb2), Is.GreaterThan(0));
+		Assert.That(sb2, Is.EqualTo(TestCaseSources.TempDir));
 
-		Assert.That(SetCurrentDirectory(sb.ToString()));
+		Assert.That(SetCurrentDirectory(sb));
 	}
 
 	[Test]
@@ -53,9 +50,8 @@ public class ProcessEnvTests
 		string str = System.IO.Path.GetRandomFileName();
 		Assert.That(SetEnvironmentVariable(str, "Value"), Is.True);
 
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(GetEnvironmentVariable(str, sb, (uint)sb.Capacity), Is.Not.Zero);
-		Assert.That(sb.ToString(), Is.EqualTo("Value"));
+		Assert.That(GetEnvironmentVariable(str, out var sb), Is.Not.Zero);
+		Assert.That(sb, Is.EqualTo("Value"));
 
 		Assert.That(SetEnvironmentVariable(str), Is.True);
 	}
@@ -78,9 +74,9 @@ public class ProcessEnvTests
 	[Test]
 	public void SearchPathTest()
 	{
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(SearchPath(null, "notepad.exe", null, (uint)sb.Capacity, sb, out StrPtrAuto ptr), Is.Not.Zero);
-		Assert.That(sb.ToString().StartsWith("C:"));
-		Assert.That(ptr.ToString(), Is.EqualTo("notepad.exe"));
+		string? sb;
+		Assert.That(sb = SearchPath(null, "notepad.exe", null, out var idx), Is.Not.Null);
+		Assert.That(sb!.StartsWith("C:"));
+		Assert.That(sb.Substring(idx), Is.EqualTo("notepad.exe"));
 	}
 }

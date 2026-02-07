@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.Dcomp</AssemblyName>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\Dcomp\Vanara.PInvoke.Dcomp.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\Direct3D11\Vanara.PInvoke.Direct3D11.csproj" />
+    <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+  </ItemGroup>
+</Project>

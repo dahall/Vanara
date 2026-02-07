@@ -40,7 +40,11 @@ public static partial class Gdi32
 		}
 
 		/// <inheritdoc/>
-		void IDisposable.Dispose() => SelectObject(hDC, hOld);
+		void IDisposable.Dispose()
+		{
+			SelectObject(hDC, hOld);
+			GC.SuppressFinalize(this);
+		}
 	}
 
 	/// <summary>A safe handle for a graphics object that releases at disposal using DeleteObject.</summary>

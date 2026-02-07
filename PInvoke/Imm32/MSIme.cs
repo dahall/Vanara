@@ -1252,7 +1252,7 @@ public static partial class Imm32
 		// **ppResult );
 		[PreserveSig]
 		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string? pwchInput,
-			[MarshalAs(UnmanagedType.LPArray)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
 
 		/// <summary>Gets the conversion mode capability of the IFELanguage object.</summary>
 		/// <param name="pdwCaps">
@@ -1382,7 +1382,7 @@ public static partial class Imm32
 	}
 
 	/// <summary>Used when invoking the Microsoft IME's Dictionary Tool or Word Register Dialog Window from the app.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/msime/ns-msime-imedlg typedef struct _IMEDLG { int cbIMEDLG; HWND hwnd; LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/msime/ns-msime-imedlg typedef struct _IMEDLG { int cbIMEDLG; HWND hwnd; StrPtrUni
 	// lpwstrWord; int nTabId; } IMEDLG;
 	[PInvokeData("msime.h", MSDNShortId = "NS:msime._IMEDLG")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1409,7 +1409,7 @@ public static partial class Imm32
 		/// <param name="tabId">The initial tab ID, 0 or 1.</param>
 		public IMEDLG(HWND hwnd, string? display = null, int tabId = 0)
 		{
-			cbIMEDLG = Marshal.SizeOf(typeof(IMEDLG));
+			cbIMEDLG = Marshal.SizeOf<IMEDLG>();
 			this.hwnd = hwnd;
 			lpwstrWord = display;
 			nTabId = tabId;

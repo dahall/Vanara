@@ -74,7 +74,7 @@ public static partial class User32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nc-winuser-propenumprocexa PROPENUMPROCEXA Propenumprocexa; BOOL
-	// Propenumprocexa( HWND Arg1, LPSTR Arg2, HANDLE Arg3, ULONG_PTR Arg4 ) {...}
+	// Propenumprocexa( HWND Arg1, StrPtrAnsi Arg2, HANDLE Arg3, ULONG_PTR Arg4 ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winuser.h", MSDNShortId = "propenumprocex")]
 	[return: MarshalAs(UnmanagedType.Bool)]

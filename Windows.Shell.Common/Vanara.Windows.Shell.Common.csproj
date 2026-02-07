@@ -10,7 +10,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-AddExtenderEventArgs, AppRegistration, AppSettingsFileListStorage, BindContext, ComClassFactory, CommandVerb, CommandVerbDictionary, ComObject, ComObjWrapper&lt;T&gt;, ControlPanel, DragEventArgs, ExtenderProviderBase&lt;T&gt;, FileInUseHandler, FileTypeAssociation, IconLocation, JumpList, JumpListDestination, JumpListItem, JumpListSeparator, JumpListTask, MemoryPropertyStore, MenuItemInfo, MessageEventArgs, MessageLoop, MRUManager, NativeClipboard, ProgId, PropertyBag, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RecycleBin, RegBasedDictionary&lt;T&gt;, RegBasedSettings, RegistryFileListStorage, SearchCondition, ShellAssociation, ShellAssociationHandler, ShellCommand, ShellContextMenu, ShellDataTable, ShellDropTarget, ShellExecuteCommand, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperationDialog, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellFolderCategorizer, ShellFolderCategory, ShellIconExtractedEventArgs, ShellIconExtractor, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemImages, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellNavigationHistory, ShellRegistrar, ShellSearch, ShellSearchViewSettings, StockIcon, Taskbar, TaskbarList, TrayIcon, Utils, WallpaperManager, WallpaperMonitor, WallpaperSlideshow
+AddExtenderEventArgs, AppRegistration, AppSettingsFileListStorage, BindContext, ComClassFactory, CommandVerb, CommandVerbDictionary, ComObject, ComObjWrapper&lt;T&gt;, ControlPanel, DragEventArgs, ExtenderProviderBase&lt;T&gt;, FileInUseHandler, FileTypeAssociation, IconLocation, JumpList, JumpListDestination, JumpListItem, JumpListSeparator, JumpListTask, MemoryPropertyStore, MenuCreatedEventArgs, MenuItemInfo, MessageEventArgs, MessageLoop, MRUManager, NativeClipboard, ProgId, PropertyBag, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RecycleBin, RegBasedDictionary&lt;T&gt;, RegBasedSettings, RegistryFileListStorage, SearchCondition, ShellAssociation, ShellAssociationHandler, ShellCommand, ShellContextMenu, ShellDataTable, ShellDropTarget, ShellExecuteCommand, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperationDialog, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellFolderCategorizer, ShellFolderCategory, ShellIconExtractedEventArgs, ShellIconExtractor, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemImages, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellNavigationHistory, ShellRegistrar, ShellSearch, ShellSearchViewSettings, StockIcon, Taskbar, TaskbarList, TrayIcon, Utils, WallpaperManager, WallpaperMonitor, WallpaperSlideshow
 
 Enumerations
 ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, MenuPlacement, OperationFlags, OperationMode, OperationType, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TaskbarButtonProgressState, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel, WallpaperFit
@@ -18,18 +18,15 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(NET40_OR_GREATER) ">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
-  <ItemGroup Condition=" !$(TargetFramework.StartsWith('net4')) ">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' " />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) " />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.5" Condition=" !$(TargetFramework.StartsWith('netcore')) And !$(TargetFramework.StartsWith('net5')) " />
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) " />
-    <PackageReference Include="System.Security.Permissions" Version="6.0.0" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' " />
-    <PackageReference Include="System.Security.Permissions" Version="8.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />
+  <ItemGroup Condition=" !$(NET40_OR_GREATER) ">
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="System.Drawing.Common" Condition=" $(DRAWING_COMMON_COND) " />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Condition=" $(ACCESSCTRL_COND) " />
+    <PackageReference Include="System.Security.Permissions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj" />

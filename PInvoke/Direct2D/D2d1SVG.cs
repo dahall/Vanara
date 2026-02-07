@@ -889,7 +889,7 @@ public static partial class D2d1
 
 		/// <summary>Gets the tag name.</summary>
 		/// <param name="name">
-		/// <para>Type: <b>PWSTR</b></para>
+		/// <para>Type: <b>StrPtrUni</b></para>
 		/// <para>The tag name.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -900,7 +900,7 @@ public static partial class D2d1
 		/// <para>Type: <b><c>HRESULT</c></b></para>
 		/// <para>This method returns an HRESULT success or error code.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-gettagname HRESULT GetTagName( [out] PWSTR
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-gettagname HRESULT GetTagName( [out] StrPtrUni
 		// name, UINT32 nameCount );
 		void GetTagName([In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
@@ -1108,7 +1108,7 @@ public static partial class D2d1
 		/// <para>The index of the attribute.</para>
 		/// </param>
 		/// <param name="name">
-		/// <para>Type: <b>PWSTR</b></para>
+		/// <para>Type: <b>StrPtrUni</b></para>
 		/// <para>Outputs the name of the attribute.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -1120,7 +1120,7 @@ public static partial class D2d1
 		/// <para>Outputs whether the attribute is set to the inherit value.</para>
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-getspecifiedattributename HRESULT
-		// GetSpecifiedAttributeName( UINT32 index, [out] PWSTR name, UINT32 nameCount, [out, optional] BOOL *inherited );
+		// GetSpecifiedAttributeName( UINT32 index, [out] StrPtrUni name, UINT32 nameCount, [out, optional] BOOL *inherited );
 		void GetSpecifiedAttributeName(uint index, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount, out bool inherited);
 
 		/// <summary>
@@ -1164,7 +1164,7 @@ public static partial class D2d1
 
 		/// <summary>Gets the value of a text content element.</summary>
 		/// <param name="name">
-		/// <para>Type: <b>PWSTR</b></para>
+		/// <para>Type: <b>StrPtrUni</b></para>
 		/// <para>The value of the text content element.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -1172,7 +1172,7 @@ public static partial class D2d1
 		/// <para>The length of the value in the name argument.</para>
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-gettextvalue HRESULT GetTextValue( [out]
-		// PWSTR name, UINT32 nameCount );
+		// StrPtrUni name, UINT32 nameCount );
 		void GetTextValue([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
 		/// <summary>Gets the length of the text content value.</summary>
@@ -1211,7 +1211,7 @@ public static partial class D2d1
 		/// <para>The string type.</para>
 		/// </param>
 		/// <param name="value">
-		/// <para>Type: [out] <b>PWSTR</b></para>
+		/// <para>Type: [out] <b>StrPtrUni</b></para>
 		/// <para>The value of the attribute.</para>
 		/// </param>
 		/// <param name="valueCount">
@@ -1219,7 +1219,7 @@ public static partial class D2d1
 		/// <para>The number of elements in the returned value.</para>
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-getattributevalue(pcwstr_d2d1_svg_attribute_string_type_pwstr_uint32)
-		// HRESULT GetAttributeValue( PCWSTR name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, PWSTR value, UINT32 valueCount );
+		// HRESULT GetAttributeValue( PCWSTR name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type, StrPtrUni value, UINT32 valueCount );
 		[PreserveSig]
 		HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, D2D1_SVG_ATTRIBUTE_STRING_TYPE type,
 			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder value, uint valueCount);
@@ -1324,7 +1324,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-getattributevalue(pcwstr_refiid_void)
 		// HRESULT GetAttributeValue( [in] PCWSTR name, [in] REFIID riid, void **value );
 		[PreserveSig]
-		HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? value);
+		HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? value);
 	}
 
 	/// <summary>Interface describing an SVG fill or stroke value.</summary>
@@ -1413,11 +1413,11 @@ public static partial class D2d1
 
 		/// <summary>Gets the element id which acts as the paint server. This id is used if the paint type is D2D1_SVG_PAINT_TYPE_URI.</summary>
 		/// <param name="id">
-		/// <para>Type: <b>PWSTR</b></para>
+		/// <para>Type: <b>StrPtrUni</b></para>
 		/// <para>The element id which acts as the paint server.</para>
 		/// </param>
 		/// <param name="idCount">Type: <b>UINT32</b></param>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpaint-getid HRESULT GetId( [out] PWSTR id, UINT32
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpaint-getid HRESULT GetId( [out] StrPtrUni id, UINT32
 		// idCount );
 		void GetId([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder id, uint idCount);
 
@@ -1562,7 +1562,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpathdata-updatecommands HRESULT UpdateCommands(
 		// [in] const D2D1_SVG_PATH_COMMAND *commands, UINT32 commandsCount, UINT32 startIndex );
-		void UpdateCommands([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
+		void UpdateCommands([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
 
 		/// <summary>Gets commands from the commands array.</summary>
 		/// <param name="commands">
@@ -1827,22 +1827,6 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgstrokedasharray-getdashescount UINT32 GetDashesCount();
 		[PreserveSig]
 		uint GetDashesCount();
-	}
-
-	/// <summary>Gets an attribute of this element as an interface type.</summary>
-	/// <typeparam name="T">The type of the requested interface.</typeparam>
-	/// <param name="elem">The <see cref="ID2D1SvgElement"/> instance.</param>
-	/// <param name="name">The name of the attribute.</param>
-	/// <param name="value">The value of the attribute.</param>
-	/// <returns>
-	/// This method returns an HRESULT success or error code. Returns an error if the attribute name is not valid on this element. Returns
-	/// an error if the attribute cannot be expressed as the specified string type. Returns an error if the attribute is not specified.
-	/// </returns>
-	public static HRESULT GetAttributeValue<T>(this ID2D1SvgElement elem, string name, out T? value) where T : ID2D1SvgAttribute
-	{
-		var hr = elem.GetAttributeValue(name, typeof(T).GUID, out var obj);
-		value = hr.Succeeded ? (T)obj! : default;
-		return hr;
 	}
 
 	/// <summary>Gets an attribute of this element as an interface type.</summary>

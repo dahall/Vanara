@@ -1157,7 +1157,7 @@ public static partial class Mpr
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WNetAddConnection3( _In_ HWND hwndOwner, _In_ LPNETRESOURCE lpNetResource, _In_ LPTSTR lpPassword, _In_ LPTSTR lpUserName,
+	// DWORD WNetAddConnection3( _In_ HWND hwndOwner, _In_ LPNETRESOURCE lpNetResource, _In_ StrPtrAuto lpPassword, _In_ StrPtrAuto lpUserName,
 	// _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385418(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385418")]
@@ -1643,7 +1643,7 @@ public static partial class Mpr
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WNetGetConnection( _In_ LPCTSTR lpLocalName, _Out_ LPTSTR lpRemoteName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385453(v=vs.85).aspx
+	// DWORD WNetGetConnection( _In_ LPCTSTR lpLocalName, _Out_ StrPtrAuto lpRemoteName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385453(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385453")]
 	public static extern Win32Error WNetGetConnection(string lpLocalName, StringBuilder? lpRemoteName, ref uint lpnLength);
@@ -1671,7 +1671,7 @@ public static partial class Mpr
 	/// <para>If the function succeeds, and it obtains the last error that the network provider reported, the return value is NO_ERROR.</para>
 	/// <para>If the caller supplies an invalid buffer, the return value is ERROR_INVALID_ADDRESS.</para>
 	/// </returns>
-	// DWORD WNetGetLastError( _Out_ LPDWORD lpError, _Out_ LPTSTR lpErrorBuf, _In_ DWORD nErrorBufSize, _Out_ LPTSTR lpNameBuf, _In_
+	// DWORD WNetGetLastError( _Out_ LPDWORD lpError, _Out_ StrPtrAuto lpErrorBuf, _In_ DWORD nErrorBufSize, _Out_ StrPtrAuto lpNameBuf, _In_
 	// DWORD nNameBufSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385459(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385459")]
@@ -1752,7 +1752,7 @@ public static partial class Mpr
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WNetGetProviderName( _In_ DWORD dwNetType, _Out_ LPTSTR lpProviderName, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385464(v=vs.85).aspx
+	// DWORD WNetGetProviderName( _In_ DWORD dwNetType, _Out_ StrPtrAuto lpProviderName, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385464(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385464")]
 	public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, StringBuilder? lpProviderName, ref uint lpBufferSize);
@@ -1840,7 +1840,7 @@ public static partial class Mpr
 	/// </para>
 	/// </returns>
 	// DWORD WNetGetResourceInformation( _In_ LPNETRESOURCE lpNetResource, _Out_ LPVOID lpBuffer, _Inout_ LPDWORD lpcbBuffer, _Out_
-	// LPTSTR *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
+	// StrPtrAuto *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385469")]
 	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out StrPtrAuto lplpSystem);
@@ -2099,7 +2099,7 @@ public static partial class Mpr
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WNetGetUser( _In_ LPCTSTR lpName, _Out_ LPTSTR lpUserName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385476(v=vs.85).aspx
+	// DWORD WNetGetUser( _In_ LPCTSTR lpName, _Out_ StrPtrAuto lpUserName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385476(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385476")]
 	public static extern Win32Error WNetGetUser([Optional] string? lpName, StringBuilder? lpUserName, ref uint lpnLength);
@@ -2298,8 +2298,8 @@ public static partial class Mpr
 	/// the Windows error returned from a provider when necessary to satisfy applications.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/npapi/nf-npapi-wnetsetlasterrora void WNetSetLastErrorA( DWORD err, LPSTR
-	// lpError, LPSTR lpProviders );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/npapi/nf-npapi-wnetsetlasterrora void WNetSetLastErrorA( DWORD err, StrPtrAnsi
+	// lpError, StrPtrAnsi lpProviders );
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("npapi.h", MSDNShortId = "ee472f01-de44-4c47-9ae5-8bbac74de78b")]
 	public static extern void WNetSetLastError(uint err, string lpError, string lpProviders);
@@ -2588,7 +2588,7 @@ public static partial class Mpr
 	/// </para>
 	/// </returns>
 	// DWORD WNetUseConnection( _In_ HWND hwndOwner, _In_ LPNETRESOURCE lpNetResource, _In_ LPCTSTR lpPassword, _In_ LPCTSTR lpUserID,
-	// _In_ DWORD dwFlags, _Out_ LPTSTR lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
+	// _In_ DWORD dwFlags, _Out_ StrPtrAuto lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
 	public static extern Win32Error WNetUseConnection([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string? lpPassword,
@@ -2693,7 +2693,7 @@ public static partial class Mpr
 	/// The <c>DISCDLGSTRUCT</c> structure is used in the <c>WNetDisconnectDialog1</c> function. The structure contains required
 	/// information for the disconnect attempt.
 	/// </summary>
-	// typedef struct _DISCDLGSTRUCT { DWORD cbStructure; HWND hwndOwner; LPTSTR lpLocalName; LPTSTR lpRemoteName; DWORD dwFlags;}
+	// typedef struct _DISCDLGSTRUCT { DWORD cbStructure; HWND hwndOwner; StrPtrAuto lpLocalName; StrPtrAuto lpRemoteName; DWORD dwFlags;}
 	// DISCDLGSTRUCT, *LPDISCDLGSTRUCT; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385339(v=vs.85).aspx
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385339")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -2712,7 +2712,7 @@ public static partial class Mpr
 		public HWND hwndOwner;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to a <c>NULL</c>-terminated string that specifies the local device name that is redirected to the network resource,
 		/// such as "F:" or "LPT1".
@@ -2721,7 +2721,7 @@ public static partial class Mpr
 		public string? lpLocalName;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to a <c>NULL</c>-terminated string that specifies the name of the network resource to disconnect. This member can
 		/// be NULL if the <c>lpLocalName</c> member is specified. When <c>lpLocalName</c> is specified, the connection to the network
@@ -2996,8 +2996,8 @@ public static partial class Mpr
 	}
 
 	/// <summary>The <c>NETRESOURCE</c> structure contains information about a network resource.</summary>
-	// typedef struct _NETRESOURCE { DWORD dwScope; DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; LPTSTR lpLocalName; LPTSTR
-	// lpRemoteName; LPTSTR lpComment; LPTSTR lpProvider;} NETRESOURCE; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx
+	// typedef struct _NETRESOURCE { DWORD dwScope; DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; StrPtrAuto lpLocalName; StrPtrAuto
+	// lpRemoteName; StrPtrAuto lpComment; StrPtrAuto lpProvider;} NETRESOURCE; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385353")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public class NETRESOURCE
@@ -3091,7 +3091,7 @@ public static partial class Mpr
 	/// that points to a Universal Naming Convention (UNC) name string for the resource, and two members that point to additional network
 	/// connection information strings.
 	/// </summary>
-	// typedef struct _REMOTE_NAME_INFO { LPTSTR lpUniversalName; LPTSTR lpConnectionName; LPTSTR lpRemainingPath;} REMOTE_NAME_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385366(v=vs.85).aspx
+	// typedef struct _REMOTE_NAME_INFO { StrPtrAuto lpUniversalName; StrPtrAuto lpConnectionName; StrPtrAuto lpRemainingPath;} REMOTE_NAME_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385366(v=vs.85).aspx
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385366")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct REMOTE_NAME_INFO
@@ -3111,7 +3111,7 @@ public static partial class Mpr
 	/// <summary>
 	/// The <c>UNIVERSAL_NAME_INFO</c> structure contains a pointer to a Universal Naming Convention (UNC) name string for a network resource.
 	/// </summary>
-	// typedef struct _UNIVERSAL_NAME_INFO { LPTSTR lpUniversalName;} UNIVERSAL_NAME_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385379(v=vs.85).aspx
+	// typedef struct _UNIVERSAL_NAME_INFO { StrPtrAuto lpUniversalName;} UNIVERSAL_NAME_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385379(v=vs.85).aspx
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385379")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct UNIVERSAL_NAME_INFO
@@ -3129,7 +3129,7 @@ public static partial class Mpr
 	[Serializable]
 	public class NetworkProviderException : Exception
 	{
-		private NetworkProviderException() { Description = Provider = string.Empty; }
+		private NetworkProviderException() { }
 
 		/// <summary>Initializes a new instance of the <see cref="NetworkProviderException"/> class.</summary>
 		/// <param name="info">
@@ -3159,17 +3159,17 @@ public static partial class Mpr
 		/// <summary>Gets the provider's description of the error.</summary>
 		/// <value>The description.</value>
 		[DefaultValue("")]
-		public string Description { get; }
+		public string Description { get; } = string.Empty;
 
 		/// <summary>Gets the network provider's name.</summary>
 		/// <value>The provider.</value>
 		[DefaultValue("")]
-		public string Provider { get; }
+		public string Provider { get; } = string.Empty;
 
 		/// <summary>Gets the error code reported by the provider.</summary>
 		/// <value>The provider error code.</value>
 		[DefaultValue(0)]
-		public uint ProviderErrorCode { get; }
+		public uint ProviderErrorCode { get; } = 0;
 
 		/// <summary>
 		/// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.
@@ -3192,5 +3192,8 @@ public static partial class Mpr
 			info.AddValue("ProviderErrorCode", ProviderErrorCode);
 			base.GetObjectData(info, context);
 		}
+
+		/// <inheritdoc/>
+		public override string ToString() => $"'{Provider}' has returned extended error: {ProviderErrorCode} - {Description}";
 	}
 }

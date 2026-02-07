@@ -55,7 +55,7 @@ public class PROPVARIANTTests
 	public void PROPVARIANTArrayTest()
 	{
 		// Setup SAFEARRAY
-		int[] array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		int[] array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		using SafeSAFEARRAY sa = SafeSAFEARRAY.CreateFromArray(array, VARTYPE.VT_I4);
 
 		// Add it to a PV
@@ -201,7 +201,7 @@ public class PROPVARIANTTests
 	[Test]
 	public void PROPVARIANTTest1()
 	{
-		string[] arr = new[] { "A", "B", "C" };
+		string[] arr = ["A", "B", "C"];
 		using PROPVARIANT pv = new(arr);
 		using PROPVARIANT pv2 = new(pv);
 		Assert.That(pv2.Value, Is.EquivalentTo(arr).And.EquivalentTo((IEnumerable)pv.Value!));
@@ -291,8 +291,8 @@ public class PROPVARIANTTests
 				return "string";
 
 			case VARTYPE.VT_STORAGE:
-				_ = StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out object iptr);
-				return (IStorage)iptr;
+				_ = StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, out IStorage? iptr);
+				return iptr!;
 
 			case VARTYPE.VT_STREAM:
 				_ = SHCreateStreamOnFileEx(TestCaseSources.SmallFile, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out IStream stm);

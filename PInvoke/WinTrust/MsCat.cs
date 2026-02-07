@@ -431,7 +431,7 @@ public static partial class WinTrust
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatadminaddcatalog HCATINFO CryptCATAdminAddCatalog(
-	// HCATADMIN hCatAdmin, PWSTR pwszCatalogFile, PWSTR pwszSelectBaseName, DWORD dwFlags );
+	// HCATADMIN hCatAdmin, StrPtrUni pwszCatalogFile, StrPtrUni pwszSelectBaseName, DWORD dwFlags );
 	[PInvokeData("mscat.h", MSDNShortId = "a227597c-a0af-4b86-bd29-03f478aef244")]
 	public static SafeHCATINFO CryptCATAdminAddCatalog(SafeHCATADMIN hCatAdmin, [MarshalAs(UnmanagedType.LPWStr)] string pwszCatalogFile,
 		[MarshalAs(UnmanagedType.LPWStr), Optional] string? pwszSelectBaseName, uint dwFlags) =>
@@ -834,6 +834,48 @@ public static partial class WinTrust
 
 	/// <summary>
 	/// <para>
+	/// [The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function is available for use in the operating systems specified in the Requirements
+	/// section. It may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function enumerates the individual file members in the <b>CatalogFiles</b> section of a
+	/// catalog definition file (CDF). <b>CryptCATCDFEnumMembersByCDFTagEx</b> is called by <c>MakeCat</c>.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// This function has no associated header file or import library. To call this function, you must create a user-defined header file and
+	/// use the <c><b>LoadLibrary</b></c> and <c><b>GetProcAddress</b></c> functions to dynamically link to Mssign32.dll.
+	/// </para>
+	/// </para>
+	/// <para></para>
+	/// </summary>
+	/// <param name="pCDF">A pointer to a <c><b>CRYPTCATCDF</b></c> structure.</param>
+	/// <param name="pwszPrevCDFTag">A pointer to a <b>null</b>-terminated string that identifies the catalog file member.</param>
+	/// <param name="pfnParseError">A pointer to a user-defined function to handle file parse errors.</param>
+	/// <param name="ppMember">A pointer to a <c><b>CRYPTCATMEMBER</b></c> structure that contains the file member information.</param>
+	/// <param name="fContinueOnError">A value that specifies whether to keep in memory a reference to the last enumerated member.</param>
+	/// <param name="pvReserved">This parameter is reserved; do not use it.</param>
+	/// <returns>
+	/// Upon success, this function returns a pointer to a <b>null</b>-terminated string that identifies a file member in the
+	/// <b>CatalogFiles</b> section of a CDF. The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function returns a <b>NULL</b> pointer if it fails.
+	/// </returns>
+	/// <remarks>
+	/// You typically call this function in a loop to enumerate all of the catalog file members in a CDF. Before entering the loop, set
+	/// pwszPrevCDFTag to <b>NULL</b>. The function returns a pointer to the first member. Set pwszPrevCDFTag to the return value of the
+	/// function for subsequent iterations of the loop.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptcatcdfenummembersbycdftagex StrPtrUni WINAPI
+	// CryptCATCDFEnumMembersByCDFTagEx( _In_ CRYPTCATCDF *pCDF, _Inout_ StrPtrUni pwszPrevCDFTag, _In_ PFN_CDF_PARSE_ERROR_CALLBACK
+	// pfnParseError, _In_ CRYPTCATMEMBER **ppMember, _In_ BOOL fContinueOnError, _In_ LPVOID pvReserved );
+	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.LPWStr)]
+	public static extern string? CryptCATCDFEnumMembersByCDFTagEx(in CRYPTCATCDF pCDF, [MarshalAs(UnmanagedType.LPWStr)] string? pwszPrevCDFTag,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] PfnCdfParseErrorCallback? pfnParseError, in ManagedStructPointer<CRYPTCATMEMBER> ppMember,
+		[In, MarshalAs(UnmanagedType.Bool)] bool fContinueOnError, [In, Optional] IntPtr pvReserved);
+
+	/// <summary>
+	/// <para>
 	/// [The <c>CryptCATCDFOpen</c> function is available for use in the operating systems specified in the Requirements section. It may
 	/// be altered or unavailable in subsequent versions.]
 	/// </para>
@@ -910,7 +952,7 @@ public static partial class WinTrust
 	/// Catalog OIDs are not available.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfopen CRYPTCATCDF * CryptCATCDFOpen( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatcdfopen CRYPTCATCDF * CryptCATCDFOpen( StrPtrUni
 	// pwszFilePath, PFN_CDF_PARSE_ERROR_CALLBACK pfnParseError );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "d400d8bd-c0a0-41dc-9093-8e4fc758d82f")]
@@ -1112,10 +1154,10 @@ public static partial class WinTrust
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatgetattrinfo CRYPTCATATTRIBUTE * CryptCATGetAttrInfo( IN
-	// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, LPWSTR pwszReferenceTag );
+	// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, StrPtrUni pwszReferenceTag );
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "e36966ea-741e-4380-85cd-5a3c9db38e6d")]
-	public static extern IntPtr CryptCATGetAttrInfo(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+	public static extern ManagedStructPointer<CRYPTCATATTRIBUTE> CryptCATGetAttrInfo(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
 
 	/// <summary>
 	/// <para>
@@ -1137,10 +1179,10 @@ public static partial class WinTrust
 	/// </returns>
 	/// <remarks>Do not free the returned pointer nor any of the members pointed to by the returned pointer.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatgetmemberinfo CRYPTCATMEMBER * CryptCATGetMemberInfo(
-	// IN HANDLE hCatalog, LPWSTR pwszReferenceTag );
+	// IN HANDLE hCatalog, StrPtrUni pwszReferenceTag );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "ff265232-f57e-4ab0-ba07-05e6d6745ae3")]
-	public static extern IntPtr CryptCATGetMemberInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+	public static extern ManagedStructPointer<CRYPTCATMEMBER> CryptCATGetMemberInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
 
 	/// <summary>
 	/// <para>
@@ -1211,7 +1253,7 @@ public static partial class WinTrust
 	/// Upon success, this function returns a handle to the open catalog. When you have finished using the handle, close it by calling
 	/// the CryptCATClose function. The <c>CryptCATOpen</c> function returns INVALID_HANDLE_VALUE if it fails.
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatopen HANDLE CryptCATOpen( LPWSTR pwszFileName, IN DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatopen HANDLE CryptCATOpen( StrPtrUni pwszFileName, IN DWORD
 	// fdwOpenFlags, IN HCRYPTPROV hProv, IN DWORD dwPublicVersion, IN DWORD dwEncodingType );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "e81f3a3d-d5b7-4266-838d-b83e331c8594")]
@@ -1354,7 +1396,7 @@ public static partial class WinTrust
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputattrinfo CRYPTCATATTRIBUTE * CryptCATPutAttrInfo( IN
-	// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, LPWSTR pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
+	// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, StrPtrUni pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
 	// *pbData );
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "13d5cdb4-2a15-4442-9e11-c3f76ca03f7e")]
@@ -1436,7 +1478,7 @@ public static partial class WinTrust
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputcatattrinfo CRYPTCATATTRIBUTE *
-	// CryptCATPutCatAttrInfo( IN HANDLE hCatalog, LPWSTR pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
+	// CryptCATPutCatAttrInfo( IN HANDLE hCatalog, StrPtrUni pwszReferenceTag, IN DWORD dwAttrTypeAndAction, IN DWORD cbData, IN BYTE
 	// *pbData );
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "16bb8560-d4fc-4c81-8eed-21a2da7f396d")]
@@ -1480,7 +1522,7 @@ public static partial class WinTrust
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/nf-mscat-cryptcatputmemberinfo CRYPTCATMEMBER * CryptCATPutMemberInfo(
-	// IN HANDLE hCatalog, LPWSTR pwszFileName, LPWSTR pwszReferenceTag, IN GUID *pgSubjectType, IN DWORD dwCertVersion, IN DWORD
+	// IN HANDLE hCatalog, StrPtrUni pwszFileName, StrPtrUni pwszReferenceTag, IN GUID *pgSubjectType, IN DWORD dwCertVersion, IN DWORD
 	// cbSIPIndirectData, IN BYTE *pbSIPIndirectData );
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "bfc10577-e32e-4b2e-ad24-1d0a85c6730a")]
@@ -1570,7 +1612,7 @@ public static partial class WinTrust
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatattribute typedef struct CRYPTCATATTRIBUTE_ { DWORD
-	// cbStruct; LPWSTR pwszReferenceTag; DWORD dwAttrTypeAndAction; DWORD cbValue; BYTE *pbValue; DWORD dwReserved; } CRYPTCATATTRIBUTE;
+	// cbStruct; StrPtrUni pwszReferenceTag; DWORD dwAttrTypeAndAction; DWORD cbValue; BYTE *pbValue; DWORD dwReserved; } CRYPTCATATTRIBUTE;
 	[PInvokeData("mscat.h", MSDNShortId = "41b91303-f3eb-4288-9ad2-98f170680988")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPTCATATTRIBUTE
@@ -1645,7 +1687,7 @@ public static partial class WinTrust
 	/// information for recoverable parse errors in the CDF.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatcdf typedef struct CRYPTCATCDF_ { DWORD cbStruct;
-	// HANDLE hFile; DWORD dwCurFilePos; DWORD dwLastMemberOffset; BOOL fEOF; LPWSTR pwszResultDir; HANDLE hCATStore; } CRYPTCATCDF;
+	// HANDLE hFile; DWORD dwCurFilePos; DWORD dwLastMemberOffset; BOOL fEOF; StrPtrUni pwszResultDir; HANDLE hCATStore; } CRYPTCATCDF;
 	[PInvokeData("mscat.h", MSDNShortId = "15d5710a-d4df-4e45-b161-5d4f7509ba29")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPTCATCDF
@@ -1688,11 +1730,11 @@ public static partial class WinTrust
 	/// </para>
 	/// <para>
 	/// The <c>CRYPTCATMEMBER</c> structure provides information about a catalog member. This structure is used by the
-	/// CryptCATGetMemberInfo and CryptCATEnumerateAttr functions.
+	/// <see cref="CryptCATGetMemberInfo"/> and <see cref="CryptCATEnumerateAttr(HCATALOG, CRYPTCATMEMBER)"/> functions.
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatmember typedef struct CRYPTCATMEMBER_ { DWORD cbStruct;
-	// LPWSTR pwszReferenceTag; LPWSTR pwszFileName; GUID gSubjectType; DWORD fdwMemberFlags; struct SIP_INDIRECT_DATA_ *pIndirectData;
+	// StrPtrUni pwszReferenceTag; StrPtrUni pwszFileName; GUID gSubjectType; DWORD fdwMemberFlags; struct SIP_INDIRECT_DATA_ *pIndirectData;
 	// DWORD dwCertVersion; DWORD dwReserved; HANDLE hReserved; CRYPT_ATTR_BLOB sEncodedIndirectData; CRYPT_ATTR_BLOB
 	// sEncodedMemberInfo; } CRYPTCATMEMBER;
 	[PInvokeData("mscat.h", MSDNShortId = "08f663d9-9dc2-4ac9-95c5-7f2ed972eb9b")]
@@ -1703,10 +1745,12 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>A pointer to a null-terminated string that contains the reference tag value.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszReferenceTag;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszReferenceTag;
 
 		/// <summary>A pointer to a null-terminated string that contains the file name.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszFileName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszFileName;
 
 		/// <summary><c>GUID</c> that identifies the subject type.</summary>
 		public Guid gSubjectType;
@@ -1715,7 +1759,7 @@ public static partial class WinTrust
 		public uint fdwMemberFlags;
 
 		/// <summary>A pointer to a <c>SIP_INDIRECT_DATA</c> structure.</summary>
-		public IntPtr pIndirectData;
+		public StructPointer<SIP_INDIRECT_DATA> pIndirectData;
 
 		/// <summary>Value that specifies the certificate version.</summary>
 		public uint dwCertVersion;
@@ -1744,7 +1788,7 @@ public static partial class WinTrust
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatstore typedef struct CRYPTCATSTORE_ { DWORD cbStruct;
-	// DWORD dwPublicVersion; LPWSTR pwszP7File; HCRYPTPROV hProv; DWORD dwEncodingType; DWORD fdwStoreFlags; HANDLE hReserved; HANDLE
+	// DWORD dwPublicVersion; StrPtrUni pwszP7File; HCRYPTPROV hProv; DWORD dwEncodingType; DWORD fdwStoreFlags; HANDLE hReserved; HANDLE
 	// hAttrs; HCRYPTMSG hCryptMsg; HANDLE hSorted; } CRYPTCATSTORE;
 	[PInvokeData("mscat.h", MSDNShortId = "65a15797-453c-4f47-8ea1-c92e616b50aa")]
 	[StructLayout(LayoutKind.Sequential)]

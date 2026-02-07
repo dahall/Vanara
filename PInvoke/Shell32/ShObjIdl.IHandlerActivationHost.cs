@@ -69,7 +69,7 @@ public static partial class Shell32
 	{
 		/// <summary>Retrieves the display name of the application that implemented the handler.</summary>
 		/// <param name="value">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a string that, when this method returns successfully, receives the display name. If no display name could be
 		/// found, the name of the application's .exe file is used.
@@ -80,13 +80,13 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ihandlerinfo-getapplicationdisplayname
-		// HRESULT GetApplicationDisplayName( LPWSTR *value );
+		// HRESULT GetApplicationDisplayName( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT GetApplicationDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string value);
 
 		/// <summary>Retrieves the name of the publisher of the application that implemented the handler.</summary>
 		/// <param name="value">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a string that, when this method returns successfully, receives the publisher's name.</para>
 		/// </param>
 		/// <returns>
@@ -94,13 +94,13 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ihandlerinfo-getapplicationpublisher
-		// HRESULT GetApplicationPublisher( LPWSTR *value );
+		// HRESULT GetApplicationPublisher( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT GetApplicationPublisher([MarshalAs(UnmanagedType.LPWStr)] out string value);
 
 		/// <summary>Retrieves the icon of the application that implemented the handler.</summary>
 		/// <param name="value">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a string that, when this method returns successfully, receives the path of the icon.</para>
 		/// </param>
 		/// <returns>
@@ -108,7 +108,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ihandlerinfo-getapplicationiconreference
-		// HRESULT GetApplicationIconReference( LPWSTR *value );
+		// HRESULT GetApplicationIconReference( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT GetApplicationIconReference([MarshalAs(UnmanagedType.LPWStr)] out string value);
 	}
@@ -121,7 +121,7 @@ public static partial class Shell32
 	{
 		/// <summary>Undocumented.</summary>
 		/// <param name="value">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a string that, when this method returns successfully, receives the application identifier.</para>
 		/// </param>
 		/// <returns>

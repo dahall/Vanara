@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
@@ -219,7 +220,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366571")]
-	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HHEAP[]? ProcessHeaps);
+	[SuppressAutoGen]
+	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), SizeDef(nameof(NumberOfHeaps), SizingMethod.QueryResultInReturn)] HHEAP[]? ProcessHeaps);
 
 	/// <summary>Returns handles to all of the active heaps for the calling process.</summary>
 	/// <returns>An array of heap handles.</returns>
@@ -337,7 +339,7 @@ public static partial class Kernel32
 	/// <para>For an example, see AWE Example.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapalloc DECLSPEC_ALLOCATOR LPVOID HeapAlloc( HANDLE
-	// hHeap, DWORD dwFlags, SIZE_T dwBytes );
+	// hHeap, DWORD dwFlags, SizeT dwBytes );
 	[PInvokeData("heapapi.h", MSDNShortId = "9a176312-0312-4cc1-baf5-949b346d983e")]
 	public static SafeHeapBlock HeapAlloc(HHEAP hHeap, HeapFlags dwFlags, SizeT dwBytes) => new(hHeap, dwBytes, dwFlags);
 
@@ -403,7 +405,7 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapcompact SIZE_T HeapCompact( HANDLE hHeap, DWORD
+	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapcompact SizeT HeapCompact( HANDLE hHeap, DWORD
 	// dwFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "792ec16f-d6b0-4afd-a832-29fe12b25058")]
@@ -578,7 +580,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapqueryinformation BOOL HeapQueryInformation( HANDLE
-	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength, PSIZE_T ReturnLength );
+	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SizeT HeapInformationLength, PSIZE_T ReturnLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "6bf6cb8b-7212-4ddb-9ea6-34bc78824a8f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -714,7 +716,7 @@ public static partial class Kernel32
 	/// If the function fails, it does not call <c>SetLastError</c>. An application cannot call <c>GetLastError</c> for extended error information.
 	/// </para>
 	/// </returns>
-	// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SIZE_T dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
+	// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SizeT dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366704")]
 	public static SafeHeapBlock HeapReAlloc(HHEAP hHeap, HeapFlags dwFlags, SafeHeapBlock lpMem, SizeT dwBytes)
 	{
@@ -797,11 +799,11 @@ public static partial class Kernel32
 	/// <para>The following example shows you how to enable the low-fragmentation heap.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsetinformation BOOL HeapSetInformation( HANDLE
-	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength );
+	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SizeT HeapInformationLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "33c262ca-5093-4f44-a8c6-09045bc90f60")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In] IntPtr HeapInformation, SizeT HeapInformationLength);
+	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In, Optional] IntPtr HeapInformation, [Optional] SizeT HeapInformationLength);
 
 	/// <summary>Enables features for a specified heap.</summary>
 	/// <param name="HeapHandle">
@@ -932,7 +934,7 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsize SIZE_T HeapSize( HANDLE hHeap, DWORD dwFlags,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsize SizeT HeapSize( HANDLE hHeap, DWORD dwFlags,
 	// LPCVOID lpMem );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "a8fcfd99-7b04-4aa3-8619-272b254551a3")]
@@ -1061,7 +1063,7 @@ public static partial class Kernel32
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366710")]
 	public static IEnumerable<PROCESS_HEAP_ENTRY> HeapWalk([In] HHEAP hHeap)
 	{
-		var e = default(PROCESS_HEAP_ENTRY);
+		PROCESS_HEAP_ENTRY e = new();
 		while (HeapWalk(hHeap, ref e))
 			yield return e;
 		var err = Win32Error.GetLastError();
@@ -1082,36 +1084,30 @@ public static partial class Kernel32
 	/// <c>HEAP_OPTIMIZE_RESOURCES_INFORMATION</c> structure. The only legal value for this field is currently 1.
 	/// </para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="HEAP_OPTIMIZE_RESOURCES_INFORMATION"/> struct.</remarks>
+	/// <param name="flags">The flags.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_heap_optimize_resources_information typedef struct
 	// _HEAP_OPTIMIZE_RESOURCES_INFORMATION { DWORD Version; DWORD Flags; } HEAP_OPTIMIZE_RESOURCES_INFORMATION, *PHEAP_OPTIMIZE_RESOURCES_INFORMATION;
 	[PInvokeData("winnt.h", MSDNShortId = "c801a08a-0b1a-4ffe-8ec7-c3ea8d913ec8")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HEAP_OPTIMIZE_RESOURCES_INFORMATION
+	public struct HEAP_OPTIMIZE_RESOURCES_INFORMATION(uint flags)
 	{
 		/// <summary>The version</summary>
-		public uint Version;
+		public uint Version = HEAP_OPTIMIZE_RESOURCES_CURRENT_VERSION;
 
 		/// <summary>Undocumented.</summary>
-		public uint Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="HEAP_OPTIMIZE_RESOURCES_INFORMATION"/> struct.</summary>
-		/// <param name="flags">The flags.</param>
-		public HEAP_OPTIMIZE_RESOURCES_INFORMATION(uint flags)
-		{
-			Version = HEAP_OPTIMIZE_RESOURCES_CURRENT_VERSION;
-			Flags = flags;
-		}
+		public uint Flags = flags;
 	}
 
 	/// <summary>Represents a heap summary retrieved with a call to HeapSummary</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/heapapi/ns-heapapi-heap_summary
-	// typedef struct _HEAP_SUMMARY { DWORD cb; SIZE_T cbAllocated; SIZE_T cbCommitted; SIZE_T cbReserved; SIZE_T cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
+	// typedef struct _HEAP_SUMMARY { DWORD cb; SizeT cbAllocated; SizeT cbCommitted; SizeT cbReserved; SizeT cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
 	[PInvokeData("heapapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HEAP_SUMMARY
+	public struct HEAP_SUMMARY()
 	{
 		/// <summary>Address of a continuous block of memory.</summary>
-		public uint cb;
+		public uint cb = (uint)Marshal.SizeOf<HEAP_SUMMARY>();
 		/// <summary>The size of the allocated memory.</summary>
 		public SizeT cbAllocated;
 		/// <summary>The size of the committed memory.</summary>
@@ -1122,7 +1118,7 @@ public static partial class Kernel32
 		public SizeT cbMaxReserve;
 
 		/// <summary>Gets this structure with the size field set appropriately.</summary>
-		public static readonly HEAP_SUMMARY Default = new() { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
+		public static readonly HEAP_SUMMARY Default = new();
 	}
 
 	public partial struct HHEAP
@@ -1360,8 +1356,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Safe handle for memory heaps.</summary>
-	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
+	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
@@ -1463,6 +1458,15 @@ public static partial class Kernel32
 		/// <value>The heap handle.</value>
 		public HHEAP HeapHandle => mm.HeapHandle;
 
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeHeapBlock(handle, size, ownsHandle);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeHeapBlock(bytes);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);
+
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
 		/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
@@ -1476,7 +1480,7 @@ public static partial class Kernel32
 		/// </param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 		/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-		public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
+		public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(count < 0 ? values : values.Take(count), mm.AllocMem, out int s, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 		/// <param name="values">The list of strings.</param>

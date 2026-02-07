@@ -25,8 +25,5 @@ public class TaskbarTests
 	}
 
 	[Test]
-	public void StructTest()
-	{
-		TestHelper.GetNestedStructSizes(typeof(ComCtl32), "TB", "NMTB", "TOOLBAR").WriteValues();
-	}
+	public void StructTest() => TestHelper.GetNestedStructSizes(typeof(ComCtl32), "TB", "NMTB", "TOOLBAR").WriteValues();
 }

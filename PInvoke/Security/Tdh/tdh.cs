@@ -570,7 +570,7 @@ public static partial class Tdh
 	/// <summary>The metadata about the event map (EVENT_MAP_INFO structure).</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
 	/// <returns>The event map format, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_format TDH_INLINE PWSTR EMI_MAP_FORMAT( [in] PEVENT_MAP_INFO
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_format TDH_INLINE StrPtrUni EMI_MAP_FORMAT( [in] PEVENT_MAP_INFO
 	// MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_FORMAT")]
 	public static string? EMI_MAP_FORMAT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
@@ -580,7 +580,7 @@ public static partial class Tdh
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
 	/// <param name="Map">A single value map entry (EVENT_MAP_ENTRY structure).</param>
 	/// <returns>The event map input, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_input TDH_INLINE PWSTR EMI_MAP_INPUT( PEVENT_MAP_INFO MapInfo,
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_input TDH_INLINE StrPtrUni EMI_MAP_INPUT( PEVENT_MAP_INFO MapInfo,
 	// PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_INPUT")]
 	public static string? EMI_MAP_INPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
@@ -589,7 +589,7 @@ public static partial class Tdh
 	/// <summary>Macro that retrieves the event map name.</summary>
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
 	/// <returns>The event map name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_name TDH_INLINE PWSTR EMI_MAP_NAME( PEVENT_MAP_INFO MapInfo );
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_name TDH_INLINE StrPtrUni EMI_MAP_NAME( PEVENT_MAP_INFO MapInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_NAME")]
 	public static string? EMI_MAP_NAME(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo) =>
 		MapInfo?.GetOffsetString(MapInfo.Value.NameOffset);
@@ -598,7 +598,7 @@ public static partial class Tdh
 	/// <param name="MapInfo">The metadata about the event map (EVENT_MAP_INFO structure).</param>
 	/// <param name="Map">A single value map entry (EVENT_MAP_ENTRY structure).</param>
 	/// <returns>The event map output, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_output TDH_INLINE PWSTR EMI_MAP_OUTPUT( PEVENT_MAP_INFO
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-emi_map_output TDH_INLINE StrPtrUni EMI_MAP_OUTPUT( PEVENT_MAP_INFO
 	// MapInfo, PEVENT_MAP_ENTRY Map );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.EMI_MAP_OUTPUT")]
 	public static string? EMI_MAP_OUTPUT(SafeCoTaskMemStruct<EVENT_MAP_INFO>? MapInfo, in EVENT_MAP_ENTRY Map) =>
@@ -610,7 +610,7 @@ public static partial class Tdh
 	/// </param>
 	/// <param name="ProviderInfo">Provider event info (PROVIDER_EVENT_INFO structure).</param>
 	/// <returns>The provider name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pei_provider_name TDH_INLINE PWSTR PEI_PROVIDER_NAME(
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pei_provider_name TDH_INLINE StrPtrUni PEI_PROVIDER_NAME(
 	// PPROVIDER_ENUMERATION_INFO ProviderEnum, PTRACE_PROVIDER_INFO ProviderInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PEI_PROVIDER_NAME")]
 	public static string? PEI_PROVIDER_NAME(SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO>? ProviderEnum, in TRACE_PROVIDER_INFO ProviderInfo) =>
@@ -620,7 +620,7 @@ public static partial class Tdh
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
 	/// <param name="FieldInfo">Provider field info (PROVIDER_FIELD_INFO structure).</param>
 	/// <returns>The provider field message, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_message TDH_INLINE PWSTR PFI_FIELD_MESSAGE(
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_message TDH_INLINE StrPtrUni PFI_FIELD_MESSAGE(
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_MESSAGE")]
 	public static string? PFI_FIELD_MESSAGE(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
@@ -630,7 +630,7 @@ public static partial class Tdh
 	/// <param name="FieldInfoArray">The PROVIDER_FIELD_INFOARRAY structure.</param>
 	/// <param name="FieldInfo">Provider field info (PROVIDER_FIELD_INFO structure).</param>
 	/// <returns>The provider field name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_name TDH_INLINE PWSTR PFI_FIELD_NAME(
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_field_name TDH_INLINE StrPtrUni PFI_FIELD_NAME(
 	// PPROVIDER_FIELD_INFOARRAY FieldInfoArray, PPROVIDER_FIELD_INFO FieldInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FIELD_NAME")]
 	public static string? PFI_FIELD_NAME(SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY>? FieldInfoArray, in PROVIDER_FIELD_INFO FieldInfo) =>
@@ -640,7 +640,7 @@ public static partial class Tdh
 	/// <param name="FilterInfoArray">Provider filter info array (PROVIDER_FILTER_INFO array).</param>
 	/// <param name="FilterInfoIndex">Index of the filter information in the array.</param>
 	/// <returns>The Provider Field Information (PFI) field message, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_filter_message TDH_INLINE PWSTR PFI_FILTER_MESSAGE( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_filter_message TDH_INLINE StrPtrUni PFI_FILTER_MESSAGE( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_FILTER_MESSAGE")]
 	public static string? PFI_FILTER_MESSAGE(SafeNativeArray<PROVIDER_FILTER_INFO>? FilterInfoArray, int FilterInfoIndex) =>
@@ -650,7 +650,7 @@ public static partial class Tdh
 	/// <param name="FilterInfoArray">Provider filter info array (PROVIDER_FILTER_INFO array).</param>
 	/// <param name="Property">Provider property info (EVENT_PROPERTY_INFO structure).</param>
 	/// <returns>The Provider Field Information (PFI) property name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_property_name TDH_INLINE PWSTR PFI_PROPERTY_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-pfi_property_name TDH_INLINE StrPtrUni PFI_PROPERTY_NAME( [in]
 	// PPROVIDER_FILTER_INFO FilterInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.PFI_PROPERTY_NAME")]
 	public static string? PFI_PROPERTY_NAME(SafeNativeArray<PROVIDER_FILTER_INFO>? FilterInfoArray, in EVENT_PROPERTY_INFO Property) =>
@@ -1020,7 +1020,7 @@ public static partial class Tdh
 	/// </returns>
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateManifestProviderEvents", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhEnumerateManifestProviderEvents([In] Guid ProviderGuid, out PROVIDER_EVENT_INFO Buffer) =>
-		Get((IntPtr p, ref uint s) => TdhEnumerateManifestProviderEvents(ProviderGuid, p, ref s), out Buffer);
+		Get((p, ref s) => TdhEnumerateManifestProviderEvents(ProviderGuid, p, ref s), out Buffer);
 
 	/// <summary>Retrieves the specified field metadata for a given provider.</summary>
 	/// <param name="pGuid">GUID that identifies the provider whose information you want to retrieve.</param>
@@ -1120,7 +1120,7 @@ public static partial class Tdh
 	// PPROVIDER_FIELD_INFOARRAY pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviderFieldInformation")]
 	public static Win32Error TdhEnumerateProviderFieldInformation([In] Guid pGuid, [In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhEnumerateProviderFieldInformation(pGuid, EventFieldType, p, ref s), out pBuffer);
+		GetMem((p, ref s) => TdhEnumerateProviderFieldInformation(pGuid, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>The <c>TdhEnumerateProviderFilters</c> function enumerates the filters that the specified provider defined in the manifest.</summary>
 	/// <param name="Guid">GUID that identifies the provider whose filters you want to retrieve.</param>
@@ -1369,7 +1369,7 @@ public static partial class Tdh
 	// [out] ULONG *bufferRequired );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProvidersForDecodingSource", MinClient = PInvokeClient.Windows10)]
 	public static Win32Error TdhEnumerateProvidersForDecodingSource(DECODING_SOURCE filter, out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> buffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhEnumerateProvidersForDecodingSource(filter, p, s, out s), out buffer);
+		GetMem((p, ref s) => TdhEnumerateProvidersForDecodingSource(filter, p, s, out s), out buffer);
 
 	/// <summary>Formats a property value for display.</summary>
 	/// <param name="EventInfo">
@@ -1729,7 +1729,7 @@ public static partial class Tdh
 	// BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventInformation")]
 	public static Win32Error TdhGetEventInformation([In] EVENT_RECORD Event, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhGetEventInformation(Event, (uint)(TdhContext?.Length ?? 0), TdhContext, p, ref s), out Buffer);
+		GetMem((p, ref s) => TdhGetEventInformation(Event, (uint)(TdhContext?.Length ?? 0), TdhContext, p, ref s), out Buffer);
 
 	/// <summary>Retrieves information about the event map contained in the event.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -1790,7 +1790,7 @@ public static partial class Tdh
 	/// <para>For an example that shows how to call this function, see Using TdhGetProperty to Consume Event Data.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhgeteventmapinformation Win32Error TdhGetEventMapInformation( [in]
-	// PEVENT_RECORD pEvent, [in] PWSTR pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
+	// PEVENT_RECORD pEvent, [in] StrPtrUni pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventMapInformation")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhGetEventMapInformation(in EVENT_RECORD pEvent, [MarshalAs(UnmanagedType.LPWStr)] string pMapName,
@@ -1843,10 +1843,10 @@ public static partial class Tdh
 	/// <para>For an example that shows how to call this function, see Using TdhGetProperty to Consume Event Data.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhgeteventmapinformation Win32Error TdhGetEventMapInformation( [in]
-	// PEVENT_RECORD pEvent, [in] PWSTR pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
+	// PEVENT_RECORD pEvent, [in] StrPtrUni pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventMapInformation")]
 	public static Win32Error TdhGetEventMapInformation([In] EVENT_RECORD pEvent, [MarshalAs(UnmanagedType.LPWStr)] string pMapName,
-		out SafeCoTaskMemStruct<EVENT_MAP_INFO> pBuffer) => GetMem((IntPtr p, ref uint sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
+		out SafeCoTaskMemStruct<EVENT_MAP_INFO> pBuffer) => GetMem((p, ref sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
 
 	/// <summary>The <c>TdhGetManifestEventInformation</c> function retrieves metadata about an event in a manifest.</summary>
 	/// <param name="ProviderGuid">A GUID that identifies the manifest provider whose event metadata you want to retrieve.</param>
@@ -1944,7 +1944,7 @@ public static partial class Tdh
 	// out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetManifestEventInformation", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhGetManifestEventInformation([In] Guid ProviderGuid, [In] EVENT_DESCRIPTOR EventDescriptor,
-		out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) => GetMem((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
+		out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) => GetMem((p, ref sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
 
 	/// <summary>Retrieves a property value from the event data.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -2151,7 +2151,7 @@ public static partial class Tdh
 	/// <para>The event record passed to your EventRecordCallback callback.</para>
 	/// </param>
 	/// <param name="PropertyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The name of the property to retrieve.</para>
 	/// <para>For a list of possible values, see PROPERTY_DATA_DESCRIPTOR.</para>
 	/// </param>
@@ -2193,7 +2193,7 @@ public static partial class Tdh
 	/// </returns>
 	/// <remarks>To retrieve only the decoded event message without specifying a property name, call TdhGetWppMessage.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhgetwppproperty Win32Error TdhGetWppProperty( [in] TDH_HANDLE Handle,
-	// [in] PEVENT_RECORD EventRecord, [in] PWSTR PropertyName, [in, out] PULONG BufferSize, [out] PBYTE Buffer );
+	// [in] PEVENT_RECORD EventRecord, [in] StrPtrUni PropertyName, [in, out] PULONG BufferSize, [out] PBYTE Buffer );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetWppProperty", MinClient = PInvokeClient.Windows8)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhGetWppProperty([In] TDH_HANDLE Handle, in EVENT_RECORD EventRecord,
@@ -2235,14 +2235,14 @@ public static partial class Tdh
 	/// function. After processing all the events, call the TdhUnloadManifest function.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhloadmanifest Win32Error TdhLoadManifest( [in] PWSTR Manifest );
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhloadmanifest Win32Error TdhLoadManifest( [in] StrPtrUni Manifest );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhLoadManifest", MinClient = PInvokeClient.Windows7)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhLoadManifest([In, MarshalAs(UnmanagedType.LPWStr)] string Manifest);
 
 	/// <summary>Takes a NULL-terminated path to a binary file that contains metadata resources needed to decode a specific event provider.</summary>
 	/// <param name="BinaryPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Path to the ETW provider binary that contains the metadata resources.</para>
 	/// </param>
 	/// <returns>
@@ -2279,7 +2279,7 @@ public static partial class Tdh
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhloadmanifestfrombinary Win32Error TdhLoadManifestFromBinary( [in]
-	// PWSTR BinaryPath );
+	// StrPtrUni BinaryPath );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhLoadManifestFromBinary", MinClient = PInvokeClient.Windows8)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhLoadManifestFromBinary([In, MarshalAs(UnmanagedType.LPWStr)] string BinaryPath);
@@ -2475,7 +2475,7 @@ public static partial class Tdh
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhQueryProviderFieldInformation")]
 	public static Win32Error TdhQueryProviderFieldInformation([In] Guid pGuid, ulong EventFieldValue,
 		[In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhQueryProviderFieldInformation(pGuid, EventFieldValue, EventFieldType, p, ref s), out pBuffer);
+		GetMem((p, ref s) => TdhQueryProviderFieldInformation(pGuid, EventFieldValue, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>Sets the value of a decoding parameter.</summary>
 	/// <param name="Handle">
@@ -2538,7 +2538,7 @@ public static partial class Tdh
 	/// </list>
 	/// </returns>
 	/// <remarks>You must call this function after processing all the events. For example, you can call this function after calling CloseTrace.</remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhunloadmanifest Win32Error TdhUnloadManifest( [in] PWSTR Manifest );
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhunloadmanifest Win32Error TdhUnloadManifest( [in] StrPtrUni Manifest );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhUnloadManifest")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhUnloadManifest([In, MarshalAs(UnmanagedType.LPWStr)] string Manifest);
@@ -2588,7 +2588,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI activity ID name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_activityid_name TDH_INLINE PWSTR TEI_ACTIVITYID_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_activityid_name TDH_INLINE StrPtrUni TEI_ACTIVITYID_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_ACTIVITYID_NAME")]
 	public static string? TEI_ACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2599,7 +2599,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI activity channel name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_channel_name TDH_INLINE PWSTR TEI_CHANNEL_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_channel_name TDH_INLINE StrPtrUni TEI_CHANNEL_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_CHANNEL_NAME")]
 	public static string? TEI_CHANNEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2610,7 +2610,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI message, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_event_message TDH_INLINE PWSTR TEI_EVENT_MESSAGE( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_event_message TDH_INLINE StrPtrUni TEI_EVENT_MESSAGE( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_EVENT_MESSAGE")]
 	public static string? TEI_EVENT_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2630,7 +2630,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI keywords name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_keywords_name TDH_INLINE PWSTR TEI_KEYWORDS_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_keywords_name TDH_INLINE StrPtrUni TEI_KEYWORDS_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_KEYWORDS_NAME")]
 	public static string? TEI_KEYWORDS_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2641,7 +2641,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI level name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_level_name TDH_INLINE PWSTR TEI_LEVEL_NAME( [in] PTRACE_EVENT_INFO
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_level_name TDH_INLINE StrPtrUni TEI_LEVEL_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_LEVEL_NAME")]
 	public static string? TEI_LEVEL_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2653,7 +2653,7 @@ public static partial class Tdh
 	/// </param>
 	/// <param name="Property">An EVENT_PROPERTY_INFO structure that contains the event property information.</param>
 	/// <returns>The TEI map name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_map_name TDH_INLINE PWSTR TEI_MAP_NAME( [in] PTRACE_EVENT_INFO
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_map_name TDH_INLINE StrPtrUni TEI_MAP_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo, [in] PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_MAP_NAME")]
 	public static string? TEI_MAP_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
@@ -2664,7 +2664,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI opcode name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_opcode_name TDH_INLINE PWSTR TEI_OPCODE_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_opcode_name TDH_INLINE StrPtrUni TEI_OPCODE_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_OPCODE_NAME")]
 	public static string? TEI_OPCODE_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2676,7 +2676,7 @@ public static partial class Tdh
 	/// </param>
 	/// <param name="Property">An EVENT_PROPERTY_INFO structure that contains the event property information.</param>
 	/// <returns>The TEI property name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_property_name TDH_INLINE PWSTR TEI_PROPERTY_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_property_name TDH_INLINE StrPtrUni TEI_PROPERTY_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo, PEVENT_PROPERTY_INFO Property );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROPERTY_NAME")]
 	public static string? TEI_PROPERTY_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo, in EVENT_PROPERTY_INFO Property) =>
@@ -2687,7 +2687,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI provider message, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_message TDH_INLINE PWSTR TEI_PROVIDER_MESSAGE( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_message TDH_INLINE StrPtrUni TEI_PROVIDER_MESSAGE( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_MESSAGE")]
 	public static string? TEI_PROVIDER_MESSAGE(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2698,7 +2698,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI provider name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_name TDH_INLINE PWSTR TEI_PROVIDER_NAME( [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_provider_name TDH_INLINE StrPtrUni TEI_PROVIDER_NAME( [in]
 	// PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_PROVIDER_NAME")]
 	public static string? TEI_PROVIDER_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2709,7 +2709,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI related activity ID name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_relatedactivityid_name TDH_INLINE PWSTR TEI_RELATEDACTIVITYID_NAME(
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_relatedactivityid_name TDH_INLINE StrPtrUni TEI_RELATEDACTIVITYID_NAME(
 	// [in] PTRACE_EVENT_INFO EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_RELATEDACTIVITYID_NAME")]
 	public static string? TEI_RELATEDACTIVITYID_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2720,7 +2720,7 @@ public static partial class Tdh
 	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
 	/// </param>
 	/// <returns>The TEI task name, or NULL.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_task_name TDH_INLINE PWSTR TEI_TASK_NAME( [in] PTRACE_EVENT_INFO
+	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tei_task_name TDH_INLINE StrPtrUni TEI_TASK_NAME( [in] PTRACE_EVENT_INFO
 	// EventInfo );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TEI_TASK_NAME")]
 	public static string? TEI_TASK_NAME(SafeCoTaskMemStruct<TRACE_EVENT_INFO>? EventInfo) =>
@@ -2781,7 +2781,7 @@ public static partial class Tdh
 		/// <para>Offset from the beginning of the EVENT_MAP_INFO structure to the null-terminated Unicode string that contains the map value.</para>
 		/// <para>The offset is used for pattern maps and WMI value maps that map strings to strings.</para>
 		/// </summary>
-		public uint InputOffset { get => Value; set => Value = value; }
+		public uint InputOffset { readonly get => Value; set => Value = value; }
 	}
 
 	/// <summary>Defines the metadata about the event map.</summary>
@@ -2811,7 +2811,7 @@ public static partial class Tdh
 		/// Determines if you use the <c>Value</c> member or <c>InputOffset</c> member of EVENT_MAP_ENTRY to access the map value. For
 		/// possible values, see the MAP_VALUETYPE enumeration.
 		/// </summary>
-		public MAP_VALUETYPE MapEntryValueType { get => (MAP_VALUETYPE)FormatStringOffset; set => FormatStringOffset = (uint)value; }
+		public MAP_VALUETYPE MapEntryValueType { readonly get => (MAP_VALUETYPE)FormatStringOffset; set => FormatStringOffset = (uint)value; }
 
 		/// <summary>
 		/// <para>
@@ -3013,7 +3013,7 @@ public static partial class Tdh
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-payload_filter_predicate typedef struct _PAYLOAD_FILTER_PREDICATE {
-	// LPWSTR FieldName; USHORT CompareOp; LPWSTR Value; } PAYLOAD_FILTER_PREDICATE, *PPAYLOAD_FILTER_PREDICATE;
+	// StrPtrUni FieldName; USHORT CompareOp; StrPtrUni Value; } PAYLOAD_FILTER_PREDICATE, *PPAYLOAD_FILTER_PREDICATE;
 	[PInvokeData("tdh.h", MSDNShortId = "6B8C03C9-2936-4FEE-AEF4-ABC368B1CB75")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PAYLOAD_FILTER_PREDICATE
@@ -3478,7 +3478,7 @@ public static partial class Tdh
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the event's name. Supported for
 		/// classic ETW events only.
 		/// </summary>
-		public uint EventNameOffset { get => ActivityIDNameOffset; set => ActivityIDNameOffset = value; }
+		public uint EventNameOffset { readonly get => ActivityIDNameOffset; set => ActivityIDNameOffset = value; }
 
 		/// <summary>
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the property name of the
@@ -3490,7 +3490,7 @@ public static partial class Tdh
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains a semicolon-separated list of
 		/// name=value attributes associated with the event. Supported for legacy ETW events only.
 		/// </summary>
-		public uint EventAttributesOffset { get => RelatedActivityIDNameOffset; set => RelatedActivityIDNameOffset = value; }
+		public uint EventAttributesOffset { readonly get => RelatedActivityIDNameOffset; set => RelatedActivityIDNameOffset = value; }
 
 		/// <summary>The number of elements in the <c>EventPropertyInfoArray</c> array.</summary>
 		public uint PropertyCount;

@@ -300,7 +300,7 @@ public static partial class AdvApi32
 	/// see article 231747, "How to Publish non-MSI Programs with .zap Files," in the Microsoft Knowledge Base.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/nf-appmgmt-uninstallapplication DWORD UninstallApplication( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/nf-appmgmt-uninstallapplication DWORD UninstallApplication( StrPtrUni
 	// ProductCode, DWORD dwStatus );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmgmt.h", MSDNShortId = "d45494e2-d86e-4d94-a158-4024eacf46a2")]
@@ -311,7 +311,7 @@ public static partial class AdvApi32
 	/// create a complete list of categories for an application publisher.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/ns-appmgmt-appcategoryinfo typedef struct _APPCATEGORYINFO { LCID
-	// Locale; LPWSTR pszDescription; GUID AppCategoryId; } APPCATEGORYINFO;
+	// Locale; StrPtrUni pszDescription; GUID AppCategoryId; } APPCATEGORYINFO;
 	[PInvokeData("appmgmt.h", MSDNShortId = "7a0e61cb-97f8-4ca2-a85a-889e671099d0")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct APPCATEGORYINFO
@@ -323,7 +323,7 @@ public static partial class AdvApi32
 		public LCID Locale;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a string containing the display name of the category. This string displays in the <c>Category</c> list in
 		/// Add/Remove Programs. This string buffer must be allocated using CoTaskMemAlloc and freed using CoTaskMemFree.
@@ -448,7 +448,7 @@ public static partial class AdvApi32
 	/// GetLocalManagedApplications function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/ns-appmgmt-_localmanagedapplication typedef struct
-	// _LOCALMANAGEDAPPLICATION { LPWSTR pszDeploymentName; LPWSTR pszPolicyName; LPWSTR pszProductId; DWORD dwState; }
+	// _LOCALMANAGEDAPPLICATION { StrPtrUni pszDeploymentName; StrPtrUni pszPolicyName; StrPtrUni pszProductId; DWORD dwState; }
 	// LOCALMANAGEDAPPLICATION, *PLOCALMANAGEDAPPLICATION;
 	[PInvokeData("appmgmt.h", MSDNShortId = "b2b7d209-76ee-4ba4-ac61-034d2c8e0689")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -490,8 +490,8 @@ public static partial class AdvApi32
 	/// array of <c>MANAGEDAPPLICATION</c> structures.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/ns-appmgmt-managedapplication typedef struct _MANAGEDAPPLICATION {
-	// LPWSTR pszPackageName; LPWSTR pszPublisher; DWORD dwVersionHi; DWORD dwVersionLo; DWORD dwRevision; GUID GpoId; LPWSTR
-	// pszPolicyName; GUID ProductId; LANGID Language; LPWSTR pszOwner; LPWSTR pszCompany; LPWSTR pszComments; LPWSTR pszContact; LPWSTR
+	// StrPtrUni pszPackageName; StrPtrUni pszPublisher; DWORD dwVersionHi; DWORD dwVersionLo; DWORD dwRevision; GUID GpoId; StrPtrUni
+	// pszPolicyName; GUID ProductId; LANGID Language; StrPtrUni pszOwner; StrPtrUni pszCompany; StrPtrUni pszComments; StrPtrUni pszContact; StrPtrUni
 	// pszSupportUrl; DWORD dwPathType; BOOL bInstalled; } MANAGEDAPPLICATION, *PMANAGEDAPPLICATION;
 	[PInvokeData("appmgmt.h", MSDNShortId = "8ac78f92-e665-4dd0-b226-6bf41dcd050a")]
 	[StructLayout(LayoutKind.Sequential)]

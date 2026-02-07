@@ -53,7 +53,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "3b1e2699-7f5f-444d-9072-f2ca7c8fa511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ClientToScreen(HWND hWnd, ref POINT lpPoint);
+	public static extern bool ClientToScreen([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>Retrieves the screen auto-rotation preferences for the current process.</summary>
 	/// <param name="pOrientation">
@@ -161,7 +161,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "")]
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
 
 	/// <summary>The ScreenToClient function converts the screen coordinates of a specified point on the screen to client-area coordinates.</summary>
 	/// <param name="hWnd">A handle to the window whose client area will be used for the conversion.</param>
@@ -173,7 +173,7 @@ public static partial class User32
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref POINT lpPoint);
+	public static extern bool ScreenToClient([In, AddAsMember] HWND hWnd, [In, Out] ref POINT lpPoint);
 
 	/// <summary>Sets the orientation preferences of the display.</summary>
 	/// <param name="orientation">The orientation.</param>

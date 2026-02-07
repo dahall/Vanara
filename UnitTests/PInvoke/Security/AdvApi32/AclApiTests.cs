@@ -10,14 +10,17 @@ namespace Vanara.PInvoke.Tests;
 public class AclApiTests
 {
 	public const SECURITY_INFORMATION SecInfoAll = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION;
+	public const SECURITY_INFORMATION SecInfoNoSacl = SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION | SECURITY_INFORMATION.DACL_SECURITY_INFORMATION;
 	public static readonly string localAdmins = $"{Environment.MachineName}\\Administrators";
-	public static readonly SafePSECURITY_DESCRIPTOR pSd;
+	public SafePSECURITY_DESCRIPTOR pSd = SafePSECURITY_DESCRIPTOR.Null;
 	public static readonly string userName = $"{Environment.UserDomainName}\\{Environment.UserName}";
 
-	static AclApiTests()
+	[OneTimeSetUp]
+	public void Setup()
 	{
 		using (new ElevPriv("SeSecurityPrivilege"))
 			pSd = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SecInfoAll);
+		Assert.That(pSd, ResultIs.ValidHandle);
 	}
 
 	[Test]
@@ -175,6 +178,7 @@ public class AclApiTests
 
 		aces.ForEach(a => dacl.Add(a));
 		Assert.That(dacl.AceCount, Is.EqualTo(aces.Count));
+		Assert.That(dacl.IsValidAcl);
 	}
 
 	[Test]
@@ -229,8 +233,11 @@ public class AclApiTests
 		var counter = 0;
 		using (new ElevPriv("SeSecurityPrivilege"))
 		{
-			Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
-			Assert.That(TreeResetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, false, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
+			Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out _, out var plsd), ResultIs.Successful);
+			bool hasChildDir = System.IO.Directory.Exists(TestCaseSources.TempChildDir);
+			if (!hasChildDir) System.IO.Directory.CreateDirectory(TestCaseSources.TempChildDir);
+			try { Assert.That(TreeResetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoNoSacl, pOwnSid, pGrpSid, dacl, default, false, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful); }
+			finally { if (!hasChildDir) System.IO.Directory.Delete(TestCaseSources.TempChildDir); }
 		}
 		Assert.That(counter, Is.GreaterThan(0));
 

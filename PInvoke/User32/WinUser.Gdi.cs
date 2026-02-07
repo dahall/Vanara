@@ -1709,7 +1709,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-	public static extern int DrawText(HDC hDC, string lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
+	public static extern int DrawText([In, AddAsMember] HDC hDC, string lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
 
 	/// <summary>
 	/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
@@ -1735,7 +1735,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-	public static extern int DrawText(HDC hDC, StringBuilder lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
+	public static extern int DrawText([In, AddAsMember] HDC hDC, StringBuilder lpchText, int nCount, in RECT lpRect, DrawTextFlags uFormat);
 
 	/// <summary>The <c>DrawTextEx</c> function draws formatted text in the specified rectangle.</summary>
 	/// <param name="hdc">A handle to the device context in which to draw.</param>
@@ -1916,11 +1916,11 @@ public static partial class User32
 	/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
 	/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, StrPtrAnsi lpchText, int
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
-	public static extern int DrawTextEx(HDC hdc, string lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
+	public static extern int DrawTextEx([In, AddAsMember] HDC hdc, string lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
 
 	/// <summary>The <c>DrawTextEx</c> function draws formatted text in the specified rectangle.</summary>
 	/// <param name="hdc">A handle to the device context in which to draw.</param>
@@ -2101,11 +2101,11 @@ public static partial class User32
 	/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
 	/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, StrPtrAnsi lpchText, int
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
-	public static extern int DrawTextEx(HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
+	public static extern int DrawTextEx([In, AddAsMember] HDC hdc, StringBuilder lpchText, int cchText, in RECT lprc, DrawTextFlags format, [Optional] DRAWTEXTPARAMS? lpdtp);
 
 	/// <summary>
 	/// <para>
@@ -2145,10 +2145,14 @@ public static partial class User32
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdc
 	// HDC GetDC( [in] HWND hWnd );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetDC")]
-	public static SafeReleaseHDC GetDC([In, Optional] HWND hWnd) => new(GetDCInternal(hWnd), hWnd);
+	[return: AddAsCtor]
+	public static SafeReleaseHDC GetDC([In, Optional, AddAsMember] HWND hWnd)
+	{
+		return new(GetDCInternal(hWnd), hWnd);
 
-	[DllImport(Lib.User32, SetLastError = false, EntryPoint = "GetDC")]
-	private static extern IntPtr GetDCInternal([In, Optional] HWND hWnd);
+		[DllImport(Lib.User32, SetLastError = false, EntryPoint = "GetDC")]
+		static extern IntPtr GetDCInternal([In, Optional] HWND hWnd);
+	}
 
 	/// <summary>
 	/// <para>
@@ -2247,7 +2251,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdcex HDC GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
-	public static extern HDC GetDCEx([In, Optional] HWND hWnd, [In, Optional] HRGN hrgnClip, DCX flags);
+	public static extern SafeReleaseHDC GetDCEx([In, Optional, AddAsMember] HWND hWnd, [In, Optional] HRGN hrgnClip, DCX flags);
 
 	/// <summary>Retrieves the count of handles to graphical user interface (GUI) objects in use by the specified process.</summary>
 	/// <param name="hProcess">
@@ -2299,7 +2303,7 @@ public static partial class User32
 	// DWORD uiFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "55fbb7e8-79b4-4011-b522-25ea5a928b86")]
-	public static extern uint GetGuiResources(HPROCESS hProcess, GR uiFlags);
+	public static extern uint GetGuiResources([In, AddAsMember] HPROCESS hProcess, GR uiFlags);
 
 	/// <summary>
 	/// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that
@@ -2379,7 +2383,7 @@ public static partial class User32
 	// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
-	public static extern uint GetTabbedTextExtent(HDC hdc, string lpString, int chCount, [Optional] int nTabPositions, [In, Optional] int[]? lpnTabStopPositions);
+	public static extern uint GetTabbedTextExtent([In] HDC hdc, string lpString, int chCount, [Optional] int nTabPositions, [In, Optional] int[]? lpnTabStopPositions);
 
 	/// <summary>
 	/// The <c>GetTabbedTextExtent</c> function computes the width and height of a character string. If the string contains one or more
@@ -2417,49 +2421,11 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettabbedtextextenta DWORD GetTabbedTextExtentA( HDC hdc,
 	// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
 	[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
-	public static SIZE GetTabbedTextExtent(HDC hdc, string lpString, int[]? lpnTabStopPositions = null)
+	public static SIZE GetTabbedTextExtent([In, AddAsMember] HDC hdc, string lpString, int[]? lpnTabStopPositions = null)
 	{
 		var ret = GetTabbedTextExtent(hdc, lpString, lpString.Length, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
 		return new SIZE(Macros.LOWORD(ret), Macros.HIWORD(ret));
 	}
-
-	/// <summary>The <c>GetUserObjectSecurity</c> function retrieves security information for the specified user object.</summary>
-	/// <param name="hObj">A handle to the user object for which to return security information.</param>
-	/// <param name="pSIRequested">A pointer to a SECURITY_INFORMATION value that specifies the security information being requested.</param>
-	/// <param name="pSID">
-	/// A pointer to a SECURITY_DESCRIPTOR structure in self-relative format that contains the requested information when the function
-	/// returns. This buffer must be aligned on a 4-byte boundary.
-	/// </param>
-	/// <param name="nLength">The length, in bytes, of the buffer pointed to by the pSD parameter.</param>
-	/// <param name="lpnLengthNeeded">
-	/// A pointer to a variable to receive the number of bytes required to store the complete security descriptor. If this variable's
-	/// value is greater than the value of the nLength parameter when the function returns, the function returns <c>FALSE</c> and none of
-	/// the security descriptor is copied to the buffer. Otherwise, the entire security descriptor is copied.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero.</para>
-	/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// To read the owner, group, or discretionary access control list (DACL) from the user object's security descriptor, the calling
-	/// process must have been granted READ_CONTROL access when the handle was opened.
-	/// </para>
-	/// <para>
-	/// To read the system access control list (SACL) from the security descriptor, the calling process must have been granted
-	/// ACCESS_SYSTEM_SECURITY access when the handle was opened. The correct way to get this access is to enable the SE_SECURITY_NAME
-	/// privilege in the caller's current token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
-	/// </para>
-	/// <para>Examples</para>
-	/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getuserobjectsecurity BOOL GetUserObjectSecurity( HANDLE
-	// hObj, PSECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID, DWORD nLength, LPDWORD lpnLengthNeeded );
-	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("winuser.h", MSDNShortId = "998c2520-7833-4efd-a794-b13b528f0485")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID,
-		uint nLength, out uint lpnLengthNeeded);
 
 	/// <summary>
 	/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra
@@ -2515,7 +2481,7 @@ public static partial class User32
 	/// error information, call GetLastError.
 	/// </returns>
 	/// <exception cref="ArgumentException">Type mismatch</exception>
-	public static T GetWindowLong<T>(HWND hWnd, WindowLongFlags nIndex)
+	public static T GetWindowLong<T>([In, AddAsMember] HWND hWnd, WindowLongFlags nIndex)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
 		return (T)GetWindowLongAuto(hWnd, nIndex).CastTo(typeof(T))!;
@@ -2655,7 +2621,8 @@ public static partial class User32
 	// LPCSTR lpBitmapName );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "5eed5f78-deaf-4b23-986e-4802dc05936c")]
-	public static extern SafeHBITMAP LoadBitmap([Optional] HINSTANCE hInstance, [In] SafeResourceId lpBitmapName);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP LoadBitmap([In, Optional] HINSTANCE hInstance, [In] SafeResourceId lpBitmapName);
 
 	/// <summary>
 	/// The <c>ReleaseDC</c> function releases a device context (DC), freeing it for use by other applications. The effect of the
@@ -2736,7 +2703,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "41a7a96c-f9d1-44e3-a7e1-fd7d155c4ed0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSysColors(int cElements, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeConst = 0)] SystemColorIndex[] lpaElements, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 0)] COLORREF[] lpaRgbValues);
+	public static extern bool SetSysColors(int cElements, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeParamIndex = 0)] SystemColorIndex[] lpaElements,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COLORREF[] lpaRgbValues);
 
 	/// <summary>
 	/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -2760,13 +2728,17 @@ public static partial class User32
 	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
 	/// </para>
 	/// </returns>
-	public static IntPtr SetWindowLong(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
+	public static IntPtr SetWindowLong([In, AddAsMember] HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
 	{
 		Kernel32.SetLastError(0);
-		if (IntPtr.Size == 4)
-			return Win32Error.ThrowLastErrorIfNull((IntPtr)SetWindowLongPtr32(hWnd, nIndex, dwNewLong));
-		else
-			return Win32Error.ThrowLastErrorIfNull(SetWindowLongPtr64(hWnd, nIndex, dwNewLong));
+		return (IntPtr.Size, IsWindowUnicode(hWnd)) switch
+		{
+			(4, false) => (IntPtr)SetWindowLongA(hWnd, nIndex, dwNewLong.ToInt32()),
+			(4, true) => (IntPtr)SetWindowLongW(hWnd, nIndex, dwNewLong.ToInt32()),
+			(8, false) => SetWindowLongPtrA(hWnd, nIndex, dwNewLong),
+			(8, true) => SetWindowLongPtrW(hWnd, nIndex, dwNewLong),
+			_ => throw new PlatformNotSupportedException(),
+		};
 	}
 
 	/// <summary>
@@ -2791,7 +2763,7 @@ public static partial class User32
 	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
 	/// </para>
 	/// </returns>
-	public static int SetWindowLong(HWND hWnd, WindowLongFlags nIndex, int dwNewLong) => SetWindowLong(hWnd, nIndex, new IntPtr(dwNewLong)).ToInt32();
+	public static int SetWindowLong([In, AddAsMember] HWND hWnd, WindowLongFlags nIndex, int dwNewLong) => SetWindowLong(hWnd, nIndex, new IntPtr(dwNewLong)).ToInt32();
 
 	/// <summary>
 	/// The <c>TabbedTextOut</c> function writes a character string at a specified location, expanding tabs to the values specified in an
@@ -2847,7 +2819,8 @@ public static partial class User32
 	// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions, int nTabOrigin );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "1cb78a75-752d-4e06-afdf-cd797f209114")]
-	public static extern int TabbedTextOut(HDC hdc, int x, int y, string lpString, int chCount, [Optional] int nTabPositions, [In, Optional] int[]? lpnTabStopPositions, int nTabOrigin);
+	public static extern int TabbedTextOut([In, AddAsMember] HDC hdc, int x, int y, [SizeDef(nameof(chCount))] string lpString, int chCount, [Optional] int nTabPositions,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] int[]? lpnTabStopPositions, int nTabOrigin);
 
 	/// <summary>
 	/// The <c>WindowFromDC</c> function returns a handle to the window associated with the specified display device context (DC). Output
@@ -2861,7 +2834,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-windowfromdc HWND WindowFromDC( HDC hDC );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "57ecec82-03be-4d1a-84cf-6b64131af19d")]
-	public static extern HWND WindowFromDC(HDC hDC);
+	public static extern HWND WindowFromDC([In, AddAsMember] HDC hDC);
 
 	private static SafeCoTaskMemHandle GetPtr<T>(in T val) => SafeCoTaskMemHandle.CreateFromStructure(val);
 
@@ -2959,64 +2932,17 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID);
 
-	/// <summary>
-	/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
-	/// </summary>
-	/// <param name="hWnd">
-	/// A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process
-	/// that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the
-	/// calling thread resides in.
-	/// </param>
-	/// <param name="nIndex">
-	/// The zero-based offset to the value to be set. Valid values are in the range zero through the number of bytes of extra window
-	/// memory, minus the size of an integer. Alternately, this can be a value from <see cref="WindowLongFlags"/>.
-	/// </param>
-	/// <param name="dwNewLong">The replacement value.</param>
-	/// <returns>
-	/// If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value
-	/// is zero. To get extended error information, call GetLastError.
-	/// <para>
-	/// If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error
-	/// information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call
-	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
-	/// </para>
-	/// </returns>
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+	private static extern int SetWindowLongA(HWND hWnd, WindowLongFlags nIndex, int dwNewLong);
 
-/* Unmerged change from project 'Vanara.PInvoke.User32 (net45)'
-Before:
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
-After:
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-*/
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-	private static extern int SetWindowLongPtr32(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	private static extern int SetWindowLongW(HWND hWnd, WindowLongFlags nIndex, int dwNewLong);
 
-	/// <summary>
-	/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
-	/// </summary>
-	/// <param name="hWnd">
-	/// A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process
-	/// that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the
-	/// calling thread resides in.
-	/// </param>
-	/// <param name="nIndex">
-	/// The zero-based offset to the value to be set. Valid values are in the range zero through the number of bytes of extra window
-	/// memory, minus the size of an integer. Alternately, this can be a value from <see cref="WindowLongFlags"/>.
-	/// </param>
-	/// <param name="dwNewLong">The replacement value.</param>
-	/// <returns>
-	/// If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value
-	/// is zero. To get extended error information, call GetLastError.
-	/// <para>
-	/// If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error
-	/// information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call
-	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
-	/// </para>
-	/// </returns>
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-	private static extern IntPtr SetWindowLongPtr64(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+	private static extern IntPtr SetWindowLongPtrA(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	private static extern IntPtr SetWindowLongPtrW(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 	/// <summary>
 	/// Grants or denies access to a handle to a User object to a job that has a user-interface restriction. When access is granted, all
@@ -3120,61 +3046,54 @@ After:
 
 		/// <summary>Updates the <see cref="WINDOWPOS"/> value pointed to by an LPARAM value from this instance.</summary>
 		/// <param name="lParam">The LPARAM value to update.</param>
-		public void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
+		public readonly void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
 	}
 
 	/// <summary>Special window handles</summary>
+	[Obsolete("Use HWND fields instead.")]
 	public static class SpecialWindowHandles
 	{
 		/// <summary>
 		/// Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its
 		/// topmost status and is placed at the bottom of all other windows.
 		/// </summary>
-		public static HWND HWND_BOTTOM = new IntPtr(1);
+		public static readonly HWND HWND_BOTTOM = new IntPtr(1);
 
 		/// <summary>
 		/// Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window
 		/// is already a non-topmost window.
 		/// </summary>
-		public static HWND HWND_NOTOPMOST = new IntPtr(-2);
+		public static readonly HWND HWND_NOTOPMOST = new IntPtr(-2);
 
 		/// <summary>Places the window at the top of the Z order.</summary>
-		public static HWND HWND_TOP = new IntPtr(0);
+		public static readonly HWND HWND_TOP = new IntPtr(0);
 
 		/// <summary>Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.</summary>
-		public static HWND HWND_TOPMOST = new IntPtr(-1);
+		public static readonly HWND HWND_TOPMOST = new IntPtr(-1);
 	}
 
 	/// <summary>The <c>DRAWTEXTPARAMS</c> structure contains extended formatting options for the DrawTextEx function.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="DRAWTEXTPARAMS"/> class.</remarks>
+	/// <param name="tabLength">The size of each tab stop, in units equal to the average character width.</param>
+	/// <param name="leftMargin">The left margin, in units equal to the average character width.</param>
+	/// <param name="rightMargin">The right margin, in units equal to the average character width.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagdrawtextparams typedef struct tagDRAWTEXTPARAMS { UINT
 	// cbSize; int iTabLength; int iLeftMargin; int iRightMargin; UINT uiLengthDrawn; } DRAWTEXTPARAMS, *LPDRAWTEXTPARAMS;
 	[PInvokeData("winuser.h", MSDNShortId = "d3b89ce2-9a05-42af-b03e-24e1c4d6ef1d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public class DRAWTEXTPARAMS
+	public class DRAWTEXTPARAMS(int tabLength = 0, int leftMargin = 0, int rightMargin = 0)
 	{
-		/// <summary>Initializes a new instance of the <see cref="DRAWTEXTPARAMS"/> class.</summary>
-		/// <param name="tabLength">The size of each tab stop, in units equal to the average character width.</param>
-		/// <param name="leftMargin">The left margin, in units equal to the average character width.</param>
-		/// <param name="rightMargin">The right margin, in units equal to the average character width.</param>
-		public DRAWTEXTPARAMS(int tabLength = 0, int leftMargin = 0, int rightMargin = 0)
-		{
-			cbSize = (uint)Marshal.SizeOf(typeof(DRAWTEXTPARAMS));
-			iTabLength = tabLength;
-			iLeftMargin = leftMargin;
-			iRightMargin = rightMargin;
-		}
-
 		/// <summary>The structure size, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<DRAWTEXTPARAMS>();
 
 		/// <summary>The size of each tab stop, in units equal to the average character width.</summary>
-		public int iTabLength;
+		public int iTabLength = tabLength;
 
 		/// <summary>The left margin, in units equal to the average character width.</summary>
-		public int iLeftMargin;
+		public int iLeftMargin = leftMargin;
 
 		/// <summary>The right margin, in units equal to the average character width.</summary>
-		public int iRightMargin;
+		public int iRightMargin = rightMargin;
 
 		/// <summary>
 		/// Receives the number of characters processed by DrawTextEx, including white-space characters. The number can be the length of
@@ -3185,17 +3104,15 @@ After:
 	}
 
 	/// <summary>A SafeHandle to track DC handles retrieved via <see cref="GetDC"/>.</summary>
-	public class SafeReleaseHDC : SafeHANDLE, IDeviceContextHandle
+	/// <remarks>
+	/// Initializes a new instance of the <see cref="SafeReleaseHDC" /> class and assigns an existing handle.
+	/// </remarks>
+	/// <param name="preexistingHandle">An <see cref="IntPtr" /> object that represents the pre-existing handle to use.</param>
+	/// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
+	/// <param name="ownsHandle"><see langword="true" /> to reliably release the handle during the finalization phase; otherwise, <see langword="false" /> (not recommended).</param>
+	public class SafeReleaseHDC(IntPtr preexistingHandle, HWND hwnd = default, bool ownsHandle = true) : SafeHANDLE(preexistingHandle, ownsHandle), IDeviceContextHandle
 	{
-		private readonly HWND hWnd;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeReleaseHDC" /> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr" /> object that represents the pre-existing handle to use.</param>
-		/// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
-		/// <param name="ownsHandle"><see langword="true" /> to reliably release the handle during the finalization phase; otherwise, <see langword="false" /> (not recommended).</param>
-		public SafeReleaseHDC(IntPtr preexistingHandle, HWND hwnd = default, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => hWnd = hwnd;
+		private readonly HWND hWnd = hwnd;
 
 		/// <summary>A NULL value for this handle.</summary>
 		public static readonly SafeReleaseHDC Null = new(IntPtr.Zero, default, false);

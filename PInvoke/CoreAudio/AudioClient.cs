@@ -10,10 +10,13 @@ public static partial class CoreAudio
 
 	/// <summary/>
 	public const uint WM_APP_GRAPHNOTIFY = 0x8002;
+
 	/// <summary/>
 	public const uint WM_APP_SESSION_DUCKED = 0x8000;
+
 	/// <summary/>
 	public const uint WM_APP_SESSION_UNDUCKED = 0x8001;
+
 	/// <summary/>
 	public const uint WM_APP_SESSION_VOLUME_CHANGED = 0x8003;
 
@@ -159,16 +162,19 @@ public static partial class CoreAudio
 	{
 		/// <summary>Undocumented</summary>
 		[PreserveSig]
+		HRESULT GetHeadTracking([MarshalAs(UnmanagedType.Bool)] out bool pbEnableHeadTracking);
+
+		/// <summary>Undocumented</summary>
+		/// <param name="pAmbisonicsParams"></param>
+		/// <param name="cbAmbisonicsParams"></param>
+		/// <returns></returns>
+		[PreserveSig]
 		HRESULT SetData([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] AMBISONICS_PARAMS[] pAmbisonicsParams,
 			uint cbAmbisonicsParams);
 
 		/// <summary>Undocumented</summary>
 		[PreserveSig]
 		HRESULT SetHeadTracking([MarshalAs(UnmanagedType.Bool)] bool bEnableHeadTracking);
-
-		/// <summary>Undocumented</summary>
-		[PreserveSig]
-		HRESULT GetHeadTracking([MarshalAs(UnmanagedType.Bool)] out bool pbEnableHeadTracking);
 
 		/// <summary>Undocumented</summary>
 		[PreserveSig]
@@ -366,6 +372,59 @@ public static partial class CoreAudio
 		[PreserveSig]
 		HRESULT GetBuffer(out IntPtr ppData, out uint pNumFramesToRead, out AUDCLNT_BUFFERFLAGS pdwFlags, out ulong pu64DevicePosition, out ulong pu64QPCPosition);
 
+		/// <summary>
+		/// The <c>GetNextPacketSize</c> method retrieves the number of frames in the next data packet in the capture endpoint buffer.
+		/// </summary>
+		/// <param name="pNumFramesInNextPacket">
+		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames in the next capture packet).
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
+		/// the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
+		/// <term>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
+		/// <term>The Windows audio service is not running.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>Parameter pNumFramesInNextPacket is NULL.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>Use this method only with shared-mode streams. It does not work with exclusive-mode streams.</para>
+		/// <para>
+		/// Before calling the IAudioCaptureClient::GetBuffer method to retrieve the next data packet, the client can call
+		/// <c>GetNextPacketSize</c> to retrieve the number of audio frames in the next packet. The count reported by
+		/// <c>GetNextPacketSize</c> matches the count retrieved in the <c>GetBuffer</c> call (through the pNumFramesToRead output
+		/// parameter) that follows the <c>GetNextPacketSize</c> call.
+		/// </para>
+		/// <para>A packet always consists of an integral number of audio frames.</para>
+		/// <para>
+		/// <c>GetNextPacketSize</c> must be called in the same thread as the GetBuffer and IAudioCaptureClient::ReleaseBuffer method calls
+		/// that get and release the packets in the capture endpoint buffer.
+		/// </para>
+		/// <para>For a code example that uses the <c>GetNextPacketSize</c> method, see Capturing a Stream.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiocaptureclient-getnextpacketsize HRESULT
+		// GetNextPacketSize( UINT32 *pNumFramesInNextPacket );
+		[PreserveSig]
+		HRESULT GetNextPacketSize(out uint pNumFramesInNextPacket);
+
 		/// <summary>The <c>ReleaseBuffer</c> method releases the buffer.</summary>
 		/// <param name="NumFramesRead">
 		/// The number of audio frames that the client read from the capture buffer. This parameter must be either equal to the number of
@@ -435,59 +494,6 @@ public static partial class CoreAudio
 		// ReleaseBuffer( UINT32 NumFramesRead );
 		[PreserveSig]
 		HRESULT ReleaseBuffer([In] uint NumFramesRead);
-
-		/// <summary>
-		/// The <c>GetNextPacketSize</c> method retrieves the number of frames in the next data packet in the capture endpoint buffer.
-		/// </summary>
-		/// <param name="pNumFramesInNextPacket">
-		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames in the next capture packet).
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
-		/// the following table.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
-		/// <term>
-		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
-		/// disabled, removed, or otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
-		/// <term>The Windows audio service is not running.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_POINTER</term>
-		/// <term>Parameter pNumFramesInNextPacket is NULL.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>Use this method only with shared-mode streams. It does not work with exclusive-mode streams.</para>
-		/// <para>
-		/// Before calling the IAudioCaptureClient::GetBuffer method to retrieve the next data packet, the client can call
-		/// <c>GetNextPacketSize</c> to retrieve the number of audio frames in the next packet. The count reported by
-		/// <c>GetNextPacketSize</c> matches the count retrieved in the <c>GetBuffer</c> call (through the pNumFramesToRead output
-		/// parameter) that follows the <c>GetNextPacketSize</c> call.
-		/// </para>
-		/// <para>A packet always consists of an integral number of audio frames.</para>
-		/// <para>
-		/// <c>GetNextPacketSize</c> must be called in the same thread as the GetBuffer and IAudioCaptureClient::ReleaseBuffer method calls
-		/// that get and release the packets in the capture endpoint buffer.
-		/// </para>
-		/// <para>For a code example that uses the <c>GetNextPacketSize</c> method, see Capturing a Stream.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiocaptureclient-getnextpacketsize HRESULT
-		// GetNextPacketSize( UINT32 *pNumFramesInNextPacket );
-		[PreserveSig]
-		HRESULT GetNextPacketSize(out uint pNumFramesInNextPacket);
 	}
 
 	/// <summary>
@@ -533,6 +539,384 @@ public static partial class CoreAudio
 	[ComImport, Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioClient
 	{
+		/// <summary>The <c>GetBufferSize</c> method retrieves the size (maximum capacity) of the endpoint buffer.</summary>
+		/// <returns>Pointer to a <c>UINT32</c> variable into which the method writes the number of audio frames that the buffer can hold.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves the length of the endpoint buffer shared between the client application and the audio engine. The length is
+		/// expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of
+		/// channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo
+		/// (2-channel) stream with 16-bit samples.
+		/// </para>
+		/// <para>
+		/// The IAudioClient::Initialize method allocates the buffer. The client specifies the buffer length in the hnsBufferDuration
+		/// parameter value that it passes to the <c>Initialize</c> method. For rendering clients, the buffer length determines the maximum
+		/// amount of rendering data that the application can write to the endpoint buffer during a single processing pass. For capture
+		/// clients, the buffer length determines the maximum amount of capture data that the audio engine can read from the endpoint buffer
+		/// during a single processing pass. The client should always call <c>GetBufferSize</c> after calling <c>Initialize</c> to determine
+		/// the actual size of the allocated buffer, which might differ from the requested size.
+		/// </para>
+		/// <para>
+		/// Rendering clients can use this value to calculate the largest rendering buffer size that can be requested from
+		/// IAudioRenderClient::GetBuffer during each processing pass.
+		/// </para>
+		/// <para>For code examples that call the <c>GetBufferSize</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getbuffersize HRESULT GetBufferSize(
+		// UINT32 *pNumBufferFrames );
+		uint GetBufferSize();
+
+		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
+		/// <returns>
+		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
+		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
+		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
+		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
+		/// from a region of the buffer to which the audio engine has not yet written valid data.
+		/// </para>
+		/// <para>
+		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
+		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
+		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
+		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
+		/// </para>
+		/// <para>
+		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
+		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
+		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
+		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
+		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
+		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
+		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
+		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
+		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
+		/// whole packet. A packet always contains an integral number of audio frames.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
+		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
+		/// packet length reported by <c>GetNextPacketSize</c>.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
+		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
+		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
+		/// a shared-mode stream. The details are as follows.
+		/// </para>
+		/// <para>
+		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
+		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
+		/// padding value from the buffer length.
+		/// </para>
+		/// <para>
+		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
+		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
+		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
+		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
+		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
+		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
+		/// </para>
+		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
+		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
+		uint GetCurrentPadding();
+
+		/// <summary>
+		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
+		/// audio engine on the data in the endpoint buffer.
+		/// </summary>
+		/// <param name="phnsDefaultDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
+		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
+		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <param name="phnsMinimumDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
+		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
+		/// </param>
+		/// <remarks>
+		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
+		/// <para>
+		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
+		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
+		/// </para>
+		/// <para>
+		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
+		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
+		/// and minimum periods.
+		/// </para>
+		/// <para>
+		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
+		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
+		/// </para>
+		/// <para>
+		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
+		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
+		/// represents the minimum possible latency that an audio application can achieve.
+		/// </para>
+		/// <para>
+		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
+		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
+		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
+		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
+		/// between processing passes.
+		/// </para>
+		/// <para>
+		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
+		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
+		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
+		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
+		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
+		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
+		/// achieve the minimum possible latency.
+		/// </para>
+		/// <para>
+		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
+		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
+		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
+		void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
+
+		/// <summary>
+		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
+		/// </summary>
+		/// <param name="ppDeviceFormat">
+		/// Pointer to a pointer variable into which the method writes the address of the mix format. This parameter must be a valid, non-
+		/// <c>NULL</c> pointer to a pointer variable. The method writes the address of a <c>WAVEFORMATEX</c> (or
+		/// <c>WAVEFORMATEXTENSIBLE</c>) structure to this variable. The method allocates the storage for the structure. The caller is
+		/// responsible for freeing the storage, when it is no longer needed, by calling the <c>CoTaskMemFree</c> function. If the
+		/// <c>GetMixFormat</c> call fails, *ppDeviceFormat is <c>NULL</c>. For information about <c>WAVEFORMATEX</c>,
+		/// <c>WAVEFORMATEXTENSIBLE</c>, and <c>CoTaskMemFree</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
+		/// the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
+		/// <term>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
+		/// <term>The Windows audio service is not running.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>Parameter ppDeviceFormat is NULL.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Out of memory.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The client can call this method before calling the IAudioClient::Initialize method. When creating a shared-mode stream for an
+		/// audio endpoint device, the <c>Initialize</c> method always accepts the stream format obtained from a <c>GetMixFormat</c> call on
+		/// the same device.
+		/// </para>
+		/// <para>
+		/// The mix format is the format that the audio engine uses internally for digital processing of shared-mode streams. This format is
+		/// not necessarily a format that the audio endpoint device supports. Thus, the caller might not succeed in creating an
+		/// exclusive-mode stream with a format obtained by calling <c>GetMixFormat</c>.
+		/// </para>
+		/// <para>
+		/// For example, to facilitate digital audio processing, the audio engine might use a mix format that represents samples as
+		/// floating-point values. If the device supports only integer PCM samples, then the engine converts the samples to or from integer
+		/// PCM values at the connection between the device and the engine. However, to avoid resampling, the engine might use a mix format
+		/// with a sample rate that the device supports.
+		/// </para>
+		/// <para>
+		/// To determine whether the <c>Initialize</c> method can create a shared-mode or exclusive-mode stream with a particular format,
+		/// call the IAudioClient::IsFormatSupported method.
+		/// </para>
+		/// <para>
+		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
+		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
+		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <see cref="WAVEFORMATEXTENSIBLE"/> structure
+		/// can specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
+		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
+		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
+		/// <c>WAVEFORMATEX</c> structure that is embedded at the start of this <c>WAVEFORMATEXTENSIBLE</c> structure. For more information
+		/// about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
+		/// </para>
+		/// <para>
+		/// For more information about the <c>GetMixFormat</c> method, see Device Formats. For code examples that call <c>GetMixFormat</c>,
+		/// see the following topics:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
+		// WAVEFORMATEX **ppDeviceFormat );
+		[PreserveSig]
+		HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+
+		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
+		/// <param name="riid">
+		/// <para>The interface ID for the requested service. The client should set this parameter to one of the following REFIID values:</para>
+		/// <para>IID_IAudioCaptureClient</para>
+		/// <para>IID_IAudioClock</para>
+		/// <para>IID_IAudioRenderClient</para>
+		/// <para>IID_IAudioSessionControl</para>
+		/// <para>IID_IAudioStreamVolume</para>
+		/// <para>IID_IChannelAudioVolume</para>
+		/// <para>IID_IMFTrustedOutput</para>
+		/// <para>IID_ISimpleAudioVolume</para>
+		/// <para>For more information, see Remarks.</para>
+		/// </param>
+		/// <returns>
+		/// Pointer to a pointer variable into which the method writes the address of an instance of the requested interface. Through this
+		/// method, the caller obtains a counted reference to the interface. The caller is responsible for releasing the interface, when it
+		/// is no longer needed, by calling the interface's <c>Release</c> method. If the <c>GetService</c> call fails, *ppv is <c>NULL</c>.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>The <c>GetService</c> method supports the following service interfaces:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IAudioCaptureClient</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClock</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioRenderClient</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioSessionControl</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioStreamVolume</term>
+		/// </item>
+		/// <item>
+		/// <term>IChannelAudioVolume</term>
+		/// </item>
+		/// <item>
+		/// <term>IMFTrustedOutput</term>
+		/// </item>
+		/// <item>
+		/// <term>ISimpleAudioVolume</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In Windows 7, a new service identifier, <c>IID_IMFTrustedOutput</c>, has been added that facilitates the use of output trust
+		/// authority (OTA) objects. These objects can operate inside or outside the Media Foundation's protected media path (PMP) and send
+		/// content outside the Media Foundation pipeline. If the caller is outside PMP, then the OTA may not operate in the PMP, and the
+		/// protection settings are less robust. OTAs must implement the IMFTrustedOutput interface. By passing <c>IID_IMFTrustedOutput</c>
+		/// in <c>GetService</c>, an application can retrieve a pointer to the object's <c>IMFTrustedOutput</c> interface. For more
+		/// information about protected objects and <c>IMFTrustedOutput</c>, see "Protected Media Path" in the Media Foundation SDK documentation.
+		/// </para>
+		/// <para>For information about using trusted audio drivers in OTAs, see Protected User Mode Audio (PUMA).</para>
+		/// <para>
+		/// Note that activating IMFTrustedOutput through this mechanism works regardless of whether the caller is running in PMP. However,
+		/// if the caller is not running in a protected process (that is, the caller is not within Media Foundation's PMP) then the audio OTA
+		/// might not operate in the PMP and the protection settings are less robust.
+		/// </para>
+		/// <para>
+		/// To obtain the interface ID for a service interface, use the <c>__uuidof</c> operator. For example, the interface ID of
+		/// <c>IAudioCaptureClient</c> is defined as follows:
+		/// </para>
+		/// <para>For information about the <c>__uuidof</c> operator, see the Windows SDK documentation.</para>
+		/// <para>
+		/// To release the <c>IAudioClient</c> object and free all its associated resources, the client must release all references to any
+		/// service objects that were created by calling <c>GetService</c>, in addition to calling <c>Release</c> on the <c>IAudioClient</c>
+		/// interface itself. The client must release a service from the same thread that releases the <c>IAudioClient</c> object.
+		/// </para>
+		/// <para>
+		/// The <c>IAudioSessionControl</c>, <c>IAudioStreamVolume</c>, <c>IChannelAudioVolume</c>, and <c>ISimpleAudioVolume</c> interfaces
+		/// control and monitor aspects of audio sessions and shared-mode streams. These interfaces do not work with exclusive-mode streams.
+		/// </para>
+		/// <para>For code examples that call the <c>GetService</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
+		// riid, void **ppv );
+		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
+		object? GetService(in Guid riid);
+
+		/// <summary>
+		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
+		/// stream has been initialized.
+		/// </summary>
+		/// <returns>
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
+		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
+		/// </para>
+		/// <para>
+		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
+		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
+		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
+		long GetStreamLatency();
+
 		/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
 		/// <param name="ShareMode">
 		/// <para>
@@ -946,142 +1330,6 @@ public static partial class CoreAudio
 		[PreserveSig]
 		HRESULT Initialize([In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags, long hnsBufferDuration, long hnsPeriodicity, [In] IntPtr pFormat, [In, Optional] in Guid AudioSessionGuid);
 
-		/// <summary>The <c>GetBufferSize</c> method retrieves the size (maximum capacity) of the endpoint buffer.</summary>
-		/// <returns>Pointer to a <c>UINT32</c> variable into which the method writes the number of audio frames that the buffer can hold.</returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves the length of the endpoint buffer shared between the client application and the audio engine. The length is
-		/// expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of
-		/// channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo
-		/// (2-channel) stream with 16-bit samples.
-		/// </para>
-		/// <para>
-		/// The IAudioClient::Initialize method allocates the buffer. The client specifies the buffer length in the hnsBufferDuration
-		/// parameter value that it passes to the <c>Initialize</c> method. For rendering clients, the buffer length determines the maximum
-		/// amount of rendering data that the application can write to the endpoint buffer during a single processing pass. For capture
-		/// clients, the buffer length determines the maximum amount of capture data that the audio engine can read from the endpoint buffer
-		/// during a single processing pass. The client should always call <c>GetBufferSize</c> after calling <c>Initialize</c> to determine
-		/// the actual size of the allocated buffer, which might differ from the requested size.
-		/// </para>
-		/// <para>
-		/// Rendering clients can use this value to calculate the largest rendering buffer size that can be requested from
-		/// IAudioRenderClient::GetBuffer during each processing pass.
-		/// </para>
-		/// <para>For code examples that call the <c>GetBufferSize</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getbuffersize HRESULT GetBufferSize(
-		// UINT32 *pNumBufferFrames );
-		uint GetBufferSize();
-
-		/// <summary>
-		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
-		/// stream has been initialized.
-		/// </summary>
-		/// <returns>
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
-		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
-		/// </para>
-		/// <para>
-		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
-		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
-		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
-		long GetStreamLatency();
-
-		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
-		/// <returns>
-		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
-		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
-		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
-		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
-		/// from a region of the buffer to which the audio engine has not yet written valid data.
-		/// </para>
-		/// <para>
-		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
-		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
-		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
-		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
-		/// </para>
-		/// <para>
-		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
-		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
-		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
-		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
-		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
-		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
-		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
-		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
-		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
-		/// whole packet. A packet always contains an integral number of audio frames.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
-		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
-		/// packet length reported by <c>GetNextPacketSize</c>.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
-		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
-		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
-		/// a shared-mode stream. The details are as follows.
-		/// </para>
-		/// <para>
-		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
-		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
-		/// padding value from the buffer length.
-		/// </para>
-		/// <para>
-		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
-		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
-		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
-		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
-		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
-		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
-		/// </para>
-		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
-		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
-		uint GetCurrentPadding();
-
 		/// <summary>The <c>IsFormatSupported</c> method indicates whether the audio endpoint device supports a particular stream format.</summary>
 		/// <param name="ShareMode">
 		/// <para>
@@ -1199,154 +1447,50 @@ public static partial class CoreAudio
 		[PreserveSig]
 		HRESULT IsFormatSupported([In] AUDCLNT_SHAREMODE ShareMode, [In] IntPtr pFormat, out SafeCoTaskMemHandle ppClosestMatch);
 
-		/// <summary>
-		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
-		/// </summary>
-		/// <param name="ppDeviceFormat">
-		/// Pointer to a pointer variable into which the method writes the address of the mix format. This parameter must be a valid, non-
-		/// <c>NULL</c> pointer to a pointer variable. The method writes the address of a <c>WAVEFORMATEX</c> (or
-		/// <c>WAVEFORMATEXTENSIBLE</c>) structure to this variable. The method allocates the storage for the structure. The caller is
-		/// responsible for freeing the storage, when it is no longer needed, by calling the <c>CoTaskMemFree</c> function. If the
-		/// <c>GetMixFormat</c> call fails, *ppDeviceFormat is <c>NULL</c>. For information about <c>WAVEFORMATEX</c>,
-		/// <c>WAVEFORMATEXTENSIBLE</c>, and <c>CoTaskMemFree</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
-		/// the following table.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
-		/// <term>
-		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
-		/// disabled, removed, or otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
-		/// <term>The Windows audio service is not running.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_POINTER</term>
-		/// <term>Parameter ppDeviceFormat is NULL.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_OUTOFMEMORY</term>
-		/// <term>Out of memory.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
+		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
 		/// <remarks>
 		/// <para>
-		/// The client can call this method before calling the IAudioClient::Initialize method. When creating a shared-mode stream for an
-		/// audio endpoint device, the <c>Initialize</c> method always accepts the stream format obtained from a <c>GetMixFormat</c> call on
-		/// the same device.
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
 		/// </para>
 		/// <para>
-		/// The mix format is the format that the audio engine uses internally for digital processing of shared-mode streams. This format is
-		/// not necessarily a format that the audio endpoint device supports. Thus, the caller might not succeed in creating an
-		/// exclusive-mode stream with a format obtained by calling <c>GetMixFormat</c>.
+		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
+		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
 		/// </para>
-		/// <para>
-		/// For example, to facilitate digital audio processing, the audio engine might use a mix format that represents samples as
-		/// floating-point values. If the device supports only integer PCM samples, then the engine converts the samples to or from integer
-		/// PCM values at the connection between the device and the engine. However, to avoid resampling, the engine might use a mix format
-		/// with a sample rate that the device supports.
-		/// </para>
-		/// <para>
-		/// To determine whether the <c>Initialize</c> method can create a shared-mode or exclusive-mode stream with a particular format,
-		/// call the IAudioClient::IsFormatSupported method.
-		/// </para>
-		/// <para>
-		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
-		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
-		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <see cref="WAVEFORMATEXTENSIBLE"/> structure can
-		/// specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
-		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
-		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
-		/// <c>WAVEFORMATEX</c> structure that is embedded at the start of this <c>WAVEFORMATEXTENSIBLE</c> structure. For more information
-		/// about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
-		/// </para>
-		/// <para>
-		/// For more information about the <c>GetMixFormat</c> method, see Device Formats. For code examples that call <c>GetMixFormat</c>,
-		/// see the following topics:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
-		// WAVEFORMATEX **ppDeviceFormat );
-		[PreserveSig]
-		HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
+		void Reset();
 
 		/// <summary>
-		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
-		/// audio engine on the data in the endpoint buffer.
+		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
+		/// the client.
 		/// </summary>
-		/// <param name="phnsDefaultDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
-		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
-		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <param name="phnsMinimumDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
-		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
-		/// </param>
+		/// <param name="eventHandle">The event handle.</param>
 		/// <remarks>
-		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
 		/// <para>
-		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
-		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
 		/// </para>
 		/// <para>
-		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
-		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
-		/// and minimum periods.
+		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
+		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
+		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
+		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
+		/// </para>
+		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
+		/// <para>
+		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
+		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
 		/// </para>
 		/// <para>
-		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
-		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
+		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
+		/// <c>SetEventHandle</c>, the call will fail and return an error code.
 		/// </para>
-		/// <para>
-		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
-		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
-		/// represents the minimum possible latency that an audio application can achieve.
-		/// </para>
-		/// <para>
-		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
-		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
-		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
-		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
-		/// between processing passes.
-		/// </para>
-		/// <para>
-		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
-		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
-		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
-		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
-		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
-		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
-		/// achieve the minimum possible latency.
-		/// </para>
-		/// <para>
-		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
-		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
-		/// </para>
+		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
-		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
-		void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
+		// HANDLE eventHandle );
+		void SetEventHandle(HEVENT eventHandle);
 
 		/// <summary>The <c>Start</c> method starts the audio stream.</summary>
 		/// <remarks>
@@ -1405,144 +1549,6 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-stop HRESULT Stop();
 		void Stop();
-
-		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
-		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
-		void Reset();
-
-		/// <summary>
-		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
-		/// the client.
-		/// </summary>
-		/// <param name="eventHandle">The event handle.</param>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
-		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
-		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
-		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
-		/// </para>
-		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
-		/// <para>
-		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
-		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
-		/// </para>
-		/// <para>
-		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
-		/// <c>SetEventHandle</c>, the call will fail and return an error code.
-		/// </para>
-		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
-		// HANDLE eventHandle );
-		void SetEventHandle(HEVENT eventHandle);
-
-		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
-		/// <param name="riid">
-		/// <para>The interface ID for the requested service. The client should set this parameter to one of the following REFIID values:</para>
-		/// <para>IID_IAudioCaptureClient</para>
-		/// <para>IID_IAudioClock</para>
-		/// <para>IID_IAudioRenderClient</para>
-		/// <para>IID_IAudioSessionControl</para>
-		/// <para>IID_IAudioStreamVolume</para>
-		/// <para>IID_IChannelAudioVolume</para>
-		/// <para>IID_IMFTrustedOutput</para>
-		/// <para>IID_ISimpleAudioVolume</para>
-		/// <para>For more information, see Remarks.</para>
-		/// </param>
-		/// <returns>
-		/// Pointer to a pointer variable into which the method writes the address of an instance of the requested interface. Through this
-		/// method, the caller obtains a counted reference to the interface. The caller is responsible for releasing the interface, when it
-		/// is no longer needed, by calling the interface's <c>Release</c> method. If the <c>GetService</c> call fails, *ppv is <c>NULL</c>.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>The <c>GetService</c> method supports the following service interfaces:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>IAudioCaptureClient</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClock</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioRenderClient</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioSessionControl</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioStreamVolume</term>
-		/// </item>
-		/// <item>
-		/// <term>IChannelAudioVolume</term>
-		/// </item>
-		/// <item>
-		/// <term>IMFTrustedOutput</term>
-		/// </item>
-		/// <item>
-		/// <term>ISimpleAudioVolume</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// In Windows 7, a new service identifier, <c>IID_IMFTrustedOutput</c>, has been added that facilitates the use of output trust
-		/// authority (OTA) objects. These objects can operate inside or outside the Media Foundation's protected media path (PMP) and send
-		/// content outside the Media Foundation pipeline. If the caller is outside PMP, then the OTA may not operate in the PMP, and the
-		/// protection settings are less robust. OTAs must implement the IMFTrustedOutput interface. By passing <c>IID_IMFTrustedOutput</c>
-		/// in <c>GetService</c>, an application can retrieve a pointer to the object's <c>IMFTrustedOutput</c> interface. For more
-		/// information about protected objects and <c>IMFTrustedOutput</c>, see "Protected Media Path" in the Media Foundation SDK documentation.
-		/// </para>
-		/// <para>For information about using trusted audio drivers in OTAs, see Protected User Mode Audio (PUMA).</para>
-		/// <para>
-		/// Note that activating IMFTrustedOutput through this mechanism works regardless of whether the caller is running in PMP. However,
-		/// if the caller is not running in a protected process (that is, the caller is not within Media Foundation's PMP) then the audio OTA
-		/// might not operate in the PMP and the protection settings are less robust.
-		/// </para>
-		/// <para>
-		/// To obtain the interface ID for a service interface, use the <c>__uuidof</c> operator. For example, the interface ID of
-		/// <c>IAudioCaptureClient</c> is defined as follows:
-		/// </para>
-		/// <para>For information about the <c>__uuidof</c> operator, see the Windows SDK documentation.</para>
-		/// <para>
-		/// To release the <c>IAudioClient</c> object and free all its associated resources, the client must release all references to any
-		/// service objects that were created by calling <c>GetService</c>, in addition to calling <c>Release</c> on the <c>IAudioClient</c>
-		/// interface itself. The client must release a service from the same thread that releases the <c>IAudioClient</c> object.
-		/// </para>
-		/// <para>
-		/// The <c>IAudioSessionControl</c>, <c>IAudioStreamVolume</c>, <c>IChannelAudioVolume</c>, and <c>ISimpleAudioVolume</c> interfaces
-		/// control and monitor aspects of audio sessions and shared-mode streams. These interfaces do not work with exclusive-mode streams.
-		/// </para>
-		/// <para>For code examples that call the <c>GetService</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
-		// riid, void **ppv );
-		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
-		object? GetService(in Guid riid);
 	}
 
 	/// <summary>
@@ -1557,419 +1563,6 @@ public static partial class CoreAudio
 	[ComImport, Guid("726778CD-F60A-4eda-82DE-E47610CD78AA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioClient2 : IAudioClient
 	{
-		/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
-		/// <param name="ShareMode">
-		/// <para>
-		/// The sharing mode for the connection. Through this parameter, the client tells the audio engine whether it wants to share the
-		/// audio endpoint device with other clients. The client should set this parameter to one of the following AUDCLNT_SHAREMODE
-		/// enumeration values:
-		/// </para>
-		/// <para>AUDCLNT_SHAREMODE_EXCLUSIVE</para>
-		/// <para>AUDCLNT_SHAREMODE_SHARED</para>
-		/// </param>
-		/// <param name="StreamFlags">
-		/// Flags to control creation of the stream. The client should set this parameter to 0 or to the bitwise OR of one or more of the
-		/// AUDCLNT_STREAMFLAGS_XXX Constants or the AUDCLNT_SESSIONFLAGS_XXX Constants.
-		/// </param>
-		/// <param name="hnsBufferDuration">
-		/// The buffer capacity as a time value. This parameter is of type <c>REFERENCE_TIME</c> and is expressed in 100-nanosecond units.
-		/// This parameter contains the buffer size that the caller requests for the buffer that the audio application will share with the
-		/// audio engine (in shared mode) or with the endpoint device (in exclusive mode). If the call succeeds, the method allocates a
-		/// buffer that is a least this large. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation. For more
-		/// information about buffering requirements, see Remarks.
-		/// </param>
-		/// <param name="hnsPeriodicity">
-		/// The device period. This parameter can be nonzero only in exclusive mode. In shared mode, always set this parameter to 0. In
-		/// exclusive mode, this parameter specifies the requested scheduling period for successive buffer accesses by the audio endpoint
-		/// device. If the requested device period lies outside the range that is set by the device's minimum period and the system's maximum
-		/// period, then the method clamps the period to that range. If this parameter is 0, the method sets the device period to its default
-		/// value. To obtain the default device period, call the IAudioClient::GetDevicePeriod method. If the
-		/// AUDCLNT_STREAMFLAGS_EVENTCALLBACK stream flag is set and AUDCLNT_SHAREMODE_EXCLUSIVE is set as the ShareMode, then hnsPeriodicity
-		/// must be nonzero and equal to hnsBufferDuration.
-		/// </param>
-		/// <param name="pFormat">
-		/// Pointer to a format descriptor. This parameter must point to a valid format descriptor of type <c>WAVEFORMATEX</c> (or
-		/// <c>WAVEFORMATEXTENSIBLE</c>). For more information, see Remarks.
-		/// </param>
-		/// <param name="AudioSessionGuid">
-		/// Pointer to a session GUID. This parameter points to a GUID value that identifies the audio session that the stream belongs to. If
-		/// the GUID identifies a session that has been previously opened, the method adds the stream to that session. If the GUID does not
-		/// identify an existing session, the method opens a new session and adds the stream to that session. The stream remains a member of
-		/// the same session for its lifetime. Setting this parameter to <c>NULL</c> is equivalent to passing a pointer to a GUID_NULL value.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
-		/// the following table.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>AUDCLNT_E_ALREADY_INITIALIZED</term>
-		/// <term>The IAudioClient object is already initialized.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_WRONG_ENDPOINT_TYPE</term>
-		/// <term>The AUDCLNT_STREAMFLAGS_LOOPBACK flag is set but the endpoint device is a capture device, not a rendering device.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED</term>
-		/// <term>
-		/// The requested buffer size is not aligned. This code can be returned for a render or a capture device if the caller specified
-		/// AUDCLNT_SHAREMODE_EXCLUSIVE and the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flags. The caller must call Initialize again with the
-		/// aligned buffer size. For more information, see Remarks.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_BUFFER_SIZE_ERROR</term>
-		/// <term>
-		/// Indicates that the buffer duration value requested by an exclusive-mode client is out of range. The requested duration value for
-		/// pull mode must not be greater than 500 milliseconds; for push mode the duration value must not be greater than 2 seconds.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_CPUUSAGE_EXCEEDED</term>
-		/// <term>
-		/// Indicates that the process-pass duration exceeded the maximum CPU usage. The audio engine keeps track of CPU usage by maintaining
-		/// the number of times the process-pass duration exceeds the maximum CPU usage. The maximum CPU usage is calculated as a percent of
-		/// the engine's periodicity. The percentage value is the system's CPU throttle value (within the range of 10% and 90%). If this
-		/// value is not found, then the default value of 40% is used to calculate the maximum CPU usage.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
-		/// <term>
-		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
-		/// disabled, removed, or otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_IN_USE</term>
-		/// <term>
-		/// The endpoint device is already in use. Either the device is being used in exclusive mode, or the device is being used in shared
-		/// mode and the caller asked to use the device in exclusive mode.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_ENDPOINT_CREATE_FAILED</term>
-		/// <term>
-		/// The method failed to create the audio endpoint for the render or the capture device. This can occur if the audio endpoint device
-		/// has been unplugged, or the audio hardware or associated hardware resources have been reconfigured, disabled, removed, or
-		/// otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_INVALID_DEVICE_PERIOD</term>
-		/// <term>Indicates that the device period requested by an exclusive-mode client is greater than 500 milliseconds.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_UNSUPPORTED_FORMAT</term>
-		/// <term>The audio engine (shared mode) or audio endpoint device (exclusive mode) does not support the specified format.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_EXCLUSIVE_MODE_NOT_ALLOWED</term>
-		/// <term>
-		/// The caller is requesting exclusive-mode use of the endpoint device, but the user has disabled exclusive-mode use of the device.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_BUFDURATION_PERIOD_NOT_EQUAL</term>
-		/// <term>The AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag is set but parameters hnsBufferDuration and hnsPeriodicity are not equal.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
-		/// <term>The Windows audio service is not running.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_POINTER</term>
-		/// <term>Parameter pFormat is NULL.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_INVALIDARG</term>
-		/// <term>
-		/// Parameter pFormat points to an invalid format description; or the AUDCLNT_STREAMFLAGS_LOOPBACK flag is set but ShareMode is not
-		/// equal to AUDCLNT_SHAREMODE_SHARED; or the AUDCLNT_STREAMFLAGS_CROSSPROCESS flag is set but ShareMode is equal to
-		/// AUDCLNT_SHAREMODE_EXCLUSIVE. A prior call to SetClientProperties was made with an invalid category for audio/render streams.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>E_OUTOFMEMORY</term>
-		/// <term>Out of memory.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// After activating an IAudioClient interface on an audio endpoint device, the client must successfully call <c>Initialize</c> once
-		/// and only once to initialize the audio stream between the client and the device. The client can either connect directly to the
-		/// audio hardware (exclusive mode) or indirectly through the audio engine (shared mode). In the <c>Initialize</c> call, the client
-		/// specifies the audio data format, the buffer size, and audio session for the stream.
-		/// </para>
-		/// <para>
-		/// <c>Note</c> In Windows 8, the first use of IAudioClient to access the audio device should be on the STA thread. Calls from an MTA
-		/// thread may result in undefined behavior.
-		/// </para>
-		/// <para>
-		/// An attempt to create a shared-mode stream can succeed only if the audio device is already operating in shared mode or the device
-		/// is currently unused. An attempt to create a shared-mode stream fails if the device is already operating in exclusive mode.
-		/// </para>
-		/// <para>
-		/// If a stream is initialized to be event driven and in shared mode, ShareMode is set to AUDCLNT_SHAREMODE_SHARED and one of the
-		/// stream flags that are set includes AUDCLNT_STREAMFLAGS_EVENTCALLBACK. For such a stream, the associated application must also
-		/// obtain a handle by making a call to IAudioClient::SetEventHandle. When it is time to retire the stream, the audio engine can then
-		/// use the handle to release the stream objects. Failure to call <c>IAudioClient::SetEventHandle</c> before releasing the stream
-		/// objects can cause a delay of several seconds (a time-out period) while the audio engine waits for an available handle. After the
-		/// time-out period expires, the audio engine then releases the stream objects.
-		/// </para>
-		/// <para>
-		/// Whether an attempt to create an exclusive-mode stream succeeds depends on several factors, including the availability of the
-		/// device and the user-controlled settings that govern exclusive-mode operation of the device. For more information, see
-		/// Exclusive-Mode Streams.
-		/// </para>
-		/// <para>
-		/// An <c>IAudioClient</c> object supports exactly one connection to the audio engine or audio hardware. This connection lasts for
-		/// the lifetime of the <c>IAudioClient</c> object.
-		/// </para>
-		/// <para>The client should call the following methods only after calling <c>Initialize</c>:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>IAudioClient::GetBufferSize</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::GetCurrentPadding</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::GetService</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::GetStreamLatency</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::Reset</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::SetEventHandle</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::Start</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::Stop</term>
-		/// </item>
-		/// </list>
-		/// <para>The following methods do not require that <c>Initialize</c> be called first:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>IAudioClient::GetDevicePeriod</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::GetMixFormat</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClient::IsFormatSupported</term>
-		/// </item>
-		/// </list>
-		/// <para>These methods can be called any time after activating the <c>IAudioClient</c> interface.</para>
-		/// <para>
-		/// Before calling <c>Initialize</c> to set up a shared-mode or exclusive-mode connection, the client can call the
-		/// IAudioClient::IsFormatSupported method to discover whether the audio engine or audio endpoint device supports a particular format
-		/// in that mode. Before opening a shared-mode connection, the client can obtain the audio engine's mix format by calling the
-		/// IAudioClient::GetMixFormat method.
-		/// </para>
-		/// <para>
-		/// The endpoint buffer that is shared between the client and audio engine must be large enough to prevent glitches from occurring in
-		/// the audio stream between processing passes by the client and audio engine. For a rendering endpoint, the client thread
-		/// periodically writes data to the buffer, and the audio engine thread periodically reads data from the buffer. For a capture
-		/// endpoint, the engine thread periodically writes to the buffer, and the client thread periodically reads from the buffer. In
-		/// either case, if the periods of the client thread and engine thread are not equal, the buffer must be large enough to accommodate
-		/// the longer of the two periods without allowing glitches to occur.
-		/// </para>
-		/// <para>
-		/// The client specifies a buffer size through the hnsBufferDuration parameter. The client is responsible for requesting a buffer
-		/// that is large enough to ensure that glitches cannot occur between the periodic processing passes that it performs on the buffer.
-		/// Similarly, the <c>Initialize</c> method ensures that the buffer is never smaller than the minimum buffer size needed to ensure
-		/// that glitches do not occur between the periodic processing passes that the engine thread performs on the buffer. If the client
-		/// requests a buffer size that is smaller than the audio engine's minimum required buffer size, the method sets the buffer size to
-		/// this minimum buffer size rather than to the buffer size requested by the client.
-		/// </para>
-		/// <para>
-		/// If the client requests a buffer size (through the hnsBufferDuration parameter) that is not an integral number of audio frames,
-		/// the method rounds up the requested buffer size to the next integral number of frames.
-		/// </para>
-		/// <para>
-		/// Following the <c>Initialize</c> call, the client should call the IAudioClient::GetBufferSize method to get the precise size of
-		/// the endpoint buffer. During each processing pass, the client will need the actual buffer size to calculate how much data to
-		/// transfer to or from the buffer. The client calls the IAudioClient::GetCurrentPadding method to determine how much of the data in
-		/// the buffer is currently available for processing.
-		/// </para>
-		/// <para>
-		/// To achieve the minimum stream latency between the client application and audio endpoint device, the client thread should run at
-		/// the same period as the audio engine thread. The period of the engine thread is fixed and cannot be controlled by the client.
-		/// Making the client's period smaller than the engine's period unnecessarily increases the client thread's load on the processor
-		/// without improving latency or decreasing the buffer size. To determine the period of the engine thread, the client can call the
-		/// IAudioClient::GetDevicePeriod method. To set the buffer to the minimum size required by the engine thread, the client should call
-		/// <c>Initialize</c> with the hnsBufferDuration parameter set to 0. Following the <c>Initialize</c> call, the client can get the
-		/// size of the resulting buffer by calling <c>IAudioClient::GetBufferSize</c>.
-		/// </para>
-		/// <para>
-		/// A client has the option of requesting a buffer size that is larger than what is strictly necessary to make timing glitches rare
-		/// or nonexistent. Increasing the buffer size does not necessarily increase the stream latency. For a rendering stream, the latency
-		/// through the buffer is determined solely by the separation between the client's write pointer and the engine's read pointer. For a
-		/// capture stream, the latency through the buffer is determined solely by the separation between the engine's write pointer and the
-		/// client's read pointer.
-		/// </para>
-		/// <para>
-		/// The loopback flag (AUDCLNT_STREAMFLAGS_LOOPBACK) enables audio loopback. A client can enable audio loopback only on a rendering
-		/// endpoint with a shared-mode stream. Audio loopback is provided primarily to support acoustic echo cancellation (AEC).
-		/// </para>
-		/// <para>
-		/// An AEC client requires both a rendering endpoint and the ability to capture the output stream from the audio engine. The engine's
-		/// output stream is the global mix that the audio device plays through the speakers. If audio loopback is enabled, a client can open
-		/// a capture buffer for the global audio mix by calling the IAudioClient::GetService method to obtain an IAudioCaptureClient
-		/// interface on the rendering stream object. If audio loopback is not enabled, then an attempt to open a capture buffer on a
-		/// rendering stream will fail. The loopback data in the capture buffer is in the device format, which the client can obtain by
-		/// querying the device's PKEY_AudioEngine_DeviceFormat property.
-		/// </para>
-		/// <para>
-		/// On Windows versions prior to Windows 10, a pull-mode capture client will not receive any events when a stream is initialized with
-		/// event-driven buffering (AUDCLNT_STREAMFLAGS_EVENTCALLBACK) and is loopback-enabled (AUDCLNT_STREAMFLAGS_LOOPBACK). If the stream
-		/// is opened with this configuration, the <c>Initialize</c> call succeeds, but relevant events are not raised to notify the capture
-		/// client each time a buffer becomes ready for processing. To work around this, initialize a render stream in event-driven mode.
-		/// Each time the client receives an event for the render stream, it must signal the capture client to run the capture thread that
-		/// reads the next set of samples from the capture endpoint buffer. As of Windows 10 the relevant event handles are now set for
-		/// loopback-enabled streams that are active.
-		/// </para>
-		/// <para>
-		/// Note that all streams must be opened in share mode because exclusive-mode streams cannot operate in loopback mode. For more
-		/// information about audio loopback, see Loopback Recording.
-		/// </para>
-		/// <para>
-		/// The AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag indicates that processing of the audio buffer by the client will be event driven.
-		/// WASAPI supports event-driven buffering to enable low-latency processing of both shared-mode and exclusive-mode streams.
-		/// </para>
-		/// <para>
-		/// The initial release of Windows Vista supports event-driven buffering (that is, the use of the AUDCLNT_STREAMFLAGS_EVENTCALLBACK
-		/// flag) for rendering streams only.
-		/// </para>
-		/// <para>
-		/// In the initial release of Windows Vista, for capture streams, the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag is supported only in
-		/// shared mode. Setting this flag has no effect for exclusive-mode capture streams. That is, although the application specifies this
-		/// flag in exclusive mode through the <c>Initialize</c> call, the application will not receive any events that are usually required
-		/// to capture the audio stream. In the Windows Vista Service Pack 1 release, this flag is functional in shared-mode and exclusive
-		/// mode; an application can set this flag to enable event-buffering for capture streams. For more information about capturing an
-		/// audio stream, see Capturing a Stream.
-		/// </para>
-		/// <para>
-		/// To enable event-driven buffering, the client must provide an event handle to the system. Following the <c>Initialize</c> call and
-		/// before calling the IAudioClient::Start method to start the stream, the client must call the IAudioClient::SetEventHandle method
-		/// to set the event handle. While the stream is running, the system periodically signals the event to indicate to the client that
-		/// audio data is available for processing. Between processing passes, the client thread waits on the event handle by calling a
-		/// synchronization function such as <c>WaitForSingleObject</c>. For more information about synchronization functions, see the
-		/// Windows SDK documentation.
-		/// </para>
-		/// <para>
-		/// For a shared-mode stream that uses event-driven buffering, the caller must set both hnsPeriodicity and hnsBufferDuration to
-		/// 0. The <c>Initialize</c> method determines how large a buffer to allocate based on the scheduling period of the audio engine.
-		/// Although the client's buffer processing thread is event driven, the basic buffer management process, as described previously, is
-		/// unaltered. Each time the thread awakens, it should call IAudioClient::GetCurrentPadding to determine how much data to write to a
-		/// rendering buffer or read from a capture buffer. In contrast to the two buffers that the <c>Initialize</c> method allocates for an
-		/// exclusive-mode stream that uses event-driven buffering, a shared-mode stream requires a single buffer.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode stream that uses event-driven buffering, the caller must specify nonzero values for hnsPeriodicity and
-		/// hnsBufferDuration, and the values of these two parameters must be equal. The <c>Initialize</c> method allocates two buffers for
-		/// the stream. Each buffer is equal in duration to the value of the hnsBufferDuration parameter. Following the <c>Initialize</c>
-		/// call for a rendering stream, the caller should fill the first of the two buffers before starting the stream. For a capture
-		/// stream, the buffers are initially empty, and the caller should assume that each buffer remains empty until the event for that
-		/// buffer is signaled. While the stream is running, the system alternately sends one buffer or the other to the client—this form of
-		/// double buffering is referred to as "ping-ponging". Each time the client receives a buffer from the system (which the system
-		/// indicates by signaling the event), the client must process the entire buffer. For example, if the client requests a packet size
-		/// from the IAudioRenderClient::GetBuffer method that does not match the buffer size, the method fails. Calls to the
-		/// <c>IAudioClient::GetCurrentPadding</c> method are unnecessary because the packet size must always equal the buffer size. In
-		/// contrast to the buffering modes discussed previously, the latency for an event-driven, exclusive-mode stream depends directly on
-		/// the buffer size.
-		/// </para>
-		/// <para>
-		/// As explained in Audio Sessions, the default behavior for a session that contains rendering streams is that its volume and mute
-		/// settings persist across system restarts. The AUDCLNT_STREAMFLAGS_NOPERSIST flag overrides the default behavior and makes the
-		/// settings nonpersistent. This flag has no effect on sessions that contain capture streams—the settings for those sessions are
-		/// never persistent. In addition, the settings for a session that contains a loopback stream (a stream that is initialized with the
-		/// AUDCLNT_STREAMFLAGS_LOOPBACK flag) are not persistent.
-		/// </para>
-		/// <para>
-		/// Only a session that connects to a rendering endpoint device can have persistent volume and mute settings. The first stream to be
-		/// added to the session determines whether the session's settings are persistent. Thus, if the AUDCLNT_STREAMFLAGS_NOPERSIST or
-		/// AUDCLNT_STREAMFLAGS_LOOPBACK flag is set during initialization of the first stream, the session's settings are not persistent.
-		/// Otherwise, they are persistent. Their persistence is unaffected by additional streams that might be subsequently added or removed
-		/// during the lifetime of the session object.
-		/// </para>
-		/// <para>
-		/// After a call to <c>Initialize</c> has successfully initialized an <c>IAudioClient</c> interface instance, a subsequent
-		/// <c>Initialize</c> call to initialize the same interface instance will fail and return error code E_ALREADY_INITIALIZED.
-		/// </para>
-		/// <para>
-		/// If the initial call to <c>Initialize</c> fails, subsequent <c>Initialize</c> calls might fail and return error code
-		/// E_ALREADY_INITIALIZED, even though the interface has not been initialized. If this occurs, release the <c>IAudioClient</c>
-		/// interface and obtain a new <c>IAudioClient</c> interface from the MMDevice API before calling <c>Initialize</c> again.
-		/// </para>
-		/// <para>For code examples that call the <c>Initialize</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Exclusive-Mode Streams</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Starting with Windows 7, <c>Initialize</c> can return AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED for a render or a capture device. This
-		/// indicates that the buffer size, specified by the caller in the hnsBufferDuration parameter, is not aligned. This error code is
-		/// returned only if the caller requested an exclusive-mode stream (AUDCLNT_SHAREMODE_EXCLUSIVE) and event-driven buffering (AUDCLNT_STREAMFLAGS_EVENTCALLBACK).
-		/// </para>
-		/// <para>
-		/// If <c>Initialize</c> returns AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED, the caller must call <c>Initialize</c> again and specify the
-		/// aligned buffer size. Use the following steps:
-		/// </para>
-		/// <list type="number">
-		/// <item>
-		/// <term>Call IAudioClient::GetBufferSize and receive the next-highest-aligned buffer size (in frames).</term>
-		/// </item>
-		/// <item>
-		/// <term>Call <c>IAudioClient::Release</c> to release the audio client used in the previous call that returned AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED.</term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// Calculate the aligned buffer size in 100-nansecond units (hns). The buffer size is . In this formula, is the buffer size
-		/// retrieved by GetBufferSize.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>Call the IMMDevice::Activate method with parameter iid set to REFIID IID_IAudioClient to create a new audio client.</term>
-		/// </item>
-		/// <item>
-		/// <term>Call <c>Initialize</c> again on the created audio client and specify the new buffer size and periodicity.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
-		/// IAudioClient2::SetClientProperties and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify the
-		/// <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to <c>IAudioClient::Initialize</c>.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>The following example code shows how to respond to the <c>AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED</c> return code.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize HRESULT Initialize(
-		// AUDCLNT_SHAREMODE ShareMode, DWORD StreamFlags, REFERENCE_TIME hnsBufferDuration, REFERENCE_TIME hnsPeriodicity, const
-		// WAVEFORMATEX *pFormat, LPCGUID AudioSessionGuid );
-		[PreserveSig]
-		new HRESULT Initialize([In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags, long hnsBufferDuration, long hnsPeriodicity, [In] IntPtr pFormat, [In, Optional] in Guid AudioSessionGuid);
-
 		/// <summary>The <c>GetBufferSize</c> method retrieves the size (maximum capacity) of the endpoint buffer.</summary>
 		/// <returns>Pointer to a <c>UINT32</c> variable into which the method writes the number of audio frames that the buffer can hold.</returns>
 		/// <remarks>
@@ -2008,590 +1601,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getbuffersize HRESULT GetBufferSize(
 		// UINT32 *pNumBufferFrames );
 		new uint GetBufferSize();
-
-		/// <summary>
-		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
-		/// stream has been initialized.
-		/// </summary>
-		/// <returns>
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
-		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
-		/// </para>
-		/// <para>
-		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
-		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
-		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
-		new long GetStreamLatency();
-
-		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
-		/// <returns>
-		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
-		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
-		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
-		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
-		/// from a region of the buffer to which the audio engine has not yet written valid data.
-		/// </para>
-		/// <para>
-		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
-		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
-		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
-		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
-		/// </para>
-		/// <para>
-		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
-		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
-		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
-		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
-		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
-		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
-		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
-		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
-		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
-		/// whole packet. A packet always contains an integral number of audio frames.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
-		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
-		/// packet length reported by <c>GetNextPacketSize</c>.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
-		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
-		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
-		/// a shared-mode stream. The details are as follows.
-		/// </para>
-		/// <para>
-		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
-		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
-		/// padding value from the buffer length.
-		/// </para>
-		/// <para>
-		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
-		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
-		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
-		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
-		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
-		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
-		/// </para>
-		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
-		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
-		new uint GetCurrentPadding();
-
-		/// <summary>The <c>IsFormatSupported</c> method indicates whether the audio endpoint device supports a particular stream format.</summary>
-		/// <param name="ShareMode">
-		/// <para>
-		/// The sharing mode for the stream format. Through this parameter, the client indicates whether it wants to use the specified format
-		/// in exclusive mode or shared mode. The client should set this parameter to one of the following AUDCLNT_SHAREMODE enumeration values:
-		/// </para>
-		/// <para>AUDCLNT_SHAREMODE_EXCLUSIVE</para>
-		/// <para>AUDCLNT_SHAREMODE_SHARED</para>
-		/// </param>
-		/// <param name="pFormat">
-		/// Pointer to the specified stream format. This parameter points to a caller-allocated format descriptor of type <c>WAVEFORMATEX</c>
-		/// or <c>WAVEFORMATEXTENSIBLE</c>. The client writes a format description to this structure before calling this method. For
-		/// information about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
-		/// </param>
-		/// <param name="ppClosestMatch">
-		/// Pointer to a pointer variable into which the method writes the address of a <c>WAVEFORMATEX</c> or <c>WAVEFORMATEXTENSIBLE</c>
-		/// structure. This structure specifies the supported format that is closest to the format that the client specified through the
-		/// pFormat parameter. For shared mode (that is, if the ShareMode parameter is AUDCLNT_SHAREMODE_SHARED), set ppClosestMatch to point
-		/// to a valid, non- <c>NULL</c> pointer variable. For exclusive mode, set ppClosestMatch to <c>NULL</c>. The method allocates the
-		/// storage for the structure. The caller is responsible for freeing the storage, when it is no longer needed, by calling the
-		/// <c>CoTaskMemFree</c> function. If the <c>IsFormatSupported</c> call fails and ppClosestMatch is non- <c>NULL</c>, the method sets
-		/// *ppClosestMatch to <c>NULL</c>. For information about <c>CoTaskMemFree</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <returns>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>Succeeded and the audio endpoint device supports the specified stream format.</term>
-		/// </item>
-		/// <item>
-		/// <term>S_FALSE</term>
-		/// <term>Succeeded with a closest match to the specified format.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_UNSUPPORTED_FORMAT</term>
-		/// <term>Succeeded but the specified format is not supported in exclusive mode.</term>
-		/// </item>
-		/// </list>
-		/// <para>If the operation fails, possible return codes include, but are not limited to, the values shown in the following table.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>E_POINTER</term>
-		/// <term>Parameter pFormat is NULL, or ppClosestMatch is NULL and ShareMode is AUDCLNT_SHAREMODE_SHARED.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_INVALIDARG</term>
-		/// <term>Parameter ShareMode is a value other than AUDCLNT_SHAREMODE_SHARED or AUDCLNT_SHAREMODE_EXCLUSIVE.</term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
-		/// <term>
-		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
-		/// disabled, removed, or otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
-		/// <term>The Windows audio service is not running.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method provides a way for a client to determine, before calling IAudioClient::Initialize, whether the audio engine supports
-		/// a particular stream format.
-		/// </para>
-		/// <para>
-		/// For exclusive mode, <c>IsFormatSupported</c> returns S_OK if the audio endpoint device supports the caller-specified format, or
-		/// it returns AUDCLNT_E_UNSUPPORTED_FORMAT if the device does not support the format. The ppClosestMatch parameter can be
-		/// <c>NULL</c>. If it is not <c>NULL</c>, the method writes <c>NULL</c> to *ppClosestMatch.
-		/// </para>
-		/// <para>
-		/// For shared mode, if the audio engine supports the caller-specified format, <c>IsFormatSupported</c> sets <c>*ppClosestMatch</c>
-		/// to <c>NULL</c> and returns S_OK. If the audio engine does not support the caller-specified format but does support a similar
-		/// format, the method retrieves the similar format through the ppClosestMatch parameter and returns S_FALSE. If the audio engine
-		/// does not support the caller-specified format or any similar format, the method sets
-		/// *ppClosestMatch to <c>NULL</c> and returns AUDCLNT_E_UNSUPPORTED_FORMAT.
-		/// </para>
-		/// <para>
-		/// In shared mode, the audio engine always supports the mix format, which the client can obtain by calling the
-		/// IAudioClient::GetMixFormat method. In addition, the audio engine might support similar formats that have the same sample rate and
-		/// number of channels as the mix format but differ in the representation of audio sample values. The audio engine represents sample
-		/// values internally as floating-point numbers, but if the caller-specified format represents sample values as integers, the audio
-		/// engine typically can convert between the integer sample values and its internal floating-point representation.
-		/// </para>
-		/// <para>
-		/// The audio engine might be able to support an even wider range of shared-mode formats if the installation package for the audio
-		/// device includes a local effects (LFX) audio processing object (APO) that can handle format conversions. An LFX APO is a software
-		/// module that performs device-specific processing of an audio stream. The audio graph builder in the Windows audio service inserts
-		/// the LFX APO into the stream between each client and the audio engine. When a client calls the <c>IsFormatSupported</c> method and
-		/// the method determines that an LFX APO is installed for use with the device, the method directs the query to the LFX APO, which
-		/// indicates whether it supports the caller-specified format.
-		/// </para>
-		/// <para>
-		/// For example, a particular LFX APO might accept a 6-channel surround sound stream from a client and convert the stream to a stereo
-		/// format that can be played through headphones. Typically, an LFX APO supports only client formats with sample rates that match the
-		/// sample rate of the mix format.
-		/// </para>
-		/// <para>
-		/// For more information about APOs, see the white papers titled "Custom Audio Effects in Windows Vista" and "Reusing the Windows
-		/// Vista Audio System Effects" at the Audio Device Technologies for Windows website. For more information about the
-		/// <c>IsFormatSupported</c> method, see Device Formats.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-isformatsupported HRESULT
-		// IsFormatSupported( AUDCLNT_SHAREMODE ShareMode, const WAVEFORMATEX *pFormat, WAVEFORMATEX **ppClosestMatch );
-		[PreserveSig]
-		new HRESULT IsFormatSupported([In] AUDCLNT_SHAREMODE ShareMode, [In] IntPtr pFormat, out SafeCoTaskMemHandle ppClosestMatch);
-
-		/// <summary>
-		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
-		/// </summary>
-		/// <param name="ppDeviceFormat">
-		/// Pointer to a pointer variable into which the method writes the address of the mix format. This parameter must be a valid, non-
-		/// <c>NULL</c> pointer to a pointer variable. The method writes the address of a <c>WAVEFORMATEX</c> (or
-		/// <c>WAVEFORMATEXTENSIBLE</c>) structure to this variable. The method allocates the storage for the structure. The caller is
-		/// responsible for freeing the storage, when it is no longer needed, by calling the <c>CoTaskMemFree</c> function. If the
-		/// <c>GetMixFormat</c> call fails, *ppDeviceFormat is <c>NULL</c>. For information about <c>WAVEFORMATEX</c>,
-		/// <c>WAVEFORMATEXTENSIBLE</c>, and <c>CoTaskMemFree</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
-		/// the following table.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
-		/// <term>
-		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
-		/// disabled, removed, or otherwise made unavailable for use.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
-		/// <term>The Windows audio service is not running.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_POINTER</term>
-		/// <term>Parameter ppDeviceFormat is NULL.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_OUTOFMEMORY</term>
-		/// <term>Out of memory.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The client can call this method before calling the IAudioClient::Initialize method. When creating a shared-mode stream for an
-		/// audio endpoint device, the <c>Initialize</c> method always accepts the stream format obtained from a <c>GetMixFormat</c> call on
-		/// the same device.
-		/// </para>
-		/// <para>
-		/// The mix format is the format that the audio engine uses internally for digital processing of shared-mode streams. This format is
-		/// not necessarily a format that the audio endpoint device supports. Thus, the caller might not succeed in creating an
-		/// exclusive-mode stream with a format obtained by calling <c>GetMixFormat</c>.
-		/// </para>
-		/// <para>
-		/// For example, to facilitate digital audio processing, the audio engine might use a mix format that represents samples as
-		/// floating-point values. If the device supports only integer PCM samples, then the engine converts the samples to or from integer
-		/// PCM values at the connection between the device and the engine. However, to avoid resampling, the engine might use a mix format
-		/// with a sample rate that the device supports.
-		/// </para>
-		/// <para>
-		/// To determine whether the <c>Initialize</c> method can create a shared-mode or exclusive-mode stream with a particular format,
-		/// call the IAudioClient::IsFormatSupported method.
-		/// </para>
-		/// <para>
-		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
-		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
-		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <c>WAVEFORMATEXTENSIBLE</c> structure can
-		/// specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
-		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
-		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
-		/// <c>WAVEFORMATEX</c> structure that is embedded at the start of this <c>WAVEFORMATEXTENSIBLE</c> structure. For more information
-		/// about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
-		/// </para>
-		/// <para>
-		/// For more information about the <c>GetMixFormat</c> method, see Device Formats. For code examples that call <c>GetMixFormat</c>,
-		/// see the following topics:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
-		// WAVEFORMATEX **ppDeviceFormat );
-		[PreserveSig]
-		new HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
-
-		/// <summary>
-		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
-		/// audio engine on the data in the endpoint buffer.
-		/// </summary>
-		/// <param name="phnsDefaultDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
-		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
-		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <param name="phnsMinimumDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
-		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
-		/// </param>
-		/// <remarks>
-		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
-		/// <para>
-		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
-		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
-		/// </para>
-		/// <para>
-		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
-		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
-		/// and minimum periods.
-		/// </para>
-		/// <para>
-		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
-		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
-		/// </para>
-		/// <para>
-		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
-		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
-		/// represents the minimum possible latency that an audio application can achieve.
-		/// </para>
-		/// <para>
-		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
-		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
-		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
-		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
-		/// between processing passes.
-		/// </para>
-		/// <para>
-		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
-		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
-		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
-		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
-		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
-		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
-		/// achieve the minimum possible latency.
-		/// </para>
-		/// <para>
-		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
-		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
-		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
-		new void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
-
-		/// <summary>The <c>Start</c> method starts the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Start</c> is a control method that the client calls to start the audio stream. Starting the stream causes the IAudioClient
-		/// object to begin streaming data between the endpoint buffer and the audio engine. It also causes the stream's audio clock to
-		/// resume counting from its current position.
-		/// </para>
-		/// <para>
-		/// The first time this method is called following initialization of the stream, the IAudioClient object's stream position counter
-		/// begins at 0. Otherwise, the clock resumes from its position at the time that the stream was last stopped. Resetting the stream
-		/// forces the stream position back to 0.
-		/// </para>
-		/// <para>
-		/// To avoid start-up glitches with rendering streams, clients should not call <c>Start</c> until the audio engine has been initially
-		/// loaded with data by calling the IAudioRenderClient::GetBuffer and IAudioRenderClient::ReleaseBuffer methods on the rendering interface.
-		/// </para>
-		/// <para>For code examples that call the <c>Start</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-start HRESULT Start();
-		new void Start();
-
-		/// <summary>The <c>Stop</c> method stops the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Stop</c> is a control method that stops a running audio stream. This method stops data from streaming through the client's
-		/// connection with the audio engine. Stopping the stream freezes the stream's audio clock at its current stream position. A
-		/// subsequent call to IAudioClient::Start causes the stream to resume running from that position. If necessary, the client can call
-		/// the IAudioClient::Reset method to reset the position while the stream is stopped.
-		/// </para>
-		/// <para>For code examples that call the <c>Stop</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-stop HRESULT Stop();
-		new void Stop();
-
-		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
-		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
-		new void Reset();
-
-		/// <summary>
-		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
-		/// the client.
-		/// </summary>
-		/// <param name="eventHandle">The event handle.</param>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
-		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
-		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
-		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
-		/// </para>
-		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
-		/// <para>
-		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
-		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
-		/// </para>
-		/// <para>
-		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
-		/// <c>SetEventHandle</c>, the call will fail and return an error code.
-		/// </para>
-		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
-		// HANDLE eventHandle );
-		new void SetEventHandle(HEVENT eventHandle);
-
-		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
-		/// <param name="riid">
-		/// <para>The interface ID for the requested service. The client should set this parameter to one of the following REFIID values:</para>
-		/// <para>IID_IAudioCaptureClient</para>
-		/// <para>IID_IAudioClock</para>
-		/// <para>IID_IAudioRenderClient</para>
-		/// <para>IID_IAudioSessionControl</para>
-		/// <para>IID_IAudioStreamVolume</para>
-		/// <para>IID_IChannelAudioVolume</para>
-		/// <para>IID_IMFTrustedOutput</para>
-		/// <para>IID_ISimpleAudioVolume</para>
-		/// <para>For more information, see Remarks.</para>
-		/// </param>
-		/// <returns>
-		/// Pointer to a pointer variable into which the method writes the address of an instance of the requested interface. Through this
-		/// method, the caller obtains a counted reference to the interface. The caller is responsible for releasing the interface, when it
-		/// is no longer needed, by calling the interface's <c>Release</c> method. If the <c>GetService</c> call fails, *ppv is <c>NULL</c>.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>The <c>GetService</c> method supports the following service interfaces:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>IAudioCaptureClient</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioClock</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioRenderClient</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioSessionControl</term>
-		/// </item>
-		/// <item>
-		/// <term>IAudioStreamVolume</term>
-		/// </item>
-		/// <item>
-		/// <term>IChannelAudioVolume</term>
-		/// </item>
-		/// <item>
-		/// <term>IMFTrustedOutput</term>
-		/// </item>
-		/// <item>
-		/// <term>ISimpleAudioVolume</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// In Windows 7, a new service identifier, <c>IID_IMFTrustedOutput</c>, has been added that facilitates the use of output trust
-		/// authority (OTA) objects. These objects can operate inside or outside the Media Foundation's protected media path (PMP) and send
-		/// content outside the Media Foundation pipeline. If the caller is outside PMP, then the OTA may not operate in the PMP, and the
-		/// protection settings are less robust. OTAs must implement the IMFTrustedOutput interface. By passing <c>IID_IMFTrustedOutput</c>
-		/// in <c>GetService</c>, an application can retrieve a pointer to the object's <c>IMFTrustedOutput</c> interface. For more
-		/// information about protected objects and <c>IMFTrustedOutput</c>, see "Protected Media Path" in the Media Foundation SDK documentation.
-		/// </para>
-		/// <para>For information about using trusted audio drivers in OTAs, see Protected User Mode Audio (PUMA).</para>
-		/// <para>
-		/// Note that activating IMFTrustedOutput through this mechanism works regardless of whether the caller is running in PMP. However,
-		/// if the caller is not running in a protected process (that is, the caller is not within Media Foundation's PMP) then the audio OTA
-		/// might not operate in the PMP and the protection settings are less robust.
-		/// </para>
-		/// <para>
-		/// To obtain the interface ID for a service interface, use the <c>__uuidof</c> operator. For example, the interface ID of
-		/// <c>IAudioCaptureClient</c> is defined as follows:
-		/// </para>
-		/// <para>For information about the <c>__uuidof</c> operator, see the Windows SDK documentation.</para>
-		/// <para>
-		/// To release the <c>IAudioClient</c> object and free all its associated resources, the client must release all references to any
-		/// service objects that were created by calling <c>GetService</c>, in addition to calling <c>Release</c> on the <c>IAudioClient</c>
-		/// interface itself. The client must release a service from the same thread that releases the <c>IAudioClient</c> object.
-		/// </para>
-		/// <para>
-		/// The <c>IAudioSessionControl</c>, <c>IAudioStreamVolume</c>, <c>IChannelAudioVolume</c>, and <c>ISimpleAudioVolume</c> interfaces
-		/// control and monitor aspects of audio sessions and shared-mode streams. These interfaces do not work with exclusive-mode streams.
-		/// </para>
-		/// <para>For code examples that call the <c>GetService</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
-		// riid, void **ppv );
-		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
-		new object? GetService(in Guid riid);
-
-		/// <summary>
-		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
-		/// capable of supporting an offloaded audio stream.
-		/// </summary>
-		/// <param name="Category">An enumeration that specifies the category of an audio stream.</param>
-		/// <returns>
-		/// A pointer to a Boolean value. <c>TRUE</c> indicates that the endpoint is offload-capable. <c>FALSE</c> indicates that the
-		/// endpoint is not offload-capable.
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-isoffloadcapable HRESULT
-		// IsOffloadCapable( AUDIO_STREAM_CATEGORY Category, BOOL *pbOffloadCapable );
-		[return: MarshalAs(UnmanagedType.Bool)]
-		bool IsOffloadCapable(AUDIO_STREAM_CATEGORY Category);
-
-		/// <summary>Sets the properties of the audio stream by populating an AudioClientProperties structure.</summary>
-		/// <param name="pProperties">Pointer to an AudioClientProperties structure.</param>
-		/// <remarks>
-		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
-		/// <c>IAudioClient2::SetClientProperties</c> and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify
-		/// the <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to IAudioClient::Initialize.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-setclientproperties HRESULT
-		// SetClientProperties( const AudioClientProperties *pProperties );
-		void SetClientProperties(in AudioClientProperties pProperties);
 
 		/// <summary>
 		/// The <c>GetBufferSizeLimits</c> method returns the buffer size limits of the hardware audio engine in 100-nanosecond units.
@@ -2611,18 +1620,346 @@ public static partial class CoreAudio
 		// GetBufferSizeLimits( const WAVEFORMATEX *pFormat, BOOL bEventDriven, REFERENCE_TIME *phnsMinBufferDuration, REFERENCE_TIME
 		// *phnsMaxBufferDuration );
 		void GetBufferSizeLimits([In] IntPtr pFormat, [MarshalAs(UnmanagedType.Bool)] bool bEventDriven, out long phnsMinBufferDuration, out long phnsMaxBufferDuration);
-	}
 
-	/// <summary>
-	/// The <c>IAudioClient3</c> interface is derived from the IAudioClient2 interface, with a set of additional methods that enable a
-	/// Windows Audio Session API (WASAPI) audio client to query for the audio engine's supported periodicities and current periodicity as
-	/// well as request initialization a shared audio stream with a specified periodicity.
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nn-audioclient-iaudioclient3
-	[PInvokeData("audioclient.h", MSDNShortId = "E8EFE682-E1BC-4D0D-A60E-DD257D6E5894")]
-	[ComImport, Guid("7ED4EE07-8E67-4CD4-8C1A-2B7A5987AD42"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IAudioClient3 : IAudioClient2
-	{
+		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
+		/// <returns>
+		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
+		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
+		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
+		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
+		/// from a region of the buffer to which the audio engine has not yet written valid data.
+		/// </para>
+		/// <para>
+		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
+		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
+		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
+		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
+		/// </para>
+		/// <para>
+		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
+		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
+		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
+		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
+		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
+		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
+		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
+		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
+		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
+		/// whole packet. A packet always contains an integral number of audio frames.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
+		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
+		/// packet length reported by <c>GetNextPacketSize</c>.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
+		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
+		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
+		/// a shared-mode stream. The details are as follows.
+		/// </para>
+		/// <para>
+		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
+		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
+		/// padding value from the buffer length.
+		/// </para>
+		/// <para>
+		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
+		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
+		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
+		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
+		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
+		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
+		/// </para>
+		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
+		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
+		new uint GetCurrentPadding();
+
+		/// <summary>
+		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
+		/// audio engine on the data in the endpoint buffer.
+		/// </summary>
+		/// <param name="phnsDefaultDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
+		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
+		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <param name="phnsMinimumDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
+		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
+		/// </param>
+		/// <remarks>
+		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
+		/// <para>
+		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
+		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
+		/// </para>
+		/// <para>
+		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
+		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
+		/// and minimum periods.
+		/// </para>
+		/// <para>
+		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
+		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
+		/// </para>
+		/// <para>
+		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
+		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
+		/// represents the minimum possible latency that an audio application can achieve.
+		/// </para>
+		/// <para>
+		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
+		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
+		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
+		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
+		/// between processing passes.
+		/// </para>
+		/// <para>
+		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
+		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
+		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
+		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
+		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
+		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
+		/// achieve the minimum possible latency.
+		/// </para>
+		/// <para>
+		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
+		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
+		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
+		new void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
+
+		/// <summary>
+		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
+		/// </summary>
+		/// <param name="ppDeviceFormat">
+		/// Pointer to a pointer variable into which the method writes the address of the mix format. This parameter must be a valid, non-
+		/// <c>NULL</c> pointer to a pointer variable. The method writes the address of a <c>WAVEFORMATEX</c> (or
+		/// <c>WAVEFORMATEXTENSIBLE</c>) structure to this variable. The method allocates the storage for the structure. The caller is
+		/// responsible for freeing the storage, when it is no longer needed, by calling the <c>CoTaskMemFree</c> function. If the
+		/// <c>GetMixFormat</c> call fails, *ppDeviceFormat is <c>NULL</c>. For information about <c>WAVEFORMATEX</c>,
+		/// <c>WAVEFORMATEXTENSIBLE</c>, and <c>CoTaskMemFree</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
+		/// the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
+		/// <term>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
+		/// <term>The Windows audio service is not running.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>Parameter ppDeviceFormat is NULL.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Out of memory.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The client can call this method before calling the IAudioClient::Initialize method. When creating a shared-mode stream for an
+		/// audio endpoint device, the <c>Initialize</c> method always accepts the stream format obtained from a <c>GetMixFormat</c> call on
+		/// the same device.
+		/// </para>
+		/// <para>
+		/// The mix format is the format that the audio engine uses internally for digital processing of shared-mode streams. This format is
+		/// not necessarily a format that the audio endpoint device supports. Thus, the caller might not succeed in creating an
+		/// exclusive-mode stream with a format obtained by calling <c>GetMixFormat</c>.
+		/// </para>
+		/// <para>
+		/// For example, to facilitate digital audio processing, the audio engine might use a mix format that represents samples as
+		/// floating-point values. If the device supports only integer PCM samples, then the engine converts the samples to or from integer
+		/// PCM values at the connection between the device and the engine. However, to avoid resampling, the engine might use a mix format
+		/// with a sample rate that the device supports.
+		/// </para>
+		/// <para>
+		/// To determine whether the <c>Initialize</c> method can create a shared-mode or exclusive-mode stream with a particular format,
+		/// call the IAudioClient::IsFormatSupported method.
+		/// </para>
+		/// <para>
+		/// By itself, a <c>WAVEFORMATEX</c> structure cannot specify the mapping of channels to speaker positions. In addition, although
+		/// <c>WAVEFORMATEX</c> specifies the size of the container for each audio sample, it cannot specify the number of bits of precision
+		/// in a sample (for example, 20 bits of precision in a 24-bit container). However, the <c>WAVEFORMATEXTENSIBLE</c> structure can
+		/// specify both the mapping of channels to speakers and the number of bits of precision in each sample. For this reason, the
+		/// <c>GetMixFormat</c> method retrieves a format descriptor that is in the form of a <c>WAVEFORMATEXTENSIBLE</c> structure instead
+		/// of a standalone <c>WAVEFORMATEX</c> structure. Through the ppDeviceFormat parameter, the method outputs a pointer to the
+		/// <c>WAVEFORMATEX</c> structure that is embedded at the start of this <c>WAVEFORMATEXTENSIBLE</c> structure. For more information
+		/// about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
+		/// </para>
+		/// <para>
+		/// For more information about the <c>GetMixFormat</c> method, see Device Formats. For code examples that call <c>GetMixFormat</c>,
+		/// see the following topics:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getmixformat HRESULT GetMixFormat(
+		// WAVEFORMATEX **ppDeviceFormat );
+		[PreserveSig]
+		new HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
+
+		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
+		/// <param name="riid">
+		/// <para>The interface ID for the requested service. The client should set this parameter to one of the following REFIID values:</para>
+		/// <para>IID_IAudioCaptureClient</para>
+		/// <para>IID_IAudioClock</para>
+		/// <para>IID_IAudioRenderClient</para>
+		/// <para>IID_IAudioSessionControl</para>
+		/// <para>IID_IAudioStreamVolume</para>
+		/// <para>IID_IChannelAudioVolume</para>
+		/// <para>IID_IMFTrustedOutput</para>
+		/// <para>IID_ISimpleAudioVolume</para>
+		/// <para>For more information, see Remarks.</para>
+		/// </param>
+		/// <returns>
+		/// Pointer to a pointer variable into which the method writes the address of an instance of the requested interface. Through this
+		/// method, the caller obtains a counted reference to the interface. The caller is responsible for releasing the interface, when it
+		/// is no longer needed, by calling the interface's <c>Release</c> method. If the <c>GetService</c> call fails, *ppv is <c>NULL</c>.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>The <c>GetService</c> method supports the following service interfaces:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IAudioCaptureClient</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClock</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioRenderClient</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioSessionControl</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioStreamVolume</term>
+		/// </item>
+		/// <item>
+		/// <term>IChannelAudioVolume</term>
+		/// </item>
+		/// <item>
+		/// <term>IMFTrustedOutput</term>
+		/// </item>
+		/// <item>
+		/// <term>ISimpleAudioVolume</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In Windows 7, a new service identifier, <c>IID_IMFTrustedOutput</c>, has been added that facilitates the use of output trust
+		/// authority (OTA) objects. These objects can operate inside or outside the Media Foundation's protected media path (PMP) and send
+		/// content outside the Media Foundation pipeline. If the caller is outside PMP, then the OTA may not operate in the PMP, and the
+		/// protection settings are less robust. OTAs must implement the IMFTrustedOutput interface. By passing <c>IID_IMFTrustedOutput</c>
+		/// in <c>GetService</c>, an application can retrieve a pointer to the object's <c>IMFTrustedOutput</c> interface. For more
+		/// information about protected objects and <c>IMFTrustedOutput</c>, see "Protected Media Path" in the Media Foundation SDK documentation.
+		/// </para>
+		/// <para>For information about using trusted audio drivers in OTAs, see Protected User Mode Audio (PUMA).</para>
+		/// <para>
+		/// Note that activating IMFTrustedOutput through this mechanism works regardless of whether the caller is running in PMP. However,
+		/// if the caller is not running in a protected process (that is, the caller is not within Media Foundation's PMP) then the audio OTA
+		/// might not operate in the PMP and the protection settings are less robust.
+		/// </para>
+		/// <para>
+		/// To obtain the interface ID for a service interface, use the <c>__uuidof</c> operator. For example, the interface ID of
+		/// <c>IAudioCaptureClient</c> is defined as follows:
+		/// </para>
+		/// <para>For information about the <c>__uuidof</c> operator, see the Windows SDK documentation.</para>
+		/// <para>
+		/// To release the <c>IAudioClient</c> object and free all its associated resources, the client must release all references to any
+		/// service objects that were created by calling <c>GetService</c>, in addition to calling <c>Release</c> on the <c>IAudioClient</c>
+		/// interface itself. The client must release a service from the same thread that releases the <c>IAudioClient</c> object.
+		/// </para>
+		/// <para>
+		/// The <c>IAudioSessionControl</c>, <c>IAudioStreamVolume</c>, <c>IChannelAudioVolume</c>, and <c>ISimpleAudioVolume</c> interfaces
+		/// control and monitor aspects of audio sessions and shared-mode streams. These interfaces do not work with exclusive-mode streams.
+		/// </para>
+		/// <para>For code examples that call the <c>GetService</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getservice HRESULT GetService( REFIID
+		// riid, void **ppv );
+		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
+		new object? GetService(in Guid riid);
+
+		/// <summary>
+		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
+		/// stream has been initialized.
+		/// </summary>
+		/// <returns>
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
+		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
+		/// </para>
+		/// <para>
+		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
+		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
+		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
+		new long GetStreamLatency();
+
 		/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
 		/// <param name="ShareMode">
 		/// <para>
@@ -3036,142 +2373,6 @@ public static partial class CoreAudio
 		[PreserveSig]
 		new HRESULT Initialize([In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags, long hnsBufferDuration, long hnsPeriodicity, [In] IntPtr pFormat, [In, Optional] in Guid AudioSessionGuid);
 
-		/// <summary>The <c>GetBufferSize</c> method retrieves the size (maximum capacity) of the endpoint buffer.</summary>
-		/// <returns>Pointer to a <c>UINT32</c> variable into which the method writes the number of audio frames that the buffer can hold.</returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves the length of the endpoint buffer shared between the client application and the audio engine. The length is
-		/// expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of
-		/// channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo
-		/// (2-channel) stream with 16-bit samples.
-		/// </para>
-		/// <para>
-		/// The IAudioClient::Initialize method allocates the buffer. The client specifies the buffer length in the hnsBufferDuration
-		/// parameter value that it passes to the <c>Initialize</c> method. For rendering clients, the buffer length determines the maximum
-		/// amount of rendering data that the application can write to the endpoint buffer during a single processing pass. For capture
-		/// clients, the buffer length determines the maximum amount of capture data that the audio engine can read from the endpoint buffer
-		/// during a single processing pass. The client should always call <c>GetBufferSize</c> after calling <c>Initialize</c> to determine
-		/// the actual size of the allocated buffer, which might differ from the requested size.
-		/// </para>
-		/// <para>
-		/// Rendering clients can use this value to calculate the largest rendering buffer size that can be requested from
-		/// IAudioRenderClient::GetBuffer during each processing pass.
-		/// </para>
-		/// <para>For code examples that call the <c>GetBufferSize</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getbuffersize HRESULT GetBufferSize(
-		// UINT32 *pNumBufferFrames );
-		new uint GetBufferSize();
-
-		/// <summary>
-		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
-		/// stream has been initialized.
-		/// </summary>
-		/// <returns>
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
-		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
-		/// </para>
-		/// <para>
-		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
-		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
-		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
-		new long GetStreamLatency();
-
-		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
-		/// <returns>
-		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
-		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
-		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
-		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
-		/// from a region of the buffer to which the audio engine has not yet written valid data.
-		/// </para>
-		/// <para>
-		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
-		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
-		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
-		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
-		/// </para>
-		/// <para>
-		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
-		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
-		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
-		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
-		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
-		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
-		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
-		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
-		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
-		/// whole packet. A packet always contains an integral number of audio frames.
-		/// </para>
-		/// <para>
-		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
-		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
-		/// packet length reported by <c>GetNextPacketSize</c>.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
-		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
-		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
-		/// </para>
-		/// <para>
-		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
-		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
-		/// a shared-mode stream. The details are as follows.
-		/// </para>
-		/// <para>
-		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
-		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
-		/// padding value from the buffer length.
-		/// </para>
-		/// <para>
-		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
-		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
-		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
-		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
-		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
-		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
-		/// </para>
-		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
-		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
-		new uint GetCurrentPadding();
-
 		/// <summary>The <c>IsFormatSupported</c> method indicates whether the audio endpoint device supports a particular stream format.</summary>
 		/// <param name="ShareMode">
 		/// <para>
@@ -3290,6 +2491,359 @@ public static partial class CoreAudio
 		new HRESULT IsFormatSupported([In] AUDCLNT_SHAREMODE ShareMode, [In] IntPtr pFormat, out SafeCoTaskMemHandle ppClosestMatch);
 
 		/// <summary>
+		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
+		/// capable of supporting an offloaded audio stream.
+		/// </summary>
+		/// <param name="Category">An enumeration that specifies the category of an audio stream.</param>
+		/// <returns>
+		/// A pointer to a Boolean value. <c>TRUE</c> indicates that the endpoint is offload-capable. <c>FALSE</c> indicates that the
+		/// endpoint is not offload-capable.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-isoffloadcapable HRESULT
+		// IsOffloadCapable( AUDIO_STREAM_CATEGORY Category, BOOL *pbOffloadCapable );
+		[return: MarshalAs(UnmanagedType.Bool)]
+		bool IsOffloadCapable(AUDIO_STREAM_CATEGORY Category);
+
+		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
+		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
+		new void Reset();
+
+		/// <summary>Sets the properties of the audio stream by populating an AudioClientProperties structure.</summary>
+		/// <param name="pProperties">Pointer to an AudioClientProperties structure.</param>
+		/// <remarks>
+		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
+		/// <c>IAudioClient2::SetClientProperties</c> and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify
+		/// the <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to IAudioClient::Initialize.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-setclientproperties HRESULT
+		// SetClientProperties( const AudioClientProperties *pProperties );
+		void SetClientProperties(in AudioClientProperties pProperties);
+
+		/// <summary>
+		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
+		/// the client.
+		/// </summary>
+		/// <param name="eventHandle">The event handle.</param>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
+		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
+		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
+		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
+		/// </para>
+		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
+		/// <para>
+		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
+		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
+		/// </para>
+		/// <para>
+		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
+		/// <c>SetEventHandle</c>, the call will fail and return an error code.
+		/// </para>
+		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
+		// HANDLE eventHandle );
+		new void SetEventHandle(HEVENT eventHandle);
+
+		/// <summary>The <c>Start</c> method starts the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Start</c> is a control method that the client calls to start the audio stream. Starting the stream causes the IAudioClient
+		/// object to begin streaming data between the endpoint buffer and the audio engine. It also causes the stream's audio clock to
+		/// resume counting from its current position.
+		/// </para>
+		/// <para>
+		/// The first time this method is called following initialization of the stream, the IAudioClient object's stream position counter
+		/// begins at 0. Otherwise, the clock resumes from its position at the time that the stream was last stopped. Resetting the stream
+		/// forces the stream position back to 0.
+		/// </para>
+		/// <para>
+		/// To avoid start-up glitches with rendering streams, clients should not call <c>Start</c> until the audio engine has been initially
+		/// loaded with data by calling the IAudioRenderClient::GetBuffer and IAudioRenderClient::ReleaseBuffer methods on the rendering interface.
+		/// </para>
+		/// <para>For code examples that call the <c>Start</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-start HRESULT Start();
+		new void Start();
+
+		/// <summary>The <c>Stop</c> method stops the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Stop</c> is a control method that stops a running audio stream. This method stops data from streaming through the client's
+		/// connection with the audio engine. Stopping the stream freezes the stream's audio clock at its current stream position. A
+		/// subsequent call to IAudioClient::Start causes the stream to resume running from that position. If necessary, the client can call
+		/// the IAudioClient::Reset method to reset the position while the stream is stopped.
+		/// </para>
+		/// <para>For code examples that call the <c>Stop</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-stop HRESULT Stop();
+		new void Stop();
+	}
+
+	/// <summary>
+	/// The <c>IAudioClient3</c> interface is derived from the IAudioClient2 interface, with a set of additional methods that enable a
+	/// Windows Audio Session API (WASAPI) audio client to query for the audio engine's supported periodicities and current periodicity as
+	/// well as request initialization a shared audio stream with a specified periodicity.
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nn-audioclient-iaudioclient3
+	[PInvokeData("audioclient.h", MSDNShortId = "E8EFE682-E1BC-4D0D-A60E-DD257D6E5894")]
+	[ComImport, Guid("7ED4EE07-8E67-4CD4-8C1A-2B7A5987AD42"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IAudioClient3 : IAudioClient2
+	{
+		/// <summary>The <c>GetBufferSize</c> method retrieves the size (maximum capacity) of the endpoint buffer.</summary>
+		/// <returns>Pointer to a <c>UINT32</c> variable into which the method writes the number of audio frames that the buffer can hold.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves the length of the endpoint buffer shared between the client application and the audio engine. The length is
+		/// expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of
+		/// channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo
+		/// (2-channel) stream with 16-bit samples.
+		/// </para>
+		/// <para>
+		/// The IAudioClient::Initialize method allocates the buffer. The client specifies the buffer length in the hnsBufferDuration
+		/// parameter value that it passes to the <c>Initialize</c> method. For rendering clients, the buffer length determines the maximum
+		/// amount of rendering data that the application can write to the endpoint buffer during a single processing pass. For capture
+		/// clients, the buffer length determines the maximum amount of capture data that the audio engine can read from the endpoint buffer
+		/// during a single processing pass. The client should always call <c>GetBufferSize</c> after calling <c>Initialize</c> to determine
+		/// the actual size of the allocated buffer, which might differ from the requested size.
+		/// </para>
+		/// <para>
+		/// Rendering clients can use this value to calculate the largest rendering buffer size that can be requested from
+		/// IAudioRenderClient::GetBuffer during each processing pass.
+		/// </para>
+		/// <para>For code examples that call the <c>GetBufferSize</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getbuffersize HRESULT GetBufferSize(
+		// UINT32 *pNumBufferFrames );
+		new uint GetBufferSize();
+
+		/// <summary>
+		/// The <c>GetBufferSizeLimits</c> method returns the buffer size limits of the hardware audio engine in 100-nanosecond units.
+		/// </summary>
+		/// <param name="pFormat">A pointer to the target format that is being queried for the buffer size limit.</param>
+		/// <param name="bEventDriven">Boolean value to indicate whether or not the stream can be event-driven.</param>
+		/// <param name="phnsMinBufferDuration">
+		/// Returns a pointer to the minimum buffer size (in 100-nanosecond units) that is required for the underlying hardware audio engine
+		/// to operate at the format specified in the pFormat parameter, without frequent audio glitching.
+		/// </param>
+		/// <param name="phnsMaxBufferDuration">
+		/// Returns a pointer to the maximum buffer size (in 100-nanosecond units) that the underlying hardware audio engine can support for
+		/// the format specified in the pFormat parameter.
+		/// </param>
+		/// <remarks>The <c>GetBufferSizeLimits</c> method is a device-facing method and does not require prior audio stream initialization.</remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-getbuffersizelimits HRESULT
+		// GetBufferSizeLimits( const WAVEFORMATEX *pFormat, BOOL bEventDriven, REFERENCE_TIME *phnsMinBufferDuration, REFERENCE_TIME
+		// *phnsMaxBufferDuration );
+		new void GetBufferSizeLimits([In] IntPtr pFormat, [MarshalAs(UnmanagedType.Bool)] bool bEventDriven, out long phnsMinBufferDuration, out long phnsMaxBufferDuration);
+
+		/// <summary>The <c>GetCurrentPadding</c> method retrieves the number of frames of padding in the endpoint buffer.</summary>
+		/// <returns>
+		/// Pointer to a <c>UINT32</c> variable into which the method writes the frame count (the number of audio frames of padding in the buffer).
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// This method retrieves a padding value that indicates the amount of valid, unread data that the endpoint buffer currently
+		/// contains. A rendering application can use the padding value to determine how much new data it can safely write to the endpoint
+		/// buffer without overwriting previously written data that the audio engine has not yet read from the buffer. A capture application
+		/// can use the padding value to determine how much new data it can safely read from the endpoint buffer without reading invalid data
+		/// from a region of the buffer to which the audio engine has not yet written valid data.
+		/// </para>
+		/// <para>
+		/// The padding value is expressed as a number of audio frames. The size of an audio frame is specified by the <c>nBlockAlign</c>
+		/// member of the WAVEFORMATEX (or WAVEFORMATEXTENSIBLE) structure that the client passed to the IAudioClient::Initialize method. The
+		/// size in bytes of an audio frame equals the number of channels in the stream multiplied by the sample size per channel. For
+		/// example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.
+		/// </para>
+		/// <para>
+		/// For a shared-mode rendering stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of audio frames
+		/// that are queued up to play in the endpoint buffer. Before writing to the endpoint buffer, the client can calculate the amount of
+		/// available space in the buffer by subtracting the padding value from the buffer length. To ensure that a subsequent call to the
+		/// IAudioRenderClient::GetBuffer method succeeds, the client should request a packet length that does not exceed the available space
+		/// in the buffer. To obtain the buffer length, call the IAudioClient::GetBufferSize method.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the number of frames of
+		/// capture data that are available in the next packet in the endpoint buffer. At a particular moment, zero, one, or more packets of
+		/// capture data might be ready for the client to read from the buffer. If no packets are currently available, the method reports a
+		/// padding value of 0. Following the <c>GetCurrentPadding</c> call, an IAudioCaptureClient::GetBuffer method call will retrieve a
+		/// packet whose length exactly equals the padding value reported by <c>GetCurrentPadding</c>. Each call to GetBuffer retrieves a
+		/// whole packet. A packet always contains an integral number of audio frames.
+		/// </para>
+		/// <para>
+		/// For a shared-mode capture stream, calling <c>GetCurrentPadding</c> is equivalent to calling the
+		/// IAudioCaptureClient::GetNextPacketSize method. That is, the padding value reported by <c>GetCurrentPadding</c> is equal to the
+		/// packet length reported by <c>GetNextPacketSize</c>.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client typically has no use for the padding value reported by <c>GetCurrentPadding</c>. Instead, the client accesses an entire
+		/// buffer during each processing pass. Each time a buffer becomes available for processing, the audio engine notifies the client by
+		/// signaling the client's event handle. For more information about this flag, see IAudioClient::Initialize.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode rendering or capture stream that was not initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, the
+		/// client can use the padding value obtained from <c>GetCurrentPadding</c> in a way that is similar to that described previously for
+		/// a shared-mode stream. The details are as follows.
+		/// </para>
+		/// <para>
+		/// First, for an exclusive-mode rendering stream, the padding value specifies the number of audio frames that are queued up to play
+		/// in the endpoint buffer. As before, the client can calculate the amount of available space in the buffer by subtracting the
+		/// padding value from the buffer length.
+		/// </para>
+		/// <para>
+		/// Second, for an exclusive-mode capture stream, the padding value reported by <c>GetCurrentPadding</c> specifies the current length
+		/// of the next packet. However, this padding value is a snapshot of the packet length, which might increase before the client calls
+		/// the IAudioCaptureClient::GetBuffer method. Thus, the length of the packet retrieved by <c>GetBuffer</c> is at least as large as,
+		/// but might be larger than, the padding value reported by the <c>GetCurrentPadding</c> call that preceded the <c>GetBuffer</c>
+		/// call. In contrast, for a shared-mode capture stream, the length of the packet obtained from <c>GetBuffer</c> always equals the
+		/// padding value reported by the preceding <c>GetCurrentPadding</c> call.
+		/// </para>
+		/// <para>For a code example that calls the <c>GetCurrentPadding</c> method, see Rendering a Stream.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getcurrentpadding HRESULT
+		// GetCurrentPadding( UINT32 *pNumPaddingFrames );
+		new uint GetCurrentPadding();
+
+		/// <summary>
+		/// Returns the current format and periodicity of the audio engine. This method enables audio clients to match the current period of
+		/// the audio engine.
+		/// </summary>
+		/// <param name="ppFormat">
+		/// <para>Type: <c>WAVEFORMATEX**</c></para>
+		/// <para>The current device format that is being used by the audio engine.</para>
+		/// </param>
+		/// <param name="pCurrentPeriodInFrames">
+		/// <para>Type: <c>UINT32*</c></para>
+		/// <para>The current period of the audio engine, in audio frames.</para>
+		/// </param>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> The values returned by this method are instantaneous values and may be invalid immediately after the call returns if,
+		/// for example, another audio client sets the periodicity or format to a different value.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The caller is responsible for calling CoTaskMemFree to deallocate the memory of the <c>WAVEFORMATEX</c> structure
+		/// populated by this method.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient3-getcurrentsharedmodeengineperiod
+		// HRESULT GetCurrentSharedModeEnginePeriod( WAVEFORMATEX **ppFormat, UINT32 *pCurrentPeriodInFrames );
+		void GetCurrentSharedModeEnginePeriod(out SafeCoTaskMemHandle ppFormat, out uint pCurrentPeriodInFrames);
+
+		/// <summary>
+		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
+		/// audio engine on the data in the endpoint buffer.
+		/// </summary>
+		/// <param name="phnsDefaultDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
+		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
+		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <param name="phnsMinimumDevicePeriod">
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
+		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
+		/// </param>
+		/// <remarks>
+		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
+		/// <para>
+		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
+		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
+		/// </para>
+		/// <para>
+		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
+		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
+		/// and minimum periods.
+		/// </para>
+		/// <para>
+		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
+		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
+		/// </para>
+		/// <para>
+		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
+		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
+		/// represents the minimum possible latency that an audio application can achieve.
+		/// </para>
+		/// <para>
+		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
+		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
+		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
+		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
+		/// between processing passes.
+		/// </para>
+		/// <para>
+		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
+		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
+		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
+		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
+		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
+		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
+		/// achieve the minimum possible latency.
+		/// </para>
+		/// <para>
+		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
+		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
+		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
+		new void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
+
+		/// <summary>
 		/// The <c>GetMixFormat</c> method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
 		/// </summary>
 		/// <param name="ppDeviceFormat">
@@ -3379,167 +2933,6 @@ public static partial class CoreAudio
 		// WAVEFORMATEX **ppDeviceFormat );
 		[PreserveSig]
 		new HRESULT GetMixFormat(out SafeCoTaskMemHandle ppDeviceFormat);
-
-		/// <summary>
-		/// The <c>GetDevicePeriod</c> method retrieves the length of the periodic interval separating successive processing passes by the
-		/// audio engine on the data in the endpoint buffer.
-		/// </summary>
-		/// <param name="phnsDefaultDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the default interval between periodic
-		/// processing passes by the audio engine. The time is expressed in 100-nanosecond units. For information about
-		/// <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
-		/// </param>
-		/// <param name="phnsMinimumDevicePeriod">
-		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value specifying the minimum interval between periodic
-		/// processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
-		/// </param>
-		/// <remarks>
-		/// <para>The client can call this method before calling the IAudioClient::Initialize method.</para>
-		/// <para>
-		/// The phnsDefaultDevicePeriod parameter specifies the default scheduling period for a shared-mode stream. The
-		/// phnsMinimumDevicePeriod parameter specifies the minimum scheduling period for an exclusive-mode stream.
-		/// </para>
-		/// <para>
-		/// At least one of the two parameters, phnsDefaultDevicePeriod and phnsMinimumDevicePeriod, must be non- <c>NULL</c> or the method
-		/// returns immediately with error code E_POINTER. If both parameters are non- <c>NULL</c>, then the method outputs both the default
-		/// and minimum periods.
-		/// </para>
-		/// <para>
-		/// For a shared-mode stream, the audio engine periodically processes the data in the endpoint buffer, which the engine shares with
-		/// the client application. The engine schedules itself to perform these processing passes at regular intervals.
-		/// </para>
-		/// <para>
-		/// The period between processing passes by the audio engine is fixed for a particular audio endpoint device and represents the
-		/// smallest processing quantum for the audio engine. This period plus the stream latency between the buffer and endpoint device
-		/// represents the minimum possible latency that an audio application can achieve.
-		/// </para>
-		/// <para>
-		/// The client has the option of scheduling its periodic processing thread to run at the same time interval as the audio engine. In
-		/// this way, the client can achieve the smallest possible latency for a shared-mode stream. However, in an application for which
-		/// latency is less important, the client can reduce the process-switching overhead on the CPU by scheduling its processing passes to
-		/// occur less frequently. In this case, the endpoint buffer must be proportionally larger to compensate for the longer period
-		/// between processing passes.
-		/// </para>
-		/// <para>
-		/// The client determines the buffer size during its call to the IAudioClient::Initialize method. For a shared-mode stream, if the
-		/// client passes this method an hnsBufferDuration parameter value of 0, the method assumes that the periods for the client and audio
-		/// engine are guaranteed to be equal, and the method will allocate a buffer small enough to achieve the minimum possible latency.
-		/// (In fact, any hnsBufferDuration value between 0 and the sum of the audio engine's period and device latency will have the same
-		/// result.) Similarly, for an exclusive-mode stream, if the client sets hnsBufferDuration to 0, the method assumes that the period
-		/// of the client is set to the minimum period of the audio endpoint device, and the method will allocate a buffer small enough to
-		/// achieve the minimum possible latency.
-		/// </para>
-		/// <para>
-		/// If the client chooses to run its periodic processing thread less often, at the cost of increased latency, it can do so as long as
-		/// it creates an endpoint buffer during the IAudioClient::Initialize call that is sufficiently large.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getdeviceperiod HRESULT
-		// GetDevicePeriod( REFERENCE_TIME *phnsDefaultDevicePeriod, REFERENCE_TIME *phnsMinimumDevicePeriod );
-		new void GetDevicePeriod([Out, Optional] out long phnsDefaultDevicePeriod, out long phnsMinimumDevicePeriod);
-
-		/// <summary>The <c>Start</c> method starts the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Start</c> is a control method that the client calls to start the audio stream. Starting the stream causes the IAudioClient
-		/// object to begin streaming data between the endpoint buffer and the audio engine. It also causes the stream's audio clock to
-		/// resume counting from its current position.
-		/// </para>
-		/// <para>
-		/// The first time this method is called following initialization of the stream, the IAudioClient object's stream position counter
-		/// begins at 0. Otherwise, the clock resumes from its position at the time that the stream was last stopped. Resetting the stream
-		/// forces the stream position back to 0.
-		/// </para>
-		/// <para>
-		/// To avoid start-up glitches with rendering streams, clients should not call <c>Start</c> until the audio engine has been initially
-		/// loaded with data by calling the IAudioRenderClient::GetBuffer and IAudioRenderClient::ReleaseBuffer methods on the rendering interface.
-		/// </para>
-		/// <para>For code examples that call the <c>Start</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-start HRESULT Start();
-		new void Start();
-
-		/// <summary>The <c>Stop</c> method stops the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Stop</c> is a control method that stops a running audio stream. This method stops data from streaming through the client's
-		/// connection with the audio engine. Stopping the stream freezes the stream's audio clock at its current stream position. A
-		/// subsequent call to IAudioClient::Start causes the stream to resume running from that position. If necessary, the client can call
-		/// the IAudioClient::Reset method to reset the position while the stream is stopped.
-		/// </para>
-		/// <para>For code examples that call the <c>Stop</c> method, see the following topics:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Rendering a Stream</term>
-		/// </item>
-		/// <item>
-		/// <term>Capturing a Stream</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-stop HRESULT Stop();
-		new void Stop();
-
-		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
-		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
-		new void Reset();
-
-		/// <summary>
-		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
-		/// the client.
-		/// </summary>
-		/// <param name="eventHandle">The event handle.</param>
-		/// <remarks>
-		/// <para>
-		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
-		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
-		/// </para>
-		/// <para>
-		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
-		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
-		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
-		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
-		/// </para>
-		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
-		/// <para>
-		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
-		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
-		/// </para>
-		/// <para>
-		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
-		/// <c>SetEventHandle</c>, the call will fail and return an error code.
-		/// </para>
-		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
-		// HANDLE eventHandle );
-		new void SetEventHandle(HEVENT eventHandle);
 
 		/// <summary>The <c>GetService</c> method accesses additional services from the audio client object.</summary>
 		/// <param name="riid">
@@ -3633,50 +3026,6 @@ public static partial class CoreAudio
 		// riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 		new object? GetService(in Guid riid);
-
-		/// <summary>
-		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
-		/// capable of supporting an offloaded audio stream.
-		/// </summary>
-		/// <param name="Category">An enumeration that specifies the category of an audio stream.</param>
-		/// <returns>
-		/// A pointer to a Boolean value. <c>TRUE</c> indicates that the endpoint is offload-capable. <c>FALSE</c> indicates that the
-		/// endpoint is not offload-capable.
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-isoffloadcapable HRESULT
-		// IsOffloadCapable( AUDIO_STREAM_CATEGORY Category, BOOL *pbOffloadCapable );
-		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool IsOffloadCapable(AUDIO_STREAM_CATEGORY Category);
-
-		/// <summary>Sets the properties of the audio stream by populating an AudioClientProperties structure.</summary>
-		/// <param name="pProperties">Pointer to an AudioClientProperties structure.</param>
-		/// <remarks>
-		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
-		/// <c>IAudioClient2::SetClientProperties</c> and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify
-		/// the <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to IAudioClient::Initialize.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-setclientproperties HRESULT
-		// SetClientProperties( const AudioClientProperties *pProperties );
-		new void SetClientProperties(in AudioClientProperties pProperties);
-
-		/// <summary>
-		/// The <c>GetBufferSizeLimits</c> method returns the buffer size limits of the hardware audio engine in 100-nanosecond units.
-		/// </summary>
-		/// <param name="pFormat">A pointer to the target format that is being queried for the buffer size limit.</param>
-		/// <param name="bEventDriven">Boolean value to indicate whether or not the stream can be event-driven.</param>
-		/// <param name="phnsMinBufferDuration">
-		/// Returns a pointer to the minimum buffer size (in 100-nanosecond units) that is required for the underlying hardware audio engine
-		/// to operate at the format specified in the pFormat parameter, without frequent audio glitching.
-		/// </param>
-		/// <param name="phnsMaxBufferDuration">
-		/// Returns a pointer to the maximum buffer size (in 100-nanosecond units) that the underlying hardware audio engine can support for
-		/// the format specified in the pFormat parameter.
-		/// </param>
-		/// <remarks>The <c>GetBufferSizeLimits</c> method is a device-facing method and does not require prior audio stream initialization.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-getbuffersizelimits HRESULT
-		// GetBufferSizeLimits( const WAVEFORMATEX *pFormat, BOOL bEventDriven, REFERENCE_TIME *phnsMinBufferDuration, REFERENCE_TIME
-		// *phnsMaxBufferDuration );
-		new void GetBufferSizeLimits([In] IntPtr pFormat, [MarshalAs(UnmanagedType.Bool)] bool bEventDriven, out long phnsMinBufferDuration, out long phnsMaxBufferDuration);
 
 		/// <summary>
 		/// Returns the range of periodicities supported by the engine for the specified stream format. The periodicity of the engine is the
@@ -3743,30 +3092,442 @@ public static partial class CoreAudio
 		void GetSharedModeEnginePeriod([In] IntPtr pFormat, out uint pDefaultPeriodInFrames, out uint pFundamentalPeriodInFrames, out uint pMinPeriodInFrames, out uint pMaxPeriodInFrames);
 
 		/// <summary>
-		/// Returns the current format and periodicity of the audio engine. This method enables audio clients to match the current period of
-		/// the audio engine.
+		/// The <c>GetStreamLatency</c> method retrieves the maximum latency for the current stream and can be called any time after the
+		/// stream has been initialized.
 		/// </summary>
-		/// <param name="ppFormat">
-		/// <para>Type: <c>WAVEFORMATEX**</c></para>
-		/// <para>The current device format that is being used by the audio engine.</para>
-		/// </param>
-		/// <param name="pCurrentPeriodInFrames">
-		/// <para>Type: <c>UINT32*</c></para>
-		/// <para>The current period of the audio engine, in audio frames.</para>
-		/// </param>
+		/// <returns>
+		/// Pointer to a REFERENCE_TIME variable into which the method writes a time value representing the latency. The time is expressed in
+		/// 100-nanosecond units. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation.
+		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// <c>Note</c> The values returned by this method are instantaneous values and may be invalid immediately after the call returns if,
-		/// for example, another audio client sets the periodicity or format to a different value.
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> The caller is responsible for calling CoTaskMemFree to deallocate the memory of the <c>WAVEFORMATEX</c> structure
-		/// populated by this method.
+		/// This method retrieves the maximum latency for the current stream. The value will not change for the lifetime of the IAudioClient object.
+		/// </para>
+		/// <para>
+		/// Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single
+		/// processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient3-getcurrentsharedmodeengineperiod
-		// HRESULT GetCurrentSharedModeEnginePeriod( WAVEFORMATEX **ppFormat, UINT32 *pCurrentPeriodInFrames );
-		void GetCurrentSharedModeEnginePeriod(out SafeCoTaskMemHandle ppFormat, out uint pCurrentPeriodInFrames);
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-getstreamlatency HRESULT
+		// GetStreamLatency( REFERENCE_TIME *phnsLatency );
+		new long GetStreamLatency();
+
+		/// <summary>The <c>Initialize</c> method initializes the audio stream.</summary>
+		/// <param name="ShareMode">
+		/// <para>
+		/// The sharing mode for the connection. Through this parameter, the client tells the audio engine whether it wants to share the
+		/// audio endpoint device with other clients. The client should set this parameter to one of the following AUDCLNT_SHAREMODE
+		/// enumeration values:
+		/// </para>
+		/// <para>AUDCLNT_SHAREMODE_EXCLUSIVE</para>
+		/// <para>AUDCLNT_SHAREMODE_SHARED</para>
+		/// </param>
+		/// <param name="StreamFlags">
+		/// Flags to control creation of the stream. The client should set this parameter to 0 or to the bitwise OR of one or more of the
+		/// AUDCLNT_STREAMFLAGS_XXX Constants or the AUDCLNT_SESSIONFLAGS_XXX Constants.
+		/// </param>
+		/// <param name="hnsBufferDuration">
+		/// The buffer capacity as a time value. This parameter is of type <c>REFERENCE_TIME</c> and is expressed in 100-nanosecond units.
+		/// This parameter contains the buffer size that the caller requests for the buffer that the audio application will share with the
+		/// audio engine (in shared mode) or with the endpoint device (in exclusive mode). If the call succeeds, the method allocates a
+		/// buffer that is a least this large. For more information about <c>REFERENCE_TIME</c>, see the Windows SDK documentation. For more
+		/// information about buffering requirements, see Remarks.
+		/// </param>
+		/// <param name="hnsPeriodicity">
+		/// The device period. This parameter can be nonzero only in exclusive mode. In shared mode, always set this parameter to 0. In
+		/// exclusive mode, this parameter specifies the requested scheduling period for successive buffer accesses by the audio endpoint
+		/// device. If the requested device period lies outside the range that is set by the device's minimum period and the system's maximum
+		/// period, then the method clamps the period to that range. If this parameter is 0, the method sets the device period to its default
+		/// value. To obtain the default device period, call the IAudioClient::GetDevicePeriod method. If the
+		/// AUDCLNT_STREAMFLAGS_EVENTCALLBACK stream flag is set and AUDCLNT_SHAREMODE_EXCLUSIVE is set as the ShareMode, then hnsPeriodicity
+		/// must be nonzero and equal to hnsBufferDuration.
+		/// </param>
+		/// <param name="pFormat">
+		/// Pointer to a format descriptor. This parameter must point to a valid format descriptor of type <c>WAVEFORMATEX</c> (or
+		/// <c>WAVEFORMATEXTENSIBLE</c>). For more information, see Remarks.
+		/// </param>
+		/// <param name="AudioSessionGuid">
+		/// Pointer to a session GUID. This parameter points to a GUID value that identifies the audio session that the stream belongs to. If
+		/// the GUID identifies a session that has been previously opened, the method adds the stream to that session. If the GUID does not
+		/// identify an existing session, the method opens a new session and adds the stream to that session. The stream remains a member of
+		/// the same session for its lifetime. Setting this parameter to <c>NULL</c> is equivalent to passing a pointer to a GUID_NULL value.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the method succeeds, it returns S_OK. If it fails, possible return codes include, but are not limited to, the values shown in
+		/// the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AUDCLNT_E_ALREADY_INITIALIZED</term>
+		/// <term>The IAudioClient object is already initialized.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_WRONG_ENDPOINT_TYPE</term>
+		/// <term>The AUDCLNT_STREAMFLAGS_LOOPBACK flag is set but the endpoint device is a capture device, not a rendering device.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED</term>
+		/// <term>
+		/// The requested buffer size is not aligned. This code can be returned for a render or a capture device if the caller specified
+		/// AUDCLNT_SHAREMODE_EXCLUSIVE and the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flags. The caller must call Initialize again with the
+		/// aligned buffer size. For more information, see Remarks.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_BUFFER_SIZE_ERROR</term>
+		/// <term>
+		/// Indicates that the buffer duration value requested by an exclusive-mode client is out of range. The requested duration value for
+		/// pull mode must not be greater than 500 milliseconds; for push mode the duration value must not be greater than 2 seconds.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_CPUUSAGE_EXCEEDED</term>
+		/// <term>
+		/// Indicates that the process-pass duration exceeded the maximum CPU usage. The audio engine keeps track of CPU usage by maintaining
+		/// the number of times the process-pass duration exceeds the maximum CPU usage. The maximum CPU usage is calculated as a percent of
+		/// the engine's periodicity. The percentage value is the system's CPU throttle value (within the range of 10% and 90%). If this
+		/// value is not found, then the default value of 40% is used to calculate the maximum CPU usage.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
+		/// <term>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_IN_USE</term>
+		/// <term>
+		/// The endpoint device is already in use. Either the device is being used in exclusive mode, or the device is being used in shared
+		/// mode and the caller asked to use the device in exclusive mode.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_ENDPOINT_CREATE_FAILED</term>
+		/// <term>
+		/// The method failed to create the audio endpoint for the render or the capture device. This can occur if the audio endpoint device
+		/// has been unplugged, or the audio hardware or associated hardware resources have been reconfigured, disabled, removed, or
+		/// otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_INVALID_DEVICE_PERIOD</term>
+		/// <term>Indicates that the device period requested by an exclusive-mode client is greater than 500 milliseconds.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_UNSUPPORTED_FORMAT</term>
+		/// <term>The audio engine (shared mode) or audio endpoint device (exclusive mode) does not support the specified format.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_EXCLUSIVE_MODE_NOT_ALLOWED</term>
+		/// <term>
+		/// The caller is requesting exclusive-mode use of the endpoint device, but the user has disabled exclusive-mode use of the device.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_BUFDURATION_PERIOD_NOT_EQUAL</term>
+		/// <term>The AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag is set but parameters hnsBufferDuration and hnsPeriodicity are not equal.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
+		/// <term>The Windows audio service is not running.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>Parameter pFormat is NULL.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// Parameter pFormat points to an invalid format description; or the AUDCLNT_STREAMFLAGS_LOOPBACK flag is set but ShareMode is not
+		/// equal to AUDCLNT_SHAREMODE_SHARED; or the AUDCLNT_STREAMFLAGS_CROSSPROCESS flag is set but ShareMode is equal to
+		/// AUDCLNT_SHAREMODE_EXCLUSIVE. A prior call to SetClientProperties was made with an invalid category for audio/render streams.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Out of memory.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// After activating an IAudioClient interface on an audio endpoint device, the client must successfully call <c>Initialize</c> once
+		/// and only once to initialize the audio stream between the client and the device. The client can either connect directly to the
+		/// audio hardware (exclusive mode) or indirectly through the audio engine (shared mode). In the <c>Initialize</c> call, the client
+		/// specifies the audio data format, the buffer size, and audio session for the stream.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> In Windows 8, the first use of IAudioClient to access the audio device should be on the STA thread. Calls from an MTA
+		/// thread may result in undefined behavior.
+		/// </para>
+		/// <para>
+		/// An attempt to create a shared-mode stream can succeed only if the audio device is already operating in shared mode or the device
+		/// is currently unused. An attempt to create a shared-mode stream fails if the device is already operating in exclusive mode.
+		/// </para>
+		/// <para>
+		/// If a stream is initialized to be event driven and in shared mode, ShareMode is set to AUDCLNT_SHAREMODE_SHARED and one of the
+		/// stream flags that are set includes AUDCLNT_STREAMFLAGS_EVENTCALLBACK. For such a stream, the associated application must also
+		/// obtain a handle by making a call to IAudioClient::SetEventHandle. When it is time to retire the stream, the audio engine can then
+		/// use the handle to release the stream objects. Failure to call <c>IAudioClient::SetEventHandle</c> before releasing the stream
+		/// objects can cause a delay of several seconds (a time-out period) while the audio engine waits for an available handle. After the
+		/// time-out period expires, the audio engine then releases the stream objects.
+		/// </para>
+		/// <para>
+		/// Whether an attempt to create an exclusive-mode stream succeeds depends on several factors, including the availability of the
+		/// device and the user-controlled settings that govern exclusive-mode operation of the device. For more information, see
+		/// Exclusive-Mode Streams.
+		/// </para>
+		/// <para>
+		/// An <c>IAudioClient</c> object supports exactly one connection to the audio engine or audio hardware. This connection lasts for
+		/// the lifetime of the <c>IAudioClient</c> object.
+		/// </para>
+		/// <para>The client should call the following methods only after calling <c>Initialize</c>:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IAudioClient::GetBufferSize</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::GetCurrentPadding</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::GetService</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::GetStreamLatency</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::Reset</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::SetEventHandle</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::Start</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::Stop</term>
+		/// </item>
+		/// </list>
+		/// <para>The following methods do not require that <c>Initialize</c> be called first:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IAudioClient::GetDevicePeriod</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::GetMixFormat</term>
+		/// </item>
+		/// <item>
+		/// <term>IAudioClient::IsFormatSupported</term>
+		/// </item>
+		/// </list>
+		/// <para>These methods can be called any time after activating the <c>IAudioClient</c> interface.</para>
+		/// <para>
+		/// Before calling <c>Initialize</c> to set up a shared-mode or exclusive-mode connection, the client can call the
+		/// IAudioClient::IsFormatSupported method to discover whether the audio engine or audio endpoint device supports a particular format
+		/// in that mode. Before opening a shared-mode connection, the client can obtain the audio engine's mix format by calling the
+		/// IAudioClient::GetMixFormat method.
+		/// </para>
+		/// <para>
+		/// The endpoint buffer that is shared between the client and audio engine must be large enough to prevent glitches from occurring in
+		/// the audio stream between processing passes by the client and audio engine. For a rendering endpoint, the client thread
+		/// periodically writes data to the buffer, and the audio engine thread periodically reads data from the buffer. For a capture
+		/// endpoint, the engine thread periodically writes to the buffer, and the client thread periodically reads from the buffer. In
+		/// either case, if the periods of the client thread and engine thread are not equal, the buffer must be large enough to accommodate
+		/// the longer of the two periods without allowing glitches to occur.
+		/// </para>
+		/// <para>
+		/// The client specifies a buffer size through the hnsBufferDuration parameter. The client is responsible for requesting a buffer
+		/// that is large enough to ensure that glitches cannot occur between the periodic processing passes that it performs on the buffer.
+		/// Similarly, the <c>Initialize</c> method ensures that the buffer is never smaller than the minimum buffer size needed to ensure
+		/// that glitches do not occur between the periodic processing passes that the engine thread performs on the buffer. If the client
+		/// requests a buffer size that is smaller than the audio engine's minimum required buffer size, the method sets the buffer size to
+		/// this minimum buffer size rather than to the buffer size requested by the client.
+		/// </para>
+		/// <para>
+		/// If the client requests a buffer size (through the hnsBufferDuration parameter) that is not an integral number of audio frames,
+		/// the method rounds up the requested buffer size to the next integral number of frames.
+		/// </para>
+		/// <para>
+		/// Following the <c>Initialize</c> call, the client should call the IAudioClient::GetBufferSize method to get the precise size of
+		/// the endpoint buffer. During each processing pass, the client will need the actual buffer size to calculate how much data to
+		/// transfer to or from the buffer. The client calls the IAudioClient::GetCurrentPadding method to determine how much of the data in
+		/// the buffer is currently available for processing.
+		/// </para>
+		/// <para>
+		/// To achieve the minimum stream latency between the client application and audio endpoint device, the client thread should run at
+		/// the same period as the audio engine thread. The period of the engine thread is fixed and cannot be controlled by the client.
+		/// Making the client's period smaller than the engine's period unnecessarily increases the client thread's load on the processor
+		/// without improving latency or decreasing the buffer size. To determine the period of the engine thread, the client can call the
+		/// IAudioClient::GetDevicePeriod method. To set the buffer to the minimum size required by the engine thread, the client should call
+		/// <c>Initialize</c> with the hnsBufferDuration parameter set to 0. Following the <c>Initialize</c> call, the client can get the
+		/// size of the resulting buffer by calling <c>IAudioClient::GetBufferSize</c>.
+		/// </para>
+		/// <para>
+		/// A client has the option of requesting a buffer size that is larger than what is strictly necessary to make timing glitches rare
+		/// or nonexistent. Increasing the buffer size does not necessarily increase the stream latency. For a rendering stream, the latency
+		/// through the buffer is determined solely by the separation between the client's write pointer and the engine's read pointer. For a
+		/// capture stream, the latency through the buffer is determined solely by the separation between the engine's write pointer and the
+		/// client's read pointer.
+		/// </para>
+		/// <para>
+		/// The loopback flag (AUDCLNT_STREAMFLAGS_LOOPBACK) enables audio loopback. A client can enable audio loopback only on a rendering
+		/// endpoint with a shared-mode stream. Audio loopback is provided primarily to support acoustic echo cancellation (AEC).
+		/// </para>
+		/// <para>
+		/// An AEC client requires both a rendering endpoint and the ability to capture the output stream from the audio engine. The engine's
+		/// output stream is the global mix that the audio device plays through the speakers. If audio loopback is enabled, a client can open
+		/// a capture buffer for the global audio mix by calling the IAudioClient::GetService method to obtain an IAudioCaptureClient
+		/// interface on the rendering stream object. If audio loopback is not enabled, then an attempt to open a capture buffer on a
+		/// rendering stream will fail. The loopback data in the capture buffer is in the device format, which the client can obtain by
+		/// querying the device's PKEY_AudioEngine_DeviceFormat property.
+		/// </para>
+		/// <para>
+		/// On Windows versions prior to Windows 10, a pull-mode capture client will not receive any events when a stream is initialized with
+		/// event-driven buffering (AUDCLNT_STREAMFLAGS_EVENTCALLBACK) and is loopback-enabled (AUDCLNT_STREAMFLAGS_LOOPBACK). If the stream
+		/// is opened with this configuration, the <c>Initialize</c> call succeeds, but relevant events are not raised to notify the capture
+		/// client each time a buffer becomes ready for processing. To work around this, initialize a render stream in event-driven mode.
+		/// Each time the client receives an event for the render stream, it must signal the capture client to run the capture thread that
+		/// reads the next set of samples from the capture endpoint buffer. As of Windows 10 the relevant event handles are now set for
+		/// loopback-enabled streams that are active.
+		/// </para>
+		/// <para>
+		/// Note that all streams must be opened in share mode because exclusive-mode streams cannot operate in loopback mode. For more
+		/// information about audio loopback, see Loopback Recording.
+		/// </para>
+		/// <para>
+		/// The AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag indicates that processing of the audio buffer by the client will be event driven.
+		/// WASAPI supports event-driven buffering to enable low-latency processing of both shared-mode and exclusive-mode streams.
+		/// </para>
+		/// <para>
+		/// The initial release of Windows Vista supports event-driven buffering (that is, the use of the AUDCLNT_STREAMFLAGS_EVENTCALLBACK
+		/// flag) for rendering streams only.
+		/// </para>
+		/// <para>
+		/// In the initial release of Windows Vista, for capture streams, the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag is supported only in
+		/// shared mode. Setting this flag has no effect for exclusive-mode capture streams. That is, although the application specifies this
+		/// flag in exclusive mode through the <c>Initialize</c> call, the application will not receive any events that are usually required
+		/// to capture the audio stream. In the Windows Vista Service Pack 1 release, this flag is functional in shared-mode and exclusive
+		/// mode; an application can set this flag to enable event-buffering for capture streams. For more information about capturing an
+		/// audio stream, see Capturing a Stream.
+		/// </para>
+		/// <para>
+		/// To enable event-driven buffering, the client must provide an event handle to the system. Following the <c>Initialize</c> call and
+		/// before calling the IAudioClient::Start method to start the stream, the client must call the IAudioClient::SetEventHandle method
+		/// to set the event handle. While the stream is running, the system periodically signals the event to indicate to the client that
+		/// audio data is available for processing. Between processing passes, the client thread waits on the event handle by calling a
+		/// synchronization function such as <c>WaitForSingleObject</c>. For more information about synchronization functions, see the
+		/// Windows SDK documentation.
+		/// </para>
+		/// <para>
+		/// For a shared-mode stream that uses event-driven buffering, the caller must set both hnsPeriodicity and hnsBufferDuration to
+		/// 0. The <c>Initialize</c> method determines how large a buffer to allocate based on the scheduling period of the audio engine.
+		/// Although the client's buffer processing thread is event driven, the basic buffer management process, as described previously, is
+		/// unaltered. Each time the thread awakens, it should call IAudioClient::GetCurrentPadding to determine how much data to write to a
+		/// rendering buffer or read from a capture buffer. In contrast to the two buffers that the <c>Initialize</c> method allocates for an
+		/// exclusive-mode stream that uses event-driven buffering, a shared-mode stream requires a single buffer.
+		/// </para>
+		/// <para>
+		/// For an exclusive-mode stream that uses event-driven buffering, the caller must specify nonzero values for hnsPeriodicity and
+		/// hnsBufferDuration, and the values of these two parameters must be equal. The <c>Initialize</c> method allocates two buffers for
+		/// the stream. Each buffer is equal in duration to the value of the hnsBufferDuration parameter. Following the <c>Initialize</c>
+		/// call for a rendering stream, the caller should fill the first of the two buffers before starting the stream. For a capture
+		/// stream, the buffers are initially empty, and the caller should assume that each buffer remains empty until the event for that
+		/// buffer is signaled. While the stream is running, the system alternately sends one buffer or the other to the client—this form of
+		/// double buffering is referred to as "ping-ponging". Each time the client receives a buffer from the system (which the system
+		/// indicates by signaling the event), the client must process the entire buffer. For example, if the client requests a packet size
+		/// from the IAudioRenderClient::GetBuffer method that does not match the buffer size, the method fails. Calls to the
+		/// <c>IAudioClient::GetCurrentPadding</c> method are unnecessary because the packet size must always equal the buffer size. In
+		/// contrast to the buffering modes discussed previously, the latency for an event-driven, exclusive-mode stream depends directly on
+		/// the buffer size.
+		/// </para>
+		/// <para>
+		/// As explained in Audio Sessions, the default behavior for a session that contains rendering streams is that its volume and mute
+		/// settings persist across system restarts. The AUDCLNT_STREAMFLAGS_NOPERSIST flag overrides the default behavior and makes the
+		/// settings nonpersistent. This flag has no effect on sessions that contain capture streams—the settings for those sessions are
+		/// never persistent. In addition, the settings for a session that contains a loopback stream (a stream that is initialized with the
+		/// AUDCLNT_STREAMFLAGS_LOOPBACK flag) are not persistent.
+		/// </para>
+		/// <para>
+		/// Only a session that connects to a rendering endpoint device can have persistent volume and mute settings. The first stream to be
+		/// added to the session determines whether the session's settings are persistent. Thus, if the AUDCLNT_STREAMFLAGS_NOPERSIST or
+		/// AUDCLNT_STREAMFLAGS_LOOPBACK flag is set during initialization of the first stream, the session's settings are not persistent.
+		/// Otherwise, they are persistent. Their persistence is unaffected by additional streams that might be subsequently added or removed
+		/// during the lifetime of the session object.
+		/// </para>
+		/// <para>
+		/// After a call to <c>Initialize</c> has successfully initialized an <c>IAudioClient</c> interface instance, a subsequent
+		/// <c>Initialize</c> call to initialize the same interface instance will fail and return error code E_ALREADY_INITIALIZED.
+		/// </para>
+		/// <para>
+		/// If the initial call to <c>Initialize</c> fails, subsequent <c>Initialize</c> calls might fail and return error code
+		/// E_ALREADY_INITIALIZED, even though the interface has not been initialized. If this occurs, release the <c>IAudioClient</c>
+		/// interface and obtain a new <c>IAudioClient</c> interface from the MMDevice API before calling <c>Initialize</c> again.
+		/// </para>
+		/// <para>For code examples that call the <c>Initialize</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Exclusive-Mode Streams</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Starting with Windows 7, <c>Initialize</c> can return AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED for a render or a capture device. This
+		/// indicates that the buffer size, specified by the caller in the hnsBufferDuration parameter, is not aligned. This error code is
+		/// returned only if the caller requested an exclusive-mode stream (AUDCLNT_SHAREMODE_EXCLUSIVE) and event-driven buffering (AUDCLNT_STREAMFLAGS_EVENTCALLBACK).
+		/// </para>
+		/// <para>
+		/// If <c>Initialize</c> returns AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED, the caller must call <c>Initialize</c> again and specify the
+		/// aligned buffer size. Use the following steps:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Call IAudioClient::GetBufferSize and receive the next-highest-aligned buffer size (in frames).</term>
+		/// </item>
+		/// <item>
+		/// <term>Call <c>IAudioClient::Release</c> to release the audio client used in the previous call that returned AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Calculate the aligned buffer size in 100-nansecond units (hns). The buffer size is . In this formula, is the buffer size
+		/// retrieved by GetBufferSize.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Call the IMMDevice::Activate method with parameter iid set to REFIID IID_IAudioClient to create a new audio client.</term>
+		/// </item>
+		/// <item>
+		/// <term>Call <c>Initialize</c> again on the created audio client and specify the new buffer size and periodicity.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
+		/// IAudioClient2::SetClientProperties and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify the
+		/// <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to <c>IAudioClient::Initialize</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>The following example code shows how to respond to the <c>AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED</c> return code.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize HRESULT Initialize(
+		// AUDCLNT_SHAREMODE ShareMode, DWORD StreamFlags, REFERENCE_TIME hnsBufferDuration, REFERENCE_TIME hnsPeriodicity, const
+		// WAVEFORMATEX *pFormat, LPCGUID AudioSessionGuid );
+		[PreserveSig]
+		new HRESULT Initialize([In] AUDCLNT_SHAREMODE ShareMode, AUDCLNT_STREAMFLAGS StreamFlags, long hnsBufferDuration, long hnsPeriodicity, [In] IntPtr pFormat, [In, Optional] in Guid AudioSessionGuid);
 
 		/// <summary>Initializes a shared stream with the specified periodicity.</summary>
 		/// <param name="StreamFlags">
@@ -3851,6 +3612,251 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient3-initializesharedaudiostream HRESULT
 		// InitializeSharedAudioStream( DWORD StreamFlags, UINT32 PeriodInFrames, const WAVEFORMATEX *pFormat, LPCGUID AudioSessionGuid );
 		void InitializeSharedAudioStream(AUDCLNT_STREAMFLAGS StreamFlags, [In] uint PeriodInFrames, [In] IntPtr pFormat, [In, Optional] in Guid AudioSessionGuid);
+
+		/// <summary>The <c>IsFormatSupported</c> method indicates whether the audio endpoint device supports a particular stream format.</summary>
+		/// <param name="ShareMode">
+		/// <para>
+		/// The sharing mode for the stream format. Through this parameter, the client indicates whether it wants to use the specified format
+		/// in exclusive mode or shared mode. The client should set this parameter to one of the following AUDCLNT_SHAREMODE enumeration values:
+		/// </para>
+		/// <para>AUDCLNT_SHAREMODE_EXCLUSIVE</para>
+		/// <para>AUDCLNT_SHAREMODE_SHARED</para>
+		/// </param>
+		/// <param name="pFormat">
+		/// Pointer to the specified stream format. This parameter points to a caller-allocated format descriptor of type <c>WAVEFORMATEX</c>
+		/// or <c>WAVEFORMATEXTENSIBLE</c>. The client writes a format description to this structure before calling this method. For
+		/// information about <c>WAVEFORMATEX</c> and <c>WAVEFORMATEXTENSIBLE</c>, see the Windows DDK documentation.
+		/// </param>
+		/// <param name="ppClosestMatch">
+		/// Pointer to a pointer variable into which the method writes the address of a <c>WAVEFORMATEX</c> or <c>WAVEFORMATEXTENSIBLE</c>
+		/// structure. This structure specifies the supported format that is closest to the format that the client specified through the
+		/// pFormat parameter. For shared mode (that is, if the ShareMode parameter is AUDCLNT_SHAREMODE_SHARED), set ppClosestMatch to point
+		/// to a valid, non- <c>NULL</c> pointer variable. For exclusive mode, set ppClosestMatch to <c>NULL</c>. The method allocates the
+		/// storage for the structure. The caller is responsible for freeing the storage, when it is no longer needed, by calling the
+		/// <c>CoTaskMemFree</c> function. If the <c>IsFormatSupported</c> call fails and ppClosestMatch is non- <c>NULL</c>, the method sets
+		/// *ppClosestMatch to <c>NULL</c>. For information about <c>CoTaskMemFree</c>, see the Windows SDK documentation.
+		/// </param>
+		/// <returns>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Succeeded and the audio endpoint device supports the specified stream format.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>Succeeded with a closest match to the specified format.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_UNSUPPORTED_FORMAT</term>
+		/// <term>Succeeded but the specified format is not supported in exclusive mode.</term>
+		/// </item>
+		/// </list>
+		/// <para>If the operation fails, possible return codes include, but are not limited to, the values shown in the following table.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_POINTER</term>
+		/// <term>Parameter pFormat is NULL, or ppClosestMatch is NULL and ShareMode is AUDCLNT_SHAREMODE_SHARED.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>Parameter ShareMode is a value other than AUDCLNT_SHAREMODE_SHARED or AUDCLNT_SHAREMODE_EXCLUSIVE.</term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_DEVICE_INVALIDATED</term>
+		/// <term>
+		/// The audio endpoint device has been unplugged, or the audio hardware or associated hardware resources have been reconfigured,
+		/// disabled, removed, or otherwise made unavailable for use.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AUDCLNT_E_SERVICE_NOT_RUNNING</term>
+		/// <term>The Windows audio service is not running.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method provides a way for a client to determine, before calling IAudioClient::Initialize, whether the audio engine supports
+		/// a particular stream format.
+		/// </para>
+		/// <para>
+		/// For exclusive mode, <c>IsFormatSupported</c> returns S_OK if the audio endpoint device supports the caller-specified format, or
+		/// it returns AUDCLNT_E_UNSUPPORTED_FORMAT if the device does not support the format. The ppClosestMatch parameter can be
+		/// <c>NULL</c>. If it is not <c>NULL</c>, the method writes <c>NULL</c> to *ppClosestMatch.
+		/// </para>
+		/// <para>
+		/// For shared mode, if the audio engine supports the caller-specified format, <c>IsFormatSupported</c> sets <c>*ppClosestMatch</c>
+		/// to <c>NULL</c> and returns S_OK. If the audio engine does not support the caller-specified format but does support a similar
+		/// format, the method retrieves the similar format through the ppClosestMatch parameter and returns S_FALSE. If the audio engine
+		/// does not support the caller-specified format or any similar format, the method sets
+		/// *ppClosestMatch to <c>NULL</c> and returns AUDCLNT_E_UNSUPPORTED_FORMAT.
+		/// </para>
+		/// <para>
+		/// In shared mode, the audio engine always supports the mix format, which the client can obtain by calling the
+		/// IAudioClient::GetMixFormat method. In addition, the audio engine might support similar formats that have the same sample rate and
+		/// number of channels as the mix format but differ in the representation of audio sample values. The audio engine represents sample
+		/// values internally as floating-point numbers, but if the caller-specified format represents sample values as integers, the audio
+		/// engine typically can convert between the integer sample values and its internal floating-point representation.
+		/// </para>
+		/// <para>
+		/// The audio engine might be able to support an even wider range of shared-mode formats if the installation package for the audio
+		/// device includes a local effects (LFX) audio processing object (APO) that can handle format conversions. An LFX APO is a software
+		/// module that performs device-specific processing of an audio stream. The audio graph builder in the Windows audio service inserts
+		/// the LFX APO into the stream between each client and the audio engine. When a client calls the <c>IsFormatSupported</c> method and
+		/// the method determines that an LFX APO is installed for use with the device, the method directs the query to the LFX APO, which
+		/// indicates whether it supports the caller-specified format.
+		/// </para>
+		/// <para>
+		/// For example, a particular LFX APO might accept a 6-channel surround sound stream from a client and convert the stream to a stereo
+		/// format that can be played through headphones. Typically, an LFX APO supports only client formats with sample rates that match the
+		/// sample rate of the mix format.
+		/// </para>
+		/// <para>
+		/// For more information about APOs, see the white papers titled "Custom Audio Effects in Windows Vista" and "Reusing the Windows
+		/// Vista Audio System Effects" at the Audio Device Technologies for Windows website. For more information about the
+		/// <c>IsFormatSupported</c> method, see Device Formats.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-isformatsupported HRESULT
+		// IsFormatSupported( AUDCLNT_SHAREMODE ShareMode, const WAVEFORMATEX *pFormat, WAVEFORMATEX **ppClosestMatch );
+		[PreserveSig]
+		new HRESULT IsFormatSupported([In] AUDCLNT_SHAREMODE ShareMode, [In] IntPtr pFormat, out SafeCoTaskMemHandle ppClosestMatch);
+
+		/// <summary>
+		/// The <c>IsOffloadCapable</c> method retrieves information about whether or not the endpoint on which a stream is created is
+		/// capable of supporting an offloaded audio stream.
+		/// </summary>
+		/// <param name="Category">An enumeration that specifies the category of an audio stream.</param>
+		/// <returns>
+		/// A pointer to a Boolean value. <c>TRUE</c> indicates that the endpoint is offload-capable. <c>FALSE</c> indicates that the
+		/// endpoint is not offload-capable.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-isoffloadcapable HRESULT
+		// IsOffloadCapable( AUDIO_STREAM_CATEGORY Category, BOOL *pbOffloadCapable );
+		[return: MarshalAs(UnmanagedType.Bool)]
+		new bool IsOffloadCapable(AUDIO_STREAM_CATEGORY Category);
+
+		/// <summary>The <c>Reset</c> method resets the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Reset</c> is a control method that the client calls to reset a stopped audio stream. Resetting the stream flushes all pending
+		/// data and resets the audio clock stream position to 0. This method fails if it is called on a stream that is not stopped.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-reset HRESULT Reset();
+		new void Reset();
+
+		/// <summary>Sets the properties of the audio stream by populating an AudioClientProperties structure.</summary>
+		/// <param name="pProperties">Pointer to an AudioClientProperties structure.</param>
+		/// <remarks>
+		/// Starting with Windows 10, hardware-offloaded audio streams must be event driven. This means that if you call
+		/// <c>IAudioClient2::SetClientProperties</c> and set the bIsOffload parameter of the AudioClientProperties to TRUE, you must specify
+		/// the <c>AUDCLNT_STREAMFLAGS_EVENTCALLBACK</c> flag in the StreamFlags parameter to IAudioClient::Initialize.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient2-setclientproperties HRESULT
+		// SetClientProperties( const AudioClientProperties *pProperties );
+		new void SetClientProperties(in AudioClientProperties pProperties);
+
+		/// <summary>
+		/// The <c>SetEventHandle</c> method sets the event handle that the system signals when an audio buffer is ready to be processed by
+		/// the client.
+		/// </summary>
+		/// <param name="eventHandle">The event handle.</param>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// During stream initialization, the client can, as an option, enable event-driven buffering. To do so, the client calls the
+		/// IAudioClient::Initialize method with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag set. After enabling event-driven buffering, and
+		/// before calling the IAudioClient::Start method to start the stream, the client must call <c>SetEventHandle</c> to register the
+		/// event handle that the system will signal each time a buffer becomes ready to be processed by the client.
+		/// </para>
+		/// <para>The event handle should be in the nonsignaled state at the time that the client calls the Start method.</para>
+		/// <para>
+		/// If the client has enabled event-driven buffering of a stream, but the client calls the Start method for that stream without first
+		/// calling <c>SetEventHandle</c>, the <c>Start</c> call will fail and return an error code.
+		/// </para>
+		/// <para>
+		/// If the client does not enable event-driven buffering of a stream but attempts to set an event handle for the stream by calling
+		/// <c>SetEventHandle</c>, the call will fail and return an error code.
+		/// </para>
+		/// <para>For a code example that calls the <c>SetEventHandle</c> method, see Exclusive-Mode Streams.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-seteventhandle HRESULT SetEventHandle(
+		// HANDLE eventHandle );
+		new void SetEventHandle(HEVENT eventHandle);
+
+		/// <summary>The <c>Start</c> method starts the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Start</c> is a control method that the client calls to start the audio stream. Starting the stream causes the IAudioClient
+		/// object to begin streaming data between the endpoint buffer and the audio engine. It also causes the stream's audio clock to
+		/// resume counting from its current position.
+		/// </para>
+		/// <para>
+		/// The first time this method is called following initialization of the stream, the IAudioClient object's stream position counter
+		/// begins at 0. Otherwise, the clock resumes from its position at the time that the stream was last stopped. Resetting the stream
+		/// forces the stream position back to 0.
+		/// </para>
+		/// <para>
+		/// To avoid start-up glitches with rendering streams, clients should not call <c>Start</c> until the audio engine has been initially
+		/// loaded with data by calling the IAudioRenderClient::GetBuffer and IAudioRenderClient::ReleaseBuffer methods on the rendering interface.
+		/// </para>
+		/// <para>For code examples that call the <c>Start</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-start HRESULT Start();
+		new void Start();
+
+		/// <summary>The <c>Stop</c> method stops the audio stream.</summary>
+		/// <remarks>
+		/// <para>
+		/// This method requires prior initialization of the IAudioClient interface. All calls to this method will fail with the error
+		/// AUDCLNT_E_NOT_INITIALIZED until the client initializes the audio stream by successfully calling the IAudioClient::Initialize method.
+		/// </para>
+		/// <para>
+		/// <c>Stop</c> is a control method that stops a running audio stream. This method stops data from streaming through the client's
+		/// connection with the audio engine. Stopping the stream freezes the stream's audio clock at its current stream position. A
+		/// subsequent call to IAudioClient::Start causes the stream to resume running from that position. If necessary, the client can call
+		/// the IAudioClient::Reset method to reset the position while the stream is stopped.
+		/// </para>
+		/// <para>For code examples that call the <c>Stop</c> method, see the following topics:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Rendering a Stream</term>
+		/// </item>
+		/// <item>
+		/// <term>Capturing a Stream</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-stop HRESULT Stop();
+		new void Stop();
 	}
 
 	/// <summary>
@@ -3911,6 +3917,14 @@ public static partial class CoreAudio
 	[ComImport, Guid("CD63314F-3FBA-4a1b-812C-EF96358728E7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioClock
 	{
+		/// <summary>The <c>GetCharacteristics</c> method is reserved for future use.</summary>
+		/// <returns>
+		/// Pointer to a <c>DWORD</c> variable into which the method writes a value that indicates the characteristics of the audio clock.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclock-getcharacteristics HRESULT
+		// GetCharacteristics( DWORD *pdwCharacteristics );
+		uint GetCharacteristics();
+
 		/// <summary>The <c>GetFrequency</c> method gets the device frequency.</summary>
 		/// <returns>A <c>UINT64</c> variable into which the method writes the device frequency. For more information, see Remarks.</returns>
 		/// <remarks>
@@ -4028,14 +4042,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclock-getposition HRESULT GetPosition( UINT64
 		// *pu64Position, UINT64 *pu64QPCPosition );
 		void GetPosition(out ulong pu64Position, out ulong pu64QPCPosition);
-
-		/// <summary>The <c>GetCharacteristics</c> method is reserved for future use.</summary>
-		/// <returns>
-		/// Pointer to a <c>DWORD</c> variable into which the method writes a value that indicates the characteristics of the audio clock.
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclock-getcharacteristics HRESULT
-		// GetCharacteristics( DWORD *pdwCharacteristics );
-		uint GetCharacteristics();
 	}
 
 	/// <summary>
@@ -4186,24 +4192,6 @@ public static partial class CoreAudio
 	[ComImport, Guid("4460B3AE-4B44-4527-8676-7548A8ACD260"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioEffectsManager
 	{
-		/// <summary>
-		/// Registers an IAudioEffectsChangedNotificationClient interface. This callback interface allows applications to receive
-		/// notifications when the list of audio effects changes or the resources needed to enable an effect changes, i.e. when the value of
-		/// the canSetState field of the associated AUDIO_EFFECT changes.
-		/// </summary>
-		/// <param name="client">The <c>IAudioEffectsChangedNotificationClient</c> interface to register.</param>
-		/// <remarks>Unregister the callback interface by calling UnregisterAudioEffectsChangedNotificationCallback.</remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioeffectsmanager-registeraudioeffectschangednotificationcallback
-		// HRESULT RegisterAudioEffectsChangedNotificationCallback( IAudioEffectsChangedNotificationClient *client );
-		void RegisterAudioEffectsChangedNotificationCallback(IAudioEffectsChangedNotificationClient client);
-
-		/// <summary>Unregisters an IAudioEffectsChangedNotificationClient interface.</summary>
-		/// <param name="client">The <c>IAudioEffectsChangedNotificationClient</c> interface to unregister.</param>
-		/// <remarks>Register the callback interface by calling RegisterAudioEffectsChangedNotificationCallback.</remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioeffectsmanager-unregisteraudioeffectschangednotificationcallback
-		// HRESULT UnregisterAudioEffectsChangedNotificationCallback( IAudioEffectsChangedNotificationClient *client );
-		void UnregisterAudioEffectsChangedNotificationCallback(IAudioEffectsChangedNotificationClient client);
-
 		/// <summary>Gets the current list of audio effects for the associated audio stream.</summary>
 		/// <param name="effects">Receives a pointer to an array of AUDIO_EFFECT structures representing the current list of audio effects.</param>
 		/// <param name="numEffects">Receives the number of <c>AUDIO_EFFECT</c> structures returned in effects.</param>
@@ -4215,6 +4203,17 @@ public static partial class CoreAudio
 		// GetAudioEffects( AUDIO_EFFECT **effects, UINT32 *numEffects );
 		void GetAudioEffects(out SafeCoTaskMemHandle effects, out uint numEffects);
 
+		/// <summary>
+		/// Registers an IAudioEffectsChangedNotificationClient interface. This callback interface allows applications to receive
+		/// notifications when the list of audio effects changes or the resources needed to enable an effect changes, i.e. when the value of
+		/// the canSetState field of the associated AUDIO_EFFECT changes.
+		/// </summary>
+		/// <param name="client">The <c>IAudioEffectsChangedNotificationClient</c> interface to register.</param>
+		/// <remarks>Unregister the callback interface by calling UnregisterAudioEffectsChangedNotificationCallback.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioeffectsmanager-registeraudioeffectschangednotificationcallback
+		// HRESULT RegisterAudioEffectsChangedNotificationCallback( IAudioEffectsChangedNotificationClient *client );
+		void RegisterAudioEffectsChangedNotificationCallback(IAudioEffectsChangedNotificationClient client);
+
 		/// <summary>Sets the state of the specified audio effect.</summary>
 		/// <param name="effectId">
 		/// The GUID identifier of the effect for which the state is being changed. Audio effect GUIDs are defined in ksmedia.h.
@@ -4224,6 +4223,13 @@ public static partial class CoreAudio
 		// https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioeffectsmanager-setaudioeffectstate HRESULT
 		// SetAudioEffectState( GUID effectId, AUDIO_EFFECT_STATE state );
 		void SetAudioEffectState(Guid effectId, AUDIO_EFFECT_STATE state);
+
+		/// <summary>Unregisters an IAudioEffectsChangedNotificationClient interface.</summary>
+		/// <param name="client">The <c>IAudioEffectsChangedNotificationClient</c> interface to unregister.</param>
+		/// <remarks>Register the callback interface by calling RegisterAudioEffectsChangedNotificationCallback.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioeffectsmanager-unregisteraudioeffectschangednotificationcallback
+		// HRESULT UnregisterAudioEffectsChangedNotificationCallback( IAudioEffectsChangedNotificationClient *client );
+		void UnregisterAudioEffectsChangedNotificationCallback(IAudioEffectsChangedNotificationClient client);
 	}
 
 	/// <summary>
@@ -4485,6 +4491,24 @@ public static partial class CoreAudio
 	[ComImport, Guid("93014887-242D-4068-8A15-CF5E93B90FE3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAudioStreamVolume
 	{
+		/// <summary>The <c>GetAllVolumes</c> method retrieves the volume levels for all the channels in the audio stream.</summary>
+		/// <param name="dwCount">
+		/// The number of elements in the pfVolumes array. The dwCount parameter must equal the number of channels in the stream format. To
+		/// get the number of channels, call the IAudioStreamVolume::GetChannelCount method.
+		/// </param>
+		/// <param name="pfVolumes">
+		/// Pointer to an array of volume levels for the channels in the audio stream. This parameter points to a caller-allocated
+		/// <c>float</c> array into which the method writes the volume levels for the individual channels. Volume levels are in the range 0.0
+		/// to 1.0.
+		/// </param>
+		/// <remarks>
+		/// Clients can call the IAudioStreamVolume::SetAllVolumes or IAudioStreamVolume::SetChannelVolume method to set the per-channel
+		/// volume levels in an audio stream.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-getallvolumes HRESULT
+		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
+		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
+
 		/// <summary>The <c>GetChannelCount</c> method retrieves the number of channels in the audio stream.</summary>
 		/// <returns>A <c>UINT32</c> variable into which the method writes the channel count.</returns>
 		/// <remarks>
@@ -4494,16 +4518,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-getchannelcount HRESULT
 		// GetChannelCount( UINT32 *pdwCount );
 		uint GetChannelCount();
-
-		/// <summary>The <c>SetChannelVolume</c> method sets the volume level for the specified channel in the audio stream.</summary>
-		/// <param name="dwIndex">
-		/// The channel number. If the stream format has N channels, the channels are numbered from 0 to N– 1. To get the number of channels,
-		/// call the IAudioStreamVolume::GetChannelCount method.
-		/// </param>
-		/// <param name="fLevel">The volume level for the channel. Valid volume levels are in the range 0.0 to 1.0.</param>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-setchannelvolume HRESULT
-		// SetChannelVolume( UINT32 dwIndex, const float fLevel );
-		void SetChannelVolume([In] uint dwIndex, [In] float fLevel);
 
 		/// <summary>The <c>GetChannelVolume</c> method retrieves the volume level for the specified channel in the audio stream.</summary>
 		/// <param name="dwIndex">
@@ -4537,23 +4551,15 @@ public static partial class CoreAudio
 		// SetAllVolumes( UINT32 dwCount, const float *pfVolumes );
 		void SetAllVolumes([In] uint dwCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
 
-		/// <summary>The <c>GetAllVolumes</c> method retrieves the volume levels for all the channels in the audio stream.</summary>
-		/// <param name="dwCount">
-		/// The number of elements in the pfVolumes array. The dwCount parameter must equal the number of channels in the stream format. To
-		/// get the number of channels, call the IAudioStreamVolume::GetChannelCount method.
+		/// <summary>The <c>SetChannelVolume</c> method sets the volume level for the specified channel in the audio stream.</summary>
+		/// <param name="dwIndex">
+		/// The channel number. If the stream format has N channels, the channels are numbered from 0 to N– 1. To get the number of channels,
+		/// call the IAudioStreamVolume::GetChannelCount method.
 		/// </param>
-		/// <param name="pfVolumes">
-		/// Pointer to an array of volume levels for the channels in the audio stream. This parameter points to a caller-allocated
-		/// <c>float</c> array into which the method writes the volume levels for the individual channels. Volume levels are in the range 0.0
-		/// to 1.0.
-		/// </param>
-		/// <remarks>
-		/// Clients can call the IAudioStreamVolume::SetAllVolumes or IAudioStreamVolume::SetChannelVolume method to set the per-channel
-		/// volume levels in an audio stream.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-getallvolumes HRESULT
-		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
-		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
+		/// <param name="fLevel">The volume level for the channel. Valid volume levels are in the range 0.0 to 1.0.</param>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-setchannelvolume HRESULT
+		// SetChannelVolume( UINT32 dwIndex, const float fLevel );
+		void SetChannelVolume([In] uint dwIndex, [In] float fLevel);
 	}
 
 	/// <summary>Provides APIs for associating an HWND with an audio stream.</summary>
@@ -4635,6 +4641,24 @@ public static partial class CoreAudio
 	[ComImport, Guid("1C158861-B533-4B30-B1CF-E853E51C59B8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IChannelAudioVolume
 	{
+		/// <summary>The <c>GetAllVolumes</c> method retrieves the volume levels for all the channels in the audio session.</summary>
+		/// <param name="dwCount">
+		/// The number of elements in the pfVolumes array. The dwCount parameter must equal the number of channels in the stream format for
+		/// the audio session. To get the number of channels, call the IChannelAudioVolume::GetChannelCount method.
+		/// </param>
+		/// <param name="pfVolumes">
+		/// Pointer to an array of volume levels for the channels in the audio session. This parameter points to a caller-allocated
+		/// <c>float</c> array into which the method writes the volume levels for the individual channels. Volume levels are in the range 0.0
+		/// to 1.0.
+		/// </param>
+		/// <remarks>
+		/// Clients can call the IChannelAudioVolume::SetAllVolumes or IChannelAudioVolume::SetChannelVolume method to set the per-channel
+		/// volume levels in an audio session.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-getallvolumes HRESULT
+		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
+		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
+
 		/// <summary>The <c>GetChannelCount</c> method retrieves the number of channels in the stream format for the audio session.</summary>
 		/// <returns>A <c>UINT32</c> variable into which the method writes the channel count.</returns>
 		/// <remarks>
@@ -4644,28 +4668,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-getchannelcount HRESULT
 		// GetChannelCount( UINT32 *pdwCount );
 		uint GetChannelCount();
-
-		/// <summary>The <c>SetChannelVolume</c> method sets the volume level for the specified channel in the audio session.</summary>
-		/// <param name="dwIndex">
-		/// The channel number. If the stream format for the audio session has N channels, the channels are numbered from 0 to N– 1. To get
-		/// the number of channels, call the IChannelAudioVolume::GetChannelCount method.
-		/// </param>
-		/// <param name="fLevel">The volume level for the channel. Valid volume levels are in the range 0.0 to 1.0.</param>
-		/// <param name="EventContext">
-		/// Pointer to the event-context GUID. If a call to this method generates a channel-volume-change event, the session manager sends
-		/// notifications to all clients that have registered IAudioSessionEvents interfaces with the session manager. The session manager
-		/// includes the EventContext pointer value with each notification. Upon receiving a notification, a client can determine whether it
-		/// or another client is the source of the event by inspecting the EventContext value. This scheme depends on the client selecting a
-		/// value for this parameter that is unique among all clients in the session. If the caller supplies a <c>NULL</c> pointer for this
-		/// parameter, the client's notification method receives a <c>NULL</c> context pointer.
-		/// </param>
-		/// <remarks>
-		/// This method, if it succeeds, generates a channel-volume-change event regardless of whether the new channel volume level differs
-		/// in value from the previous channel volume level.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-setchannelvolume HRESULT
-		// SetChannelVolume( UINT32 dwIndex, const float fLevel, LPCGUID EventContext );
-		void SetChannelVolume([In] uint dwIndex, [In] float fLevel, in Guid EventContext);
 
 		/// <summary>The <c>GetChannelVolume</c> method retrieves the volume level for the specified channel in the audio session.</summary>
 		/// <param name="dwIndex">
@@ -4711,23 +4713,27 @@ public static partial class CoreAudio
 		// SetAllVolumes( UINT32 dwCount, const float *pfVolumes, LPCGUID EventContext );
 		void SetAllVolumes([In] uint dwCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes, in Guid EventContext);
 
-		/// <summary>The <c>GetAllVolumes</c> method retrieves the volume levels for all the channels in the audio session.</summary>
-		/// <param name="dwCount">
-		/// The number of elements in the pfVolumes array. The dwCount parameter must equal the number of channels in the stream format for
-		/// the audio session. To get the number of channels, call the IChannelAudioVolume::GetChannelCount method.
+		/// <summary>The <c>SetChannelVolume</c> method sets the volume level for the specified channel in the audio session.</summary>
+		/// <param name="dwIndex">
+		/// The channel number. If the stream format for the audio session has N channels, the channels are numbered from 0 to N– 1. To get
+		/// the number of channels, call the IChannelAudioVolume::GetChannelCount method.
 		/// </param>
-		/// <param name="pfVolumes">
-		/// Pointer to an array of volume levels for the channels in the audio session. This parameter points to a caller-allocated
-		/// <c>float</c> array into which the method writes the volume levels for the individual channels. Volume levels are in the range 0.0
-		/// to 1.0.
+		/// <param name="fLevel">The volume level for the channel. Valid volume levels are in the range 0.0 to 1.0.</param>
+		/// <param name="EventContext">
+		/// Pointer to the event-context GUID. If a call to this method generates a channel-volume-change event, the session manager sends
+		/// notifications to all clients that have registered IAudioSessionEvents interfaces with the session manager. The session manager
+		/// includes the EventContext pointer value with each notification. Upon receiving a notification, a client can determine whether it
+		/// or another client is the source of the event by inspecting the EventContext value. This scheme depends on the client selecting a
+		/// value for this parameter that is unique among all clients in the session. If the caller supplies a <c>NULL</c> pointer for this
+		/// parameter, the client's notification method receives a <c>NULL</c> context pointer.
 		/// </param>
 		/// <remarks>
-		/// Clients can call the IChannelAudioVolume::SetAllVolumes or IChannelAudioVolume::SetChannelVolume method to set the per-channel
-		/// volume levels in an audio session.
+		/// This method, if it succeeds, generates a channel-volume-change event regardless of whether the new channel volume level differs
+		/// in value from the previous channel volume level.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-getallvolumes HRESULT
-		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
-		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-setchannelvolume HRESULT
+		// SetChannelVolume( UINT32 dwIndex, const float fLevel, LPCGUID EventContext );
+		void SetChannelVolume([In] uint dwIndex, [In] float fLevel, in Guid EventContext);
 	}
 
 	/// <summary>
@@ -4787,6 +4793,28 @@ public static partial class CoreAudio
 	[ComImport, Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface ISimpleAudioVolume
 	{
+		/// <summary>The <c>GetMasterVolume</c> method retrieves the client volume level for the audio session.</summary>
+		/// <returns>
+		/// A <c>float</c> variable into which the method writes the client volume level. The volume level is a value in the range 0.0 to 1.0.
+		/// </returns>
+		/// <remarks>
+		/// This method retrieves the client volume level for the session. This is the volume level that the client set in a previous call to
+		/// the ISimpleAudioVolume::SetMasterVolume method.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-getmastervolume HRESULT
+		// GetMasterVolume( float *pfLevel );
+		float GetMasterVolume();
+
+		/// <summary>The <c>GetMute</c> method retrieves the current muting state for the audio session.</summary>
+		/// <returns>
+		/// A <c>BOOL</c> variable into which the method writes the muting state. <c>TRUE</c> indicates that muting is enabled. <c>FALSE</c>
+		/// indicates that it is disabled.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-getmute HRESULT GetMute( BOOL
+		// *pbMute );
+		[return: MarshalAs(UnmanagedType.Bool)]
+		bool GetMute();
+
 		/// <summary>The <c>SetMasterVolume</c> method sets the master volume level for the audio session.</summary>
 		/// <param name="fLevel">The new master volume level. Valid volume levels are in the range 0.0 to 1.0.</param>
 		/// <param name="EventContext">
@@ -4804,18 +4832,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-setmastervolume HRESULT
 		// SetMasterVolume( float fLevel, LPCGUID EventContext );
 		void SetMasterVolume([In] float fLevel, in Guid EventContext);
-
-		/// <summary>The <c>GetMasterVolume</c> method retrieves the client volume level for the audio session.</summary>
-		/// <returns>
-		/// A <c>float</c> variable into which the method writes the client volume level. The volume level is a value in the range 0.0 to 1.0.
-		/// </returns>
-		/// <remarks>
-		/// This method retrieves the client volume level for the session. This is the volume level that the client set in a previous call to
-		/// the ISimpleAudioVolume::SetMasterVolume method.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-getmastervolume HRESULT
-		// GetMasterVolume( float *pfLevel );
-		float GetMasterVolume();
 
 		/// <summary>The <c>SetMute</c> method sets the muting state for the audio session.</summary>
 		/// <param name="bMute">The new muting state. <c>TRUE</c> enables muting. <c>FALSE</c> disables muting.</param>
@@ -4843,16 +4859,6 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-setmute HRESULT SetMute( const
 		// BOOL bMute, LPCGUID EventContext );
 		void SetMute([In][MarshalAs(UnmanagedType.Bool)] bool bMute, in Guid EventContext);
-
-		/// <summary>The <c>GetMute</c> method retrieves the current muting state for the audio session.</summary>
-		/// <returns>
-		/// A <c>BOOL</c> variable into which the method writes the muting state. <c>TRUE</c> indicates that muting is enabled. <c>FALSE</c>
-		/// indicates that it is disabled.
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-isimpleaudiovolume-getmute HRESULT GetMute( BOOL
-		// *pbMute );
-		[return: MarshalAs(UnmanagedType.Bool)]
-		bool GetMute();
 	}
 
 	/// <summary>Gets the current list of audio effects for the associated audio stream.</summary>
@@ -6101,14 +6107,11 @@ public static partial class CoreAudio
 	[StructLayout(LayoutKind.Sequential)]
 	public struct AMBISONICS_PARAMS
 	{
-		/// <summary>Undocumented</summary>
-		public uint u32Size = (uint)Marshal.SizeOf(typeof(AMBISONICS_PARAMS));
-
-		/// <summary>Undocumented</summary>
-		public uint u32Version = AMBISONICS_PARAM_VERSION_1;
-
-		/// <summary>Undocumented</summary>
-		public AMBISONICS_TYPE u32Type;
+		/// <summary>
+		/// A sequence of 32-bit unsigned integers that maps audio channels in a given audio track to ambisonic components, given the defined
+		/// ambisonics_channel_ordering. The sequence of channel_map values should match the channel sequence within the given audio track.
+		/// </summary>
+		public IntPtr pu32ChannelMap;
 
 		/// <summary>Undocumented</summary>
 		public AMBISONICS_CHANNEL_ORDERING u32ChannelOrdering;
@@ -6117,16 +6120,19 @@ public static partial class CoreAudio
 		public AMBISONICS_NORMALIZATION u32Normalization;
 
 		/// <summary>Undocumented</summary>
+		public uint u32NumChannels;
+
+		/// <summary>Undocumented</summary>
 		public uint u32Order;
 
 		/// <summary>Undocumented</summary>
-		public uint u32NumChannels;
+		public uint u32Size = (uint)Marshal.SizeOf(typeof(AMBISONICS_PARAMS));
 
-		/// <summary>
-		/// A sequence of 32-bit unsigned integers that maps audio channels in a given audio track to ambisonic components, given the defined
-		/// ambisonics_channel_ordering. The sequence of channel_map values should match the channel sequence within the given audio track.
-		/// </summary>
-		public IntPtr pu32ChannelMap;
+		/// <summary>Undocumented</summary>
+		public AMBISONICS_TYPE u32Type;
+
+		/// <summary>Undocumented</summary>
+		public uint u32Version = AMBISONICS_PARAM_VERSION_1;
 
 		/// <summary>Initializes a new instance of the <see cref="AMBISONICS_PARAMS"/> struct.</summary>
 		public AMBISONICS_PARAMS()
@@ -6141,12 +6147,12 @@ public static partial class CoreAudio
 	[StructLayout(LayoutKind.Sequential)]
 	public struct AUDIO_EFFECT
 	{
-		/// <summary>The GUID identifier for an audio effect. Audio effect GUIDs are defined in ksmedia.h.</summary>
-		public Guid id;
-
 		/// <summary>A boolean value specifying whether the effect state can be modified.</summary>
 		[MarshalAs(UnmanagedType.Bool)]
 		public bool canSetState;
+
+		/// <summary>The GUID identifier for an audio effect. Audio effect GUIDs are defined in ksmedia.h.</summary>
+		public Guid id;
 
 		/// <summary>A member of the AUDIO_EFFECT_STATE enumeration specifying the state of the audio effect.</summary>
 		public AUDIO_EFFECT_STATE state;
@@ -6166,12 +6172,12 @@ public static partial class CoreAudio
 	[StructLayout(LayoutKind.Sequential)]
 	public struct AudioClientProperties
 	{
-		/// <summary>The size of the <c>AudioClientProperties</c> structure, in bytes.</summary>
-		public uint cbSize;
-
 		/// <summary>Boolean value to indicate whether or not the audio stream is hardware-offloaded.</summary>
 		[MarshalAs(UnmanagedType.Bool)]
 		public bool bIsOffload;
+
+		/// <summary>The size of the <c>AudioClientProperties</c> structure, in bytes.</summary>
+		public uint cbSize;
 
 		/// <summary>An enumeration that is used to specify the category of the audio stream.</summary>
 		public AUDIO_STREAM_CATEGORY eCategory;

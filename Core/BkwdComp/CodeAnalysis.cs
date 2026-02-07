@@ -1,6 +1,6 @@
 ﻿namespace System.Diagnostics.CodeAnalysis;
 
-#if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER
+#if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER && !NETSTANDARD2_1_OR_GREATER
 /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
 /// <remarks>
 /// To override a method that has a parameter annotated with this attribute, use the <c>?</c> operator. For example: <c>override
@@ -26,7 +26,7 @@ public sealed class DisallowNullAttribute : Attribute
 }
 
 /// <summary>Specifies that an output may be <see langword="null"/> even if the corresponding type disallows it.</summary>
-/// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
+ /// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
 public sealed class MaybeNullAttribute : Attribute
 {
 	/// <summary>Initializes a new instance of the <see cref="MaybeNullAttribute" /> class.</summary>
@@ -256,6 +256,21 @@ public sealed class DynamicDependencyAttribute : Attribute
 	public string? TypeName { get; }
 }
 
+/// <summary>Indicates that certain members on a specified System.Type are accessed dynamically, for example, through System.Reflection.</summary>
+/// <remarks>Initializes a new instance of the <see cref="DynamicallyAccessedMembersAttribute"/> class with the specified member types.</remarks>
+/// <param name="memberTypes">
+/// The types of members that are dynamically accessed. This value specifies the kinds of members that the annotated code is expected to
+/// access dynamically at runtime.
+/// </param>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter, Inherited = false)]
+public sealed class DynamicallyAccessedMembersAttribute(DynamicallyAccessedMemberTypes memberTypes) : Attribute
+{
+	/// <summary>
+	/// Gets the System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes that specifies the type of dynamically accessed members.
+	/// </summary>
+	public DynamicallyAccessedMemberTypes MemberTypes { get; } = memberTypes;
+}
+
 /// <summary>
 /// Specifies that the method or property will ensure that the listed field and property members have values that aren't <see langword="null"/>.
 /// </summary>
@@ -272,5 +287,56 @@ public sealed class MemberNotNullAttribute : Attribute
 
 	/// <summary>Gets field or property member names.</summary>
 	public string[] Members { get; }
+}
+#endif
+
+#if !NET7_0_OR_GREATER
+/// <summary>Specifies the syntax used in a string.</summary>
+/// <param name="syntax">The syntax identifier.</param>
+/// <param name="arguments">Optional arguments associated with the specific syntax employed.</param>
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+public sealed class StringSyntaxAttribute(string syntax, params object?[] arguments) : Attribute
+{
+	/// <summary>Gets the identifier of the syntax used.</summary>
+	public string Syntax { get; } = syntax;
+
+	/// <summary>Optional arguments associated with the specific syntax employed.</summary>
+	public object?[] Arguments { get; } = arguments;
+
+	/// <summary>The syntax identifier for strings containing composite formats for string formatting.</summary>
+	public const string CompositeFormat = nameof(CompositeFormat);
+
+	/// <summary>The syntax identifier for strings containing date format specifiers.</summary>
+	public const string DateOnlyFormat = nameof(DateOnlyFormat);
+
+	/// <summary>The syntax identifier for strings containing date and time format specifiers.</summary>
+	public const string DateTimeFormat = nameof(DateTimeFormat);
+
+	/// <summary>The syntax identifier for strings containing <see cref="Enum"/> format specifiers.</summary>
+	public const string EnumFormat = nameof(EnumFormat);
+
+	/// <summary>The syntax identifier for strings containing <see cref="Guid"/> format specifiers.</summary>
+	public const string GuidFormat = nameof(GuidFormat);
+
+	/// <summary>The syntax identifier for strings containing JavaScript Object Notation (JSON).</summary>
+	public const string Json = nameof(Json);
+
+	/// <summary>The syntax identifier for strings containing numeric format specifiers.</summary>
+	public const string NumericFormat = nameof(NumericFormat);
+
+	/// <summary>The syntax identifier for strings containing regular expressions.</summary>
+	public const string Regex = nameof(Regex);
+
+	/// <summary>The syntax identifier for strings containing time format specifiers.</summary>
+	public const string TimeOnlyFormat = nameof(TimeOnlyFormat);
+
+	/// <summary>The syntax identifier for strings containing <see cref="TimeSpan"/> format specifiers.</summary>
+	public const string TimeSpanFormat = nameof(TimeSpanFormat);
+
+	/// <summary>The syntax identifier for strings containing URIs.</summary>
+	public const string Uri = nameof(Uri);
+
+	/// <summary>The syntax identifier for strings containing XML.</summary>
+	public const string Xml = nameof(Xml);
 }
 #endif

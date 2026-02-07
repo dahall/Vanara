@@ -1295,7 +1295,7 @@ public static partial class HttpApi
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_request_auth_info typedef struct _HTTP_REQUEST_AUTH_INFO {
 	// HTTP_AUTH_STATUS AuthStatus; SECURITY_STATUS SecStatus; ULONG Flags; HTTP_REQUEST_AUTH_TYPE AuthType; HANDLE AccessToken; ULONG
 	// ContextAttributes; ULONG PackedContextLength; ULONG PackedContextType; PVOID PackedContext; ULONG MutualAuthDataLength; PCHAR
-	// pMutualAuthData; USHORT PackageNameLength; PWSTR pPackageName; } HTTP_REQUEST_AUTH_INFO, *PHTTP_REQUEST_AUTH_INFO;
+	// pMutualAuthData; USHORT PackageNameLength; StrPtrUni pPackageName; } HTTP_REQUEST_AUTH_INFO, *PHTTP_REQUEST_AUTH_INFO;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_REQUEST_AUTH_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_REQUEST_AUTH_INFO
@@ -2095,6 +2095,21 @@ public static partial class HttpApi
 
 		/// <summary>A pointer to an array of <see cref="HTTP_RESPONSE_INFO"/> structures containing more information about the request.</summary>
 		public IntPtr pResponseInfo;
+
+		/// <summary>Performs an implicit conversion from <see cref="HTTP_RESPONSE_V1"/> to <see cref="HTTP_RESPONSE_V2"/>.</summary>
+		/// <param name="v1">The v1 value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HTTP_RESPONSE_V2(HTTP_RESPONSE_V1 v1) => new HTTP_RESPONSE_V2
+		{
+			Flags = v1.Flags,
+			Version = v1.Version,
+			StatusCode = v1.StatusCode,
+			ReasonLength = v1.ReasonLength,
+			pReason = v1.pReason,
+			Headers = v1.Headers,
+			EntityChunkCount = v1.EntityChunkCount,
+			pEntityChunks = v1.pEntityChunks,
+		};
 	}
 
 	/// <summary>
@@ -2102,7 +2117,7 @@ public static partial class HttpApi
 	/// <para>This structure is contained in the HTTP_SERVER_AUTHENTICATION_INFO structure.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_server_authentication_basic_params typedef struct
-	// _HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS { USHORT RealmLength; PWSTR Realm; } HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS, *PHTTP_SERVER_AUTHENTICATION_BASIC_PARAMS;
+	// _HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS { USHORT RealmLength; StrPtrUni Realm; } HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS, *PHTTP_SERVER_AUTHENTICATION_BASIC_PARAMS;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_SERVER_AUTHENTICATION_BASIC_PARAMS
@@ -2126,7 +2141,7 @@ public static partial class HttpApi
 	/// <para>This structure is contained in the HTTP_SERVER_AUTHENTICATION_INFO structure.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_server_authentication_digest_params typedef struct
-	// _HTTP_SERVER_AUTHENTICATION_DIGEST_PARAMS { USHORT DomainNameLength; PWSTR DomainName; USHORT RealmLength; PWSTR Realm; }
+	// _HTTP_SERVER_AUTHENTICATION_DIGEST_PARAMS { USHORT DomainNameLength; StrPtrUni DomainName; USHORT RealmLength; StrPtrUni Realm; }
 	// HTTP_SERVER_AUTHENTICATION_DIGEST_PARAMS, *PHTTP_SERVER_AUTHENTICATION_DIGEST_PARAMS;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVER_AUTHENTICATION_DIGEST_PARAMS")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2603,8 +2618,8 @@ public static partial class HttpApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_service_config_ssl_param typedef struct
-	// _HTTP_SERVICE_CONFIG_SSL_PARAM { ULONG SslHashLength; PVOID pSslHash; GUID AppId; PWSTR pSslCertStoreName; DWORD DefaultCertCheckMode;
-	// DWORD DefaultRevocationFreshnessTime; DWORD DefaultRevocationUrlRetrievalTimeout; PWSTR pDefaultSslCtlIdentifier; PWSTR
+	// _HTTP_SERVICE_CONFIG_SSL_PARAM { ULONG SslHashLength; PVOID pSslHash; GUID AppId; StrPtrUni pSslCertStoreName; DWORD DefaultCertCheckMode;
+	// DWORD DefaultRevocationFreshnessTime; DWORD DefaultRevocationUrlRetrievalTimeout; StrPtrUni pDefaultSslCtlIdentifier; StrPtrUni
 	// pDefaultSslCtlStoreName; DWORD DefaultFlags; } HTTP_SERVICE_CONFIG_SSL_PARAM, *PHTTP_SERVICE_CONFIG_SSL_PARAM;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVICE_CONFIG_SSL_PARAM")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2829,7 +2844,7 @@ public static partial class HttpApi
 	/// set to <c>HttpServiceConfigSslSniCertInfo</c>.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_service_config_ssl_sni_key typedef struct
-	// _HTTP_SERVICE_CONFIG_SSL_SNI_KEY { SOCKADDR_STORAGE IpPort; PWSTR Host; } HTTP_SERVICE_CONFIG_SSL_SNI_KEY, *PHTTP_SERVICE_CONFIG_SSL_SNI_KEY;
+	// _HTTP_SERVICE_CONFIG_SSL_SNI_KEY { SOCKADDR_STORAGE IpPort; StrPtrUni Host; } HTTP_SERVICE_CONFIG_SSL_SNI_KEY, *PHTTP_SERVICE_CONFIG_SSL_SNI_KEY;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVICE_CONFIG_SSL_SNI_KEY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_SERVICE_CONFIG_SSL_SNI_KEY
@@ -2973,7 +2988,7 @@ public static partial class HttpApi
 	/// reservation store. It is a member of the HTTP_SERVICE_CONFIG_URLACL_SET and HTTP_SERVICE_CONFIG_URLACL_QUERY structures.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_service_config_urlacl_key typedef struct
-	// _HTTP_SERVICE_CONFIG_URLACL_KEY { PWSTR pUrlPrefix; } HTTP_SERVICE_CONFIG_URLACL_KEY, *PHTTP_SERVICE_CONFIG_URLACL_KEY;
+	// _HTTP_SERVICE_CONFIG_URLACL_KEY { StrPtrUni pUrlPrefix; } HTTP_SERVICE_CONFIG_URLACL_KEY, *PHTTP_SERVICE_CONFIG_URLACL_KEY;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVICE_CONFIG_URLACL_KEY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_SERVICE_CONFIG_URLACL_KEY
@@ -2995,7 +3010,7 @@ public static partial class HttpApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/ns-http-http_service_config_urlacl_param typedef struct
-	// _HTTP_SERVICE_CONFIG_URLACL_PARAM { PWSTR pStringSecurityDescriptor; } HTTP_SERVICE_CONFIG_URLACL_PARAM, *PHTTP_SERVICE_CONFIG_URLACL_PARAM;
+	// _HTTP_SERVICE_CONFIG_URLACL_PARAM { StrPtrUni pStringSecurityDescriptor; } HTTP_SERVICE_CONFIG_URLACL_PARAM, *PHTTP_SERVICE_CONFIG_URLACL_PARAM;
 	[PInvokeData("http.h", MSDNShortId = "NS:http._HTTP_SERVICE_CONFIG_URLACL_PARAM")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HTTP_SERVICE_CONFIG_URLACL_PARAM

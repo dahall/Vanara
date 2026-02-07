@@ -55,7 +55,7 @@ public class InitializationFile
 		public string Name { get; }
 
 		/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{TKey, TValue}"/>.</summary>
-		public ICollection<string> Values => GetSection().Select(kv => kv.Value).ToList();
+		public ICollection<string> Values => [.. GetSection().Select(kv => kv.Value)];
 
 		/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
 		bool ICollection<KeyValuePair<string, string>>.IsReadOnly => false;
@@ -91,7 +91,7 @@ public class InitializationFile
 		}
 
 		/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
-		public void Clear() => Win32Error.ThrowLastErrorIfFalse(WritePrivateProfileSection(Name, new string[0], file.FullName));
+		public void Clear() => Win32Error.ThrowLastErrorIfFalse(WritePrivateProfileSection(Name, [], file.FullName));
 
 		/// <summary>Determines whether this instance contains the object.</summary>
 		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
@@ -238,13 +238,11 @@ public class InitializationFile
 
 	/// <summary>Provides a collection of sections within an initialization file.</summary>
 	/// <seealso cref="ICollection{T}"/>
-	public class InitializationFileSections : ICollection<InitializationFileSection>
+	/// <remarks>Initializes a new instance of the <see cref="InitializationFileSections"/> class.</remarks>
+	/// <param name="privateProfileFile">The private profile file.</param>
+	public class InitializationFileSections(InitializationFile privateProfileFile) : ICollection<InitializationFileSection>
 	{
-		private readonly InitializationFile file;
-
-		/// <summary>Initializes a new instance of the <see cref="InitializationFileSections"/> class.</summary>
-		/// <param name="privateProfileFile">The private profile file.</param>
-		public InitializationFileSections(InitializationFile privateProfileFile) => file = privateProfileFile;
+		private readonly InitializationFile file = privateProfileFile;
 
 		/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 		public int Count => SectionNames.Length;
@@ -270,7 +268,7 @@ public class InitializationFile
 			if (Contains(sectionName))
 				throw new ArgumentException("Duplicate name.", nameof(sectionName));
 			var ret = new InitializationFileSection(file, sectionName);
-			Win32Error.ThrowLastErrorIfFalse(WritePrivateProfileSection(sectionName, new string[0], file.FullName));
+			Win32Error.ThrowLastErrorIfFalse(WritePrivateProfileSection(sectionName, [], file.FullName));
 			return ret;
 		}
 

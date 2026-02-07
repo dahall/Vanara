@@ -26,7 +26,4 @@ CCAB COMPRESSOR_HANDLE COMPRESS_ALLOCATION_ROUTINES DECOMPRESSOR_HANDLE DECRYPT 
   <ItemGroup>
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

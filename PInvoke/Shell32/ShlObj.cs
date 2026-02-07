@@ -1,7 +1,6 @@
 ﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using static Vanara.Extensions.BitHelper;
@@ -3158,7 +3157,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszFilePath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A null-terminated Unicode string that contains a file name used to initialize the File Name edit control. This string corresponds
 	/// to the OPENFILENAME structure's <c>lpstrFile</c> member and is used in exactly the same way.
@@ -3202,7 +3201,7 @@ public static partial class Shell32
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-getfilenamefrombrowse BOOL GetFileNameFromBrowse( HWND hwnd,
-	// PWSTR pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
+	// StrPtrUni pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj.h", MSDNShortId = "1f075051-18c8-4ec2-b010-f983ba2d3303")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3442,7 +3441,7 @@ public static partial class Shell32
 	/// <para>This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszSpec">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated buffer that contains the file or directory name to be cleaned. In the case of a file, include the
 	/// file's extension. Note that because '' is considered an invalid character and will be removed, this buffer cannot contain a path
@@ -3501,7 +3500,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathcleanupspec int PathCleanupSpec( PCWSTR
-	// pszDir, PWSTR pszSpec );
+	// pszDir, StrPtrUni pszSpec );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
 	public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string? pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
@@ -3514,7 +3513,7 @@ public static partial class Shell32
 	/// <para>Retrieves the short path form of a specified input path.</para>
 	/// </summary>
 	/// <param name="pszLongPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated, Unicode string that contains the long path. When the function returns, it contains the equivalent
 	/// short path.
@@ -3523,7 +3522,7 @@ public static partial class Shell32
 	/// <returns>
 	/// <para>This function does not return a value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath void PathGetShortPath( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath void PathGetShortPath( StrPtrUni
 	// pszLongPath );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "f374a575-3fbf-4bed-aa76-76ed81e01d60")]
@@ -3589,7 +3588,7 @@ public static partial class Shell32
 	/// <para>Creates a unique path name from a template.</para>
 	/// </summary>
 	/// <param name="pszUniqueName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A buffer that receives a null-terminated Unicode string that contains the unique path name. It should be at least MAX_PATH
 	/// characters in length.
@@ -3633,7 +3632,7 @@ public static partial class Shell32
 	/// names such as "My New Filename (1)", "My New Filename (2)", and so on.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( StrPtrUni
 	// pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
@@ -3648,7 +3647,7 @@ public static partial class Shell32
 	/// <para>Converts a relative or unqualified path name to a fully qualified path name.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A null-terminated Unicode string that contains the path to resolve. When the function returns, the string contains the
 	/// corresponding fully qualified path. This buffer should be at least MAX_PATH characters long.
@@ -3689,18 +3688,18 @@ public static partial class Shell32
 	/// </para>
 	/// <para>If <c>PathResolve</c> cannot resolve the path specified in , it calls PathFindOnPath using and as the parameters.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve int PathResolve( PWSTR pszPath,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve int PathResolve( StrPtrUni pszPath,
 	// PZPCWSTR dirs, UINT fFlags );
 	[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathResolve(StringBuilder pszPath, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? dirs, PRF fFlags);
+	public static extern bool PathResolve(StringBuilder pszPath, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? dirs, PRF fFlags);
 
 	/// <summary>
 	/// <para>Creates a unique filename based on an existing filename.</para>
 	/// </summary>
 	/// <param name="pszUniqueName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A string buffer that receives a null-terminated Unicode string that contains the fully qualified path of the unique file name.
 	/// This buffer should be at least MAX_PATH characters long to avoid causing a buffer overrun.
@@ -3735,7 +3734,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathyetanothermakeuniquename BOOL
-	// PathYetAnotherMakeUniqueName( PWSTR pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
+	// PathYetAnotherMakeUniqueName( StrPtrUni pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1f76ecfa-6f2f-4dde-b05e-4252c92660d9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3756,7 +3755,7 @@ public static partial class Shell32
 	/// <para>The handle of the parent window. This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszIconPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a string that contains the null-terminated, fully qualified path of the default resource that contains the icons. If
 	/// the user chooses a different resource in the dialog, this buffer contains the path of that file when the function returns. This
@@ -3779,7 +3778,7 @@ public static partial class Shell32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <see langword="true"/> if successful; otherwise, <see langword="false"/>.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, StrPtrUni
 	// pszIconPath, UINT cchIconPath, int *piIconIndex );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
@@ -4272,7 +4271,7 @@ public static partial class Shell32
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
@@ -4301,7 +4300,7 @@ public static partial class Shell32
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
 	public static TIntf? SHBindToFolderIDListParent<TIntf>(IShellFolder? psfRoot = null, PIDL? pidl = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToFolderIDListParent(psfRoot, pidl ?? PIDL.Null, g, out o, out _));
+		IidGetObj<TIntf>((in g, out o) => SHBindToFolderIDListParent(psfRoot, pidl ?? PIDL.Null, g, out o, out _));
 
 	/// <summary>
 	/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
@@ -4352,7 +4351,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
 	public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder? psfRoot, PIDL pidl, [Optional] IBindCtx? ppbc, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</summary>
 	/// <typeparam name="TIntf">
@@ -4383,7 +4382,7 @@ public static partial class Shell32
 	// PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
 	public static TIntf? SHBindToFolderIDListParentEx<TIntf>(IShellFolder? psfRoot = null, PIDL? pidl = null, IBindCtx? ppbc = null) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToFolderIDListParentEx(psfRoot, pidl ?? PIDL.Null, ppbc, g, out o, out var _));
+		IidGetObj<TIntf>((in g, out o) => SHBindToFolderIDListParentEx(psfRoot, pidl ?? PIDL.Null, ppbc, g, out o, out var _));
 
 	/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 	/// <param name="psf">
@@ -4427,7 +4426,7 @@ public static partial class Shell32
 	// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
-	public static extern HRESULT SHBindToObject(IShellFolder? psf, PIDL pidl, IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT SHBindToObject(IShellFolder? psf, PIDL pidl, IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 	/// <typeparam name="TIntf">Type of the interface to return.</typeparam>
@@ -4461,7 +4460,7 @@ public static partial class Shell32
 	// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
 	public static TIntf? SHBindToObject<TIntf>(IShellFolder? psf, PIDL? pidl, IBindCtx? pbc) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToObject(psf, pidl ?? PIDL.Null, pbc, g, out o));
+		IidGetObj<TIntf>((in g, out o) => SHBindToObject(psf, pidl ?? PIDL.Null, pbc, g, out o));
 
 	/// <summary>
 	/// <para>
@@ -4499,7 +4498,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
@@ -4514,7 +4513,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
 	public static TIntf? SHBindToParent<TIntf>(PIDL pidl) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHBindToParent(pidl, g, out o, out _));
+		IidGetObj<TIntf>((in g, out o) => SHBindToParent(pidl, g, out o, out _));
 
 	/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 	/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
@@ -4819,9 +4818,10 @@ public static partial class Shell32
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [In, Optional] IDataObject? pdtInner,
-		in Guid riid, out IDataObject ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out IDataObject? ppv);
 
 	/// <summary>Creates a data object in a parent folder.</summary>
 	/// <param name="pidlFolder">
@@ -4876,8 +4876,9 @@ public static partial class Shell32
 	// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
-	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject ppv) =>
-		SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl is null ? null : apidl.Select(p => p.DangerousGetHandle()).ToArray(),
+	[SuppressAutoGen]
+	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject? ppv) =>
+		SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl?.Select(p => p.DangerousGetHandle()).ToArray(),
 			pdtInner, typeof(IDataObject).GUID, out ppv);
 
 	/// <summary>
@@ -4913,7 +4914,96 @@ public static partial class Shell32
 	// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
-	public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
+
+	/// <summary>Creates an object that represents the Shell's default context menu implementation.</summary>
+	/// <remarks>
+	/// The returned <see cref="IContextMenu"/> is valid only as long as the associated resources are not disposed. Always dispose the object
+	/// provided in <paramref name="disposables"/> to release native resources and avoid memory leaks. This method simplifies the process of
+	/// creating a shell context menu by handling common parent folder resolution and resource management.
+	/// </remarks>
+	/// <param name="pContainingFolder">
+	/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that contains the
+	/// context menu if no file objects are selected. Can be <see langword="null"/> to infer the folder from the provided item identifiers.
+	/// </param>
+	/// <param name="disposables">
+	/// When this method returns, contains an <see cref="IDisposable"/> instance that manages the lifetime of resources associated with the
+	/// context menu. The caller is responsible for disposing this object when the context menu is no longer needed.
+	/// </param>
+	/// <param name="items">
+	/// An array of IShellItem instances for which to create the context menu. Each entry in the array describes a child item to which the
+	/// context menu applies, for instance, a selected file the user wants to Open.
+	/// </param>
+	/// <returns>An <see cref="IContextMenu"/> instance that provides access to the default context menu for the specified items.</returns>
+	public static IContextMenu SHCreateDefaultContextMenuEx(IShellFolder? pContainingFolder, out IDisposable disposables, params IShellItem[] items)
+	{
+		var pidls = Array.ConvertAll(items, si => { SHGetIDListFromObject(si, out var pidl).ThrowIfFailed(); return pidl!; });
+		var pcm = SHCreateDefaultContextMenuEx(pContainingFolder, out disposables, pidls);
+		(disposables as Vanara.Collections.DisposingList)?.AddRange(pidls);
+		return pcm;
+	}
+
+	/// <summary>Creates an object that represents the Shell's default context menu implementation.</summary>
+	/// <remarks>
+	/// The returned <see cref="IContextMenu"/> is valid only as long as the associated resources are not disposed. Always dispose the object
+	/// provided in <paramref name="disposables"/> to release native resources and avoid memory leaks. This method simplifies the process of
+	/// creating a shell context menu by handling common parent folder resolution and resource management.
+	/// </remarks>
+	/// <param name="pContainingFolder">
+	/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that contains the
+	/// context menu if no file objects are selected. Can be <see langword="null"/> to infer the folder from the provided item identifiers.
+	/// </param>
+	/// <param name="disposables">
+	/// When this method returns, contains an <see cref="IDisposable"/> instance that manages the lifetime of resources associated with the
+	/// context menu. The caller is responsible for disposing this object when the context menu is no longer needed.
+	/// </param>
+	/// <param name="pidls">
+	/// An array of item identifier lists (PIDLs) representing the shell items for which to create the context menu. Each entry in the array
+	/// describes a child item to which the context menu applies, for instance, a selected file the user wants to Open.
+	/// </param>
+	/// <returns>An <see cref="IContextMenu"/> instance that provides access to the default context menu for the specified items.</returns>
+	public static IContextMenu SHCreateDefaultContextMenuEx(IShellFolder? pContainingFolder, out IDisposable disposables, params PIDL[] pidls)
+	{
+		IShellFolder? psf = pContainingFolder;
+		Vanara.Collections.DisposingList dl = [];
+		disposables = dl;
+		if (pidls is null || pidls.Length == 0)
+		{
+			if (psf is null)
+				SHGetDesktopFolder(out psf).ThrowIfFailed();
+			SHGetIDListFromObject(psf, out var pidl).ThrowIfFailed();
+			dl.AddRange(pidls = [pidl]);
+		}
+		else if (pidls.Length == 1)
+		{
+			if (psf is null)
+			{
+				if (pidls[0].IsFolder)
+				{
+					SHBindToParent(pidls[0], out psf, out _).ThrowIfFailed();
+					dl.Add(psf!);
+					pidls = [];
+				}
+				else
+				{
+					using var pfpidl = pidls[0].Parent ?? PIDL.Desktop;
+					dl.Add(psf = SHBindToObject<IShellFolder>(null, pfpidl, null)!);
+				}
+			}
+		}
+		else
+		{
+			if (psf is null)
+			{
+				using var pfpidl = PIDL.FindCommonParent(pidls);
+				dl.Add(psf = SHBindToObject<IShellFolder>(null, pfpidl, null)!);
+			}
+		}
+		SHCreateDefaultContextMenu(new DEFCONTEXTMENU(psf!, pidls!, null, out var mem), out IContextMenu? pcm).ThrowIfFailed();
+		dl.Add(mem); // maybe remove?
+		return pcm!;
+	}
+
 
 	/// <summary>
 	/// <para>
@@ -5104,7 +5194,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
 	public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes,
-		in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -6060,7 +6150,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// When this function returns, this value points to the directory path and appended subpath. This is a <c>null</c>-terminated string
 	/// of length MAX_PATH. This string is empty when the function returns an error code.
@@ -6071,7 +6161,7 @@ public static partial class Shell32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetfolderpathandsubdira HRESULT
-	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
+	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, StrPtrAnsi pszPath );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
 	public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, CSIDL csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
@@ -6173,13 +6263,13 @@ public static partial class Shell32
 	/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-	public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>Retrieves an image list.</summary>
 	/// <param name="iImageList">The image type contained in the list.</param>
 	/// <returns>When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</returns>
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-	public static IImageList SHGetImageList(SHIL iImageList) => IidGetObj<IImageList>((in Guid iid, out object? ppv) => SHGetImageList(iImageList, iid, out ppv))!;
+	public static IImageList SHGetImageList(SHIL iImageList) => IidGetObj<IImageList>((in iid, out ppv) => SHGetImageList(iImageList, iid, out ppv))!;
 
 	/// <summary>
 	/// <para>
@@ -6287,7 +6377,7 @@ public static partial class Shell32
 	/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 	/// <typeparam name="TIntf">The Type of the interface that represents the item, usually IShellItem or IShellItem2.</typeparam>
@@ -6315,7 +6405,7 @@ public static partial class Shell32
 	/// <returns>When this method returns, contains the interface pointer requested.</returns>
 	[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
 	public static TIntf? SHGetKnownFolderItem<TIntf>(KNOWNFOLDERID rfid, KNOWN_FOLDER_FLAG dwFlags = KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, [In] HTOKEN hToken = default) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetKnownFolderItem(rfid.Guid(), dwFlags, hToken, g, out o));
+		IidGetObj<TIntf>((in g, out o) => SHGetKnownFolderItem(rfid.Guid(), dwFlags, hToken, g, out o));
 
 	/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 	/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
@@ -6385,7 +6475,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// When this function is called it is passed a null-terminated, Unicode buffer to receive the file system path. This buffer is of
 	/// size .
@@ -6420,7 +6510,7 @@ public static partial class Shell32
 	/// <para>If the parameter specifies a shortcut, the contains the path to the shortcut, not to the shortcut's target.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetpathfromidlistex BOOL SHGetPathFromIDListEx(
-	// PCIDLIST_ABSOLUTE pidl, PWSTR pszPath, DWORD cchPath, GPFIDL_FLAGS uOpts );
+	// PCIDLIST_ABSOLUTE pidl, StrPtrUni pszPath, DWORD cchPath, GPFIDL_FLAGS uOpts );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "80270c59-275d-4b13-b16c-0c07bb79ed8e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7011,7 +7101,7 @@ public static partial class Shell32
 	// IPropertyStorage **ppstg, UINT *puCodePage );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "fd99e04e-ef96-4357-9226-da6604fb0e84")]
-	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, CreationOption dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 	/// <summary>Ensures proper handling of code page retrieval or assignment for the requested property set operation.</summary>
 	/// <param name="psstg">
@@ -7072,7 +7162,7 @@ public static partial class Shell32
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHPropStgCreate")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, [Optional] GuidPtr pclsid, PROPSETFLAG grfFlags,
-		STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+		STGM grfMode, CreationOption dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 	/// <summary>
 	/// <para>
@@ -7465,7 +7555,7 @@ public static partial class Shell32
 	/// <para>Handle of the parent window, used to display UI. If this is not needed, this value can be set to <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszFile">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated Unicode string that specifies the UNC path to validate. Note: This string must not be a constant string.
 	/// </para>
@@ -7491,7 +7581,7 @@ public static partial class Shell32
 	/// <para>Returns <c>TRUE</c> if the UNC path exists; <c>FALSE</c> if the UNC path does not exist or if some other failure occurred.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shvalidateunc BOOL SHValidateUNC( HWND hwndOwner,
-	// PWSTR pszFile, UINT fConnect );
+	// StrPtrUni pszFile, UINT fConnect );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "42394650-5571-4165-84f1-19a26fb4a1b8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7559,7 +7649,8 @@ public static partial class Shell32
 	// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
-	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode,
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Creates a unique name for a stream or storage object from a template.</summary>
 	/// <typeparam name="TIntf">The type of the interface to retrieve through, typically IStorage or IStream.</typeparam>
@@ -7583,7 +7674,7 @@ public static partial class Shell32
 	// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
 	public static TIntf? StgMakeUniqueName<TIntf>(IStorage pstgParent, string pszFileSpec, STGM grfMode) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => StgMakeUniqueName(pstgParent, pszFileSpec, grfMode, g, out o));
+		IidGetObj<TIntf>((in g, out o) => StgMakeUniqueName(pstgParent, pszFileSpec, grfMode, g, out o));
 
 	/// <summary>
 	/// <para>
@@ -7818,6 +7909,7 @@ public static partial class Shell32
 		/// <summary>
 		/// A pointer to the IContextMenuCB interface supported by the callback object. This value is optional and can be NULL.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public IContextMenuCB? pcmcb;
 
 		/// <summary>
@@ -7830,14 +7922,15 @@ public static partial class Shell32
 		/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that
 		/// contains the context menu if no file objects are selected.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public IShellFolder psf;
 
 		/// <summary>The count of items in member apidl.</summary>
 		public uint cidl;
 
 		/// <summary>
-		/// A pointer to a constant array of ITEMIDLIST structures. Each entry in the array describes a child item to which the context
-		/// menu applies, for instance, a selected file the user wants to Open.
+		/// A pointer to a constant array of ITEMIDLIST structure pointers. Each entry in the array describes a child item to which the
+		/// context menu applies, for instance, a selected file the user wants to Open.
 		/// </summary>
 		public IntPtr apidl;
 
@@ -7848,6 +7941,7 @@ public static partial class Shell32
 		/// IShellFolder::GetUIObjectOf returns E_NOTIMPL, a default implementation is provided based on the SFGAO_FOLDER and
 		/// SFGAO_FILESYSTEM attributes returned from IShellFolder::GetAttributesOf.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public IQueryAssociations? punkAssociationInfo;
 
 		/// <summary>
@@ -7863,8 +7957,46 @@ public static partial class Shell32
 		/// NULL. If the value is NULL, the extensions are loaded based on the object that supports interface IQueryAssociations as
 		/// specified in punkAssociationInfo.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		public HKEY[]? aKeys;
+		[SizeDef(nameof(cKeys))]
+		public ArrayPointer<HKEY> aKeys;
+
+		/// <summary>Initializes a new instance of the DEFCONTEXTMENU class for the specified shell folder and child item identifiers.</summary>
+		/// <param name="pShellFolder">The IShellFolder instance representing the parent shell folder containing the child items.</param>
+		/// <param name="childIds">
+		/// An array of PIDL objects that identify the child items within the specified shell folder. The array must not be null or empty.
+		/// </param>
+		/// <param name="extKeys">The registry keys from which to load extensions. This parameter is optional and can be <see langword="null"/>.</param>
+		/// <param name="mem">
+		/// When this method returns, contains a SafeAllocatedMemoryHandle representing the allocated memory for the item identifier list.
+		/// This parameter is passed uninitialized.
+		/// </param>
+		/// <exception cref="ArgumentNullException">Thrown if pShellFolder is null, or if childIds is null or empty.</exception>
+		public DEFCONTEXTMENU(IShellFolder pShellFolder, PIDL[] childIds, HKEY[]? extKeys, out SafeAllocatedMemoryHandle mem)
+		{
+			psf = pShellFolder ?? throw new ArgumentNullException(nameof(pShellFolder));
+
+			if (childIds is null || childIds.Length == 0)
+				throw new ArgumentNullException(nameof(childIds));
+			cidl = (uint)childIds.Length;
+			SHGetIDListFromObject(pShellFolder, out var fpidl).ThrowIfFailed();
+			pidlFolder = (IntPtr)fpidl;
+			SafeNativeArray<IntPtr> arpidls = new(childIds.Length);
+			for (int i = 0; i < arpidls.Count; i++)
+			{
+				var ap = childIds[i].GetRelativeTo(fpidl);
+				arpidls.AddSubReference([ap]);
+				arpidls[i] = (IntPtr)ap;
+			}
+			apidl = mem = arpidls;
+			mem.AddSubReference([fpidl]);
+
+			if (extKeys != null && extKeys.Length > 0)
+			{
+				if (extKeys.Length > 16)
+					throw new ArgumentOutOfRangeException(nameof(extKeys), "The maximum number of keys is 16.");
+				mem.AddSubReference(aKeys.DestructiveAssign(extKeys));
+			}
+		}
 	}
 
 	/// <summary>Holds an extra data block used by IShellLinkDataList. It holds the link's Windows Installer ID.</summary>
@@ -8037,12 +8169,14 @@ public static partial class Shell32
 		/// <para>Type: <c>LPCWSTR</c></para>
 		/// <para>A pointer to the file name.</para>
 		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pcszFile;
 
 		/// <summary>
 		/// <para>Type: <c>LPCWSTR</c></para>
 		/// <para>A pointer to the file type description. Set this parameter to <c>NULL</c> to use the file name extension of <c>pcszFile</c>.</para>
 		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? pcszClass;
 
 		/// <summary>
@@ -8215,24 +8349,27 @@ public static partial class Shell32
 	/// <summary>This structure is used with the SHCreateShellFolderView function.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	[PInvokeData("Shlobj.h")]
-	public struct SFV_CREATE
+	public struct SFV_CREATE(IShellFolder shf)
 	{
 		/// <summary>The size of the SFV_CREATE structure, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<SFV_CREATE>();
 
 		/// <summary>The IShellFolder interface of the folder for which to create the view.</summary>
-		public IShellFolder pshf;
+		[MarshalAs(UnmanagedType.Interface)]
+		public IShellFolder pshf = shf;
 
 		/// <summary>
 		/// A pointer to the parent IShellView interface. This parameter may be NULL. This parameter is used only when the view created
 		/// by SHCreateShellFolderView is hosted in a common dialog box.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public IShellView? psvOuter;
 
 		/// <summary>
 		/// A pointer to the IShellFolderViewCB interface that handles the view's callbacks when various events occur. This parameter may
 		/// be NULL.
 		/// </summary>
+		[MarshalAs(UnmanagedType.Interface)]
 		public IShellFolderViewCB? psfvcb;
 	}
 
@@ -8344,17 +8481,20 @@ public static partial class Shell32
 	/// Contains and receives information for change notifications. This structure is used with the SHChangeNotifyRegister function and
 	/// the SFVM_QUERYFSNOTIFY notification.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</remarks>
+	/// <param name="pidl">PIDL for which to receive notifications.</param>
+	/// <param name="recursive">A flag indicating whether to post notifications for children of this PIDL.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/ns-shlobj_core-shchangenotifyentry typedef struct _SHChangeNotifyEntry
 	// { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry; // _SHChangeNotifyEntry { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry;
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NS:shlobj_core._SHChangeNotifyEntry")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct SHChangeNotifyEntry
+	public struct SHChangeNotifyEntry(IntPtr pidl, bool recursive = false)
 	{
 		/// <summary>
 		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
 		/// <para>PIDL for which to receive notifications.</para>
 		/// </summary>
-		public IntPtr pidl;
+		public IntPtr pidl = pidl;
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
@@ -8364,16 +8504,7 @@ public static partial class Shell32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool fRecursive;
-
-		/// <summary>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</summary>
-		/// <param name="pidl">PIDL for which to receive notifications.</param>
-		/// <param name="recursive">A flag indicating whether to post notifications for children of this PIDL.</param>
-		public SHChangeNotifyEntry(IntPtr pidl, bool recursive = false)
-		{
-			this.pidl = pidl;
-			fRecursive = recursive;
-		}
+		public bool fRecursive = recursive;
 
 		/// <summary>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</summary>
 		/// <param name="pidl">PIDL for which to receive notifications.</param>
@@ -8727,18 +8858,18 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-shfoldercustomsettings typedef struct
-	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; LPWSTR pszWebViewTemplate; DWORD cchWebViewTemplate;
-	// LPWSTR pszWebViewTemplateVersion; LPWSTR pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; LPWSTR pszIconFile; DWORD
-	// cchIconFile; int iIconIndex; LPWSTR pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
+	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; StrPtrUni pszWebViewTemplate; DWORD cchWebViewTemplate;
+	// StrPtrUni pszWebViewTemplateVersion; StrPtrUni pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; StrPtrUni pszIconFile; DWORD
+	// cchIconFile; int iIconIndex; StrPtrUni pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
 	[PInvokeData("shlobj_core.h", MSDNShortId = "a6357372-80ef-4719-b53f-87eb3fdc1b0d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct SHFOLDERCUSTOMSETTINGS
+	public struct SHFOLDERCUSTOMSETTINGS(FOLDERCUSTOMSETTINGSMASK mask)
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The size of the structure, in bytes.</para>
 		/// </summary>
-		public uint dwSize;
+		public uint dwSize = (uint)Marshal.SizeOf<SHFOLDERCUSTOMSETTINGS>();
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8763,7 +8894,7 @@ public static partial class Shell32
 		/// <para>FCSM_FLAGS</para>
 		/// <para>Not used.</para>
 		/// </summary>
-		public FOLDERCUSTOMSETTINGSMASK dwMask;
+		public FOLDERCUSTOMSETTINGSMASK dwMask = mask;
 
 		/// <summary>
 		/// <para>Type: <c>SHELLVIEWID*</c></para>
@@ -8772,10 +8903,10 @@ public static partial class Shell32
 		public IntPtr pvid;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated string containing the path to the folder's WebView template.</para>
 		/// </summary>
-		public string pszWebViewTemplate;
+		public StrPtrAuto pszWebViewTemplate;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8788,16 +8919,16 @@ public static partial class Shell32
 		public uint cchWebViewTemplate;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the WebView template version.</para>
 		/// </summary>
-		public string pszWebViewTemplateVersion;
+		public StrPtrAuto pszWebViewTemplateVersion;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the text of the folder's infotip.</para>
 		/// </summary>
-		public string pszInfoTip;
+		public StrPtrAuto pszInfoTip;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8815,7 +8946,7 @@ public static partial class Shell32
 		/// registry under that CLSID entry.
 		/// </para>
 		/// </summary>
-		public IntPtr pclsid;
+		public GuidPtr pclsid;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8824,10 +8955,10 @@ public static partial class Shell32
 		public uint dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the path to file containing the folder's icon.</para>
 		/// </summary>
-		public string pszIconFile;
+		public StrPtrAuto pszIconFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8845,13 +8976,13 @@ public static partial class Shell32
 		public int iIconIndex;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to a null-terminated buffer containing the path to the file containing the folder's logo image. This is the image
 		/// used in thumbnail views.
 		/// </para>
 		/// </summary>
-		public string pszLogo;
+		public StrPtrAuto pszLogo;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8862,14 +8993,4 @@ public static partial class Shell32
 		/// </summary>
 		public uint cchLogo;
 	}
-
-	/*[StructLayout(LayoutKind.Sequential)]
-	[PInvokeData("Shlobj.h", MSDNShortId = "bb773399")]
-	public struct SFV_CREATE
-	{
-		public uint cbSize;
-		[MarshalAs(UnmanagedType.Interface)] public IShellFolder pshf;
-		[MarshalAs(UnmanagedType.Interface)] public IShellView psvOuter;
-		[MarshalAs(UnmanagedType.Interface)] public IShellFolderViewCB psfbcb;
-	}*/
 }

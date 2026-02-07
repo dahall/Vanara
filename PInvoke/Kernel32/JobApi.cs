@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -800,7 +803,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681949")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AssignProcessToJobObject([In] HJOB hJob, [In] HPROCESS hProcess);
+	public static extern bool AssignProcessToJobObject([In, AddAsMember] HJOB hJob, [In] HPROCESS hProcess);
 
 	/// <summary>
 	/// <para>Creates or opens a job object.</para>
@@ -860,6 +863,7 @@ public static partial class Kernel32
 	// LPSECURITY_ATTRIBUTES lpJobAttributes, LPCSTR lpName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "ca6a044f-67ed-4a9c-9aeb-69dd77652854")]
+	[return: AddAsCtor]
 	public static extern SafeHJOB CreateJobObject([In, Optional] SECURITY_ATTRIBUTES? lpJobAttributes, [In, Optional] string? lpName);
 
 	/// <summary>
@@ -896,7 +900,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684127")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsProcessInJob([In] HPROCESS ProcessHandle, [In] HJOB JobHandle, [MarshalAs(UnmanagedType.Bool)] out bool Result);
+	public static extern bool IsProcessInJob([In] HPROCESS ProcessHandle, [In, AddAsMember] HJOB JobHandle, [MarshalAs(UnmanagedType.Bool)] out bool Result);
 
 	/// <summary>Opens an existing job object.</summary>
 	/// <param name="dwDesiredAccess">
@@ -922,6 +926,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenJobObject( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandles, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684312(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684312")]
+	[return: AddAsCtor]
 	public static extern SafeHJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, string lpName);
 
 	/// <summary>Retrieves limit and job state information from the job object.</summary>
@@ -1066,6 +1071,7 @@ public static partial class Kernel32
 		uint cbJobObjectInfoLength, out uint lpReturnLength);
 
 	/// <summary>Retrieves limit and job state information from the job object.</summary>
+	/// <typeparam name="T">The type of the return value.</typeparam>
 	/// <param name="hJob">
 	/// <para>
 	/// A handle to the job whose information is being queried. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this
@@ -1120,23 +1126,6 @@ public static partial class Kernel32
 	/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</term>
 	/// </item>
 	/// <item>
-	/// <term>JobObjectGroupInformation11</term>
-	/// <term>
-	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives the list of processor groups to which the job is currently
-	/// assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this value by to
-	/// determine the number of groups.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>JobObjectGroupInformationEx14</term>
-	/// <term>
-	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives an array of GROUP_AFFINITY structures that indicate the
-	/// affinity of the job in the processor groups to which the job is currently assigned. The variable pointed to by the lpReturnLength
-	/// parameter is set to the size of the group affinity data. Divide this value by to determine the number of groups.Windows 7,
-	/// Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
 	/// <term>JobObjectLimitViolationInformation13</term>
 	/// <term>
 	/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION structure. Windows 7, Windows Server 2008
@@ -1185,12 +1174,71 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.</returns>
-	public static T QueryInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
+	public static T QueryInformationJobObject<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
-		using var mem = SafeHGlobalHandle.CreateFromStructure<T>();
-		Win32Error.ThrowLastErrorIfFalse(QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out _));
-		return mem.ToStructure<T>();
+		using SafeCoTaskMemStruct<T> mem = new();
+		var err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out var sz);
+		if ((typeof(T) == typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST) && sz > sizeof(uint) * 2) || typeof(T) == typeof(JOBOBJECT_SECURITY_LIMIT_INFORMATION))
+		{
+			mem.Size = sz;
+			err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, sz, out _);
+		}
+		Win32Error.ThrowLastErrorIfFalse(err);
+		return mem.Value;
+	}
+
+	/// <summary>Retrieves limit and job state information from the job object.</summary>
+	/// <typeparam name="T">The element type of the return array.</typeparam>
+	/// <param name="hJob">
+	/// <para>
+	/// A handle to the job whose information is being queried. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this
+	/// handle. The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information, see Job Object Security and Access Rights.
+	/// </para>
+	/// <para>
+	/// If this value is NULL and the calling process is associated with a job, the job associated with the calling process is used. If
+	/// the job is nested, the immediate job of the calling process is used.
+	/// </para>
+	/// </param>
+	/// <param name="jobObjectInfoClass">
+	/// <para>The information class for the limits to be queried. This parameter can be one of the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>JobObjectGroupInformation 11</term>
+	/// <term>
+	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives the list of processor groups to which the job is currently
+	/// assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this value by to
+	/// determine the number of groups.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>JobObjectGroupInformationEx 14</term>
+	/// <term>
+	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives an array of GROUP_AFFINITY structures that indicate the
+	/// affinity of the job in the processor groups to which the job is currently assigned. The variable pointed to by the lpReturnLength
+	/// parameter is set to the size of the group affinity data. Divide this value by to determine the number of groups.Windows 7,
+	/// Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <returns>The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.</returns>
+	public static T[] QueryInformationJobObjectArray<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T[]))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
+		using SafeNativeArray<T> mem = new(1);
+		var err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out var sz) ? Win32Error.ERROR_SUCCESS : GetLastError();
+		if (err.Succeeded) return sz == 0 ? [] : mem.ToArray();
+		err.ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+		mem.Size = sz;
+		Win32Error.ThrowLastErrorIfFalse(QueryInformationJobObject(hJob, jobObjectInfoClass, mem, sz, out sz));
+		return mem.DangerousGetHandle().ToArray<T>(sz / Marshal.SizeOf<T>(), 0, sz)!;
 	}
 
 	/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
@@ -1252,7 +1300,7 @@ public static partial class Kernel32
 	/// job. Your code must free the memory for this array by calling the <c>FreeMemoryJobObject</c> function with the address of the array.
 	/// </returns>
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
-	public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject(HJOB hJob, string? VolumeName = null)
+	public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject([In, AddAsMember] HJOB hJob, string? VolumeName = null)
 	{
 		var relId = int.Parse(Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "0")!.ToString()!);
 		if (relId is 0 or >= 1607)
@@ -1500,7 +1548,7 @@ public static partial class Kernel32
 	/// The limits or job state to be set for the job. The format of this data depends on the value of JobObjectInfoClass.
 	/// </param>
 	[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
-	public static void SetInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass, in T jobObjectInfo) where T : struct
+	public static void SetInformationJobObject<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass, in T jobObjectInfo) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
 		using var mem = SafeHGlobalHandle.CreateFromStructure(jobObjectInfo);
@@ -1526,7 +1574,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280128")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetIoRateControlInformationJobObject(HJOB hJob, in JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
+	public static extern bool SetIoRateControlInformationJobObject([In, AddAsMember] HJOB hJob, in JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
 
 	/// <summary>
 	/// Terminates all processes currently associated with the job. If the job is nested, this function terminates all processes
@@ -1554,7 +1602,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686709")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TerminateJobObject([In] HJOB hJob, uint uExitCode);
+	public static extern bool TerminateJobObject([In, AddAsMember] HJOB hJob, uint uExitCode);
 
 	/// <summary>
 	/// Contains I/O accounting information for a process or a job object. For a job object, the counters include all operations
@@ -1693,7 +1741,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains basic limit information for a job object.</summary>
 	// typedef struct _JOBOBJECT_BASIC_LIMIT_INFORMATION { LARGE_INTEGER PerProcessUserTimeLimit; LARGE_INTEGER PerJobUserTimeLimit;
-	// DWORD LimitFlags; SIZE_T MinimumWorkingSetSize; SIZE_T MaximumWorkingSetSize; DWORD ActiveProcessLimit; ULONG_PTR Affinity; DWORD
+	// DWORD LimitFlags; SizeT MinimumWorkingSetSize; SizeT MaximumWorkingSetSize; DWORD ActiveProcessLimit; ULONG_PTR Affinity; DWORD
 	// PriorityClass; DWORD SchedulingClass;} JOBOBJECT_BASIC_LIMIT_INFORMATION, *PJOBOBJECT_BASIC_LIMIT_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684147")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1952,6 +2000,7 @@ public static partial class Kernel32
 	// ProcessIdList[1];} JOBOBJECT_BASIC_PROCESS_ID_LIST, *PJOBOBJECT_BASIC_PROCESS_ID_LIST; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684150(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684150")]
 	[StructLayout(LayoutKind.Sequential)]
+	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<JOBOBJECT_BASIC_PROCESS_ID_LIST>), nameof(NumberOfProcessIdsInList))]
 	public struct JOBOBJECT_BASIC_PROCESS_ID_LIST
 	{
 		/// <summary>The number of process identifiers to be stored in <c>ProcessIdList</c>.</summary>
@@ -1967,7 +2016,8 @@ public static partial class Kernel32
 		/// A variable-length array of process identifiers returned by this call. Array elements 0 through
 		/// <c>NumberOfProcessIdsInList</c> – 1 contain valid process identifiers.
 		/// </summary>
-		public IntPtr ProcessIdList;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+		public UIntPtr[] ProcessIdList;
 	}
 
 	/// <summary>Contains basic user-interface restrictions for a job object.</summary>
@@ -2211,7 +2261,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains basic and extended limit information for a job object.</summary>
 	// typedef struct _JOBOBJECT_EXTENDED_LIMIT_INFORMATION { JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation; IO_COUNTERS
-	// IoInfo; SIZE_T ProcessMemoryLimit; SIZE_T JobMemoryLimit; SIZE_T PeakProcessMemoryUsed; SIZE_T PeakJobMemoryUsed;}
+	// IoInfo; SizeT ProcessMemoryLimit; SizeT JobMemoryLimit; SizeT PeakProcessMemoryUsed; SizeT PeakJobMemoryUsed;}
 	// JOBOBJECT_EXTENDED_LIMIT_INFORMATION, *PJOBOBJECT_EXTENDED_LIMIT_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684156(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684156")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2281,7 +2331,7 @@ public static partial class Kernel32
 	/// Contains information used to control the I/O rate for a job. This structure is used by the
 	/// <c>SetIoRateControlInformationJobObject</c> and <c>QueryIoRateControlInformationJobObject</c> functions.
 	/// </summary>
-	// typedef struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION { LONG64 MaxIops; LONG64 MaxBandwith; LONG64 ReservationIops; PWSTR
+	// typedef struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION { LONG64 MaxIops; LONG64 MaxBandwith; LONG64 ReservationIops; StrPtrUni
 	// VolumeName; ULONG BaseIoSize; ULONG ControlFlags;} JOBOBJECT_IO_RATE_CONTROL_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/mt280122(v=vs.85).aspx
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280122")]

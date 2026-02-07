@@ -31,10 +31,11 @@ public static partial class Kernel32
 	/// <para>The following sample established a named object so that it is accessible from a Windows Store app.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/securityappcontainer/nf-securityappcontainer-getappcontainernamedobjectpath
-	// BOOL GetAppContainerNamedObjectPath( HANDLE Token, PSID AppContainerSid, ULONG ObjectPathLength, LPWSTR ObjectPath, PULONG
+	// BOOL GetAppContainerNamedObjectPath( HANDLE Token, PSID AppContainerSid, ULONG ObjectPathLength, StrPtrUni ObjectPath, PULONG
 	// ReturnLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securityappcontainer.h", MSDNShortId = "466CE2DA-332E-4AA7-A0EB-868A646C0979")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAppContainerNamedObjectPath([Optional] HTOKEN Token, [Optional] PSID AppContainerSid, uint ObjectPathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder ObjectPath, out uint ReturnLength);
+	public static extern bool GetAppContainerNamedObjectPath([Optional] HTOKEN Token, [Optional] PSID AppContainerSid, uint ObjectPathLength,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(ObjectPathLength), SizingMethod.Query, OutVarName = nameof(ReturnLength))] StringBuilder? ObjectPath, out uint ReturnLength);
 }

@@ -659,7 +659,7 @@ public static partial class AdvApi32
 	/// <para><c>TRUE</c> if the function succeeds; otherwise, <c>FALSE</c>.</para>
 	/// <para>For extended error information, call the GetLastError function.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credisprotecteda BOOL CredIsProtectedA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credisprotecteda BOOL CredIsProtectedA( StrPtrAnsi
 	// pszProtectedCredentials, CRED_PROTECTION_TYPE *pProtectionType );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincred.h", MSDNShortId = "3c38ecf5-1288-4a50-ad17-595e9ff4aaca")]
@@ -706,7 +706,7 @@ public static partial class AdvApi32
 	/// <para>CredType is not valid.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credmarshalcredentiala BOOL CredMarshalCredentialA(
-	// CRED_MARSHAL_TYPE CredType, PVOID Credential, LPSTR *MarshaledCredential );
+	// CRED_MARSHAL_TYPE CredType, PVOID Credential, StrPtrAnsi *MarshaledCredential );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincred.h", MSDNShortId = "20a1d54b-04a7-4b0a-88e4-1970d1f71502")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -805,8 +805,8 @@ public static partial class AdvApi32
 	/// CredUnprotect function is not updated and may produce incorrect results.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credprotecta BOOL CredProtectA( BOOL fAsSelf, LPSTR
-	// pszCredentials, DWORD cchCredentials, LPSTR pszProtectedCredentials, DWORD *pcchMaxChars, CRED_PROTECTION_TYPE *ProtectionType );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credprotecta BOOL CredProtectA( BOOL fAsSelf, StrPtrAnsi
+	// pszCredentials, DWORD cchCredentials, StrPtrAnsi pszProtectedCredentials, DWORD *pcchMaxChars, CRED_PROTECTION_TYPE *ProtectionType );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincred.h", MSDNShortId = "1e299dfb-2ffe-463c-9e2c-b7774a2216e3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1166,8 +1166,8 @@ public static partial class AdvApi32
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credunprotecta BOOL CredUnprotectA( BOOL fAsSelf, LPSTR
-	// pszProtectedCredentials, DWORD cchProtectedCredentials, LPSTR pszCredentials, DWORD *pcchMaxChars );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-credunprotecta BOOL CredUnprotectA( BOOL fAsSelf, StrPtrAnsi
+	// pszProtectedCredentials, DWORD cchProtectedCredentials, StrPtrAnsi pszCredentials, DWORD *pcchMaxChars );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincred.h", MSDNShortId = "7a22fb2b-edfc-45f2-b2d2-729f3761584d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1770,8 +1770,8 @@ public static partial class AdvApi32
 	/// <para>The <c>CREDENTIAL_TARGET_INFORMATION</c> structure contains the target computer's name, domain, and tree.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/ns-wincred-_credential_target_informationa typedef struct
-	// _CREDENTIAL_TARGET_INFORMATIONA { LPSTR TargetName; LPSTR NetbiosServerName; LPSTR DnsServerName; LPSTR NetbiosDomainName; LPSTR
-	// DnsDomainName; LPSTR DnsTreeName; LPSTR PackageName; ULONG Flags; DWORD CredTypeCount; LPDWORD CredTypes; }
+	// _CREDENTIAL_TARGET_INFORMATIONA { StrPtrAnsi TargetName; StrPtrAnsi NetbiosServerName; StrPtrAnsi DnsServerName; StrPtrAnsi NetbiosDomainName; StrPtrAnsi
+	// DnsDomainName; StrPtrAnsi DnsTreeName; StrPtrAnsi PackageName; ULONG Flags; DWORD CredTypeCount; LPDWORD CredTypes; }
 	// CREDENTIAL_TARGET_INFORMATIONA, *PCREDENTIAL_TARGET_INFORMATIONA;
 	[PInvokeData("wincred.h", MSDNShortId = "92180f2c-ef7c-4481-9b6f-19234c114afb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1869,7 +1869,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/ns-wincred-_username_target_credential_info typedef struct
-	// _USERNAME_TARGET_CREDENTIAL_INFO { LPWSTR UserName; } USERNAME_TARGET_CREDENTIAL_INFO, *PUSERNAME_TARGET_CREDENTIAL_INFO;
+	// _USERNAME_TARGET_CREDENTIAL_INFO { StrPtrUni UserName; } USERNAME_TARGET_CREDENTIAL_INFO, *PUSERNAME_TARGET_CREDENTIAL_INFO;
 	[PInvokeData("wincred.h", MSDNShortId = "1cb56a85-fafd-4471-b0e9-660ac0dc0219")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USERNAME_TARGET_CREDENTIAL_INFO
@@ -1917,6 +1917,6 @@ public static partial class AdvApi32
 		/// <exception cref="InsufficientMemoryException"></exception>
 		public T ToStructure<T>() where T : struct => handle.ToStructure<T>();
 
-		internal CREDENTIAL_MGD[] GetCredArray(int count) => handle.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
+		internal CREDENTIAL_MGD[] GetCredArray(int count) => this.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
 	}
 }

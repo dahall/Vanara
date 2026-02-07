@@ -466,7 +466,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new queue created.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT CreateQueue(in DSTORAGE_QUEUE_DESC desc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+		HRESULT CreateQueue(in DSTORAGE_QUEUE_DESC desc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Opens a file for DirectStorage access.</summary>
 		/// <param name="path">Path of the file to be opened.</param>
@@ -474,7 +474,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new file opened.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT OpenFile([In] string path, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+		HRESULT OpenFile([In] string path, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Creates a DirectStorage status array object.</summary>
 		/// <param name="capacity">Specifies the number of statuses that the array can hold.</param>
@@ -485,7 +485,7 @@ public static partial class DStorage
 		/// <param name="ppv">Receives the new status array object created.</param>
 		/// <returns>Standard HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT CreateStatusArray(uint capacity, [In, Optional] string? name, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+		HRESULT CreateStatusArray(uint capacity, [In, Optional] string? name, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Sets flags used to control the debug layer.</summary>
 		/// <param name="flags">A set of flags controlling the debug layer.</param>
@@ -722,7 +722,7 @@ public static partial class DStorage
 	/// <param name="ppv">Receives the DirectStorage object.</param>
 	/// <returns>Standard HRESULT error code.</returns>
 	[DllImport(Lib_DirectStorage, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
-	public static extern HRESULT DStorageCreateCompressionCodec(DSTORAGE_COMPRESSION_FORMAT format, uint numThreads, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+	public static extern HRESULT DStorageCreateCompressionCodec(DSTORAGE_COMPRESSION_FORMAT format, uint numThreads, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// Returns the static DirectStorage factory object used to create DirectStorage queues, open files for DirectStorage access, and other
@@ -732,7 +732,7 @@ public static partial class DStorage
 	/// <param name="ppv">Receives the DirectStorage factory object.</param>
 	/// <returns>Standard HRESULT error code.</returns>
 	[DllImport(Lib_DirectStorage, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
-	public static extern HRESULT DStorageGetFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+	public static extern HRESULT DStorageGetFactory(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppv);
 
 	/// <summary>
 	/// Returns the static DirectStorage factory object used to create DirectStorage queues, open files for DirectStorage access, and other

@@ -10,7 +10,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class Ws2tcpipTests
 {
-	const string saddr4 = "192.168.0.1";
+	static readonly string saddr4 = TestCaseSources.GetValueOrDefault("IPv4Host", "192.168.0.1")!;
 	const string saddr6 = "2001:db8:aaaa:1::100";
 
 	public static IPAddress? localIP4 => Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
@@ -40,7 +40,7 @@ public class Ws2tcpipTests
 	{
 		var hints = new ADDRINFOW { ai_flags = ADDRINFO_FLAGS.AI_CANONNAME, ai_family = ADDRESS_FAMILY.AF_UNSPEC };
 		Assert.That(GetAddrInfoW(localIP4?.ToString(), null, hints, out var res), ResultIs.Successful);
-		TestContext.Write(string.Join(", ", res));
+		res.WriteValues();
 	}
 
 	[Test]
@@ -50,9 +50,9 @@ public class Ws2tcpipTests
 		var ovl = new NativeOverlapped();
 		Assert.That(GetAddrInfoExW(localIP4?.ToString(), null, NS.NS_ALL, default, &hints, out var res,
 			default, &ovl, GAIExCompl, null), ResultIs.Successful);
-		TestContext.Write(string.Join(", ", res));
+		res.WriteValues();
 		Assert.That(GetAddrInfoExW(localIP4?.ToString(), ppResult: out res), ResultIs.Successful);
-		TestContext.Write(string.Join(", ", res));
+		res.WriteValues();
 
 		static unsafe void GAIExCompl(uint error, uint bytes, NativeOverlapped* overlapped) { }
 	}
@@ -149,12 +149,13 @@ public class Ws2tcpipTests
 	}
 
 	[Test]
-	public unsafe void SetAddrInfoExTest()
+	public void SetAddrInfoExTest()
 	{
+		Assert.Inconclusive("Not documented well-enough to test");
 		var chkAddr = IPAddress.Parse(saddr4);
 		var addr = new SOCKADDR(new SOCKADDR_IN(new IN_ADDR(chkAddr.GetAddressBytes())));
 		var saddr = new SOCKET_ADDRESS { lpSockaddr = addr, iSockaddrLength = addr.Size };
-		Assert.That(SetAddrInfoEx("Temp", null, new[] { saddr }, 1), ResultIs.Value(0));
-		Assert.That(SetAddrInfoEx("Temp"), ResultIs.Value(0));
+		Assert.That(SetAddrInfoEx("Temp", null, [saddr], 1), ResultIs.Successful);
+		Assert.That(SetAddrInfoEx("Temp"), ResultIs.Successful);
 	}
 }

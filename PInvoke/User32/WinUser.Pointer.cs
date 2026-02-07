@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -482,7 +484,7 @@ public static partial class User32
 	/// <returns>None</returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-get_pointerid_wparam void GET_POINTERID_WPARAM( wParam );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GET_POINTERID_WPARAM")]
-	public static uint GET_POINTERID_WPARAM(IntPtr wParam) => (uint)Macros.LOWORD(wParam);
+	public static uint GET_POINTERID_WPARAM(IntPtr wParam) => Macros.LOWORD(wParam);
 
 	/// <summary>Checks whether the specified pointer message is considered intentional rather than accidental.</summary>
 	/// <param name="wParam">The value to be converted.</param>
@@ -599,7 +601,8 @@ public static partial class User32
 	// CreateSyntheticPointerDevice( POINTER_INPUT_TYPE pointerType, ULONG maxCount, POINTER_FEEDBACK_MODE mode );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "251F837F-DF9A-4A94-B790-73AA7196E4A9")]
-	public static extern SafeHSYNTHETICPOINTERDEVICE CreateSyntheticPointerDevice(POINTER_INPUT_TYPE pointerType, uint maxCount, POINTER_FEEDBACK_MODE mode);
+	[return: AddAsCtor]
+	public static extern SafeHSYNTHETICPOINTERDEVICE CreateSyntheticPointerDevice(POINTER_INPUT_TYPE pointerType, [Range(0, MAX_TOUCH_COUNT)] uint maxCount, POINTER_FEEDBACK_MODE mode);
 
 	/// <summary>Destroys the specified pointer injection device.</summary>
 	/// <param name="device">A handle to the pointer injection device.</param>
@@ -672,7 +675,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winuser.h", MSDNShortId = "800E0BFE-6E57-4EAA-B47C-FEEC0B5BFA2F")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDevice(HANDLE device, out POINTER_DEVICE_INFO pointerDevice);
+	public static extern bool GetPointerDevice([In, AddAsMember] HPOINTERDEVICE device, out POINTER_DEVICE_INFO pointerDevice);
 
 	/// <summary>Gets the cursor IDs that are mapped to the cursors associated with a pointer device.</summary>
 	/// <param name="device">The device handle.</param>
@@ -689,7 +692,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "4dd25033-e63a-4fa9-89b9-bfcae4061a76")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDeviceCursors(HANDLE device, ref uint cursorCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_CURSOR_INFO[]? deviceCursors);
+	public static extern bool GetPointerDeviceCursors([In, AddAsMember] HPOINTERDEVICE device, ref uint cursorCount,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cursorCount), SizingMethod.Query)] POINTER_DEVICE_CURSOR_INFO[]? deviceCursors);
 
 	/// <summary>Gets device properties that aren't included in the POINTER_DEVICE_INFO structure.</summary>
 	/// <param name="device">
@@ -713,7 +717,8 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "dbb81637-217a-49b1-9e81-2068cf4c0951")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDeviceProperties(HANDLE device, ref uint propertyCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_PROPERTY[]? pointerProperties);
+	public static extern bool GetPointerDeviceProperties([In, AddAsMember] HPOINTERDEVICE device, ref uint propertyCount,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(propertyCount), SizingMethod.Query)] POINTER_DEVICE_PROPERTY[]? pointerProperties);
 
 	/// <summary>
 	/// Gets the x and y range for the pointer device (in himetric) and the x and y range (current resolution) for the display that the
@@ -730,7 +735,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a6586dec-6d57-4345-be56-89c7308c1097")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDeviceRects(HANDLE device, out RECT pointerDeviceRect, out RECT displayRect);
+	public static extern bool GetPointerDeviceRects([In, AddAsMember] HPOINTERDEVICE device, out RECT pointerDeviceRect, out RECT displayRect);
 
 	/// <summary>Gets information about the pointer devices attached to the system.</summary>
 	/// <param name="deviceCount">
@@ -764,7 +769,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "91FD5EBA-EDD7-4D7D-ABF3-3CE2461417B0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerDevices(ref uint deviceCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINTER_DEVICE_INFO[]? pointerDevices);
+	public static extern bool GetPointerDevices(ref uint deviceCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(deviceCount), SizingMethod.Query)] POINTER_DEVICE_INFO[]? pointerDevices);
 
 	/// <summary>Gets the entire frame of information for the specified pointers associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
@@ -857,113 +862,121 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "6b7f450d-6ab1-4991-b2f9-a1db3f065711")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray)] POINTER_INFO[]? pointerInfo);
+	public static extern bool GetPointerFrameInfo(uint pointerId, ref uint pointerCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pointerCount), SizingMethod.Query)] POINTER_INFO[]? pointerInfo);
 
 	/// <summary>
 	/// Gets the entire frame of information (including coalesced input frames) for the specified pointers associated with the current message.
 	/// </summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
-	/// <param name="entriesCount">
-	/// A pointer to a variable that specifies the count of rows in the two-dimensional array to which pointerInfo points. If
-	/// <c>GetPointerFrameInfoHistory</c> succeeds, entriesCount is updated with the total count of frames available in the history.
-	/// </param>
-	/// <param name="pointerCount">
-	/// A pointer to a variable that specifies the count of columns in the two-dimensional array to which pointerInfo points. If
-	/// <c>GetPointerFrameInfoHistory</c> succeeds, pointerCount is updated with the total count of pointers in each frame.
-	/// </param>
 	/// <param name="pointerInfo">
-	/// <para>
-	/// Address of a two-dimensional array of POINTER_INFO structures to receive the pointer information. This parameter can be NULL if
-	/// *entriesCount and *pointerCount are both zero.
-	/// </para>
-	/// <para>This array is interpreted as .</para>
+	/// <para>A two-dimensional array of <c>POINTER_INFO</c> structures that receives the pointer information.</para>
+	/// <para>This array is interpreted as <c>POINTER_INFO[*entriesCount][*pointerCount]</c>.</para>
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is non-zero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from
-	/// that device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless
-	/// the application-specific requirements dictate otherwise.
+	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from that
+	/// device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless the
+	/// application-specific requirements dictate otherwise.
 	/// </para>
 	/// <para>
-	/// The information returned by GetPointerFrameInfo is associated with the most recent pointer message retrieved by the calling
-	/// thread. When the next message is retrieved by the calling thread, the information associated with the previous message may no
-	/// longer be available.
+	/// The information returned by <c>GetPointerFrameInfo</c> is associated with the most recent pointer message retrieved by the calling
+	/// thread. When the next message is retrieved by the calling thread, the information associated with the previous message may no longer
+	/// be available.
 	/// </para>
 	/// <para>
 	/// If the application does not process pointer input messages as fast as they are generated, some messages may be coalesced into a
-	/// WM_POINTERUPDATE message. Use <c>GetPointerFrameInfoHistory</c> to retrieve the message history (including coalesced input
-	/// frames) from the most recent <c>WM_POINTERUPDATE</c> message.
+	/// <c>WM_POINTERUPDATE</c> message. Use <b>GetPointerFrameInfoHistory</b> to retrieve the message history (including coalesced input
+	/// frames) from the most recent <b>WM_POINTERUPDATE</b> message.
 	/// </para>
 	/// <para>
-	/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
+	/// Having retrieved the entire frame of information, the application can then call the <c>SkipPointerFrameMessages</c> function to skip
 	/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-	/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
-	/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
-	/// remaining pointer messages one by one as they are retrieved.
+	/// retrieving and processing the remaining messages one by one. However, the <b>SkipPointerFrameMessages</b> function should be used
+	/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining pointer
+	/// messages one by one as they are retrieved.
 	/// </para>
 	/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 	/// <para>
-	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer
-	/// in the frame.
+	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer in
+	/// the frame.
 	/// </para>
 	/// <para>
-	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned
-	/// array. The most recent entry is the same as that returned by the GetPointerFrameInfo function.
+	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned array.
+	/// The most recent entry is the same as that returned by the <c>GetPointerFrameInfo</c> function.
 	/// </para>
 	/// <para>
-	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with
-	/// the buffer containing the most recent entries and *entriesCount containing the total count of entries available.
+	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with the
+	/// buffer containing the most recent entries and <i>*entriesCount</i> containing the total count of entries available.
 	/// </para>
 	/// <para>
 	/// If the pointer frame contains no additional pointers besides the specified pointer, this function succeeds and returns only the
 	/// information for the specified pointer.
 	/// </para>
 	/// <para>
-	/// If the information associated with the pointer frame is no longer available, this function fails with the last error set to <c>ERROR_NO_DATA</c>.
+	/// If the information associated with the pointer frame is no longer available, this function fails with the last error set to <b>ERROR_NO_DATA</b>.
 	/// </para>
 	/// <para>
-	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to
-	/// which the pointer message has been delivered, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
+	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to which
+	/// the pointer message has been delivered, this function fails with the last error set to <b>ERROR_ACCESS_DENIED</b>.
 	/// </para>
 	/// <para>
-	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To
-	/// differentiate between client and non-client data, you must perform hit testing on the target window.
+	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To differentiate
+	/// between client and non-client data, you must perform hit testing on the target window.
 	/// </para>
 	/// <para>We recommend the following if you want to filter data from the input frame:</para>
 	/// <list type="bullet">
 	/// <item>
-	/// <term>
-	/// For each update that does not include a pointer contact (a POINTER_FLAG_UPDATE without <c>POINTER_FLAG_INCONTACT</c>), hit test
-	/// to determine if the input is client or non-client.
-	/// </term>
+	/// <description>
+	/// For each update that does not include a pointer contact (a <c>POINTER_FLAG_UPDATE</c> without <b>POINTER_FLAG_INCONTACT</b>), hit
+	/// test to determine if the input is client or non-client.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>For each new contact (POINTER_FLAG_DOWN), hit test to determine if the input is client or non-client and track this info.</term>
+	/// <description>
+	/// For each new contact ( <c>POINTER_FLAG_DOWN</c>), hit test to determine if the input is client or non-client and track this info.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>
-	/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
+	/// <description>
+	/// For each update that includes a pointer contact (a <c>POINTER_FLAG_UPDATE</c> with <b>POINTER_FLAG_INCONTACT</b>), use the tracking
 	/// info to determine whether the input is client or non-client.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>
-	/// For each POINTER_FLAG_UP, use the tracking info to determine whether the input is client or non-client and then clear this
+	/// <description>
+	/// For each <c>POINTER_FLAG_UP</c>, use the tracking info to determine whether the input is client or non-client and then clear this
 	/// pointer from the tracking data.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerframeinfohistory BOOL
-	// GetPointerFrameInfoHistory( UINT32 pointerId, UINT32 *entriesCount, UINT32 *pointerCount, POINTER_INFO *pointerInfo );
-	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("winuser.h", MSDNShortId = "1ae035d6-a375-4421-82a6-50be4a2341f6")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_INFO[,]? pointerInfo);
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getpointerframeinfohistory BOOL GetPointerFrameInfoHistory(
+	// [in] UINT32 pointerId, [in, out] UINT32 *entriesCount, [in, out] UINT32 *pointerCount, [out] POINTER_INFO *pointerInfo );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetPointerFrameInfoHistory")]
+	public static bool GetPointerFrameInfoHistory(uint pointerId, out POINTER_INFO[,] pointerInfo)
+	{
+		pointerInfo = new POINTER_INFO[0, 0];
+		uint entriesCount = 0, pointerCount = 0;
+		if (!GetPointerFrameInfoHistory(pointerId, ref entriesCount, ref pointerCount))
+			return false;
+		pointerInfo = new POINTER_INFO[entriesCount, pointerCount];
+		unsafe
+		{
+			fixed (POINTER_INFO* p = &pointerInfo[0, 0])
+			{
+				return GetPointerFrameInfoHistory(pointerId, ref entriesCount, ref pointerCount, (IntPtr)p);
+			}
+
+		}
+
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetPointerFrameInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] IntPtr pointerInfo);
+	}
 
 	/// <summary>
 	/// Gets the entire frame of pen-based information for the specified pointers (of type PT_PEN) associated with the current message.
@@ -1059,26 +1072,15 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "52db9b96-7f9e-41d7-88f7-b9c7691a6511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFramePenInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[]? penInfo);
+	public static extern bool GetPointerFramePenInfo(uint pointerId, ref uint pointerCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pointerCount), SizingMethod.Query)] POINTER_PEN_INFO[]? penInfo);
 
 	/// <summary>
 	/// Gets the entire frame of pen-based information (including coalesced input frames) for the specified pointers (of type PT_PEN)
 	/// associated with the current message.
 	/// </summary>
 	/// <param name="pointerId">The identifier of the pointer for which to retrieve frame information.</param>
-	/// <param name="entriesCount">
-	/// A pointer to a variable that specifies the count of rows in the two-dimensional array to which penInfo points. If
-	/// <c>GetPointerFramePenInfoHistory</c> succeeds, entriesCount is updated with the total count of frames available in the history.
-	/// </param>
-	/// <param name="pointerCount">
-	/// A pointer to a variaable that specifies the count of columns in the two-dimensional array to which penInfo points. If
-	/// <c>GetPointerFramePenInfoHistory</c> succeeds, pointerCount is updated with the total count of pointers in each frame.
-	/// </param>
 	/// <param name="penInfo">
-	/// <para>
-	/// Address of a two-dimensional array of POINTER_PEN_INFO structures to receive the pointer information. This parameter can be NULL
-	/// if *entriesCount and *pointerCount are both zero.
-	/// </para>
+	/// <para>A two-dimensional array of POINTER_PEN_INFO structures with the pointer information.</para>
 	/// <para>This array is interpreted as POINTER_PEN_INFO[*entriesCount][*pointerCount].</para>
 	/// </param>
 	/// <returns>
@@ -1087,14 +1089,14 @@ public static partial class User32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from
-	/// that device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless
-	/// the application-specific requirements dictate otherwise.
+	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from that
+	/// device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless the
+	/// application-specific requirements dictate otherwise.
 	/// </para>
 	/// <para>
 	/// The information returned by GetPointerFramePenInfo is associated with the most recent pointer (PT_PEN) message retrieved by the
-	/// calling thread. When the next message is retrieved by the calling thread, the information associated with the previous message
-	/// may no longer be available.
+	/// calling thread. When the next message is retrieved by the calling thread, the information associated with the previous message may no
+	/// longer be available.
 	/// </para>
 	/// <para>
 	/// If the application does not process pointer input messages as fast as they are generated, some messages may be coalesced into a
@@ -1104,22 +1106,22 @@ public static partial class User32
 	/// <para>
 	/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 	/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-	/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
-	/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
-	/// remaining pointer messages one by one as they are retrieved.
+	/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
+	/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining pointer
+	/// messages one by one as they are retrieved.
 	/// </para>
 	/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 	/// <para>
-	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer
-	/// in the frame.
+	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer in
+	/// the frame.
 	/// </para>
 	/// <para>
-	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned
-	/// array. The most recent entry is the same as that returned by the GetPointerFramePenInfo function.
+	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned array.
+	/// The most recent entry is the same as that returned by the GetPointerFramePenInfo function.
 	/// </para>
 	/// <para>
-	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with
-	/// the buffer containing the most recent entries and *entriesCount containing the total count of entries available.
+	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with the
+	/// buffer containing the most recent entries and *entriesCount containing the total count of entries available.
 	/// </para>
 	/// <para>
 	/// If the pointer frame contains no additional pointers besides the specified pointer, this function succeeds and returns only the
@@ -1129,20 +1131,20 @@ public static partial class User32
 	/// If the information associated with the pointer frame is no longer available, this function fails with the last error set to <c>ERROR_NO_DATA</c>.
 	/// </para>
 	/// <para>
-	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to
-	/// which the pointer message has been delivered, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
+	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to which
+	/// the pointer message has been delivered, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
 	/// </para>
 	/// <para>If the specified pointer is not of type PT_PEN, this function fails with the last error set to <c>ERROR_DATATYPE_MISMATCH</c>.</para>
 	/// <para>
-	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To
-	/// differentiate between client and non-client data, you must perform hit testing on the target window.
+	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To differentiate
+	/// between client and non-client data, you must perform hit testing on the target window.
 	/// </para>
 	/// <para>We recommend the following if you want to filter data from the input frame:</para>
 	/// <list type="bullet">
 	/// <item>
 	/// <term>
-	/// For each update that does not include a pointer contact (a POINTER_FLAG_UPDATE without <c>POINTER_FLAG_INCONTACT</c>), hit test
-	/// to determine if the input is client or non-client.
+	/// For each update that does not include a pointer contact (a POINTER_FLAG_UPDATE without <c>POINTER_FLAG_INCONTACT</c>), hit test to
+	/// determine if the input is client or non-client.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1150,24 +1152,41 @@ public static partial class User32
 	/// </item>
 	/// <item>
 	/// <term>
-	/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
-	/// info to determine whether the input is client or non-client.
+	/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info to
+	/// determine whether the input is client or non-client.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>
-	/// For each POINTER_FLAG_UP, use the tracking info to determine whether the input is client or non-client and then clear this
-	/// pointer from the tracking data.
+	/// For each POINTER_FLAG_UP, use the tracking info to determine whether the input is client or non-client and then clear this pointer
+	/// from the tracking data.
 	/// </term>
 	/// </item>
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerframepeninfohistory BOOL
 	// GetPointerFramePenInfoHistory( UINT32 pointerId, UINT32 *entriesCount, UINT32 *pointerCount, POINTER_PEN_INFO *penInfo );
-	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a4f6a9f3-dfbd-4413-aae7-f58e1521ef1d")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFramePenInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_PEN_INFO[,]? penInfo);
+	public static bool GetPointerFramePenInfoHistory(uint pointerId, out POINTER_PEN_INFO[,] penInfo)
+	{
+		penInfo = new POINTER_PEN_INFO[0, 0];
+		uint entriesCount = 0, pointerCount = 0;
+		if (!GetPointerFramePenInfoHistory(pointerId, ref entriesCount, ref pointerCount))
+			return false;
+		penInfo = new POINTER_PEN_INFO[entriesCount, pointerCount];
+		unsafe
+		{
+			fixed (POINTER_PEN_INFO* p = &penInfo[0, 0])
+			{
+				return GetPointerFramePenInfoHistory(pointerId, ref entriesCount, ref pointerCount, (IntPtr)p);
+			}
+
+		}
+
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetPointerFramePenInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] IntPtr penInfo);
+	}
 
 	/// <summary>
 	/// Gets the entire frame of touch-based information for the specified pointers (of type PT_TOUCH) associated with the current message.
@@ -1263,42 +1282,28 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a100cc7a-62fc-4ace-8d35-e77aff98d944")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameTouchInfo(uint pointerId, ref uint pointerCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[]? touchInfo);
+	public static extern bool GetPointerFrameTouchInfo(uint pointerId, ref uint pointerCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pointerCount), SizingMethod.Query)] POINTER_TOUCH_INFO[]? touchInfo);
 
 	/// <summary>
 	/// Gets the entire frame of touch-based information (including coalesced input frames) for the specified pointers (of type
 	/// PT_TOUCH) associated with the current message.
 	/// </summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
-	/// <param name="entriesCount">
-	/// A pointer to variable that specifies the count of rows in the two-dimensional array to which touchInfo points. If
-	/// <c>GetPointerFrameTouchInfoHistory</c> succeeds, entriesCount is updated with the total count of frames available in the history.
-	/// </param>
-	/// <param name="pointerCount">
-	/// A pointer to a variable that specifies the count of columns in the two-dimensional array to which touchInfo points. If
-	/// <c>GetPointerFrameTouchInfoHistory</c> succeeds, pointerCount is updated with the total count of pointers in each frame.
-	/// </param>
-	/// <param name="touchInfo">
-	/// <para>
-	/// Address of a two-dimensional array of POINTER_TOUCH_INFO structures to receive the pointer information. This parameter can be
-	/// NULL if *entriesCount and *pointerCount are both zero.
-	/// </para>
-	/// <para>This array is interpreted as .</para>
-	/// </param>
+	/// <param name="touchInfo">A two-dimensional array of POINTER_TOUCH_INFO structures with the pointer information.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is non-zero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from
-	/// that device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless
-	/// the application-specific requirements dictate otherwise.
+	/// Parallel-mode devices may report pointer input in frames, that is, they may report the state and position of all pointers from that
+	/// device in a single input report to the system. Ideally, applications should view the entire frame as a single input unless the
+	/// application-specific requirements dictate otherwise.
 	/// </para>
 	/// <para>
-	/// The information returned by GetPointerFrameTouchInfo is associated with the most recent pointer (PT_TOUCH) message retrieved by
-	/// the calling thread. When the next message is retrieved by the calling thread, the information associated with the previous
-	/// message may no longer be available.
+	/// The information returned by GetPointerFrameTouchInfo is associated with the most recent pointer (PT_TOUCH) message retrieved by the
+	/// calling thread. When the next message is retrieved by the calling thread, the information associated with the previous message may no
+	/// longer be available.
 	/// </para>
 	/// <para>
 	/// If the application does not process pointer input messages as fast as they are generated, some messages may be coalesced into a
@@ -1308,22 +1313,22 @@ public static partial class User32
 	/// <para>
 	/// Having retrieved the entire frame of information, the application can then call the SkipPointerFrameMessages function to skip
 	/// remaining pointer messages associated with this frame that are pending retrieval. This saves the application the overhead of
-	/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be
-	/// used with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the
-	/// remaining pointer messages one by one as they are retrieved.
+	/// retrieving and processing the remaining messages one by one. However, the <c>SkipPointerFrameMessages</c> function should be used
+	/// with care and only when the caller can be sure that no other entity on the caller’s thread is expecting to see the remaining pointer
+	/// messages one by one as they are retrieved.
 	/// </para>
 	/// <para>The frame contains only pointers that are currently owned by the same window as the specified pointer.</para>
 	/// <para>
-	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer
-	/// in the frame.
+	/// The information retrieved represents a two-dimensional array with one row for each history entry and one column for each pointer in
+	/// the frame.
 	/// </para>
 	/// <para>
-	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned
-	/// array. The most recent entry is the same as that returned by the GetPointerFrameTouchInfo function.
+	/// The information retrieved appears in reverse chronological order, with the most recent entry in the first row of the returned array.
+	/// The most recent entry is the same as that returned by the GetPointerFrameTouchInfo function.
 	/// </para>
 	/// <para>
-	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with
-	/// the buffer containing the most recent entries and *entriesCount containing the total count of entries available.
+	/// If the count of rows in the buffer provided is insufficient to hold all available history entries, this function succeeds with the
+	/// buffer containing the most recent entries and *entriesCount containing the total count of entries available.
 	/// </para>
 	/// <para>
 	/// If the pointer frame contains no additional pointers besides the specified pointer, this function succeeds and returns only the
@@ -1333,20 +1338,20 @@ public static partial class User32
 	/// If the information associated with the pointer frame is no longer available, this function fails with the last error set to <c>ERROR_NO_DATA</c>.
 	/// </para>
 	/// <para>
-	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to
-	/// which the pointer message has been delivered, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
+	/// If the calling thread does not own the window (where the input was originally delivered or where the message was forwarded) to which
+	/// the pointer message has been delivered, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
 	/// </para>
 	/// <para>If the specified pointer is not of type PT_TOUCH, this function fails with the last error set to <c>ERROR_DATATYPE_MISMATCH</c>.</para>
 	/// <para>
-	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To
-	/// differentiate between client and non-client data, you must perform hit testing on the target window.
+	/// For apps that have both client and non-client areas, the input frame can include both client and non-client data. To differentiate
+	/// between client and non-client data, you must perform hit testing on the target window.
 	/// </para>
 	/// <para>We recommend the following if you want to filter data from the input frame:</para>
 	/// <list type="bullet">
 	/// <item>
 	/// <term>
-	/// For each update that does not include a pointer contact (a POINTER_FLAG_UPDATE without <c>POINTER_FLAG_INCONTACT</c>), hit test
-	/// to determine if the input is client or non-client.
+	/// For each update that does not include a pointer contact (a POINTER_FLAG_UPDATE without <c>POINTER_FLAG_INCONTACT</c>), hit test to
+	/// determine if the input is client or non-client.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1354,24 +1359,41 @@ public static partial class User32
 	/// </item>
 	/// <item>
 	/// <term>
-	/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking
-	/// info to determine whether the input is client or non-client.
+	/// For each update that includes a pointer contact (a POINTER_FLAG_UPDATE with <c>POINTER_FLAG_INCONTACT</c>), use the tracking info to
+	/// determine whether the input is client or non-client.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>
-	/// For each POINTER_FLAG_UP, use the tracking info to determine whether the input is client or non-client and then clear this
-	/// pointer from the tracking data.
+	/// For each POINTER_FLAG_UP, use the tracking info to determine whether the input is client or non-client and then clear this pointer
+	/// from the tracking data.
 	/// </term>
 	/// </item>
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerframetouchinfohistory BOOL
 	// GetPointerFrameTouchInfoHistory( UINT32 pointerId, UINT32 *entriesCount, UINT32 *pointerCount, POINTER_TOUCH_INFO *touchInfo );
-	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "f2521a67-9850-46e9-bc8b-75bf5b6cc263")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerFrameTouchInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] POINTER_TOUCH_INFO[,]? touchInfo);
+	public static bool GetPointerFrameTouchInfoHistory(uint pointerId, out POINTER_TOUCH_INFO[,] touchInfo)
+	{
+		touchInfo = new POINTER_TOUCH_INFO[0, 0];
+		uint entriesCount = 0, pointerCount = 0;
+		if (!GetPointerFrameTouchInfoHistory(pointerId, ref entriesCount, ref pointerCount))
+			return false;
+		touchInfo = new POINTER_TOUCH_INFO[entriesCount, pointerCount];
+		unsafe
+		{
+			fixed (POINTER_TOUCH_INFO* p = &touchInfo[0, 0])
+			{
+				return GetPointerFrameTouchInfoHistory(pointerId, ref entriesCount, ref pointerCount, (IntPtr)p);
+			}
+
+		}
+
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetPointerFrameTouchInfoHistory(uint pointerId, ref uint entriesCount, ref uint pointerCount, [In, Out, Optional] IntPtr touchInfo);
+	}
 
 	/// <summary>
 	/// <para>Gets the information for the specified pointer associated with the current message.</para>
@@ -1409,7 +1431,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-19fe530f1800")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerInfo(uint pointerId, ref POINTER_INFO pointerInfo);
+	public static extern bool GetPointerInfo(uint pointerId, out POINTER_INFO pointerInfo);
 
 	/// <summary>
 	/// Gets the information associated with the individual inputs, if any, that were coalesced into the current message for the
@@ -1463,7 +1485,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "92173197-45e8-4ee7-8959-2f14f90c2d21")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_INFO[]? pointerInfo);
+	public static extern bool GetPointerInfoHistory(uint pointerId, ref uint entriesCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(entriesCount), SizingMethod.Query)] POINTER_INFO[]? pointerInfo);
 
 	/// <summary>Gets one or more transforms for the pointer information coordinates associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
@@ -1543,7 +1565,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9F10ED61-90E3-441B-8F4D-E33DA54D473C")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerInputTransform(uint pointerId, uint historyCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] INPUT_TRANSFORM[] inputTransform);
+	public static extern bool GetPointerInputTransform(uint pointerId, uint historyCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] INPUT_TRANSFORM[] inputTransform);
 
 	/// <summary>Gets the pen-based information for the specified pointer (of type PT_PEN) associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
@@ -1634,7 +1656,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "90082327-b242-4f5d-8cd7-fd8ef9340395")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerPenInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_PEN_INFO[]? penInfo);
+	public static extern bool GetPointerPenInfoHistory(uint pointerId, ref uint entriesCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(entriesCount), SizingMethod.Query)] POINTER_PEN_INFO[]? penInfo);
 
 	/// <summary>Gets the touch-based information for the specified pointer (of type PT_TOUCH) associated with the current message.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
@@ -1727,7 +1749,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9fdfbde7-4126-4c1b-b870-479f846e1aa9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetPointerTouchInfoHistory(uint pointerId, ref uint entriesCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_TOUCH_INFO[]? touchInfo);
+	public static extern bool GetPointerTouchInfoHistory(uint pointerId, ref uint entriesCount, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(entriesCount), SizingMethod.Query)] POINTER_TOUCH_INFO[]? touchInfo);
 
 	/// <summary>Retrieves the pointer type for a specified pointer.</summary>
 	/// <param name="pointerId">An identifier of the pointer for which to retrieve pointer type.</param>
@@ -1795,7 +1817,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9F7FC5E2-F4B8-42C2-A4BE-240E36AFC13B")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InjectSyntheticPointerInput(HSYNTHETICPOINTERDEVICE device, [In, MarshalAs(UnmanagedType.LPArray)] POINTER_TYPE_INFO[] pointerInfo, uint count);
+	public static extern bool InjectSyntheticPointerInput([In, AddAsMember] HSYNTHETICPOINTERDEVICE device, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINTER_TYPE_INFO[] pointerInfo, uint count);
 
 	/// <summary>
 	/// Indicates whether EnableMouseInPointer is set for the mouse to act as a pointer input device and send WM_POINTER messages.
@@ -1842,7 +1864,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a7322d97-f96c-449d-94a6-2081962ec7ed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterPointerDeviceNotifications(HWND window, [MarshalAs(UnmanagedType.Bool)] bool notifyRange);
+	public static extern bool RegisterPointerDeviceNotifications([In, AddAsMember] HWND window, [MarshalAs(UnmanagedType.Bool)] bool notifyRange);
 
 	/// <summary>Allows the caller to register a target window to which all pointer input of the specified type is redirected.</summary>
 	/// <param name="hwnd">
@@ -1889,7 +1911,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-09fe530f1830")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterPointerInputTarget(HWND hwnd, POINTER_INPUT_TYPE pointerType);
+	public static extern bool RegisterPointerInputTarget([In, AddAsMember] HWND hwnd, POINTER_INPUT_TYPE pointerType);
 
 	/// <summary>
 	/// <para>[ <c>RegisterPointerInputTargetEx</c> is not supported and may be altered or unavailable in the future. Instead, use RegisterPointerInputTarget.]</para>
@@ -1904,7 +1926,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "E2B3D097-36E5-4444-B9DF-B3D38F1FEF48")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterPointerInputTargetEx(HWND hwnd, POINTER_INPUT_TYPE pointerType, [MarshalAs(UnmanagedType.Bool)] bool fObserve);
+	public static extern bool RegisterPointerInputTargetEx([In, AddAsMember] HWND hwnd, POINTER_INPUT_TYPE pointerType, [MarshalAs(UnmanagedType.Bool)] bool fObserve);
 
 	/// <summary>
 	/// Determines which pointer input frame generated the most recently retrieved message for the specified pointer and discards any
@@ -1996,7 +2018,22 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-09fe530f1800")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterPointerInputTarget(HWND hwnd, POINTER_INPUT_TYPE pointerType);
+	public static extern bool UnregisterPointerInputTarget([In, AddAsMember] HWND hwnd, POINTER_INPUT_TYPE pointerType);
+
+	/// <summary>Handle to a pointer device.</summary>
+	[AutoHandle]
+	public partial struct HPOINTERDEVICE { }
+
+	public partial struct HSYNTHETICPOINTERDEVICE
+	{
+		/// <summary>Defines an implicit conversion from an HSYNTHETICPOINTERDEVICE to an HPOINTERDEVICE handle.</summary>
+		/// <param name="h">The HSYNTHETICPOINTERDEVICE instance to convert.</param>
+		public static implicit operator HPOINTERDEVICE(HSYNTHETICPOINTERDEVICE h) => new(h.DangerousGetHandle());
+
+		/// <summary>Defines an implicit conversion from an HSYNTHETICPOINTERDEVICE to an HANDLE handle.</summary>
+		/// <param name="h">The HSYNTHETICPOINTERDEVICE instance to convert.</param>
+		public static implicit operator HANDLE(HSYNTHETICPOINTERDEVICE h) => new(h.DangerousGetHandle());
+	}
 
 	/// <summary>
 	/// Defines the matrix that represents a transform on a message consumer. This matrix can be used to transform pointer input data
@@ -2025,7 +2062,7 @@ public static partial class User32
 		/// <summary>Undocumented.</summary>
 		public float[,] m
 		{
-			get => new float[4, 4] { { _11, _12, _13, _14 }, { 21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 } };
+			readonly get => new float[4, 4] { { _11, _12, _13, _14 }, { 21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 } };
 			set
 			{
 				if (value is null) throw new ArgumentNullException(nameof(m));
@@ -2079,7 +2116,7 @@ public static partial class User32
 		public uint displayOrientation;
 
 		/// <summary>The handle to the pointer device.</summary>
-		public HANDLE device;
+		public HPOINTERDEVICE device;
 
 		/// <summary>The device type.</summary>
 		public POINTER_DEVICE_TYPE pointerDeviceType;
@@ -2190,7 +2227,7 @@ public static partial class User32
 		/// <para>Type: <c>HANDLE</c></para>
 		/// <para>Handle to the source device that can be used in calls to the raw input device API and the digitizer device API.</para>
 		/// </summary>
-		public HANDLE sourceDevice;
+		public HPOINTERDEVICE sourceDevice;
 
 		/// <summary>
 		/// <para>Type: <c>HWND</c></para>

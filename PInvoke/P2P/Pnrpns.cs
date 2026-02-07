@@ -55,7 +55,7 @@ public static partial class P2P
 	/// <summary>The <c>PNRPINFO_V1</c> structure is pointed to by the <c>lpBlob</c> member of the WSAQUERYSET structure.</summary>
 	/// <remarks>Starting with Windows Vista, please use the PNRPINFO_V2 structure.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pnrpns/ns-pnrpns-pnrpinfo_v1 typedef struct _PNRPINFO_V1 { DWORD dwSize;
-	// LPWSTR lpwszIdentity; DWORD nMaxResolve; DWORD dwTimeout; DWORD dwLifetime; PNRP_RESOLVE_CRITERIA enResolveCriteria; DWORD
+	// StrPtrUni lpwszIdentity; DWORD nMaxResolve; DWORD dwTimeout; DWORD dwLifetime; PNRP_RESOLVE_CRITERIA enResolveCriteria; DWORD
 	// dwFlags; SOCKET_ADDRESS saHint; PNRP_REGISTERED_ID_STATE enNameState; } PNRPINFO_V1, *PPNRPINFO_V1;
 	[PInvokeData("pnrpns.h", MSDNShortId = "NS:pnrpns._PNRPINFO_V1")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -111,9 +111,9 @@ public static partial class P2P
 	/// <summary>The <c>PNRPINFO_V1</c> structure is pointed to by the <c>lpBlob</c> member of the WSAQUERYSET structure.</summary>
 	/// <remarks>Starting with Windows Vista, please use the PNRPINFO_V2 structure.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pnrpns/ns-pnrpns-pnrpinfo_v2 typedef struct _PNRPINFO_V2 { DWORD dwSize;
-	// LPWSTR lpwszIdentity; DWORD nMaxResolve; DWORD dwTimeout; DWORD dwLifetime; PNRP_RESOLVE_CRITERIA enResolveCriteria; DWORD
+	// StrPtrUni lpwszIdentity; DWORD nMaxResolve; DWORD dwTimeout; DWORD dwLifetime; PNRP_RESOLVE_CRITERIA enResolveCriteria; DWORD
 	// dwFlags; SOCKET_ADDRESS saHint; PNRP_REGISTERED_ID_STATE enNameState; PNRP_EXTENDED_PAYLOAD_TYPE enExtendedPayloadType; union {
-	// BLOB blobPayload; PWSTR pwszPayload; }; } PNRPINFO_V2, *PPNRPINFO_V2;
+	// BLOB blobPayload; StrPtrUni pwszPayload; }; } PNRPINFO_V2, *PPNRPINFO_V2;
 	[PInvokeData("pnrpns.h", MSDNShortId = "NS:pnrpns._PNRPINFO_V2")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PNRPINFO_V2

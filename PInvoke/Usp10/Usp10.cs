@@ -943,7 +943,7 @@ public static partial class Usp10
 		public int iKashidaWidth;
 
 		/// <summary>Gets a default instance with the size field set.</summary>
-		public static SCRIPT_FONTPROPERTIES Default { get; } = new() { cBytes = Marshal.SizeOf(typeof(SCRIPT_FONTPROPERTIES)) };
+		public static SCRIPT_FONTPROPERTIES Default { get; } = new() { cBytes = Marshal.SizeOf<SCRIPT_FONTPROPERTIES>() };
 	}
 
 	/// <summary>Contains information about a glyph that is part of an output glyph array.</summary>

@@ -119,10 +119,10 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>On 32-bit Windows, the function always fails, and the extended error is set to ERROR_CALL_NOT_IMPLEMENTED.</para>
 	/// </returns>
-	// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724405(v=vs.85).aspx
+	// UINT WINAPI GetSystemWow64Directory( _Out_ StrPtrAuto lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724405(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724405")]
-	public static extern uint GetSystemWow64Directory([Optional] StringBuilder? lpBuffer, [Optional] uint uSize);
+	public static extern uint GetSystemWow64Directory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize);
 
 	/// <summary>
 	/// Retrieves the path of the system directory used by WOW64, using the specified image file machine type. This directory is not
@@ -139,10 +139,10 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize, _In_ WORD ImageFileMachineType); https://msdn.microsoft.com/en-us/library/windows/desktop/mt804319(v=vs.85).aspx
+	// UINT WINAPI GetSystemWow64Directory( _Out_ StrPtrAuto lpBuffer, _In_ UINT uSize, _In_ WORD ImageFileMachineType); https://msdn.microsoft.com/en-us/library/windows/desktop/mt804319(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804319")]
-	public static extern uint GetSystemWow64Directory2([Optional] StringBuilder? lpBuffer, [Optional] uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
+	public static extern uint GetSystemWow64Directory2([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
 
 	/// <summary>
 	/// <para>
@@ -195,7 +195,7 @@ public static partial class Kernel32
 	/// <see langword="true"/> if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set
 	/// to <see langword="false"/>. If the process is a 64-bit application running under 64-bit Windows, the value is also set to <see langword="false"/>.
 	/// </returns>
-	public static bool IsWow64(this HPROCESS hProc) => Environment.OSVersion.Version >= new Version(5, 1) && IsWow64Process(hProc, out var b) && b;
+	public static bool IsWow64([In] this HPROCESS hProc) => Environment.OSVersion.Version >= new Version(5, 1) && IsWow64Process(hProc, out var b) && b;
 
 	/// <summary>
 	/// Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.
@@ -219,7 +219,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804318")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWow64Process2([In] HPROCESS hProcess, out IMAGE_FILE_MACHINE pProcessMachine, out IMAGE_FILE_MACHINE pNativeMachine);
+	public static extern bool IsWow64Process2([In, AddAsMember] HPROCESS hProcess, out IMAGE_FILE_MACHINE pProcessMachine, out IMAGE_FILE_MACHINE pNativeMachine);
 
 	/// <summary>Disables file system redirection for the calling thread. File system redirection is enabled by default.</summary>
 	/// <param name="OldValue">
@@ -252,7 +252,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365745")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Wow64RevertWow64FsRedirection(IntPtr OldValue);
+	public static extern bool Wow64RevertWow64FsRedirection([In] IntPtr OldValue);
 
 	/// <summary>Undocumented.</summary>
 	/// <param name="Machine">Undocumented.</param>

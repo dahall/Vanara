@@ -8,7 +8,7 @@ namespace Vanara.Extensions.Tests;
 [TestFixture()]
 public class InteropExtensionsTests
 {
-	private readonly int intSz = Marshal.SizeOf(typeof(int));
+	private readonly int intSz = Marshal.SizeOf<int>();
 
 	[Test()]
 	public void IsBlittableTest()
@@ -42,7 +42,7 @@ public class InteropExtensionsTests
 	[Test()]
 	public void MarshalToPtrTest()
 	{
-		var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
+		var h = new SafeHGlobalHandle(Marshal.SizeOf<RECT>() * 2 + intSz);
 		var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 		((IntPtr)h).Write(rs, intSz, h.Size);
 		Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
@@ -63,7 +63,7 @@ public class InteropExtensionsTests
 			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 			h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, intSz);
 			Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-			Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + intSz));
+			Assert.That(a, Is.EqualTo(Marshal.SizeOf<RECT>() * rs.Length + intSz));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * intSz), Is.EqualTo(10));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * intSz), Is.EqualTo(12));
@@ -288,7 +288,7 @@ public class InteropExtensionsTests
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -298,6 +298,40 @@ public class InteropExtensionsTests
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).Count(), Throws.TypeOf<InsufficientMemoryException>());
 		}
 		Assert.That(IntPtr.Zero.ToStringEnum(CharSet.Unicode, intSz), Is.Empty);
+	}
+
+	[Test()]
+	public void ToEncStringEnumConcatTest()
+	{
+		var rs = new[] { "str1", "str2", "str3" };
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Ansi, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size);
+			Assert.That(se, Is.EquivalentTo(rs));
+			Assert.That(() => ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size);
+			Assert.That(se, Is.EquivalentTo(rs));
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size);
+			Assert.That(se, Is.Empty);
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, intSz).Count(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 1).Count(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		Assert.That(IntPtr.Zero.ToStringEnum(Encoding.Unicode, intSz), Is.Empty);
 	}
 
 	[Test()]
@@ -318,7 +352,7 @@ public class InteropExtensionsTests
 			var se = ptr.ToStringEnum(rs.Length, CharSet.Unicode, intSz);
 			Assert.That(se, Is.EquivalentTo(rs));
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Packed, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Packed, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -386,7 +420,7 @@ public class InteropExtensionsTests
 	[Test]
 	public unsafe void AsUnmanagedArrayPointerTest()
 	{
-		var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
+		var h = new SafeHGlobalHandle(Marshal.SizeOf<RECT>() * 2 + intSz);
 		var rs = new[] { new RECT(0, 1, 2, 3), new RECT(10, 11, 12, 13) };
 		((IntPtr)h).Write(rs, intSz, h.Size);
 
@@ -404,32 +438,34 @@ public class InteropExtensionsTests
 		var h = mem.DangerousGetHandle();
 
 		// null
-		Assert.That(h.Write((object?)null), Is.EqualTo(0));
+		Assert.That((int)h.Write((object?)null), Is.EqualTo(0));
 
 		// bytes
-		Assert.That(h.Write((object)new byte[] { 1, 2, 4, 5 }), Is.EqualTo(4));
+		Assert.That((int)h.Write((object)new byte[] { 1, 2, 4, 5 }), Is.EqualTo(4));
 
 		// marshaled
 		//Assert.That(h.Write(), ResultIs.Successful);
 
 		// string
-		Assert.That(h.Write((object)"abcde"), Is.EqualTo(12));
+		Assert.That((int)h.Write((object)"abcde"), Is.EqualTo(12));
 
 		// blitted
-		Assert.That(h.Write((object)1234L), Is.EqualTo(8));
-		Assert.That(h.Write((object)Guid.NewGuid()), Is.EqualTo(16));
-		Assert.That(h.Write((object)PlatformID.Win32NT), Is.EqualTo(4));
+		Assert.That((int)h.Write((object)1234L), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)Guid.NewGuid()), Is.EqualTo(16));
+		Assert.That((int)h.Write((object)PlatformID.Win32NT), Is.EqualTo(4));
 
 		// string enum
-		Assert.That(h.Write((object)new[] { "abcde", "abcde" }), Is.EqualTo(26));
+		Assert.That((int)h.Write((object)new[] { "abcde", "abcde" }), Is.EqualTo(26));
 
 		// array
-		Assert.That(h.Write((object)new[] { 1234, 1234 }), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)new[] { 1234, 1234 }), Is.EqualTo(8));
 
 		// ienum
-		Assert.That(h.Write((object)new List<int>() { 1234, 1234 }), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)new List<int>() { 1234, 1234 }), Is.EqualTo(8));
 
+#if !NET8_0_OR_GREATER
 		// iserial
-		Assert.That(h.Write((object)DateTime.Now), Is.EqualTo(78));
+		Assert.That((int)h.Write((object)DateTime.Now), Is.EqualTo(78));
+#endif
 	}
 }

@@ -20,7 +20,4 @@ RM_FILTER_INFO RM_PROCESS_INFO RM_UNIQUE_PROCESS
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

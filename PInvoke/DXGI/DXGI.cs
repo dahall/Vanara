@@ -934,10 +934,23 @@ public static partial class DXGI
 
 		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
 		/// <param name="color">The color.</param>
-		/// <param name="a">The alpha value.</param>
-		public D3DCOLORVALUE(System.Drawing.Color color, float a = 1.0f) : this(color.R / 255f, color.G / 255f, color.B / 255f, a)
+		public D3DCOLORVALUE(System.Drawing.Color color) : this(color.R / 255f, color.G / 255f, color.B / 255f, color.A)
 		{
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE" /> struct.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="a">The alpha value.</param>
+		public D3DCOLORVALUE(COLORREF color, float a = 1f) : this(color.R / 255f, color.G / 255f, color.B / 255f, a)
+		{
+		}
+
+#if !NETSTANDARD2_0
+		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="a">The alpha value.</param>
+		public D3DCOLORVALUE(System.Drawing.KnownColor color, float a = 1.0f) : this(System.Drawing.Color.FromKnownColor(color)) => this.a = a;
+#endif
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D3DCOLORVALUE dCOLORVALUE && Equals(dCOLORVALUE);
@@ -988,6 +1001,11 @@ public static partial class DXGI
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator float[](D3DCOLORVALUE cv) => [cv.r, cv.g, cv.b, cv.a];
 
+		/// <summary>Performs an explicit conversion from <see cref="Vanara.PInvoke.COLORREF"/> to <see cref="D3DCOLORVALUE"/>.</summary>
+		/// <param name="c">The color.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator D3DCOLORVALUE(System.Drawing.Color c) => new(c);
+
 		/// <summary>Performs an explicit conversion from <see cref="float"/>[] to <see cref="D3DCOLORVALUE"/>.</summary>
 		/// <param name="cv">The color value array.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -1000,8 +1018,8 @@ public static partial class DXGI
 	/// IDXGIAdapter::GetDesc method.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc typedef struct DXGI_ADAPTER_DESC { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; } DXGI_ADAPTER_DESC;
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; } DXGI_ADAPTER_DESC;
 	[PInvokeData("dxgi.h"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DXGI_ADAPTER_DESC
 	{
@@ -1047,13 +1065,13 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
 		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
@@ -1062,7 +1080,7 @@ public static partial class DXGI
 		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
@@ -1083,8 +1101,8 @@ public static partial class DXGI
 	/// IDXGIAdapter1::GetDesc1 method.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc1 typedef struct DXGI_ADAPTER_DESC1 { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; UINT Flags; } DXGI_ADAPTER_DESC1;
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; UINT Flags; } DXGI_ADAPTER_DESC1;
 	[PInvokeData("dxgi.h", MSDNShortId = "0ae3bdb1-b122-439a-8f62-c831a9dd87e2"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DXGI_ADAPTER_DESC1
 	{
@@ -1130,13 +1148,13 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
 		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
@@ -1145,7 +1163,7 @@ public static partial class DXGI
 		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.

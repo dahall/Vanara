@@ -463,7 +463,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="pSourceName">
@@ -538,7 +538,7 @@ public static partial class D3DCompiler
 	/// using <c>D3DCompile2</c>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile HRESULT D3DCompile( [in] LPCVOID pSrcData,
-	// [in] SIZE_T SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
+	// [in] SizeT SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
 	// ID3DInclude *pInclude, [in, optional] LPCSTR pEntrypoint, [in] LPCSTR pTarget, [in] UINT Flags1, [in] UINT Flags2, [out] ID3DBlob
 	// **ppCode, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile")]
@@ -555,7 +555,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="pSourceName">
@@ -630,7 +630,7 @@ public static partial class D3DCompiler
 	/// using <c>D3DCompile2</c>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile HRESULT D3DCompile( [in] LPCVOID pSrcData,
-	// [in] SIZE_T SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
+	// [in] SizeT SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
 	// ID3DInclude *pInclude, [in, optional] LPCSTR pEntrypoint, [in] LPCSTR pTarget, [in] UINT Flags1, [in] UINT Flags2, [out] ID3DBlob
 	// **ppCode, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile")]
@@ -647,7 +647,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data (ASCII HLSL code).</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size, in bytes, of the block of memory that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="pSourceName">
@@ -747,7 +747,7 @@ public static partial class D3DCompiler
 	/// </para>
 	/// </param>
 	/// <param name="SecondaryDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>
 	/// The size, in bytes, of the block of memory that <c>pSecondaryData</c> points to. If <c>pSecondaryData</c> is <c>NULL</c>, set to zero.
 	/// </para>
@@ -803,9 +803,9 @@ public static partial class D3DCompiler
 	/// </list>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile2 HRESULT D3DCompile2( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
+	// pSrcData, [in] SizeT SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
 	// ID3DInclude *pInclude, [in] LPCSTR pEntrypoint, [in] LPCSTR pTarget, [in] UINT Flags1, [in] UINT Flags2, [in] UINT
-	// SecondaryDataFlags, [in, optional] LPCVOID pSecondaryData, [in] SIZE_T SecondaryDataSize, [out] ID3DBlob **ppCode, [out, optional]
+	// SecondaryDataFlags, [in, optional] LPCVOID pSecondaryData, [in] SizeT SecondaryDataSize, [out] ID3DBlob **ppCode, [out, optional]
 	// ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile2")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
@@ -821,7 +821,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data (ASCII HLSL code).</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size, in bytes, of the block of memory that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="pSourceName">
@@ -921,7 +921,7 @@ public static partial class D3DCompiler
 	/// </para>
 	/// </param>
 	/// <param name="SecondaryDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>
 	/// The size, in bytes, of the block of memory that <c>pSecondaryData</c> points to. If <c>pSecondaryData</c> is <c>NULL</c>, set to zero.
 	/// </para>
@@ -977,9 +977,9 @@ public static partial class D3DCompiler
 	/// </list>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile2 HRESULT D3DCompile2( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
+	// pSrcData, [in] SizeT SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
 	// ID3DInclude *pInclude, [in] LPCSTR pEntrypoint, [in] LPCSTR pTarget, [in] UINT Flags1, [in] UINT Flags2, [in] UINT
-	// SecondaryDataFlags, [in, optional] LPCVOID pSecondaryData, [in] SIZE_T SecondaryDataSize, [out] ID3DBlob **ppCode, [out, optional]
+	// SecondaryDataFlags, [in, optional] LPCVOID pSecondaryData, [in] SizeT SecondaryDataSize, [out] ID3DBlob **ppCode, [out, optional]
 	// ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile2")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
@@ -1224,7 +1224,7 @@ public static partial class D3DCompiler
 
 	/// <summary>Creates a buffer.</summary>
 	/// <param name="Size">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Number of bytes in the blob.</para>
 	/// </param>
 	/// <param name="ppBlob">
@@ -1239,7 +1239,7 @@ public static partial class D3DCompiler
 	/// The latest D3dcompiler_nn.dll contains the <c>D3DCreateBlob</c> compiler function. Therefore, you are no longer required to create
 	/// and use an arbitrary length data buffer by using the D3D10CreateBlob function that is contained in D3d10.dll.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcreateblob HRESULT D3DCreateBlob( [in] SIZE_T Size,
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcreateblob HRESULT D3DCreateBlob( [in] SizeT Size,
 	// [out] ID3DBlob **ppBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCreateBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
@@ -1309,7 +1309,7 @@ public static partial class D3DCompiler
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of uncompiled shader data that <c>pSrcData</c> points to.</para>
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>The number of shaders to decompress.</para>
@@ -1329,7 +1329,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of uncompiled shader data that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="uNumShaders">
@@ -1361,12 +1361,12 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3ddecompressshaders HRESULT D3DDecompressShaders(
-	// [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] UINT uNumShaders, [in] UINT uStartIndex, [in, optional] UINT *pIndices, [in]
+	// [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] UINT uNumShaders, [in] UINT uStartIndex, [in, optional] UINT *pIndices, [in]
 	// UINT uFlags, [out] ID3DBlob **ppShaders, [out, optional] UINT *pTotalShaders );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDecompressShaders")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDecompressShaders([In] IntPtr pSrcData, [In] SizeT SrcDataSize, uint uNumShaders, uint uStartIndex,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? pIndices, [Optional] uint uFlags, out ID3DBlob ppShaders, out uint pTotalShaders);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? pIndices, [Optional, Ignore] uint uFlags, out ID3DBlob ppShaders, out uint pTotalShaders);
 
 	/// <summary>Disassembles compiled HLSL code.</summary>
 	/// <param name="pSrcData">
@@ -1374,7 +1374,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="Flags">
@@ -1434,7 +1434,7 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3ddisassemble HRESULT D3DDisassemble( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [out] ID3DBlob **ppDisassembly );
+	// pSrcData, [in] SizeT SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassemble")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDisassemble([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
@@ -1527,8 +1527,8 @@ public static partial class D3DCompiler
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3ddisassembleregion HRESULT D3DDisassembleRegion(
-	// [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [in] SIZE_T StartByteOffset, [in]
-	// SIZE_T NumInsts, [out, optional] SIZE_T *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
+	// [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [in] SizeT StartByteOffset, [in]
+	// SizeT NumInsts, [out, optional] SizeT *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassembleRegion")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
@@ -1599,8 +1599,8 @@ public static partial class D3DCompiler
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3ddisassembleregion HRESULT D3DDisassembleRegion(
-	// [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [in] SIZE_T StartByteOffset, [in]
-	// SIZE_T NumInsts, [out, optional] SIZE_T *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
+	// [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [in] SizeT StartByteOffset, [in]
+	// SizeT NumInsts, [out, optional] SizeT *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassembleRegion")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
@@ -1613,7 +1613,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of uncompiled shader data that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="Part">
@@ -1637,7 +1637,7 @@ public static partial class D3DCompiler
 	/// <c>Part</c> parameter specifies.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgetblobpart HRESULT D3DGetBlobPart( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in] D3D_BLOB_PART Part, [in] UINT Flags, [out] ID3DBlob **ppPart );
+	// pSrcData, [in] SizeT SrcDataSize, [in] D3D_BLOB_PART Part, [in] UINT Flags, [out] ID3DBlob **ppPart );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetBlobPart")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetBlobPart([In] IntPtr pSrcData, [In] SizeT SrcDataSize, [In] D3D_BLOB_PART Part,
@@ -1646,7 +1646,7 @@ public static partial class D3DCompiler
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
 	/// <para>A pointer to source data; either uncompiled or compiled HLSL code.</para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// <para>Type: <c>ID3DBlob**</c></para>
 	/// <para>A pointer to a buffer that receives the ID3DBlob interface that contains debug information.</para>
@@ -1656,7 +1656,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data; either uncompiled or compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="ppDebugInfo">
@@ -1669,7 +1669,7 @@ public static partial class D3DCompiler
 	/// </returns>
 	/// <remarks>Debug information is embedded in the body of the shader after calling D3DCompile.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgetdebuginfo HRESULT D3DGetDebugInfo( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppDebugInfo );
+	// pSrcData, [in] SizeT SrcDataSize, [out] ID3DBlob **ppDebugInfo );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetDebugInfo")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetDebugInfo([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppDebugInfo);
@@ -1677,7 +1677,7 @@ public static partial class D3DCompiler
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
 	/// <para>A pointer to source data as compiled HLSL code.</para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// <para>Type: <c>ID3DBlob**</c></para>
 	/// <para>A pointer to a buffer that receives the ID3DBlob interface that contains a compiled shader.</para>
@@ -1687,7 +1687,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="ppSignatureBlob">
@@ -1699,7 +1699,7 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgetinputandoutputsignatureblob HRESULT
-	// D3DGetInputAndOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
+	// D3DGetInputAndOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetInputAndOutputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetInputAndOutputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
@@ -1707,7 +1707,7 @@ public static partial class D3DCompiler
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
 	/// <para>A pointer to source data as compiled HLSL code.</para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// <para>Type: <c>ID3DBlob**</c></para>
 	/// <para>A pointer to a buffer that receives the ID3DBlob interface that contains a compiled shader.</para>
@@ -1717,7 +1717,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="ppSignatureBlob">
@@ -1729,7 +1729,7 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgetinputsignatureblob HRESULT
-	// D3DGetInputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
+	// D3DGetInputSignatureBlob( [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetInputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetInputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
@@ -1737,7 +1737,7 @@ public static partial class D3DCompiler
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
 	/// <para>A pointer to source data as compiled HLSL code.</para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// <para>Type: <c>ID3DBlob**</c></para>
 	/// <para>A pointer to a buffer that receives the ID3DBlob interface that contains a compiled shader.</para>
@@ -1747,7 +1747,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="ppSignatureBlob">
@@ -1759,7 +1759,7 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgetoutputsignatureblob HRESULT
-	// D3DGetOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
+	// D3DGetOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetOutputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetOutputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
@@ -1802,8 +1802,8 @@ public static partial class D3DCompiler
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dgettraceinstructionoffsets HRESULT
-	// D3DGetTraceInstructionOffsets( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] UINT Flags, [in] SIZE_T StartInstIndex, [in]
-	// SIZE_T NumInsts, [out, optional] SIZE_T *pOffsets, [out, optional] SIZE_T *pTotalInsts );
+	// D3DGetTraceInstructionOffsets( [in] LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] UINT Flags, [in] SizeT StartInstIndex, [in]
+	// SizeT NumInsts, [out, optional] SizeT *pOffsets, [out, optional] SizeT *pTotalInsts );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetTraceInstructionOffsets")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DGetTraceInstructionOffsets([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_GET_INST_OFFSETS Flags,
@@ -1823,7 +1823,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to the source data for the shader module.</para>
 	/// </param>
 	/// <param name="cbSrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size, in bytes, of the block of memory that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="ppModule">
@@ -1839,7 +1839,7 @@ public static partial class D3DCompiler
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dloadmodule HRESULT D3DLoadModule( [in] LPCVOID
-	// pSrcData, [in] SIZE_T cbSrcDataSize, [out] ID3D11Module **ppModule );
+	// pSrcData, [in] SizeT cbSrcDataSize, [out] ID3D11Module **ppModule );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DLoadModule")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DLoadModule([In] IntPtr pSrcData, [In] SizeT cbSrcDataSize, out ID3D11Module ppModule);
@@ -1850,7 +1850,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to uncompiled shader data; either ASCII HLSL code or a compiled effect.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="pSourceName">
@@ -1888,7 +1888,7 @@ public static partial class D3DCompiler
 	/// properly related to the input source.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dpreprocess HRESULT D3DPreprocess( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
+	// pSrcData, [in] SizeT SrcDataSize, [in, optional] LPCSTR pSourceName, [in, optional] const D3D_SHADER_MACRO *pDefines, [in, optional]
 	// ID3DInclude *pInclude, [out] ID3DBlob **ppCodeText, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DPreprocess")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
@@ -1927,7 +1927,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="pInterface">
@@ -1947,11 +1947,11 @@ public static partial class D3DCompiler
 	/// <para>The following code illustrates retrieving a ID3D11ShaderReflection Interface from a shader.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dreflect HRESULT D3DReflect( [in] LPCVOID pSrcData,
-	// [in] SIZE_T SrcDataSize, [in] REFIID pInterface, [out] void **ppReflector );
+	// [in] SizeT SrcDataSize, [in] REFIID pInterface, [out] void **ppReflector );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflect")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DReflect([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid pInterface,
-		[MarshalAs(UnmanagedType.Interface)] out object? ppReflector);
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppReflector);
 
 	/// <summary>
 	/// <para>Creates a library-reflection interface from source data that contains an HLSL library of functions.</para>
@@ -1967,7 +1967,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as an HLSL library of functions.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size, in bytes, of the block of memory that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="riid">
@@ -1983,11 +1983,11 @@ public static partial class D3DCompiler
 	/// <para>Returns S_OK if successful; otherwise, returns one of the Direct3D 11 Return Codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dreflectlibrary HRESULT D3DReflectLibrary( [in]
-	// LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] REFIID riid, [out] LPVOID *ppReflector );
+	// LPCVOID pSrcData, [in] SizeT SrcDataSize, [in] REFIID riid, [out] LPVOID *ppReflector );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflectLibrary")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DReflectLibrary([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid riid,
-		[MarshalAs(UnmanagedType.Interface)] out object? ppReflector);
+		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppReflector);
 
 	/// <summary>Sets information in a compilation result.</summary>
 	/// <param name="pSrcData">
@@ -1995,7 +1995,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to compiled shader data.</para>
 	/// </param>
 	/// <param name="SrcDataSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The length of the compiled shader data that <c>pSrcData</c> points to.</para>
 	/// </param>
 	/// <param name="Part">
@@ -2014,7 +2014,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to data to set in the compilation result.</para>
 	/// </param>
 	/// <param name="PartSize">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The length of the data that <c>pPart</c> points to.</para>
 	/// </param>
 	/// <param name="ppNewShader">
@@ -2034,7 +2034,7 @@ public static partial class D3DCompiler
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dsetblobpart HRESULT D3DSetBlobPart( [in] LPCVOID
-	// pSrcData, [in] SIZE_T SrcDataSize, [in] D3D_BLOB_PART Part, [in] UINT Flags, [in] LPCVOID pPart, [in] SIZE_T PartSize, [out] ID3DBlob
+	// pSrcData, [in] SizeT SrcDataSize, [in] D3D_BLOB_PART Part, [in] UINT Flags, [in] LPCVOID pPart, [in] SizeT PartSize, [out] ID3DBlob
 	// **ppNewShader );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DSetBlobPart")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
@@ -2047,7 +2047,7 @@ public static partial class D3DCompiler
 	/// <para>A pointer to source data as compiled HLSL code.</para>
 	/// </param>
 	/// <param name="BytecodeLength">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>Length of <c>pSrcData</c>.</para>
 	/// </param>
 	/// <param name="uStripFlags">
@@ -2066,7 +2066,7 @@ public static partial class D3DCompiler
 	/// <para>Returns one of the Direct3D 11 return codes.</para>
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dstripshader HRESULT D3DStripShader( [in] LPCVOID
-	// pShaderBytecode, [in] SIZE_T BytecodeLength, [in] UINT uStripFlags, [out] ID3DBlob **ppStrippedBlob );
+	// pShaderBytecode, [in] SizeT BytecodeLength, [in] UINT uStripFlags, [out] ID3DBlob **ppStrippedBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DStripShader")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DStripShader([In] IntPtr pShaderBytecode, [In] SizeT BytecodeLength, D3DCOMPILER_STRIP_FLAGS uStripFlags,
@@ -2118,7 +2118,7 @@ public static partial class D3DCompiler
 	/// An array of <c>D3D_SHADER_DATA</c> structures is passed to D3DCompressShaders to compress the shader data into a more compact form.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/ns-d3dcompiler-d3d_shader_data typedef struct _D3D_SHADER_DATA {
-	// LPCVOID pBytecode; SIZE_T BytecodeLength; } D3D_SHADER_DATA;
+	// LPCVOID pBytecode; SizeT BytecodeLength; } D3D_SHADER_DATA;
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NS:d3dcompiler._D3D_SHADER_DATA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct D3D_SHADER_DATA

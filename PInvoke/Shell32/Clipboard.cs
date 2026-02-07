@@ -88,10 +88,10 @@ public static partial class Shell32
 	/// <summary>Converts an ANSI string to Unicode.</summary>
 	/// <param name="value">The ANSI string value.</param>
 	/// <returns>The Unicode string value.</returns>
-	public static string AnsiToUnicode(string value)
+	public static string? AnsiToUnicode(byte[]? value)
 	{
-		if (string.IsNullOrEmpty(value)) return value;
-		var sz = MultiByteToWideChar(0, 0, value, value.Length);
+		if (value is null) return null;
+		var sz = MultiByteToWideChar(0, 0, value, value.Length, default(byte[]), 0);
 		var ret = new byte[sz];
 		MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
 		return Encoding.Unicode.GetString(ret);
@@ -562,8 +562,11 @@ public static partial class Shell32
 		public static implicit operator FILEDESCRIPTOR(FileInfo fi)
 		{
 			var fd = (FILEDESCRIPTOR)(fi as FileSystemInfo);
-			fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
-			fd.nFileSize = unchecked((ulong)fi.Length);
+			if (!fd.dwFileAttributes.IsFlagSet(FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY))
+			{
+				fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
+				fd.nFileSize = unchecked((ulong)fi.Length);
+			}
 			return fd;
 		}
 	}
@@ -612,7 +615,7 @@ public static partial class Shell32
 	/// Conventions for Function Prototypes.</note>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/ns-winnetwk-netresourcew typedef struct _NETRESOURCEW { DWORD dwScope;
-	// DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; LPWSTR lpLocalName; LPWSTR lpRemoteName; LPWSTR lpComment; LPWSTR lpProvider; }
+	// DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; StrPtrUni lpLocalName; StrPtrUni lpRemoteName; StrPtrUni lpComment; StrPtrUni lpProvider; }
 	// NETRESOURCEW, *LPNETRESOURCEW;
 	[PInvokeData("winnetwk.h", MSDNShortId = "NS:winnetwk._NETRESOURCEW")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -775,7 +778,7 @@ public static partial class Shell32
 		/// <summary>
 		/// <para>Type: <c>NETRESOURCE[1]</c></para>
 		/// <para>
-		/// The array of NETRESOURCE structures that contain information about network resources. The string members ( <c>LPSTR</c>
+		/// The array of NETRESOURCE structures that contain information about network resources. The string members ( <c>StrPtrAnsi</c>
 		/// types) in the structure contain offsets instead of addresses.
 		/// </para>
 		/// </summary>
@@ -911,7 +914,7 @@ public static partial class Shell32
 		/// target then uses the returned interface pointer or global memory handle to extract the data.
 		/// </para>
 		/// </summary>
-		[ClipCorrespondingType(typeof(IStream), TYMED.TYMED_ISTREAM)]
+		[ClipCorrespondingType(typeof(IStream), TYMED.TYMED_ISTREAM | TYMED.TYMED_HGLOBAL | TYMED.TYMED_ISTORAGE)]
 		public const string CFSTR_FILECONTENTS = "FileContents";
 
 		/// <summary>

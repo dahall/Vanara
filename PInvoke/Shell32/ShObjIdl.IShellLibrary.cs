@@ -420,7 +420,7 @@ public static partial class Shell32
 	/// <para>A value from the LIBRARYSAVEFLAGS enumeration that specifies how to handle a library name collision.</para>
 	/// </param>
 	/// <param name="ppszSavedToPath">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// A pointer to a string that, when this function returns successfully, receives the path to the library description file into which
 	/// the library was saved. If this path is not required, the value of this parameter can be <c>NULL</c>.
@@ -433,7 +433,7 @@ public static partial class Shell32
 	/// <remarks>This is an inline helper function that wraps the IShellLibrary::Save method.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-shsavelibraryinfolderpath HRESULT
 	// SHSaveLibraryInFolderPath( [in] IShellLibrary *plib, [in] PCWSTR pszFolderPath, [in] PCWSTR pszLibraryName, [in] LIBRARYSAVEFLAGS
-	// lsf, [out, optional] PWSTR *ppszSavedToPath );
+	// lsf, [out, optional] StrPtrUni *ppszSavedToPath );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "NF:shobjidl_core.SHSaveLibraryInFolderPath")]
 	public static HRESULT SHSaveLibraryInFolderPath([In] IShellLibrary plib, string pszFolderPath, string pszLibraryName,
 		LIBRARYSAVEFLAGS lsf, out string? ppszSavedToPath)

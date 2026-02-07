@@ -47,7 +47,7 @@ public static partial class P2P
 	/// </returns>
 	/// <remarks>The parameter ppwzPeername must be set to null before the <c>PeerCreatePeerName</c> function is called.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercreatepeername NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerCreatePeerName( PCWSTR pwzIdentity, PCWSTR pwzClassifier, PWSTR *ppwzPeerName );
+	// PeerCreatePeerName( PCWSTR pwzIdentity, PCWSTR pwzClassifier, StrPtrUni *ppwzPeerName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCreatePeerName")]
 	public static extern HRESULT PeerCreatePeerName([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzIdentity, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzClassifier,
@@ -236,7 +236,7 @@ public static partial class P2P
 	/// <para>If hCryptProv is not <c>NULL</c>, it can be released by using CryptReleaseContext after the call returns.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentitycreate NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityCreate( PCWSTR pwzClassifier, PCWSTR pwzFriendlyName, HCRYPTPROV hCryptProv, PWSTR *ppwzIdentity );
+	// PeerIdentityCreate( PCWSTR pwzClassifier, PCWSTR pwzFriendlyName, HCRYPTPROV hCryptProv, StrPtrUni *ppwzIdentity );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityCreate")]
 	public static extern HRESULT PeerIdentityCreate([Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwzClassifier,
@@ -334,7 +334,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentityexport NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityExport( PCWSTR pwzIdentity, PCWSTR pwzPassword, PWSTR *ppwzExportXML );
+	// PeerIdentityExport( PCWSTR pwzIdentity, PCWSTR pwzPassword, StrPtrUni *ppwzExportXML );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityExport")]
 	public static extern HRESULT PeerIdentityExport([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity, [MarshalAs(UnmanagedType.LPWStr)] string pwzPassword,
@@ -409,7 +409,7 @@ public static partial class P2P
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentitygetdefault NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityGetDefault( PWSTR *ppwzPeerName );
+	// PeerIdentityGetDefault( StrPtrUni *ppwzPeerName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityGetDefault")]
 	public static extern HRESULT PeerIdentityGetDefault([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzPeerName);
@@ -449,7 +449,7 @@ public static partial class P2P
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentitygetfriendlyname NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityGetFriendlyName( PCWSTR pwzIdentity, PWSTR *ppwzFriendlyName );
+	// PeerIdentityGetFriendlyName( PCWSTR pwzIdentity, StrPtrUni *ppwzFriendlyName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityGetFriendlyName")]
 	public static extern HRESULT PeerIdentityGetFriendlyName([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity,
@@ -501,7 +501,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentitygetxml NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityGetXML( PCWSTR pwzIdentity, PWSTR *ppwzIdentityXML );
+	// PeerIdentityGetXML( PCWSTR pwzIdentity, StrPtrUni *ppwzIdentityXML );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityGetXML")]
 	public static extern HRESULT PeerIdentityGetXML([MarshalAs(UnmanagedType.LPWStr)] string pwzIdentity,
@@ -558,7 +558,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peeridentityimport NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerIdentityImport( PCWSTR pwzImportXML, PCWSTR pwzPassword, PWSTR *ppwzIdentity );
+	// PeerIdentityImport( PCWSTR pwzImportXML, PCWSTR pwzPassword, StrPtrUni *ppwzIdentity );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerIdentityImport")]
 	public static extern HRESULT PeerIdentityImport([MarshalAs(UnmanagedType.LPWStr)] string pwzImportXML, [MarshalAs(UnmanagedType.LPWStr)] string pwzPassword,

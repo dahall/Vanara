@@ -11,6 +11,34 @@ namespace Vanara.PInvoke.Tests;
 public class Ole32Tests
 {
 	[Test]
+	public void TestStructs()
+	{
+		typeof(DVTARGETDEVICE).Assembly.GetTypes().GetStructSizes(true).WriteValues();
+	}
+
+	[Test]
+	public void DVTARGEDEVICETest()
+	{
+		DVTARGETDEVICE dvtd = new("0123456789", "01234567890123456789", "0123", new() { dmColor = DMCOLOR.DMCOLOR_COLOR });
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.EqualTo("01234567890123456789"));
+		Assert.That(dvtd.tdPortName, Is.EqualTo("0123"));
+		Assert.That(dvtd.tdExtDevmode.dmColor, Is.EqualTo(DMCOLOR.DMCOLOR_COLOR));
+
+		Assert.That(() => dvtd.tdDeviceName = new string('1', 500), Throws.InstanceOf<ArgumentException>());
+
+		dvtd.tdDeviceName = null;
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.Null);
+		Assert.That(dvtd.tdPortName, Is.EqualTo("0123"));
+
+		dvtd.tdPortName = null;
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.Null);
+		Assert.That(dvtd.tdPortName, Is.Null);
+	}
+
+	[Test]
 	public void CoInitializeExTest()
 	{
 		HRESULT hr = CoInitializeEx(IntPtr.Zero, COINIT.COINIT_APARTMENTTHREADED);
@@ -32,7 +60,7 @@ public class Ole32Tests
 	public void PropVariantClearTest()
 	{
 		PROPVARIANT pv = new();
-		_ = InitPropVariantFromStringVector(new[] { "A", "B", "C", "D" }, 4, pv);
+		_ = InitPropVariantFromStringVector(["A", "B", "C", "D"], 4, pv);
 		Assert.That(pv.vt != VARTYPE.VT_EMPTY);
 		Assert.That(PropVariantClear(pv).Succeeded);
 		Assert.That(pv.vt == VARTYPE.VT_EMPTY && pv.uhVal == 0);
@@ -42,7 +70,7 @@ public class Ole32Tests
 	public void PropVariantCopyTest()
 	{
 		using PROPVARIANT pv = new();
-		string[] strArr = new[] { "A", "B", "C", "D" };
+		string[] strArr = ["A", "B", "C", "D"];
 		_ = InitPropVariantFromStringVector(strArr, 4, pv);
 		Assert.That(pv.vt == (VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR));
 		Assert.That(pv.Value, Is.EquivalentTo(strArr));
@@ -62,46 +90,38 @@ public class Ole32Tests
 	[Test]
 	public void IPropSetStorageTest()
 	{
-		Guid propSetKey = PROPERTYKEY.System.Title.Key;
+		Guid propSetKey = FMTID.FMTID_UserDefinedProperties;
 
 		// creates a new storage object using NTFS implementation
 		StgOpenStorageEx(TestCaseSources.LogFile, STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE,
-			STGFMT.STGFMT_ANY, default, default, default, typeof(IPropertySetStorage).GUID, out object iptr).ThrowIfFailed();
-		using ComReleaser<IPropertySetStorage> istg = ComReleaserFactory.Create((IPropertySetStorage)iptr);
-
-		PROPSPEC[] prcs = new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid)).ToArray();
-		string[] vals = prcs.Select((prc, idx) => "VALUE" + idx).ToArray();
+			STGFMT.STGFMT_ANY, default, default, default, out IPropertySetStorage? istg).ThrowIfFailed();
 
 		// creates propertystorage
-		istg.Item.Create(propSetKey, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out IPropertyStorage ipse).ThrowIfFailed();
-		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
+		istg!.Create(propSetKey, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out IPropertyStorage? ipse).ThrowIfFailed();
+
+		// write properties
+		PROPSPEC[] prcs = [.. new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid))];
+		string[] vals = [.. prcs.Select((prc, idx) => "VALUE" + idx)];
+		PROPVARIANT[] prvs = [.. vals.Select(val => new PROPVARIANT(val, VarEnum.VT_LPWSTR))];
+		try
 		{
-			// write properties
-			PROPVARIANT[] prvs = vals.Select(val => new PROPVARIANT(val, VarEnum.VT_LPWSTR)).ToArray();
-			try
-			{
-				ipse.WriteMultiple(prcs, prvs, PID_FIRST_USABLE).ThrowIfFailed();
-			}
-			finally
-			{
-				foreach (PROPVARIANT prv in prvs)
-					prv.Dispose();
-			}
+			ipse.WriteMultiple(prcs, prvs, PID_FIRST_USABLE).ThrowIfFailed();
 		}
-
-		//hr = ipse.Commit((uint)STGC.STGC_DEFAULT);
-		// read property
-		istg.Item.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
-		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
+		finally
 		{
-			PROPVARIANT[] prvs = new PROPVARIANT[0];
-			ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
-
-			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
-
 			foreach (PROPVARIANT prv in prvs)
 				prv.Dispose();
 		}
+		Marshal.FinalReleaseComObject(ipse);
+
+		// read property
+		istg.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
+		prvs = [];
+		ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
+		CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
+		foreach (PROPVARIANT prv in prvs)
+			prv.Dispose();
+		Marshal.FinalReleaseComObject(ipse);
 	}
 
 	[Test]

@@ -42,7 +42,7 @@ public static partial class Kernel32
 	// HRESULT WINAPI DecodeRemotePointer( _In_ HANDLE ProcessHandle, _In_opt_ PVOID Ptr, _Out_ PVOID * DecodedPtr ); https://msdn.microsoft.com/en-us/library/dn877133(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("UtilApiSet.h", MSDNShortId = "dn877133")]
-	public static extern HRESULT DecodeRemotePointer(HPROCESS ProcessHandle, IntPtr Ptr, out IntPtr DecodedPtr);
+	public static extern HRESULT DecodeRemotePointer([In] HPROCESS ProcessHandle, [In, Optional] IntPtr Ptr, out IntPtr DecodedPtr);
 
 	/// <summary>Decodes a pointer that was previously encoded with EncodeSystemPointer.</summary>
 	/// <param name="Ptr">The system pointer to be decoded.</param>
@@ -77,7 +77,7 @@ public static partial class Kernel32
 	// HRESULT WINAPI EncodeRemotePointer( _In_ HANDLE ProcessHandle, _In_opt_ PVOID Ptr, _Out_ PVOID * EncodedPtr ); https://msdn.microsoft.com/en-us/library/dn877135(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("UtilApiSet.h", MSDNShortId = "dn877135")]
-	public static extern HRESULT EncodeRemotePointer(HPROCESS ProcessHandle, IntPtr Ptr, out IntPtr EncodedPtr);
+	public static extern HRESULT EncodeRemotePointer([In] HPROCESS ProcessHandle, [In, Optional] IntPtr Ptr, out IntPtr EncodedPtr);
 
 	/// <summary>
 	/// Encodes the specified pointer with a system-specific value. Encoded pointers can be used to provide another layer of protection

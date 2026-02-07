@@ -2801,7 +2801,7 @@ public static partial class IMAPI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-sendcommandnodata HRESULT SendCommandNoData(
 		// BYTE *Cdb, ULONG CdbSize, BYTE [18] SenseBuffer, ULONG Timeout );
-		void SendCommandNoData([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb, uint CdbSize,
+		void SendCommandNoData([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb, uint CdbSize,
 			[MarshalAs(UnmanagedType.LPArray, SizeConst = 18)] byte[] SenseBuffer, uint Timeout);
 
 		/// <summary>Sends a MMC command and its associated data buffer to the recording device.</summary>
@@ -2878,9 +2878,9 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-sendcommandsenddatatodevice HRESULT
 		// SendCommandSendDataToDevice( BYTE *Cdb, ULONG CdbSize, BYTE [18] SenseBuffer, ULONG Timeout, BYTE *Buffer, ULONG_IMAPI2_NONZERO
 		// BufferSize );
-		void SendCommandSendDataToDevice([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb,
+		void SendCommandSendDataToDevice([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb,
 			uint CdbSize, [MarshalAs(UnmanagedType.LPArray, SizeConst = 18)] byte[] SenseBuffer, uint Timeout,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] byte[] Buffer,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] byte[] Buffer,
 			uint BufferSize);
 
 		/// <summary>Sends a MMC command to the recording device requesting data from the device.</summary>
@@ -2960,9 +2960,9 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-sendcommandgetdatafromdevice HRESULT
 		// SendCommandGetDataFromDevice( BYTE *Cdb, ULONG CdbSize, BYTE [18] SenseBuffer, ULONG Timeout, BYTE *Buffer, ULONG_IMAPI2_NONZERO
 		// BufferSize, ULONG_IMAPI2_NOT_NEGATIVE *BufferFetched );
-		void SendCommandGetDataFromDevice([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb,
+		void SendCommandGetDataFromDevice([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] Cdb,
 			uint CdbSize, [MarshalAs(UnmanagedType.LPArray, SizeConst = 18)] byte[] SenseBuffer, uint Timeout,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] byte[] Buffer,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] byte[] Buffer,
 			uint BufferSize, out uint BufferFetched);
 
 		/// <summary>Reads a DVD structure from the media.</summary>
@@ -3004,7 +3004,7 @@ public static partial class IMAPI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-senddvdstructure HRESULT SendDvdStructure(
 		// ULONG format, BYTE *data, ULONG_IMAPI2_DVD_STRUCTURE count );
-		void SendDvdStructure(uint format, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] data, int count);
+		void SendDvdStructure(uint format, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] data, int count);
 
 		/// <summary>Retrieves the adapter descriptor for the device.</summary>
 		/// <param name="data">
@@ -3124,7 +3124,7 @@ public static partial class IMAPI
 		// https://docs.microsoft.com/en-us/windows/win32/api/imapi2/nf-imapi2-idiscrecorder2ex-setmodepage HRESULT SetModePage(
 		// IMAPI_MODE_PAGE_REQUEST_TYPE requestType, BYTE *data, ULONG_IMAPI2_MODE_PAGE byteSize );
 		void SetModePage(IMAPI_MODE_PAGE_REQUEST_TYPE requestType,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] data, uint byteSize);
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 2)] byte[] data, uint byteSize);
 
 		/// <summary>Retrieves the list of supported feature pages or the current feature pages of the device.</summary>
 		/// <param name="currentFeatureOnly">

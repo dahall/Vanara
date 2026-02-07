@@ -1,0 +1,85 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NETFRAMEWORK>false</NETFRAMEWORK>
+    <NETFRAMEWORK Condition="$(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4'))">true</NETFRAMEWORK>
+    <NET40_OR_GREATER>false</NET40_OR_GREATER>
+    <NET40_OR_GREATER Condition="$(TargetFramework.StartsWith('net4'))">true</NET40_OR_GREATER>
+    <NETSTANDARD2_0>false</NETSTANDARD2_0>
+    <NETSTANDARD2_0 Condition="'$(TargetFramework)' == 'netstandard2.0'">true</NETSTANDARD2_0>
+    <NETSTANDARD2_1>false</NETSTANDARD2_1>
+    <NETSTANDARD2_1 Condition="'$(TargetFramework)' == 'netstandard2.1'">true</NETSTANDARD2_1>
+    <ACCESSCTRL_COND>false</ACCESSCTRL_COND>
+    <ACCESSCTRL_COND Condition="$(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore'))">true</ACCESSCTRL_COND>
+    <DRAWING_COMMON_COND>false</DRAWING_COMMON_COND>
+    <DRAWING_COMMON_COND Condition="$(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('net8')) Or $(TargetFramework.StartsWith('net9')) Or $(TargetFramework.StartsWith('net10'))">true</DRAWING_COMMON_COND>
+    <PRENET6>false</PRENET6>
+    <PRENET6 Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">true</PRENET6>
+    <NET6OR7>false</NET6OR7>
+    <NET6OR7 Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">true</NET6OR7>
+    <NET8ORLATER>false</NET8ORLATER>
+    <NET8ORLATER Condition="!$(PRENET6) And !$(NET6OR7)">true</NET8ORLATER>
+    <CODEANALYSISVER>5.0.0</CODEANALYSISVER>
+    <CODEANALYSISTESTVER>1.1.3</CODEANALYSISTESTVER>
+    <SYSVER>10.0.2</SYSVER>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="7.1.2" Condition=" '$(TargetFramework)' == 'net5.0' " />
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.0.0" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.4.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />
+    <PackageVersion Include="AutoFixture" Version="4.18.1" />
+    <PackageVersion Include="dSPACE.Runtime.InteropServices" Version="1.10.0" />
+    <PackageVersion Include="ICSharpCode.Decompiler" Version="9.1.0.7988" />
+    <PackageVersion Include="Microsoft.CodeAnalysis" Version="$(CODEANALYSISVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="$(CODEANALYSISVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(CODEANALYSISVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="$(CODEANALYSISTESTVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="$(CODEANALYSISTESTVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="$(CODEANALYSISTESTVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="$(CODEANALYSISTESTVER)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(CODEANALYSISVER)" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.102" />
+    <PackageVersion Include="Microsoft.VisualBasic" Version="10.1.0" />
+    <PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120" />
+    <PackageVersion Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.7463" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="NUnit" Version="4.4.0" />
+    <PackageVersion Include="NUnit.DeepObjectCompare" Version="2.0.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="6.1.0" />
+    <PackageVersion Include="System.Collections.Immutable" Version="$(SYSVER)" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" Condition=" $(NET40_OR_GREATER) Or $(NETSTANDARD2_0) Or $(NETSTANDARD2_1) " />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="6.0.1" Condition=" $(PRENET6) " />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" Condition=" $(NET6OR7) " />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
+    <PackageVersion Include="System.Diagnostics.PerformanceCounter" Version="$(SYSVER)" />
+    <PackageVersion Include="System.DirectoryServices" Version="6.0.1" Condition=" $(PRENET6) " />
+    <PackageVersion Include="System.DirectoryServices" Version="8.0.0" Condition=" $(NET6OR7) " />
+    <PackageVersion Include="System.DirectoryServices" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
+    <PackageVersion Include="System.Drawing.Common" Version="$(SYSVER)" Condition=" $(DRAWING_COMMON_COND) " />
+    <PackageVersion Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(ACCESSCTRL_COND) " />
+    <PackageVersion Include="System.Management" Version="6.0.2" Condition=" $(PRENET6) " />
+    <PackageVersion Include="System.Management" Version="8.0.0" Condition=" $(NET6OR7) " />
+    <PackageVersion Include="System.Management" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
+    <PackageVersion Include="System.Memory" Version="4.6.3" />
+    <PackageVersion Include="System.Reflection.Metadata" Version="$(SYSVER)" />
+    <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" Condition=" $(NETSTANDARD2_1) " />
+    <PackageVersion Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
+    <PackageVersion Include="System.Security.AccessControl" Version="6.0.1" />
+    <PackageVersion Include="System.Security.Permissions" Version="6.0.0" Condition=" $(PRENET6) " />
+    <PackageVersion Include="System.Security.Permissions" Version="8.0.0" Condition=" $(NET6OR7) " />
+    <PackageVersion Include="System.Security.Permissions" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
+    <PackageVersion Include="System.ServiceProcess.ServiceController" Version="6.0.1" Condition=" $(PRENET6) " />
+    <PackageVersion Include="System.ServiceProcess.ServiceController" Version="8.0.1" Condition=" $(NET6OR7) " />
+    <PackageVersion Include="System.ServiceProcess.ServiceController" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
+    <PackageVersion Include="System.ValueTuple" Version="4.6.1" Condition=" $(NETSTANDARD2_0) " />
+    <PackageVersion Include="NuGet.Build.Tasks.Pack" Version="6.14.0" />
+  </ItemGroup>
+</Project>

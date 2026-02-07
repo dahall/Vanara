@@ -1147,7 +1147,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms714942(v=vs.85) HRESULT CreateSession ( IUnknown *pUnkOuter,
 		// REFIID riid, IUnknown **ppDBSession);
 		[PreserveSig]
-		HRESULT CreateSession([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppDBSession);
+		HRESULT CreateSession([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppDBSession);
 	}
 
 	/// <summary>
@@ -1291,7 +1291,7 @@ public static partial class OleDb
 		// cPropertySets, DBPROPSET rgPropertySets[], IUnknown *pUnkOuter, REFIID riid, IUnknown **ppSession);
 		[PreserveSig]
 		HRESULT CreateDataSource(uint cPropertySets, [In, Out] SafeDBPROPSETListHandle rgPropertySets, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter,
-			in Guid riid, [Optional, MarshalAs(UnmanagedType.IUnknown)] out object? ppDBSession);
+			in Guid riid, [Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppDBSession);
 
 		/// <summary>Destroys the current data store.</summary>
 		/// <returns>
@@ -3083,10 +3083,8 @@ public static partial class OleDb
 		/// <summary>Returns a pointer to an interface on the custom error object.</summary>
 		/// <param name="ulRecordNum">[in] The zero-based number of the record for which to return a custom error object.</param>
 		/// <param name="riid">[in] The IID of the interface to return.</param>
-		/// <param name="ppObject">
-		/// [out] A pointer to memory in which to return an interface pointer on the custom error object. If there is no custom error object,
-		/// a null pointer is returned; that is, *ppObject is a null pointer.
-		/// </param>
+		/// <param name="ppObject">[out] A pointer to memory in which to return an interface pointer on the custom error object. If there is no custom error object,
+		/// a null pointer is returned; that is, *ppObject is a null pointer.</param>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms725417(v=vs.85) HRESULT GetCustomErrorObject ( ULONG
 		// ulRecordNum, REFIID riid, IUnknown **ppObject);
 		void GetCustomErrorObject(uint ulRecordNum, in Guid riid, [Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppObject);

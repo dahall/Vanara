@@ -7,11 +7,6 @@
     <AssemblyName>Vanara.PInvoke.VssApiMgd</AssemblyName>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>false</IsPackable>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <!--<Target Name="WipeObj" BeforeTargets="Clean;CoreClean">
-    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" ContinueOnError="true" />
-  </Target>-->
 </Project>

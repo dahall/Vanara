@@ -2506,7 +2506,7 @@ public static partial class OleAut32
 	// const VARIANTARG *pvargSrc );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
-	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, [MarshalAs(UnmanagedType.Struct)] in object pvargSrc);
+	public static extern HRESULT VariantCopyInd(out VARIANT pvarDest, [MarshalAs(UnmanagedType.Struct)] in object? pvargSrc);
 
 	/// <summary>
 	/// Frees the destination variant and makes a copy of the source variant, performing the necessary indirection if the source is
@@ -2559,7 +2559,7 @@ public static partial class OleAut32
 	// const VARIANTARG *pvargSrc );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
-	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object pvarDest, in VARIANT pvargSrc);
+	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object? pvarDest, in VARIANT pvargSrc);
 
 	/// <summary>
 	/// Frees the destination variant and makes a copy of the source variant, performing the necessary indirection if the source is
@@ -2612,7 +2612,7 @@ public static partial class OleAut32
 	// const VARIANTARG *pvargSrc );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "5d9be6cd-92e5-485c-ba0d-8630d3e414b8")]
-	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object pvarDest, [In, MarshalAs(UnmanagedType.Struct)] in object pvargSrc);
+	public static extern HRESULT VariantCopyInd([MarshalAs(UnmanagedType.Struct)] out object? pvarDest, [In, MarshalAs(UnmanagedType.Struct)] in object? pvargSrc);
 
 	/// <summary>Initializes a variant.</summary>
 	/// <param name="pvarg">The variant to initialize.</param>
@@ -3321,7 +3321,7 @@ public static partial class OleAut32
 
 		/// <summary>Initializes a new instance of the <see cref="VARIANT"/> struct.</summary>
 		/// <param name="o">An object value.</param>
-		public VARIANT(object o)
+		public VARIANT(object? o)
 		{
 			VariantCopyInd(out VARIANT v, o).ThrowIfFailed();
 			this = v;
@@ -3329,15 +3329,46 @@ public static partial class OleAut32
 
 		/// <summary>Performs a conversion from <see cref="VARIANT"/> to <see cref="System.Object"/>.</summary>
 		/// <returns>The result of the conversion.</returns>
-		public readonly object ToObject()
+		public readonly object? ToObject()
 		{
 			if (vt.IsFlagSet(VARTYPE.VT_ARRAY))
 			{
 				SafeSAFEARRAY a = new(byref, false);
 				return a.ToArray();
 			}
-			VariantCopyInd(out object o, this).ThrowIfFailed();
+			VariantCopyInd(out object? o, this).ThrowIfFailed();
 			return o;
 		}
 	}
+
+	//*** This was a fun experiment, but it turns out that custom marshalers cannot be used for values or nullables ***
+	///// <summary>Provides a custom marshaler for marshaling a specific type as a VARIANT.</summary>
+	//public class VariantMarshaler<T> : ICustomMarshaler
+	//{
+	//	/// <summary>Gets an instance of the <see cref="VariantMarshaler{T}"/> class.</summary>
+	//	public static ICustomMarshaler GetInstance(string pstrCookie) => new VariantMarshaler<T>();
+
+	//	void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
+	//	void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
+	//	int ICustomMarshaler.GetNativeDataSize() => IntPtr.Size;
+
+	//	IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj)
+	//	{
+	//		if (ManagedObj is not null && ManagedObj.GetType() != typeof(T)) throw new ArgumentException("Only specified type parameter type can be marshaled.");
+	//		SafeCoTaskMemStruct<VARIANT> pv = new(ManagedObj is null ? new VARIANT { vt = VARTYPE.VT_EMPTY } : new VARIANT(ManagedObj));
+	//		return pv.ReleaseOwnership();
+	//	}
+
+	//	object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData)
+	//	{
+	//		if (pNativeData == IntPtr.Zero) return null!;
+	//		unsafe
+	//		{
+	//			VARIANT* v = (VARIANT*)&pNativeData;
+	//			if (v->vt == VARTYPE.VT_EMPTY) return null!;
+	//			if (v->vt.GetCorrespondingType() != typeof(T)) throw new ArgumentException("Only specified type parameter type can be marshaled.");
+	//			return v->ToObject()!;
+	//		}
+	//	}
+	//}
 }

@@ -700,7 +700,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdiclassnamefromguida WINSETUPAPI BOOL
-	// SetupDiClassNameFromGuidA( const GUID *ClassGuid, PSTR ClassName, DWORD ClassNameSize, PDWORD RequiredSize );
+	// SetupDiClassNameFromGuidA( const GUID *ClassGuid, StrPtrAnsi ClassName, DWORD ClassNameSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiClassNameFromGuidA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -743,7 +743,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdiclassnamefromguidexa WINSETUPAPI BOOL
-	// SetupDiClassNameFromGuidExA( const GUID *ClassGuid, PSTR ClassName, DWORD ClassNameSize, PDWORD RequiredSize, PCSTR MachineName,
+	// SetupDiClassNameFromGuidExA( const GUID *ClassGuid, StrPtrAnsi ClassName, DWORD ClassNameSize, PDWORD RequiredSize, PCSTR MachineName,
 	// PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiClassNameFromGuidExA")]
@@ -1987,7 +1987,7 @@ public static partial class SetupAPI
 	/// <para>For information about retrieving an INF DDInstall section for a device, see SetupDiGetActualSectionToInstall.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetactualmodelssectiona WINSETUPAPI BOOL
-	// SetupDiGetActualModelsSectionA( PINFCONTEXT Context, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PSTR InfSectionWithExt, DWORD
+	// SetupDiGetActualModelsSectionA( PINFCONTEXT Context, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, StrPtrAnsi InfSectionWithExt, DWORD
 	// InfSectionWithExtSize, PDWORD RequiredSize, PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualModelsSectionA")]
@@ -2075,8 +2075,8 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetactualsectiontoinstalla WINSETUPAPI BOOL
-	// SetupDiGetActualSectionToInstallA( HINF InfHandle, PCSTR InfSectionName, PSTR InfSectionWithExt, DWORD InfSectionWithExtSize,
-	// PDWORD RequiredSize, PSTR *Extension );
+	// SetupDiGetActualSectionToInstallA( HINF InfHandle, PCSTR InfSectionName, StrPtrAnsi InfSectionWithExt, DWORD InfSectionWithExtSize,
+	// PDWORD RequiredSize, StrPtrAnsi *Extension );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2180,8 +2180,8 @@ public static partial class SetupAPI
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetactualsectiontoinstallexa WINSETUPAPI BOOL
-	// SetupDiGetActualSectionToInstallExA( HINF InfHandle, PCSTR InfSectionName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PSTR
-	// InfSectionWithExt, DWORD InfSectionWithExtSize, PDWORD RequiredSize, PSTR *Extension, PVOID Reserved );
+	// SetupDiGetActualSectionToInstallExA( HINF InfHandle, PCSTR InfSectionName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, StrPtrAnsi
+	// InfSectionWithExt, DWORD InfSectionWithExtSize, PDWORD RequiredSize, StrPtrAnsi *Extension, PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2285,8 +2285,8 @@ public static partial class SetupAPI
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetactualsectiontoinstallexa WINSETUPAPI BOOL
-	// SetupDiGetActualSectionToInstallExA( HINF InfHandle, PCSTR InfSectionName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, PSTR
-	// InfSectionWithExt, DWORD InfSectionWithExtSize, PDWORD RequiredSize, PSTR *Extension, PVOID Reserved );
+	// SetupDiGetActualSectionToInstallExA( HINF InfHandle, PCSTR InfSectionName, PSP_ALTPLATFORM_INFO AlternatePlatformInfo, StrPtrAnsi
+	// InfSectionWithExt, DWORD InfSectionWithExtSize, PDWORD RequiredSize, StrPtrAnsi *Extension, PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetActualSectionToInstallExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2354,7 +2354,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks>Call <c>SetupDiGetClassDescriptionEx</c> to retrieve the description of a setup class installed on a remote computer.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetclassdescriptiona WINSETUPAPI BOOL
-	// SetupDiGetClassDescriptionA( const GUID *ClassGuid, PSTR ClassDescription, DWORD ClassDescriptionSize, PDWORD RequiredSize );
+	// SetupDiGetClassDescriptionA( const GUID *ClassGuid, StrPtrAnsi ClassDescription, DWORD ClassDescriptionSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDescriptionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2396,7 +2396,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetclassdescriptionexa WINSETUPAPI BOOL
-	// SetupDiGetClassDescriptionExA( const GUID *ClassGuid, PSTR ClassDescription, DWORD ClassDescriptionSize, PDWORD RequiredSize,
+	// SetupDiGetClassDescriptionExA( const GUID *ClassGuid, StrPtrAnsi ClassDescription, DWORD ClassDescriptionSize, PDWORD RequiredSize,
 	// PCSTR MachineName, PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassDescriptionExA")]

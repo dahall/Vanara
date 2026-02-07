@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -615,7 +616,7 @@ public static partial class Kernel32
 	// HANDLE hInput, _In_ HANDLE hOutput, _In_ DWORD dwFlags, _Out_ HPCON* phPC );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ConsoleApi.h")]
-	public static extern HRESULT CreatePseudoConsole([In] COORD size, [In] HFILE hInput, [In] HFILE hOutput, [In] PSEUDOCONSOLE dwFlags, out SafeHPCON phPC);
+	public static extern HRESULT CreatePseudoConsole([In] COORD size, [In] HFILE hInput, [In] HFILE hOutput, [In] PSEUDOCONSOLE dwFlags, [AddAsCtor] out SafeHPCON phPC);
 
 	/// <summary>
 	/// Sets the character attributes for a specified number of character cells, beginning at the specified coordinates in a screen buffer.
@@ -643,7 +644,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FillConsoleOutputAttribute(HFILE hConsoleOutput, CHARACTER_ATTRIBUTE wAttribute, uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
+	public static extern bool FillConsoleOutputAttribute([In] HFILE hConsoleOutput, CHARACTER_ATTRIBUTE wAttribute, uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 	/// <summary>Writes a character to the console screen buffer a specified number of times, beginning at the specified coordinates.</summary>
 	/// <param name="hConsoleOutput">
@@ -667,7 +668,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FillConsoleOutputCharacter(HFILE hConsoleOutput, char cCharacter, uint nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+	public static extern bool FillConsoleOutputCharacter([In] HFILE hConsoleOutput, char cCharacter, uint nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
 
 	/// <summary>Flushes the console input buffer. All input records currently in the input buffer are discarded.</summary>
 	/// <param name="hConsoleInput">
@@ -682,7 +683,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlushConsoleInputBuffer(HFILE hConsoleInput);
+	public static extern bool FlushConsoleInputBuffer([In] HFILE hConsoleInput);
 
 	/// <summary>Detaches the calling process from its console.</summary>
 	/// <returns>
@@ -752,12 +753,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAlias( _In_ LPTSTR lpSource, _Out_ LPTSTR lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ LPTSTR
+	// DWORD WINAPI GetConsoleAlias( _In_ StrPtrAuto lpSource, _Out_ StrPtrAuto lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ StrPtrAuto
 	// lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleAlias(string lpSource, StringBuilder lpTargetBuffer, uint TargetBufferLength, string lpExeName);
+	public static extern bool GetConsoleAlias(string lpSource, [SizeDef(nameof(TargetBufferLength))] StringBuilder lpTargetBuffer, [Range(0, 8191)] uint TargetBufferLength, string lpExeName);
 
 	/// <summary>Retrieves the text for the specified console alias and executable.</summary>
 	/// <param name="lpSource">The console alias whose text is to be retrieved.</param>
@@ -768,7 +769,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAlias( _In_ LPTSTR lpSource, _Out_ LPTSTR lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ LPTSTR
+	// DWORD WINAPI GetConsoleAlias( _In_ StrPtrAuto lpSource, _Out_ StrPtrAuto lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ StrPtrAuto
 	// lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
@@ -796,8 +797,8 @@ public static partial class Kernel32
 	/// Using the Windows Headers.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer,
-	// _In_ DWORD AliasBufferLength, _In_ LPTSTR lpExeName );
+	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ StrPtrAuto lpAliasBuffer,
+	// _In_ DWORD AliasBufferLength, _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -824,11 +825,11 @@ public static partial class Kernel32
 	/// Using the Windows Headers.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer,
-	// _In_ DWORD AliasBufferLength, _In_ LPTSTR lpExeName );
+	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ StrPtrAuto lpAliasBuffer,
+	// _In_ DWORD AliasBufferLength, _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
-	public static extern bool GetConsoleAliases(SafeAllocatedMemoryHandle lpAliasBuffer, uint AliasBufferLength, string lpExeName);
+	public static extern bool GetConsoleAliases(IntPtr lpAliasBuffer, uint AliasBufferLength, string lpExeName);
 
 	/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
 	/// <param name="lpExeName">The executable file whose aliases are to be retrieved.</param>
@@ -839,13 +840,13 @@ public static partial class Kernel32
 		using var buf = new SafeHGlobalHandle((int)GetConsoleAliasesLength(lpExeName) + StringHelper.GetCharSize());
 		var ret = GetConsoleAliases(buf, buf.Size, lpExeName);
 		if (!ret) Win32Error.ThrowLastError();
-		return buf.ToStringEnum().ToArray();
+		return [.. buf.ToStringEnum()];
 	}
 
 	/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
 	/// <param name="lpExeName">The name of the executable file whose console aliases are to be retrieved.</param>
 	/// <returns>The size of the buffer required to store all console aliases defined for this executable file, in bytes.</returns>
-	// DWORD WINAPI GetConsoleAliasesLength( _In_ LPTSTR lpExeName );
+	// DWORD WINAPI GetConsoleAliasesLength( _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleAliasesLength(string lpExeName);
@@ -857,7 +858,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ LPTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -870,15 +871,15 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ LPTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleAliasExes(SafeAllocatedMemoryHandle lpExeNameBuffer, uint ExeNameBufferLength);
+	public static extern bool GetConsoleAliasExes(IntPtr lpExeNameBuffer, uint ExeNameBufferLength);
 
 	/// <summary>Retrieves the names of all executable files with console aliases defined.</summary>
 	/// <returns>An array of the executable files.</returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ LPTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static string[] GetConsoleAliasExes()
@@ -892,7 +893,7 @@ public static partial class Kernel32
 			ret = GetConsoleAliasExes(buf, buf.Size);
 		}
 		if (!ret) Win32Error.ThrowLastError();
-		return buf.ToStringEnum().ToArray();
+		return [.. buf.ToStringEnum()];
 	}
 
 	/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliasExes</c> function.</summary>
@@ -930,7 +931,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleCursorInfo(HFILE hConsoleOutput, out CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+	public static extern bool GetConsoleCursorInfo([In] HFILE hConsoleOutput, out CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
 
 	/// <summary>Retrieves the display mode of the current console.</summary>
 	/// <param name="lpModeFlags">
@@ -990,7 +991,7 @@ public static partial class Kernel32
 	// COORD WINAPI GetConsoleFontSize( _In_ HANDLE hConsoleOutput, _In_ DWORD nFont );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern COORD GetConsoleFontSize(HFILE hConsoleOutput, uint nFont);
+	public static extern COORD GetConsoleFontSize([In] HFILE hConsoleOutput, uint nFont);
 
 	/// <summary>Retrieves the history settings for the calling process's console.</summary>
 	/// <param name="lpConsoleHistoryInfo">
@@ -1185,7 +1186,7 @@ public static partial class Kernel32
 	// LPDWORD lpMode );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
-	public static extern bool GetConsoleMode(HFILE hConsoleHandle, out CONSOLE_INPUT_MODE lpMode);
+	public static extern bool GetConsoleMode([In] HFILE hConsoleHandle, out CONSOLE_INPUT_MODE lpMode);
 
 	/// <summary>Retrieves the current input mode of a console's input buffer or the current output mode of a console screen buffer.</summary>
 	/// <param name="hConsoleHandle">
@@ -1366,7 +1367,7 @@ public static partial class Kernel32
 	// LPDWORD lpMode );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
-	public static extern bool GetConsoleMode(HFILE hConsoleHandle, out CONSOLE_OUTPUT_MODE lpMode);
+	public static extern bool GetConsoleMode([In] HFILE hConsoleHandle, out CONSOLE_OUTPUT_MODE lpMode);
 
 	/// <summary>Retrieves the original title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">
@@ -1382,10 +1383,10 @@ public static partial class Kernel32
 	/// <para>If the buffer is not large enough to store the title, the return value is zero and <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern uint GetConsoleOriginalTitle(StringBuilder lpConsoleTitle, uint nSize);
+	public static extern uint GetConsoleOriginalTitle([SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder lpConsoleTitle, uint nSize);
 
 	/// <summary>Retrieves the original title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">
@@ -1401,7 +1402,7 @@ public static partial class Kernel32
 	/// <para>If the buffer is not large enough to store the title, the return value is zero and <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleOriginalTitle(IntPtr lpConsoleTitle, uint nSize);
@@ -1477,7 +1478,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleScreenBufferInfo(HFILE hConsoleOutput, out CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
+	public static extern bool GetConsoleScreenBufferInfo([In] HFILE hConsoleOutput, out CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
 
 	/// <summary>Retrieves extended information about the specified console screen buffer.</summary>
 	/// <param name="hConsoleOutput">
@@ -1496,7 +1497,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleScreenBufferInfoEx(HFILE hConsoleOutput, ref CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
+	public static extern bool GetConsoleScreenBufferInfoEx([In] HFILE hConsoleOutput, ref CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
 
 	/// <summary>Retrieves information about the current console selection.</summary>
 	/// <param name="lpConsoleSelectionInfo">A pointer to a <c>CONSOLE_SELECTION_INFO</c> structure that receives the selection information.</param>
@@ -1526,10 +1527,10 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the length of the console window's title, in characters.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern uint GetConsoleTitle(StringBuilder lpConsoleTitle, uint nSize);
+	public static extern uint GetConsoleTitle([SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpConsoleTitle, uint nSize);
 
 	/// <summary>Retrieves the title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">
@@ -1547,7 +1548,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the length of the console window's title, in characters.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleTitle(IntPtr lpConsoleTitle, uint nSize);
@@ -1581,7 +1582,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCurrentConsoleFont(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, out CONSOLE_FONT_INFO lpConsoleCurrentFont);
+	public static extern bool GetCurrentConsoleFont([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, out CONSOLE_FONT_INFO lpConsoleCurrentFont);
 
 	/// <summary>Retrieves extended information about the current console font.</summary>
 	/// <param name="hConsoleOutput">
@@ -1601,7 +1602,7 @@ public static partial class Kernel32
 	// lpConsoleCurrentFontEx );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern bool GetCurrentConsoleFontEx(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, ref CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
+	public static extern bool GetCurrentConsoleFontEx([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, ref CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 
 	/// <summary>Gets the foreground console color from a <see cref="CHARACTER_ATTRIBUTE"/> value.</summary>
 	/// <param name="ca">The <c>CHARACTER_ATTRIBUTE</c> value.</param>
@@ -1621,7 +1622,7 @@ public static partial class Kernel32
 	// COORD WINAPI GetLargestConsoleWindowSize( _In_ HANDLE hConsoleOutput );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern COORD GetLargestConsoleWindowSize(HFILE hConsoleOutput);
+	public static extern COORD GetLargestConsoleWindowSize([In] HFILE hConsoleOutput);
 
 	/// <summary>Retrieves the number of unread input records in the console's input buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1639,7 +1640,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNumberOfConsoleInputEvents(HFILE hConsoleInput, out uint lpcNumberOfEvents);
+	public static extern bool GetNumberOfConsoleInputEvents([In] HFILE hConsoleInput, out uint lpcNumberOfEvents);
 
 	/// <summary>Retrieves the number of buttons on the mouse used by the current console.</summary>
 	/// <param name="lpNumberOfMouseButtons">A pointer to a variable that receives the number of mouse buttons.</param>
@@ -1675,7 +1676,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "PeekConsoleInputW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PeekConsoleInput(HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+	public static extern bool PeekConsoleInput([In] HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
 		uint nLength, out uint lpNumberOfEventsRead);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
@@ -1710,7 +1711,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsole(HFILE hConsoleInput, StringBuilder lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
+	public static extern bool ReadConsole([In] HFILE hConsoleInput, [SizeDef(nameof(nNumberOfCharsToRead))] StringBuilder lpBuffer,
+		uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1744,7 +1746,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsole(HFILE hConsoleInput, StringBuilder lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
+	public static extern bool ReadConsole([In] HFILE hConsoleInput, [SizeDef(nameof(nNumberOfCharsToRead))] StringBuilder lpBuffer,
+		uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1778,7 +1781,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsole(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
+	public static extern bool ReadConsole([In] HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1812,7 +1815,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsole(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
+	public static extern bool ReadConsole([In] HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, in CONSOLE_READCONSOLE_CONTROL pInputControl);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1846,7 +1849,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleA(HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
+	public static extern bool ReadConsoleA([In] HFILE hConsoleInput, IntPtr lpBuffer, uint nNumberOfCharsToRead, out uint lpNumberOfCharsRead, IntPtr pInputControl = default);
 
 	/// <summary>Reads data from a console input buffer and removes it from the buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -1871,7 +1874,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleInput(HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+	public static extern bool ReadConsoleInput([In] HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
 		uint nLength, out uint lpNumberOfEventsRead);
 
 	/// <summary>
@@ -1914,7 +1917,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutput(HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray)] CHAR_INFO[] lpBuffer,
+	public static extern bool ReadConsoleOutput([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray)] CHAR_INFO[] lpBuffer,
 		COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpReadRegion);
 
 	/// <summary>
@@ -1950,7 +1953,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutputAttribute(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute, uint nLength, COORD dwReadCoord, out uint lpNumberOfAttrsRead);
+	public static extern bool ReadConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+		uint nLength, COORD dwReadCoord, out uint lpNumberOfAttrsRead);
 
 	/// <summary>Copies a number of characters from consecutive cells of a console screen buffer, beginning at a specified location.</summary>
 	/// <param name="hConsoleOutput">
@@ -1977,12 +1981,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ LPTSTR lpCharacter, _In_ DWORD nLength, _In_ COORD
+	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ StrPtrAuto lpCharacter, _In_ DWORD nLength, _In_ COORD
 	// dwReadCoord, _Out_ LPDWORD lpNumberOfCharsRead);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutputCharacter(HFILE hConsoleOutput, StringBuilder lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
+	public static extern bool ReadConsoleOutputCharacter([In] HFILE hConsoleOutput, [SizeDef(nameof(nLength))] StringBuilder lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
 
 	/// <summary>Copies a number of characters from consecutive cells of a console screen buffer, beginning at a specified location.</summary>
 	/// <param name="hConsoleOutput">
@@ -2009,12 +2013,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ LPTSTR lpCharacter, _In_ DWORD nLength, _In_ COORD
+	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ StrPtrAuto lpCharacter, _In_ DWORD nLength, _In_ COORD
 	// dwReadCoord, _Out_ LPDWORD lpNumberOfCharsRead);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutputCharacter(HFILE hConsoleOutput, IntPtr lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
+	public static extern bool ReadConsoleOutputCharacter([In] HFILE hConsoleOutput, IntPtr lpCharacter, uint nLength, COORD dwReadCoord, out uint lpNumberOfCharsRead);
 
 	/// <summary>Resizes the internal buffers for a pseudoconsole to the given size.</summary>
 	/// <param name="hPC">[in] A handle to an active psuedoconsole as opened by CreatePseudoConsole.</param>
@@ -2068,7 +2072,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ScrollConsoleScreenBufferW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScrollConsoleScreenBuffer(HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, in SMALL_RECT lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
+	public static extern bool ScrollConsoleScreenBuffer([In] HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, in SMALL_RECT lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
 
 	/// <summary>
 	/// Moves a block of data in a screen buffer. The effects of the move can be limited by specifying a clipping rectangle, so the
@@ -2102,7 +2106,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ScrollConsoleScreenBufferW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScrollConsoleScreenBuffer(HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, [Optional] IntPtr lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
+	public static extern bool ScrollConsoleScreenBuffer([In] HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, [Optional] IntPtr lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
 
 	/// <summary>Sets the specified screen buffer to be the currently displayed console screen buffer.</summary>
 	/// <param name="hConsoleOutput">A handle to the console screen buffer.</param>
@@ -2114,7 +2118,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleActiveScreenBuffer(HFILE hConsoleOutput);
+	public static extern bool SetConsoleActiveScreenBuffer([In] HFILE hConsoleOutput);
 
 	/// <summary>
 	/// Sets the input code page used by the console associated with the calling process. A console uses its input code page to
@@ -2177,7 +2181,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleCursorInfo(HFILE hConsoleOutput, in CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+	public static extern bool SetConsoleCursorInfo([In] HFILE hConsoleOutput, in CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
 
 	/// <summary>
 	/// <para>Sets the cursor position in the specified console screen buffer.</para>
@@ -2214,7 +2218,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "8e9abada-a64e-429f-8286-ced1169c7104")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleCursorPosition(HFILE hConsoleOutput, COORD dwCursorPosition);
+	public static extern bool SetConsoleCursorPosition([In] HFILE hConsoleOutput, COORD dwCursorPosition);
 
 	/// <summary>Sets the display mode of the specified console screen buffer.</summary>
 	/// <param name="hConsoleOutput">A handle to the console screen buffer.</param>
@@ -2248,7 +2252,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleDisplayMode(HFILE hConsoleOutput, SET_CONSOLE_DISPLAY_MODE dwFlags, out COORD lpNewScreenBufferDimensions);
+	public static extern bool SetConsoleDisplayMode([In] HFILE hConsoleOutput, SET_CONSOLE_DISPLAY_MODE dwFlags, out COORD lpNewScreenBufferDimensions);
 
 	/// <summary>Sets the history settings for the calling process's console.</summary>
 	/// <param name="lpConsoleHistoryInfo">
@@ -2427,7 +2431,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleMode(HFILE hConsoleHandle, CONSOLE_INPUT_MODE dwMode);
+	public static extern bool SetConsoleMode([In] HFILE hConsoleHandle, CONSOLE_INPUT_MODE dwMode);
 
 	/// <summary>Sets the input mode of a console's input buffer or the output mode of a console screen buffer.</summary>
 	/// <param name="hConsoleHandle">
@@ -2592,7 +2596,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleMode(HFILE hConsoleHandle, CONSOLE_OUTPUT_MODE dwMode);
+	public static extern bool SetConsoleMode([In] HFILE hConsoleHandle, CONSOLE_OUTPUT_MODE dwMode);
 
 	/// <summary>
 	/// Sets the output code page used by the console associated with the calling process. A console uses its output code page to
@@ -2625,7 +2629,7 @@ public static partial class Kernel32
 	// lpConsoleScreenBufferInfoEx );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern bool SetConsoleScreenBufferInfoEx(HFILE hConsoleOutput, in CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
+	public static extern bool SetConsoleScreenBufferInfoEx([In] HFILE hConsoleOutput, in CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
 
 	/// <summary>Changes the size of the specified console screen buffer.</summary>
 	/// <param name="hConsoleOutput">
@@ -2646,7 +2650,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleScreenBufferSize(HFILE hConsoleOutput, COORD dwSize);
+	public static extern bool SetConsoleScreenBufferSize([In] HFILE hConsoleOutput, COORD dwSize);
 
 	/// <summary>
 	/// Sets the attributes of characters written to the console screen buffer by the <c>WriteFile</c> or <c>WriteConsole</c> function,
@@ -2665,7 +2669,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleTextAttribute(HFILE hConsoleOutput, CHARACTER_ATTRIBUTE wAttributes);
+	public static extern bool SetConsoleTextAttribute([In] HFILE hConsoleOutput, CHARACTER_ATTRIBUTE wAttributes);
 
 	/// <summary>Sets the title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">
@@ -2701,7 +2705,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetConsoleWindowInfo(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bAbsolute, in SMALL_RECT lpConsoleWindow);
+	public static extern bool SetConsoleWindowInfo([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bAbsolute, in SMALL_RECT lpConsoleWindow);
 
 	/// <summary>Sets extended information about the current console font.</summary>
 	/// <param name="hConsoleOutput">
@@ -2721,7 +2725,7 @@ public static partial class Kernel32
 	// lpConsoleCurrentFontEx );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern bool SetCurrentConsoleFontEx(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, in CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
+	public static extern bool SetCurrentConsoleFontEx([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, in CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 
 	/// <summary>Converts a <see cref="ConsoleColor"/> to the color value within a <see cref="CHARACTER_ATTRIBUTE"/> enum.</summary>
 	/// <param name="cc">The <c>ConsoleColor</c> value.</param>
@@ -2758,7 +2762,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsole(HFILE hConsoleOutput, [In] char[] lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
+	public static extern bool WriteConsole([In] HFILE hConsoleOutput, [In] char[] lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
 
 	/// <summary>Writes a character string to a console screen buffer beginning at the current cursor location.</summary>
 	/// <param name="hConsoleOutput">
@@ -2787,7 +2791,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsole(HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
+	public static extern bool WriteConsole([In] HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
 
 	/// <summary>Writes a character string to a console screen buffer beginning at the current cursor location.</summary>
 	/// <param name="hConsoleOutput">
@@ -2816,7 +2820,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleA(HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
+	public static extern bool WriteConsoleA([In] HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
 
 	/// <summary>Writes data directly to the console input buffer.</summary>
 	/// <param name="hConsoleInput">
@@ -2841,7 +2845,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "WriteConsoleInputW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleInput(HFILE hConsoleInput, [In] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsWritten);
+	public static extern bool WriteConsoleInput([In] HFILE hConsoleInput, [In] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsWritten);
 
 	/// <summary>
 	/// Writes character and color attribute data to a specified rectangular block of character cells in a console screen buffer. The
@@ -2882,7 +2886,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "WriteConsoleOutputW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleOutput(HFILE hConsoleOutput, [In] CHAR_INFO[] lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpWriteRegion);
+	public static extern bool WriteConsoleOutput([In] HFILE hConsoleOutput, [In] CHAR_INFO[] lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpWriteRegion);
 
 	/// <summary>
 	/// Copies a number of character attributes to consecutive cells of a console screen buffer, beginning at a specified location.
@@ -2917,7 +2921,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleOutputAttribute(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute, uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
+	public static extern bool WriteConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+		uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 	/// <summary>Copies a number of characters to consecutive cells of a console screen buffer, beginning at a specified location.</summary>
 	/// <param name="hConsoleOutput">
@@ -2946,19 +2951,22 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleOutputCharacter(HFILE hConsoleOutput, string lpCharacter, uint nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+	public static extern bool WriteConsoleOutputCharacter([In] HFILE hConsoleOutput, string lpCharacter, uint nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
 
 	/// <summary>
 	/// Specifies a Unicode or ANSI character and its attributes. This structure is used by console functions to read from and write to
 	/// a console screen buffer.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="CHAR_INFO"/> struct.</remarks>
+	/// <param name="char">A Unicode character.</param>
+	/// <param name="attr">The character attributes.</param>
 	// typedef struct _CHAR_INFO { union { WCHAR UnicodeChar; CHAR AsciiChar; } Char; WORD Attributes; } CHAR_INFO, *PCHAR_INFO;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, Pack = 2, CharSet = CharSet.Unicode)]
-	public struct CHAR_INFO
+	public struct CHAR_INFO(char @char, CHARACTER_ATTRIBUTE attr = 0)
 	{
 		/// <summary>Translated Unicode character.</summary>
-		public char Char;
+		public char Char = @char;
 
 		/// <summary>
 		/// <para>The character attributes. This member can be zero or any combination of the following values.</para>
@@ -3031,16 +3039,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public CHARACTER_ATTRIBUTE Attributes;
-
-		/// <summary>Initializes a new instance of the <see cref="CHAR_INFO"/> struct.</summary>
-		/// <param name="char">A Unicode character.</param>
-		/// <param name="attr">The character attributes.</param>
-		public CHAR_INFO(char @char, CHARACTER_ATTRIBUTE attr = 0)
-		{
-			Char = @char;
-			Attributes = attr;
-		}
+		public CHARACTER_ATTRIBUTE Attributes = attr;
 	}
 
 	/// <summary>Contains information about the console cursor.</summary>
@@ -3081,10 +3080,10 @@ public static partial class Kernel32
 	// FaceName[LF_FACESIZE]; } CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CONSOLE_FONT_INFOEX
+	public struct CONSOLE_FONT_INFOEX()
 	{
 		/// <summary>The size of this structure, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CONSOLE_FONT_INFOEX>();
 
 		/// <summary>The index of the font in the system's console font table.</summary>
 		public uint nFont;
@@ -3109,19 +3108,19 @@ public static partial class Kernel32
 
 		/// <summary>The name of the typeface (such as Courier or Arial).</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-		public string FaceName;
+		public string FaceName = "";
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_FONT_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
+		public static readonly CONSOLE_FONT_INFOEX Default = new();
 	}
 
 	/// <summary>Contains information about the console history.</summary>
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CONSOLE_HISTORY_INFO
+	public struct CONSOLE_HISTORY_INFO()
 	{
 		/// <summary>The size of the structure, in bytes. Set this member to sizeof(CONSOLE_HISTORY_INFO).</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CONSOLE_HISTORY_INFO>();
 
 		/// <summary>The number of commands kept in each history buffer.</summary>
 		public uint HistoryBufferSize;
@@ -3135,7 +3134,7 @@ public static partial class Kernel32
 		public uint dwFlags;
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_HISTORY_INFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
+		public static readonly CONSOLE_HISTORY_INFO Default = new();
 	}
 
 	/// <summary>Contains information for a console read operation.</summary>
@@ -3143,10 +3142,10 @@ public static partial class Kernel32
 	// nLength; ULONG nInitialChars; ULONG dwCtrlWakeupMask; ULONG dwControlKeyState; } CONSOLE_READCONSOLE_CONTROL, *PCONSOLE_READCONSOLE_CONTROL;
 	[PInvokeData("ConsoleApi.h", MSDNShortId = "6a8451a6-d692-43af-88c4-972c4dc5e07c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CONSOLE_READCONSOLE_CONTROL
+	public struct CONSOLE_READCONSOLE_CONTROL()
 	{
 		/// <summary>The size of the structure. Set this member to sizeof(CONSOLE_READCONSOLE_CONTROL).</summary>
-		public uint nLength;
+		public uint nLength = (uint)Marshal.SizeOf<CONSOLE_READCONSOLE_CONTROL>();
 
 		/// <summary>
 		/// The number of characters to skip (and thus preserve) before writing newly read input in the buffer passed to the ReadConsole
@@ -3161,7 +3160,7 @@ public static partial class Kernel32
 		public CONTROL_KEY_STATE dwControlKeyState;
 
 		/// <summary>Gets an empty structure value with the <see cref="nLength"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_READCONSOLE_CONTROL Default = new() { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
+		public static readonly CONSOLE_READCONSOLE_CONTROL Default = new();
 	}
 
 	/// <summary>Contains information about a console screen buffer.</summary>
@@ -3202,10 +3201,10 @@ public static partial class Kernel32
 	// CONSOLE_SCREEN_BUFFER_INFOEX, *PCONSOLE_SCREEN_BUFFER_INFOEX;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CONSOLE_SCREEN_BUFFER_INFOEX
+	public struct CONSOLE_SCREEN_BUFFER_INFOEX()
 	{
 		/// <summary>The size of this structure, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CONSOLE_SCREEN_BUFFER_INFOEX>();
 
 		/// <summary>A <c>COORD</c> structure that contains the size of the console screen buffer, in character columns and rows.</summary>
 		public COORD dwSize;
@@ -3240,10 +3239,10 @@ public static partial class Kernel32
 
 		/// <summary>An array of <c>COLORREF</c> values that describe the console's color settings.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		public COLORREF[] ColorTable;
+		public COLORREF[] ColorTable = new COLORREF[16];
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
+		public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new();
 	}
 
 	/// <summary>Contains information for a console selection.</summary>
@@ -3297,26 +3296,20 @@ public static partial class Kernel32
 	/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top,
 	/// left cell of the buffer.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="COORD"/> struct.</remarks>
+	/// <param name="x">The horizontal coordinate or column value.</param>
+	/// <param name="y">The vertical coordinate or row value.</param>
 	// typedef struct _COORD { SHORT X; SHORT Y; } COORD, *PCOORD;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[DebuggerDisplay("{X}, {Y}")]
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
-	public struct COORD
+	public struct COORD(int x, int y)
 	{
 		/// <summary>The horizontal coordinate or column value. The units depend on the function call.</summary>
-		public short X;
+		public short X = (short)x;
 
 		/// <summary>The vertical coordinate or row value. The units depend on the function call.</summary>
-		public short Y;
-
-		/// <summary>Initializes a new instance of the <see cref="COORD"/> struct.</summary>
-		/// <param name="x">The horizontal coordinate or column value.</param>
-		/// <param name="y">The vertical coordinate or row value.</param>
-		public COORD(int x, int y)
-		{
-			X = (short)x;
-			Y = (short)y;
-		}
+		public short Y = (short)y;
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -3683,35 +3676,27 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Defines the coordinates of the upper left and lower right corners of a rectangle.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="SMALL_RECT"/> struct.</remarks>
+	/// <param name="left">The x-coordinate of the upper left corner of the rectangle.</param>
+	/// <param name="top">The y-coordinate of the upper left corner of the rectangle.</param>
+	/// <param name="right">The x-coordinate of the lower right corner of the rectangle.</param>
+	/// <param name="bottom">The y-coordinate of the lower right corner of the rectangle.</param>
 	// typedef struct _SMALL_RECT { SHORT Left; SHORT Top; SHORT Right; SHORT Bottom; } SMALL_RECT;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SMALL_RECT
+	public struct SMALL_RECT(short left, short top, short right, short bottom)
 	{
 		/// <summary>The x-coordinate of the upper left corner of the rectangle.</summary>
-		public short Left;
+		public short Left = left;
 
 		/// <summary>The y-coordinate of the upper left corner of the rectangle.</summary>
-		public short Top;
+		public short Top = top;
 
 		/// <summary>The x-coordinate of the lower right corner of the rectangle.</summary>
-		public short Right;
+		public short Right = right;
 
 		/// <summary>The y-coordinate of the lower right corner of the rectangle.</summary>
-		public short Bottom;
-
-		/// <summary>Initializes a new instance of the <see cref="SMALL_RECT"/> struct.</summary>
-		/// <param name="left">The x-coordinate of the upper left corner of the rectangle.</param>
-		/// <param name="top">The y-coordinate of the upper left corner of the rectangle.</param>
-		/// <param name="right">The x-coordinate of the lower right corner of the rectangle.</param>
-		/// <param name="bottom">The y-coordinate of the lower right corner of the rectangle.</param>
-		public SMALL_RECT(short left, short top, short right, short bottom)
-		{
-			Left = left;
-			Top = top;
-			Right = right;
-			Bottom = bottom;
-		}
+		public short Bottom = bottom;
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

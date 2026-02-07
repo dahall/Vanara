@@ -1813,7 +1813,7 @@ public static partial class WlanApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/nf-wlanapi-wlangetprofile DWORD WlanGetProfile( HANDLE hClientHandle,
-	// const GUID *pInterfaceGuid, LPCWSTR strProfileName, PVOID pReserved, LPWSTR *pstrProfileXml, DWORD *pdwFlags, DWORD
+	// const GUID *pInterfaceGuid, LPCWSTR strProfileName, PVOID pReserved, StrPtrUni *pstrProfileXml, DWORD *pdwFlags, DWORD
 	// *pdwGrantedAccess );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "6486e961-402f-45c8-a806-ab91a4f0f156")]
@@ -2063,7 +2063,7 @@ public static partial class WlanApi
 	/// calling WlanFreeMemory function and passing in the pstrCurrentSDDL parameter.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/nf-wlanapi-wlangetsecuritysettings DWORD WlanGetSecuritySettings(
-	// HANDLE hClientHandle, WLAN_SECURABLE_OBJECT SecurableObject, PWLAN_OPCODE_VALUE_TYPE pValueType, LPWSTR *pstrCurrentSDDL, PDWORD
+	// HANDLE hClientHandle, WLAN_SECURABLE_OBJECT SecurableObject, PWLAN_OPCODE_VALUE_TYPE pValueType, StrPtrUni *pstrCurrentSDDL, PDWORD
 	// pdwGrantedAccess );
 	[DllImport(Lib.Wlanapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wlanapi.h", MSDNShortId = "5e14a70c-c049-4cd1-8675-2b01ed11463f")]
@@ -2489,7 +2489,7 @@ public static partial class WlanApi
 	/// </item>
 	/// <item>
 	/// <term>wlan_hosted_network_opcode_station_profile</term>
-	/// <term>A PWSTR to contains an XML WLAN profile for connecting to the wireless Hosted Network is returned.</term>
+	/// <term>A StrPtrUni to contains an XML WLAN profile for connecting to the wireless Hosted Network is returned.</term>
 	/// </item>
 	/// <item>
 	/// <term>wlan_hosted_network_opcode_enable</term>

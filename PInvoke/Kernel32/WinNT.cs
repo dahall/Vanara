@@ -1,4 +1,6 @@
-﻿using static Vanara.Extensions.BitHelper;
+﻿//using static Vanara.Extensions.BitHelper;
+
+using System.ComponentModel.DataAnnotations;
 
 namespace Vanara.PInvoke;
 
@@ -19,12 +21,13 @@ public static partial class Kernel32
 	/// <returns>Pointer to a <see cref="IMAGE_RUNTIME_FUNCTION_ENTRY"/> structure.</returns>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("WinNT.h")]
-	public delegate IntPtr GetRuntimeFunctionCallback(IntPtr ControlPc, IntPtr Context);
+	public delegate IntPtr GetRuntimeFunctionCallback([In] IntPtr ControlPc, [In, Optional] IntPtr Context);
 
 	/// <summary/>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("WinNT.h")]
-	public delegate uint OutOfProcessFunctionTableCallback(HPROCESS Process, IntPtr TableAddress, out uint Entries, [Out] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
+	public delegate uint OutOfProcessFunctionTableCallback([In] HPROCESS Process, [In] IntPtr TableAddress, out uint Entries,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IMAGE_RUNTIME_FUNCTION_ENTRY[] Functions);
 
 	/// <summary>
 	/// <para>The application-defined user-mode scheduling (UMS) scheduler entry point function associated with a UMS completion list.</para>
@@ -127,7 +130,7 @@ public static partial class Kernel32
 	// SchedulerParam ) {...}
 	[PInvokeData("winnt.h", MSDNShortId = "10de1c48-255d-45c3-acf0-25f8a564b585")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void RtlUmsSchedulerEntryPoint(RTL_UMS_SCHEDULER_REASON Reason, IntPtr ActivationPayload, IntPtr SchedulerParam);
+	public delegate void RtlUmsSchedulerEntryPoint(RTL_UMS_SCHEDULER_REASON Reason, [In] IntPtr ActivationPayload, [In] IntPtr SchedulerParam);
 
 	/// <summary>
 	/// <para>
@@ -175,11 +178,11 @@ public static partial class Kernel32
 	/// <para>To unregister the callback function, use the RemoveSecureMemoryCacheCallback function.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/nc-winnt-psecure_memory_cache_callback BOOLEAN
-	// PsecureMemoryCacheCallback( PVOID Addr, SIZE_T Range ) {...}
+	// PsecureMemoryCacheCallback( PVOID Addr, SizeT Range ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winnt.h", MSDNShortId = "abde4b6f-7cd8-4a4b-9b00-f035b2c29054")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public delegate bool SecureMemoryCacheCallback(IntPtr Addr, SizeT Range);
+	public delegate bool SecureMemoryCacheCallback([In] IntPtr Addr, SizeT Range);
 
 	/// <summary>A bitmask that specifies the compression format.</summary>
 	[PInvokeData("winnt.h")]
@@ -268,11 +271,11 @@ public static partial class Kernel32
 		UmsThreadTeb,
 
 		/// <summary>The suspension status of the thread. This information can only be queried; it cannot be set.</summary>
-		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(BOOL), CorrespondingAction.Get)]
 		UmsThreadIsSuspended,
 
 		/// <summary>The termination status of the thread. This information can only be queried; it cannot be set.</summary>
-		[CorrespondingType(typeof(bool), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(BOOL), CorrespondingAction.Get)]
 		UmsThreadIsTerminated,
 
 		/// <summary>Reserved.</summary>
@@ -387,7 +390,7 @@ public static partial class Kernel32
 	// void RtlCopyMemory( Destination, Source, Length );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "d204eeb4-e109-4a86-986f-0fccdda3f8f8")]
-	public static extern void RtlCopyMemory(IntPtr Destination, IntPtr Source, SizeT Length);
+	public static extern void RtlCopyMemory([Out] IntPtr Destination, [In] IntPtr Source, SizeT Length);
 
 	/// <summary>The <c>RtlFillMemory</c> routine fills a block of memory with the specified fill value.</summary>
 	/// <param name="Destination">Datatype: void*. A pointer to the block of memory to be filled.</param>
@@ -405,7 +408,7 @@ public static partial class Kernel32
 	// void RtlFillMemory( Destination, Length, Fill );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "9a73331a-cc73-4a47-948b-a821600ca6a6")]
-	public static extern void RtlFillMemory(IntPtr Destination, SizeT Length, int Fill);
+	public static extern void RtlFillMemory([Out] IntPtr Destination, SizeT Length, [Range(0, byte.MaxValue)] int Fill);
 
 	/// <summary>
 	/// Copies the contents of a source memory block to a destination memory block, and supports overlapping source and destination
@@ -430,7 +433,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/devnotes/rtlmovememory VOID RtlMoveMemory( _Out_ VOID UNALIGNED *Destination, _In_
-	// const VOID UNALIGNED *Source, _In_ SIZE_T Length );
+	// const VOID UNALIGNED *Source, _In_ SizeT Length );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnt.h", MSDNShortId = "D374F14D-24C7-4771-AD40-3AC37E7A2D2F")]
 	public static extern void RtlMoveMemory([In] IntPtr Destination, [In] IntPtr Source, [In] SizeT Length);
@@ -443,18 +446,19 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-rtlzeromemory
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnt.h")]
-	public static extern void RtlZeroMemory(IntPtr Destination, SizeT Length);
+	public static extern void RtlZeroMemory([In] IntPtr Destination, SizeT Length);
 
 	/// <summary>
 	/// Contains processor-specific register data. The system uses CONTEXT structures to perform various internal operations. Refer to
 	/// the header file WinNT.h for definitions of this structure for each processor architecture.
 	/// </summary>
+	/// <param name="flags">The context flags.</param>
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms679284(v=vs.85).aspx
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CONTEXT
+	public struct CONTEXT(uint flags = 0u)
 	{
 		/// <summary/>
-		public uint ContextFlags;
+		public uint ContextFlags = flags;
 
 		/// <summary/>
 		public uint Dr0;
@@ -480,121 +484,6 @@ public static partial class Kernel32
 
 		// Retrieved by CONTEXT_SEGMENTS
 		/// <summary/>
-
-		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net45)'
-		Before:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		After:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		*/
-
-		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net48)'
-		Before:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		After:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		*/
-
-		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net6.0)'
-		Before:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		After:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		*/
-
-		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (netstandard2.0)'
-		Before:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		After:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		*/
-
-		/* Unmerged change from project 'Vanara.PInvoke.Kernel32 (net7.0)'
-		Before:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		After:
-				public uint SegGs;
-
-				/// <summary/>
-				public uint SegFs;
-
-				/// <summary/>
-				public uint SegEs;
-
-				/// <summary/>
-		*/
 		public uint SegGs;
 
 		/// <summary/>
@@ -647,7 +536,7 @@ public static partial class Kernel32
 		// Retrieved by CONTEXT_EXTENDED_REGISTERS
 		/// <summary/>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 512)]
-		public byte[] ExtendedRegisters;
+		public byte[] ExtendedRegisters = new byte[512];
 
 		/// <summary>Represents the 80387 save area on WOW64. Refer to the header file WinNT.h for the definition of this structure.</summary>
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms681671(v=vs.85).aspx
@@ -655,7 +544,6 @@ public static partial class Kernel32
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FLOATING_SAVE_AREA
 		{
-
 			/// <summary/>
 			public int ControlWord;
 
@@ -684,10 +572,6 @@ public static partial class Kernel32
 			/// <summary/>
 			public int Cr0NpxState;
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="CONTEXT"/> struct.</summary>
-		/// <param name="flags">The context flags.</param>
-		public CONTEXT(uint flags) : this() { ContextFlags = flags; ExtendedRegisters = new byte[512]; }
 	}
 
 	/// <summary/>
@@ -1034,15 +918,15 @@ public static partial class Kernel32
 	// PERFORMANCE_DATA, *PPERFORMANCE_DATA; https://msdn.microsoft.com/en-us/library/windows/desktop/dd796401(v=vs.85).aspx
 	[PInvokeData("Winnt.h", MSDNShortId = "dd796401")]
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct PERFORMANCE_DATA
+	public struct PERFORMANCE_DATA()
 	{
 		private const int MAX_HW_COUNTERS = 16;
 
 		/// <summary>The size of this structure.</summary>
-		public ushort Size;
+		public ushort Size = (ushort)Marshal.SizeOf<PERFORMANCE_DATA>();
 
 		/// <summary>The version of this structure. Must be set to PERFORMANCE_DATA_VERSION.</summary>
-		public byte Version;
+		public byte Version = PERFORMANCE_DATA_VERSION;
 
 		/// <summary>
 		/// The number of array elements in the <c>HwCounters</c> array that contain hardware counter data. A value of 3 means that the
@@ -1075,10 +959,10 @@ public static partial class Kernel32
 		/// contain the counter data for that counter.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_HW_COUNTERS)]
-		public HARDWARE_COUNTER_DATA[] HwCounters;
+		public HARDWARE_COUNTER_DATA[] HwCounters = new HARDWARE_COUNTER_DATA[MAX_HW_COUNTERS];
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly PERFORMANCE_DATA Default = new() { Size = (ushort)Marshal.SizeOf(typeof(PERFORMANCE_DATA)), Version = PERFORMANCE_DATA_VERSION };
+		public static readonly PERFORMANCE_DATA Default = new();
 	}
 
 	/// <summary>The <c>SECURITY_CAPABILITIES</c> structure defines the security capabilities of the app container.</summary>
@@ -1106,40 +990,33 @@ public static partial class Kernel32
 	/// <para>Specifies attributes for a user-mode scheduling (UMS) worker thread.</para>
 	/// <para>This structure is used with the UpdateProcThreadAttribute function.</para>
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="UMS_CREATE_THREAD_ATTRIBUTES"/> struct.</remarks>
+	/// <param name="ctx">
+	/// A UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
+	/// </param>
+	/// <param name="completionList">
+	/// A UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created worker thread is
+	/// queued to the specified completion list.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-ums_create_thread_attributes typedef struct
 	// _UMS_CREATE_THREAD_ATTRIBUTES { DWORD UmsVersion; PVOID UmsContext; PVOID UmsCompletionList; } UMS_CREATE_THREAD_ATTRIBUTES, *PUMS_CREATE_THREAD_ATTRIBUTES;
 	[PInvokeData("winnt.h", MSDNShortId = "5d3e1721-c439-49bb-9cb6-8386fa8aaf50")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct UMS_CREATE_THREAD_ATTRIBUTES
+	public struct UMS_CREATE_THREAD_ATTRIBUTES(PUMS_CONTEXT ctx = default, PUMS_COMPLETION_LIST completionList = default)
 	{
 		/// <summary>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION</c>.</summary>
-		public uint UmsVersion;
+		public uint UmsVersion = UMS_VERSION;
 
 		/// <summary>
 		/// A pointer to a UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
 		/// </summary>
-		public PUMS_CONTEXT UmsContext;
+		public PUMS_CONTEXT UmsContext = ctx;
 
 		/// <summary>
 		/// A pointer to a UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created
 		/// worker thread is queued to the specified completion list.
 		/// </summary>
-		public PUMS_COMPLETION_LIST UmsCompletionList;
-
-		/// <summary>Initializes a new instance of the <see cref="UMS_CREATE_THREAD_ATTRIBUTES"/> struct.</summary>
-		/// <param name="ctx">
-		/// A UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
-		/// </param>
-		/// <param name="completionList">
-		/// A UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created worker thread is
-		/// queued to the specified completion list.
-		/// </param>
-		public UMS_CREATE_THREAD_ATTRIBUTES(PUMS_CONTEXT ctx, PUMS_COMPLETION_LIST completionList)
-		{
-			UmsVersion = UMS_VERSION;
-			UmsContext = ctx;
-			UmsCompletionList = completionList;
-		}
+		public PUMS_COMPLETION_LIST UmsCompletionList = completionList;
 	}
 
 	/// <summary/>
@@ -1376,7 +1253,7 @@ public static partial class Kernel32
 		/// </summary>
 		public byte BaseMid;
 
-		private ushort Flags;
+		private BitField<ushort> Flags;
 
 		/// <summary>
 		/// <para>The high bits (24-31) of the base address of the segment.</para>
@@ -1386,36 +1263,36 @@ public static partial class Kernel32
 		/// <summary>
 		/// <para>The type of segment. This member can be one of the following values:</para>
 		/// </summary>
-		public byte Type { get => GetBits((byte)Flags, 0, 5); set => SetBits(ref Flags, 0, 5, value); }
+		public byte Type { get => (byte)Flags[0..4]; set => Flags[0..4] = value; }
 
 		/// <summary>
 		/// <para>
 		/// The privilege level of the descriptor. This member is an integer value in the range 0 (most privileged) through 3 (least privileged).
 		/// </para>
 		/// </summary>
-		public byte Dpl { get => GetBits((byte)Flags, 5, 2); set => SetBits(ref Flags, 5, 2, value); }
+		public byte Dpl { get => (byte)Flags[5..6]; set => Flags[5..6] = value; }
 
 		/// <summary>
 		/// <para>The present flag. This member is 1 if the segment is present in physical memory or 0 if it is not.</para>
 		/// </summary>
-		public bool Pres { get => GetBit(Flags, 7); set => SetBit(ref Flags, 7, value); }
+		public bool Pres { get => Flags[7]; set => Flags[7] = value; }
 
 		/// <summary>
 		/// <para>The high bits (16â€“19) of the address of the last byte in the segment.</para>
 		/// </summary>
-		public byte LimitHi { get => GetBits((byte)Flags, 8, 4); set => SetBits(ref Flags, 8, 4, value); }
+		public byte LimitHi { get => (byte)Flags[8..11]; set => Flags[8..11] = value; }
 
 		/// <summary>
 		/// <para>
 		/// The space that is available to system programmers. This member might be used for marking segments in some system-specific way.
 		/// </para>
 		/// </summary>
-		public bool Sys { get => GetBit(Flags, 12); set => SetBit(ref Flags, 12, value); }
+		public bool Sys { get => Flags[12]; set => Flags[12] = value; }
 
 		/// <summary>
 		/// <para>Reserved.</para>
 		/// </summary>
-		public bool Reserved_0 { get => GetBit(Flags, 13); set => SetBit(ref Flags, 13, value); }
+		public bool Reserved_0 { get => Flags[13]; set => Flags[13] = value; }
 
 		/// <summary>
 		/// <para>
@@ -1426,12 +1303,12 @@ public static partial class Kernel32
 		/// If the segment is a code segment, this member contains 1. The segment runs with the default (native mode) instruction set.
 		/// </para>
 		/// </summary>
-		public bool Default_Big { get => GetBit(Flags, 14); set => SetBit(ref Flags, 14, value); }
+		public bool Default_Big { get => Flags[14]; set => Flags[14] = value; }
 
 		/// <summary>
 		/// <para>The granularity. This member contains 0 if the segment is byte granular, 1 if the segment is page granular.</para>
 		/// </summary>
-		public bool Granularity { get => GetBit(Flags, 15); set => SetBit(ref Flags, 15, value); }
+		public bool Granularity { get => Flags[15]; set => Flags[15] = value; }
 	}
 
 	/// <summary>Used by thread context functions.</summary>
@@ -1516,12 +1393,12 @@ public static partial class Kernel32
 	// ARM64_NT_NEON128 V[32]; DWORD Fpcr; DWORD Fpsr; DWORD Bcr[ARM64_MAX_BREAKPOINTS]; DWORD64 Bvr[ARM64_MAX_BREAKPOINTS]; DWORD
 	// Wcr[ARM64_MAX_WATCHPOINTS]; DWORD64 Wvr[ARM64_MAX_WATCHPOINTS]; } ARM64_NT_CONTEXT, *PARM64_NT_CONTEXT;
 	[PInvokeData("winnt.h", MSDNShortId = "a6c201b3-4402-4de4-89c7-e6e2fbcd27f7")]
-	public class SafeCONTEXT : SafeHandle
+	public partial class SafeCONTEXT : SafeHANDLE
 	{
 		private readonly SafeHGlobalHandle buffer;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeCONTEXT"/> class.</summary>
-		/// <param name="contextFlags">The context flags.</param>
+		/// <param name="contextFlags">The context flags from values in the <see cref="CONTEXT_FLAG"/> class.</param>
 		public SafeCONTEXT(uint contextFlags) : base(IntPtr.Zero, true)
 		{
 			uint len = 0;
@@ -1567,7 +1444,7 @@ public static partial class Kernel32
 			handle.ToStructure<TContext>(buffer.Size - handle.ToInt32() + buffer.DangerousGetHandle().ToInt32());
 
 		/// <inheritdoc/>
-		protected override bool ReleaseHandle()
+		protected override bool InternalReleaseHandle()
 		{
 			buffer.Dispose();
 			SetHandle(IntPtr.Zero);

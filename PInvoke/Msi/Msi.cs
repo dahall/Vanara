@@ -800,6 +800,9 @@ public static partial class Msi
 		/// <summary>Returns an invalid handle by instantiating a <see cref="MSIHANDLE"/> object with zero.</summary>
 		public static MSIHANDLE NULL => new(0UL);
 
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
+
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0UL;
 

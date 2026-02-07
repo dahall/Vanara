@@ -1,4 +1,5 @@
-﻿using static Vanara.PInvoke.Gdi32;
+﻿using System.Collections.Generic;
+using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
 
@@ -52,7 +53,7 @@ public static partial class User32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winuser.h", MSDNShortId = "2d69e363-2b2c-450f-9069-488b80991217")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool MonitorEnumProc(IntPtr Arg1, IntPtr Arg2, PRECT Arg3, IntPtr Arg4);
+	public delegate bool MonitorEnumProc(HMONITOR Arg1, HDC Arg2, PRECT? Arg3, IntPtr Arg4);
 
 	/// <summary>Flags for <see cref="EnumDisplayDevices"/>.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "df3b493c-23d2-4996-9b79-86009efe3078")]
@@ -269,7 +270,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a7668c28-77c9-4373-ae1a-eab3cb98f866")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDisplayMonitors([Optional] HDC hdc, [Optional] PRECT? lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+	public static extern bool EnumDisplayMonitors([Optional] HDC hdc, [Optional] PRECT? lprcClip, MonitorEnumProc lpfnEnum, [Optional] IntPtr dwData);
 
 	/// <summary>
 	/// <para>
@@ -519,7 +520,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "025a89c2-4bbd-4c8b-8367-3735fb5b872a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMonitorInfo(HMONITOR hMonitor, ref MONITORINFO lpmi);
+	public static extern bool GetMonitorInfo([In] HMONITOR hMonitor, ref MONITORINFO lpmi);
 
 	/// <summary>The <c>GetMonitorInfo</c> function retrieves information about a display monitor.</summary>
 	/// <param name="hMonitor">A handle to the display monitor of interest.</param>
@@ -545,7 +546,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "025a89c2-4bbd-4c8b-8367-3735fb5b872a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMonitorInfo(HMONITOR hMonitor, ref MONITORINFOEX lpmi);
+	public static extern bool GetMonitorInfo([In] HMONITOR hMonitor, ref MONITORINFOEX lpmi);
 
 	/// <summary>The <c>MonitorFromPoint</c> function retrieves a handle to the display monitor that contains a specified point.</summary>
 	/// <param name="pt">A POINT structure that specifies the point of interest in virtual-screen coordinates.</param>
@@ -579,6 +580,7 @@ public static partial class User32
 	// DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c46281bf-7e45-4628-be92-736850225a9e")]
+	[return: AddAsCtor]
 	public static extern HMONITOR MonitorFromPoint(POINT pt, MonitorFlags dwFlags);
 
 	/// <summary>
@@ -619,6 +621,7 @@ public static partial class User32
 	// DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "81c3fffb-bbc9-4adb-bb6b-edd59f7a77b4")]
+	[return: AddAsCtor]
 	public static extern HMONITOR MonitorFromRect(in RECT lprc, MonitorFlags dwFlags);
 
 	/// <summary>
@@ -660,6 +663,7 @@ public static partial class User32
 	// DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "fe6505c9-b481-4fec-ae9d-995943234a3a")]
+	[return: AddAsCtor]
 	public static extern HMONITOR MonitorFromWindow(HWND hwnd, MonitorFlags dwFlags);
 
 	/// <summary>
@@ -674,7 +678,7 @@ public static partial class User32
 	// cbSize; RECT rcMonitor; RECT rcWork; DWORD dwFlags; } MONITORINFO, *LPMONITORINFO;
 	[PInvokeData("winuser.h", MSDNShortId = "ca8ec86f-69ba-4cf8-a867-67182a3d630d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct MONITORINFO
+	public struct MONITORINFO()
 	{
 		/// <summary>
 		/// <para>The size of the structure, in bytes.</para>
@@ -683,7 +687,7 @@ public static partial class User32
 		/// are passing to it.
 		/// </para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<MONITORINFO>();
 
 		/// <summary>
 		/// A RECT structure that specifies the display monitor rectangle, expressed in virtual-screen coordinates. Note that if the
@@ -716,7 +720,7 @@ public static partial class User32
 		/// <summary>Gets an instance of <see cref="MONITORINFO"/> structure with <see cref="cbSize"/> set correctly.</summary>
 		/// <returns>Returns new instance of properly initialized <see cref="MONITORINFO"/> structure.</returns>
 		/// <seealso cref="GetMonitorInfo(HMONITOR, ref MONITORINFO)"/>
-		public static MONITORINFO Default => new() { cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFO)) };
+		public static MONITORINFO Default => new();
 	}
 
 	/// <summary>
@@ -731,7 +735,7 @@ public static partial class User32
 	// szDevice[CCHDEVICENAME]; base_class tagMONITORINFO; } MONITORINFOEXA, *LPMONITORINFOEXA;
 	[PInvokeData("winuser.h", MSDNShortId = "f296ce29-3fc8-41c9-a201-56e222aa2219")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct MONITORINFOEX
+	public struct MONITORINFOEX()
 	{
 		/// <summary>
 		/// <para>The size of the structure, in bytes.</para>
@@ -740,7 +744,7 @@ public static partial class User32
 		/// are passing to it.
 		/// </para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<MONITORINFOEX>();
 
 		/// <summary>
 		/// A RECT structure that specifies the display monitor rectangle, expressed in virtual-screen coordinates. Note that if the
@@ -775,11 +779,11 @@ public static partial class User32
 		/// and so can save some bytes by using a MONITORINFO structure.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-		public string szDevice;
+		public string szDevice = "";
 
 		/// <summary>Gets an instance of <see cref="MONITORINFOEX"/> structure with <see cref="cbSize"/> set correctly.</summary>
 		/// <returns>Returns new instance of properly initialized <see cref="MONITORINFOEX"/> structure.</returns>
 		/// <seealso cref="GetMonitorInfo(HMONITOR, ref MONITORINFOEX)"/>
-		public static MONITORINFOEX Default => new() { cbSize = (uint)Marshal.SizeOf(typeof(MONITORINFOEX)) };
+		public static MONITORINFOEX Default => new();
 	}
 }

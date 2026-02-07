@@ -6,10 +6,10 @@ namespace Vanara.PInvoke.Tests;
 public class ElevPriv : IDisposable
 {
 	TOKEN_PRIVILEGES prevState;
-	SafeHTOKEN tok;
+	readonly SafeHTOKEN tok;
 
 	public ElevPriv(string priv, HPROCESS hProc = default, TokenAccess access = TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY) :
-		this(new[] { priv }, hProc, access)
+		this([priv], hProc, access)
 	{ }
 
 	public ElevPriv(string[] privs, HPROCESS hProc = default, TokenAccess access = TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY)
@@ -19,7 +19,7 @@ public class ElevPriv : IDisposable
 		ElevatePrivileges(privs);
 	}
 
-	public ElevPriv(string priv, HTOKEN hToken) : this(new[] { priv }, hToken) { }
+	public ElevPriv(string priv, HTOKEN hToken) : this([priv], hToken) { }
 
 	public ElevPriv(string[] privs, HTOKEN hToken)
 	{

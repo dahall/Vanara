@@ -697,7 +697,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "7295a55b-12c7-4ed0-a7a4-9ecee16afdec")]
 	public static extern HRESULT CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter,
-		CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+		CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>Creates an instance of a specific class on a specific computer.</para>
@@ -1355,7 +1355,7 @@ public static partial class Ole32
 	// riid, void **ppInterface );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "b82e32c0-840d-402e-90d5-ff678c51faf1")]
-	public static extern HRESULT CoGetCallContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppInterface);
+	public static extern HRESULT CoGetCallContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppInterface);
 
 	/// <summary>Returns a pointer to a <c>DWORD</c> that contains the apartment ID of the caller's thread.</summary>
 	/// <param name="lpdwTID">
@@ -1441,7 +1441,156 @@ public static partial class Ole32
 	// dwThreadId, REFIID iid, void **ppUnk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "d38161af-d662-4430-99b7-6563efda6f4e")]
-	public static extern HRESULT CoGetCancelObject(uint dwThreadId, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppUnk);
+	public static extern HRESULT CoGetCancelObject(uint dwThreadId, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppUnk);
+
+	/// <summary>
+	/// <para>
+	/// Provides a pointer to an interface on a class object associated with a specified CLSID. <c>CoGetClassObject</c> locates, and if
+	/// necessary, dynamically loads the executable code required to do this.
+	/// </para>
+	/// <para>
+	/// Call <c>CoGetClassObject</c> directly to create multiple objects through a class object for which there is a CLSID in the system
+	/// registry. You can also retrieve a class object from a specific remote computer. Most class objects implement the IClassFactory
+	/// interface. You would then call CreateInstance to create an uninitialized object. It is not always necessary to go through this
+	/// process however. To create a single object, call the CoCreateInstanceEx function, which allows you to create an instance on a
+	/// remote machine. This replaces the CoCreateInstance function, which can still be used to create an instance on a local computer.
+	/// Both functions encapsulate connecting to the class object, creating the instance, and releasing the class object. Two other
+	/// functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage, provide both instance creation on a remote system and object
+	/// activation. There are numerous functions and interface methods whose purpose is to create objects of a single type and provide a
+	/// pointer to an interface on that object.
+	/// </para>
+	/// </summary>
+	/// <param name="rclsid">The CLSID associated with the data and code that you will use to create the objects.</param>
+	/// <param name="dwClsContext">
+	/// The context in which the executable code is to be run. To enable a remote activation, include CLSCTX_REMOTE_SERVER. For more
+	/// information on the context values and their use, see the CLSCTX enumeration.
+	/// </param>
+	/// <param name="pvReserved">
+	/// A pointer to computer on which to instantiate the class object. If this parameter is <c>NULL</c>, the class object is
+	/// instantiated on the current computer or at the computer specified under the class's RemoteServerName key, according to the
+	/// interpretation of the dwClsCtx parameter. See COSERVERINFO.
+	/// </param>
+	/// <param name="riid">
+	/// Reference to the identifier of the interface, which will be supplied in ppv on successful return. This interface will be used to
+	/// communicate with the class object. Typically this value is IID_IClassFactory, although other values â€“ such as
+	/// IID_IClassFactory2 which supports a form of licensing â€“ are allowed. All OLE-defined interface IIDs are defined in the OLE
+	/// header files as IID_interfacename, where interfacename is the name of the interface.
+	/// </param>
+	/// <param name="ppv">
+	/// The address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppv contains the
+	/// requested interface pointer.
+	/// </param>
+	/// <returns>
+	/// <para>This function can return the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>S_OK</term>
+	/// <term>Location and connection to the specified class object was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>REGDB_E_CLASSNOTREG</term>
+	/// <term>
+	/// The CLSID is not properly registered. This error can also indicate that the value you specified in dwClsContext is not in the registry.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>E_NOINTERFACE</term>
+	/// <term>
+	/// Either the object pointed to by ppv does not support the interface identified by riid, or the QueryInterface operation on the
+	/// class object returned E_NOINTERFACE.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>REGDB_E_READREGDB</term>
+	/// <term>There was an error reading the registration database.</term>
+	/// </item>
+	/// <item>
+	/// <term>CO_E_DLLNOTFOUND</term>
+	/// <term>Either the in-process DLL or handler DLL was not found (depending on the context).</term>
+	/// </item>
+	/// <item>
+	/// <term>CO_E_APPNOTFOUND</term>
+	/// <term>The executable (.exe) was not found (CLSCTX_LOCAL_SERVER only).</term>
+	/// </item>
+	/// <item>
+	/// <term>E_ACCESSDENIED</term>
+	/// <term>There was a general access failure on load.</term>
+	/// </item>
+	/// <item>
+	/// <term>CO_E_ERRORINDLL</term>
+	/// <term>There is an error in the executable image.</term>
+	/// </item>
+	/// <item>
+	/// <term>CO_E_APPDIDNTREG</term>
+	/// <term>The executable was launched, but it did not register the class object (and it may have shut down).</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// A class object in OLE is an intermediate object that supports an interface that permits operations common to a group of objects.
+	/// The objects in this group are instances derived from the same object definition represented by a single CLSID. Usually, the
+	/// interface implemented on a class object is IClassFactory, through which you can create object instances of a given definition (class).
+	/// </para>
+	/// <para>
+	/// A call to <c>CoGetClassObject</c> creates, initializes, and gives the caller access (through a pointer to an interface specified
+	/// with the riid parameter) to the class object. The class object is the one associated with the CLSID that you specify in the
+	/// rclsid parameter. The details of how the system locates the associated code and data within a computer are transparent to the
+	/// caller, as is the dynamic loading of any code that is not already loaded.
+	/// </para>
+	/// <para>
+	/// If the class context is CLSCTX_REMOTE_SERVER, indicating remote activation is required, the COSERVERINFO structure provided in
+	/// the pServerInfo parameter allows you to specify the computer on which the server is located. For information on the algorithm
+	/// used to locate a remote server when pServerInfo is <c>NULL</c>, refer to the CLSCTX enumeration.
+	/// </para>
+	/// <para>There are two places to find a CLSID for a class:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// The registry holds an association between CLSIDs and file suffixes, and between CLSIDs and file signatures for determining the
+	/// class of an object.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>When an object is saved to persistent storage, its CLSID is stored with its data.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// To create and initialize embedded or linked OLE document objects, it is not necessary to call <c>CoGetClassObject</c> directly.
+	/// Instead, call the OleCreate or <c>OleCreate</c> XXX function. These functions encapsulate the entire object instantiation and
+	/// initialization process, and call, among other functions, <c>CoGetClassObject</c>.
+	/// </para>
+	/// <para>
+	/// The riid parameter specifies the interface the client will use to communicate with the class object. In most cases, this
+	/// interface is IClassFactory. This provides access to the CreateInstance method, through which the caller can then create an
+	/// uninitialized object of the kind specified in its implementation. All classes registered in the system with a CLSID must
+	/// implement IClassFactory.
+	/// </para>
+	/// <para>
+	/// In rare cases, however, you may want to specify some other interface that defines operations common to a set of objects. For
+	/// example, in the way OLE implements monikers, the interface on the class object is IParseDisplayName, used to transform the
+	/// display name of an object into a moniker.
+	/// </para>
+	/// <para>
+	/// The dwClsContext parameter specifies the execution context, allowing one CLSID to be associated with different pieces of code in
+	/// different execution contexts. The CLSCTX enumeration specifies the available context flags. <c>CoGetClassObject</c> consults (as
+	/// appropriate for the context indicated) both the registry and the class objects that are currently registered by calling the
+	/// CoRegisterClassObject function.
+	/// </para>
+	/// <para>
+	/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove
+	/// a class object's CLSID from the system registry.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
+	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
+	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -1590,156 +1739,7 @@ public static partial class Ole32
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
-
-	/// <summary>
-	/// <para>
-	/// Provides a pointer to an interface on a class object associated with a specified CLSID. <c>CoGetClassObject</c> locates, and if
-	/// necessary, dynamically loads the executable code required to do this.
-	/// </para>
-	/// <para>
-	/// Call <c>CoGetClassObject</c> directly to create multiple objects through a class object for which there is a CLSID in the system
-	/// registry. You can also retrieve a class object from a specific remote computer. Most class objects implement the IClassFactory
-	/// interface. You would then call CreateInstance to create an uninitialized object. It is not always necessary to go through this
-	/// process however. To create a single object, call the CoCreateInstanceEx function, which allows you to create an instance on a
-	/// remote machine. This replaces the CoCreateInstance function, which can still be used to create an instance on a local computer.
-	/// Both functions encapsulate connecting to the class object, creating the instance, and releasing the class object. Two other
-	/// functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage, provide both instance creation on a remote system and object
-	/// activation. There are numerous functions and interface methods whose purpose is to create objects of a single type and provide a
-	/// pointer to an interface on that object.
-	/// </para>
-	/// </summary>
-	/// <param name="rclsid">The CLSID associated with the data and code that you will use to create the objects.</param>
-	/// <param name="dwClsContext">
-	/// The context in which the executable code is to be run. To enable a remote activation, include CLSCTX_REMOTE_SERVER. For more
-	/// information on the context values and their use, see the CLSCTX enumeration.
-	/// </param>
-	/// <param name="pvReserved">
-	/// A pointer to computer on which to instantiate the class object. If this parameter is <c>NULL</c>, the class object is
-	/// instantiated on the current computer or at the computer specified under the class's RemoteServerName key, according to the
-	/// interpretation of the dwClsCtx parameter. See COSERVERINFO.
-	/// </param>
-	/// <param name="riid">
-	/// Reference to the identifier of the interface, which will be supplied in ppv on successful return. This interface will be used to
-	/// communicate with the class object. Typically this value is IID_IClassFactory, although other values â€“ such as
-	/// IID_IClassFactory2 which supports a form of licensing â€“ are allowed. All OLE-defined interface IIDs are defined in the OLE
-	/// header files as IID_interfacename, where interfacename is the name of the interface.
-	/// </param>
-	/// <param name="ppv">
-	/// The address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppv contains the
-	/// requested interface pointer.
-	/// </param>
-	/// <returns>
-	/// <para>This function can return the following values.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>S_OK</term>
-	/// <term>Location and connection to the specified class object was successful.</term>
-	/// </item>
-	/// <item>
-	/// <term>REGDB_E_CLASSNOTREG</term>
-	/// <term>
-	/// The CLSID is not properly registered. This error can also indicate that the value you specified in dwClsContext is not in the registry.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>E_NOINTERFACE</term>
-	/// <term>
-	/// Either the object pointed to by ppv does not support the interface identified by riid, or the QueryInterface operation on the
-	/// class object returned E_NOINTERFACE.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>REGDB_E_READREGDB</term>
-	/// <term>There was an error reading the registration database.</term>
-	/// </item>
-	/// <item>
-	/// <term>CO_E_DLLNOTFOUND</term>
-	/// <term>Either the in-process DLL or handler DLL was not found (depending on the context).</term>
-	/// </item>
-	/// <item>
-	/// <term>CO_E_APPNOTFOUND</term>
-	/// <term>The executable (.exe) was not found (CLSCTX_LOCAL_SERVER only).</term>
-	/// </item>
-	/// <item>
-	/// <term>E_ACCESSDENIED</term>
-	/// <term>There was a general access failure on load.</term>
-	/// </item>
-	/// <item>
-	/// <term>CO_E_ERRORINDLL</term>
-	/// <term>There is an error in the executable image.</term>
-	/// </item>
-	/// <item>
-	/// <term>CO_E_APPDIDNTREG</term>
-	/// <term>The executable was launched, but it did not register the class object (and it may have shut down).</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// A class object in OLE is an intermediate object that supports an interface that permits operations common to a group of objects.
-	/// The objects in this group are instances derived from the same object definition represented by a single CLSID. Usually, the
-	/// interface implemented on a class object is IClassFactory, through which you can create object instances of a given definition (class).
-	/// </para>
-	/// <para>
-	/// A call to <c>CoGetClassObject</c> creates, initializes, and gives the caller access (through a pointer to an interface specified
-	/// with the riid parameter) to the class object. The class object is the one associated with the CLSID that you specify in the
-	/// rclsid parameter. The details of how the system locates the associated code and data within a computer are transparent to the
-	/// caller, as is the dynamic loading of any code that is not already loaded.
-	/// </para>
-	/// <para>
-	/// If the class context is CLSCTX_REMOTE_SERVER, indicating remote activation is required, the COSERVERINFO structure provided in
-	/// the pServerInfo parameter allows you to specify the computer on which the server is located. For information on the algorithm
-	/// used to locate a remote server when pServerInfo is <c>NULL</c>, refer to the CLSCTX enumeration.
-	/// </para>
-	/// <para>There are two places to find a CLSID for a class:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// The registry holds an association between CLSIDs and file suffixes, and between CLSIDs and file signatures for determining the
-	/// class of an object.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>When an object is saved to persistent storage, its CLSID is stored with its data.</term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// To create and initialize embedded or linked OLE document objects, it is not necessary to call <c>CoGetClassObject</c> directly.
-	/// Instead, call the OleCreate or <c>OleCreate</c> XXX function. These functions encapsulate the entire object instantiation and
-	/// initialization process, and call, among other functions, <c>CoGetClassObject</c>.
-	/// </para>
-	/// <para>
-	/// The riid parameter specifies the interface the client will use to communicate with the class object. In most cases, this
-	/// interface is IClassFactory. This provides access to the CreateInstance method, through which the caller can then create an
-	/// uninitialized object of the kind specified in its implementation. All classes registered in the system with a CLSID must
-	/// implement IClassFactory.
-	/// </para>
-	/// <para>
-	/// In rare cases, however, you may want to specify some other interface that defines operations common to a set of objects. For
-	/// example, in the way OLE implements monikers, the interface on the class object is IParseDisplayName, used to transform the
-	/// display name of an object into a moniker.
-	/// </para>
-	/// <para>
-	/// The dwClsContext parameter specifies the execution context, allowing one CLSID to be associated with different pieces of code in
-	/// different execution contexts. The CLSCTX enumeration specifies the available context flags. <c>CoGetClassObject</c> consults (as
-	/// appropriate for the context indicated) both the registry and the class objects that are currently registered by calling the
-	/// CoRegisterClassObject function.
-	/// </para>
-	/// <para>
-	/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove
-	/// a class object's CLSID from the system registry.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
-	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO? pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO? pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Returns a pointer to an implementation of IObjContext for the current context.</summary>
 	/// <param name="pToken">A pointer to an implementation of IObjContext for the current context.</param>
@@ -1768,7 +1768,7 @@ public static partial class Ole32
 	// ULONG_PTR *pToken );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "1218d928-ca3f-4bdc-9a00-ea4c214175a9")]
-	public static extern HRESULT CoGetContextToken([MarshalAs(UnmanagedType.IUnknown)] out IObjContext pToken);
+	public static extern HRESULT CoGetContextToken([MarshalAs(UnmanagedType.Interface)] out IObjContext pToken);
 
 	/// <summary>Returns the logical thread identifier of the current physical thread.</summary>
 	/// <param name="pguid">A pointer to a GUID that contains the logical thread ID on return.</param>
@@ -1919,7 +1919,7 @@ public static partial class Ole32
 	// APTTYPE aptType, REFIID riid, void **ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "97a0e7da-e8bb-4bde-a8ba-35c90a1351d2")]
-	public static extern HRESULT CoGetDefaultContext(APTTYPE aptType, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT CoGetDefaultContext(APTTYPE aptType, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Unmarshals a buffer containing an interface pointer and releases the stream when an interface pointer has been marshaled from
@@ -2100,7 +2100,7 @@ public static partial class Ole32
 	// REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "97a0c6c3-a011-44dc-b428-aabdad7d4364")]
-	public static extern HRESULT CoGetObjectContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+	public static extern HRESULT CoGetObjectContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 	/// <summary>Returns the CLSID of the DLL that implements the proxy and stub for the specified interface.</summary>
 	/// <param name="riid">The interface whose proxy/stub CLSID is to be returned.</param>
@@ -3456,7 +3456,7 @@ public static partial class Ole32
 	/// this function, even when requesting small amounts of memory, because there is no guarantee that the memory will be allocated.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemalloc LPVOID CoTaskMemAlloc( SIZE_T cb );
+	// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemalloc LPVOID CoTaskMemAlloc( SizeT cb );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "c4cb588d-9482-4f90-a92e-75b604540d5c")]
 	public static extern IntPtr CoTaskMemAlloc(SizeT cb);
@@ -3508,7 +3508,7 @@ public static partial class Ole32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemrealloc LPVOID CoTaskMemRealloc( LPVOID pv,
-	// SIZE_T cb );
+	// SizeT cb );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "83014a3e-198d-4b4b-91aa-0c0804c8e1bf")]
 	public static extern IntPtr CoTaskMemRealloc(IntPtr pv, SizeT cb);
@@ -3770,7 +3770,7 @@ public static partial class Ole32
 	// CoWaitForMultipleHandles( DWORD dwFlags, DWORD dwTimeout, ULONG cHandles, LPHANDLE pHandles, LPDWORD lpdwindex );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "3eeecd34-aa94-4a48-8b41-167a71b52860")]
-	public static extern HRESULT CoWaitForMultipleHandles(COWAIT_FLAGS dwFlags, uint dwTimeout, uint cHandles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
+	public static extern HRESULT CoWaitForMultipleHandles(COWAIT_FLAGS dwFlags, uint dwTimeout, uint cHandles, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
 
 	/// <summary>
 	/// A replacement for CoWaitForMultipleHandles. This replacement API hides the options for <c>CoWaitForMultipleHandles</c> that are
@@ -3792,7 +3792,7 @@ public static partial class Ole32
 	// CoWaitForMultipleObjects( DWORD dwFlags, DWORD dwTimeout, ULONG cHandles, const HANDLE *pHandles, LPDWORD lpdwindex );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "7A14E4F4-20F0-43FF-8D64-9AAC34B8D56F")]
-	public static extern HRESULT CoWaitForMultipleObjects(CWMO_FLAGS dwFlags, uint dwTimeout, uint cHandles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
+	public static extern HRESULT CoWaitForMultipleObjects(CWMO_FLAGS dwFlags, uint dwTimeout, uint cHandles, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
 
 	/// <summary>
 	/// <para>
@@ -3989,7 +3989,7 @@ public static partial class Ole32
 	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "42c08149-c251-47f7-a81f-383975d7081c")]
-	public static extern HRESULT DllGetClassObject(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT DllGetClassObject(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// The <c>FreePropVariantArray</c> function calls PropVariantClear on each of the PROPVARIANT structures in the rgvars array to
@@ -4013,7 +4013,7 @@ public static partial class Ole32
 	// FreePropVariantArray( ULONG cVariants, PROPVARIANT *rgvars );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "2eefb57e-9311-46e1-9eed-e25aa3b5afaa")]
-	public static extern HRESULT FreePropVariantArray(uint cVariants, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[]? rgvars);
+	public static extern HRESULT FreePropVariantArray(uint cVariants, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[]? rgvars);
 
 	/// <summary>
 	/// The <c>GetHGlobalFromStream</c> function retrieves the global memory handle to a stream that was created through a call to the

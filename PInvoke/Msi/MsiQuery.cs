@@ -1126,7 +1126,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msienumcomponentcostsa UINT MsiEnumComponentCostsA(
-	// MSIHANDLE hInstall, LPCSTR szComponent, DWORD dwIndex, INSTALLSTATE iState, LPSTR szDriveBuf, LPDWORD pcchDriveBuf, LPINT piCost,
+	// MSIHANDLE hInstall, LPCSTR szComponent, DWORD dwIndex, INSTALLSTATE iState, StrPtrAnsi szDriveBuf, LPDWORD pcchDriveBuf, LPINT piCost,
 	// LPINT piTempCost );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiEnumComponentCostsA")]
@@ -1239,7 +1239,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msiformatrecorda UINT MsiFormatRecordA( MSIHANDLE
-	// hInstall, MSIHANDLE hRecord, LPSTR szResultBuf, LPDWORD pcchResultBuf );
+	// hInstall, MSIHANDLE hRecord, StrPtrAnsi szResultBuf, LPDWORD pcchResultBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiFormatRecordA")]
 	public static extern Win32Error MsiFormatRecord([Optional] MSIHANDLE hInstall, MSIHANDLE hRecord,
@@ -1898,7 +1898,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msigetpropertya UINT MsiGetPropertyA( MSIHANDLE hInstall,
-	// LPCSTR szName, LPSTR szValueBuf, LPDWORD pcchValueBuf );
+	// LPCSTR szName, StrPtrAnsi szValueBuf, LPDWORD pcchValueBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiGetPropertyA")]
 	public static extern Win32Error MsiGetProperty(MSIHANDLE hInstall, [MarshalAs(UnmanagedType.LPTStr)] string szName,
@@ -1940,7 +1940,7 @@ public static partial class Msi
 	/// <para>If the function fails, you can obtain extended error information by using MsiGetLastErrorRecord.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msigetsourcepatha UINT MsiGetSourcePathA( MSIHANDLE
-	// hInstall, LPCSTR szFolder, LPSTR szPathBuf, LPDWORD pcchPathBuf );
+	// hInstall, LPCSTR szFolder, StrPtrAnsi szPathBuf, LPDWORD pcchPathBuf );
 	[DllImport(Lib_Msi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiGetSourcePathA")]
 	public static extern Win32Error MsiGetSourcePath(MSIHANDLE hInstall, [MarshalAs(UnmanagedType.LPTStr)] string szFolder,
@@ -2027,7 +2027,7 @@ public static partial class Msi
 	/// <para>If the function fails, you can obtain extended error information by using MsiGetLastErrorRecord.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msigettargetpatha UINT MsiGetTargetPathA( MSIHANDLE
-	// hInstall, LPCSTR szFolder, LPSTR szPathBuf, LPDWORD pcchPathBuf );
+	// hInstall, LPCSTR szFolder, StrPtrAnsi szPathBuf, LPDWORD pcchPathBuf );
 	[DllImport(Lib_Msi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiGetTargetPathA")]
 	public static extern Win32Error MsiGetTargetPath(MSIHANDLE hInstall, [MarshalAs(UnmanagedType.LPTStr)] string szFolder,
@@ -2528,7 +2528,7 @@ public static partial class Msi
 	/// buffer by passing in a Null (value=0).
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msirecordgetstringa UINT MsiRecordGetStringA( MSIHANDLE
-	// hRecord, UINT iField, LPSTR szValueBuf, LPDWORD pcchValueBuf );
+	// hRecord, UINT iField, StrPtrAnsi szValueBuf, LPDWORD pcchValueBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiRecordGetStringA")]
 	public static extern Win32Error MsiRecordGetString(MSIHANDLE hRecord, uint iField, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder szValueBuf, ref uint pcchValueBuf);
@@ -3025,7 +3025,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msisummaryinfogetpropertya UINT
-	// MsiSummaryInfoGetPropertyA( MSIHANDLE hSummaryInfo, UINT uiProperty, PUINT puiDataType, LPINT piValue, FILETIME *pftValue, LPSTR
+	// MsiSummaryInfoGetPropertyA( MSIHANDLE hSummaryInfo, UINT uiProperty, PUINT puiDataType, LPINT piValue, FILETIME *pftValue, StrPtrAnsi
 	// szValueBuf, LPDWORD pcchValueBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiSummaryInfoGetPropertyA")]
@@ -3412,7 +3412,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msiviewgeterrorw MSIDBERROR MsiViewGetErrorW( MSIHANDLE
-	// hView, LPWSTR szColumnNameBuffer, LPDWORD pcchBuf );
+	// hView, StrPtrUni szColumnNameBuffer, LPDWORD pcchBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msiquery.h", MSDNShortId = "NF:msiquery.MsiViewGetErrorW")]
 	public static extern MSIDBERROR MsiViewGetError(MSIHANDLE hView, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder szColumnNameBuffer, ref uint pcchBuf);

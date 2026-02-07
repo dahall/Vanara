@@ -292,7 +292,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </param>
 	/// <param name="szCurDir">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A buffer that receives the path to a current version of the file being installed. The path is a zero-terminated string. If a
 	/// current version is not installed, the buffer will contain a zero-length string. The buffer should be at least <c>_MAX_PATH</c>
@@ -309,7 +309,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </param>
 	/// <param name="szDestDir">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A buffer that receives the path to the installation location recommended by <c>VerFindFile</c>. The path is a zero-terminated
 	/// string. The buffer should be at least <c>_MAX_PATH</c> characters long, although this is not required.
@@ -375,7 +375,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winver/nf-winver-verfindfilea DWORD VerFindFileA( DWORD uFlags, LPCSTR
-	// szFileName, LPCSTR szWinDir, LPCSTR szAppDir, LPSTR szCurDir, PUINT puCurDirLen, LPSTR szDestDir, PUINT puDestDirLen );
+	// szFileName, LPCSTR szWinDir, LPCSTR szAppDir, StrPtrAnsi szCurDir, PUINT puCurDirLen, StrPtrAnsi szDestDir, PUINT puDestDirLen );
 	[DllImport(Lib_Version, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winver.h", MSDNShortId = "NF:winver.VerFindFileA")]
 	public static extern VFF VerFindFile(VFFF uFlags, [MarshalAs(UnmanagedType.LPTStr)] string szFileName,
@@ -436,7 +436,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </param>
 	/// <param name="szTmpFile">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The name of a temporary copy of the source file. The buffer should be at least <c>_MAX_PATH</c> characters long, although this
 	/// is not required, and should be empty on input.
@@ -599,7 +599,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winver/nf-winver-verinstallfilea DWORD VerInstallFileA( DWORD uFlags, LPCSTR
-	// szSrcFileName, LPCSTR szDestFileName, LPCSTR szSrcDir, LPCSTR szDestDir, LPCSTR szCurDir, LPSTR szTmpFile, PUINT puTmpFileLen );
+	// szSrcFileName, LPCSTR szDestFileName, LPCSTR szSrcDir, LPCSTR szDestDir, LPCSTR szCurDir, StrPtrAnsi szTmpFile, PUINT puTmpFileLen );
 	[DllImport(Lib_Version, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winver.h", MSDNShortId = "NF:winver.VerInstallFileA")]
 	public static extern VIF VerInstallFile(VIFF uFlags, [MarshalAs(UnmanagedType.LPTStr)] string szSrcFileName,
@@ -617,7 +617,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </param>
 	/// <param name="szLang">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The language specified by the wLang parameter.</para>
 	/// </param>
 	/// <param name="cchLang">
@@ -649,7 +649,7 @@ public static partial class VersionDll
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winver/nf-winver-verlanguagenamea DWORD VerLanguageNameA( DWORD wLang, LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winver/nf-winver-verlanguagenamea DWORD VerLanguageNameA( DWORD wLang, StrPtrAnsi
 	// szLang, DWORD cchLang );
 	[DllImport(Lib_Version, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winver.h", MSDNShortId = "NF:winver.VerLanguageNameA")]

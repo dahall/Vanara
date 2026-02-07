@@ -80,6 +80,80 @@ public static class WallpaperManager
 
 	private static IDesktopWallpaper Wallpaper => pWallpaper?.Item ?? (pWallpaper = ComReleaserFactory.Create(new IDesktopWallpaper())).Item;
 
+#if NET5_0_OR_GREATER || NETCOREAPP3_1
+	/// <summary>Serializes the current wallpaper settings to a JSON string.</summary>
+	/// <remarks>
+	/// Use this method to obtain a snapshot of the wallpaper settings in a format suitable for storage or transmission. The output string can be
+	/// deserialized later to restore the settings.
+	/// </remarks>
+	/// <param name="jsonSettings">When this method returns, contains a JSON-formatted string representing the current wallpaper settings.</param>
+	public static void CaptureSettings(out string jsonSettings)
+	{
+		WallpaperSettings ws = new()
+		{
+			Status = Enabled ? Status : 0,
+			BackgroundColor = BackgroundColor,
+			Fit = Wallpaper.GetPosition()
+		};
+		if (Enabled)
+		{
+			if (Status.IsFlagSet(DESKTOP_SLIDESHOW_STATE.DSS_SLIDESHOW))
+			{
+				ws.Slideshow = [.. Slideshow.Images.Select(i => i.FileSystemPath!)];
+				Wallpaper.GetSlideshowOptions(out var o, out var t);
+				ws.Options = o;
+				ws.Tick = t;
+			}
+			else if (Status.IsFlagSet(DESKTOP_SLIDESHOW_STATE.DSS_ENABLED))
+			{
+				switch ((int)Wallpaper.GetWallpaper(null, out var path))
+				{
+					case HRESULT.S_OK:
+						ws.Wallpapers.Add(string.Empty, path);
+						break;
+					case HRESULT.S_FALSE:
+						foreach (var m in Monitors.Where(m => !string.IsNullOrEmpty(m.Id)))
+							ws.Wallpapers.Add(m.Id!, m.ImagePath);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		jsonSettings = System.Text.Json.JsonSerializer.Serialize(ws, new System.Text.Json.JsonSerializerOptions() { WriteIndented = true });
+	}
+
+	/// <summary>Applies wallpaper and slideshow settings from a JSON-encoded configuration string.</summary>
+	/// <remarks>
+	/// This method updates the desktop wallpaper, background color, position, and slideshow options based on the provided settings. If the
+	/// JSON string is invalid or does not match the expected format, an exception may be thrown during deserialization.
+	/// </remarks>
+	/// <param name="jsonSettings">
+	/// A JSON string that represents the wallpaper settings to apply. The string must be a valid serialization of a WallpaperSettings object.
+	/// </param>
+	public static void ApplySettings(string jsonSettings)
+	{
+		var ws = System.Text.Json.JsonSerializer.Deserialize<WallpaperSettings>(jsonSettings);
+		Wallpaper.Enable(ws!.Status != 0);
+		Wallpaper.SetBackgroundColor(ws.BackgroundColor);
+		Wallpaper.SetPosition(ws.Fit);
+		if (ws.Status != 0)
+		{
+			if (ws.Status.IsFlagSet(DESKTOP_SLIDESHOW_STATE.DSS_SLIDESHOW) && ws.Slideshow.Count > 0)
+			{
+				using ShellItemArray sia = new(ws.Slideshow.Select(ShellItem.Open));
+				Wallpaper.SetSlideshow(sia.IShellItemArray!);
+				Wallpaper.SetSlideshowOptions(ws.Options, ws.Tick);
+			}
+			else if (ws.Wallpapers.Count > 0)
+			{
+				foreach (var kv in ws.Wallpapers)
+					Wallpaper.SetWallpaper(kv.Key == string.Empty ? null : kv.Key, kv.Value);
+			}
+		}
+	}
+#endif
+
 	/// <summary>Sets the wallpaper to a single picture.</summary>
 	/// <param name="imagePath">The full path to the image file. This file must exist and be a picture format (jpg, gif, etc.).</param>
 	/// <param name="fit">The display option for the desktop wallpaper image.</param>
@@ -112,7 +186,7 @@ public static class WallpaperManager
 	{
 		if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException();
 		Enabled = true;
-		Slideshow.Images = new List<ShellItem>() { new ShellItem(folderPath) };
+		Slideshow.Images = [new ShellItem(folderPath)];
 		WallpaperFit = fit;
 		if (interval.HasValue) Slideshow.Interval = interval.Value;
 		if (shuffle.HasValue) Slideshow.Shuffle = shuffle.Value;
@@ -177,7 +251,7 @@ public static class WallpaperManager
 				}
 				catch
 				{
-					return new List<ShellItem>();
+					return [];
 				}
 			}
 
@@ -250,5 +324,17 @@ public static class WallpaperManager
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	/// <summary>Represents the settings for the desktop wallpaper.</summary>
+	private class WallpaperSettings()
+	{
+		public COLORREF BackgroundColor { get; set; } = 0;
+		public DESKTOP_WALLPAPER_POSITION Fit { get; set; } = 0;
+		public DESKTOP_SLIDESHOW_OPTIONS Options { get; set; } = 0;
+		public List<string> Slideshow { get; set; } = [];
+		public DESKTOP_SLIDESHOW_STATE Status { get; set; } = 0;
+		public uint Tick { get; set; } = 0;
+		public Dictionary<string, string> Wallpapers { get; set; } = [];
 	}
 }

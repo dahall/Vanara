@@ -127,17 +127,15 @@ public static partial class Mpr
 	public static IEnumerable<NETRESOURCE> WNetEnumResources([Optional] NETRESOURCE? root, NETRESOURCEScope dwScope = NETRESOURCEScope.RESOURCE_GLOBALNET,
 		NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_ANY, NETRESOURCEUsage dwUsage = 0, bool recurseContainers = false)
 	{
-		var err = WNetOpenEnum(dwScope, dwType, dwUsage, root, out var h);
-		if (err == Win32Error.ERROR_NOT_CONTAINER || err == Win32Error.ERROR_NO_NETWORK)
+		if (WNetOpenEnum(dwScope, dwType, dwUsage, root, out var h).Failed)
 			yield break;
-		else
-			err.WNetThrowIfFailed();
 
 		using (h)
 		{
 			var count = -1;
-			var sz = 4096U;
+			var sz = 0x4000U;
 			using var mem = new SafeHGlobalHandle((int)sz);
+			Win32Error err = 0;
 			do
 			{
 				mem.Zero();

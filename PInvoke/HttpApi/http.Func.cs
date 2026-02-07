@@ -1243,7 +1243,7 @@ public static partial class HttpApi
 	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpprepareurl HTTPAPI_LINKAGE ULONG HttpPrepareUrl( PVOID Reserved,
-	// ULONG Flags, [in] PCWSTR Url, [out] PWSTR *PreparedUrl );
+	// ULONG Flags, [in] PCWSTR Url, [out] StrPtrUni *PreparedUrl );
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpPrepareUrl")]
 	public static Win32Error HttpPrepareUrl(string Url, out string? PreparedUrl)
 	{
@@ -5820,11 +5820,27 @@ public static partial class HttpApi
 	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpprepareurl HTTPAPI_LINKAGE ULONG HttpPrepareUrl( PVOID Reserved,
-	// ULONG Flags, [in] PCWSTR Url, [out] PWSTR *PreparedUrl );
+	// ULONG Flags, [in] PCWSTR Url, [out] StrPtrUni *PreparedUrl );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpPrepareUrl")]
 	private static extern Win32Error HttpPrepareUrl([In, Optional] IntPtr Reserved, [Optional] uint Flags, [MarshalAs(UnmanagedType.LPWStr)] string Url,
 		out SafeHeapBlock PreparedUrl);
+
+	public partial struct HREQQUEUE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="HREQQUEUE"/> to <see cref="HREQQUEUEv1"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HREQQUEUEv1(HREQQUEUE h) => h.handle;
+	}
+
+	public partial class SafeHREQQUEUE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="HREQQUEUE"/> to <see cref="HREQQUEUEv1"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HREQQUEUEv1(SafeHREQQUEUE h) => h.handle;
+	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HTTP_SERVER_SESSION_ID"/> that is disposed using <see cref="HttpCloseServerSession"/>.</summary>
 	[StructLayout(LayoutKind.Sequential)]

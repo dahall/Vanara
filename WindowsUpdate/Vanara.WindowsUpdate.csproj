@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <ProjectExtensions>
-    <!--<SupportedDlls>WindowsUpdate.dll</SupportedDlls>-->
-    <Exclude>true</Exclude>
-  </ProjectExtensions>
   <PropertyGroup>
-    <Description>PInvoke API (methods, structures and constants) imported from Windows WindowsUpdate.dll.</Description>
+    <Description>Wrapper classes around the Windows Update API to simplify and ensure proper use.</Description>
     <AssemblyName>Vanara.WindowsUpdate</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WindowsUpdate</PackageTags>
-    <PackageReleaseNotes />
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+AutomaticUpdates, AutomaticUpdatesResults, AutomaticUpdatesSettings, BoolCriteria, Category, CategoryCollection, ContainsCriteria, DownloadProgress, DownloadResult, Ext, FluentQueryBase, ImageInformation, InclCriteria, InstallationBehavior, InstallationProgress, InstallationResult, QueryCondition, QueryOperator, SearchResult, SetCriteria, StringCollection, SystemInformation, Update, UpdateCollection, UpdateDownloadContent, UpdateDownloader, UpdateDownloadResult, UpdateException, UpdateHistory, UpdateHistoryEntry, UpdateIdentity, UpdateInstallationResult, UpdateInstaller, UpdateSearcher, UpdateService, UpdateServiceManager, UpdateSession, WebProxy, WindowsDriverUpdate, WindowsDriverUpdateEntry, WindowsUpdateAgentInfo
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\WUApi\Vanara.PInvoke.WUApi.csproj" />

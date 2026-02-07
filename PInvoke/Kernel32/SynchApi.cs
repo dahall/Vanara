@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Vanara.PInvoke;
@@ -32,7 +33,7 @@ public static partial class Kernel32
 	[PInvokeData("synchapi.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool InitOnceCallback(ref INIT_ONCE InitOnce, IntPtr Parameter, out IntPtr Context);
+	public delegate bool InitOnceCallback(ref INIT_ONCE InitOnce, [In, Out, Optional] IntPtr Parameter, [Optional] out IntPtr Context);
 
 	/// <summary>
 	/// An application-defined timer completion routine. Specify this address when calling the SetWaitableTimer function. The
@@ -51,7 +52,7 @@ public static partial class Kernel32
 	/// </param>
 	[PInvokeData("synchapi.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void TimerAPCProc([In] IntPtr lpArgToCompletionRoutine, uint dwTimerLowValue, uint dwTimerHighValue);
+	public delegate void TimerAPCProc([In, Optional] IntPtr lpArgToCompletionRoutine, uint dwTimerLowValue, uint dwTimerHighValue);
 
 	/// <summary>Used by <see cref="SleepConditionVariableSRW"/>.</summary>
 	[PInvokeData("synchapi.h")]
@@ -422,6 +423,7 @@ public static partial class Kernel32
 	// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682400(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682400")]
+	[return: AddAsCtor]
 	public static extern SafeEventHandle CreateEventEx([In, Optional] SECURITY_ATTRIBUTES? lpEventAttributes, [In, Optional] string? lpName,
 		[Optional] CREATE_EVENT_FLAGS dwFlags, ACCESS_MASK dwDesiredAccess);
 
@@ -477,6 +479,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI CreateMutex( _In_opt_ LPSECURITY_ATTRIBUTES lpMutexAttributes, _In_ BOOL bInitialOwner, _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682411(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682411")]
+	[return: AddAsCtor]
 	public static extern SafeMutexHandle CreateMutex([In, Optional] SECURITY_ATTRIBUTES? lpMutexAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInitialOwner,
 		[In, Optional] string? lpName);
 
@@ -538,6 +541,7 @@ public static partial class Kernel32
 	// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682418(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682418")]
+	[return: AddAsCtor]
 	public static extern SafeMutexHandle CreateMutexEx([In, Optional] SECURITY_ATTRIBUTES? lpMutexAttributes, [In, Optional] string? lpName,
 		[Optional] CREATE_MUTEX_FLAGS dwFlags, ACCESS_MASK dwDesiredAccess);
 
@@ -594,6 +598,7 @@ public static partial class Kernel32
 	// _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682438(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682438")]
+	[return: AddAsCtor]
 	public static extern SafeSemaphoreHandle CreateSemaphore([In, Optional] SECURITY_ATTRIBUTES? lpSemaphoreAttributes, int lInitialCount,
 		int lMaximumCount, [In, Optional] string? lpName);
 
@@ -654,6 +659,7 @@ public static partial class Kernel32
 	// lMaximumCount, _In_opt_ LPCTSTR lpName, _Reserved_ DWORD dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682446(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682446")]
+	[return: AddAsCtor]
 	public static extern SafeSemaphoreHandle CreateSemaphoreEx([In, Optional] SECURITY_ATTRIBUTES? lpSemaphoreAttributes, int lInitialCount,
 		int lMaximumCount, [In, Optional] string? lpName, [Optional] uint dwFlags, ACCESS_MASK dwDesiredAccess);
 
@@ -700,6 +706,7 @@ public static partial class Kernel32
 	// lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682492(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682492")]
+	[return: AddAsCtor]
 	public static extern SafeWaitableTimerHandle CreateWaitableTimer([In, Optional] SECURITY_ATTRIBUTES? lpTimerAttributes,
 		[MarshalAs(UnmanagedType.Bool)] bool bManualReset, [In, Optional] string? lpTimerName);
 
@@ -757,6 +764,7 @@ public static partial class Kernel32
 	// dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682494(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682494")]
+	[return: AddAsCtor]
 	public static extern SafeWaitableTimerHandle CreateWaitableTimerEx([In, Optional] SECURITY_ATTRIBUTES? lpTimerAttributes,
 		[In, Optional] string? lpTimerName, [Optional] CREATE_WAITABLE_TIMER_FLAG dwFlags, ACCESS_MASK dwDesiredAccess);
 
@@ -1236,7 +1244,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenEvent( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684305(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684305")]
-	public static extern SafeEventHandle OpenEvent(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+	public static extern SafeEventHandle OpenEvent(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 	/// <summary>Opens an existing named mutex object.</summary>
 	/// <param name="dwDesiredAccess">
@@ -1269,7 +1277,8 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenMutex( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684315(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684315")]
-	public static extern SafeMutexHandle OpenMutex(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+	[return: AddAsCtor]
+	public static extern SafeMutexHandle OpenMutex(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 	/// <summary>Opens an existing named semaphore object.</summary>
 	/// <param name="dwDesiredAccess">
@@ -1300,7 +1309,8 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenSemaphore( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684326(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684326")]
-	public static extern SafeSemaphoreHandle OpenSemaphore(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+	[return: AddAsCtor]
+	public static extern SafeSemaphoreHandle OpenSemaphore(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 	/// <summary>Opens an existing named waitable timer object.</summary>
 	/// <param name="dwDesiredAccess">
@@ -1331,7 +1341,8 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenWaitableTimer( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684337(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684337")]
-	public static extern SafeWaitableTimerHandle OpenWaitableTimer(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpTimerName);
+	[return: AddAsCtor]
+	public static extern SafeWaitableTimerHandle OpenWaitableTimer(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpTimerName);
 
 	/// <summary>
 	/// Sets the specified event object to the signaled state and then resets it to the nonsignaled state after releasing the appropriate
@@ -1351,7 +1362,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684914")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PulseEvent([In] SafeEventHandle hEvent);
+	public static extern bool PulseEvent([In] HEVENT hEvent);
 
 	/// <summary>Releases ownership of the specified mutex object.</summary>
 	/// <param name="hMutex">A handle to the mutex object. The <c>CreateMutex</c> or <c>OpenMutex</c> function returns this handle.</param>
@@ -1363,7 +1374,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685066")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReleaseMutex([In] SafeMutexHandle hMutex);
+	public static extern bool ReleaseMutex([In, AddAsMember] SafeMutexHandle hMutex);
 
 	/// <summary>Increases the count of the specified semaphore object by a specified amount.</summary>
 	/// <param name="hSemaphore">
@@ -1390,7 +1401,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685071")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReleaseSemaphore([In] SafeSemaphoreHandle hSemaphore, int lReleaseCount, out int lpPreviousCount);
+	public static extern bool ReleaseSemaphore([In, AddAsMember] SafeSemaphoreHandle hSemaphore, int lReleaseCount, out int lpPreviousCount);
 
 	/// <summary>Releases a slim reader/writer (SRW) lock that was acquired in exclusive mode.</summary>
 	/// <param name="SRWLock">A pointer to the SRW lock.</param>
@@ -1407,40 +1418,6 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685080")]
 	public static extern void ReleaseSRWLockShared(ref SRWLOCK SRWLock);
-
-	/// <summary>Sets the specified event object to the nonsignaled state.</summary>
-	/// <param name="hEvent">
-	/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-	/// <para>
-	/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI ResetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685081(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms685081")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ResetEvent([In] SafeEventHandle hEvent);
-
-	/// <summary>Sets the specified event object to the nonsignaled state.</summary>
-	/// <param name="hEvent">
-	/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-	/// <para>
-	/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI ResetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685081(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms685081")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ResetEvent([In] IntPtr hEvent);
 
 	/// <summary>Sets the specified event object to the nonsignaled state.</summary>
 	/// <param name="hEvent">
@@ -1475,40 +1452,6 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686197")]
 	public static extern uint SetCriticalSectionSpinCount(ref CRITICAL_SECTION lpCriticalSection, uint dwSpinCount);
-
-	/// <summary>Sets the specified event object to the signaled state.</summary>
-	/// <param name="hEvent">
-	/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-	/// <para>
-	/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI SetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686211(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetEvent([In] SafeEventHandle hEvent);
-
-	/// <summary>Sets the specified event object to the signaled state.</summary>
-	/// <param name="hEvent">
-	/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-	/// <para>
-	/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI SetEvent( _In_ HANDLE hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686211(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetEvent([In] IntPtr hEvent);
 
 	/// <summary>Sets the specified event object to the signaled state.</summary>
 	/// <param name="hEvent">
@@ -1651,7 +1594,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc? pfnCompletionRoutine,
+	public static extern bool SetWaitableTimerEx([In, AddAsMember] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc? pfnCompletionRoutine,
 		[In, Optional] IntPtr lpArgToCompletionRoutine, [In] REASON_CONTEXT WakeContext, uint TolerableDelay);
 
 	/// <summary>
@@ -1733,7 +1676,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc? pfnCompletionRoutine,
+	public static extern bool SetWaitableTimerEx([In, AddAsMember] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, [Optional] int lPeriod, [Optional] TimerAPCProc? pfnCompletionRoutine,
 		[In, Optional] IntPtr lpArgToCompletionRoutine, [Optional] IntPtr WakeContext, uint TolerableDelay);
 
 	/// <summary>
@@ -2027,7 +1970,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686870")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterWait([In] SafeRegisteredWaitHandle WaitHandle);
+	public static extern bool UnregisterWait([In, AddAsMember] SafeRegisteredWaitHandle WaitHandle);
 
 	/// <summary>
 	/// <para>Waits until one or all of the specified objects are in the signaled state or the time-out interval elapses.</para>
@@ -2339,7 +2282,7 @@ public static partial class Kernel32
 	/// TRUE if the wait succeeded. If the operation fails, the function returns FALSE. If the wait fails, call <c>GetLastError</c> to obtain
 	/// extended error information. In particular, if the operation times out, <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>.
 	/// </returns>
-	// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SIZE_T AddressSize, _In_opt_ DWORD
+	// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SizeT AddressSize, _In_opt_ DWORD
 	// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706898(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("SynchAPI.h", MSDNShortId = "hh706898")]
@@ -2434,7 +2377,7 @@ public static partial class Kernel32
 	/// Contains information about a power request. This structure is used by the <c>PowerCreateRequest</c> and <c>SetWaitableTimerEx</c> functions.
 	/// </summary>
 	// typedef struct _REASON_CONTEXT { ULONG Version; DWORD Flags; union { struct { HMODULE LocalizedReasonModule; ULONG LocalizedReasonId;
-	// ULONG ReasonStringCount; LPWSTR *ReasonStrings; } Detailed; LPWSTR SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
+	// ULONG ReasonStringCount; StrPtrUni *ReasonStrings; } Detailed; StrPtrUni SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
 	[PInvokeData("MinWinBase.h", MSDNShortId = "dd405536")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class REASON_CONTEXT : IDisposable
@@ -2507,6 +2450,7 @@ public static partial class Kernel32
 
 		void IDisposable.Dispose()
 		{
+			GC.SuppressFinalize(this);
 			if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_SIMPLE_STRING)
 				Marshal.FreeHGlobal(_reason.LocalizedReasonModule);
 			else if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_DETAILED_STRING)
@@ -2535,6 +2479,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an event that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HEVENT), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Event|Ex\b", "")]
 	public partial class SafeEventHandle
 	{
 		/// <summary>
@@ -2545,21 +2490,21 @@ public static partial class Kernel32
 		/// <para>If the function succeeds, the return value is <see langword="true"/>.</para>
 		/// <para>If the function fails, the return value is <see langword="false"/>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		public bool Pulse() => PulseEvent(this);
+		public bool Pulse() => PulseEvent(handle);
 
 		/// <summary>Sets this event object to the nonsignaled state.</summary>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		public bool Reset() => ResetEvent(this);
+		public bool Reset() => ResetEvent(handle);
 
 		/// <summary>Sets this event object to the signaled state.</summary>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		public bool Set() => SetEvent(this);
+		public bool Set() => SetEvent(handle);
 
 		/// <summary>Performs an implicit conversion from <see cref="EventWaitHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
@@ -2656,6 +2601,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Mutex|Ex\b", "")]
 	public partial class SafeMutexHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
@@ -2668,6 +2614,7 @@ public static partial class Kernel32
 	/// Provides a <see cref="SafeHandle"/> to a wait handle created by RegisterWaitForSingleObject and closed on disposal by UnregisterWaitEx.
 	/// </summary>
 	[AutoSafeHandle]
+	[AdjustAutoMethodNamePattern(@"WaitFor|Wait", "")]
 	public partial class SafeRegisteredWaitHandle
 	{
 		/// <summary>
@@ -2680,19 +2627,15 @@ public static partial class Kernel32
 		/// <value><c>true</c> if disposal wait for all functions to complete; otherwise, <c>false</c>.</value>
 		public bool WaitForAllFunctions { get; set; } = false;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeRegisteredWaitHandle"/>.</summary>
-		/// <param name="p">The handle pointer.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeRegisteredWaitHandle(IntPtr p) => new(p, false);
-
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() =>
-			UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? SafeEventHandle.InvalidHandle : SafeEventHandle.Null))
-				? true : CompletionEvent is not null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING && CompletionEvent.Wait();
+			UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? HEVENT.INVALID_HANDLE_VALUE : HEVENT.NULL)) ||
+			CompletionEvent is not null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING && CompletionEvent.Wait();
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a semaphore that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Semaphore|Ex\b", "")]
 	public partial class SafeSemaphoreHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
@@ -2703,6 +2646,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a waitable timer that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"WaitableTimer|Ex\b", "")]
 	public partial class SafeWaitableTimerHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>

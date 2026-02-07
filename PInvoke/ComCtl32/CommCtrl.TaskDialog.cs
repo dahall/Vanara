@@ -1165,7 +1165,7 @@ After:
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TASKDIALOGCONFIG"/> class setting the <see cref="cbSize"/> field properly.
 		/// </summary>
-		public TASKDIALOGCONFIG() => cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
+		public TASKDIALOGCONFIG() => cbSize = (uint)Marshal.SizeOf<TASKDIALOGCONFIG>();
 
 		/// <summary>
 		/// The string to be used for the task dialog title. If this parameter is NULL, the filename of the executable program is used.

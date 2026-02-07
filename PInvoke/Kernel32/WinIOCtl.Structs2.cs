@@ -1192,7 +1192,7 @@ public static partial class Kernel32
 			FileTypeID = fileTypeID;
 			NumFileTypeIDs = (uint)fileTypeID.Length;
 			Flags = flags;
-			Size = (uint)(Marshal.SizeOf(typeof(DEVICE_DSM_NOTIFICATION_PARAMETERS)) + Marshal.SizeOf(typeof(Guid)) * (NumFileTypeIDs - 1));
+			Size = (uint)(Marshal.SizeOf<DEVICE_DSM_NOTIFICATION_PARAMETERS>() + Marshal.SizeOf<Guid>() * (NumFileTypeIDs - 1));
 		}
 	}
 
@@ -1271,7 +1271,7 @@ public static partial class Kernel32
 		/// <summary>Specifies the total size of the data returned, in bytes. This may include data that follows this structure.</summary>
 		public uint Size;
 
-		private byte flags;
+		private BitField<byte> flags;
 
 		/// <summary>
 		/// <para>The thin provisioning–enabled status.</para>
@@ -1290,7 +1290,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool ThinProvisioningEnabled { get => BitHelper.GetBit(flags, 0); set => BitHelper.SetBit(ref flags, 0, value); }
+		public bool ThinProvisioningEnabled { get => flags[0]; set => flags[0] = value; }
 
 		/// <summary>
 		/// <para>Reads to unmapped regions return zeros.</para>
@@ -1309,7 +1309,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool ThinProvisioningReadZeros { get => BitHelper.GetBit(flags, 1); set => BitHelper.SetBit(ref flags, 1, value); }
+		public bool ThinProvisioningReadZeros { get => flags[1]; set => flags[1] = value; }
 
 		/// <summary>
 		/// <para>Deterministic read after trim support.</para>
@@ -1328,7 +1328,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public byte AnchorSupported { get => BitHelper.GetBits(flags, 2, 3); set => BitHelper.SetBits(ref flags, 2, 3, value); }
+		public byte AnchorSupported { get => flags[2..4]; set => flags[2..4] = value; }
 
 		/// <summary>
 		/// <para>The validity of unmap granularity alignment for the device.</para>
@@ -1347,7 +1347,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool UnmapGranularityAlignmentValid { get => BitHelper.GetBit(flags, 5); set => BitHelper.SetBit(ref flags, 5, value); }
+		public bool UnmapGranularityAlignmentValid { get => flags[5]; set => flags[5] = value; }
 
 		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
@@ -1994,16 +1994,16 @@ public static partial class Kernel32
 		/// no object identifier at that time. After copy operations, move operations, or other file operations, this may not be the
 		/// same as the object identifier of the volume on which the object presently resides.
 		/// </summary>
-		public byte[] BirthVolumeId { get => ExtendedInfo.Take(16).ToArray(); set => Buffer.BlockCopy(value, 0, ExtendedInfo, 0, 16); }
+		public byte[] BirthVolumeId { get => [.. ExtendedInfo.Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 0, 16); }
 
 		/// <summary>
 		/// The object identifier of the object at the time it was created. After copy operations, move operations, or other file
 		/// operations, this may not be the same as the <c>ObjectId</c> member at present.
 		/// </summary>
-		public byte[] BirthObjectId { get => ExtendedInfo.Skip(16).Take(16).ToArray(); set => Buffer.BlockCopy(value, 0, ExtendedInfo, 16, 16); }
+		public byte[] BirthObjectId { get => [.. ExtendedInfo.Skip(16).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 16, 16); }
 
 		/// <summary>Reserved; must be zero.</summary>
-		public byte[] DomainId { get => ExtendedInfo.Skip(32).Take(16).ToArray(); set => Buffer.BlockCopy(value, 0, ExtendedInfo, 32, 16); }
+		public byte[] DomainId { get => [.. ExtendedInfo.Skip(32).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 32, 16); }
 	}
 
 	/// <summary>Receives the volume information from a call to FSCTL_QUERY_ON_DISK_VOLUME_INFO.</summary>
@@ -5466,20 +5466,23 @@ public static partial class Kernel32
 	/// one of several structures depending on the value of the <c>PropertyId</c> member. If the <c>QueryType</c> member is set to
 	/// <c>PropertyExistsQuery</c>, then no structure is returned.
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="STORAGE_PROPERTY_QUERY"/> struct.</remarks>
+	/// <param name="propertyId">The property identifier.</param>
+	/// <param name="queryType">Type of the query.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-storage_property_query typedef struct
 	// _STORAGE_PROPERTY_QUERY { STORAGE_PROPERTY_ID PropertyId; STORAGE_QUERY_TYPE QueryType; BYTE AdditionalParameters[1]; }
 	// STORAGE_PROPERTY_QUERY, *PSTORAGE_PROPERTY_QUERY;
 	[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._STORAGE_PROPERTY_QUERY")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<STORAGE_PROPERTY_QUERY>), "*")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct STORAGE_PROPERTY_QUERY
+	public struct STORAGE_PROPERTY_QUERY(STORAGE_PROPERTY_ID propertyId, STORAGE_QUERY_TYPE queryType = Kernel32.STORAGE_QUERY_TYPE.PropertyStandardQuery)
 	{
 		/// <summary>
 		/// Indicates whether the caller is requesting a device descriptor, an adapter descriptor, a write cache property, a device
 		/// unique ID (DUID), or the device identifiers provided in the device's SCSI vital product data (VPD) page. For a list of the
 		/// property IDs that can be assigned to this member, see STORAGE_PROPERTY_ID.
 		/// </summary>
-		public STORAGE_PROPERTY_ID PropertyId;
+		public STORAGE_PROPERTY_ID PropertyId = propertyId;
 
 		/// <summary>
 		/// <para>Contains flags indicating the type of query to be performed as enumerated by the STORAGE_QUERY_TYPE enumeration.</para>
@@ -5498,21 +5501,11 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public STORAGE_QUERY_TYPE QueryType;
+		public STORAGE_QUERY_TYPE QueryType = queryType;
 
 		/// <summary>Contains an array of bytes that can be used to retrieve additional parameters for specific queries.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public byte[] AdditionalParameters;
-
-		/// <summary>Initializes a new instance of the <see cref="STORAGE_PROPERTY_QUERY"/> struct.</summary>
-		/// <param name="propertyId">The property identifier.</param>
-		/// <param name="queryType">Type of the query.</param>
-		public STORAGE_PROPERTY_QUERY(STORAGE_PROPERTY_ID propertyId, STORAGE_QUERY_TYPE queryType = STORAGE_QUERY_TYPE.PropertyStandardQuery)
-		{
-			PropertyId = propertyId;
-			QueryType = queryType;
-			AdditionalParameters = new byte[1];
-		}
+		public byte[] AdditionalParameters = new byte[1];
 	}
 
 	/// <summary>
@@ -7003,7 +6996,7 @@ public static partial class Kernel32
 	{
 		static readonly Lazy<long> propOffset = new(() => Marshal.OffsetOf(typeof(STORAGE_DEVICE_DESCRIPTOR), nameof(STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties)).ToInt64());
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(STORAGE_DEVICE_DESCRIPTOR));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_DESCRIPTOR>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
 

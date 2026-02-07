@@ -51,7 +51,8 @@ public static partial class CldApi
 	// CF_CONNECTION_KEY *ConnectionKey );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "287DA978-9797-48DF-9C90-BA53BB82475C")]
-	public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, MarshalAs(UnmanagedType.LPArray)] CF_CALLBACK_REGISTRATION[] CallbackTable,
+	public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath,
+		[In, MarshalAs(UnmanagedType.LPArray)] CF_CALLBACK_REGISTRATION[] CallbackTable,
 		[In, Optional] IntPtr CallbackContext, CF_CONNECT_FLAGS ConnectFlags, out CF_CONNECTION_KEY ConnectionKey);
 
 	/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
@@ -113,7 +114,7 @@ public static partial class CldApi
 	// Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "FDDE9CB0-E1A2-46D6-94E0-228495675271")]
-	public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out USN ConvertUsn, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out USN ConvertUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
 	/// <param name="FileHandle">Handle to the file or directory to be converted.</param>
@@ -203,7 +204,8 @@ public static partial class CldApi
 	// EntriesProcessed );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "96A6F62E-7F14-40B5-AB57-260DC9B1DF89")]
-	public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
+	public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
 		uint PlaceholderCount, CF_CREATE_FLAGS CreateFlags, out uint EntriesProcessed);
 
 	/// <summary>
@@ -240,7 +242,7 @@ public static partial class CldApi
 	// Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("CfApi.h")]
-	public static extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>
 	/// Dehydrates a placeholder file by ensuring that the specified byte range is not present on-disk in the placeholder. This is valid
@@ -549,7 +551,7 @@ public static partial class CldApi
 	// FileHandle, LARGE_INTEGER StartingOffset, LARGE_INTEGER Length, CF_HYDRATE_FLAGS HydrateFlags, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "4FFD7580-BF59-48D0-B6D7-516559914096")]
-	public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset = 0, long Length = -1, CF_HYDRATE_FLAGS HydrateFlags = 0, [In, Out] IntPtr Overlapped = default);
+	public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset = 0, long Length = -1, CF_HYDRATE_FLAGS HydrateFlags = 0, [In, Out] StructPointer<NativeOverlapped> Overlapped = default);
 
 	/// <summary>
 	/// Hydrates a placeholder file by ensuring that the specified byte range is present on-disk in the placeholder. This is valid for
@@ -766,7 +768,7 @@ public static partial class CldApi
 	// SyncRootPath, CF_SYNC_STATUS *SyncStatus );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "DC77D18A-CBF4-4172-815A-AB49A48D10B3")]
-	public static extern HRESULT CfReportSyncStatus([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, Optional] IntPtr SyncStatus);
+	public static extern HRESULT CfReportSyncStatus([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, Optional] StructPointer<NativeOverlapped> SyncStatus);
 
 	/// <summary>
 	/// Reverts a placeholder back to a regular file, stripping away all special characteristics such as the reparse tag, the file
@@ -906,7 +908,7 @@ public static partial class CldApi
 	// CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "8B279914-E23A-479B-8621-E83DE1978597")]
-	public static extern HRESULT CfSetPinState(HFILE FileHandle, CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfSetPinState(HFILE FileHandle, CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>
 	/// This sets the pin state of a placeholder, used to represent a user’s intent. Any application (not just the sync provider) can
@@ -1039,9 +1041,9 @@ public static partial class CldApi
 	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
-	public static extern HRESULT CfUpdatePlaceholder(HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In] IntPtr FileIdentity, uint FileIdentityLength,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
-		ref USN UpdateUsn, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
+		ref USN UpdateUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>Updates characteristics of the placeholder file or directory.</summary>
 	/// <param name="FileHandle">A handle to the file or directory whose metadata is to be updated.</param>
@@ -1109,9 +1111,80 @@ public static partial class CldApi
 	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
-	public static unsafe extern HRESULT CfUpdatePlaceholder(HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In] IntPtr FileIdentity, uint FileIdentityLength,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
-		ref USN UpdateUsn, [In, Out] NativeOverlapped* Overlapped);
+	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, [In, Optional] StructPointer<CF_FS_METADATA> FsMetadata, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
+		[In, Out, Optional] StructPointer<USN> UpdateUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
+
+	/// <summary>Updates characteristics of the placeholder file or directory.</summary>
+	/// <param name="FileHandle">A handle to the file or directory whose metadata is to be updated.</param>
+	/// <param name="FsMetadata">
+	/// File system metadata to be updated for the placeholder. Values of 0 for the metadata indicate there are no updates.
+	/// </param>
+	/// <param name="FileIdentity">
+	/// A user mode buffer that contains file or directory information supplied by the caller. Should not exceed 4KB in size.
+	/// </param>
+	/// <param name="FileIdentityLength">Length, in bytes, of the FileIdentity.</param>
+	/// <param name="DehydrateRangeArray">
+	/// A range of an existing placeholder that will no longer be considered valid after the call to <c>CfUpdatePlaceholder</c>.
+	/// </param>
+	/// <param name="DehydrateRangeCount">The count of a series of discrete DehydrateRangeArray partitions of placeholder data.</param>
+	/// <param name="UpdateFlags">Update flags for placeholders.</param>
+	/// <param name="UpdateUsn">
+	/// <para>
+	/// On input, UpdateUsn instructs the platform to only perform the update if the file still has the same USN value as the one passed
+	/// in. This serves a similar purpose to <c>CF_UPDATE_FLAG_VERIFY_IN_SYNC</c> but also encompasses local metadata changes.
+	/// </para>
+	/// <para>On return, UpdateUsn receives the final USN value after update actions were performed.</para>
+	/// </param>
+	/// <param name="Overlapped">
+	/// <para>
+	/// When specified and combined with an asynchronous FileHandle, Overlapped allows the platform to perform the
+	/// <c>CfUpdatePlaceholder</c> call asynchronously. See the Remarks for more details.
+	/// </para>
+	/// <para>If not specified, the platform will perform the API call synchronously, regardless of how the handle was created.</para>
+	/// </param>
+	/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+	/// <remarks>
+	/// <para>To update a placeholder:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// The placeholder to be updated must be contained in a registered sync root tree; it can be the sync root directory itself, or any
+	/// descendant directory; otherwise, the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_UNDER_SYNC_ROOT).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If dehydration is requested, the sync root must be registered with a valid hydration policy that is not
+	/// CF_HYDRATION_POLICY_ALWAYS_FULL; otherwise the call will be failed with HRESULT(ERROR_CLOUD_FILE_NOT_SUPPORTED).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>If dehydration is requested, the placeholder must not be pinned locally or the call with be failed with HRESULT(ERROR_CLOUD_FILE_PINNED).</term>
+	/// </item>
+	/// <item>
+	/// <term>If dehydration is requested, the placeholder must be in sync or the call with be failed with HRESULT(ERROR_CLOUD_FILE_NOT_IN_SYNC).</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The caller must have WRITE_DATA or WRITE_DAC access to the placeholder to be updated. Otherwise the operation will be failed
+	/// with HRESULT(ERROR_CLOUD_FILE_ACCESS_DENIED).
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If the API returns HRESULT_FROM_WIN32(ERROR_IO_PENDING) when using Overlapped asynchronously, the caller can then wait using GetOverlappedResult.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/cfapi/nf-cfapi-cfupdateplaceholder HRESULT CfUpdatePlaceholder( HANDLE
+	// FileHandle, const CF_FS_METADATA *FsMetadata, LPCVOID FileIdentity, DWORD FileIdentityLength, const CF_FILE_RANGE
+	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
+	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
+	[SuppressAutoGen]
+	public static unsafe extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, [In, Optional] CF_FS_METADATA* FsMetadata, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
+		[In, Out, Optional] USN* UpdateUsn, [In, Out, Optional] NativeOverlapped* Overlapped);
 
 	/// <summary>Updates the current status of the sync provider.</summary>
 	/// <param name="ConnectionKey">A connection key representing a communication channel with the sync filter.</param>

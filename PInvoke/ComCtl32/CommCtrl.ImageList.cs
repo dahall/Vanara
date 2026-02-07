@@ -933,7 +933,7 @@ public static partial class ComCtl32
 	/// </returns>
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h")]
-	public static extern HRESULT HIMAGELIST_QueryInterface([In] HIMAGELIST himl, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT HIMAGELIST_QueryInterface([In] HIMAGELIST himl, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>Get an image list interface from an image list handle.</summary>
 	/// <param name="himl">
@@ -948,12 +948,7 @@ public static partial class ComCtl32
 #if !NETSTANDARD2_0
 	public static TIntf HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl) => !himl.IsNull ? (TIntf)Marshal.GetTypedObjectForIUnknown((IntPtr)himl, typeof(TIntf)) : throw new ArgumentNullException(nameof(himl));
 #else
-	public static TIntf HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl)
-	{
-		if (himl.IsNull) throw new ArgumentNullException(nameof(himl));
-		HIMAGELIST_QueryInterface(himl, typeof(TIntf).GUID, out var ppv).ThrowIfFailed();
-		return (TIntf)ppv;
-	}
+	public static TIntf? HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl) where TIntf : class => HIMAGELIST_QueryInterface(himl, out TIntf? ppv).Succeeded ? ppv : throw new InvalidCastException();
 #endif
 
 	/// <summary>Get an image list handle from an image list interface.</summary>
@@ -1114,7 +1109,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_CoCreateInstance( _In_ REFCLSID rclsid, _In_opt_ const IUnknown *punkOuter, _In_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761518(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("CommonControls.h", MSDNShortId = "bb761518")]
-	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Copies images within a given image list.</summary>
 	/// <param name="himlDst">
@@ -2059,7 +2054,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_ReadEx( _In_ DWORD dwFlags, _In_ LPSTREAM pstm, _Out_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761562(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761562")]
-	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Removes an image from an image list.</summary>
 	/// <param name="himl">
@@ -2555,7 +2550,7 @@ public static partial class ComCtl32
 	{
 		/// <summary>Gets the IImageList interface for this handle.</summary>
 		/// <value>The interface.</value>
-		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle);
+		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle)!;
 
 		/// <summary>Gets a safe HIMAGELIST handle from an <see cref="IImageList"/> instance.</summary>
 		/// <param name="iil">An IImageList object.</param>

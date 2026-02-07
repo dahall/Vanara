@@ -535,7 +535,7 @@ public static partial class Gdi32
 		public BITMAPINFOHEADER(int width, int height, ushort bitCount = 32)
 			: this()
 		{
-			biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFO));
+			biSize = (uint)Marshal.SizeOf<BITMAPINFO>();
 			biWidth = width;
 			biHeight = height;
 			biPlanes = 1;
@@ -569,7 +569,7 @@ public static partial class Gdi32
 			// Initialize the fields in the BITMAPINFO structure.
 			return new()
 			{
-				biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFOHEADER)),
+				biSize = (uint)Marshal.SizeOf<BITMAPINFOHEADER>(),
 				biWidth = bmp.bmWidth,
 				biHeight = bmp.bmHeight,
 				biPlanes = bmp.bmPlanes,
@@ -587,7 +587,7 @@ public static partial class Gdi32
 		}
 
 		/// <summary>Gets the default value for this structure with size fields set appropriately.</summary>
-		public static readonly BITMAPINFOHEADER Default = new() { biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFOHEADER)) };
+		public static readonly BITMAPINFOHEADER Default = new() { biSize = (uint)Marshal.SizeOf<BITMAPINFOHEADER>() };
 	}
 
 	/// <summary>
@@ -1255,7 +1255,7 @@ public static partial class Gdi32
 		/// CreateDIBSection was called with a NULL value for its hSection parameter, causing the system to allocate memory for the
 		/// bitmap, the dshSection member will be NULL.
 		/// </summary>
-		public IntPtr dshSection;
+		public HSECTION dshSection;
 
 		/// <summary>
 		/// The offset to the bitmap's bit values within the file mapping object referenced by dshSection. If dshSection is NULL, the
@@ -1270,7 +1270,7 @@ public static partial class Gdi32
 		/// </summary>
 		public uint[] dsBitFields
 		{
-			get => new[] { dsBitField1, dsBitField2, dsBitField3 };
+			get => [dsBitField1, dsBitField2, dsBitField3];
 			set { dsBitField1 = value[0]; dsBitField2 = value[1]; dsBitField3 = value[2]; }
 		}
 
@@ -1282,7 +1282,7 @@ public static partial class Gdi32
 	public class SafeBITMAPINFO : SafeCoTaskMemStruct<BITMAPINFO>
 	{
 		private const int RGBQUADSZ = 4;
-		private static readonly int hdrSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
+		private static readonly int hdrSize = Marshal.SizeOf<BITMAPINFOHEADER>();
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="bmpInfo">The <see cref="BITMAPINFO"/> value.</param>
@@ -1330,7 +1330,7 @@ public static partial class Gdi32
 		/// </summary>
 		public ushort[] bmiColorBytes
 		{
-			get => handle.ToArray<ushort>((Size - hdrSize) / 2, hdrSize, Size) ?? new ushort[0];
+			get => handle.ToArray<ushort>((Size - hdrSize) / 2, hdrSize, Size) ?? [];
 			set
 			{
 				var reqSize = hdrSize + value.Length;
@@ -1362,7 +1362,7 @@ public static partial class Gdi32
 		/// </summary>
 		public RGBQUAD[] bmiColors
 		{
-			get => handle.ToArray<RGBQUAD>((Size - hdrSize) / RGBQUADSZ, hdrSize, Size) ?? new RGBQUAD[0];
+			get => handle.ToArray<RGBQUAD>((Size - hdrSize) / RGBQUADSZ, hdrSize, Size) ?? [];
 			set
 			{
 				var reqSize = hdrSize + value.Length * RGBQUADSZ;
@@ -1375,10 +1375,8 @@ public static partial class Gdi32
 		/// <summary>A BITMAPINFOHEADER structure that contains information about the dimensions of color format.</summary>
 		public BITMAPINFOHEADER bmiHeader { get => Value.bmiHeader; set => handle.Write(value, 0, Size); }
 
-#if ALLOWSPAN
 		/// <summary>A reference to the BITMAPINFOHEADER structure.</summary>
-		public ref BITMAPINFOHEADER bmiHeaderAsRef => ref AsRef().bmiHeader;
-#endif
+		public ref BITMAPINFOHEADER bmiHeaderAsRef => ref handle.AsRef<BITMAPINFOHEADER>();
 
 		/// <summary>
 		/// Specifies the number of bytes required by the structure. This value does not include the size of the color table or the size
@@ -1398,6 +1396,11 @@ public static partial class Gdi32
 		/// <typeparam name="T">The type of the header to get.</typeparam>
 		/// <returns>The requested header structure.</returns>
 		public T GetHeader<T>() where T : struct => handle.ToStructure<T>(Size);
+
+		/// <summary>Gets a reference to the header of the specified type <typeparamref name="T"/>.</summary>
+		/// <typeparam name="T">The type of the header to get.</typeparam>
+		/// <returns>The requested header structure reference.</returns>
+		public ref T GetHeaderAsRef<T>() where T : struct => ref handle.AsRef<T>();
 
 		/// <summary>Zero out all allocated memory.</summary>
 		public override void Zero() { base.Zero(); HeaderSize = hdrSize; }

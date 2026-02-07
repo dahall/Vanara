@@ -4045,7 +4045,7 @@ public static partial class AdvApi32
 	{
 		if (!CorrespondingTypeAttribute.CanGet<T, ACL_INFORMATION_CLASS>(out var c)) throw new ArgumentException("Cannot retrieve value of type T.");
 		using var mem = new SafeCoTaskMemHandle(12);
-		return GetAclInformation(pAcl, mem, (uint)Marshal.SizeOf(typeof(T)), c) ? mem.ToStructure<T>() : throw new Win32Exception();
+		return GetAclInformation(pAcl, mem, (uint)Marshal.SizeOf<T>(), c) ? mem.ToStructure<T>() : throw new Win32Exception();
 	}
 
 	/// <summary>The <c>GetKernelObjectSecurity</c> function retrieves a copy of the security descriptor that protects a kernel object.</summary>

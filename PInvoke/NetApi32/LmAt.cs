@@ -309,7 +309,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmat/ns-lmat-_at_enum typedef struct _AT_ENUM { DWORD JobId; DWORD_PTR
-	// JobTime; DWORD DaysOfMonth; UCHAR DaysOfWeek; UCHAR Flags; LPWSTR Command; } AT_ENUM, *PAT_ENUM, *LPAT_ENUM;
+	// JobTime; DWORD DaysOfMonth; UCHAR DaysOfWeek; UCHAR Flags; StrPtrUni Command; } AT_ENUM, *PAT_ENUM, *LPAT_ENUM;
 	[PInvokeData("lmat.h", MSDNShortId = "ed7c5171-b8aa-4a9a-8f31-4d914bcad0b1")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct AT_ENUM
@@ -391,7 +391,7 @@ public static partial class NetApi32
 		public AtJobFlags Flags;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that contains the name of the command, batch program, or binary file to execute.</para>
 		/// </summary>
 		public string Command;
@@ -411,7 +411,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmat/ns-lmat-_at_info typedef struct _AT_INFO { DWORD_PTR JobTime; DWORD
-	// DaysOfMonth; UCHAR DaysOfWeek; UCHAR Flags; LPWSTR Command; } AT_INFO, *PAT_INFO, *LPAT_INFO;
+	// DaysOfMonth; UCHAR DaysOfWeek; UCHAR Flags; StrPtrUni Command; } AT_INFO, *PAT_INFO, *LPAT_INFO;
 	[PInvokeData("lmat.h", MSDNShortId = "eb0bf696-53ca-432a-b04c-5e0b6a61a0fd")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct AT_INFO
@@ -516,7 +516,7 @@ public static partial class NetApi32
 		public AtJobFlags Flags;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that contains the name of the command, batch program, or binary file to execute.</para>
 		/// </summary>
 		public string Command;

@@ -1353,7 +1353,7 @@ public static partial class SearchApi
 		/// <para>Receives the name of the current catalog.</para>
 		/// </value>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-get_name HRESULT get_Name(
-		// LPWSTR *pszName );
+		// StrPtrUni *pszName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
 		string Name { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -1516,7 +1516,7 @@ public static partial class SearchApi
 		/// <para>The URL that is currently being indexed.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-urlbeingindexed HRESULT
-		// URLBeingIndexed( LPWSTR *pszUrl );
+		// URLBeingIndexed( StrPtrUni *pszUrl );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? URLBeingIndexed();
@@ -1587,7 +1587,7 @@ public static partial class SearchApi
 		// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
 		// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
 		[PInvokeData("searchapi.h")]
-		void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
+		void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="dwCookie">Type: <c>DWORD</c></param>
@@ -1671,7 +1671,7 @@ public static partial class SearchApi
 		/// <para>Receives the name of the current catalog.</para>
 		/// </value>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-get_name HRESULT get_Name(
-		// LPWSTR *pszName );
+		// StrPtrUni *pszName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
 		new string Name { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -1834,7 +1834,7 @@ public static partial class SearchApi
 		/// <para>The URL that is currently being indexed.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-urlbeingindexed HRESULT
-		// URLBeingIndexed( LPWSTR *pszUrl );
+		// URLBeingIndexed( StrPtrUni *pszUrl );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? URLBeingIndexed();
@@ -1905,7 +1905,7 @@ public static partial class SearchApi
 		// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
 		// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
 		[PInvokeData("searchapi.h")]
-		new void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
+		new void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="dwCookie">Type: <c>DWORD</c></param>
@@ -2930,7 +2930,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadwordbreaker HRESULT
 		// LoadWordBreaker( LCID lcid, REFIID riid, void **ppWordBreaker, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadWordBreaker(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppWordBreaker, out LCID pLcidUsed);
+		void LoadWordBreaker(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppWordBreaker, out LCID pLcidUsed);
 
 		/// <summary>Retrieves an interface to the word stemmer registered for the specified language code identifier (LCID).</summary>
 		/// <param name="lcid">
@@ -2952,7 +2952,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadstemmer HRESULT
 		// LoadStemmer( LCID lcid, REFIID riid, void **ppStemmer, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadStemmer(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStemmer, out LCID pLcidUsed);
+		void LoadStemmer(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStemmer, out LCID pLcidUsed);
 
 		/// <summary>
 		/// Determines whether the query token is a prefix of the document token, disregarding case, width, and (optionally) diacritics.
@@ -3014,7 +3014,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-getindexerversionstr HRESULT
-		// GetIndexerVersionStr( LPWSTR *ppszVersionString );
+		// GetIndexerVersionStr( StrPtrUni *ppszVersionString );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetIndexerVersionStr();
@@ -3089,7 +3089,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-get_proxyname HRESULT
-		// get_ProxyName( LPWSTR *ppszProxyName );
+		// get_ProxyName( StrPtrUni *ppszProxyName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010004)]
 		string ProxyName { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -3099,7 +3099,7 @@ public static partial class SearchApi
 		/// through the proxy server. This list is set by calling ISearchManager::SetProxy.
 		/// </summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives a pointer to the proxy bypass list that is stored in the indexer.</para>
 		/// </returns>
 		/// <remarks>
@@ -3107,7 +3107,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-get_bypasslist HRESULT
-		// get_BypassList( LPWSTR *ppszBypassList );
+		// get_BypassList( StrPtrUni *ppszBypassList );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010005)]
 		string BypassList { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -3253,7 +3253,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-getindexerversionstr HRESULT
-		// GetIndexerVersionStr( LPWSTR *ppszVersionString );
+		// GetIndexerVersionStr( StrPtrUni *ppszVersionString );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string GetIndexerVersionStr();
@@ -3328,7 +3328,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-get_proxyname HRESULT
-		// get_ProxyName( LPWSTR *ppszProxyName );
+		// get_ProxyName( StrPtrUni *ppszProxyName );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010004)]
 		new string ProxyName { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -3338,7 +3338,7 @@ public static partial class SearchApi
 		/// through the proxy server. This list is set by calling ISearchManager::SetProxy.
 		/// </summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives a pointer to the proxy bypass list that is stored in the indexer.</para>
 		/// </returns>
 		/// <remarks>
@@ -3346,7 +3346,7 @@ public static partial class SearchApi
 		/// files to re-index and how.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchmanager-get_bypasslist HRESULT
-		// get_BypassList( LPWSTR *ppszBypassList );
+		// get_BypassList( StrPtrUni *ppszBypassList );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010005)]
 		new string BypassList { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -4052,7 +4052,7 @@ public static partial class SearchApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/Searchapi/nf-searchapi-isearchqueryhelper-get_connectionstring HRESULT
-		// get_ConnectionString( LPWSTR *pszConnectionString );
+		// get_ConnectionString( StrPtrUni *pszConnectionString );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
 		string ConnectionString { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -4251,7 +4251,7 @@ public static partial class SearchApi
 		/// <para>A pointer to a null-terminated Unicode string containing a query in AQS or NQS.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives the address of a pointer to a SQL query string based on the query in the pszQuery parameter.</para>
 		/// </returns>
 		/// <remarks>
@@ -4276,7 +4276,7 @@ public static partial class SearchApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchqueryhelper-generatesqlfromuserquery
-		// HRESULT GenerateSQLFromUserQuery( LPCWSTR pszQuery, LPWSTR *ppszSQL );
+		// HRESULT GenerateSQLFromUserQuery( LPCWSTR pszQuery, StrPtrUni *ppszSQL );
 		[PInvokeData("searchapi.h")]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GenerateSQLFromUserQuery([In, MarshalAs(UnmanagedType.LPWStr)] string pszQuery);
@@ -4485,7 +4485,7 @@ public static partial class SearchApi
 	{
 		/// <summary>Gets the pattern or URL for the rule. The scope rules determine what URLs or paths to include or exclude.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// On return, contains the address of a pointer to a null-terminated, Unicode buffer that contains the pattern or URL string.
 		/// </para>
@@ -4500,7 +4500,7 @@ public static partial class SearchApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchscoperule-get_patternorurl HRESULT
-		// get_PatternOrURL( LPWSTR *ppszPatternOrURL );
+		// get_PatternOrURL( StrPtrUni *ppszPatternOrURL );
 		[PInvokeData("searchapi.h")]
 		[DispId(0x60010000)]
 		string PatternOrURL { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
@@ -5568,7 +5568,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor3-getimpersonationsidblobs HRESULT
 		// GetImpersonationSidBlobs( LPCWSTR pcwszURL, DWORD *pcSidCount, BLOB **ppSidBlobs );
 		[PInvokeData("searchapi.h")]
-		void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
+		void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
 	}
 
 	/// <summary>
@@ -5941,7 +5941,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor3-getimpersonationsidblobs HRESULT
 		// GetImpersonationSidBlobs( LPCWSTR pcwszURL, DWORD *pcSidCount, BLOB **ppSidBlobs );
 		[PInvokeData("searchapi.h")]
-		new void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
+		new void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
 
 		/// <summary>Identifies whether the item's content should be indexed.</summary>
 		/// <param name="pfIndexContent">
@@ -6083,7 +6083,7 @@ public static partial class SearchApi
 	public static ISearchItemsChangedSink GetItemsChangedSink(this ISearchCatalogManager mgr, ISearchNotifyInlineSite pISearchNotifyInlineSite, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber)
 	{
 		mgr.GetItemsChangedSink(pISearchNotifyInlineSite, typeof(ISearchItemsChangedSink).GUID, out var ppv, out pGUIDCatalogResetSignature, out pGUIDCheckPointSignature, out pdwLastCheckPointNumber);
-		return (ISearchItemsChangedSink)ppv;
+		return (ISearchItemsChangedSink)ppv!;
 	}
 
 	/// <summary>Describes security authentication information for content access.</summary>
@@ -6333,7 +6333,7 @@ public static partial class SearchApi
 
 	/// <summary>Specifies the changes to an indexed item.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/ns-searchapi-_search_item_change typedef struct _SEARCH_ITEM_CHANGE
-	// { SEARCH_KIND_OF_CHANGE Change; SEARCH_NOTIFICATION_PRIORITY Priority; BLOB *pUserData; LPWSTR lpwszURL; LPWSTR lpwszOldURL; } SEARCH_ITEM_CHANGE;
+	// { SEARCH_KIND_OF_CHANGE Change; SEARCH_NOTIFICATION_PRIORITY Priority; BLOB *pUserData; StrPtrUni lpwszURL; StrPtrUni lpwszOldURL; } SEARCH_ITEM_CHANGE;
 	[PInvokeData("searchapi.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct SEARCH_ITEM_CHANGE
@@ -6359,7 +6359,7 @@ public static partial class SearchApi
 		public IntPtr pUserData;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a null-terminated Unicode string containing the URL of the item in a SEARCH_CHANGE_MOVE_RENAME, SEARCH_CHANGE_ADD,
 		/// or SEARCH_CHANGE_MODIFY notification. In the case of a move, this member contains the new URL of the item.
@@ -6369,7 +6369,7 @@ public static partial class SearchApi
 		public string? lpwszURL;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a null-terminated Unicode string containing the old URL of the item in a SEARCH_CHANGE_MOVE_RENAME or
 		/// SEARCH_CHANGE_DELETE notification.
@@ -6408,7 +6408,7 @@ public static partial class SearchApi
 	/// </summary>
 	/// <remarks>SEARCH_CHANGE_MOVE_RENAME is not supported for use with ISearchPersistentItemsChangedSink::OnItemsChanged.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/ns-searchapi-_search_item_persistent_change typedef struct
-	// _SEARCH_ITEM_PERSISTENT_CHANGE { SEARCH_KIND_OF_CHANGE Change; LPWSTR URL; LPWSTR OldURL; SEARCH_NOTIFICATION_PRIORITY Priority; } SEARCH_ITEM_PERSISTENT_CHANGE;
+	// _SEARCH_ITEM_PERSISTENT_CHANGE { SEARCH_KIND_OF_CHANGE Change; StrPtrUni URL; StrPtrUni OldURL; SEARCH_NOTIFICATION_PRIORITY Priority; } SEARCH_ITEM_PERSISTENT_CHANGE;
 	[PInvokeData("searchapi.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct SEARCH_ITEM_PERSISTENT_CHANGE
@@ -6420,7 +6420,7 @@ public static partial class SearchApi
 		public SEARCH_KIND_OF_CHANGE Change;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a null-terminated Unicode string containing the URL of the item in a SEARCH_CHANGE_ADD, SEARCH_CHANGE_MODIFY, or
 		/// SEARCH_CHANGE_DELETE notification. In the case of a move, this member contains the new URL of the item.

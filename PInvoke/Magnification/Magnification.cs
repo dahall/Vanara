@@ -983,11 +983,11 @@ public static partial class Magnification
 	/// <para>
 	/// <code>cbSize</code>
 	/// </para>
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The size of the data.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/magnification/ns-magnification-magimageheader typedef struct tagMAGIMAGEHEADER
-	// { UINT width; UINT height; WICPixelFormatGUID format; UINT stride; UINT offset; SIZE_T cbSize; } MAGIMAGEHEADER, *PMAGIMAGEHEADER;
+	// { UINT width; UINT height; WICPixelFormatGUID format; UINT stride; UINT offset; SizeT cbSize; } MAGIMAGEHEADER, *PMAGIMAGEHEADER;
 	[PInvokeData("magnification.h", MSDNShortId = "NS:magnification.tagMAGIMAGEHEADER")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct MAGIMAGEHEADER
@@ -1026,7 +1026,7 @@ public static partial class Magnification
 		public uint offset;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data.</para>
 		/// </summary>
 		public SizeT cbSize;

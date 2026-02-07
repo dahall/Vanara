@@ -117,7 +117,7 @@ public static partial class AdvApi32
 	/// <para><c>Windows Vista:</c> The CounterInitialize function is named <c>PerfAutoInitialize</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/nc-perflib-perf_mem_alloc PERF_MEM_ALLOC PerfMemAlloc; LPVOID
-	// PerfMemAlloc( IN SIZE_T AllocSize, IN LPVOID pContext ) {...}
+	// PerfMemAlloc( IN SizeT AllocSize, IN LPVOID pContext ) {...}
 	[PInvokeData("perflib.h", MSDNShortId = "09af7e56-2174-4a82-b45b-59f4180e4aab")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate IntPtr AllocateMemory([In] SizeT AllocSize, [In, Optional] IntPtr pContext);
@@ -1591,7 +1591,7 @@ public static partial class AdvApi32
 		public string InstanceName;
 
 		/// <summary>An instance of this structure with the size property preset.</summary>
-		public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new() { Size = (uint)Marshal.SizeOf(typeof(PERF_COUNTER_IDENTIFIER_WITH_INST_NAME)) };
+		public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new() { Size = (uint)Marshal.SizeOf<PERF_COUNTER_IDENTIFIER_WITH_INST_NAME>() };
 	}
 
 	/// <summary>Defines the counter that is sent to a provider's callback when the consumer adds or removes a counter from the query.</summary>
@@ -2171,13 +2171,13 @@ public static partial class AdvApi32
 		public uint dwNumCounters;
 
 		/// <summary>The timestamp from a high-resolution clock.</summary>
-		public int PerfTimeStamp;
+		public long PerfTimeStamp;
 
 		/// <summary>The number of 100 nanosecond intervals since January 1, 1601, in Coordinated Universal Time (UTC).</summary>
-		public int PerfTime100NSec;
+		public long PerfTime100NSec;
 
 		/// <summary>The frequency of a high-resolution clock.</summary>
-		public int PerfFreq;
+		public long PerfFreq;
 
 		/// <summary>The time at which data is collected by the provider.</summary>
 		public SYSTEMTIME SystemTime;
@@ -2336,7 +2336,7 @@ public static partial class AdvApi32
 		public IntPtr pMemContext;
 
 		/// <summary>Provides a default instance of this structure with the size preset.</summary>
-		public static readonly PERF_PROVIDER_CONTEXT Default = new() { ContextSize = (uint)Marshal.SizeOf(typeof(PERF_PROVIDER_CONTEXT)) };
+		public static readonly PERF_PROVIDER_CONTEXT Default = new() { ContextSize = (uint)Marshal.SizeOf<PERF_PROVIDER_CONTEXT>() };
 	}
 
 	/// <summary>

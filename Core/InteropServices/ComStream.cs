@@ -290,7 +290,7 @@ public class ComStream : Stream, IStream
 			long totalBytesRead = 0;
 			long totalBytesWritten = 0;
 
-			IntPtr bw = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)));
+			IntPtr bw = Marshal.AllocHGlobal(Marshal.SizeOf<int>());
 			Marshal.WriteInt32(bw, 0);
 
 			while (totalBytesWritten < cb)

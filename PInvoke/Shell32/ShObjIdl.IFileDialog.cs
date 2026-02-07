@@ -255,7 +255,7 @@ public static partial class Shell32
 		/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 		/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 		void SetFileTypes(uint cFileTypes,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 		/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 		/// <param name="iFileType">
@@ -397,7 +397,7 @@ public static partial class Shell32
 		/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 		/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 		new void SetFileTypes(uint cFileTypes,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 		/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 		/// <param name="iFileType">
@@ -833,7 +833,7 @@ public static partial class Shell32
 		/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 		/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 		new void SetFileTypes(uint cFileTypes,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 		/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 		/// <param name="iFileType">
@@ -1207,7 +1207,7 @@ public static partial class Shell32
 		/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 		/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 		new void SetFileTypes(uint cFileTypes,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 		/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 		/// <param name="iFileType">

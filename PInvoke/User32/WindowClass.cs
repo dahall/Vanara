@@ -1,22 +1,19 @@
-﻿using static Vanara.PInvoke.Gdi32;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Interface identifying a class that can subclass a window proceedure.</summary>
-public interface IWindowInit
+/// <summary>Interface identifying a class that can provide a window proceedure.</summary>
+public interface IWndProcProvider
 {
 	/// <summary>
-	/// Method called on WM_NCCREATE which takes control of the window procedure. The window must provide a GCHandle pointer to itself in
-	/// the lpParam parameter of CreateWindowEx. This method implentation should confirm it's HWND value against <paramref name="hwnd"/>
-	/// and then using SetWindowLongPtr with GWLP_WNDPROC to update the window procedure.
+	/// Property fetched on WM_NCCREATE which provides a new window procedure. The window must provide a GCHandle pointer to itself in the
+	/// lpParam parameter of CreateWindowEx.
 	/// </summary>
-	/// <param name="hwnd">A handle to the window.</param>
-	/// <param name="msg">Always WM_NCCREATE.</param>
-	/// <param name="wParam">A pointer to the window class' WindowProc delegate.</param>
-	/// <param name="lParam">A pointer to a <see cref="CREATESTRUCT"/> instance with the window creation paramters.</param>
-	/// <returns>The return should be IntPtr(1) to indicate success. Any other value will stop the completion of CreateWindowEx.</returns>
-	IntPtr InitWndProcOnNCCreate(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+	/// <value>The window procedure.</value>
+	WindowProc WndProc { get; }
 }
 
 /// <summary>Encapsulates a window class.</summary>
@@ -25,11 +22,14 @@ public class WindowClass
 	/// <summary>The instance of the <see cref="WNDCLASSEX"/> populated for the window class.</summary>
 	public readonly WNDCLASSEX wc;
 
-	private static readonly uint cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX));
+	/// <summary>The prior WND proc map</summary>
+	protected static readonly Dictionary<HWND, IntPtr> PriorWndProcMap = [];
+
+	private static readonly uint cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>();
 	private static SafeHICON? appIcon;
 	private static SafeHCURSOR? arrowCursor;
 	private readonly WindowProc instProc;
-	private readonly WindowProc? wndProc;
+	private readonly WindowProc? userProc;
 
 	/// <summary>Initializes a new instance of the <see cref="WindowClass"/> class and registers the class name.</summary>
 	/// <param name="className">
@@ -64,7 +64,7 @@ public class WindowClass
 	/// A handle to the class background brush. This member can be a handle to the brush to be used for painting the background, or it
 	/// can be a color value. A color value must be one of the following standard system colors (the value 1 must be added to the chosen color).
 	/// <para>
-	/// The system automatically deletes class background brushes when the class is unregistered by using <see cref="UnregisterClass"/>.
+	/// The system automatically deletes class background brushes when the class is unregistered by using <c>UnregisterClass</c>.
 	/// An application should not delete these brushes.
 	/// </para>
 	/// <para>
@@ -88,13 +88,16 @@ public class WindowClass
 	public WindowClass(string? className = null, HINSTANCE hInst = default, WindowProc? wndProc = default, WindowClassStyles styles = 0, HICON hIcon = default, HICON hSmIcon = default,
 		HCURSOR hCursor = default, HBRUSH hbrBkgd = default, string? menuName = null, int extraBytes = 0, int extraWinBytes = 0) : this()
 	{
-		this.wndProc = wndProc ?? DefWindowProc;
+		userProc = wndProc;
+		className ??= $"VWC+{Guid.NewGuid():N}";
+		if (className.Length > 256)
+			throw new ArgumentException("The maximum length for className is 256.", nameof(className));
 		wc = new WNDCLASSEX
 		{
 			cbSize = cbSize,
 			lpfnWndProc = instProc,
 			hInstance = hInst.IsNull ? Kernel32.GetModuleHandle() : hInst,
-			lpszClassName = className ?? Guid.NewGuid().ToString("N"),
+			lpszClassName = className,
 			style = styles,
 			hIcon = hIcon,
 			hIconSm = hSmIcon,
@@ -115,7 +118,7 @@ public class WindowClass
 		wc = wcx;
 		if (register)
 		{
-			wndProc = wc.lpfnWndProc ?? DefWindowProc;
+			userProc = wc.lpfnWndProc;
 			wc.lpfnWndProc = instProc;
 			Win32Error.ThrowLastErrorIfFalse(!RegisterClassEx(wc).IsInvalid);
 		}
@@ -154,7 +157,11 @@ public class WindowClass
 
 	/// <summary>Gets the <see cref="WindowProc"/> that is executed by this class.</summary>
 	/// <value>The executing <see cref="WindowProc"/>.</value>
-	public WindowProc WndProc => wndProc ?? DefWindowProc;
+	public WindowProc WndProc
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => userProc ?? DefWindowProc;
+	}
 
 	/// <summary>Gets a <see cref="WindowClass"/> instance associated with a window handle.</summary>
 	/// <param name="hWnd">The window handle to examine.</param>
@@ -217,6 +224,24 @@ public class WindowClass
 	/// </returns>
 	public bool Unregister() => UnregisterClass(wc.lpszClassName, wc.hInstance);
 
+	/// <summary>Restores a window's original windows proc, if subclassed by this object.</summary>
+	/// <param name="hwnd">The window handle.</param>
+	protected static void RestoreWindowProc(HWND hwnd)
+	{
+		if (!PriorWndProcMap.TryGetValue(hwnd, out var p)) return;
+		SetWindowLong(hwnd, WindowLongFlags.GWL_WNDPROC, p);
+		PriorWndProcMap.Remove(hwnd);
+	}
+
+	/// <summary>Subclasses the window.</summary>
+	/// <param name="hwnd">The window handle.</param>
+	/// <param name="wndProc">The new <see cref="WindowProc"/>.</param>
+	protected static void SubclassWindow(HWND hwnd, WindowProc wndProc)
+	{
+		IntPtr old = SetWindowLong(hwnd, WindowLongFlags.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate(wndProc));
+		PriorWndProcMap.Add(hwnd, old);
+	}
+
 	/// <summary>An class function that processes messages sent to this class instance.</summary>
 	/// <param name="hwnd">A handle to the window.</param>
 	/// <param name="msg">The MSG.</param>
@@ -226,17 +251,27 @@ public class WindowClass
 	protected virtual IntPtr PrimaryClassWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 	{
 		WindowBase.DebugWriteMessageInfo(msg);
-		if (msg == (uint)WindowMessage.WM_NCCREATE)
+		try
 		{
-			try
+			if (msg == (uint)WindowMessage.WM_NCCREATE)
 			{
-				var cp = lParam.ToStructure<CREATESTRUCT>().lpCreateParams;
-				if (cp != IntPtr.Zero && GCHandle.FromIntPtr(cp).Target is IWindowInit wnd)
-					return wnd.InitWndProcOnNCCreate(hwnd, msg, Marshal.GetFunctionPointerForDelegate(wndProc ?? throw new NullReferenceException()), lParam);
+				unsafe
+				{
+					CREATESTRUCT_UNMGD* cp = (CREATESTRUCT_UNMGD*)lParam.ToPointer();
+					if (cp->lpCreateParams != IntPtr.Zero && GCHandle.FromIntPtr(cp->lpCreateParams).Target is IWndProcProvider wnd)
+					{
+						// Subclass the calling window with it's provided WindowProc
+						SubclassWindow(hwnd, wnd.WndProc);
+						return wnd.WndProc(hwnd, msg, wParam, lParam);
+					}
+				}
 			}
-			catch { }
+			return WndProc.Invoke(hwnd, msg, wParam, lParam);
 		}
-		return wndProc?.Invoke(hwnd, msg, wParam, lParam) ?? IntPtr.Zero;
+		catch
+		{
+			return IntPtr.Zero;
+		}
 	}
 
 	private static string GetClassName(HWND hwnd)

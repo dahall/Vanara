@@ -306,7 +306,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "fce80bac-2a44-46e7-a87a-ef93f4599807")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WinHelp(HWND hWndMain, string lpszHelp, HelpCmd uCommand, [Optional] IntPtr dwData);
+	public static extern bool WinHelp([In, AddAsMember] HWND hWndMain, string lpszHelp, HelpCmd uCommand, [Optional] IntPtr dwData);
 
 	/// <summary>
 	/// Contains the size and position of either a primary or secondary Help window. An application can set this information by calling

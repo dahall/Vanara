@@ -85,7 +85,7 @@ public class LibLoaderApiTests
 		t.Start();
 		t.Join();
 
-		void ThreadFunc()
+		static void ThreadFunc()
 		{
 			const string fn = @"C:\Windows\System32\kernel32.dll";
 			using SafeHINSTANCE hLib = LoadLibrary(fn);
@@ -157,8 +157,5 @@ public class LibLoaderApiTests
 	}
 
 	[Test]
-	public void QueryOptionalDelayLoadedAPITest()
-	{
-		Assert.That(() => QueryOptionalDelayLoadedAPI(GetModuleHandle(), "kernel32.dll", "GetNativeSystemInfo"), Throws.Nothing);
-	}
+	public void QueryOptionalDelayLoadedAPITest() => Assert.That(() => QueryOptionalDelayLoadedAPI(GetModuleHandle(), "kernel32.dll", "GetNativeSystemInfo"), Throws.Nothing);
 }

@@ -434,9 +434,8 @@ public static partial class Vfw32
 	}
 
 	/// <summary>
-	/// Flags defining the window style. In addition to specifying the window styles used with the <see
-	/// cref="User32.CreateWindowEx(User32.WindowStylesEx, IntPtr, string, User32.WindowStyles, int, int, int, int, HWND, HMENU,
-	/// HINSTANCE, IntPtr)"/> function, you can specify the following styles to use with MCIWnd windows.
+	/// Flags defining the window style. In addition to specifying the window styles used with the function,
+	/// <c>CreateWindowEx</c> you can specify the following styles to use with MCIWnd windows.
 	/// </summary>
 	[Flags]
 	public enum MCIWNDF : uint

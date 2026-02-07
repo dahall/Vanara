@@ -52,9 +52,10 @@ public class FileApiTests
 	public void CreateDirectoryTest()
 	{
 		string dir = TestCaseSources.TempChildDir;
-		Assert.That(CreateDirectory(dir), Is.True);
+		if (Directory.Exists(dir)) Directory.Delete(dir, true);
+		Assert.That(CreateDirectory(dir), ResultIs.Successful);
 		Assert.That(Directory.Exists(dir), Is.True);
-		Assert.That(RemoveDirectory(dir), Is.True);
+		Assert.That(RemoveDirectory(dir), ResultIs.Successful);
 	}
 
 	[Test]
@@ -120,16 +121,10 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void EnumFilesExTest()
-	{
-		Assert.That(EnumFilesEx(@"C:\Temp\*.txt").ToArray(), Is.Not.Empty);
-	}
+	public void EnumFilesExTest() => Assert.That(EnumFilesEx(@"C:\Temp\*.txt").ToArray(), Is.Not.Empty);
 
 	[Test]
-	public void EnumVolumesTest()
-	{
-		Assert.That(EnumVolumes().ToArray(), Is.Not.Empty);
-	}
+	public void EnumVolumesTest() => Assert.That(EnumVolumes().ToArray(), Is.Not.Empty);
 
 	[Test]
 	public void FileTimeToLocalFileTimeTest()
@@ -202,10 +197,7 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void GetDriveTypeTest()
-	{
-		Assert.That(GetDriveType(null), Is.EqualTo(DRIVE_TYPE.DRIVE_FIXED));
-	}
+	public void GetDriveTypeTest() => Assert.That(GetDriveType(null), Is.EqualTo(DRIVE_TYPE.DRIVE_FIXED));
 
 	[Test]
 	public void GetFileInformationByHandleTest()
@@ -245,17 +237,13 @@ public class FileApiTests
 	[Test]
 	public void GetFullPathNameTest()
 	{
-		StringBuilder sb = new(1024);
-		uint u = GetFullPathName("notepad.exe", (uint)sb.Capacity, sb, out _);
-		Assert.That(u, Is.Not.Zero);
+		var sb = GetFullPathName("notepad.exe", out var idx);
+		Assert.That(idx, Is.Not.Zero);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
-	public void GetLogicalDrivesTest()
-	{
-		Assert.That(GetLogicalDrives(), Is.Not.Zero);
-	}
+	public void GetLogicalDrivesTest() => Assert.That(GetLogicalDrives(), Is.Not.Zero);
 
 	[Test]
 	public void GetLogicalDriveStringsTest()
@@ -321,23 +309,21 @@ public class FileApiTests
 	[Test]
 	public void GetVolumeInformationByHandleWTest()
 	{
-		StringBuilder vn = new(1024);
-		StringBuilder fsn = new(1024);
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		bool b = GetVolumeInformationByHandleW(tmp.hFile!, vn, (uint)vn.Capacity, out uint vsn, out uint mcl, out FileSystemFlags fsf, fsn, (uint)fsn.Capacity);
+		bool b = GetVolumeInformationByHandleW(tmp.hFile!, out var vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out var fsn);
 		Assert.That(b, Is.True);
-		Assert.That(vn.ToString(), Is.Not.Null.And.Not.Empty);
+		Assert.That(vn, Is.Not.Null.And.Not.Empty);
 		Assert.That(vsn, Is.Not.EqualTo(0));
 		Assert.That(mcl, Is.Not.EqualTo(0));
 		Assert.That(fsf, Is.Not.EqualTo(0));
-		Assert.That(fsn.ToString(), Is.Not.Null.And.Not.Empty);
+		Assert.That(fsn, Is.Not.Null.And.Not.Empty);
 		TestContext.WriteLine($"{vn}:{vsn}:{mcl}:{fsf}:{fsn}");
 	}
 
 	[Test]
 	public void GetVolumeInformationTest()
 	{
-		bool b = GetVolumeInformation(null, out string vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out string fsn);
+		bool b = GetVolumeInformation(null, out string? vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out string? fsn);
 		Assert.That(b, Is.True);
 		Assert.That(vn, Is.Not.Null.And.Not.Empty);
 		Assert.That(vsn, Is.Not.EqualTo(0));
@@ -357,9 +343,8 @@ public class FileApiTests
 	[Test]
 	public void GetVolumePathNamesForVolumeNameTest()
 	{
-		StringBuilder sb = new(1024);
-		Assert.That(GetVolumePathNamesForVolumeName(EnumVolumes().First(), sb, (uint)sb.Capacity, out uint l), Is.True);
-		TestContext.WriteLine(sb);
+		Assert.That(GetVolumePathNamesForVolumeName(EnumVolumes().First(), out var sb), Is.True);
+		TestContext.WriteLine(string.Join("\n", sb));
 	}
 
 	[Test]

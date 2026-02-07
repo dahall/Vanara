@@ -1,218 +1,10 @@
 using System.Runtime.Versioning;
+using static Vanara.PInvoke.Dcomp;
 
 namespace Vanara.PInvoke;
 
 public static partial class UIAnimation
 {
-	/// <summary>
-	/// Represents a function for animating one or more properties of one or more Microsoft DirectComposition objects. Any object property
-	/// that takes a scalar value can be animated.
-	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nn-dcompanimation-idcompositionanimation
-	[PInvokeData("dcompanimation.h", MSDNShortId = "NN:dcompanimation.IDCompositionAnimation")]
-	[ComImport, Guid("CBFD91D9-51B2-45E4-B3DE-D19CCFB863C5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-#if !NET5_0
-	[SupportedOSPlatform("windows8.0")]
-#endif
-	public interface IDCompositionAnimation
-	{
-		/// <summary>Resets the animation function so that it contains no segments.</summary>
-		/// <remarks>
-		/// This method returns the animation function to a clean state, as when the animation was first constructed. After this method is
-		/// called, the next segment to be added becomes the first segment of the animation function. Because it is the first segment, it
-		/// can have any non-negative beginning offset.
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-reset HRESULT Reset();
-		void Reset();
-
-		/// <summary>Sets the absolute time at which the animation function starts.</summary>
-		/// <param name="beginTime">
-		/// <para>Type: <c>LARGE_INTEGER</c></para>
-		/// <para>The starting time for this animation.</para>
-		/// </param>
-		/// <remarks>
-		/// <para>
-		/// By default, an animation function starts when the first frame of the animation takes effect. For example, if an application
-		/// creates a simple animation function with a single primitive at offset zero, associates the animation with some property, and
-		/// then calls the IDCompositionDevice::Commit method, the first frame that includes the commit samples the animation at offset zero
-		/// for the first primitive.
-		/// </para>
-		/// <para>
-		/// This implies that the actual default start time of all animations varies depending on the time between when the application
-		/// creates the animation and calls <c>Commit</c>, to the time it takes the composition engine to pick up the committed changes. The
-		/// application can use the <c>SetAbsoluteBeginTime</c> method to exercise finer control over the starting time of an animation.
-		/// </para>
-		/// <para>
-		/// This method does not control when animations take effect; it only affects how animations are sampled after they start. If the
-		/// application specifies the exact time of the next frame as the absolute begin time, the result is the same as not calling this
-		/// method at all. If the specified begin time is different from the time of the next frame, the result is one of following:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <description>
-		/// If the specified time is later than the next frame time, the animation start is delayed until the specified begin time.
-		/// </description>
-		/// </item>
-		/// <item>
-		/// <description>
-		/// If the specified time is earlier than the next frame time, the beginning of the animation is dropped and sampling starts into
-		/// the animation function.
-		/// </description>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-setabsolutebegintime
-		// HRESULT SetAbsoluteBeginTime( [in] LARGE_INTEGER beginTime );
-		void SetAbsoluteBeginTime(long beginTime);
-
-		/// <summary>Adds a cubic polynomial segment to the animation function.</summary>
-		/// <param name="beginOffset">
-		/// <para>Type: <c>double</c></para>
-		/// <para>The offset, in seconds, from the beginning of the animation function to the point when this segment should take effect.</para>
-		/// </param>
-		/// <param name="constantCoefficient">
-		/// <para>Type: <c>float</c></para>
-		/// <para>The constant coefficient of the polynomial.</para>
-		/// </param>
-		/// <param name="linearCoefficient">
-		/// <para>Type: <c>float</c></para>
-		/// <para>The linear coefficient of the polynomial.</para>
-		/// </param>
-		/// <param name="quadraticCoefficient">
-		/// <para>Type: <c>float</c></para>
-		/// <para>The quadratic coefficient of the polynomial.</para>
-		/// </param>
-		/// <param name="cubicCoefficient">
-		/// <para>Type: <c>float</c></para>
-		/// <para>The cubic coefficient of the polynomial.</para>
-		/// </param>
-		/// <remarks>
-		/// <para>
-		/// A cubic segment transitions time along a cubic polynomial. For a given time input (t), the output value is given by the
-		/// following equation.
-		/// </para>
-		/// <para><c>x</c>( <c>t</c>) = <c>at</c>³ + <c>bt</c>² + <c>ct</c> + <c>d</c></para>
-		/// <para>This method fails if any of the parameters are NaN, positive infinity, or negative infinity.</para>
-		/// <para>
-		/// Because animation segments must be added in increasing order, this method fails if the <c>beginOffset</c> parameter is less than
-		/// or equal to the <c>beginOffset</c> parameter of the previous segment, if any.
-		/// </para>
-		/// <para>
-		/// This animation segment remains in effect until the begin time of the next segment in the animation function. If the animation
-		/// function contains no more segments, this segment remains in effect indefinitely.
-		/// </para>
-		/// <para>
-		/// If all coefficients except <c>constantCoefficient</c> are zero, the value of this segment remains constant over time, and the
-		/// animation does not cause a recomposition for the duration of the segment.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>The following example creates an animation function with two cubic polynomial segments.</para>
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-addcubic HRESULT
-		// AddCubic( [in] double beginOffset, [in] float constantCoefficient, [in] float linearCoefficient, [in] float quadraticCoefficient,
-		// [in] float cubicCoefficient );
-		void AddCubic(double beginOffset, float constantCoefficient, float linearCoefficient, float quadraticCoefficient, float cubicCoefficient);
-
-		/// <summary>Adds a sinusoidal segment to the animation function.</summary>
-		/// <param name="beginOffset">
-		/// <para>Type: <c>double</c></para>
-		/// <para>The offset, in seconds, from the beginning of the animation function to the point when this segment should take effect.</para>
-		/// </param>
-		/// <param name="bias">
-		/// <para>Type: <c>float</c></para>
-		/// <para>A constant that is added to the sinusoidal.</para>
-		/// </param>
-		/// <param name="amplitude">
-		/// <para>Type: <c>float</c></para>
-		/// <para>A scale factor that is applied to the sinusoidal.</para>
-		/// </param>
-		/// <param name="frequency">
-		/// <para>Type: <c>float</c></para>
-		/// <para>A scale factor that is applied to the time offset, in Hertz.</para>
-		/// </param>
-		/// <param name="phase">
-		/// <para>Type: <c>float</c></para>
-		/// <para>A constant that is added to the time offset, in degrees.</para>
-		/// </param>
-		/// <remarks>
-		/// <para>
-		/// This method fails if any of the parameters are NaN, positive infinity, or negative infinity, or if the <c>beginOffset</c>
-		/// parameter is negative.
-		/// </para>
-		/// <para>
-		/// Because animation segments must be added in increasing order, this method fails if the <c>beginOffset</c> parameter is less than
-		/// or equal to the <c>beginOffset</c> parameter of the previous segment, if any.
-		/// </para>
-		/// <para>
-		/// This animation segment remains in effect until the begin time of the next segment in the animation function. If the animation
-		/// function contains no more segments, this segment remains in effect indefinitely.
-		/// </para>
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-addsinusoidal HRESULT
-		// AddSinusoidal( double beginOffset, float bias, float amplitude, float frequency, float phase );
-		void AddSinusoidal(double beginOffset, float bias, float amplitude, float frequency, float phase);
-
-		/// <summary>Adds a repeat segment that causes the specified portion of an animation function to be repeated.</summary>
-		/// <param name="beginOffset">
-		/// <para>Type: <c>double</c></para>
-		/// <para>The offset, in seconds, from the beginning of the animation to the point at which the repeat should begin.</para>
-		/// </param>
-		/// <param name="durationToRepeat">
-		/// <para>Type: <c>double</c></para>
-		/// <para>
-		/// The duration, in seconds, of a portion of the animation immediately preceding the begin time that is specified by
-		/// <c>beginOffset</c>. This is the portion that will be repeated.
-		/// </para>
-		/// </param>
-		/// <remarks>
-		/// <para>This method fails if any of the parameters are NaN, positive infinity, or negative infinity.</para>
-		/// <para>
-		/// Because animation segments must be added in increasing order, this method fails if the <c>beginOffset</c> parameter is less than
-		/// or equal to the <c>beginOffset</c> parameter of the previous segment. This method also fails if this is the first segment to be
-		/// added to the animation function.
-		/// </para>
-		/// <para>
-		/// This animation segment remains in effect until the begin time of the next segment. If the animation function contains no more
-		/// segments, this segment remains in effect indefinitely.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example creates an animation function that includes a repeat segment, and applies the animation to the x and y
-		/// axes of a scale transform.
-		/// </para>
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-addrepeat HRESULT
-		// AddRepeat( [in] double beginOffset, [in] double durationToRepeat );
-		void AddRepeat(double beginOffset, double durationToRepeat);
-
-		/// <summary>Adds an end segment that marks the end of an animation function.</summary>
-		/// <param name="endOffset">
-		/// <para>Type: <c>double</c></para>
-		/// <para>The offset, in seconds, from the beginning of the animation function to the point when the function ends.</para>
-		/// </param>
-		/// <param name="endValue">
-		/// <para>Type: <c>float</c></para>
-		/// <para>The final value of the animation.</para>
-		/// </param>
-		/// <remarks>
-		/// <para>
-		/// When the specified offset is reached, the property or properties affected by this animation are set to the specified final
-		/// value, and then the animation stops. If no end segment is added, the final segment of the animation function runs indefinitely.
-		/// Calling this method is semantically identical to making the last segment of the animation function a cubic polynomial where the
-		/// cubic, quadratic, and linear coefficients are all zeros, and the constant coefficient is the desired final value.
-		/// </para>
-		/// <para>
-		/// Because animation segments must be added in increasing order, this method fails if the <c>endOffset</c> parameter is less than
-		/// or equal to the <c>beginOffset</c> parameter of the previous segment. This method also fails if this is the first segment to be
-		/// added to the animation function.
-		/// </para>
-		/// <para>After this method is called, all methods on this animation object fail except the IDCompositionAnimation::Reset method.</para>
-		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dcompanimation/nf-dcompanimation-idcompositionanimation-end HRESULT End( [in]
-		// double endOffset, [in] float endValue );
-		void End(double endOffset, float endValue);
-	}
-
 	/// <summary>
 	/// Extends the IUIAnimationInterpolator interface that defines methods for creating a custom interpolator.
 	/// <c>IUIAnimationInterpolator2</c> supports interpolation in a given dimension.
@@ -270,7 +62,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationinterpolator2-setinitialvalueandvelocity
 		// HRESULT SetInitialValueAndVelocity( [in] DOUBLE *initialValue, [in] DOUBLE *initialVelocity, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT SetInitialValueAndVelocity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialVelocity, uint cDimension);
+		HRESULT SetInitialValueAndVelocity([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialVelocity, uint cDimension);
 
 		/// <summary>Sets the duration of the transition in the given dimension.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1670,7 +1462,7 @@ public static partial class UIAnimation
 		/// <remarks>The animation manager should not call this method after the transition has been added to a storyboard.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransition2-setinitialvectorvalue
 		// HRESULT SetInitialVectorValue( [in] const DOUBLE *value, [in] UINT cDimension );
-		void SetInitialVectorValue([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] value, uint cDimension);
+		void SetInitialVectorValue([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] value, uint cDimension);
 
 		/// <summary>Sets the initial velocity of the transition.</summary>
 		/// <param name="velocity">The initial velocity for the transition.</param>
@@ -1685,7 +1477,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransition2-setinitialvectorvelocity
 		// HRESULT SetInitialVectorVelocity( [in] const DOUBLE *velocity, [in] UINT cDimension );
-		void SetInitialVectorVelocity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] velocity, uint cDimension);
+		void SetInitialVectorVelocity([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] velocity, uint cDimension);
 
 		/// <summary>Determines whether the duration of a transition is known.</summary>
 		/// <returns>
@@ -1794,7 +1586,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createinstantaneousvectortransition
 		// HRESULT CreateInstantaneousVectorTransition( [in] const DOUBLE *finalValue, [in] UINT cDimension, [out, retval]
 		// IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateInstantaneousVectorTransition([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateInstantaneousVectorTransition([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a constant scalar transition.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1846,7 +1638,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-creatediscretevectortransition
 		// HRESULT CreateDiscreteVectorTransition( [in] UI_ANIMATION_SECONDS delay, [in] const DOUBLE *finalValue, [in] UINT cDimension,
 		// [in] UI_ANIMATION_SECONDS hold, [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateDiscreteVectorTransition(double delay, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double hold);
+		IUIAnimationTransition2 CreateDiscreteVectorTransition(double delay, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double hold);
 
 		/// <summary>Creates a linear scalar transition.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1881,7 +1673,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createlinearvectortransition
 		// HRESULT CreateLinearVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] UINT cDimension,
 		// [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateLinearVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateLinearVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a linear-speed scalar transition.</summary>
 		/// <param name="speed">The absolute value of the velocity in units/second.</param>
@@ -1917,7 +1709,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createlinearvectortransitionfromspeed
 		// HRESULT CreateLinearVectorTransitionFromSpeed( [in] DOUBLE speed, [in] const DOUBLE *finalValue, [in] UINT cDimension, [out]
 		// IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateLinearVectorTransitionFromSpeed(double speed, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateLinearVectorTransitionFromSpeed(double speed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a sinusoidal scalar transition where amplitude is determined by initial velocity.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -2040,7 +1832,8 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createcubicvectortransition
 		// HRESULT CreateCubicVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] const DOUBLE
 		// *finalVelocity, [in] UINT cDimension, [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateCubicVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalVelocity, uint cDimension);
+		IUIAnimationTransition2 CreateCubicVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalValue,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalVelocity, uint cDimension);
 
 		/// <summary>Creates a smooth-stop scalar transition.</summary>
 		/// <param name="maximumDuration">The maximum duration of the transition.</param>
@@ -2122,7 +1915,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createcubicbezierlinearvectortransition
 		// HRESULT CreateCubicBezierLinearVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] UINT
 		// cDimension, [in] DOUBLE x1, [in] DOUBLE y1, [in] DOUBLE x2, [in] DOUBLE y2, [out] IUIAnimationTransition2 **ppTransition );
-		IUIAnimationTransition2 CreateCubicBezierLinearVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double x1, double y1, double x2, double y2);
+		IUIAnimationTransition2 CreateCubicBezierLinearVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double x1, double y1, double x2, double y2);
 	}
 
 	/// <summary>Defines an animation variable, which represents a visual element that can be animated in multiple dimensions.</summary>
@@ -2166,7 +1959,7 @@ public static partial class UIAnimation
 		/// <remarks>The application implements the IDCompositionAnimation object that is referenced by the <c>animation</c> parameter.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-getvectorcurve HRESULT
 		// GetVectorCurve( [in] IDCompositionAnimation **animation, [in] UINT cDimension );
-		void GetVectorCurve([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IDCompositionAnimation[] animation, uint cDimension);
+		void GetVectorCurve([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IDCompositionAnimation[] animation, uint cDimension);
 
 		/// <summary>
 		/// Gets the final value of the animation variable. This is the value after all currently scheduled animations have completed.
@@ -2299,7 +2092,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-setlowerboundvector HRESULT
 		// SetLowerBoundVector( [in] const DOUBLE *bound, [in] UINT cDimension );
-		void SetLowerBoundVector([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
+		void SetLowerBoundVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
 
 		/// <summary>
 		/// Sets the upper bound (ceiling) for the value of the animation variable. The value of the animation variable should not rise
@@ -2320,7 +2113,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-setupperboundvector HRESULT
 		// SetUpperBoundVector( [in] const DOUBLE *bound, [in] UINT cDimension );
-		void SetUpperBoundVector([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
+		void SetUpperBoundVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
 
 		/// <summary>Sets the rounding mode of the animation variable.</summary>
 		/// <param name="mode">The rounding mode.</param>
@@ -2523,7 +2316,7 @@ public static partial class UIAnimation
 		// HRESULT OnValueChanged( [in] IUIAnimationStoryboard2 *storyboard, [in] IUIAnimationVariable2 *variable, [in] DOUBLE *newValue,
 		// [in] DOUBLE *previousValue, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT OnValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] newValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] previousValue, uint cDimension);
+		HRESULT OnValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] newValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] previousValue, uint cDimension);
 	}
 
 	/// <summary>Defines a method for handling animation curve update events.</summary>
@@ -2630,7 +2423,7 @@ public static partial class UIAnimation
 		// HRESULT OnIntegerValueChanged( [in] IUIAnimationStoryboard2 *storyboard, [in] IUIAnimationVariable2 *variable, [in] INT32
 		// *newValue, [in] INT32 *previousValue, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT OnIntegerValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] newValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] previousValue, uint cDimension);
+		HRESULT OnIntegerValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] newValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] previousValue, uint cDimension);
 	}
 
 	/// <summary>Gets the tag for a storyboard.</summary>

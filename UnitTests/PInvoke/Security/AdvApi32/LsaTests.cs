@@ -15,7 +15,7 @@ public class LsaTests
 	[OneTimeSetUp]
 	public void _Setup()
 	{
-		hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS);
+		Assert.That(hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS), ResultIs.ValidHandle);
 		pSid = SafePSID.Current;
 	}
 
@@ -69,7 +69,7 @@ public class LsaTests
 		PSID[]? sids = null;
 		Assert.That(() => sids = LsaEnumerateAccountsWithUserRight(hPol).ToArray(), Throws.Nothing);
 		Assert.That(sids, Is.Not.Empty);
-		TestContext.Write(string.Join("\n", sids!.Select(ConvertSidToStringSid)));
+		TestContext.WriteLine(string.Join("\n", sids!.Select(ConvertSidToStringSid)));
 		Assert.That(() => sids = LsaEnumerateAccountsWithUserRight(hPol!, "SeBackupPrivilege").ToArray(), Throws.Nothing);
 		Assert.That(sids, Is.Not.Empty);
 		TestContext.Write(string.Join("\n", sids!.Select(ConvertSidToStringSid)));
@@ -165,8 +165,8 @@ public class LsaTests
 	[Test]
 	public void LsaOpenPolicyRemoteTest()
 	{
-		NTStatus stat = LsaOpenPolicy(TestCaseSources.GetValueOrDefault("RemoteComputer"), LSA_OBJECT_ATTRIBUTES.Empty, LsaPolicyRights.POLICY_ALL_ACCESS, out SafeLSA_HANDLE h);
-		Assert.That(stat, ResultIs.Successful);
+		Assert.That(LsaOpenPolicy(TestCaseSources.GetValueOrDefault(Environment.MachineName), LSA_OBJECT_ATTRIBUTES.Empty, LsaPolicyRights.POLICY_ALL_ACCESS, out SafeLSA_HANDLE h),
+			ResultIs.Successful);
 		h.Dispose();
 	}
 
@@ -226,8 +226,8 @@ public class LsaTests
 	{
 		const string keyName = "Random";
 		Assert.That(LsaStorePrivateData(hPol!, keyName, keyName), ResultIs.Successful);
-		Assert.That(LsaRetrievePrivateData(hPol!, keyName, out SafeLsaMemoryHandle privData), ResultIs.Successful); //FailureCode((NTStatus)NTStatus.STATUS_OBJECT_NAME_NOT_FOUND));
-		Assert.That(privData.ToStructure<LSA_UNICODE_STRING>().ToString(), Is.EqualTo(keyName));
+		Assert.That(LsaRetrievePrivateData(hPol!, keyName, out var privData), ResultIs.Successful); //FailureCode((NTStatus)NTStatus.STATUS_OBJECT_NAME_NOT_FOUND));
+		Assert.That(privData, Is.EqualTo(keyName));
 	}
 
 	private SafePSID GetDomainSid(string? name = null)

@@ -35,8 +35,13 @@ public class Gdi32Tests
 	public void CreatePaletteTest()
 	{
 		LOGPALETTE lp = new() { palVersion = 0x300, palNumEntries = 32, palPalEntry = new PALETTEENTRY[32] };
-		for (int i = 0;i < 32; i++) { lp.palPalEntry[i] = new() { peFlags = PC.PC_NOCOLLAPSE }; }
-		Assert.That(CreatePalette(lp), ResultIs.ValidHandle);
+		Array.Fill(lp.palPalEntry, new PALETTEENTRY() { peFlags = PC.PC_NOCOLLAPSE });
+		SafeHPALETTE hp = CreatePalette(lp);
+		Assert.That(hp, ResultIs.ValidHandle);
+		Assert.That(GetPaletteEntries(hp), Is.EqualTo(32));
+		var pes = new PALETTEENTRY[32];
+		Assert.That(GetPaletteEntries(hp, 0, 32, pes), Is.EqualTo(32));
+		Assert.That(pes.All(pe => pe.peFlags == PC.PC_NOCOLLAPSE), Is.True);
 	}
 
 	// TODO: [Test]
@@ -55,20 +60,17 @@ public class Gdi32Tests
 	public void EnumEnhMetaFileTest()
 	{
 		var count = 0;
-		using (var hEmf = GetEnhMetaFile(@"C:\Temp\test.emf"))
+		using var hEmf = GetEnhMetaFile(@"C:\Temp\test.emf");
+		Assert.That(hEmf, ResultIs.ValidHandle);
+
+		var hdr = GetEnhMetaFileHeader(hEmf);
+
+		Assert.That(EnumEnhMetaFile(HDC.NULL, hEmf, Proc, default, default), ResultIs.Successful);
+		Assert.That(count, Is.EqualTo(hdr.nRecords));
+
+		int Proc(HDC hdc, HGDIOBJ[] lpht, ENHMETARECORD lpmr, int nHandles, IntPtr data)
 		{
-			Assert.That(hEmf, ResultIs.ValidHandle);
-
-			var hdr = GetEnhMetaFileHeader(hEmf);
-
-			Assert.That(EnumEnhMetaFile(HDC.NULL, hEmf, Proc, default, default), ResultIs.Successful);
-			Assert.That(count, Is.EqualTo(hdr.nRecords));
-		}
-
-		int Proc(HDC hdc, HGDIOBJ[] lpht, IntPtr lpmr, int nHandles, IntPtr data)
-		{
-			var rec = (ENHMETARECORD)lpmr;
-			TestContext.WriteLine($"{++count}) {rec.iType} {string.Join(",", rec.dParm.Select(v => v.ToString()))}");
+			TestContext.WriteLine($"{++count}) {lpmr.iType} {string.Join(",", lpmr.dParm.Select(v => v.ToString()))}");
 			return 1;
 		}
 	}
@@ -76,8 +78,8 @@ public class Gdi32Tests
 	[Test]
 	public void EnumFontFamiliesExTest()
 	{
-		using (var hdc = SafeHDC.ScreenCompatibleDCHandle)
-			Assert.That(EnumFontFamiliesEx(hdc), Has.Count.GreaterThan(0));
+		using var hdc = SafeHDC.ScreenCompatibleDCHandle;
+		Assert.That(EnumFontFamiliesEx(hdc), Has.Count.GreaterThan(0));
 	}
 
 	// TODO: [Test]
@@ -89,13 +91,11 @@ public class Gdi32Tests
 	[Test]
 	public void GetFontUnicodeRangesTest()
 	{
-		using (var hdc = SafeHDC.ScreenCompatibleDCHandle)
-		{
-			var g = GetFontUnicodeRanges(hdc);
-			Assert.That(g.cRanges, Is.GreaterThan(0));
-			Assert.That(g.ranges.Length, Is.EqualTo((int)g.cRanges));
-			g.WriteValues();
-		}
+		using var hdc = SafeHDC.ScreenCompatibleDCHandle;
+		var g = GetFontUnicodeRanges(hdc);
+		Assert.That(g.cRanges, Is.GreaterThan(0));
+		Assert.That(g.ranges.Length, Is.EqualTo((int)g.cRanges));
+		g.WriteValues();
 	}
 
 	[Test]
@@ -128,15 +128,13 @@ public class Gdi32Tests
 		using (var hdc = SafeHDC.ScreenCompatibleDCHandle)
 		using (var hfont = CreateFont(13, pszFaceName: "Arial"))
 		using (hdc.SelectObject(hfont))
-		using (var mem = new SafeHGlobalHandle(Marshal.SizeOf<OUTLINETEXTMETRIC>() + 1024))
 		{
-			Assert.That(GetOutlineTextMetrics(hdc, mem.Size, mem), Is.GreaterThan(0));
-			var otm = mem.ToStructure<OUTLINETEXTMETRIC>();
-			otm.WriteValues();
-			TestContext.WriteLine(mem.ToString(-1, otm.otmpFaceName.ToInt32(), CharSet.Auto));
-			TestContext.WriteLine(mem.ToString(-1, otm.otmpFamilyName.ToInt32(), CharSet.Auto));
-			TestContext.WriteLine(mem.ToString(-1, otm.otmpFullName.ToInt32(), CharSet.Auto));
-			TestContext.WriteLine(mem.ToString(-1, otm.otmpStyleName.ToInt32(), CharSet.Auto));
+			Assert.That(GetOutlineTextMetrics(hdc, out SafeCoTaskMemStruct<OUTLINETEXTMETRIC> otm), Is.GreaterThan(0));
+			ref var otmRef = ref otm.AsRef();
+			otmRef.WriteValues();
+			TestContext.WriteLine(otm.GetStringAtOffset(otmRef.otmpFaceName, CharSet.Auto));
+			TestContext.WriteLine(otm.GetStringAtOffset(otmRef.otmpFullName, CharSet.Auto));
+			TestContext.WriteLine(otm.GetStringAtOffset(otmRef.otmpStyleName, CharSet.Auto));
 		}
 	}
 
@@ -147,6 +145,22 @@ public class Gdi32Tests
 		var cs = GetTextCharsetInfo(hdc, out var fs);
 		Assert.That(cs, Is.Not.EqualTo(CharacterSetUint.DEFAULT_CHARSET));
 		fs.WriteValues();
+	}
+
+	[Test]
+	public void PolyTextOutTest()
+	{
+		using (var hdc = SafeHDC.ScreenCompatibleDCHandle)
+		using (var hfont = CreateFont(48, pszFaceName: "Arial"))
+		using (hdc.SelectObject(hfont))
+		{
+			POLYTEXT[] pts =
+			[
+				new(10, 10, "Hello,"),
+				new(10, 70, "World!", ETO.ETO_CLIPPED, new(0, 0, 100, 20), new SafeNativeArray<int>([20, 15, 15, 15, 15, 10])),
+			];
+			Assert.That(PolyTextOut(hdc, pts), ResultIs.Successful);
+		}
 	}
 
 	[Test]

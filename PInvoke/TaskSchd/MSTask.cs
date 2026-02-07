@@ -285,7 +285,7 @@ public static class MSTask
 		/// </param>
 		/// <param name="rgpwszNames">
 		/// <para>
-		/// A pointer to an array of pointers ( <c>LPWSTR</c>) to <c>null</c>-terminated character strings containing the file names of
+		/// A pointer to an array of pointers ( <c>StrPtrUni</c>) to <c>null</c>-terminated character strings containing the file names of
 		/// the tasks returned from the enumeration sequence. These file names are taken from the Scheduled Tasks folder and have the
 		/// ".job" extension.
 		/// </para>
@@ -332,7 +332,7 @@ public static class MSTask
 		/// For an example of how to use <c>Next</c> to enumerate the tasks in the Scheduled Tasks folder, see Enumerating Tasks Example.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/mstask/nf-mstask-ienumworkitems-next HRESULT Next( ULONG celt, LPWSTR
+		// https://docs.microsoft.com/en-us/windows/desktop/api/mstask/nf-mstask-ienumworkitems-next HRESULT Next( ULONG celt, StrPtrUni
 		// **rgpwszNames, ULONG *pceltFetched );
 		[PInvokeData("mstask.h", MSDNShortId = "a606e340-33fb-4a51-acdd-b7428c755ac5")]
 		HRESULT Next([In] uint celt, [Out] out IntPtr rgpwszNames, [Out] out uint pceltFetched);

@@ -734,7 +734,7 @@ public static partial class ComDlg32
 
 		/// <summary>Retrieves the name of the currently selected printer, for use with PrintDlgEx.</summary>
 		/// <param name="pPrinterName">
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>The name of the currently selected printer.</para>
 		/// </param>
 		/// <param name="pcchSize">
@@ -758,13 +758,13 @@ public static partial class ComDlg32
 		/// <para>If an error occurs, the return value is a COM error code. For more information, see Error Handling.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/nf-commdlg-iprintdialogservices-getcurrentprintername HRESULT
-		// GetCurrentPrinterName( LPWSTR pPrinterName, UINT *pcchSize );
+		// GetCurrentPrinterName( StrPtrUni pPrinterName, UINT *pcchSize );
 		[PreserveSig]
-		HRESULT GetCurrentPrinterName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pPrinterName, ref uint pcchSize);
+		HRESULT GetCurrentPrinterName([MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(pcchSize), SizingMethod.Query)] StringBuilder? pPrinterName, ref uint pcchSize);
 
 		/// <summary>Retrieves the name of the current port for use with PrintDlgEx.</summary>
 		/// <param name="pPortName">
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>The name of the current port.</para>
 		/// </param>
 		/// <param name="pcchSize">
@@ -788,9 +788,9 @@ public static partial class ComDlg32
 		/// <para>If an error occurs, the return value is a COM error code. For more information, see Error Handling.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/nf-commdlg-iprintdialogservices-getcurrentportname HRESULT
-		// GetCurrentPortName( LPWSTR pPortName, UINT *pcchSize );
+		// GetCurrentPortName( StrPtrUni pPortName, UINT *pcchSize );
 		[PreserveSig]
-		HRESULT GetCurrentPortName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pPortName, ref uint pcchSize);
+		HRESULT GetCurrentPortName([MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(pcchSize), SizingMethod.Query)] StringBuilder pPortName, ref uint pcchSize);
 	}
 
 	/// <summary>Creates a <c>Color</c> dialog box that enables the user to select a color.</summary>
@@ -1164,7 +1164,7 @@ public static partial class ComDlg32
 	/// <para>The name and location of a file.</para>
 	/// </param>
 	/// <param name="lpszTitle">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer that receives the name of the file.</para>
 	/// </param>
 	/// <param name="cchSize">
@@ -1199,11 +1199,12 @@ public static partial class ComDlg32
 	/// run-time library functions such as <c>strrchr</c>, <c>wcsrchr</c>, and <c>_mbsrchr</c>.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/nf-commdlg-getfiletitlea short GetFileTitleA( LPCSTR , LPSTR Buf, WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/nf-commdlg-getfiletitlea short GetFileTitleA( LPCSTR , StrPtrAnsi Buf, WORD
 	// cchSize );
 	[DllImport(Lib_ComDlg32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("commdlg.h", MSDNShortId = "NF:commdlg.GetFileTitleA")]
-	public static extern short GetFileTitle([MarshalAs(UnmanagedType.LPTStr)] string lpszPath, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpszTitle, ushort cchSize);
+	public static extern short GetFileTitle([MarshalAs(UnmanagedType.LPTStr)] string lpszPath,
+		[MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpszTitle, short cchSize);
 
 	/// <summary>
 	/// <para>

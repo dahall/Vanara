@@ -1451,7 +1451,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 	public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses,
-		uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Retrieves an object that implements an IQueryAssociations interface.</summary>
 	/// <typeparam name="TIntf">Reference to the desired IID type, normally IQueryAssociations.</typeparam>
@@ -1465,7 +1465,7 @@ public static partial class Shell32
 	// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-	public static TIntf? AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
+	public static TIntf? AssocCreateForClasses<TIntf>(params ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
 		IidGetObj<TIntf>((in Guid g, out object? o) => AssocCreateForClasses(rgClasses, (uint)rgClasses.Length, g, out o));
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
@@ -1487,13 +1487,13 @@ public static partial class Shell32
 	/// <para>Pointer to an <c>int</c> that receives the number of array elements returned, similar to .</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>LPWSTR*</c></para>
-	/// <para>A pointer to an array of <c>LPWSTR</c> values, similar to .</para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
+	/// <para>A pointer to an array of <c>StrPtrUni</c> values, similar to .</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The address returned by <c>CommandLineToArgvW</c> is the address of the first element in an array of <c>LPWSTR</c> values; the
+	/// The address returned by <c>CommandLineToArgvW</c> is the address of the first element in an array of <c>StrPtrUni</c> values; the
 	/// number of pointers in this array is indicated by . Each pointer to a <c>null</c>-terminated Unicode string represents an
 	/// individual argument found on the command line.
 	/// </para>
@@ -1533,7 +1533,7 @@ public static partial class Shell32
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw LPWSTR * CommandLineToArgvW( LPCWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw StrPtrUni * CommandLineToArgvW( LPCWSTR
 	// lpCmdLine, int *pNumArgs );
 	[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
@@ -1545,7 +1545,7 @@ public static partial class Shell32
 	/// <para>Pointer to a <c>null</c>-terminated Unicode string that contains the full command line. If this parameter is an empty string the function returns the path to the current executable file.</para>
 	/// </param>
 	/// <returns>
-	/// <para>An array of <c>LPWSTR</c> values, similar to argv.</para>
+	/// <para>An array of <c>StrPtrUni</c> values, similar to argv.</para>
 	/// <para>If the function fails, the return value is an empty array. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	/// <remarks>
@@ -1568,7 +1568,7 @@ public static partial class Shell32
 	/// <para><c>Important</c> <c>CommandLineToArgvW</c> treats whitespace outside of quotation marks as argument delimiters. However, if lpCmdLine starts with any amount of whitespace, <c>CommandLineToArgvW</c> will consider the first argument to be an empty string. Excess whitespace at the end of lpCmdLine is ignored.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
-	// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
+	// StrPtrUni * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
 	[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
 	public static string?[] CommandLineToArgvW(string lpCmdLine = "") =>
 		CommandLineToArgvW(lpCmdLine, out var pNumArgs).ToStringEnum(pNumArgs, CharSet.Unicode).ToArray();
@@ -1635,7 +1635,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="lpszFile">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The address of a buffer that receives the file name of a dropped file when the function returns. This file name is a
 	/// null-terminated string. If this parameter is <c>NULL</c>, <c>DragQueryFile</c> returns the required size, in characters, of this buffer.
@@ -1662,7 +1662,7 @@ public static partial class Shell32
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragqueryfilea UINT DragQueryFileA( HDROP hDrop, UINT
-	// iFile, LPSTR lpszFile, UINT cch );
+	// iFile, StrPtrAnsi lpszFile, UINT cch );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "93fab381-9035-46c4-ba9d-efb2d0801d84")]
 	public static extern uint DragQueryFile(HDROP hDrop, uint iFile, [Optional] string? lpszFile, uint cch);
@@ -1717,7 +1717,7 @@ public static partial class Shell32
 	/// <para>A handle to the instance of the calling application.</para>
 	/// </param>
 	/// <param name="pszIconPath">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function
 	/// extracts the icon handle from that file, or from an executable file associated with that file.
@@ -1767,7 +1767,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatedicona HICON ExtractAssociatedIconA( [in]
-	// HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIcon );
+	// HINSTANCE hInst, [in, out] StrPtrAnsi pszIconPath, [in, out] WORD *piIcon );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconA")]
 	public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIcon);
@@ -1787,7 +1787,7 @@ public static partial class Shell32
 	/// <para>The handle of the module from which to extract the icon.</para>
 	/// </param>
 	/// <param name="pszIconPath">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function
 	/// extracts the icon handle from that file, or from an executable file associated with that file.
@@ -1831,7 +1831,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-extractassociatediconexa HICON ExtractAssociatedIconExA(
-	// [in] HINSTANCE hInst, [in, out] LPSTR pszIconPath, [in, out] WORD *piIconIndex, [in, out] WORD *piIconId );
+	// [in] HINSTANCE hInst, [in, out] StrPtrAnsi pszIconPath, [in, out] WORD *piIconIndex, [in, out] WORD *piIconId );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "NF:shellapi.ExtractAssociatedIconExA")]
 	public static extern SafeHICON ExtractAssociatedIconEx(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
@@ -2093,7 +2093,7 @@ public static partial class Shell32
 	/// <para>The address of a <c>null</c>-terminated string that specifies the default directory. This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="lpResult">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The address of a buffer that receives the file name of the associated executable file. This file name is a <c>null</c>-terminated
 	/// string that specifies the executable file started when an "open" by association is run on the file specified in the parameter.
@@ -2147,7 +2147,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-findexecutablea HINSTANCE FindExecutableA( LPCSTR
-	// lpFile, LPCSTR lpDirectory, LPSTR lpResult );
+	// lpFile, LPCSTR lpDirectory, StrPtrAnsi lpResult );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "969edbd9-164e-457f-ab0a-dc4d069bf16b")]
 	public static extern IntPtr FindExecutable(string lpFile, string? lpDirectory, StringBuilder lpResult);
@@ -2266,7 +2266,7 @@ public static partial class Shell32
 	/// <para>Allocates memory from the Shell's heap.</para>
 	/// </summary>
 	/// <param name="cb">
-	/// <para>Type: <c>SIZE_T</c></para>
+	/// <para>Type: <c>SizeT</c></para>
 	/// <para>The number of bytes of memory to allocate.</para>
 	/// </param>
 	/// <returns>
@@ -2826,7 +2826,7 @@ public static partial class Shell32
 	/// <para>The index of the user account.</para>
 	/// </param>
 	/// <param name="pszMailAddress">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a Unicode string that specifies the email address of an account belonging to the specified user.</para>
 	/// </param>
 	/// <param name="cchMailAddress">
@@ -2844,7 +2844,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shenumerateunreadmailaccountsw HRESULT
-	// SHEnumerateUnreadMailAccountsW( HKEY hKeyUser, DWORD dwIndex, LPWSTR pszMailAddress, int cchMailAddress );
+	// SHEnumerateUnreadMailAccountsW( HKEY hKeyUser, DWORD dwIndex, StrPtrUni pszMailAddress, int cchMailAddress );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "67ec8355-f902-4b71-972f-94e403701f96")]
 	public static extern HRESULT SHEnumerateUnreadMailAccounts(HKEY hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
@@ -2860,7 +2860,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="ppszApplication">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// A pointer to the verified path to the application. This value should be passed as the parameter in a call to CreateProcess or as
 	/// the parameter in a call to ShellExecute. This resource is allocated using CoTaskMemAlloc, and it is the responsibility of the
@@ -2868,7 +2868,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="ppszCommandLine">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// A pointer to a command-line string template to be used in a call to CreateProcess. Command-line parameters should be specified
 	/// based on this template, and then passed as the parameter to <c>CreateProcess</c>. It is guaranteed to be of a form that
@@ -2878,7 +2878,7 @@ public static partial class Shell32
 	/// <para>This parameter can be <c>NULL</c> if this function is not being used in association with a call to CreateProcess.</para>
 	/// </param>
 	/// <param name="ppszParameters">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// A pointer to a command-line string template to be used in a call to ShellExecute. Command-line parameters should be specified
 	/// based on this template, and then passed as the parameter to <c>ShellExecute</c>. This parameter is identical to calling
@@ -2904,7 +2904,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shevaluatesystemcommandtemplate SHSTDAPI
-	// SHEvaluateSystemCommandTemplate( PCWSTR pszCmdTemplate, PWSTR *ppszApplication, PWSTR *ppszCommandLine, PWSTR *ppszParameters );
+	// SHEvaluateSystemCommandTemplate( PCWSTR pszCmdTemplate, StrPtrUni *ppszApplication, StrPtrUni *ppszCommandLine, StrPtrUni *ppszParameters );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shellapi.h", MSDNShortId = "554b941d-7d03-47ae-a23a-2c47c5ca1044")]
 	public static extern HRESULT SHEvaluateSystemCommandTemplate(string pszCmdTemplate,
@@ -3127,7 +3127,7 @@ public static partial class Shell32
 	/// <para>A pointer to a string that specifies the fully qualified path of the file.</para>
 	/// </param>
 	/// <param name="pszResModule">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>When this function returns, contains a pointer to a string resource that specifies the localized version of the file name.</para>
 	/// </param>
 	/// <param name="cch">
@@ -3143,7 +3143,7 @@ public static partial class Shell32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetlocalizedname SHSTDAPI SHGetLocalizedName( PCWSTR
-	// pszPath, PWSTR pszResModule, UINT cch, int *pidsRes );
+	// pszPath, StrPtrUni pszResModule, UINT cch, int *pidsRes );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "2929b77f-4467-44a8-9885-96f0c3e35584")]
 	public static extern HRESULT SHGetLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pszPath, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszResModule, uint cch, out int pidsRes);
@@ -3166,7 +3166,7 @@ public static partial class Shell32
 	/// <para>A pointer to a null-terminated string that contains the path of the folder in which the shortcut would be created.</para>
 	/// </param>
 	/// <param name="pszName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a string that receives the null-terminated path and file name for the shortcut. This buffer is assumed to be at
 	/// least MAX_PATH characters in size.
@@ -3226,7 +3226,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetnewlinkinfoa BOOL SHGetNewLinkInfoA( LPCSTR
-	// pszLinkTo, LPCSTR pszDir, LPSTR pszName, BOOL *pfMustCopy, UINT uFlags );
+	// pszLinkTo, LPCSTR pszDir, StrPtrAnsi pszName, BOOL *pfMustCopy, UINT uFlags );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shellapi.h", MSDNShortId = "ca658d5c-af7b-400c-8f4d-7d4b07bf7f2b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3286,7 +3286,7 @@ public static partial class Shell32
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
-	public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Retrieves an object that represents a specific window's collection of properties, which allows those properties to be queried or set.
@@ -3330,8 +3330,7 @@ public static partial class Shell32
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
+	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class { SHGetPropertyStoreForWindow(hwnd, out TIntf? o).ThrowIfFailed(); return o; }
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>
@@ -3451,7 +3450,7 @@ public static partial class Shell32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetunreadmailcountw HRESULT SHGetUnreadMailCountW(
-	// HKEY hKeyUser, LPCWSTR pszMailAddress, DWORD *pdwCount, FILETIME *pFileTime, LPWSTR pszShellExecuteCommand, int
+	// HKEY hKeyUser, LPCWSTR pszMailAddress, DWORD *pdwCount, FILETIME *pFileTime, StrPtrUni pszShellExecuteCommand, int
 	// cchShellExecuteCommand );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shellapi.h", MSDNShortId = "d2a57fa0-13fe-4e12-89cc-8a6dbdb44f08")]

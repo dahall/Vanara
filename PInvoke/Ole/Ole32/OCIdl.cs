@@ -806,7 +806,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iclassfactory-createinstance HRESULT CreateInstance(
 		// IUnknown *pUnkOuter, REFIID riid, void **ppvObject );
 		[PreserveSig]
-		new HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid,
+		new HRESULT CreateInstance([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
 
 		/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
@@ -996,7 +996,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-iclassfactory2-createinstancelic HRESULT
 		// CreateInstanceLic( IUnknown *pUnkOuter, IUnknown *pUnkReserved, REFIID riid, BSTR bstrKey, PVOID *ppvObj );
 		[PreserveSig]
-		HRESULT CreateInstanceLic([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkReserved,
+		HRESULT CreateInstanceLic([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkReserved,
 			in Guid riid, [In, MarshalAs(UnmanagedType.BStr)] string bstrKey, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObj);
 	}
 

@@ -332,10 +332,10 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
 		new SizeT GetBufferSize();
 
@@ -357,7 +357,7 @@ public static partial class DXC
 	/// return output name strings in DXC.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxcblobutf8 struct IDxcBlobUtf8 : IDxcBlobEncoding { LPCSTR
-	// GetStringPointer(); SIZE_T GetStringLength(); };
+	// GetStringPointer(); SizeT GetStringLength(); };
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcBlobUtf8")]
 	[ComImport, Guid("3da636c9-ba71-4024-a301-30cbf125305b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDxcBlobUtf8 : IDxcBlobEncoding, IDxcBlob
@@ -373,10 +373,10 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
 		new SizeT GetBufferSize();
 
@@ -397,7 +397,7 @@ public static partial class DXC
 		string GetStringPointer();
 
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcblobutf8-getstringlength SIZE_T GetStringLength();
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcblobutf8-getstringlength SizeT GetStringLength();
 		[PreserveSig]
 		SizeT GetStringLength();
 	}
@@ -423,10 +423,10 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
 		new SizeT GetBufferSize();
 
@@ -447,7 +447,7 @@ public static partial class DXC
 		string GetStringPointer();
 
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
-		// SIZE_T GetStringLength();
+		// SizeT GetStringLength();
 		[PreserveSig]
 		SizeT GetStringLength();
 	}
@@ -521,7 +521,7 @@ public static partial class DXC
 	/// <summary><b>IDxcCompiler2</b> is deprecated; use <c>IDxcCompiler3</c> instead.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxccompiler2 struct IDxcCompiler2 : IDxcCompiler { HRESULT
 	// CompileWithDebug( IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32
-	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, LPWSTR
+	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, StrPtrUni
 	// *ppDebugBlobName, IDxcBlob **ppDebugBlob ); };
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcCompiler2")]
 	[ComImport, Guid("a005a9d9-b8bb-4594-b5c9-0e633bec4d37"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -599,7 +599,7 @@ public static partial class DXC
 		/// <param name="ppDebugBlob">The debug blob.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompiler2-compilewithdebug HRESULT CompileWithDebug(
 		// IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32 argCount, const
-		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, LPWSTR
+		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, StrPtrUni
 		// *ppDebugBlobName, IDxcBlob **ppDebugBlob );
 		[PreserveSig]
 		HRESULT CompileWithDebug([In] IDxcBlob pSource, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pSourceName,
@@ -650,7 +650,7 @@ public static partial class DXC
 		[PreserveSig]
 		HRESULT Compile(in DxcBuffer pSource, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[]? pArguments,
 			uint argCount, [In, Optional] IDxcIncludeHandler? pIncludeHandler, in Guid riid,
-			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object ppResult);
+			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppResult);
 
 		/// <summary>Disassemble a program.</summary>
 		/// <param name="pObject">The program to disassemble: dxil container or bitcode.</param>
@@ -659,7 +659,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompiler3-disassemble HRESULT Disassemble( const
 		// DxcBuffer *pObject, REFIID riid, LPVOID *ppResult );
 		[PreserveSig]
-		HRESULT Disassemble(in DxcBuffer pObject, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppResult);
+		HRESULT Disassemble(in DxcBuffer pObject, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppResult);
 	}
 
 	/// <summary>
@@ -716,7 +716,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompilerargs-adddefines HRESULT AddDefines( const
 		// DxcDefine *pDefines, UINT32 defineCount );
 		[PreserveSig]
-		HRESULT AddDefines([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DxcDefine[] pDefines, int defineCount);
+		HRESULT AddDefines([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DxcDefine[] pDefines, int defineCount);
 	}
 
 	/// <summary>
@@ -837,7 +837,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccontainerreflection-getpartreflection HRESULT
 		// GetPartReflection( UINT32 idx, REFIID iid, void **ppvObject );
 		[PreserveSig]
-		HRESULT GetPartReflection(uint idx, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvObject);
+		HRESULT GetPartReflection(uint idx, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvObject);
 	}
 
 	/// <summary>
@@ -932,7 +932,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingfrompinned HRESULT
 		// CreateBlobWithEncodingFromPinned( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingFromPinned([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingFromPinned([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="pText"/>
@@ -942,7 +942,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonheapcopy HRESULT
 		// CreateBlobWithEncodingOnHeapCopy( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingOnHeapCopy([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingOnHeapCopy([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="pText"/>
@@ -953,7 +953,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonmalloc HRESULT
 		// CreateBlobWithEncodingOnMalloc( LPCVOID pText, IMalloc *pIMalloc, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingOnMalloc([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pText, IMalloc pIMalloc, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingOnMalloc([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pText, IMalloc pIMalloc, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="ppResult"/>
@@ -1133,14 +1133,14 @@ public static partial class DXC
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionname HRESULT GetOptionName(
-		// LPWSTR *ppResult );
+		// StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionName([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getdescription HRESULT GetDescription(
-		// LPWSTR *ppResult );
+		// StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetDescription([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1158,7 +1158,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargname HRESULT GetOptionArgName(
-		// UINT32 argIndex, LPWSTR *ppResult );
+		// UINT32 argIndex, StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgName(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1169,7 +1169,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargdescription HRESULT
-		// GetOptionArgDescription( UINT32 argIndex, LPWSTR *ppResult );
+		// GetOptionArgDescription( UINT32 argIndex, StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgDescription(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string? ppResult);
 	}
@@ -1546,7 +1546,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcresult-getoutput HRESULT GetOutput( DXC_OUT_KIND
 		// dxcOutKind, REFIID iid, void **ppvObject, IDxcBlobWide **ppOutputName );
 		[PreserveSig]
-		HRESULT GetOutput(DXC_OUT_KIND dxcOutKind, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppvObject, out IDxcBlobWide ppOutputName);
+		HRESULT GetOutput(DXC_OUT_KIND dxcOutKind, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject, out IDxcBlobWide ppOutputName);
 
 		/// <summary>Retrieves the number of outputs available in this result.</summary>
 		/// <returns>The number of outputs available in this result.</returns>
@@ -1597,7 +1597,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createblobfrompinned HRESULT CreateBlobFromPinned(
 		// LPCVOID pData, UINT32 size, UINT32 codePage, IDxcBlobEncoding **ppBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobFromPinned([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT CreateBlobFromPinned([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>Moves data to a blob.</summary>
 		/// <param name="pData">Pointer to a buffer containing the contents of the new blob.</param>
@@ -1606,7 +1606,7 @@ public static partial class DXC
 		/// <param name="codePage">The code page to use if the blob contains text. For binary or ANSI code page, use <b>DXC_CP_ACP</b>.</param>
 		/// <param name="ppBlobEncoding"/>
 		[PreserveSig]
-		HRESULT MoveToBlob([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pData, IMalloc pIMalloc, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT MoveToBlob([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pData, IMalloc pIMalloc, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>
 		/// <para>Create a blob containing a copy of the existing data. The new blob and its contents are allocated with the current allocator.</para>
@@ -1619,7 +1619,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createblob HRESULT CreateBlob( LPCVOID pData,
 		// UINT32 size, UINT32 codePage, IDxcBlobEncoding **ppBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlob([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT CreateBlob([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>
 		/// <para>Create a blob with data loaded from a file. The new blob and its contents are allocated with the current allocator.</para>
@@ -1684,7 +1684,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createreflection HRESULT CreateReflection( const
 		// DxcBuffer *pData, REFIID iid, void **ppvReflection );
 		[PreserveSig]
-		HRESULT CreateReflection(in DxcBuffer pData, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvReflection);
+		HRESULT CreateReflection(in DxcBuffer pData, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvReflection);
 
 		/// <summary>Build arguments that can be passed to the <c>Compile</c> method.</summary>
 		/// <param name="pSourceName">An optional file name. Used in errors and include handlers.</param>
@@ -1881,10 +1881,10 @@ public static partial class DXC
 	/// <param name="ppResult">An <c>IDxcResult</c> representing the compiler output status, buffer, and errors.</param>
 	/// <returns>An error code.</returns>
 	public static HRESULT Compile(this IDxcCompiler3 cmp, in DxcBuffer pSource, [In, Optional] string[]? pArguments,
-		[In, Optional] IDxcIncludeHandler? pIncludeHandler, out IDxcResult ppResult)
+		[In, Optional] IDxcIncludeHandler? pIncludeHandler, out IDxcResult? ppResult)
 	{
 		var hr = cmp.Compile(pSource, pArguments, (uint)(pArguments?.Length ?? 0), pIncludeHandler, typeof(IDxcResult).GUID, out var ppv);
-		ppResult = (IDxcResult)ppv;
+		ppResult = (IDxcResult?)ppv;
 		return hr;
 	}
 
@@ -1893,10 +1893,10 @@ public static partial class DXC
 	/// <param name="pObject">The program to disassemble: dxil container or bitcode.</param>
 	/// <param name="ppResult">An <c>IDxcResult</c> representing the compiler output status, buffer, and errors.</param>
 	/// <returns>An error code.</returns>
-	public static HRESULT Disassemble(this IDxcCompiler3 cmp, in DxcBuffer pObject, out IDxcResult ppResult)
+	public static HRESULT Disassemble(this IDxcCompiler3 cmp, in DxcBuffer pObject, out IDxcResult? ppResult)
 	{
 		var hr = cmp.Disassemble(pObject, typeof(IDxcResult).GUID, out var ppv);
-		ppResult = (IDxcResult)ppv;
+		ppResult = (IDxcResult?)ppv;
 		return hr;
 	}
 
@@ -1927,32 +1927,7 @@ public static partial class DXC
 	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance")]
 	[DllImport(Lib_Dxilconv, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DxcCreateInstance(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
-
-	/// <summary>Creates a single uninitialized object of the class associated with a specified CLSID. Also see <c>DxcCreateInstance2</c>.</summary>
-	/// <typeparam name="T">The type of the interface to be used to communicate with the object.</typeparam>
-	/// <param name="rclsid">The CLSID associated with the data and code that will be used to create the object.</param>
-	/// <param name="ppv">
-	/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, <c>*ppv</c> contains the
-	/// requested interface pointer. Upon failure, <c>*ppv</c> contains NULL.
-	/// </param>
-	/// <returns>While this function is similar to <b>CoCreateInstance</b>, there's no COM involvement.</returns>
-	/// <remarks>
-	/// <para>
-	/// To make it more convenient for you to use <b>GetProcAddress</b> to call <b>DxcCreateInstance</b>, the <b>DxcCreateInstanceProc</b>
-	/// typedef is provided:
-	/// </para>
-	/// <para><c>typedef HRESULT (__stdcall *DxcCreateInstanceProc)( _In_ REFCLSID rclsid, _In_ REFIID riid, _Out_ LPVOID* ppv );</c></para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-dxccreateinstance DXC_API_IMPORT HRESULT DxcCreateInstance(
-	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
-	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance")]
-	public static HRESULT DxcCreateInstance<T>(in Guid rclsid, out T? ppv) where T : class
-	{
-		var hr = DxcCreateInstance(rclsid, typeof(T).GUID, out var pv);
-		ppv = hr.Succeeded ? (T)pv! : null;
-		return hr;
-	}
+	public static extern HRESULT DxcCreateInstance(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Creates a single uninitialized object of the class associated with a specified CLSID (can be used to create an instance of the
@@ -1980,40 +1955,8 @@ public static partial class DXC
 	// IMalloc *pMalloc, REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance2")]
 	[DllImport(Lib_Dxilconv, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DxcCreateInstance2(IMalloc pMalloc, in Guid rclsid, in Guid riid,
+	public static extern HRESULT DxcCreateInstance2(Vanara.PInvoke.Ole32.IMalloc pMalloc, in Guid rclsid, in Guid riid,
 	   [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
-
-	/// <summary>
-	/// Creates a single uninitialized object of the class associated with a specified CLSID (can be used to create an instance of the
-	/// compiler with a custom memory allocator). Also see <c>DxcCreateInstance</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to be used to communicate with the object.</typeparam>
-	/// <param name="pMalloc">An <b>IMalloc</b> interface pointer representing a custom memory allocator.</param>
-	/// <param name="rclsid">The CLSID associated with the data and code that will be used to create the object.</param>
-	/// <param name="ppv">
-	/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, <c>*ppv</c> contains the
-	/// requested interface pointer. Upon failure, <c>*ppv</c> contains NULL.
-	/// </param>
-	/// <returns>While this function is similar to <b>CoCreateInstance</b>, there's no COM involvement.</returns>
-	/// <remarks>
-	/// <para>
-	/// To make it more convenient for you to use <b>GetProcAddress</b> to call <b>DxcCreateInstance2</b>, the <b>DxcCreateInstance2Proc</b>
-	/// typedef is provided:
-	/// </para>
-	/// <para>
-	/// <c>typedef HRESULT(__stdcall *DxcCreateInstance2Proc)( _In_ IMalloc *pMalloc, _In_ REFCLSID rclsid, _In_ REFIID riid, _Out_ LPVOID*
-	/// ppv );</c>
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-dxccreateinstance2 DXC_API_IMPORT HRESULT DxcCreateInstance2(
-	// IMalloc *pMalloc, REFCLSID rclsid, REFIID riid, LPVOID *ppv );
-	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance2")]
-	public static HRESULT DxcCreateInstance2<T>(IMalloc pMalloc, in Guid rclsid, out T? ppv) where T : class
-	{
-		var hr = DxcCreateInstance2(pMalloc, rclsid, typeof(T).GUID, out var pv);
-		ppv = hr.Succeeded ? (T)pv! : null;
-		return hr;
-	}
 
 	/// <summary>Gets the SHA of the latest commit.</summary>
 	/// <param name="vi2">The <see cref="IDxcVersionInfo2"/> instance.</param>
@@ -2104,7 +2047,7 @@ public static partial class DXC
 	}
 
 	/// <summary>Structure for supplying bytes or text input to Dxc APIs.</summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-dxctext typedef struct DxcBuffer { LPCVOID Ptr; SIZE_T Size;
+	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-dxctext typedef struct DxcBuffer { LPCVOID Ptr; SizeT Size;
 	// UINT Encoding; } DxcText;
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.DxcBuffer")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

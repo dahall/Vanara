@@ -939,7 +939,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itffunctionprovider-getfunction HRESULT GetFunction(
 		// REFGUID rguid, REFIID riid, IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT GetFunction(in Guid rguid, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
+		HRESULT GetFunction(in Guid rguid, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppunk);
 	}
 
 	/// <summary>

@@ -863,7 +863,7 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
-		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
+		uint ulReponseHeaderCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
 		ref uint pulSelectedExtensionCount, out uint pulSelectedSubprotocol);
 
 	/// <summary>The <c>WebSocketEndClientHandshake</c> function completes the client-side handshake.</summary>
@@ -936,7 +936,7 @@ public static partial class WebSocket
 	[DllImport(Lib_Websocket, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT WebSocketEndClientHandshake([In] WEB_SOCKET_HANDLE hWebSocket,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] WEB_SOCKET_HTTP_HEADER[] pResponseHeaders,
-		uint ulReponseHeaderCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
+		uint ulReponseHeaderCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[]? pulSelectedExtensions,
 		[In, Optional] IntPtr pulSelectedExtensionCount, [In, Optional] IntPtr pulSelectedSubprotocol);
 
 	/// <summary>The <c>WebSocketEndServerHandshake</c> function completes the server-side handshake.</summary>

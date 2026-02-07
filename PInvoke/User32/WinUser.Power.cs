@@ -400,7 +400,7 @@ public static partial class User32
 		/// <summary>Gets the data as an enumeration value.</summary>
 		/// <typeparam name="TEnum">The type of the enum.</typeparam>
 		/// <returns>The enum value in <see cref="Data"/>.</returns>
-		public TEnum GetEnumData<TEnum>() where TEnum : unmanaged, Enum => EnumExtensions.ToEnum<TEnum>(Data);
+		public readonly TEnum GetEnumData<TEnum>() where TEnum : unmanaged, Enum => EnumExtensions.ToEnum<TEnum>(Data);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <c>HPOWERNOTIFY</c> that is disposed using <see cref="UnregisterPowerSettingNotification"/>.</summary>

@@ -1,12 +1,13 @@
 <Project>
   <PropertyGroup>
-    <TargetFrameworks>net48;net5.0;net6.0;net7.0;net8.0-windows;net9.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(ExclSlnTargets)' != 'true'">net48;net5.0;net6.0;net7.0;net8.0-windows;net9.0-windows;net10.0-windows;netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <!-- Defined variable for projects that do not support .NET Standard -->
-    <TargetFrameworksNotStd>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;netcoreapp3.1</TargetFrameworksNotStd>
+    <TargetFrameworksNotStd>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;net10.0-windows;netcoreapp3.1</TargetFrameworksNotStd>
+    <TargetFrameworksNotStdCore>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworksNotStdCore>
     <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>4.1.1</Version>
-    <PackageVersion>4.1.1</PackageVersion>
+    <Platforms>AnyCPU</Platforms>
+    <Version>5.0.1</Version>
+    <PackageVersion>5.0.1</PackageVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -17,7 +18,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Nullable>enable</Nullable>
     <SignAssembly>true</SignAssembly>
-    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026;IL2050;IL2075;IL2067;IL2070;IL2072;IL2077;IL2080;IL2087;IL2090;CS0618;CA1041;CA1401;CA1510;CA2101;SYSLIB1054;SYSLIB1096;</NoWarn>
+    <NoWarn>$(NoWarn);NETSDK1138;SYSLIB0003;SYSLIB0004;SYSLIB0011;IL2026;IL2050;IL2075;IL2067;IL2070;IL2072;IL2077;IL2080;IL2087;IL2090;CS0618;CS0649;CA1041;CA1069;CA1401;CA1510;CA2101;SYSLIB1054;SYSLIB1096;</NoWarn>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -25,17 +26,20 @@
   </PropertyGroup>
 
   <!-- Custom generator -->
+  <ItemGroup Condition="!$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Generator\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" PrivateAssets="all" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" Condition="'$(MSBuildProjectName)'!='Vanara.Core'"/>
+  </ItemGroup>
   <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
-  <ItemGroup Condition="'$(MSBuildProjectName)'!='Vanara.Core' And '$(MSBuildProjectName)'!='Vanara.CodeGen'">
-    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-  </ItemGroup>
     
   <Import Project="Package.targets" />
-  <Import Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests'))" Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)SourceLink.targets" Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests')) And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))" />
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
-    <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)'=='.csproj'" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)'=='.csproj' And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))" />
   </ItemGroup>
 </Project>

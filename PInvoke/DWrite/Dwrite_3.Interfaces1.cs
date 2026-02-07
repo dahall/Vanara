@@ -10225,6 +10225,6 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontface3-areglyphslocal HRESULT AreGlyphsLocal(
 		// [in] UINT16 const *glyphIndices, UINT32 glyphCount, BOOL enqueueIfNotLocal, [out] BOOL *isLocal );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		bool AreGlyphsLocal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
+		bool AreGlyphsLocal([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
 	}
 }

@@ -182,7 +182,7 @@ public static partial class User32
 	/// <para>The null-terminated string to be translated.</para>
 	/// </param>
 	/// <param name="pDst">
-	/// <para>Type: <c>LPSTR</c></para>
+	/// <para>Type: <c>StrPtrAnsi</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>CharToOem</c> function is being used as an ANSI function,
 	/// the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot
@@ -196,11 +196,11 @@ public static partial class User32
 	/// the function. In this case the function returns zero and GetLastError returns <c>ERROR_INVALID_ADDRESS</c>.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooema BOOL CharToOemA( LPCSTR pSrc, LPSTR pDst );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooema BOOL CharToOemA( LPCSTR pSrc, StrPtrAnsi pDst );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CharToOem(string pSrc, StringBuilder pDst);
+	public static extern bool CharToOem(string pSrc, [Out] StringBuilder pDst);
 
 	/// <summary>Translates a specified number of characters in a string into the OEM-defined character set.</summary>
 	/// <param name="lpszSrc">
@@ -208,7 +208,7 @@ public static partial class User32
 	/// <para>The null-terminated string to be translated.</para>
 	/// </param>
 	/// <param name="lpszDst">
-	/// <para>Type: <c>LPSTR</c></para>
+	/// <para>Type: <c>StrPtrAnsi</c></para>
 	/// <para>
 	/// The buffer for the translated string. If the <c>CharToOemBuff</c> function is being used as an ANSI function, the string can be
 	/// translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot be done if
@@ -230,12 +230,12 @@ public static partial class User32
 	/// Unlike the CharToOem function, the <c>CharToOemBuff</c> function does not stop converting characters when it encounters a null
 	/// character in the buffer pointed to by lpszSrc. The <c>CharToOemBuff</c> function converts all cchDstLength characters.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooembuffa BOOL CharToOemBuffA( LPCSTR lpszSrc, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooembuffa BOOL CharToOemBuffA( LPCSTR lpszSrc, StrPtrAnsi
 	// lpszDst, DWORD cchDstLength );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CharToOemBuff(string lpszSrc, StringBuilder lpszDst, uint cchDstLength);
+	public static extern bool CharToOemBuff(string lpszSrc, [Out] StringBuilder lpszDst, uint cchDstLength);
 
 	/// <summary>
 	/// Retrieves an AR_STATE value containing the state of screen auto-rotation for the system, for example whether auto-rotation is
@@ -264,7 +264,7 @@ public static partial class User32
 	/// <para>A null-terminated string of characters from the OEM-defined character set.</para>
 	/// </param>
 	/// <param name="pDst">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>OemToChar</c> function is being used as an ANSI function,
 	/// the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot
@@ -278,11 +278,11 @@ public static partial class User32
 	/// the function. In this case the function returns zero and GetLastError returns <c>ERROR_INVALID_ADDRESS</c>.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtochara BOOL OemToCharA( LPCSTR pSrc, LPSTR pDst );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtochara BOOL OemToCharA( LPCSTR pSrc, StrPtrAnsi pDst );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OemToChar(string pSrc, StringBuilder pDst);
+	public static extern bool OemToChar(string pSrc, [Out] StringBuilder pDst);
 
 	/// <summary>
 	/// Translates a specified number of characters in a string from the OEM-defined character set into either an ANSI or a
@@ -293,7 +293,7 @@ public static partial class User32
 	/// <para>One or more characters from the OEM-defined character set.</para>
 	/// </param>
 	/// <param name="lpszDst">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>OemToCharBuff</c> function is being used as an ANSI
 	/// function, the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter.
@@ -315,12 +315,12 @@ public static partial class User32
 	/// Unlike the OemToChar function, the <c>OemToCharBuff</c> function does not stop converting characters when it encounters a null
 	/// character in the buffer pointed to by lpszSrc. The <c>OemToCharBuff</c> function converts all cchDstLength characters.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtocharbuffa BOOL OemToCharBuffA( LPCSTR lpszSrc, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtocharbuffa BOOL OemToCharBuffA( LPCSTR lpszSrc, StrPtrAnsi
 	// lpszDst, DWORD cchDstLength );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OemToCharBuff(string lpszSrc, StringBuilder lpszDst, uint cchDstLength);
+	public static extern bool OemToCharBuff(string lpszSrc, [Out] StringBuilder lpszDst, uint cchDstLength);
 
 	/// <summary>Registers or unregisters windows to receive notification to dismiss their tooltip windows.</summary>
 	/// <param name="hWnd">
@@ -390,7 +390,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.RegisterForTooltipDismissNotification")]
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterForTooltipDismissNotification(HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags);
+	public static extern bool RegisterForTooltipDismissNotification([In, AddAsMember] HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags);
 
 	/// <summary>
 	/// <para>Sets the last-error code.</para>
@@ -421,17 +421,15 @@ public static partial class User32
 	public static extern void SetLastErrorEx(uint dwErrCode, uint dwType = 0);
 
 	/// <summary>For all notifications coming through WM_COMMAND, the <c>wParam</c> parameter can be cast to <see cref="CmdNotifyWParam"/>.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="CmdNotifyWParam"/> struct.</remarks>
+	/// <param name="wParam">A WPARAM value.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CmdNotifyWParam
+	public struct CmdNotifyWParam(IntPtr wParam)
 	{
 		/// <summary>The control's identifier.</summary>
-		public ushort ctrlId;
+		public ushort ctrlId = Macros.LOWORD(wParam);
 
 		/// <summary>The notification code.</summary>
-		public ushort notification;
-
-		/// <summary>Initializes a new instance of the <see cref="CmdNotifyWParam"/> struct.</summary>
-		/// <param name="wParam">A WPARAM value.</param>
-		public CmdNotifyWParam(IntPtr wParam) { ctrlId = Macros.LOWORD(wParam); notification = Macros.HIWORD(wParam); }
+		public ushort notification = Macros.HIWORD(wParam);
 	}
 }

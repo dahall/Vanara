@@ -545,7 +545,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -887,7 +887,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -1192,7 +1192,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -1348,7 +1348,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -1514,7 +1514,7 @@ public static partial class CoreAudio
 		/// the DeviceTopology API to the next.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iconnector-getconnectoridconnectedto
-		// HRESULT GetConnectorIdConnectedTo( LPWSTR *ppwstrConnectorId );
+		// HRESULT GetConnectorIdConnectedTo( StrPtrUni *ppwstrConnectorId );
 		SafeCoTaskMemString GetConnectorIdConnectedTo();
 
 		/// <summary>
@@ -1554,7 +1554,7 @@ public static partial class CoreAudio
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iconnector-getdeviceidconnectedto HRESULT
-		// GetDeviceIdConnectedTo( LPWSTR *ppwstrDeviceId );
+		// GetDeviceIdConnectedTo( StrPtrUni *ppwstrDeviceId );
 		SafeCoTaskMemString GetDeviceIdConnectedTo();
 	}
 
@@ -1634,7 +1634,7 @@ public static partial class CoreAudio
 		/// As an example of a friendly name, a subunit with an IAudioPeakMeter interface might have the friendly name "peak meter".
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-icontrolinterface-getname HRESULT
-		// GetName( LPWSTR *ppwstrName );
+		// GetName( StrPtrUni *ppwstrName );
 		SafeCoTaskMemString GetName();
 
 		/// <summary>The <c>GetIID</c> method gets the interface ID of the function-specific control interface of the part.</summary>
@@ -1954,7 +1954,7 @@ public static partial class CoreAudio
 		/// <para>For a code example that uses the <c>GetDeviceId</c> method, see Using the IKsControl Interface to Access Audio Properties.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-idevicetopology-getdeviceid HRESULT
-		// GetDeviceId( LPWSTR *ppwstrDeviceId );
+		// GetDeviceId( StrPtrUni *ppwstrDeviceId );
 		SafeCoTaskMemString GetDeviceId();
 
 		/// <summary>The <c>GetSignalPath</c> method gets a list of parts in the signal path that links two parts, if the path exists.</summary>
@@ -2287,7 +2287,7 @@ public static partial class CoreAudio
 		/// friendly name of this part. The method allocates the storage for the string. If the <c>GetName</c> call fails, *ppwstrName
 		/// is <c>NULL</c>. For information about <c>CoTaskMemFree</c>, see the Windows SDK documentation.
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-getname HRESULT GetName( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-getname HRESULT GetName( StrPtrUni
 		// *ppwstrName );
 		SafeCoTaskMemString GetName();
 
@@ -2332,7 +2332,7 @@ public static partial class CoreAudio
 		/// the DeviceTopology API to the next.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-getglobalid HRESULT GetGlobalId(
-		// LPWSTR *ppwstrGlobalId );
+		// StrPtrUni *ppwstrGlobalId );
 		SafeCoTaskMemString GetGlobalId();
 
 		/// <summary>The <c>GetPartType</c> method gets the part type of this part.</summary>
@@ -2651,7 +2651,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-activate HRESULT Activate( DWORD
 		// dwClsContext, REFIID refiid, void **ppvObject );
-		[return: MarshalAs(UnmanagedType.IUnknown)]
+		[return: MarshalAs(UnmanagedType.IUnknown, SizeParamIndex = 1)]
 		object? Activate([In] CLSCTX dwClsContext, in Guid refiid);
 
 		/// <summary>
@@ -3025,7 +3025,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>

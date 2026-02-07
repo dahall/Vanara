@@ -9,16 +9,14 @@ public partial class Wow64ApiSetTests
 	[Test]
 	public void GetSystemWow64Directory2Test()
 	{
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(GetSystemWow64Directory2(sb, (uint)sb.Capacity, IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_AMD64), ResultIs.Not.Value(0));
+		Assert.That(GetSystemWow64Directory2(out var sb, IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_I386), ResultIs.Not.Value(0));
 		TestContext.Write(sb);
 	}
 
 	[Test]
 	public void GetSystemWow64DirectoryTest()
 	{
-		StringBuilder sb = new(MAX_PATH);
-		Assert.That(GetSystemWow64Directory(sb, (uint)sb.Capacity), ResultIs.Not.Value(0));
+		Assert.That(GetSystemWow64Directory(out var sb), ResultIs.Not.Value(0));
 		TestContext.Write(sb);
 	}
 
@@ -54,8 +52,5 @@ public partial class Wow64ApiSetTests
 	}
 
 	[Test]
-	public void Wow64SetThreadDefaultGuestMachineTest()
-	{
-		Assert.That(() => Wow64SetThreadDefaultGuestMachine(IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_AMD64), Throws.Nothing);
-	}
+	public void Wow64SetThreadDefaultGuestMachineTest() => Assert.That(() => Wow64SetThreadDefaultGuestMachine(IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_AMD64), Throws.Nothing);
 }

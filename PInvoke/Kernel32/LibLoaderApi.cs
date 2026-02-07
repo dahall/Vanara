@@ -80,7 +80,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpszName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The name of a resource of the type being enumerated. Alternately, rather than a pointer, this parameter can be , where ID is the
 	/// integer identifier of the resource. For more information, see the Remarks section below.
@@ -97,7 +97,7 @@ public static partial class Kernel32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <c>TRUE</c> to continue enumeration or <c>FALSE</c> to stop enumeration.</para>
 	/// </returns>
-	// BOOL CALLBACK EnumResNameProc( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpszType, _In_ LPTSTR lpszName, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648034(v=vs.85).aspx
+	// BOOL CALLBACK EnumResNameProc( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpszType, _In_ StrPtrAuto lpszName, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648034(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 	[SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648034")]
@@ -117,7 +117,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpszType">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The type of resource for which the type is being enumerated. Alternately, rather than a pointer, this parameter can be
 	/// <c>MAKEINTRESOURCE</c>(ID), where ID is the integer identifier of the given resource type. For standard resource types, see
@@ -135,7 +135,7 @@ public static partial class Kernel32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <c>TRUE</c> to continue enumeration or <c>FALSE</c> to stop enumeration.</para>
 	/// </returns>
-	// BOOL CALLBACK EnumResTypeProc( _In_opt_ HMODULE hModule, _In_ LPTSTR lpszType, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648041(v=vs.85).aspx
+	// BOOL CALLBACK EnumResTypeProc( _In_opt_ HMODULE hModule, _In_ StrPtrAuto lpszType, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648041(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648041")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -396,7 +396,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms682579")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DisableThreadLibraryCalls([In] HINSTANCE hModule);
+	public static extern bool DisableThreadLibraryCalls([In, AddAsMember] HINSTANCE hModule);
 
 	/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a binary module.</summary>
 	/// <param name="hModule">
@@ -574,9 +574,9 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>A list of the language identifiers (see Language Identifiers) for which a resource was found.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
-	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
+	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx([In, AddAsMember] HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
-		List<LANGID> list = new();
+		List<LANGID> list = [];
 		if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 			Win32Error.ThrowLastError();
 		return list;
@@ -640,7 +640,7 @@ public static partial class Kernel32
 			{
 				var hres = FindResourceEx(hModule, ResourceType.RT_MESSAGETABLE, n, id);
 				if (hres.IsNull) continue;
-				foreach (var r in hres.EnumResourceMessages(hModule))
+				foreach (var r in EnumResourceMessages(hres, hModule))
 					yield return (id, r.block, r.id, r.text);
 			}
 		}
@@ -650,9 +650,9 @@ public static partial class Kernel32
 	/// <param name="hRsrc">The resource handle returned by <see cref="FindResourceEx"/>.</param>
 	/// <param name="hMod">The module handle of the file containing the resources.</param>
 	/// <returns>A list of blocks, identifiers, an associated text for each of the entries in the message table.</returns>
-	public static IReadOnlyList<(uint block, uint id, string? text)> EnumResourceMessages(this HRSRC hRsrc, HINSTANCE hMod)
+	public static IReadOnlyList<(uint block, uint id, string? text)> EnumResourceMessages(HRSRC hRsrc, HINSTANCE hMod)
 	{
-		List<(uint block, uint id, string? text)> ret = new();
+		List<(uint block, uint id, string? text)> ret = [];
 		unsafe
 		{
 			var hRes = LoadResource(hMod, hRsrc);
@@ -768,7 +768,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-	public static IReadOnlyList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
+	public static IReadOnlyList<ResourceId> EnumResourceNamesEx([In, AddAsMember] HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
 		EnumResWrapper(p => EnumResourceNamesEx(hModule, type, p, default, flags, langFilter), throwOnError);
 
 	/// <summary>
@@ -1053,7 +1053,7 @@ public static partial class Kernel32
 	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
 	/// </param>
 	/// <returns>List of resource identifiers.</returns>
-	public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
+	public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In, AddAsMember] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
 		var list = new List<ResourceId>();
 		if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
@@ -1142,7 +1142,7 @@ public static partial class Kernel32
 	// HRSRC WINAPI FindResourceEx( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpType, _In_ LPCTSTR lpName, _In_ WORD wLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648043(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceExW")]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648043")]
-	public static extern HRSRC FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
+	public static extern HRSRC FindResourceEx([In, AddAsMember] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
 
 	/// <summary>Locates a Unicode string (wide characters) in another Unicode string for a non-linguistic comparison.</summary>
 	/// <param name="dwFindStringOrdinalFlags">
@@ -1319,10 +1319,10 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ LPTSTR lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
+	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ StrPtrAuto lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
-	public static extern uint GetModuleFileName(HINSTANCE hModule, StringBuilder? lpFilename, uint nSize);
+	public static extern uint GetModuleFileName(HINSTANCE hModule, [SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder? lpFilename, uint nSize);
 
 	/// <summary>
 	/// Retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the
@@ -1343,7 +1343,7 @@ public static partial class Kernel32
 	/// </returns>
 	[SecurityCritical]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683197")]
-	public static string GetModuleFileName(HINSTANCE hModule)
+	public static string GetModuleFileName([In, AddAsMember] HINSTANCE hModule)
 	{
 		var buffer = new StringBuilder(MAX_PATH);
 Label_000B:
@@ -1420,7 +1420,7 @@ Label_000B:
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string? lpModuleName, out SafeHINSTANCE phModule);
+	public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [Optional] string? lpModuleName, [AddAsCtor] out SafeHINSTANCE phModule);
 
 	/// <summary>
 	/// Retrieves a module handle for the specified module and increments the module's reference count unless
@@ -1455,7 +1455,7 @@ Label_000B:
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [In] IntPtr lpModuleName, out SafeHINSTANCE phModule);
+	public static extern bool GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG dwFlags, [In] IntPtr lpModuleName, [AddAsCtor] out SafeHINSTANCE phModule);
 
 	/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 	/// <param name="hModule">
@@ -1479,7 +1479,7 @@ Label_000B:
 	// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
-	public static extern IntPtr GetProcAddress(HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+	public static extern IntPtr GetProcAddress([In] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
 
 	/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 	/// <param name="hModule">
@@ -1503,7 +1503,7 @@ Label_000B:
 	// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
-	public static extern IntPtr GetProcAddress(HINSTANCE hModule, IntPtr lpProcName);
+	public static extern IntPtr GetProcAddress(HINSTANCE hModule, nint lpProcName);
 
 	/// <summary>
 	/// <para>
@@ -1872,9 +1872,8 @@ Label_000B:
 	/// <para>If the function succeeds, the return value is a handle to the loaded module.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HMODULE WINAPI LoadLibraryEx( _In_ LPCTSTR lpFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx
 	[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
-	[SuppressUnmanagedCodeSecurity]
+	[return: AddAsCtor]
 	public static SafeHINSTANCE LoadLibraryEx(string lpFileName, LoadLibraryExFlags dwFlags = 0) => LoadLibraryEx(lpFileName, IntPtr.Zero, dwFlags);
 
 	/// <summary>Retrieves a handle that can be used to obtain a pointer to the first byte of the specified resource in memory.</summary>
@@ -1898,7 +1897,7 @@ Label_000B:
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648046")]
 	[SuppressUnmanagedCodeSecurity]
-	public static extern HRSRCDATA LoadResource(HINSTANCE hModule, HRSRC hResInfo);
+	public static extern HRSRCDATA LoadResource([In, AddAsMember] HINSTANCE hModule, HRSRC hResInfo);
 
 	/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 	/// <param name="hResData">
@@ -1972,7 +1971,7 @@ Label_000B:
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, uint Reserved = 0);
+	public static extern bool QueryOptionalDelayLoadedAPI([In, AddAsMember] HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, [Optional] uint Reserved);
 
 	/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 	/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>
@@ -2051,7 +2050,7 @@ Label_000B:
 	// DWORD WINAPI SizeofResource( _In_opt_ HMODULE hModule, _In_ HRSRC hResInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648048(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
-	public static extern uint SizeofResource(HINSTANCE hModule, HRSRC hResInfo);
+	public static extern uint SizeofResource([In, AddAsMember] HINSTANCE hModule, HRSRC hResInfo);
 
 	private static IReadOnlyList<ResourceId> EnumResWrapper(Func<EnumResNameProc, bool> f, bool throwOnError)
 	{
@@ -2064,6 +2063,7 @@ Label_000B:
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 	[PInvokeData("LibLoaderAPI.h")]
 	[AutoSafeHandle("FreeLibrary(handle)", typeof(HINSTANCE), typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"Library|Module|Ex\b", "")]
 	public partial class SafeHINSTANCE
 	{
 		/// <summary>
@@ -2096,7 +2096,7 @@ Label_000B:
 		/// <para>If the function succeeds, the return value is the address of the exported function or variable.</para>
 		/// <para>If the function fails, an exception with the error is thrown.</para>
 		/// </returns>
-		public IntPtr GetProcAddress(int ordinal) => GetProcAddress($"#{ordinal}");
+		public IntPtr GetProcAddress(int ordinal) => Win32Error.ThrowLastErrorIfNull(Kernel32.GetProcAddress(handle, $"#{ordinal}"));
 
 		/// <summary>Retrieves a delegate for an exported function or variable from the specified dynamic-link library (DLL).</summary>
 		/// <typeparam name="T">The delegate type to which to convert that function pointer.</typeparam>

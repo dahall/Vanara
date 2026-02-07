@@ -395,8 +395,8 @@ public static partial class Cabinet
 	/// When set, the _A_EXEC attribute is added to the file entry in the CAB. This mechanism is used in some Microsoft self-extracting
 	/// executables, and could be used for this purpose in any custom extraction application.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fciaddfile BOOL DIAMONDAPI FCIAddFile( HFCI hfci, LPSTR
-	// pszSourceFile, LPSTR pszFileName, BOOL fExecute, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis, PFNFCIGETOPENINFO
+	// https://docs.microsoft.com/en-us/windows/desktop/api/fci/nf-fci-fciaddfile BOOL DIAMONDAPI FCIAddFile( HFCI hfci, StrPtrAnsi
+	// pszSourceFile, StrPtrAnsi pszFileName, BOOL fExecute, PFNFCIGETNEXTCABINET pfnfcignc, PFNFCISTATUS pfnfcis, PFNFCIGETOPENINFO
 	// pfnfcigoi, TCOMP typeCompress );
 	[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 	[PInvokeData("fci.h", MSDNShortId = "f99e8718-853b-4d35-98ae-61a8333dbaba")]

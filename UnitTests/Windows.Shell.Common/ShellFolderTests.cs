@@ -113,8 +113,8 @@ public class ShellFolderTests
 		using var computer = new ShellFolder(KNOWNFOLDERID.FOLDERID_ComputerFolder);
 		foreach (var si in computer)
 		{
-			TestContext.WriteLine(si.ParsingName);
-			si.Dispose();
+			using (si)
+				TestContext.WriteLine(si.ParsingName);
 		}
 	}
 

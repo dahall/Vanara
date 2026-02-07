@@ -9,7 +9,7 @@ public class KnownFolderIdExtTests
 	[Test()]
 	public void FullPathTest()
 	{
-		Assert.That(KNOWNFOLDERID.FOLDERID_Documents.FullPath(), Is.EqualTo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+		Assert.That(KNOWNFOLDERID.FOLDERID_PublicDocuments.FullPath(), Is.EqualTo(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)));
 	}
 
 	[Test()]

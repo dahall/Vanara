@@ -128,7 +128,7 @@ public static partial class InteropExtensions
 	{
 		if (ptr == IntPtr.Zero || length <= 0) return;
 		// Write multiples of 8 bytes first
-		var lval = value == 0 ? 0L : BitConverter.ToInt64(new[] { value, value, value, value, value, value, value, value }, 0);
+		var lval = value == 0 ? 0L : BitConverter.ToInt64([value, value, value, value, value, value, value, value], 0);
 		for (var ofs = 0L; ofs < length / 8; ofs++)
 			Marshal.WriteInt64(ptr.Offset(ofs * 8), 0, lval);
 		// Write remaining bytes
@@ -157,6 +157,23 @@ public static partial class InteropExtensions
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static System.Collections.IEnumerator GetEnumerator(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
+
+	/// <summary>
+	/// Gets the length of a null terminated array of numeric values. <note type="warning">This is a very dangerous function and can result
+	/// in memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
+	/// </summary>
+	/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+	/// <param name="elemType">Type of the array element.</param>
+	/// <returns>The number of non-zero values in the array. If <paramref name="lptr"/> is equal to IntPtr.Zero, this result is 0.</returns>
+	public static int GetNulledArrayLength(this IntPtr lptr, Type elemType)
+	{
+		if (lptr == IntPtr.Zero) return 0;
+		int c = 0, elemSize = Marshal.SizeOf(elemType);
+		object defVal = Activator.CreateInstance(elemType)!;
+		while (!Equals(Marshal.PtrToStructure(lptr.Offset(c++ * elemSize), elemType), defVal)) { }
+
+		return c - 1;
+	}
 
 	/// <summary>
 	/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in
@@ -197,9 +214,7 @@ public static partial class InteropExtensions
 	public static bool IsMarshalable(this Type type)
 	{
 		Type t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-		return t.IsSerializable || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
+		return t.CanSerialize() || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
 	}
 
 	/// <summary>Determines whether this type is nullable (derived from <see cref="Nullable{T}"/>).</summary>
@@ -276,7 +291,7 @@ public static partial class InteropExtensions
 		}
 
 		// Write to memory stream
-		using var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet };
+		using var ms = new NativeMemoryStream(1024L, 1024L, access: FileAccess.ReadWrite) { CharSet = charSet };
 		ms.SetLength(ms.Position = prefixBytes);
 		foreach (var o in values)
 		{
@@ -337,6 +352,38 @@ public static partial class InteropExtensions
 			bytesAllocated += prefixBytes;
 			return AllocWrite(bytesAllocated, (p, c) => Write(p, newVal, prefixBytes, c), memAlloc, memLock, memUnlock);
 		}
+	}
+
+	/// <summary>
+	/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+	/// </summary>
+	/// <param name="items">
+	/// The array of items to marshal. If this is an array of strings, it will be marshaled as a concatenated list with default character encoding.
+	/// </param>
+	/// <param name="memAlloc">
+	/// The function that allocates the memory for the block of items (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+	/// </param>
+	/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+	/// <param name="memLock">
+	/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will be used.
+	/// </param>
+	/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
+	/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
+	/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
+	public static IntPtr MarshalToPtr(this Array items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+	{
+		if (items.Rank != 1)
+			throw new ArgumentException("Only single dimension arrays are supported.", nameof(items));
+		if (items.GetType().GetElementType() == typeof(string))
+			return items.Cast<string?>().MarshalToPtr(StringListPackMethod.Concatenated, memAlloc, out bytesAllocated, CharSet.Auto, prefixBytes, memLock, memUnlock);
+		bytesAllocated = 0;
+#pragma warning disable IL2060
+		return (IntPtr)typeof(InteropExtensions).GetMethods()
+			.First(static m => m.Name == "MarshalToPtr" && m.GetParameters()[0].ParameterType.Name == "T[]")
+			.MakeGenericMethod(items.GetType().GetElementType()!)
+			.Invoke(null, new object?[] { items, memAlloc, bytesAllocated, prefixBytes, memLock, memUnlock }!)!;
+#pragma warning restore IL2060
 	}
 
 	/// <summary>
@@ -629,6 +676,28 @@ public static partial class InteropExtensions
 	public static System.Collections.IEnumerable ToIEnum(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
+	/// <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+	/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+	/// <param name="ptr">The <see cref="SafeHandle"/> pointing to the native array.</param>
+	/// <param name="count">The number of items in the native array.</param>
+	/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static IEnumerable<T?> ToIEnum<T>(this SafeHandle ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
+		new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
+
+	/// <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+	/// <param name="ptr">The <see cref="SafeHandle"/> pointing to the native array.</param>
+	/// <param name="type">Type of native structure used by the C-style array.</param>
+	/// <param name="count">The number of items in the native array.</param>
+	/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static System.Collections.IEnumerable ToIEnum(this SafeHandle ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
+		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
+
 	/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
 	/// <param name="s">The <see cref="SecureString"/> value.</param>
 	/// <returns>The extracted string.</returns>
@@ -759,6 +828,28 @@ public static partial class InteropExtensions
 	}
 
 	/// <summary>
+	/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length
+	/// <paramref name="count"/>.
+	/// </summary>
+	/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+	/// <param name="count">The count of expected strings.</param>
+	/// <param name="encoder">The character encoding of the strings.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>Enumeration of strings.</returns>
+	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SizeT count, Encoding encoder, SizeT prefixBytes = default, SizeT allocatedBytes = default)
+	{
+		if (ptr == IntPtr.Zero || count == 0) yield break;
+		if (allocatedBytes > 0 && count * IntPtr.Size + prefixBytes > allocatedBytes)
+			throw new InsufficientMemoryException();
+		for (var i = 0; i < count; i++)
+		{
+			IntPtr sptr = Marshal.ReadIntPtr(ptr.Offset(prefixBytes + i * IntPtr.Size));
+			yield return StringHelper.GetString(sptr, encoder, out _);
+		}
+	}
+
+	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
 	/// and is terminated by two '\0' characters.
 	/// </summary>
@@ -789,6 +880,30 @@ public static partial class InteropExtensions
 		if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 
 		int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
+	}
+
+	/// <summary>
+	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is
+	/// terminated by two '\0' characters.
+	/// </summary>
+	/// <param name="lptr">The <see cref="IntPtr" /> pointing to the native array.</param>
+	/// <param name="encoder">The character encoding of the strings.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr" />.</param>
+	/// <returns>An enumerated list of strings.</returns>
+	/// <exception cref="System.InsufficientMemoryException"></exception>
+	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
+	{
+		SizeT c, bytesread = prefixBytes;
+		if (lptr == IntPtr.Zero) yield break;
+		if (allocatedBytes == default) allocatedBytes = IntPtr.Size == 4 ? int.MaxValue : long.MaxValue;
+		for (IntPtr ptr = lptr.Offset(prefixBytes); bytesread <= allocatedBytes && encoder.GetChar(ptr).GetValueOrDefault('\0') != '\0'; bytesread += c, ptr = lptr.Offset(bytesread))
+		{
+			var s = StringHelper.GetString(ptr, encoder, out c, allocatedBytes - bytesread)!;
+			yield return s;
+		}
+		bytesread += encoder.GetCharSize();
+		if (allocatedBytes > 0 && bytesread > allocatedBytes) throw new InsufficientMemoryException();
 	}
 
 	/// <summary>
@@ -852,15 +967,15 @@ public static partial class InteropExtensions
 					{
 						return GetBlittable(Nullable.GetUnderlyingType(destType)!, out bytesRead);
 					}
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-					if (destType.IsSerializable)
+					if (destType.CanSerialize())
 					{
 						using var mem = new MemoryStream(ptr.ToByteArray((int)allocatedBytes - offset, offset, allocatedBytes)!);
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 						var ret = new BinaryFormatter().Deserialize(mem);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 						bytesRead = (int)mem.Position;
 						return ret;
 					}
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
 				}
 				catch (ArgumentOutOfRangeException)
 				{
@@ -975,6 +1090,27 @@ public static partial class InteropExtensions
 		unsafe { return new UIntPtr(p.ToPointer()); }
 	}
 
+	/// <summary>Retrieves the memory address of the element at the specified index within a pinned <see cref="Span{T}"/>.</summary>
+	/// <remarks>
+	/// This method is intended for advanced scenarios where direct memory manipulation is required. The caller is responsible for ensuring
+	/// that the span is pinned and that the index is within the valid range of the span. Accessing an out-of-range index may result in
+	/// undefined behavior.
+	/// </remarks>
+	/// <typeparam name="T">The type of elements in the span. Must be an unmanaged type.</typeparam>
+	/// <param name="span">The span containing the elements. The span must be pinned in memory.</param>
+	/// <param name="index">The zero-based index of the element whose address is to be retrieved.</param>
+	/// <returns>An <see cref="IntPtr"/> representing the memory address of the specified element within the span.</returns>
+	public static IntPtr UnsafeAddrOfPinnedSpanElement<T>(this Span<T> span, int index = 0) where T : unmanaged
+	{
+		unsafe
+		{
+			fixed (T* p = &span[index])
+			{
+				return new IntPtr(p);
+			}
+		}
+	}
+
 	/// <summary>Converts an unsafe structure pointer into a managed array.</summary>
 	/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 	/// <param name="ptr">The pointer to the first structure in the native array.</param>
@@ -1047,7 +1183,7 @@ public static partial class InteropExtensions
 	public static SizeT Write(this IntPtr ptr, IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, SizeT offset = default, SizeT allocatedBytes = default)
 	{
 		// Check size
-		SizeT sz = GetStrListSize(items, packing, charSet);
+		int sz = GetStrListSize(items, packing, charSet);
 		if (allocatedBytes > 0 && (sz > 0 && sz + offset > allocatedBytes) || (sz < 0 && -sz + offset > allocatedBytes))
 			throw new InsufficientMemoryException();
 
@@ -1152,7 +1288,7 @@ public static partial class InteropExtensions
 		// Handle strings (risk is wrong CharSet)
 		if (value is string s)
 		{
-			StringHelper.Write(s, ptr.Offset(offset), out var wrtn, true, CharSet.Auto, allocatedBytes == 0 ? long.MaxValue : allocatedBytes);
+			StringHelper.Write(s, ptr.Offset(offset), out var wrtn, true, CharSet.Auto, allocatedBytes == 0 ? int.MaxValue : allocatedBytes);
 			return wrtn;
 		}
 
@@ -1222,19 +1358,18 @@ public static partial class InteropExtensions
 		}
 
 		// Handle binary serialization
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-		if (valType.IsSerializable)
+		if (valType.CanSerialize())
 		{
 			using var str = new NativeMemoryStream();
-			var bf = new BinaryFormatter();
-			bf.Serialize(str, value);
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
+			new BinaryFormatter().Serialize(str, value);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 			str.Flush();
 			if (allocatedBytes > 0 && offset + str.Length > allocatedBytes)
 				throw new InsufficientMemoryException();
 			str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
 			return (int)str.Length;
 		}
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
 
 		throw new ArgumentException("Unable to convert object to its binary format.");
 
@@ -1264,7 +1399,16 @@ public static partial class InteropExtensions
 		return alloc;
 	}
 
-	private static SizeT GetStrListSize(IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet)
+	private static bool CanSerialize(this Type type) =>
+#if NET8_0_OR_GREATER
+		false;
+#else
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
+		type.IsSerializable;
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
+#endif
+
+	private static int GetStrListSize(IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet)
 	{
 		int chSz = StringHelper.GetCharSize(charSet);
 		if (items is null || !items.Any())

@@ -1841,7 +1841,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumclientsa UINT MsiEnumClientsA( LPCSTR szComponent, DWORD
-	// iProductIndex, LPSTR lpProductBuf );
+	// iProductIndex, StrPtrAnsi lpProductBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumClientsA")]
 	public static extern Win32Error MsiEnumClients([MarshalAs(UnmanagedType.LPTStr)] string szComponent, uint iProductIndex,
@@ -2032,7 +2032,7 @@ public static partial class Msi
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumclientsexa UINT MsiEnumClientsExA( LPCSTR szComponent,
-	// LPCSTR szUserSid, DWORD dwContext, DWORD dwProductIndex, CHAR [39] szProductBuf, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR
+	// LPCSTR szUserSid, DWORD dwContext, DWORD dwProductIndex, CHAR [39] szProductBuf, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi
 	// szSid, LPDWORD pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumClientsExA")]
@@ -2226,7 +2226,7 @@ public static partial class Msi
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumclientsexa UINT MsiEnumClientsExA( LPCSTR szComponent,
-	// LPCSTR szUserSid, DWORD dwContext, DWORD dwProductIndex, CHAR [39] szProductBuf, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR
+	// LPCSTR szUserSid, DWORD dwContext, DWORD dwProductIndex, CHAR [39] szProductBuf, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi
 	// szSid, LPDWORD pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumClientsExA")]
@@ -2433,7 +2433,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumcomponentqualifiersa UINT MsiEnumComponentQualifiersA(
-	// LPCSTR szComponent, DWORD iIndex, LPSTR lpQualifierBuf, LPDWORD pcchQualifierBuf, LPSTR lpApplicationDataBuf, LPDWORD
+	// LPCSTR szComponent, DWORD iIndex, StrPtrAnsi lpQualifierBuf, LPDWORD pcchQualifierBuf, StrPtrAnsi lpApplicationDataBuf, LPDWORD
 	// pcchApplicationDataBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumComponentQualifiersA")]
@@ -2494,7 +2494,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumcomponentsa UINT MsiEnumComponentsA( DWORD iComponentIndex,
-	// LPSTR lpComponentBuf );
+	// StrPtrAnsi lpComponentBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumComponentsA")]
 	public static extern Win32Error MsiEnumComponents(uint iComponentIndex, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpComponentBuf);
@@ -2680,7 +2680,7 @@ public static partial class Msi
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumcomponentsexa UINT MsiEnumComponentsExA( LPCSTR szUserSid,
-	// DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledComponentCode, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR szSid, LPDWORD
+	// DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledComponentCode, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi szSid, LPDWORD
 	// pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumComponentsExA")]
@@ -2869,7 +2869,7 @@ public static partial class Msi
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumcomponentsexa UINT MsiEnumComponentsExA( LPCSTR szUserSid,
-	// DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledComponentCode, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR szSid, LPDWORD
+	// DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledComponentCode, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi szSid, LPDWORD
 	// pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumComponentsExA")]
@@ -2934,7 +2934,7 @@ public static partial class Msi
 	/// no more features (that is, until the function returns ERROR_NO_MORE_ITEMS).
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumfeaturesa UINT MsiEnumFeaturesA( LPCSTR szProduct, DWORD
-	// iFeatureIndex, LPSTR lpFeatureBuf, LPSTR lpParentBuf );
+	// iFeatureIndex, StrPtrAnsi lpFeatureBuf, StrPtrAnsi lpParentBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumFeaturesA")]
 	public static extern Win32Error MsiEnumFeatures([MarshalAs(UnmanagedType.LPTStr)] string szProduct, uint iFeatureIndex,
@@ -3006,7 +3006,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumpatchesa UINT MsiEnumPatchesA( LPCSTR szProduct, DWORD
-	// iPatchIndex, LPSTR lpPatchBuf, LPSTR lpTransformsBuf, LPDWORD pcchTransformsBuf );
+	// iPatchIndex, StrPtrAnsi lpPatchBuf, StrPtrAnsi lpTransformsBuf, LPDWORD pcchTransformsBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumPatchesA")]
 	public static extern Win32Error MsiEnumPatches([MarshalAs(UnmanagedType.LPTStr)] string szProduct, uint iPatchIndex,
@@ -3206,7 +3206,7 @@ public static partial class Msi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumpatchesexa UINT MsiEnumPatchesExA( LPCSTR szProductCode,
 	// LPCSTR szUserSid, DWORD dwContext, DWORD dwFilter, DWORD dwIndex, CHAR [39] szPatchCode, CHAR [39] szTargetProductCode,
-	// MSIINSTALLCONTEXT *pdwTargetProductContext, LPSTR szTargetUserSid, LPDWORD pcchTargetUserSid );
+	// MSIINSTALLCONTEXT *pdwTargetProductContext, StrPtrAnsi szTargetUserSid, LPDWORD pcchTargetUserSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumPatchesExA")]
 	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
@@ -3408,7 +3408,7 @@ public static partial class Msi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumpatchesexa UINT MsiEnumPatchesExA( LPCSTR szProductCode,
 	// LPCSTR szUserSid, DWORD dwContext, DWORD dwFilter, DWORD dwIndex, CHAR [39] szPatchCode, CHAR [39] szTargetProductCode,
-	// MSIINSTALLCONTEXT *pdwTargetProductContext, LPSTR szTargetUserSid, LPDWORD pcchTargetUserSid );
+	// MSIINSTALLCONTEXT *pdwTargetProductContext, StrPtrAnsi szTargetUserSid, LPDWORD pcchTargetUserSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumPatchesExA")]
 	public static extern Win32Error MsiEnumPatchesEx([MarshalAs(UnmanagedType.LPTStr)] string? szProductCode,
@@ -3467,7 +3467,7 @@ public static partial class Msi
 	/// When making multiple calls to <c>MsiEnumProducts</c> to enumerate all of the products, each call should be made from the same thread.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumproductsa UINT MsiEnumProductsA( DWORD iProductIndex, LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumproductsa UINT MsiEnumProductsA( DWORD iProductIndex, StrPtrAnsi
 	// lpProductBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumProductsA")]
@@ -3641,7 +3641,7 @@ public static partial class Msi
 	/// <para>Use MsiGetProductInfoEx to get the state or other information about each product instance enumerated by <c>MsiEnumProductsEx</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumproductsexa UINT MsiEnumProductsExA( LPCSTR szProductCode,
-	// LPCSTR szUserSid, DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledProductCode, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR
+	// LPCSTR szUserSid, DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledProductCode, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi
 	// szSid, LPDWORD pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumProductsExA")]
@@ -3819,7 +3819,7 @@ public static partial class Msi
 	/// <para>Use MsiGetProductInfoEx to get the state or other information about each product instance enumerated by <c>MsiEnumProductsEx</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumproductsexa UINT MsiEnumProductsExA( LPCSTR szProductCode,
-	// LPCSTR szUserSid, DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledProductCode, MSIINSTALLCONTEXT *pdwInstalledContext, LPSTR
+	// LPCSTR szUserSid, DWORD dwContext, DWORD dwIndex, CHAR [39] szInstalledProductCode, MSIINSTALLCONTEXT *pdwInstalledContext, StrPtrAnsi
 	// szSid, LPDWORD pcchSid );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumProductsExA")]
@@ -3995,7 +3995,7 @@ public static partial class Msi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msienumrelatedproductsa UINT MsiEnumRelatedProductsA( LPCSTR
-	// lpUpgradeCode, DWORD dwReserved, DWORD iProductIndex, LPSTR lpProductBuf );
+	// lpUpgradeCode, DWORD dwReserved, DWORD iProductIndex, StrPtrAnsi lpProductBuf );
 	[DllImport(Lib_Msi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiEnumRelatedProductsA")]
 	public static extern Win32Error MsiEnumRelatedProducts([MarshalAs(UnmanagedType.LPTStr)] string lpUpgradeCode, [Optional] uint dwReserved,

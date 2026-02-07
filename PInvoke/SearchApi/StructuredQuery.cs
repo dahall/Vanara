@@ -926,14 +926,14 @@ public static partial class SearchApi
 	{
 		/// <summary>Retrieves the name of this entity.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the name of this entity as a Unicode string. The calling application must free the returned string by
 		/// calling CoTaskMemFree.
 		/// </para>
 		/// </returns>
 		/// <remarks>Each name must be unique.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-name HRESULT Name( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-name HRESULT Name( StrPtrUni
 		// *ppszName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string Name();
@@ -1046,14 +1046,14 @@ public static partial class SearchApi
 
 		/// <summary>Retrieves a default phrase to use for this entity in restatements.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the default phrase as a Unicode string. The calling application must free the returned string by
 		/// calling CoTaskMemFree.
 		/// </para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-defaultphrase HRESULT
-		// DefaultPhrase( LPWSTR *ppszPhrase );
+		// DefaultPhrase( StrPtrUni *ppszPhrase );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string DefaultPhrase();
 	}
@@ -1066,27 +1066,27 @@ public static partial class SearchApi
 	{
 		/// <summary>Retrieves the value of this named entity as a string.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the value of the named entity as a Unicode string. The calling application must free the returned
 		/// string by calling CoTaskMemFree.
 		/// </para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-inamedentity-getvalue HRESULT
-		// GetValue( LPWSTR *ppszValue );
+		// GetValue( StrPtrUni *ppszValue );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetValue();
 
 		/// <summary>Retrieves a default phrase to use for this named entity in restatements.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the default phrase as a Unicode string. The calling application must free the returned string by
 		/// calling CoTaskMemFree.
 		/// </para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-inamedentity-defaultphrase HRESULT
-		// DefaultPhrase( LPWSTR *ppszPhrase );
+		// DefaultPhrase( StrPtrUni *ppszPhrase );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string DefaultPhrase();
 	}
@@ -1227,11 +1227,11 @@ public static partial class SearchApi
 		/// <para>Reserved. Must be <c>FALSE</c>.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives the restated query string. The caller must free the string by calling CoTaskMemFree.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-restatetostring HRESULT
-		// RestateToString( ICondition *pCondition, BOOL fUseEnglish, LPWSTR *ppszQueryString );
+		// RestateToString( ICondition *pCondition, BOOL fUseEnglish, StrPtrUni *ppszQueryString );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string RestateToString([In] ICondition pCondition, [In, MarshalAs(UnmanagedType.Bool)] bool fUseEnglish);
 
@@ -1269,20 +1269,20 @@ public static partial class SearchApi
 		/// <para>Reserved. Must be <c>FALSE</c>.</para>
 		/// </param>
 		/// <param name="ppszPropertyName">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the property name as a Unicode string. The calling application must free the string by calling CoTaskMemFree.
 		/// </para>
 		/// </param>
 		/// <param name="ppszQueryString">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives a pointer to a query string for that property. The calling application must free the string by calling CoTaskMemFree.</para>
 		/// </param>
 		/// <remarks>
 		/// If the leaf nodes of the condition contain more than one property name, or no property name at all, E_INVALIDARG is returned.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-restatepropertyvaluetostring
-		// HRESULT RestatePropertyValueToString( ICondition *pCondition, BOOL fUseEnglish, LPWSTR *ppszPropertyName, LPWSTR
+		// HRESULT RestatePropertyValueToString( ICondition *pCondition, BOOL fUseEnglish, StrPtrUni *ppszPropertyName, StrPtrUni
 		// *ppszQueryString );
 		void RestatePropertyValueToString([In] ICondition pCondition, [In, MarshalAs(UnmanagedType.Bool)] bool fUseEnglish, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszPropertyName, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszQueryString);
 	}
@@ -1602,7 +1602,7 @@ public static partial class SearchApi
 		/// Reports the query string, how it was tokenized, and what language code identifier (LCID) and word breaker were used to parse it.
 		/// </summary>
 		/// <param name="ppszInputString">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives the query string. This parameter can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="ppTokens">
@@ -1620,7 +1620,7 @@ public static partial class SearchApi
 		/// <para>Receives a pointer to the word breaker used for this query. This parameter can be <c>NULL</c>.</para>
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iquerysolution-getlexicaldata HRESULT
-		// GetLexicalData( LPWSTR *ppszInputString, ITokenCollection **ppTokens, LCID *plcid, IUnknown **ppWordBreaker );
+		// GetLexicalData( StrPtrUni *ppszInputString, ITokenCollection **ppTokens, LCID *plcid, IUnknown **ppWordBreaker );
 		void GetLexicalData([MarshalAs(UnmanagedType.LPWStr)] out string? ppszInputString, [Out] out ITokenCollection? ppTokens, [Out] out uint plcid,
 			[Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppWordBreaker);
 	}
@@ -1633,14 +1633,14 @@ public static partial class SearchApi
 	{
 		/// <summary>Retrieves the name of the relationship.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the name of the relationship as a Unicode string. The calling application must free the returned string
 		/// by calling CoTaskMemFree.
 		/// </para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-name HRESULT Name(
-		// LPWSTR *ppszName );
+		// StrPtrUni *ppszName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string Name();
 
@@ -1690,11 +1690,11 @@ public static partial class SearchApi
 
 		/// <summary>Retrieves the default phrase to use for this relationship in restatements.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives the default phrase as a Unicode string. The calling application must free the string by calling CoTaskMemFree.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-defaultphrase HRESULT
-		// DefaultPhrase( LPWSTR *ppszPhrase );
+		// DefaultPhrase( StrPtrUni *ppszPhrase );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string DefaultPhrase();
 	}
@@ -1715,7 +1715,7 @@ public static partial class SearchApi
 		/// </para>
 		/// </param>
 		/// <param name="ppszLocalString">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Returns a null-terminated Unicode string that is the localized string. The calling application must free the returned string
 		/// by calling CoTaskMemFree. If the method does not succeed, this parameter is set to <c>NULL</c>.
@@ -1726,7 +1726,7 @@ public static partial class SearchApi
 		/// <para>Returns S_OK if successful, or S_FALSE otherwise.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ischemalocalizersupport-localize
-		// HRESULT Localize( LPCWSTR pszGlobalString, LPWSTR *ppszLocalString );
+		// HRESULT Localize( LPCWSTR pszGlobalString, StrPtrUni *ppszLocalString );
 		[PreserveSig]
 		HRESULT Localize([MarshalAs(UnmanagedType.LPWStr)] string pszGlobalString, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszLocalString);
 	}
@@ -1852,7 +1852,7 @@ public static partial class SearchApi
 		/// <para>Receives a pointer to the number of tokens covered by the named entity keyword that was found.</para>
 		/// </param>
 		/// <param name="ppszValue">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Receives a pointer to the value of the named entity that was found, as a Unicode string. The caller must free the string by
 		/// calling CoTaskMemFree. An INamedEntity object can be obtained by calling the GetNamedEntity method of pEntity and passing the
@@ -1865,7 +1865,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ischemaprovider-lookupauthorednamedentity
 		// HRESULT LookupAuthoredNamedEntity( IEntity *pEntity, LPCWSTR pszInputString, ITokenCollection *pTokenCollection, ULONG
-		// cTokensBegin, ULONG *pcTokensLength, LPWSTR *ppszValue );
+		// cTokensBegin, ULONG *pcTokensLength, StrPtrUni *ppszValue );
 		void LookupAuthoredNamedEntity([In] IEntity pEntity, [In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In] ITokenCollection pTokenCollection,
 			[In] uint cTokensBegin, out uint pcTokensLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszValue);
 	}
@@ -1899,11 +1899,11 @@ public static partial class SearchApi
 		/// <para>Receives the number of characters spanned by the token. This parameter can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="ppsz">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Receives the overriding text for this token if available, or <c>NULL</c> if there is none.</para>
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-itokencollection-gettoken HRESULT
-		// GetToken( ULONG i, ULONG *pBegin, ULONG *pLength, LPWSTR *ppsz );
+		// GetToken( ULONG i, ULONG *pBegin, ULONG *pLength, StrPtrUni *ppsz );
 		void GetToken(uint i, out uint pBegin, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz);
 	}
 

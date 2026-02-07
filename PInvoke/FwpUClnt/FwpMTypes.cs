@@ -63,6 +63,26 @@ public static partial class FwpUClnt
 		FWP_ACTION_FLAG_CALLOUT = 0x00004000,
 	}
 
+	/// <summary>TBD</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fwptypes/ne-fwptypes-fwp_network_connection_policy_setting_type typedef enum
+	// FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE_ { FWP_NETWORK_CONNECTION_POLICY_SOURCE_ADDRESS,
+	// FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP_INTERFACE, FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP, FWP_NETWORK_CONNECTION_POLICY_MAX } FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE;
+	[PInvokeData("fwptypes.h", MSDNShortId = "NE:fwptypes.FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE_")]
+	public enum FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE
+	{
+		/// <summary>TBD</summary>
+		FWP_NETWORK_CONNECTION_POLICY_SOURCE_ADDRESS = 0,
+
+		/// <summary>TBD</summary>
+		FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP_INTERFACE,
+
+		/// <summary>TBD</summary>
+		FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP,
+
+		/// <summary>TBD</summary>
+		FWP_NETWORK_CONNECTION_POLICY_MAX,
+	}
+
 	/// <summary>
 	/// The <c>FWPM_APPC_NETWORK_CAPABILITY_TYPE</c> enumeration specifies the type of app container network capability that is associated
 	/// with the object or traffic in question.
@@ -1693,7 +1713,7 @@ public static partial class FwpUClnt
 		/// <para>Schema information for the layer's fields.</para>
 		/// <para>See <see cref="FWPM_FIELD0"/> for more information.</para>
 		/// </summary>
-		public IEnumerable<FWPM_FIELD0> Fields => field.ToIEnum<FWPM_FIELD0>((int)numFields);
+		public IEnumerable<FWPM_FIELD0> Fields => @field.ToIEnum<FWPM_FIELD0>((int)numFields);
 
 		/// <summary>Sublayer used when a filter is added with a null sublayer.</summary>
 		public Guid defaultSubLayerKey;
@@ -2791,8 +2811,8 @@ public static partial class FwpUClnt
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_net_event_ikeext_em_failure1 typedef struct
 	// FWPM_NET_EVENT_IKEEXT_EM_FAILURE1_ { UINT32 failureErrorCode; IPSEC_FAILURE_POINT failurePoint; UINT32 flags; IKEEXT_EM_SA_STATE
 	// emState; IKEEXT_SA_ROLE saRole; IKEEXT_AUTHENTICATION_METHOD_TYPE emAuthMethod; UINT8 endCertHash[20]; UINT64 mmId; UINT64 qmFilterId;
-	// wchar_t *localPrincipalNameForAuth; wchar_t *remotePrincipalNameForAuth; UINT32 numLocalPrincipalGroupSids; LPWSTR
-	// *localPrincipalGroupSids; UINT32 numRemotePrincipalGroupSids; LPWSTR *remotePrincipalGroupSids; IPSEC_TRAFFIC_TYPE saTrafficType; } FWPM_NET_EVENT_IKEEXT_EM_FAILURE1;
+	// wchar_t *localPrincipalNameForAuth; wchar_t *remotePrincipalNameForAuth; UINT32 numLocalPrincipalGroupSids; StrPtrUni
+	// *localPrincipalGroupSids; UINT32 numRemotePrincipalGroupSids; StrPtrUni *remotePrincipalGroupSids; IPSEC_TRAFFIC_TYPE saTrafficType; } FWPM_NET_EVENT_IKEEXT_EM_FAILURE1;
 	[PInvokeData("fwpmtypes.h", MSDNShortId = "NS:fwpmtypes.FWPM_NET_EVENT_IKEEXT_EM_FAILURE1_")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FWPM_NET_EVENT_IKEEXT_EM_FAILURE1
@@ -2947,7 +2967,7 @@ public static partial class FwpUClnt
 	// FWPM_NET_EVENT_IKEEXT_MM_FAILURE1_ { UINT32 failureErrorCode; IPSEC_FAILURE_POINT failurePoint; UINT32 flags; IKEEXT_KEY_MODULE_TYPE
 	// keyingModuleType; IKEEXT_MM_SA_STATE mmState; IKEEXT_SA_ROLE saRole; IKEEXT_AUTHENTICATION_METHOD_TYPE mmAuthMethod; UINT8
 	// endCertHash[20]; UINT64 mmId; UINT64 mmFilterId; wchar_t *localPrincipalNameForAuth; wchar_t *remotePrincipalNameForAuth; UINT32
-	// numLocalPrincipalGroupSids; LPWSTR *localPrincipalGroupSids; UINT32 numRemotePrincipalGroupSids; LPWSTR *remotePrincipalGroupSids; } FWPM_NET_EVENT_IKEEXT_MM_FAILURE1;
+	// numLocalPrincipalGroupSids; StrPtrUni *localPrincipalGroupSids; UINT32 numRemotePrincipalGroupSids; StrPtrUni *remotePrincipalGroupSids; } FWPM_NET_EVENT_IKEEXT_MM_FAILURE1;
 	[PInvokeData("fwpmtypes.h", MSDNShortId = "NS:fwpmtypes.FWPM_NET_EVENT_IKEEXT_MM_FAILURE1_")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FWPM_NET_EVENT_IKEEXT_MM_FAILURE1
@@ -3474,6 +3494,50 @@ public static partial class FwpUClnt
 		public SafeCoTaskMemStruct<FWPM_NET_EVENT_CLASSIFY_DROP_MAC0> classifyDropMac { get => new(ptr, false); set => ptr = value; }
 	}
 
+	/// <summary>Stores a type and value pair for a connection policy setting. You use this structure with <c>FwpmConnectionPolicyAdd0</c>.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_network_connection_policy_setting0 typedef struct
+	// FWPM_NETWORK_CONNECTION_POLICY_SETTING0_ { FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE type; FWP_VALUE0 value; } FWPM_NETWORK_CONNECTION_POLICY_SETTING0;
+	[PInvokeData("fwpmtypes.h", MSDNShortId = "NS:fwpmtypes.FWPM_NETWORK_CONNECTION_POLICY_SETTING0_")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FWPM_NETWORK_CONNECTION_POLICY_SETTING0
+	{
+		/// <summary>A type of connection policy setting. See <c>FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE</c>.</summary>
+		public FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE type;
+
+		/// <summary>
+		/// <para>The value of a connection policy setting.</para>
+		/// <para>
+		/// <b>FWP_NETWORK_CONNECTION_POLICY_SOURCE_ADDRESS</b>. The source address to use for the connection. The value should be a
+		/// <b>FWP_UINT32</b> for an IPv4 address, and a <b>FWP_BYTE_ARRAY16_TYPE</b> for an IPv6 address.
+		/// </para>
+		/// <para>
+		/// <b>FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP_INTERFACE</b>. The LUID of the outgoing interface to use for the connection. The value
+		/// should be a <b>FWP_UINT64</b>.
+		/// </para>
+		/// <para>
+		/// <b>FWP_NETWORK_CONNECTION_POLICY_NEXT_HOP</b>. The nexthop address (or gateway) to use for the connection. The value should be a
+		/// <b>FWP_UINT32</b> for an IPv4 address, and a <b>FWP_BYTE_ARRAY16_TYPE</b> for an IPv6 address.
+		/// </para>
+		/// </summary>
+		public FWP_VALUE0 value;
+	}
+
+	/// <summary>
+	/// Stores an array of <c>FWPM_NETWORK_CONNECTION_POLICY_SETTING0</c> values, together with the number of elements in that array.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_network_connection_policy_settings0 typedef struct
+	// FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0_ { UINT32 numSettings; FWPM_NETWORK_CONNECTION_POLICY_SETTING0 *settings; } FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0;
+	[PInvokeData("fwpmtypes.h", MSDNShortId = "NS:fwpmtypes.FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0_")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0
+	{
+		/// <summary>The number of <c>FWPM_NETWORK_CONNECTION_POLICY_SETTING0</c> structures contained in settings.</summary>
+		public uint numSettings;
+
+		/// <summary>An array of <c>FWPM_NETWORK_CONNECTION_POLICY_SETTING0</c> structures</summary>
+		public ArrayPointer<FWPM_NETWORK_CONNECTION_POLICY_SETTING0> settings;
+	}
+
 	/// <summary>The <c>FWPM_PROVIDER_CHANGE0</c> structure specifies a change notification dispatched to subscribers.</summary>
 	/// <remarks>
 	/// <c>FWPM_PROVIDER_CHANGE0</c> is a specific implementation of FWPM_PROVIDER_CHANGE. See WFP Version-Independent Names and Targeting
@@ -3493,6 +3557,193 @@ public static partial class FwpUClnt
 
 		/// <summary>GUID of the provider that changed.</summary>
 		public Guid providerKey;
+	}
+
+	/// <summary>
+	/// Stores the state associated with a provider context. <c>FWPM_PROVIDER_CONTEXT0</c>, <c>FWPM_PROVIDER_CONTEXT1</c>, and
+	/// <c>FWPM_PROVIDER_CONTEXT2</c> are available.
+	/// </summary>
+	/// <remarks>The first seven elements of the union are information supplied when adding objects.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/fwpmtypes/ns-fwpmtypes-fwpm_provider_context3 typedef struct
+	// FWPM_PROVIDER_CONTEXT3_ { GUID providerContextKey; FWPM_DISPLAY_DATA0 displayData; UINT32 flags; GUID *providerKey; FWP_BYTE_BLOB
+	// providerData; FWPM_PROVIDER_CONTEXT_TYPE type; union { IPSEC_KEYING_POLICY1 *keyingPolicy; IPSEC_TRANSPORT_POLICY2
+	// *ikeQmTransportPolicy; IPSEC_TUNNEL_POLICY3 *ikeQmTunnelPolicy; IPSEC_TRANSPORT_POLICY2 *authipQmTransportPolicy; IPSEC_TUNNEL_POLICY3
+	// *authipQmTunnelPolicy; IKEEXT_POLICY2 *ikeMmPolicy; IKEEXT_POLICY2 *authIpMmPolicy; FWP_BYTE_BLOB *dataBuffer; FWPM_CLASSIFY_OPTIONS0
+	// *classifyOptions; IPSEC_TUNNEL_POLICY3 *ikeV2QmTunnelPolicy; IPSEC_TRANSPORT_POLICY2 *ikeV2QmTransportPolicy; IKEEXT_POLICY2
+	// *ikeV2MmPolicy; IPSEC_DOSP_OPTIONS0 *idpOptions; FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0 *networkConnectionPolicy; }; UINT64
+	// providerContextId; } FWPM_PROVIDER_CONTEXT3;
+	[PInvokeData("fwpmtypes.h", MSDNShortId = "NS:fwpmtypes.FWPM_PROVIDER_CONTEXT3_")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FWPM_PROVIDER_CONTEXT3
+	{
+		/// <summary>
+		/// <para>Type: <b>GUID</b></para>
+		/// <para>
+		/// Uniquely identifies the provider context. If the GUID is zero-initialized in the call to <c>FwpmProviderContextAdd2</c>, then
+		/// Base Filtering Engine (BFE) will generate one.
+		/// </para>
+		/// </summary>
+		public Guid providerContextKey;
+
+		/// <summary>
+		/// <para>Type: <b><c>FWPM_DISPLAY_DATA0</c></b></para>
+		/// <para>Allows provider contexts to be annotated in a human-readable form. The <c>FWPM_DISPLAY_DATA0</c> structure is required.</para>
+		/// </summary>
+		public FWPM_DISPLAY_DATA0 displayData;
+
+		/// <summary>
+		/// <para>Type: <b>UINT32</b></para>
+		/// <para>Possible values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Provider context flag</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FWPM_PROVIDER_CONTEXT_FLAG_PERSISTENT</description>
+		/// <description>The object is persistent, that is, it survives across BFE stop/start.</description>
+		/// </item>
+		/// <item>
+		/// <description>FWPM_PROVIDER_CONTEXT_FLAG_DOWNLEVEL</description>
+		/// <description>Reserved for internal use.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FWPM_PROVIDER_CONTEXT_FLAG flags;
+
+		/// <summary>
+		/// <para>Type: <b>GUID*</b></para>
+		/// <para>GUID of the policy provider that manages this object.</para>
+		/// </summary>
+		public GuidPtr providerKey;
+
+		/// <summary>
+		/// <para>Type: <b><c>FWP_BYTE_BLOB</c></b></para>
+		/// <para>Optional provider-specific data that allows providers to store additional context info with the object.</para>
+		/// </summary>
+		public FWP_BYTE_BLOB providerData;
+
+		/// <summary>
+		/// <para>Type: <b><c>FWPM_PROVIDER_CONTEXT_TYPE</c></b></para>
+		/// <para>The type of provider context.</para>
+		/// </summary>
+		public FWPM_PROVIDER_CONTEXT_TYPE type;
+
+		/// <summary>The union of policies</summary>
+		public FWPM_PROVIDER_CONTEXT3_UNION union;
+
+		/// <summary>The union of policies</summary>
+		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+		public struct FWPM_PROVIDER_CONTEXT3_UNION
+		{
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_KEYING_POLICY1</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_KEYING_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IPSEC_KEYING_POLICY1> keyingPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TRANSPORT_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKE_QM_TRANSPORT_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IPSEC_TRANSPORT_POLICY2> ikeQmTransportPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TUNNEL_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKE_QM_TUNNEL_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public ManagedStructPointer<IPSEC_TUNNEL_POLICY3> ikeQmTunnelPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TRANSPORT_POLICY2</c>*</b></para>
+			/// <para>[case()][unique]</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IPSEC_TRANSPORT_POLICY2> authipQmTransportPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TUNNEL_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_AUTHIP_QM_TRANSPORT_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public ManagedStructPointer<IPSEC_TUNNEL_POLICY3> authipQmTunnelPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IKEEXT_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKE_MM_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IKEEXT_POLICY2> ikeMmPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IKEEXT_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_AUTHIP_MM_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IKEEXT_POLICY2> authIpMmPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>FWP_BYTE_BLOB</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_GENERAL_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<FWP_BYTE_BLOB> dataBuffer;
+
+			/// <summary>
+			/// <para>Type: <b><c>FWPM_CLASSIFY_OPTIONS0</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_CLASSIFY_OPTIONS_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<FWPM_CLASSIFY_OPTIONS0> classifyOptions;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TUNNEL_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKEV2_QM_TUNNEL_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public ManagedStructPointer<IPSEC_TUNNEL_POLICY3> ikeV2QmTunnelPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_TRANSPORT_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKEV2_QM_TRANSPORT_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IPSEC_TRANSPORT_POLICY2> ikeV2QmTransportPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IKEEXT_POLICY2</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_IKEV2_MM_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IKEEXT_POLICY2> ikeV2MmPolicy;
+
+			/// <summary>
+			/// <para>Type: <b><c>IPSEC_DOSP_OPTIONS0</c>*</b></para>
+			/// <para>Available when <b>type</b> is <b>FWPM_IPSEC_DOSP_CONTEXT</b>.</para>
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<IPSEC_DOSP_OPTIONS0> idpOptions;
+
+			/// <summary>
+			/// A pointer to a <c>FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0</c> structure containing the number of network connection polices, and
+			/// a list of those policies formatted.
+			/// </summary>
+			[FieldOffset(0)]
+			public StructPointer<FWPM_NETWORK_CONNECTION_POLICY_SETTINGS0> networkConnectionPolicy;
+		}
+
+		/// <summary>
+		/// <para>Type: <b>UINT64</b></para>
+		/// <para>
+		/// LUID identifying the context. This is the context value stored in the <b>FWPS_FILTER1</b> structure for filters that reference a
+		/// provider context. The <b>FWPS_FILTER1</b> structure is documented in the WDK. This is additional information returned when
+		/// getting/enumerating objects.
+		/// </para>
+		/// </summary>
+		public ulong providerContextId;
 	}
 
 	/// <summary>The <c>FWPM_PROVIDER_CONTEXT_CHANGE0</c> structure contains a change notification dispatched to subscribers.</summary>

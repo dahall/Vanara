@@ -1,6 +1,7 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -23,8 +24,6 @@ public static class NativeClipboard
 	private const int stdRetryDelay = 100;
 	private static readonly object objectLock = new();
 	private static ListenerWindow? listener;
-	[ThreadStatic]
-	private static bool oleInit = false;
 
 	/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 	public static event EventHandler ClipboardUpdate
@@ -80,7 +79,7 @@ public static class NativeClipboard
 			GetUpdatedClipboardFormats(null, 0, out var cnt);
 			var fmts = new uint[cnt];
 			Win32Error.ThrowLastErrorIfFalse(GetUpdatedClipboardFormats(fmts, (uint)fmts.Length, out cnt));
-			return fmts.Take((int)cnt).ToArray();
+			return [.. fmts.Take((int)cnt)];
 		}
 	}
 
@@ -112,7 +111,7 @@ public static class NativeClipboard
 		if (parent is null) throw new ArgumentNullException(nameof(parent));
 		if (relativeShellItems.Length == 0) return CreateEmptyDataObject();
 		SHCreateDataObject(parent.PIDL, relativeShellItems.Select(i => i.PIDL), default, out var dataObj).ThrowIfFailed();
-		return dataObj;
+		return dataObj!;
 	}
 
 	/// <summary>Creates an empty, writable data object.</summary>
@@ -120,7 +119,7 @@ public static class NativeClipboard
 	public static IComDataObject CreateEmptyDataObject()
 	{
 		SHCreateDataObject(ppv: out var writableDataObj).ThrowIfFailed();
-		return writableDataObj;
+		return writableDataObj!;
 	}
 
 	/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>
@@ -206,7 +205,8 @@ public static class NativeClipboard
 		Flush();
 	}
 
-	private static void Init() { if (!oleInit) { oleInit = CoInitialize().Succeeded; } }
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void Init() => OleThreadState.EnsureSTA();
 
 	private static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
 	{
@@ -235,6 +235,7 @@ public static class NativeClipboard
 		}
 		throw hr.GetException()!;
 	}
+
 	private class ListenerWindow : SystemEventHandler
 	{
 		protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)

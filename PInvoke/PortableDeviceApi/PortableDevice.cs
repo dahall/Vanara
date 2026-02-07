@@ -211,7 +211,7 @@ public static partial class PortableDeviceApi
 		/// <summary>The parameter is a regular expression.</summary>
 		WPD_PARAMETER_ATTRIBUTE_FORM_REGULAR_EXPRESSION,
 		/// <summary>The parameter is an object identifier.</summary>
-		WPD_PARAMETER_ATTRIBUTE_OBJECT_IDENTIFIER,
+		WPD_PARAMETER_ATTRIBUTE_FORM_OBJECT_IDENTIFIER
 	}
 
 	/// <summary>

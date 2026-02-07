@@ -73,16 +73,9 @@ public class ComClassFactory : IClassFactory, IDisposable
 		System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: riid={riid:B}");
 		ppv = null;
 		if (pUnkOuter is not null) return HRESULT.CLASS_E_NOAGGREGATION;
-		try
-		{
-			ppv = comObj.QueryInterface(riid);
-			System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: out ppv={ppv?.GetType().Name}");
-		}
-		catch (Exception e)
-		{
-			return e.GetPropertyValue<int>("HResult");
-		}
-		return HRESULT.S_OK;
+		HRESULT hr = comObj.QueryInterface(riid, out ppv);
+		System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: out ppv={ppv?.GetType().Name}, hr={hr}");
+		return hr;
 	}
 
 	/// <inheritdoc/>

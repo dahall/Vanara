@@ -1058,7 +1058,7 @@ public static partial class Shell32
 		/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
 		/// <param name="uFlags">Flags specifying where the toolbar buttons should go.</param>
 		[PreserveSig]
-		HRESULT SetToolbarItems([Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TBBUTTON[]? lpButtons, uint nButtons, FCT uFlags);
+		HRESULT SetToolbarItems([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TBBUTTON[]? lpButtons, uint nButtons, FCT uFlags);
 	}
 
 	/// <summary>

@@ -714,6 +714,51 @@ public static partial class UrlMon
 		FMFD_RETURNUPDATEDIMGMIMES = 0x00000020,
 	}
 
+	/// <summary>Values that control the action of IInternetSecurityManager::MapUrlToZone and IInternetSecurityManagerEx2::MapUrlToZoneEx2.</summary>
+	[PInvokeData("urlmon.h")]
+	[Flags]
+	public enum MUTZ : uint
+	{
+		/// <summary>Indicates that the file should not be checked for the MOTW.</summary>
+		MUTZ_NOSAVEDFILECHECK = 0x00000001,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Indicates that the URL is a file and "file:" does not need to be prepended.
+		/// </summary>
+		MUTZ_ISFILE = 0x00000002,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Indicates that wildcard characters can be used.</summary>
+		MUTZ_ACCEPT_WILDCARD_SCHEME = 0x00000080,
+
+		/// <summary>Indicates that the URL should be treated as if it were in the Restricted sites zone.</summary>
+		MUTZ_ENFORCERESTRICTED = 0x00000100,
+
+		/// <summary>Internet Explorer 7. Reserved. Do not use.</summary>
+		MUTZ_RESERVED = 0x00000200,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Always evaluate the "saved from url" (MOTW) information in the file. By setting
+		/// this flag, you override the FEATURE_UNC_SAVEDFILECHECK feature control setting.
+		/// </summary>
+		MUTZ_REQUIRESAVEDFILECHECK = 0x00000400,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Do not unescape the URL.</summary>
+		MUTZ_DONT_UNESCAPE = 0x00000800,
+
+		/// <summary>Internet Explorer 7. Do not check the local Internet cache.</summary>
+		MUTZ_DONT_USE_CACHE = 0x00001000,
+
+		/// <summary>Internet Explorer 7. Force the intranet flags to be active. Implies MUTZ_DONT_USE_CACHE.</summary>
+		MUTZ_FORCE_INTRANET_FLAGS = 0x00002000,
+
+		/// <summary>
+		/// Internet Explorer 7. Ignore all zone mappings that the user or administrator has set in the registry, including those set by ESC.
+		/// For example, a site in the Trusted Sites zone would appear to be in the Internet zone (or whatever zone it was in originally).
+		/// Implies MUTZ_DONT_USE_CACHE.
+		/// </summary>
+		MUTZ_IGNORE_ZONE_MAPPINGS = 0x00004000,
+	}
+
 	/// <summary>
 	/// Contains options for URL parsing operations. Used by <c>CoInternetParseUrl</c>, <c>CoInternetParseIUri</c>, and implementations
 	/// of <c>IInternetProtocolInfo::ParseUrl</c>.
@@ -793,6 +838,94 @@ public static partial class UrlMon
 		PARSE_UNESCAPE
 	}
 
+	/// <summary>
+	/// <para>This enumeration contains the flags passed into the <c>IInternetSecurityManager::ProcessUrlAction</c> method.</para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms928911(v=msdn.10)
+	[PInvokeData("urlmon.h")]
+	[Flags]
+	public enum PUAF
+	{
+		/// <summary>Use the defaults associated with the action.</summary>
+		PUAF_DEFAULT = 0,
+
+		/// <summary>Do not display any user interface.</summary>
+		PUAF_NOUI = 0x1,
+
+		/// <summary>Assume the URL is a file. The protocol scheme, "file://", is not required.</summary>
+		PUAF_ISFILE = 0x2,
+
+		/// <summary>Warn the user that a URL action was denied.</summary>
+		PUAF_WARN_IF_DENIED = 0x4,
+
+		/// <summary>Force the user interface to be displayed in the foreground.</summary>
+		PUAF_FORCEUI_FOREGROUND = 0x8,
+
+		/// <summary>Obsolete. Do not use.</summary>
+		PUAF_CHECK_TIFS = 0x10,
+
+		/// <summary>Reserved.</summary>
+		PUAF_DONTCHECKBOXINDIALOG = 0x20,
+
+		/// <summary>
+		/// Indicates that the call is coming from a trusted source and implies that the policy returned should be the lowest security level
+		/// possible. The default security manager will not honor this flag, but custom security managers may choose to honor it. This value
+		/// was introduced for Internet Explorer 5.
+		/// </summary>
+		PUAF_TRUSTED = 0x40,
+
+		/// <summary>
+		/// Indicates that the security manager should accept wildcards in the URL scheme. This value was introduced for Internet Explorer 5.
+		/// </summary>
+		PUAF_ACCEPT_WILDCARD_SCHEME = 0x80,
+
+		/// <summary>Force the URL into the Restricted Zone.</summary>
+		PUAF_ENFORCERESTRICTED = 0x100,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Do not check the file for "saved from url" information.</summary>
+		PUAF_NOSAVEDFILECHECK = 0x200,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Force the file to be checked for "saved from url" information.</summary>
+		PUAF_REQUIRESAVEDFILECHECK = 0x400,
+
+		/// <summary>Internet Explorer 7. Do not use the IInternetSecurityManager::MapUrlToZone zone cache. Recompute the zone instead.</summary>
+		PUAF_DONT_USE_CACHE = 0x1000,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Return policy values for the Local Machine zone when running in the Local
+		/// Machine Lockdown zone.
+		/// </summary>
+		PUAF_LMZ_UNLOCKED = 0x10000,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Return policy values for the Local Machine Lockdown zone when running in the
+		/// Local Machine Lockdown zone.
+		/// </summary>
+		PUAF_LMZ_LOCKED = 0x20000,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Return unlocked security zone policies when the protocol is restricted in the
+		/// current zone.
+		/// </summary>
+		PUAF_DEFAULTZONEPOL = 0x40000,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Return locked security zone policies when the protocol is restricted in the
+		/// current zone.
+		/// </summary>
+		PUAF_NPL_USE_LOCKED_IF_RESTRICTED = 0x80000,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Disable the display of UI when running in a locked zone.</summary>
+		PUAF_NOUIIFLOCKED = 0x100000,
+
+		/// <summary>
+		/// Internet Explorer 6 for Windows XP SP2 and later. Verify that the link protocol can be dropped into the Address bar when
+		/// processing the URLACTION_SHELL_MOVE_OR_COPY action. The page hosting the script is used to determine the zone when querying if a
+		/// given protocol is allowed.
+		/// </summary>
+		PUAF_DRAGPROTOCOLCHECK = 0x200000
+	}
+
 	/// <summary>Contains the available query options for <c>CoInternetQueryInfo</c>.</summary>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775139%28v%3dvs.85%29
 	// typedef enum _tagQUERYOPTION { QUERY_EXPIRATION_DATE = 1, QUERY_TIME_OF_LAST_CHANGE, QUERY_CONTENT_ENCODING, QUERY_CONTENT_TYPE,
@@ -852,6 +985,19 @@ public static partial class UrlMon
 		/// CoInternetQueryInfo returns TRUE in pvBuffer; FALSE otherwise.
 		/// </summary>
 		QUERY_IS_CACHED_AND_USABLE_OFFLINE
+	}
+
+	/// <summary>Contains the flag values used for creating and enumerating security zone mappings.</summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537173(v=vs.85) typedef
+	// enum { SZM_CREATE&#160;&#160;= 0x00000000, SZM_DELETE&#160;&#160;= 0x00000001 } SZM_FLAGS;
+	[PInvokeData("Urlmon.h")]
+	public enum SZM_FLAGS
+	{
+		/// <summary>Create a new mapping.</summary>
+		SZM_CREATE,
+
+		/// <summary>Delete the mapping.</summary>
+		SZM_DELETE,
 	}
 
 	/// <summary>Flags used by <see cref="CreateUri"/>.</summary>
@@ -1287,6 +1433,77 @@ public static partial class UrlMon
 		URL_SCHEME_MAXVALUE,
 	}
 
+	/// <summary>
+	/// <para>The following list contains the values associated with the policies used with the <c><b>URL action flags</b></c>.</para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537179(v=vs.85)
+	[PInvokeData("urlmon.h")]
+	public enum URLPOLICY : uint
+	{
+		/// <summary>Only allow ActiveX controls that are on the trusted controls list to be used.</summary>
+		URLPOLICY_ACTIVEX_CHECK_LIST = 0x00010000,
+
+		/// <summary>Allow the action to take place silently.</summary>
+		URLPOLICY_ALLOW = 0x00,
+
+		/// <summary>Use challenge-response authentication schemes (such as NTLM).</summary>
+		URLPOLICY_AUTHENTICATE_CHALLENGE_RESPONSE = 0x00010000,
+
+		/// <summary>Use basic HTTP authentication.</summary>
+		URLPOLICY_AUTHENTICATE_CLEARTEXT_OK = 0x00000000,
+
+		/// <summary>Require mutual authentication with the server.</summary>
+		URLPOLICY_AUTHENTICATE_MUTUAL_ONLY = 0x00030000,
+
+		/// <summary>Internet Explorer 6 for Windows XP SP2 and later. Only allow behaviors that are on the trusted list to be used.</summary>
+		URLPOLICY_BEHAVIOR_CHECK_LIST = 0x00010000,
+
+		/// <summary>Allow automatic installation of software updates.</summary>
+		URLPOLICY_CHANNEL_SOFTDIST_AUTOINSTALL = 0x00030000,
+
+		/// <summary>Cache content downloaded from Software Update Channels.</summary>
+		URLPOLICY_CHANNEL_SOFTDIST_PRECACHE = 0x00020000,
+
+		/// <summary>Prohibit downloads from Software Update Channels.</summary>
+		URLPOLICY_CHANNEL_SOFTDIST_PROHIBIT = 0x00010000,
+
+		/// <summary>Only allow users to log on anonymously, so their credentials are not exposed.</summary>
+		URLPOLICY_CREDENTIALS_ANONYMOUS_ONLY = 0x00030000,
+
+		/// <summary>Prompt the user for permission if the resource is not located in the Intranet zone.</summary>
+		URLPOLICY_CREDENTIALS_CONDITIONAL_PROMPT = 0x00020000,
+
+		/// <summary>Prompt the user to enter a user name and password.</summary>
+		URLPOLICY_CREDENTIALS_MUST_PROMPT_USER = 0x00010000,
+
+		/// <summary>Automatically log on with the user's credentials.</summary>
+		URLPOLICY_CREDENTIALS_SILENT_LOGON_OK = 0x00000000,
+
+		/// <summary>Do not allow the action.</summary>
+		URLPOLICY_DISALLOW = 0x03,
+
+		/// <summary>Not currently implemented.</summary>
+		URLPOLICY_JAVA_CUSTOM = 0x00800000,
+
+		/// <summary>Set high Java security. Java applets will run in a sandbox.</summary>
+		URLPOLICY_JAVA_HIGH = 0x00010000,
+
+		/// <summary>Set low Java security. Java applets will be allowed to do high-capability operations, such as file I/O.</summary>
+		URLPOLICY_JAVA_LOW = 0x00030000,
+
+		/// <summary>Set medium Java security. Java applets run in a sandbox with additional capabilities, such as scratch space.</summary>
+		URLPOLICY_JAVA_MEDIUM = 0x00020000,
+
+		/// <summary>Prevent Java applets from running.</summary>
+		URLPOLICY_JAVA_PROHIBIT = 0x00000000,
+
+		/// <summary>Mask that can be used for comparisons to get the bits that pertain to permissions.</summary>
+		URLPOLICY_MASK_PERMISSIONS = 0x0f,
+
+		/// <summary>Prompt the user to determine if an action is allowed.</summary>
+		URLPOLICY_QUERY = 0x01,
+	}
+
 	/// <summary>Installs the specified component.</summary>
 	/// <param name="szDistUnit">A pointer to a string that specifies the name of the component.</param>
 	/// <param name="szTYPE">
@@ -1404,7 +1621,7 @@ public static partial class UrlMon
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT CoGetClassObjectFromURL(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string szCodeURL, uint dwFileVersionMS,
 		uint dwFileVersionLS, [MarshalAs(UnmanagedType.LPWStr)] string szContentType, IBindCtx pBindCtx, CLSCTX dwClsContext,
-		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 8)] out object? ppv);
 
 	/// <summary>Combines a base Uniform Resource Identifier (URI) and a relative URI into a full URI.</summary>
 	/// <param name="pBaseUri">A pointer to the <c>IUri</c> interface of the base URI.</param>
@@ -1501,7 +1718,7 @@ public static partial class UrlMon
 	/// bytes required to hold the result, including the terminating <c>NULL</c> character.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775085(v=vs.85) HRESULT
-	// CoInternetCombineUrl( LPCWSTR pwzBaseUrl, LPCWSTR pwzRelativeUrl, DWORD dwCombineFlags, LPWSTR pwzResult, DWORD cchResult, DWORD
+	// CoInternetCombineUrl( LPCWSTR pwzBaseUrl, LPCWSTR pwzRelativeUrl, DWORD dwCombineFlags, StrPtrUni pwzResult, DWORD cchResult, DWORD
 	// *pcchResult, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -1725,7 +1942,7 @@ public static partial class UrlMon
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775088(v=vs.85) STDAPI
-	// CoInternetParseIUri( _In_ IUri *pIUri, _In_ PARSEACTION ParseAction, _In_ DWORD dwFlags, _In_ LPWSTR pwzResult, _In_ DWORD
+	// CoInternetParseIUri( _In_ IUri *pIUri, _In_ PARSEACTION ParseAction, _In_ DWORD dwFlags, _In_ StrPtrUni pwzResult, _In_ DWORD
 	// cchResult, _Out_ DWORD *pcchResult, _Reserved_ DWORD_PTR dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -1820,7 +2037,7 @@ public static partial class UrlMon
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775089(v=vs.85) STDAPI
-	// CoInternetParseUrl( LPCWSTR pwzUrl, PARSEACTION ParseAction, DWORD dwFlags, LPWSTR pszResult, DWORD cchResult, DWORD *pcchResult,
+	// CoInternetParseUrl( LPCWSTR pwzUrl, PARSEACTION ParseAction, DWORD dwFlags, StrPtrUni pszResult, DWORD cchResult, DWORD *pcchResult,
 	// _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -2727,7 +2944,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775107(v=vs.85) HRESULT
-	// FindMimeFromData( LPBC pBC, LPCWSTR pwzUrl, LPVOID pBuffer, DWORD cbSize, LPCWSTR pwzMimeProposed, DWORD dwMimeFlags, LPWSTR
+	// FindMimeFromData( LPBC pBC, LPCWSTR pwzUrl, LPVOID pBuffer, DWORD cbSize, LPCWSTR pwzMimeProposed, DWORD dwMimeFlags, StrPtrUni
 	// *ppwzMimeOut, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -2796,7 +3013,7 @@ public static partial class UrlMon
 	/// to a lack of dependence on just-in-time (JIT) in components.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa359665(v=vs.85) HRESULT
-	// GetComponentIDFromCLSSPEC( _In_ uCLSSPEC *pClassSpec, _Out_ LPSTR *ppszComponentID );
+	// GetComponentIDFromCLSSPEC( _In_ uCLSSPEC *pClassSpec, _Out_ StrPtrAnsi *ppszComponentID );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT GetComponentIDFromCLSSPEC(in uCLSSPEC pClassSpec, out SafeCoTaskMemHandle ppszComponentID);
@@ -2975,7 +3192,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775113(v=vs.85) HRESULT
-	// MkParseDisplayNameEx( _In_ IBindCtx *pbc, _In_ LPWSTR szDisplayName, _Out_ unsigned long *pcchEaten, _Out_ IMoniker **ppmk );
+	// MkParseDisplayNameEx( _In_ IBindCtx *pbc, _In_ StrPtrUni szDisplayName, _Out_ unsigned long *pcchEaten, _Out_ IMoniker **ppmk );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT MkParseDisplayNameEx(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string szDisplayName, out uint pcchEaten, out IMoniker ppmk);
@@ -3124,7 +3341,8 @@ public static partial class UrlMon
 	// RegisterMediaTypeClass( _In_ LPBC pbc, _In_ UINT ctypes, _In_ LPCSTR *rgszTypes, _In_ CLSID *rgclsID, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT RegisterMediaTypeClass(IBindCtx pbc, uint ctypes, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[] rgszTypes, [MarshalAs(UnmanagedType.LPArray)] Guid[] rgclsID, uint dwReserved = 0);
+	public static extern HRESULT RegisterMediaTypeClass(IBindCtx pbc, uint ctypes, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 1)] string[] rgszTypes,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] rgclsID, uint dwReserved = 0);
 
 	/// <summary>Registers media type strings.</summary>
 	/// <param name="ctypes">[in]The number of media type strings in the rgszTypes array. This parameter cannot be zero.</param>
@@ -3268,7 +3486,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775122(v=vs.85) HRESULT
-	// URLDownloadToCacheFile( _In_ LPUNKNOWN lpUnkcaller, _In_ LPCSTR szURL, _Out_ LPTSTR szFileName, _In_ DWORD cchFileName,
+	// URLDownloadToCacheFile( _In_ LPUNKNOWN lpUnkcaller, _In_ LPCSTR szURL, _Out_ StrPtrAuto szFileName, _In_ DWORD cchFileName,
 	// _Reserved_ DWORD dwReserved, _In_opt_ IBindStatusCallback *pBSC );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
@@ -3553,8 +3771,8 @@ public static partial class UrlMon
 	/// the structure. For more information, see Handling BINDINFO Structures.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774966%28v%3dvs.85%29
-	// typedef struct _tagBINDINFO { unsigned long cbSize; LPWSTR szExtraInfo; STGMEDIUM stgmedData; DWORD grfBindInfoF; DWORD
-	// dwBindVerb; LPWSTR szCustomVerb; DWORD cbStgmedData; DWORD dwOptions; DWORD dwOptionsFlags; DWORD dwCodePage; SECURITY_ATTRIBUTES
+	// typedef struct _tagBINDINFO { unsigned long cbSize; StrPtrUni szExtraInfo; STGMEDIUM stgmedData; DWORD grfBindInfoF; DWORD
+	// dwBindVerb; StrPtrUni szCustomVerb; DWORD cbStgmedData; DWORD dwOptions; DWORD dwOptionsFlags; DWORD dwCodePage; SECURITY_ATTRIBUTES
 	// securityAttributes; IID iid; IUnknown *pUnk; DWORD dwReserved; } BINDINFO;
 	[PInvokeData("Urlmon.h")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

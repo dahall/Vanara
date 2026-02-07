@@ -92,7 +92,8 @@ public static partial class Kernel32
 	// HANDLE WINAPI CreateBoundaryDescriptor( _In_ LPCTSTR Name, _In_ ULONG Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682121(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682121")]
-	public static extern SafeBoundaryDescriptorHandle CreateBoundaryDescriptor(string Name, [Optional] uint Flags);
+	[return: AddAsCtor]
+	public static extern BoundaryDescriptorHandle CreateBoundaryDescriptor(string Name, [Optional] uint Flags);
 
 	/// <summary>Creates a private namespace.</summary>
 	/// <param name="lpPrivateNamespaceAttributes">
@@ -114,6 +115,7 @@ public static partial class Kernel32
 	// lpBoundaryDescriptor, _In_ LPCTSTR lpAliasPrefix); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682419(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682419")]
+	[return: AddAsCtor]
 	public static extern SafeNamespaceHandle CreatePrivateNamespace([In, Optional] SECURITY_ATTRIBUTES? lpPrivateNamespaceAttributes, [In] BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
 	/// <summary>Deletes the specified boundary descriptor.</summary>
@@ -156,21 +158,19 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684318")]
 	private static extern SafeNamespaceHandle OpenPrivateNamespaceInternal([In] BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
-	public partial class SafeBoundaryDescriptorHandle
+	public partial struct BoundaryDescriptorHandle
 	{
 		/// <summary>Adds a security identifier (SID) to the boundary descriptor.</summary>
+		/// <param name="lpBoundaryDescriptor">A descriptor that defines how the namespace is to be isolated.</param>
 		/// <param name="pSid">A pointer to a <c>SID</c> structure.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		public bool AddSid(PSID pSid)
-		{
-			BoundaryDescriptorHandle h = handle;
-			return Marshal.ReadByte(pSid.DangerousGetHandle(), 7) == 16
-				? AddIntegrityLabelToBoundaryDescriptor(ref h, pSid)
-				: AddSIDToBoundaryDescriptor(ref h, pSid);
-		}
+		public static bool AddSid(ref BoundaryDescriptorHandle lpBoundaryDescriptor, PSID pSid) =>
+			Marshal.ReadByte(pSid.DangerousGetHandle(), 7) == 16
+				? AddIntegrityLabelToBoundaryDescriptor(ref lpBoundaryDescriptor, pSid)
+				: AddSIDToBoundaryDescriptor(ref lpBoundaryDescriptor, pSid);
 	}
 
 	public partial class SafeNamespaceHandle

@@ -826,7 +826,7 @@ public static partial class FunDisc
 		/// <summary>Performs as a factory for services that are exposed through an implementation of IServiceProvider.</summary>
 		/// <param name="guidService">A unique identifier of the requested service.</param>
 		/// <param name="riid">A unique identifier of the interface which the caller wishes to receive for the service.</param>
-		/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
+		/// <param name="ppvObject">The interface specified by the <c>riid</c> parameter.</param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
 		HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvObject);

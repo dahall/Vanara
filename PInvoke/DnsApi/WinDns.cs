@@ -1133,7 +1133,7 @@ public static partial class DnsApi
 	/// <para>To use <c>DNS_CUSTOM_SERVER</c> together with ServerAddr, include <code>ws2ipdef.h</code> before <code>windns.h</code>.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_custom_server typedef struct _DNS_CUSTOM_SERVER { DWORD
-	// dwServerType; ULONG64 ullFlags; union { PWSTR pwszTemplate; }; CHAR MaxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; } DNS_CUSTOM_SERVER;
+	// dwServerType; ULONG64 ullFlags; union { StrPtrUni pwszTemplate; }; CHAR MaxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; } DNS_CUSTOM_SERVER;
 	[PInvokeData("windns.h", MSDNShortId = "NS:windns._DNS_CUSTOM_SERVER")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DNS_CUSTOM_SERVER
@@ -1180,7 +1180,7 @@ public static partial class DnsApi
 		public DNS_CUSTOM_SERVER_FLAGS ullFlags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A <c>NULL</c>-terminated wide string representing the <c>DNS-over-HTTPS</c> template.</para>
 		/// <para>If dwServerType is set to <c>DNS_CUSTOM_SERVER_TYPE_UDP</c>, then this field must be <c>NULL</c>.</para>
 		/// <para>
@@ -1646,7 +1646,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_MINFO_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_minfo_dataa typedef struct { PSTR pNameMailbox; PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_minfo_dataa typedef struct { StrPtrAnsi pNameMailbox; StrPtrAnsi
 	// pNameErrorsMailbox; } DNS_MINFO_DATAA, *PDNS_MINFO_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "cd392b48-734f-462b-b893-855f07c30575")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1672,7 +1672,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_MX_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_mx_dataa typedef struct { PSTR pNameExchange; WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_mx_dataa typedef struct { StrPtrAnsi pNameExchange; WORD
 	// wPreference; WORD Pad; } DNS_MX_DATAA, *PDNS_MX_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "72a0b42e-a7af-42d2-b672-cf06d0b5d1ba")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1695,7 +1695,7 @@ public static partial class DnsApi
 	/// The <c>DNS_NAPTR_DATA</c> structure represents a Naming Authority Pointer (NAPTR) DNS Resource Record (RR) as specified in RFC 2915.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_naptr_dataw typedef struct { WORD wOrder; WORD
-	// wPreference; PWSTR pFlags; PWSTR pService; PWSTR pRegularExpression; PWSTR pReplacement; } DNS_NAPTR_DATAW, *PDNS_NAPTR_DATAW;
+	// wPreference; StrPtrUni pFlags; StrPtrUni pService; StrPtrUni pRegularExpression; StrPtrUni pReplacement; } DNS_NAPTR_DATAW, *PDNS_NAPTR_DATAW;
 	[PInvokeData("windns.h", MSDNShortId = "8f576efb-4ef3-4fc0-8cf5-d373460a3b3c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DNS_NAPTR_DATA
@@ -1735,7 +1735,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_NSEC_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_nsec_dataa typedef struct { PSTR pNextDomainName; WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_nsec_dataa typedef struct { StrPtrAnsi pNextDomainName; WORD
 	// wTypeBitMapsLength; WORD wPad; #if ... BYTE TypeBitMaps[]; #else BYTE TypeBitMaps[1]; #endif } DNS_NSEC_DATAA, *PDNS_NSEC_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "ea446732-bc6a-4597-b164-11bfd77c07f2")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_NSEC_DATA>), nameof(wTypeBitMapsLength))]
@@ -1846,7 +1846,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_NXT_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_nxt_dataa typedef struct { PSTR pNameNext; WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_nxt_dataa typedef struct { StrPtrAnsi pNameNext; WORD
 	// wNumTypes; #if ... WORD wTypes[]; #else WORD wTypes[1]; #endif } DNS_NXT_DATAA, *PDNS_NXT_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "0e5370c2-30d3-4bb7-85a0-f4412f5572fd")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_NXT_DATA>), nameof(wNumTypes))]
@@ -1896,7 +1896,7 @@ public static partial class DnsApi
 	/// The <c>DNS_PROXY_INFORMATION</c> structure contains the proxy information for a DNS server's name resolution policy table.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_proxy_information typedef struct DNS_PROXY_INFORMATION {
-	// ULONG version; DNS_PROXY_INFORMATION_TYPE proxyInformationType; PWSTR proxyName; } DNS_PROXY_INFORMATION;
+	// ULONG version; DNS_PROXY_INFORMATION_TYPE proxyInformationType; StrPtrUni proxyName; } DNS_PROXY_INFORMATION;
 	[PInvokeData("windns.h", MSDNShortId = "cfe7653f-7e68-4e50-ba67-bd441f837ef8")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DNS_PROXY_INFORMATION
@@ -1924,7 +1924,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_PTR_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_ptr_dataa typedef struct { PSTR pNameHost; }
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_ptr_dataa typedef struct { StrPtrAnsi pNameHost; }
 	// DNS_PTR_DATAA, *PDNS_PTR_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "8b7f8898-ac91-46da-876c-889c427068a3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1977,7 +1977,7 @@ public static partial class DnsApi
 	/// <para>Represents a DNS raw query request (see DnsQueryRaw).</para>
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_query_raw_request typedef struct _DNS_QUERY_RAW_REQUEST {
-	// ULONG version; ULONG resultsVersion; ULONG dnsQueryRawSize; BYTE *dnsQueryRaw; PWSTR dnsQueryName; USHORT dnsQueryType; ULONG64
+	// ULONG version; ULONG resultsVersion; ULONG dnsQueryRawSize; BYTE *dnsQueryRaw; StrPtrUni dnsQueryName; USHORT dnsQueryType; ULONG64
 	// queryOptions; ULONG interfaceIndex; DNS_QUERY_RAW_COMPLETION_ROUTINE queryCompletionCallback; VOID *queryContext; ULONG64
 	// queryRawOptions; ULONG customServersSize; DNS_CUSTOM_SERVER *customServers; ULONG protocol; union { SOCKADDR_INET sourceAddr; CHAR
 	// maxSa[DNS_ADDR_MAX_SOCKADDR_LENGTH]; }; } DNS_QUERY_RAW_REQUEST;
@@ -2016,7 +2016,7 @@ public static partial class DnsApi
 		public IntPtr dnsQueryRaw;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a string that represents the DNS name to query, used in conjunction with dnsQueryType. If this value is present, then
 		/// it will be used instead of dnsQueryRaw.
@@ -2533,7 +2533,7 @@ public static partial class DnsApi
 	/// in the <c>DNS_RECORD</c> structure should be set to zero.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_recorda typedef struct _DnsRecordA { struct _DnsRecordA
-	// *pNext; PSTR pName; WORD wType; WORD wDataLength; union { DWORD DW; DNS_RECORD_FLAGS S; } Flags; DWORD dwTtl; DWORD dwReserved;
+	// *pNext; StrPtrAnsi pName; WORD wType; WORD wDataLength; union { DWORD DW; DNS_RECORD_FLAGS S; } Flags; DWORD dwTtl; DWORD dwReserved;
 	// union { DNS_A_DATA A; DNS_SOA_DATAA SOA; DNS_SOA_DATAA Soa; DNS_PTR_DATAA PTR; DNS_PTR_DATAA Ptr; DNS_PTR_DATAA NS; DNS_PTR_DATAA
 	// Ns; DNS_PTR_DATAA CNAME; DNS_PTR_DATAA Cname; DNS_PTR_DATAA DNAME; DNS_PTR_DATAA Dname; DNS_PTR_DATAA MB; DNS_PTR_DATAA Mb;
 	// DNS_PTR_DATAA MD; DNS_PTR_DATAA Md; DNS_PTR_DATAA MF; DNS_PTR_DATAA Mf; DNS_PTR_DATAA MG; DNS_PTR_DATAA Mg; DNS_PTR_DATAA MR;
@@ -3010,9 +3010,9 @@ public static partial class DnsApi
 
 	/// <summary>Represents a DNS service running on the network.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_service_instance typedef struct _DNS_SERVICE_INSTANCE {
-	// #if ... DNSSD_RPC_STRING pszInstanceName; #else LPWSTR pszInstanceName; #endif #if ... DNSSD_RPC_STRING pszHostName; #else LPWSTR
+	// #if ... DNSSD_RPC_STRING pszInstanceName; #else StrPtrUni pszInstanceName; #endif #if ... DNSSD_RPC_STRING pszHostName; #else StrPtrUni
 	// pszHostName; #endif IP4_ADDRESS *ip4Address; IP6_ADDRESS *ip6Address; WORD wPort; WORD wPriority; WORD wWeight; DWORD
-	// dwPropertyCount; #if ... DNSSD_RPC_STRING *keys; #if ... DNSSD_RPC_STRING *values; #else PWSTR *keys; #endif #else PWSTR *values;
+	// dwPropertyCount; #if ... DNSSD_RPC_STRING *keys; #if ... DNSSD_RPC_STRING *values; #else StrPtrUni *keys; #endif #else StrPtrUni *values;
 	// #endif DWORD dwInterfaceIndex; } DNS_SERVICE_INSTANCE, *PDNS_SERVICE_INSTANCE;
 	[PInvokeData("windns.h")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -3116,7 +3116,7 @@ public static partial class DnsApi
 	/// specific service name that you'd like to connect to.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_service_resolve_request typedef struct
-	// _DNS_SERVICE_RESOLVE_REQUEST { ULONG Version; ULONG InterfaceIndex; PWSTR QueryName; PDNS_SERVICE_RESOLVE_COMPLETE
+	// _DNS_SERVICE_RESOLVE_REQUEST { ULONG Version; ULONG InterfaceIndex; StrPtrUni QueryName; PDNS_SERVICE_RESOLVE_COMPLETE
 	// pResolveCompletionCallback; PVOID pQueryContext; } DNS_SERVICE_RESOLVE_REQUEST, *PDNS_SERVICE_RESOLVE_REQUEST;
 	[PInvokeData("windns.h")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -3155,7 +3155,7 @@ public static partial class DnsApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_sig_dataa typedef struct { WORD wTypeCovered; BYTE
 	// chAlgorithm; BYTE chLabelCount; DWORD dwOriginalTtl; DWORD dwExpiration; DWORD dwTimeSigned; WORD wKeyTag; WORD wSignatureLength;
-	// PSTR pNameSigner; #if ... BYTE Signature[]; #else BYTE Signature[1]; #endif } DNS_SIG_DATAA, *PDNS_SIG_DATAA, DNS_RRSIG_DATAA, *PDNS_RRSIG_DATAA;
+	// StrPtrAnsi pNameSigner; #if ... BYTE Signature[]; #else BYTE Signature[1]; #endif } DNS_SIG_DATAA, *PDNS_SIG_DATAA, DNS_RRSIG_DATAA, *PDNS_RRSIG_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "09c2f515-acc1-402f-8e62-a0d273031633")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_SIG_DATA>), nameof(wSignatureLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3239,7 +3239,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_SOA_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_soa_dataa typedef struct { PSTR pNamePrimaryServer; PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_soa_dataa typedef struct { StrPtrAnsi pNamePrimaryServer; StrPtrAnsi
 	// pNameAdministrator; DWORD dwSerialNo; DWORD dwRefresh; DWORD dwRetry; DWORD dwExpire; DWORD dwDefaultTtl; } DNS_SOA_DATAA, *PDNS_SOA_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "715cbb70-91fe-47ac-a713-1fe0701d4f8c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3278,7 +3278,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_SRV_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_srv_dataa typedef struct { PSTR pNameTarget; WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_srv_dataa typedef struct { StrPtrAnsi pNameTarget; WORD
 	// wPriority; WORD wWeight; WORD wPort; WORD Pad; } DNS_SRV_DATAA, *PDNS_SRV_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "212db7ac-a5e3-4e58-b1c2-0eb551403dfc")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3314,7 +3314,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_TKEY_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_tkey_dataa typedef struct { PSTR pNameAlgorithm; PBYTE
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_tkey_dataa typedef struct { StrPtrAnsi pNameAlgorithm; PBYTE
 	// pAlgorithmPacket; PBYTE pKey; PBYTE pOtherData; DWORD dwCreateTime; DWORD dwExpireTime; WORD wMode; WORD wError; WORD wKeyLength;
 	// WORD wOtherLength; UCHAR cAlgNameLength; BOOL bPacketPointers; } DNS_TKEY_DATAA, *PDNS_TKEY_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "4dad3449-3e41-47d9-89c2-10fa6e51573b")]
@@ -3449,7 +3449,7 @@ public static partial class DnsApi
 	/// <remarks>
 	/// The <c>DNS_TSIG_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_tsig_dataa typedef struct { PSTR pNameAlgorithm; PBYTE
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_tsig_dataa typedef struct { StrPtrAnsi pNameAlgorithm; PBYTE
 	// pAlgorithmPacket; PBYTE pSignature; PBYTE pOtherData; LONGLONG i64CreateTime; WORD wFudgeTime; WORD wOriginalXid; WORD wError;
 	// WORD wSigLength; WORD wOtherLength; UCHAR cAlgNameLength; BOOL bPacketPointers; } DNS_TSIG_DATAA, *PDNS_TSIG_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "32077169-d319-45c0-982f-8d470cd70111")]
@@ -3557,7 +3557,7 @@ public static partial class DnsApi
 	/// <remarks>Initializes a new instance of the <see cref="DNS_TXT_DATA" /> struct.</remarks>
 	/// <param name="values">The values representing the descriptive text of the TXT resource record.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_txt_dataa typedef struct { DWORD dwStringCount; #if ...
-	// PSTR pStringArray[]; #else PSTR pStringArray[1]; #endif } DNS_TXT_DATAA, *PDNS_TXT_DATAA;
+	// StrPtrAnsi pStringArray[]; #else StrPtrAnsi pStringArray[1]; #endif } DNS_TXT_DATAA, *PDNS_TXT_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "3ff643e2-d736-45d5-8cf8-ab5e63caf44b")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_TXT_DATA>), nameof(dwStringCount))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3640,7 +3640,7 @@ public static partial class DnsApi
 	/// The <c>DNS_WINSR_DATA</c> structure is used in conjunction with the DNS_RECORD structure to programmatically manage DNS entries.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_winsr_dataa typedef struct { DWORD dwMappingFlag; DWORD
-	// dwLookupTimeout; DWORD dwCacheTimeout; PSTR pNameResultDomain; } DNS_WINSR_DATAA, *PDNS_WINSR_DATAA;
+	// dwLookupTimeout; DWORD dwCacheTimeout; StrPtrAnsi pNameResultDomain; } DNS_WINSR_DATAA, *PDNS_WINSR_DATAA;
 	[PInvokeData("windns.h", MSDNShortId = "a7e79e30-905f-42a5-a4de-02d71adfe95e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DNS_WINSR_DATA

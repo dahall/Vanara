@@ -24,7 +24,4 @@ DATE_STRUCT INTVAL SQLHDBC SQLHDESC SQLHENV SQLHSTMT SQL_DAY_SECOND SQL_INTERVAL
   <ItemGroup>
     <Compile Remove="OleDB.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

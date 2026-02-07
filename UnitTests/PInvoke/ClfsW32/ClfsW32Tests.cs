@@ -50,7 +50,7 @@ public class ClfsW32Tests
 			ctx.WriteValues();
 
 			StringBuilder sb = new((int)ctx.pinfoContainer[0].FileNameActualLength + 1);
-			Assert.That(GetLogContainerName(hLog, ctx.pinfoContainer[0].LogicalContainerId, sb, sb.Capacity, out _), ResultIs.Successful);
+			Assert.That(GetLogContainerName(hLog, ctx.pinfoContainer[0].LogicalContainerId, sb, (uint)sb.Capacity, out _), ResultIs.Successful);
 			TestContext.WriteLine(sb);
 		}
 		finally

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>Dcomp.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Dcomp.dll (DirectComposition).</Description>
+    <AssemblyName>Vanara.PInvoke.Dcomp</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;dcomp;directcomposition</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+CreatePresentationFactory DCompositionAttachMouseDragToHwnd DCompositionAttachMouseWheelToHwnd DCompositionBoostCompositorClock DCompositionCreateDevice DCompositionCreateDevice2 DCompositionCreateDevice3 DCompositionCreateSurfaceHandle DCompositionGetFrameId DCompositionGetStatistics DCompositionGetTargetStatistics DCompositionWaitForCompositorClock
+
+Structures
+COMPOSITION_FRAME_STATS COMPOSITION_STATS COMPOSITION_TARGET_ID COMPOSITION_TARGET_STATS DCompositionInkTrailPoint DCOMPOSITION_FRAME_STATISTICS
+
+Interfaces
+IDCompositionAffineTransform2DEffect IDCompositionAnimation IDCompositionArithmeticCompositeEffect IDCompositionBlendEffect IDCompositionBrightnessEffect IDCompositionClip IDCompositionColorMatrixEffect IDCompositionCompositeEffect IDCompositionDelegatedInkTrail IDCompositionDesktopDevice IDCompositionDevice IDCompositionDevice2 IDCompositionDevice3 IDCompositionDevice4 IDCompositionDeviceDebug IDCompositionEffect IDCompositionEffectGroup IDCompositionFilterEffect IDCompositionGaussianBlurEffect IDCompositionHueRotationEffect IDCompositionInkTrailDevice IDCompositionLinearTransferEffect IDCompositionMatrixTransform IDCompositionMatrixTransform3D IDCompositionRectangleClip IDCompositionRotateTransform IDCompositionRotateTransform3D IDCompositionSaturationEffect IDCompositionScaleTransform IDCompositionScaleTransform3D IDCompositionShadowEffect IDCompositionSkewTransform IDCompositionSurface IDCompositionSurfaceFactory IDCompositionTableTransferEffect IDCompositionTarget IDCompositionTexture IDCompositionTransform IDCompositionTransform3D IDCompositionTranslateTransform IDCompositionTranslateTransform3D IDCompositionTurbulenceEffect IDCompositionVirtualSurface IDCompositionVisual IDCompositionVisual2 IDCompositionVisual3 IDCompositionVisualDebug
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Direct2D\Vanara.PInvoke.Direct2D.csproj" />
+  </ItemGroup>
+</Project>

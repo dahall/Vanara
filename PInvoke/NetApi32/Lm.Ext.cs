@@ -21,9 +21,10 @@ public static partial class NetApi32
 	/// not of the proper form.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsaddresstositenamesexa DSGETDCAPI DWORD
-	// DsAddressToSiteNamesExA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPSTR **SiteNames,
-	// OUT LPSTR **SubnetNames );
+	// DsAddressToSiteNamesExA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT StrPtrAnsi **SiteNames,
+	// OUT StrPtrAnsi **SubnetNames );
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
+	[SuppressAutoGen]
 	public static IEnumerable<(SOCKET_ADDRESS address, string site, string subnet)> DsAddressToSiteNamesEx(string ComputerName, SOCKET_ADDRESS[] SocketAddresses)
 	{
 		DsAddressToSiteNamesEx(ComputerName, (uint)SocketAddresses.Length, SocketAddresses, out var sites, out var subnets).ThrowIfFailed();
@@ -66,7 +67,7 @@ public static partial class NetApi32
 	/// </param>
 	/// <returns>An enumeration of DS_DOMAIN_TRUSTS structures. Each structure in this array contains trust data about a domain.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsenumeratedomaintrustsa DSGETDCAPI DWORD
-	// DsEnumerateDomainTrustsA( LPSTR ServerName, ULONG Flags, PDS_DOMAIN_TRUSTSA *Domains, PULONG DomainCount );
+	// DsEnumerateDomainTrustsA( StrPtrAnsi ServerName, ULONG Flags, PDS_DOMAIN_TRUSTSA *Domains, PULONG DomainCount );
 	[PInvokeData("dsgetdc.h", MSDNShortId = "6c3b788f-ee53-4637-acdb-04316e8464fe")]
 	public static IEnumerable<DS_DOMAIN_TRUSTS> DsEnumerateDomainTrusts(DomainTrustFlag Flags, string? ServerName = null)
 	{
@@ -1244,7 +1245,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netenumeratecomputernames NET_API_STATUS NET_API_FUNCTION
-	// NetEnumerateComputerNames( LPCWSTR Server, NET_COMPUTER_NAME_TYPE NameType, ULONG Reserved, PDWORD EntryCount, LPWSTR
+	// NetEnumerateComputerNames( LPCWSTR Server, NET_COMPUTER_NAME_TYPE NameType, ULONG Reserved, PDWORD EntryCount, StrPtrUni
 	// **ComputerNames );
 	[PInvokeData("lmjoin.h", MSDNShortId = "c657ae33-404e-4c36-a956-5fbcfa540be7")]
 	public static IEnumerable<string?> NetEnumerateComputerNames([Optional] string? Server, NET_COMPUTER_NAME_TYPE NameType = NET_COMPUTER_NAME_TYPE.NetAllComputerNames)

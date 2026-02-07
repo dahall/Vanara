@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in NCrypt.dll.</summary>
 public static partial class NCrypt
@@ -271,8 +274,10 @@ public static partial class NCrypt
 	// pszAlgId, _Out_ PBYTE pbOutput, _In_ DWORD cbOutput, _Out_ DWORD *pcbResult, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "f4a12464-8ad6-4bf9-8b6e-49bdf5332b66")]
-	public static extern HRESULT SslComputeClientAuthHash(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, NCRYPT_HASH_HANDLE hHandshakeHash,
-		[MarshalAs(UnmanagedType.LPWStr)] string pszAlgId, [Out] IntPtr pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
+	public static extern HRESULT SslComputeClientAuthHash([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, [In] NCRYPT_KEY_HANDLE hMasterKey,
+		[In] NCRYPT_HASH_HANDLE hHandshakeHash, [MarshalAs(UnmanagedType.LPWStr)] string pszAlgId,
+		[Out, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, uint cbOutput, out uint pcbResult,
+		[Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslComputeEapKeyBlock</c> function computes the key block used by the Extensible Authentication Protocol (EAP).
@@ -311,7 +316,10 @@ public static partial class NCrypt
 	// pbOutput, _In_ DWORD cbOutput, _Out_ DWORD *pcbResult, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "0f382668-6fc6-440f-ba61-70b1db0f3987")]
-	public static extern HRESULT SslComputeEapKeyBlock(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, [In] IntPtr pbRandoms, uint cbRandoms, [Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, SslHost dwFlags);
+	public static extern HRESULT SslComputeEapKeyBlock([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, [In] NCRYPT_KEY_HANDLE hMasterKey,
+		[In, SizeDef(nameof(cbRandoms))] IntPtr pbRandoms, uint cbRandoms,
+		[Out, Optional, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, uint cbOutput,
+		out uint pcbResult, SslHost dwFlags);
 
 	/// <summary>
 	/// The <c>SslComputeFinishedHash</c> function computes the hash sent in the finished message of the Secure Sockets Layer protocol
@@ -377,7 +385,8 @@ public static partial class NCrypt
 	// _In_ DWORD cbOutput, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "82dfeb1d-c141-40c9-b692-daad78ab6d55")]
-	public static extern HRESULT SslComputeFinishedHash(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, NCRYPT_HASH_HANDLE hHandshakeHash, [Out] IntPtr pbOutput, uint cbOutput, SslHost dwFlags);
+	public static extern HRESULT SslComputeFinishedHash([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, [In] NCRYPT_KEY_HANDLE hMasterKey,
+		[In] NCRYPT_HASH_HANDLE hHandshakeHash, [Out, SizeDef(nameof(cbOutput))] IntPtr pbOutput, [Range(0, 128)] uint cbOutput, SslHost dwFlags);
 
 	/// <summary>The <c>SslCreateClientAuthHash</c> function retrieves a handle to the handshake hash that is used for client authentication.</summary>
 	/// <param name="hSslProvider">The handle of the Secure Sockets Layer protocol (SSL) protocol provider instance.</param>
@@ -427,7 +436,7 @@ public static partial class NCrypt
 	// LPCWSTR pszHashAlgId, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "55007ce0-4bf1-4605-9b34-2931935762aa")]
-	public static extern HRESULT SslCreateClientAuthHash(NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_HASH_HANDLE phHandshakeHash, SslProviderProtocolId dwProtocol,
+	public static extern HRESULT SslCreateClientAuthHash([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_HASH_HANDLE phHandshakeHash, SslProviderProtocolId dwProtocol,
 		SslProviderCipherSuiteId dwCipherSuite, [MarshalAs(UnmanagedType.LPWStr)] string pszHashAlgId, uint dwFlags = 0);
 
 	/// <summary>
@@ -486,8 +495,8 @@ public static partial class NCrypt
 	// DWORD dwKeyType, _In_ DWORD dwKeyBitLen, _In_ PBYTE pbParams, _In_ DWORD cbParams, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "faad9b3b-e476-4e61-b978-bcb517ecaeb7")]
-	public static extern HRESULT SslCreateEphemeralKey(NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_KEY_HANDLE phEphemeralKey, SslProviderProtocolId dwProtocol,
-		SslProviderCipherSuiteId dwCipherSuite, [Optional] SslProviderKeyTypeId dwKeyType, uint dwKeyBitLen, [In, Optional] IntPtr pbParams, uint cbParams, uint dwFlags = 0);
+	public static extern HRESULT SslCreateEphemeralKey([In] NCRYPT_PROV_HANDLE hSslProvider, [AddAsCtor] out NCRYPT_KEY_HANDLE phEphemeralKey, SslProviderProtocolId dwProtocol,
+		SslProviderCipherSuiteId dwCipherSuite, [Optional] SslProviderKeyTypeId dwKeyType, uint dwKeyBitLen, [In, Optional, SizeDef(nameof(cbParams))] IntPtr pbParams, uint cbParams, uint dwFlags = 0);
 
 	/// <summary>The <c>SslCreateHandshakeHash</c> function obtains a hash handle that is used to hash handshake messages.</summary>
 	/// <param name="hSslProvider">The handle of the Secure Sockets Layer protocol (SSL) protocol provider instance.</param>
@@ -537,7 +546,8 @@ public static partial class NCrypt
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "31390584-9d23-41d1-8604-b84a5e52ecde")]
-	public static extern HRESULT SslCreateHandshakeHash(NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_HASH_HANDLE phHandshakeHash, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, uint dwFlags = 0);
+	public static extern HRESULT SslCreateHandshakeHash([In] NCRYPT_PROV_HANDLE hSslProvider, [AddAsCtor] out NCRYPT_HASH_HANDLE phHandshakeHash,
+		SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslDecrementProviderReferenceCount</c> function decrements the references to the Secure Sockets Layer protocol (SSL) provider.
@@ -562,7 +572,7 @@ public static partial class NCrypt
 	// SslDecrementProviderReferenceCount( _In_ NCRYPT_PROV_HANDLE hSslProvider );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "67bfa4b5-c02c-4a76-871d-93f3bf4e3602")]
-	public static extern HRESULT SslDecrementProviderReferenceCount(NCRYPT_PROV_HANDLE hSslProvider);
+	public static extern HRESULT SslDecrementProviderReferenceCount([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider);
 
 	/// <summary>the <c>SslDecryptPacket</c> function decrypts a single Secure Sockets Layer protocol (SSL) packet.</summary>
 	/// <param name="hSslProvider">The handle of the SSL protocol provider instance.</param>
@@ -595,8 +605,9 @@ public static partial class NCrypt
 	// _In_ DWORD cbOutput, _Out_ DWORD *pcbResult, _In_ ULONGLONG SequenceNumber, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "22a7dd2b-d023-47b9-8f76-1c17c2dd6466")]
-	public static extern HRESULT SslDecryptPacket(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hKey, in IntPtr pbInput, uint cbInput,
-		[Out] IntPtr pbOutput, uint cbOutput, out uint pcbResult, ulong SequenceNumber, uint dwFlags = 0);
+	public static extern HRESULT SslDecryptPacket([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, [In, Out] NCRYPT_KEY_HANDLE hKey,
+		[In, SizeDef(nameof(cbInput))] in IntPtr pbInput, uint cbInput, [Out, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput,
+		uint cbOutput, out uint pcbResult, ulong SequenceNumber, [Ignore] uint dwFlags = 0);
 
 	/// <summary>The <c>SslEncryptPacket</c> function encrypts a single Secure Sockets Layer protocol (SSL) packet.</summary>
 	/// <param name="hSslProvider">The handle of the SSL protocol provider instance.</param>
@@ -655,8 +666,10 @@ public static partial class NCrypt
 	// _In_ DWORD cbOutput, _Out_ DWORD *pcbResult, _In_ ULONGLONG SequenceNumber, _In_ DWORD dwContentType, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "1002158b-1a4f-4461-978f-b221ef6332e0")]
-	public static extern HRESULT SslEncryptPacket(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hKey, in IntPtr pbInput, uint cbInput,
-		[Out] IntPtr pbOutput, uint cbOutput, out uint pcbResult, ulong SequenceNumber, PacketContentType dwContentType, uint dwFlags = 0);
+	public static extern HRESULT SslEncryptPacket([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hKey,
+		[In, SizeDef(nameof(cbInput))] in IntPtr pbInput, uint cbInput,
+		[Out, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, uint cbOutput,
+		out uint pcbResult, ulong SequenceNumber, PacketContentType dwContentType, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslEnumCipherSuites</c> function enumerates the cipher suites supported by a Secure Sockets Layer protocol (SSL) protocol provider.
@@ -714,7 +727,7 @@ public static partial class NCrypt
 	// PVOID *ppEnumState, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "c12bc422-71c9-44f4-abf7-76902b19d3bd")]
-	public static extern HRESULT SslEnumCipherSuites(NCRYPT_PROV_HANDLE hSslProvider, [Optional] NCRYPT_KEY_HANDLE hPrivateKey, out IntPtr ppCipherSuite, ref SafeSslBuffer ppEnumState, uint dwFlags = 0);
+	public static extern HRESULT SslEnumCipherSuites([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, [Optional] NCRYPT_KEY_HANDLE hPrivateKey, out IntPtr ppCipherSuite, ref SafeSslBuffer ppEnumState, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslEnumProtocolProviders</c> function returns an array of installed Secure Sockets Layer protocol (SSL) protocol providers.
@@ -858,8 +871,10 @@ public static partial class NCrypt
 	// *pcbResult, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "c978e6ac-a535-4625-8598-4aa16484dcad")]
-	public static extern HRESULT SslExportKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
-		[Out, Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
+	public static extern HRESULT SslExportKey([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hKey,
+		[MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		[Out, Optional, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, uint cbOutput,
+		out uint pcbResult, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// Exports keying material per the RFC 5705 standard. This function uses the TLS pseudorandom function to produce a byte buffer of
@@ -905,8 +920,10 @@ public static partial class NCrypt
 	// _In_opt_ PBYTE pbContextValue, _In_ WORD cbContextValue, _Out_ PBYTE pbOutput, _In_ DWORD cbOutput, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "19624852-B1A6-4BB4-96AF-0457834DA294")]
-	public static extern HRESULT SslExportKeyingMaterial(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, [MarshalAs(UnmanagedType.LPStr)] string sLabel,
-		[In] IntPtr pbRandoms, uint cbRandoms, [In, Optional] IntPtr pbContextValue, ushort cbContextValue, [Out] IntPtr pbOutput, uint cbOutput, uint dwFlags = 0);
+	public static extern HRESULT SslExportKeyingMaterial([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey,
+		[MarshalAs(UnmanagedType.LPStr)] string sLabel,
+		[In, SizeDef(nameof(cbRandoms))] IntPtr pbRandoms, uint cbRandoms, [In, Optional, SizeDef(nameof(cbContextValue))] IntPtr pbContextValue,
+		ushort cbContextValue, [In, SizeDef(nameof(cbOutput))] IntPtr pbOutput, uint cbOutput, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslFreeBuffer</c> function is used to free memory that was allocated by one of the Secure Sockets Layer protocol (SSL)
@@ -1027,8 +1044,10 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "c9408eb3-711d-42c3-a4ba-e388689da34e")]
 	public static extern HRESULT SslGenerateMasterKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, NCRYPT_KEY_HANDLE hPublicKey,
-		out NCRYPT_KEY_HANDLE phMasterKey, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, [In] NCryptBufferDesc pParameterList,
-		[Out, Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, SslHost dwFlags);
+		[AddAsCtor] out NCRYPT_KEY_HANDLE phMasterKey, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
+		[Out, Optional, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, uint cbOutput, out uint pcbResult,
+		SslHost dwFlags);
 
 	/// <summary>The <c>SslGenerateSessionKeys</c> function generates a set of Secure Sockets Layer protocol (SSL) session keys.</summary>
 	/// <param name="hSslProvider">The handle to the SSL protocol provider instance.</param>
@@ -1069,8 +1088,10 @@ public static partial class NCrypt
 	// *phWriteKey, _In_ PNCryptBufferDesc pParameterList, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "88465f30-8591-411e-8618-8a381d4c22e9")]
-	public static extern HRESULT SslGenerateSessionKeys(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, out NCRYPT_KEY_HANDLE phReadKey,
-		out NCRYPT_KEY_HANDLE phWriteKey, [In] NCryptBufferDesc pParameterList, uint dwFlags = 0);
+	public static extern HRESULT SslGenerateSessionKeys([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey,
+		out NCRYPT_KEY_HANDLE phReadKey, out NCRYPT_KEY_HANDLE phWriteKey,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
+		[Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslGetCipherSuitePRFHashAlgorithm</c> function returns the Cryptography API: Next Generation (CNG) Algorithm Identifier of
@@ -1122,8 +1143,9 @@ public static partial class NCrypt
 	// DWORD dwKeyType, _Out_ WCHAR szPRFHash[NCRYPT_SSL_MAX_NAME_SIZE], _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "8d20b2da-390e-458e-b122-f5ef3722ad87")]
-	public static extern HRESULT SslGetCipherSuitePRFHashAlgorithm(NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
-		SslProviderKeyTypeId dwKeyType, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder szPRFHash, uint dwFlags = 0);
+	public static extern HRESULT SslGetCipherSuitePRFHashAlgorithm([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol,
+		SslProviderCipherSuiteId dwCipherSuite, SslProviderKeyTypeId dwKeyType,
+		[Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(NCRYPT_SSL_MAX_NAME_SIZE)] StringBuilder szPRFHash, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslGetKeyProperty</c> function retrieves the value of a named property for a Secure Sockets Layer protocol (SSL) provider
@@ -1135,11 +1157,8 @@ public static partial class NCrypt
 	/// predefined <c>Key Storage Property Identifiers</c> or a custom property identifier.
 	/// </param>
 	/// <param name="ppbOutput">
-	/// A pointer to a buffer that receives the property value. The caller of the function must free this buffer by calling the
-	/// <c>SslFreeBuffer</c> function.
+	/// A buffer that receives the property value.
 	/// </param>
-	/// <param name="pcbOutput">The size, in bytes, of the pbOutput buffer.</param>
-	/// <param name="dwFlags">This parameter is reserved for future use.</param>
 	/// <returns>
 	/// <para>If the function succeeds, it returns zero.</para>
 	/// <para>If the function fails, it returns a nonzero error value.</para>
@@ -1161,9 +1180,18 @@ public static partial class NCrypt
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/seccng/sslgetkeyproperty SECURITY_STATUS WINAPI SslGetKeyProperty( _In_
 	// NCRYPT_KEY_HANDLE hKey, _In_ LPCWSTR pszProperty, _Out_ PBYTE ppbOutput, _Out_ DWORD *pcbOutput, _In_ DWORD dwFlags );
-	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "01a7e82a-3888-4f96-85a2-e07811f1895e")]
-	public static extern HRESULT SslGetKeyProperty(NCRYPT_KEY_HANDLE hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, [Out] IntPtr ppbOutput, out uint pcbOutput, uint dwFlags = 0);
+	public static HRESULT SslGetKeyProperty([In, AddAsMember] NCRYPT_KEY_HANDLE hKey, string pszProperty, out byte[] ppbOutput)
+	{
+		IntPtr pOut = default;
+		var hr = SslGetKeyProperty(hKey, pszProperty, pOut, out var pcOut);
+		ppbOutput = hr.Failed || pOut == IntPtr.Zero || pcOut == 0 ? [] : pOut.ToArray<byte>(pcOut)!;
+		SslFreeBuffer(pOut);
+		return hr;
+
+		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
+		static extern HRESULT SslGetKeyProperty(NCRYPT_KEY_HANDLE hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, [Out] IntPtr ppbOutput, out int pcbOutput, uint dwFlags = 0);
+	}
 
 	/// <summary>The <c>SslGetProviderProperty</c> function retrieves the value of a specified provider property.</summary>
 	/// <param name="hSslProvider">The handle of the Secure Sockets Layer protocol (SSL) provider for which to retrieve the property.</param>
@@ -1209,8 +1237,8 @@ public static partial class NCrypt
 	// https://docs.microsoft.com/en-us/windows/win32/seccng/sslgetproviderproperty SECURITY_STATUS WINAPI SslGetProviderProperty( _In_
 	// NCRYPT_PROV_HANDLE hSslProvider, _In_ LPCWSTR pszProperty, _Out_ PBYTE ppbOutput, _Out_ DWORD *pcbOutput, _Inout_ PVOID
 	// *ppEnumState, _In_ DWORD dwFlags );
-	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "69235520-acaa-4ec4-9fd6-4b3297e14376")]
+	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT SslGetProviderProperty(NCRYPT_PROV_HANDLE hSslProvider, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, [Out] IntPtr ppbOutput, out uint pcbOutput, ref IntPtr ppEnumState, uint dwFlags = 0);
 
 	/// <summary>The <c>SslHashHandshake</c> function returns a handle to the handshake hash.</summary>
@@ -1239,7 +1267,8 @@ public static partial class NCrypt
 	// dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "c0f20084-c863-42cf-afdf-298c5a96eed9")]
-	public static extern HRESULT SslHashHandshake(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_HASH_HANDLE hHandshakeHash, [Out] IntPtr pbInput, uint cbInput, uint dwFlags = 0);
+	public static extern HRESULT SslHashHandshake([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_HASH_HANDLE hHandshakeHash,
+		[In, SizeDef(nameof(cbInput))] IntPtr pbInput, uint cbInput, [Ignore] uint dwFlags = 0);
 
 	/// <summary>The <c>SslImportKey</c> function imports a key into the Secure Sockets Layer protocol (SSL) protocol provider.</summary>
 	/// <param name="hSslProvider">The handle to the SSL protocol provider instance.</param>
@@ -1317,7 +1346,8 @@ public static partial class NCrypt
 	// dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "42310799-384e-4396-a9d5-5f226ca25a86")]
-	public static extern HRESULT SslImportKey(NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_KEY_HANDLE phKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [In] IntPtr pbKeyBlob, uint cbKeyBlob, uint dwFlags = 0);
+	public static extern HRESULT SslImportKey(NCRYPT_PROV_HANDLE hSslProvider, [AddAsCtor] out NCRYPT_KEY_HANDLE phKey,
+		[MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [In, SizeDef(nameof(cbKeyBlob))] IntPtr pbKeyBlob, uint cbKeyBlob, [Ignore] uint dwFlags = 0);
 
 	/// <summary>The <c>SslImportMasterKey</c> function performs a server-side Secure Sockets Layer protocol (SSL) key exchange operation.</summary>
 	/// <param name="hSslProvider">The handle to the SSL protocol provider instance.</param>
@@ -1368,8 +1398,10 @@ public static partial class NCrypt
 	// dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "052e38ee-658c-47dc-8098-c9a1fd359e1c")]
-	public static extern HRESULT SslImportMasterKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, out NCRYPT_KEY_HANDLE phMasterKey,
-		SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, [In] NCryptBufferDesc pParameterList, [In] IntPtr pbEncryptedKey, uint cbEncryptedKey, SslHost dwFlags);
+	public static extern HRESULT SslImportMasterKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, [AddAsCtor] out NCRYPT_KEY_HANDLE phMasterKey,
+		SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
+		[In, SizeDef(nameof(cbEncryptedKey))] IntPtr pbEncryptedKey, uint cbEncryptedKey, SslHost dwFlags);
 
 	/// <summary>
 	/// The <c>SslIncrementProviderReferenceCount</c> function increments the reference count to a Secure Sockets Layer protocol (SSL)
@@ -1395,7 +1427,7 @@ public static partial class NCrypt
 	// SslIncrementProviderReferenceCount( _In_ NCRYPT_PROV_HANDLE hSslProvider );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "67e7b8b4-b073-4936-b1e0-3fc7c1c011a2")]
-	public static extern HRESULT SslIncrementProviderReferenceCount(NCRYPT_PROV_HANDLE hSslProvider);
+	public static extern HRESULT SslIncrementProviderReferenceCount([AddAsMember] NCRYPT_PROV_HANDLE hSslProvider);
 
 	/// <summary>
 	/// The <c>SslLookupCipherLengths</c> function returns an <c>NCRYPT_SSL_CIPHER_LENGTHS</c> structure that contains the header and
@@ -1443,8 +1475,8 @@ public static partial class NCrypt
 	// NCRYPT_SSL_CIPHER_LENGTHS *pCipherLengths, _In_ DWORD cbCipherLengths, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "44d0d803-16d7-4bdf-9638-afbdaf9e1802")]
-	public static extern HRESULT SslLookupCipherLengths(NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
-		SslProviderKeyTypeId dwKeyType, ref NCRYPT_SSL_CIPHER_LENGTHS pCipherLengths, uint cbCipherLengths, uint dwFlags = 0);
+	public static extern HRESULT SslLookupCipherLengths([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol,
+		SslProviderCipherSuiteId dwCipherSuite, SslProviderKeyTypeId dwKeyType, out NCRYPT_SSL_CIPHER_LENGTHS pCipherLengths, uint cbCipherLengths = 20, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslLookupCipherSuiteInfo</c> function retrieves the cipher suite information for a specified protocol, cipher suite, and
@@ -1478,8 +1510,8 @@ public static partial class NCrypt
 	// NCRYPT_SSL_CIPHER_SUITE *pCipherSuite, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "ab995d9a-48fa-491a-95b1-d15c5b92f1da")]
-	public static extern HRESULT SslLookupCipherSuiteInfo(NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
-		SslProviderKeyTypeId dwKeyType, out NCRYPT_SSL_CIPHER_SUITE pCipherSuite, uint dwFlags = 0);
+	public static extern HRESULT SslLookupCipherSuiteInfo([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, SslProviderProtocolId dwProtocol,
+		SslProviderCipherSuiteId dwCipherSuite, SslProviderKeyTypeId dwKeyType, out NCRYPT_SSL_CIPHER_SUITE pCipherSuite, [Ignore] uint dwFlags = 0);
 
 	/// <summary>The <c>SslOpenPrivateKey</c> function opens a handle to a private key.</summary>
 	/// <param name="hSslProvider">The handle to the Secure Sockets Layer protocol (SSL) protocol provider instance.</param>
@@ -1520,7 +1552,8 @@ public static partial class NCrypt
 	// NCRYPT_PROV_HANDLE hSslProvider, _Out_ NCRYPT_KEY_HANDLE *phPrivateKey, _In_ PCCERT_CONTEXT pCertContext, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "2406be2c-121c-4475-b193-d370a88641da")]
-	public static extern HRESULT SslOpenPrivateKey(NCRYPT_PROV_HANDLE hSslProvider, out NCRYPT_KEY_HANDLE phPrivateKey, in Crypt32.CERT_CONTEXT pCertContext, uint dwFlags = 0);
+	public static extern HRESULT SslOpenPrivateKey(NCRYPT_PROV_HANDLE hSslProvider, [AddAsCtor] out SafeNCRYPT_KEY_HANDLE phPrivateKey,
+		in Crypt32.CERT_CONTEXT pCertContext, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslOpenProvider</c> function opens a handle to the specified Secure Sockets Layer protocol (SSL) protocol provider.
@@ -1561,7 +1594,8 @@ public static partial class NCrypt
 	// NCRYPT_PROV_HANDLE *phSslProvider, _In_ LPCWSTR pszProviderName, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "0d5c4da3-12d6-4a53-a4d0-f0f174a4c8d8")]
-	public static extern HRESULT SslOpenProvider(out NCRYPT_PROV_HANDLE phSslProvider, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszProviderName, uint dwFlags = 0);
+	public static extern HRESULT SslOpenProvider([AddAsCtor] out SafeNCRYPT_PROV_HANDLE phSslProvider,
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszProviderName, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslSignHash</c> function signs a hash by using the specified private key. The signing process is performed on the server.
@@ -1600,7 +1634,10 @@ public static partial class NCrypt
 	// DWORD cbSignature, _Out_ DWORD *pcbResult, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "25e8ebc5-278d-4d1f-977a-c2fab07b790a")]
-	public static extern HRESULT SslSignHash(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, [In] IntPtr pbHashValue, uint cbHashValue, [Out, Optional] IntPtr pbSignature, uint cbSignature, out uint pcbResult, uint dwFlags = 0);
+	public static extern HRESULT SslSignHash([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey,
+		[In, SizeDef(nameof(cbHashValue))] IntPtr pbHashValue, uint cbHashValue,
+		[Out, Optional, SizeDef(nameof(cbSignature), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbSignature, uint cbSignature,
+		out uint pcbResult, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslVerifySignature</c> function verifies the specified signature by using the supplied hash and the public key.
@@ -1642,7 +1679,9 @@ public static partial class NCrypt
 	// pbSignature, _In_ DWORD cbSignature, _In_ DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "fa274851-15f2-4be0-9e2f-4cdced36daff")]
-	public static extern HRESULT SslVerifySignature(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPublicKey, [In] IntPtr pbHashValue, uint cbHashValue, [In] IntPtr pbSignature, uint cbSignature, uint dwFlags = 0);
+	public static extern HRESULT SslVerifySignature([In, AddAsMember] NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPublicKey,
+		[In, SizeDef(nameof(cbHashValue))] IntPtr pbHashValue, uint cbHashValue, [In, SizeDef(nameof(cbSignature))] IntPtr pbSignature, uint cbSignature,
+		[Ignore] uint dwFlags = 0);
 
 	/// <summary>Contains the header and trailer lengths of the input protocol, cipher suite, and key type.</summary>
 	[PInvokeData("Sslprovider.h", MSDNShortId = "44d0d803-16d7-4bdf-9638-afbdaf9e1802")]

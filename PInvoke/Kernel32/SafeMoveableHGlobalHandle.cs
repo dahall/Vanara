@@ -5,9 +5,50 @@ namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
+	/// <summary>Unmanaged memory methods for HGLOBAL with GMEM_MOVEABLE.</summary>
+	/// <seealso cref="HGlobalMemoryMethods" />
+	/// <seealso cref="MemoryMethodsBase" />
+	public sealed class MoveableHGlobalMemoryMethods : MemoryMethodsBase
+	{
+		/// <inheritdoc/>
+		public override bool AllocZeroes => true;
+
+		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+		public override bool Lockable => true;
+
+		/// <summary>Gets a static instance of these methods.</summary>
+		public static readonly IMemoryMethods Instance = new MoveableHGlobalMemoryMethods();
+
+		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalAlloc(GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE, size));
+
+		/// <summary>Frees the memory associated with a handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		public override void FreeMem(IntPtr hMem) => GlobalFree(hMem);
+
+		/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <returns>A pointer to the locked memory.</returns>
+		public override IntPtr LockMem(IntPtr hMem) => Win32Error.ThrowLastErrorIfNull(GlobalLock(hMem));
+
+		/// <summary>Gets the reallocation method.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <param name="size">The size, in bytes, of memory to allocate.</param>
+		/// <returns>A memory handle.</returns>
+		public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE));
+
+		/// <summary>Unlocks the memory of a specified handle.</summary>
+		/// <param name="hMem">A memory handle.</param>
+		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+		public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
+	}
+
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated as moveable HGLOBAL.</summary>
 	/// <seealso cref="SafeHandle"/>
-	public class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>
+	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="handle">The handle.</param>
@@ -44,6 +85,15 @@ public static partial class Kernel32
 
 		/// <summary>Represents a NULL memory pointer.</summary>
 		public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, false);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeMoveableHGlobalHandle(handle, ownsHandle);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeMoveableHGlobalHandle(bytes);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

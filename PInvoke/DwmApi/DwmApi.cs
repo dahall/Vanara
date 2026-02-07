@@ -753,7 +753,7 @@ public static partial class DwmApi
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dwmapi.h")]
-	public static extern HRESULT DwmRenderGesture(GESTURE_TYPE gt, uint cContacts, ref uint pdwPointerID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINT[] pPoints);
+	public static extern HRESULT DwmRenderGesture(GESTURE_TYPE gt, uint cContacts, ref uint pdwPointerID, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINT[] pPoints);
 
 	/// <summary>
 	/// Sets a static, iconic bitmap to display a live preview (also known as a Peek preview) of a window or tab. The taskbar can use

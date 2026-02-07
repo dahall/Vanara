@@ -42,6 +42,56 @@ public static partial class CryptNet
 		CRYPT_GET_URL_FROM_AUTH_ATTRIBUTE = 0x00000008,
 	}
 
+	/// <summary>A value that specifies the type of object represented by the URL.</summary>
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_PRE_FETCH_INFO")]
+	public enum CRYPTNET_URL_CACHE_PRE_FETCH_TYPE : uint
+	{
+		/// <summary>Prefetch information does not yet exist.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_NONE = 0,
+
+		/// <summary>The object is a memory <c>BLOB</c>.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_BLOB = 1,
+
+		/// <summary>The object is a <c>certificate revocation list</c> (CRL).</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_CRL = 2,
+
+		/// <summary>The object is an <c>online certificate status protocol</c> (OCSP) response.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_OCSP = 3,
+
+		/// <summary>The object is a <c>signed certificate timestamp</c> (SCT) list.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_AUTOROOT_CAB = 5,
+
+		/// <summary>The object is a CAB file.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_DISALLOWED_CERT_CAB = 6,
+
+		/// <summary>The object is a PIN rules CAB file.</summary>
+		CRYPTNET_URL_CACHE_PRE_FETCH_PIN_RULES_CAB = 7,
+	}
+
+	/// <summary>
+	/// A value that indicates whether the cache entry contains HTTP response information.
+	/// </summary>
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_RESPONSE_INFO")]
+	public enum CRYPTNET_URL_CACHE_RESPONSE_TYPE : ushort
+	{
+		/// <summary>The cache entry contains no response information.</summary>
+		CRYPTNET_URL_CACHE_RESPONSE_NONE = 0,
+
+		/// <summary>The cache entry contains response information derived from HTTP response headers.</summary>
+		CRYPTNET_URL_CACHE_RESPONSE_HTTP = 1,
+	}
+
+	/// <summary>
+	/// A value that specifies a collection of flags that control server-based certificate validation response options.
+	/// </summary>
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_RESPONSE_INFO")]
+	[Flags]
+	public enum CRYPTNET_URL_CACHE_RESPONSE_FLAGS : ushort
+	{
+		/// <summary/>
+		CRYPTNET_URL_CACHE_RESPONSE_VALIDATED = 0x8000,
+	}
+
 	/// <summary>A value that determines various retrieval factors such as time-out, source, and validity checks.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "dd639b43-1560-4e9f-a778-9e20484ae012")]
 	[Flags]
@@ -641,9 +691,9 @@ public static partial class CryptNet
 		using SafeCoTaskMemStruct<CRYPT_URL_ARRAY> urls = new(asz);
 		using SafeCoTaskMemStruct<CRYPT_URL_INFO> info = new(isz);
 		Win32Error.ThrowLastErrorIfFalse(CryptGetObjectUrl(pszUrlOid, para, dwFlags, urls, ref asz, info, ref isz));
-		pUrlArray = urls.AsRef().rgwszUrl.ToStringEnum((int)urls.AsRef().cUrl, CharSet.Unicode, 0, asz).ToArray();
+		pUrlArray = [.. urls.AsRef().rgwszUrl.ToStringEnum((int)urls.AsRef().cUrl, CharSet.Unicode, 0, asz)];
 		dwSyncDeltaTime = info.AsRef().dwSyncDeltaTime;
-		rgcGroupEntry = info.AsRef().rgcGroupEntry.ToArray<uint>((int)info.AsRef().cGroup, 0, isz);
+		rgcGroupEntry = info.AsRef().rgcGroupEntry.AsSpan((int)info.AsRef().cGroup).ToArray();
 	}
 
 	/// <summary>
@@ -1881,13 +1931,13 @@ public static partial class CryptNet
 		/// A pointer to a FILETIME structure used in the freshness time check. If this pointer is <c>NULL</c>, the revocation handler
 		/// uses the current time.
 		/// </summary>
-		public IntPtr pftCurrentTime;
+		public StructPointer<FILETIME> pftCurrentTime;
 
 		/// <summary>
 		/// A pointer to a FILETIME structure that governs the use of cached information. Any information cached before this time is
 		/// considered invalid and new information is retrieved. When set, this value overrides the registry configuration CacheResync time.
 		/// </summary>
-		public IntPtr pftCacheResync;
+		public StructPointer<FILETIME> pftCacheResync;
 
 		/// <summary>
 		/// <para>
@@ -1970,25 +2020,25 @@ public static partial class CryptNet
 		/// A pointer to a FILETIME structure that governs the use of cached information. Any information cached before this time is
 		/// considered invalid and new information is retrieved.
 		/// </summary>
-		public IntPtr pftCacheResync;
+		public StructPointer<FILETIME> pftCacheResync;
 
 		/// <summary>
 		/// A pointer to a FILETIME structure that contains the time of the last synchronization of the data retrieved for the object.
 		/// </summary>
-		public IntPtr pLastSyncTime;
+		public StructPointer<FILETIME> pLastSyncTime;
 
 		/// <summary>
 		/// A pointer to a FILETIME structure that specifies an expiration time of the data retrieved based on the <c>dwMaxAge</c>
 		/// member of the CRYPTNET_URL_CACHE_RESPONSE_INFO structure.
 		/// </summary>
-		public IntPtr pMaxAgeTime;
+		public StructPointer<FILETIME> pMaxAgeTime;
 
 		/// <summary>
 		/// A pointer to a <see cref="CERT_REVOCATION_CHAIN_PARA"/> structure that contains the CertGetCertificateChain function
 		/// parameters used by the caller. The data in this member enables independent online certificate status protocol (OCSP) signer
 		/// certificate chain verification.
 		/// </summary>
-		public IntPtr pChainPara;
+		public StructPointer<CERT_REVOCATION_CHAIN_PARA> pChainPara;
 
 		/// <summary>
 		/// <para>
@@ -1998,7 +2048,7 @@ public static partial class CryptNet
 		/// </para>
 		/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This member is not supported.</para>
 		/// </summary>
-		public IntPtr pDeltaCrlIndicator;
+		public StructPointer<CRYPTOAPI_BLOB> pDeltaCrlIndicator;
 	}
 
 	/// <summary>
@@ -2008,8 +2058,8 @@ public static partial class CryptNet
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_retrieve_aux_info typedef struct
 	// _CRYPT_RETRIEVE_AUX_INFO { DWORD cbSize; FILETIME *pLastSyncTime; DWORD dwMaxUrlRetrievalByteCount;
 	// PCRYPTNET_URL_CACHE_PRE_FETCH_INFO pPreFetchInfo; PCRYPTNET_URL_CACHE_FLUSH_INFO pFlushInfo; PCRYPTNET_URL_CACHE_RESPONSE_INFO
-	// *ppResponseInfo; LPWSTR pwszCacheFileNamePrefix; LPFILETIME pftCacheResync; BOOL fProxyCacheRetrieval; DWORD dwHttpStatusCode;
-	// LPWSTR *ppwszErrorResponseHeaders; PCRYPT_DATA_BLOB *ppErrorContentBlob; } CRYPT_RETRIEVE_AUX_INFO, *PCRYPT_RETRIEVE_AUX_INFO;
+	// *ppResponseInfo; StrPtrUni pwszCacheFileNamePrefix; LPFILETIME pftCacheResync; BOOL fProxyCacheRetrieval; DWORD dwHttpStatusCode;
+	// StrPtrUni *ppwszErrorResponseHeaders; PCRYPT_DATA_BLOB *ppErrorContentBlob; } CRYPT_RETRIEVE_AUX_INFO, *PCRYPT_RETRIEVE_AUX_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "33ea51e7-c3e3-4cf8-ade0-099cb8b2e651")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_RETRIEVE_AUX_INFO
@@ -2018,7 +2068,7 @@ public static partial class CryptNet
 		public uint cbSize;
 
 		/// <summary>A FILETIME structure that contains the time of the last synchronization of the data retrieved.</summary>
-		public IntPtr pLastSyncTime;
+		public StructPointer<FILETIME> pLastSyncTime;
 
 		/// <summary>A value that specifies a limit to the number of byes retrieved. A value of zero or less specifies no limit.</summary>
 		public uint dwMaxUrlRetrievalByteCount;
@@ -2027,20 +2077,20 @@ public static partial class CryptNet
 		/// A pointer to a CRYPTNET_URL_CACHE_PRE_FETCH_INFO structure. To get prefetch information, set its <c>cbSize</c> upon input.
 		/// For no prefetch information, except for <c>cbSize</c>, the data structure contains zero upon return.
 		/// </summary>
-		public IntPtr pPreFetchInfo;
+		public StructPointer<CRYPTNET_URL_CACHE_PRE_FETCH_INFO> pPreFetchInfo;
 
 		/// <summary>
 		/// A pointer to a CRYPTNET_URL_CACHE_FLUSH_INFO structure. To get flush information, set its <c>cbSize</c> upon input. For no
 		/// flush information, except for <c>cbSize</c>, the data structure contains zero upon return.
 		/// </summary>
-		public IntPtr pFlushInfo;
+		public StructPointer<CRYPTNET_URL_CACHE_FLUSH_INFO> pFlushInfo;
 
 		/// <summary>
 		/// A pointer to a PCRYPTNET_URL_CACHE_RESPONSE_INFO structure. To get response information, set the pointer to the address of a
 		/// <c>CRYPTNET_URL_CACHE_RESPONSE_INFO</c> pointer updated with the allocated structure. For no response information,
 		/// <c>ppResponseInfo</c> is set to <c>NULL</c>. If it is not <c>NULL</c>, it must be freed by using the CryptMemFree function.
 		/// </summary>
-		public IntPtr ppResponseInfo;
+		public StructPointer<ManagedStructPointer<CRYPTNET_URL_CACHE_RESPONSE_INFO>> ppResponseInfo;
 
 		/// <summary>
 		/// A pointer to a string that contains a prefix for a cached file name. If not <c>NULL</c>, the specified prefix string is
@@ -2054,7 +2104,7 @@ public static partial class CryptNet
 		/// time, CryptRetrieveObjectByUrl returns <c>ERROR_INVALID_TIME</c>. When used with an HTTP retrieval, this specifies the
 		/// maximum age for a time-valid object.
 		/// </summary>
-		public IntPtr pftCacheResync;
+		public StructPointer<FILETIME> pftCacheResync;
 
 		/// <summary>
 		/// A value that indicates whether CryptRetrieveObjectByUrl was called with <c>CRYPT_PROXY_CACHE_RETRIEVAL</c> set in
@@ -2071,10 +2121,10 @@ public static partial class CryptNet
 		public uint dwHttpStatusCode;
 
 		/// <summary/>
-		public IntPtr ppwszErrorResponseHeaders;
+		public ArrayPointer<StrPtrUni> ppwszErrorResponseHeaders;
 
 		/// <summary/>
-		public IntPtr ppErrorContentBlob;
+		public StructPointer<StructPointer<CRYPTOAPI_BLOB>> ppErrorContentBlob;
 	}
 
 	/// <summary>The data for the value entry.</summary>
@@ -2087,6 +2137,234 @@ public static partial class CryptNet
 
 		/// <summary>An array of Unicode string pointers to URLs.</summary>
 		public IntPtr rgwszUrl;
+	}
+
+	/// <summary>The <b>CRYPTNET_URL_CACHE_FLUSH_INFO</b> structure contains expiry information used by the Cryptnet URL Cache (CUC) service to maintain a URL cache entry. This structure composes the <b>pFlushInfo</b> member of the <c>CRYPT_RETRIEVE_AUX_INFO</c> structure that is passed to the <c>CryptRetrieveObjectByUrl</c> method as the <i>pAuxInfo</i> parameter.</summary>
+	/// <remarks>The <b>dwExemptSeconds</b> member is added to the <b>ExpireTime</b> member to determine the flush time. If the <b>pLastSyncTime</b> member of the <c>CRYPT_RETRIEVE_AUX_INFO</c> structure is after the <b>ExpireTime</b> member, the <b>pLastSyncTime</b> member determines the flush time.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cryptnet_url_cache_flush_info
+	// typedef struct _CRYPTNET_URL_CACHE_FLUSH_INFO { DWORD cbSize; DWORD dwExemptSeconds; FILETIME ExpireTime; } CRYPTNET_URL_CACHE_FLUSH_INFO, *PCRYPTNET_URL_CACHE_FLUSH_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_FLUSH_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPTNET_URL_CACHE_FLUSH_INFO
+	{
+		/// <summary>The size, in bytes, of this structure.</summary>
+		public uint cbSize;
+
+		/// <summary>
+		///   <para>A value that specifies how long to extend the <b>ExpireTime</b> member. If prefetch is enabled, the CUC service ignores this value.</para>
+		///   <para>The following values have special meaning.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_DEFAULT_FLUSH</b> 0</description>
+		///       <description>Use the default flush exempt seconds for a retrieved URL. The following <b>REG_DWORD</b> constants define the default value of dwExemptSeconds for a computer. CRYPTNET_URL_CACHE_DEFAULT_FLUSH_EXEMPT_SECONDS_VALUE_NAME L"CryptnetDefaultFlushExemptSeconds" CRYPTNET_URL_CACHE_DEFAULT_FLUSH_EXEMPT_SECONDS_DEFAULT (28 * 24 * 60 * 60)</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_DISABLE_FLUSH</b> 0xFFFFFFFF</description>
+		///       <description>Disable cache flushing for a retrieved URL.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public uint dwExemptSeconds;
+
+		/// <summary>A <c>FILETIME</c> structure that contains the time the object expires.</summary>
+		public FILETIME ExpireTime;
+	}
+
+	/// <summary>The <b>CRYPTNET_URL_CACHE_PRE_FETCH_INFO</b> structure contains update information used by the Cryptnet URL Cache (CUC) service to maintain a URL cache entry. This structure composes the <b>pPreFetchInfo</b> member of the <c>CRYPT_RETRIEVE_AUX_INFO</c> structure that is passed to the <c>CryptRetrieveObjectByUrl</c> function as the <i>pAuxInfo</i> parameter.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cryptnet_url_cache_pre_fetch_info
+	// typedef struct _CRYPTNET_URL_CACHE_PRE_FETCH_INFO { DWORD cbSize; DWORD dwObjectType; DWORD dwError; DWORD dwReserved; FILETIME ThisUpdateTime; FILETIME NextUpdateTime; FILETIME PublishTime; } CRYPTNET_URL_CACHE_PRE_FETCH_INFO, *PCRYPTNET_URL_CACHE_PRE_FETCH_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_PRE_FETCH_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPTNET_URL_CACHE_PRE_FETCH_INFO
+	{
+		/// <summary>The size, in bytes, of this structure.</summary>
+		public uint cbSize;
+
+		/// <summary>
+		///   <para>A value that specifies the type of object represented by the URL.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_PRE_FETCH_NONE</b> 0</description>
+		///       <description>Prefetch information does not yet exist.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_PRE_FETCH_BLOB</b> 1</description>
+		///       <description>The object is a memory <c>BLOB</c>.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_PRE_FETCH_CRL</b> 2</description>
+		///       <description>The object is a <c>certificate revocation list</c> (CRL).</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_PRE_FETCH_OCSP</b> 3</description>
+		///       <description>The object is an <c>online certificate status protocol</c> (OCSP) response.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_PRE_FETCH_AUTOROOT_CAB</b> 5</description>
+		///       <description>The object is a CAB file.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public CRYPTNET_URL_CACHE_PRE_FETCH_TYPE dwObjectType;
+
+		/// <summary>
+		///   <para>A value that specifies the status of a prefetch attempt.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>S_OK</b> 0x00000000L</description>
+		///       <description>The prefetch is pending.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>ERROR_MEDIA_OFFLINE</b> 4304L</description>
+		///       <description>The CRL prefetch is disabled because the OCSP service is offline or unavailable.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>ERROR_FILE_OFFLINE</b> 4350L</description>
+		///       <description>The prefetch content is unchanged.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>ERROR_INVALID_DATA</b> 13L</description>
+		///       <description>The prefetch content is not valid.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c>
+		///         <c></c> <b>Other values</b></description>
+		///       <description>The service is unable to retrieve prefetch content.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public HRESULT dwError;
+
+		/// <summary>This parameter is not used. It must be zero.</summary>
+		public uint dwReserved;
+
+		/// <summary>A <c>FILETIME</c> structure that contains a date and time whose meaning depends on <b>dwObjectType</b>. For a CRL, this indicates when the CRL was published. For an OCSP response, this indicates when the indicated status is known to be correct.</summary>
+		public FILETIME ThisUpdateTime;
+
+		/// <summary>
+		///   <para>A <c>FILETIME</c> structure that contains a date and time whose meaning depends on <b>dwObjectType</b>. For a CRL, this indicates the next scheduled update for the CRL. For an OCSP response, this indicates when newer information will be available for the certificate status.</para>
+		///   <para>This is effectively an expiry date for the object. A value of zero indicates that the information has no expiration date.</para>
+		/// </summary>
+		public FILETIME NextUpdateTime;
+
+		/// <summary>
+		///   <para>A <c>FILETIME</c> structure that specifies the time interval before expiry that a new CRL will be published. This value can be zero.</para>
+		///   <para>This value is based on a nonstandard CRL extension with the following <c>object identifier</c> (OID).</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c>
+		///         <c></c> <b>szOID_CRL_NEXT_PUBLISH</b> 1.3.6.1.4.1.311.21.4</description>
+		///       <description>NextPublishTime</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public FILETIME PublishTime;
+	}
+
+	/// <summary>The <b>CRYPTNET_URL_CACHE_RESPONSE_INFO</b> structure contains response information used by the Cryptnet URL Cache (CUC) service to maintain a URL cache entry. This structure composes the <b>pResponseInfo</b> member of the <c>CRYPT_RETRIEVE_AUX_INFO</c> structure, which is passed to <c>CryptRetrieveObjectByUrl</c> as the <i>pAuxInfo</i> parameter.</summary>
+	/// <remarks>
+	/// <para>If not specified in the HTTP response headers, the cache service sets the values of the <b>LastModifiedTime</b>, <b>dwMaxAge</b>, <b>pwszETag</b>, and <b>dwProxyId</b> members to zero.</para>
+	/// <para>The cache service only allows a strong <b>ETag</b> in the <b>pwszETag</b> member.</para>
+	/// <para>To determine whether a response is valid, the cache service performs a bitwise <b>AND</b> of the <b>wResponseFlags</b> member with the following constant defined in Wincrypt.h. If the result is <b>TRUE</b>, the response is valid.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Name</description>
+	/// <description>Value</description>
+	/// </listheader>
+	/// <item>
+	/// <description>CRYPTNET_URL_CACHE_RESPONSE_VALIDATED</description>
+	/// <description>0x8000</description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cryptnet_url_cache_response_info
+	// typedef struct _CRYPTNET_URL_CACHE_RESPONSE_INFO { DWORD cbSize; WORD wResponseType; WORD wResponseFlags; FILETIME LastModifiedTime; DWORD dwMaxAge; LPCWSTR pwszETag; DWORD dwProxyId; } CRYPTNET_URL_CACHE_RESPONSE_INFO, *PCRYPTNET_URL_CACHE_RESPONSE_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPTNET_URL_CACHE_RESPONSE_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPTNET_URL_CACHE_RESPONSE_INFO
+	{
+		/// <summary>The size, in bytes, of this structure.</summary>
+		public uint cbSize;
+
+		/// <summary>
+		///   <para>A value that indicates whether the cache entry contains HTTP response information.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_RESPONSE_NONE</b> 0</description>
+		///       <description>The cache entry contains no response information.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPTNET_URL_CACHE_RESPONSE_HTTP</b> 1</description>
+		///       <description>The cache entry contains response information derived from HTTP response headers.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public CRYPTNET_URL_CACHE_RESPONSE_TYPE wResponseType;
+
+		/// <summary>A value that specifies a collection of flags that control server-based certificate validation response options.</summary>
+		public CRYPTNET_URL_CACHE_RESPONSE_FLAGS wResponseFlags;
+
+		/// <summary>A <b>FILETIME</b> structure that specifies the <b>Last-Modified</b> entity-header field value of the cached HTTP response for the URL.</summary>
+		public FILETIME LastModifiedTime;
+
+		/// <summary>A value that specifies the number of seconds in the <b>max-age</b> directive of the <b>Cache-Control</b> header of the cached HTTP response for the URL.</summary>
+		public uint dwMaxAge;
+		
+		/// <summary>A pointer to a string that contains the <b>ETag</b> response-header field value of the cached HTTP response for the URL.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)] public string pwszETag;
+		
+		/// <summary>A value that contains the MD5 hash of the HTTP response header values <b>Via</b>, <b>ETag</b>, and <b>Last-Modified</b>, if they exist.</summary>
+		public uint dwProxyId;
 	}
 
 	/// <summary>The <c>CRYPT_URL_INFO</c> structure contains information about groupings of URLs.</summary>
@@ -2106,6 +2384,6 @@ public static partial class CryptNet
 		public uint cGroup;
 
 		/// <summary>Array of URL groups returned.</summary>
-		public IntPtr rgcGroupEntry;
+		public ArrayPointer<uint> rgcGroupEntry;
 	}
 }

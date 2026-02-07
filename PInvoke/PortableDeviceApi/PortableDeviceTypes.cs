@@ -263,10 +263,10 @@ public static partial class PortableDeviceApi
 		/// <summary>The <c>GetStringValue</c> method retrieves a string value (type VT_LPWSTR) specified by a key.</summary>
 		/// <param name="key">A <c>REFPROPERTYKEY</c> key that specifies the item to retrieve.</param>
 		/// <returns>
-		/// Pointer to the retrieved <c>LPWSTR</c> value. The caller is responsible for calling <c>CoTaskMemFree</c> to release the memory.
+		/// Pointer to the retrieved <c>StrPtrUni</c> value. The caller is responsible for calling <c>CoTaskMemFree</c> to release the memory.
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevalues-getstringvalue HRESULT GetStringValue( [in]
-		// REFPROPERTYKEY key, [out] LPWSTR *pValue );
+		// REFPROPERTYKEY key, [out] StrPtrUni *pValue );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetStringValue(in PROPERTYKEY key);
 

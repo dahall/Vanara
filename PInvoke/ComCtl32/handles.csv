@@ -1,0 +1,2 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,ComCtl32,HMRULIST,IHandle,Handle to a device notification,SafeHMRULIST,SafeHANDLE,FreeMRUList(handle)>0,

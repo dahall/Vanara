@@ -89,7 +89,7 @@ public class Shell32_IconTests
 	[Test]
 	public void SHCreateDefaultExtractIconTest()
 	{
-		Assert.That(SHCreateDefaultExtractIcon(typeof(IDefaultExtractIconInit).GUID, out var ppv), Is.EqualTo((HRESULT)0));
+		Assert.That(SHCreateDefaultExtractIcon(typeof(IDefaultExtractIconInit).GUID, out IDefaultExtractIconInit? ppv), Is.EqualTo((HRESULT)0));
 		Assert.That(ppv, Is.Not.Null);
 		Marshal.FinalReleaseComObject(ppv);
 	}
@@ -98,14 +98,14 @@ public class Shell32_IconTests
 	public void SHCreateFileExtractIconWTest()
 	{
 		const string icoFile = @"notepad.exe";
-		Assert.That(SHCreateFileExtractIconW(icoFile, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, typeof(IExtractIconW).GUID, out var ppv), ResultIs.Successful);
+		Assert.That(SHCreateFileExtractIconW(icoFile, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, out IExtractIconW? ppv), ResultIs.Successful);
 		Assert.That(ppv, Is.Not.Null);
-		((IExtractIconW)ppv).Extract(icoFile, 0, 48, out var lg, 16, out var sm).ThrowIfFailed();
+		ppv!.Extract(icoFile, 0, 48, out var lg, 16, out var sm).ThrowIfFailed();
 		Assert.That(lg.IsInvalid, Is.False);
 		Assert.That(lg.Size.Height, Is.EqualTo(48));
 		Assert.That(sm.IsInvalid, Is.False);
 		Assert.That(sm.Size.Height, Is.EqualTo(16));
-		Marshal.FinalReleaseComObject(ppv);
+		Marshal.FinalReleaseComObject(ppv!);
 	}
 
 	[Test]

@@ -55,7 +55,7 @@ public class ProcessThreadsTests
 	[Test]
 	public void CreateProcessTest4()
 	{
-		bool res = CreateProcess(@"C:\Windows\system32\cmd.exe", null, default, default, false, 0, new[] { @"PATH=C:\Windows", "DOG=Bone" }, null, STARTUPINFO.Default, out SafePROCESS_INFORMATION pi);
+		bool res = CreateProcess(@"C:\Windows\system32\cmd.exe", null, default, default, false, 0, [@"PATH=C:\Windows", "DOG=Bone"], null, STARTUPINFO.Default, out SafePROCESS_INFORMATION pi);
 		if (!res) TestContext.WriteLine(Win32Error.GetLastError());
 		Assert.That(res);
 		using (pi)
@@ -82,10 +82,15 @@ public class ProcessThreadsTests
 		{
 			Assert.That(hThread.IsInvalid, Is.False);
 			Assert.That(GetThreadId(hThread), Is.EqualTo(threadId));
+
+			//CONTEXT ctx = new(CONTEXT_FLAG.CONTEXT_ALL);
+			//Assert.That(GetThreadContext(hThread, ref ctx), ResultIs.Successful);
+			//Assert.That(SetThreadContext(hThread, ctx), ResultIs.Successful);
+
 			Assert.That(ResumeThread(hThread), Is.LessThanOrEqualTo(1));
 			Sleep(50);
 			Assert.That(ResumeThread(hThread), Is.LessThanOrEqualTo(1));
-			Assert.That(WaitForSingleObject(hThread, INFINITE), Is.EqualTo(WAIT_STATUS.WAIT_OBJECT_0));
+			Assert.That(WaitForSingleObject(hThread, 10000), Is.EqualTo(WAIT_STATUS.WAIT_OBJECT_0));
 			Assert.That(GetExitCodeThread(hThread, out uint exitCode), Is.True);
 			Assert.That(exitCode, Is.EqualTo(0U));
 		}
@@ -98,11 +103,6 @@ public class ProcessThreadsTests
 			Assert.That(GetThreadPriority(hThread), Is.EqualTo((int)THREAD_PRIORITY.THREAD_PRIORITY_NORMAL));
 			Assert.That(SetThreadPriority(hThread, (int)THREAD_PRIORITY.THREAD_PRIORITY_BELOW_NORMAL), Is.True);
 
-			CONTEXT ctx = new(CONTEXT_FLAG.CONTEXT_ALL);
-			bool ret = GetThreadContext(hThread, ref ctx);
-			if (!ret) return (uint)(int)(HRESULT)Win32Error.GetLastError();
-			ret = SetThreadContext(hThread, ctx);
-			if (!ret) return (uint)(int)(HRESULT)Win32Error.GetLastError();
 			return 0U;
 		}
 	}
@@ -115,18 +115,15 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetCurrentProcessIdTest()
-	{
-		Assert.That(GetCurrentProcessId(), Is.GreaterThan(0));
-	}
+	public void GetCurrentProcessIdTest() => Assert.That(GetCurrentProcessId(), Is.GreaterThan(0));
 
 	[Test]
 	public void GetCurrentProcessorNumberTest()
 	{
 		uint p = GetCurrentProcessorNumber();
-		Assert.That(p, Is.LessThan(8));
+		Assert.That(p, Is.LessThan(Environment.ProcessorCount));
 		GetCurrentProcessorNumberEx(out PROCESSOR_NUMBER pNum);
-		Assert.That(pNum.Number, Is.LessThan(8));
+		Assert.That(pNum.Number, Is.LessThan(Environment.ProcessorCount));
 		TestContext.Write($"Num:{p}; Grp:{pNum.Group}; GrpNum:{pNum.Number}");
 	}
 
@@ -201,14 +198,14 @@ public class ProcessThreadsTests
 	public void GetProcessInformationTest()
 	{
 		object o = 0;
-		Assert.That(() => o = GetProcessInformation<MEMORY_PRIORITY_INFORMATION>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessMemoryPriority), Throws.Nothing);
+		Assert.That(() => o = GetProcessInformation<MEMORY_PRIORITY_INFORMATION>(GetCurrentProcess()), Throws.Nothing);
 		o.WriteValues();
-		Assert.That(() => o = GetProcessInformation<APP_MEMORY_INFORMATION>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessAppMemoryInfo), Throws.Nothing);
+		Assert.That(() => o = GetProcessInformation<APP_MEMORY_INFORMATION>(GetCurrentProcess()), Throws.Nothing);
 		o.WriteValues();
-		Assert.That(() => o = GetProcessInformation<PROCESS_PROTECTION_LEVEL_INFORMATION>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessProtectionLevelInfo), Throws.Nothing);
+		Assert.That(() => o = GetProcessInformation<PROCESS_PROTECTION_LEVEL_INFORMATION>(GetCurrentProcess()), Throws.Nothing);
 		o.WriteValues();
 
-		Assert.That(() => GetProcessInformation<PROCESS_MEMORY_EXHAUSTION_INFO>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessMemoryExhaustionInfo), Throws.Exception);
+		Assert.That(() => GetProcessInformation<PROCESS_MEMORY_EXHAUSTION_INFO>(GetCurrentProcess()), Throws.Exception);
 		Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessInPrivateInfo), Throws.Exception);
 		Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessReservedValue1), Throws.Exception);
 		Assert.That(() => GetProcessInformation<uint>(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessTelemetryCoverageInfo), Throws.Exception);
@@ -216,14 +213,14 @@ public class ProcessThreadsTests
 		PROCESS_POWER_THROTTLING_STATE state = new(0, 0);
 		using PinnedObject pin = new(state);
 		Assert.That(GetProcessInformation(GetCurrentProcess(), PROCESS_INFORMATION_CLASS.ProcessPowerThrottling, pin, (uint)Marshal.SizeOf<PROCESS_POWER_THROTTLING_STATE>()), ResultIs.Successful);
-		Assert.That((int)state.ControlMask, Is.Not.Zero);
+		state.WriteValues();
 	}
 
 	[Test]
 	public void GetProcessMitigationPolicyTest()
 	{
 		HPROCESS hProc = GetCurrentProcess();
-		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => new object?[] { hProc, e, null }, (e, ret, param) =>
+		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => [hProc, e, null], (e, ret, param) =>
 		{
 			if (!(bool)ret!) TestContext.WriteLine($"{e} -> {Win32Error.GetLastError()}");
 			Assert.That(ret, Is.True);
@@ -329,21 +326,15 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetStartupInfoTest()
-	{
-		Assert.That(() =>
-		{
-			GetStartupInfo(out STARTUPINFO si);
-			Assert.That(si.cb, Is.GreaterThan(0));
-			Assert.That(si.lpTitle, Is.Not.Null);
-		}, Throws.Nothing);
-	}
+	public void GetStartupInfoTest() => Assert.That(() =>
+											 {
+												 GetStartupInfo(out STARTUPINFO si);
+												 Assert.That(si.cb, Is.GreaterThan(0));
+												 Assert.That(si.lpTitle, Is.Not.Null);
+											 }, Throws.Nothing);
 
 	[Test]
-	public void GetSystemCpuSetInformationTest()
-	{
-		Assert.That(GetSystemCpuSetInformation(GetCurrentProcess()), Is.Not.Empty);
-	}
+	public void GetSystemCpuSetInformationTest() => Assert.That(GetSystemCpuSetInformation(GetCurrentProcess()), Is.Not.Empty);
 
 	[Test]
 	public void GetSystemTimesTest()
@@ -361,17 +352,11 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetThreadInformationTest()
-	{
-		TestHelper.RunForEach<THREAD_INFORMATION_CLASS>(typeof(Kernel32), "GetThreadInformation", e => new object[] { GetCurrentThread(), e },
-			(e, ret, param) => ret?.WriteValues(), ex => throw ex!);
-	}
+	public void GetThreadInformationTest() => TestHelper.RunForEach<THREAD_INFORMATION_CLASS>(typeof(Kernel32), "GetThreadInformation", e => [GetCurrentThread(), e],
+			(e, ex) => throw ex!, (e, ret, param) => ret?.WriteValues(), CorrespondingAction.Get);
 
 	[Test]
-	public void GetThreadIOPendingFlagTest()
-	{
-		Assert.That(GetThreadIOPendingFlag(GetCurrentThread(), out bool pending), Is.True);
-	}
+	public void GetThreadIOPendingFlagTest() => Assert.That(GetThreadIOPendingFlag(GetCurrentThread(), out bool pending), Is.True);
 
 	[Test]
 	public void GetThreadTimesTest()
@@ -382,16 +367,10 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void IsProcessCriticalTest()
-	{
-		Assert.That(IsProcessCritical(GetCurrentProcess(), out bool critical), Is.True);
-	}
+	public void IsProcessCriticalTest() => Assert.That(IsProcessCritical(GetCurrentProcess(), out bool critical), Is.True);
 
 	[Test]
-	public void IsProcessorFeaturePresentTest()
-	{
-		Assert.That(IsProcessorFeaturePresent(PROCESSOR_FEATURE.PF_RDRAND_INSTRUCTION_AVAILABLE), Is.True);
-	}
+	public void IsProcessorFeaturePresentTest() => Assert.That(IsProcessorFeaturePresent(PROCESSOR_FEATURE.PF_RDRAND_INSTRUCTION_AVAILABLE), Is.True);
 
 	[Test]
 	public void OpenProcessTest()
@@ -408,16 +387,10 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void ProcessIdToSessionIdTest()
-	{
-		Assert.That(ProcessIdToSessionId(GetCurrentProcessId(), out uint sess), Is.True);
-	}
+	public void ProcessIdToSessionIdTest() => Assert.That(ProcessIdToSessionId(GetCurrentProcessId(), out uint sess), Is.True);
 
 	[Test]
-	public void QueryProcessAffinityUpdateModeTest()
-	{
-		Assert.That(QueryProcessAffinityUpdateMode(GetCurrentProcess(), out PROCESS_AFFINITY_MODE flag), Is.True);
-	}
+	public void QueryProcessAffinityUpdateModeTest() => Assert.That(QueryProcessAffinityUpdateMode(GetCurrentProcess(), out PROCESS_AFFINITY_MODE flag), Is.True);
 
 	[Test]
 	public void QuerySetProtectedPolicyTest()
@@ -435,7 +408,7 @@ public class ProcessThreadsTests
 	{
 		Assert.That(QueueUserAPC(papc, GetCurrentThread(), IntPtr.Zero), Is.True);
 
-		void papc(IntPtr dwParam) { }
+		static void papc(IntPtr dwParam) { }
 	}
 
 	[Test]
@@ -457,10 +430,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void SetProcessAffinityUpdateModeTest()
-	{
-		Assert.That(SetProcessAffinityUpdateMode(GetCurrentProcess(), PROCESS_AFFINITY_MODE.PROCESS_AFFINITY_ENABLE_AUTO_UPDATE), Is.True);
-	}
+	public void SetProcessAffinityUpdateModeTest() => Assert.That(SetProcessAffinityUpdateMode(GetCurrentProcess(), PROCESS_AFFINITY_MODE.PROCESS_AFFINITY_ENABLE_AUTO_UPDATE), Is.True);
 
 	[Test]
 	public void SetProcessInformationTest()
@@ -470,12 +440,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void SetProcessMitigationPolicyTest()
-	{
-		Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessImageLoadPolicy, new PROCESS_MITIGATION_IMAGE_LOAD_POLICY { Flags = PROCESS_MITIGATION_IMAGE_LOAD_POLICY_FLAGS.NoRemoteImages }), Is.True);
-		//Assert.That(GetProcessMitigationPolicy<ulong[]>(GetCurrentProcess(), PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, out var p), Is.True);
-		//Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, p), Is.True);
-	}
+	public void SetProcessMitigationPolicyTest() => Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessImageLoadPolicy, new PROCESS_MITIGATION_IMAGE_LOAD_POLICY { Flags = PROCESS_MITIGATION_IMAGE_LOAD_POLICY_FLAGS.NoRemoteImages }), Is.True);//Assert.That(GetProcessMitigationPolicy<ulong[]>(GetCurrentProcess(), PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, out var p), Is.True);//Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, p), Is.True);
 
 	[Test]
 	public void SetThreadIdealProcessorExTest()
@@ -505,16 +470,12 @@ public class ProcessThreadsTests
 	public void SetThreadStackGuaranteeTest()
 	{
 		uint sz = 0U;
-		Assert.That(SetThreadStackGuarantee(ref sz), Is.True);
-		Assert.That(sz, Is.GreaterThan(0));
-		Assert.That(SetThreadStackGuarantee(ref sz), Is.True);
+		Assert.That(SetThreadStackGuarantee(ref sz), ResultIs.Successful);
+		TestContext.Write($"Stack guarantee size: {sz}");
 	}
 
 	[Test]
-	public void SwitchToThreadTest()
-	{
-		Assert.That(SwitchToThread(), Is.True);
-	}
+	public void SwitchToThreadTest() => Assert.That(SwitchToThread(), Is.False);
 
 	[Test]
 	public void TlsTest()

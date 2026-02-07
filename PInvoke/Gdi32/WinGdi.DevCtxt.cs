@@ -150,38 +150,37 @@ public static partial class Gdi32
 	public enum ObjType
 	{
 		/// <summary/>
-		[CorrespondingType(typeof(HPEN))]
+		[CorrespondingType(typeof(LOGPEN))]
+		[CorrespondingType(typeof(EXTLOGPEN))]
 		OBJ_PEN = 1,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HBRUSH))]
+		[CorrespondingType(typeof(LOGBRUSH))]
 		OBJ_BRUSH = 2,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HDC))]
 		OBJ_DC = 3,
 
 		/// <summary/>
 		OBJ_METADC = 4,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HPALETTE))]
+		[CorrespondingType(typeof(ushort))]
 		OBJ_PAL = 5,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HFONT))]
+		[CorrespondingType(typeof(LOGFONT))]
 		OBJ_FONT = 6,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HBITMAP))]
+		[CorrespondingType(typeof(BITMAP))]
+		[CorrespondingType(typeof(DIBSECTION))]
 		OBJ_BITMAP = 7,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HRGN))]
 		OBJ_REGION = 8,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HMETAFILE))]
 		OBJ_METAFILE = 9,
 
 		/// <summary/>
@@ -194,11 +193,9 @@ public static partial class Gdi32
 		OBJ_ENHMETADC = 12,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HENHMETAFILE))]
 		OBJ_ENHMETAFILE = 13,
 
 		/// <summary/>
-		[CorrespondingType(typeof(HCOLORSPACE))]
 		OBJ_COLORSPACE = 14,
 	}
 
@@ -324,7 +321,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1dcb3dfe-0ab0-4bf5-ac2f-7a9c11712eef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CancelDC(HDC hdc);
+	public static extern bool CancelDC([In, AddAsMember] HDC hdc);
 
 	/// <summary>The CreateCompatibleDC function creates a memory device context (DC) compatible with the specified device.</summary>
 	/// <param name="hDC">
@@ -363,6 +360,7 @@ public static partial class Gdi32
 	/// </remarks>
 	[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd183489")]
+	[return: AddAsCtor]
 	public static extern SafeHDC CreateCompatibleDC([Optional] HDC hDC);
 
 	/// <summary>The <c>CreateDC</c> function creates a device context (DC) for a device using the specified name.</summary>
@@ -427,6 +425,7 @@ public static partial class Gdi32
 	// LPCSTR pszPort, const DEVMODEA *pdm );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6fc443c8-da97-4196-a9ed-179a4e583849")]
+	[return: AddAsCtor]
 	public static extern SafeHDC CreateDC([Optional] string? pwszDriver, [Optional] string? pwszDevice, [Optional] string? pszPort, ref DEVMODE pdm);
 
 	/// <summary>The <c>CreateDC</c> function creates a device context (DC) for a device using the specified name.</summary>
@@ -491,7 +490,8 @@ public static partial class Gdi32
 	// LPCSTR pszPort, const DEVMODEA *pdm );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6fc443c8-da97-4196-a9ed-179a4e583849")]
-	public static extern SafeHDC CreateDC([Optional] string? pwszDriver, [Optional] string? pwszDevice, [Optional] string? pszPort, [Optional] IntPtr pdm);
+	[return: AddAsCtor]
+	public static extern SafeHDC CreateDC([Optional] string? pwszDriver, [Optional] string? pwszDevice, [Optional] string? pszPort, [Optional, Ignore] IntPtr pdm);
 
 	/// <summary>
 	/// The <c>CreateIC</c> function creates an information context for the specified device. The information context provides a fast way
@@ -522,6 +522,7 @@ public static partial class Gdi32
 	// LPCSTR pszPort, const DEVMODEA *pdm );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "dcb08ce7-9ded-497c-936c-48d3026a0004")]
+	[return: AddAsCtor]
 	public static extern SafeHDC CreateIC([Optional] string? pszDriver, [Optional] string? pszDevice, [Optional] string? pszPort, ref DEVMODE pdm);
 
 	/// <summary>
@@ -553,7 +554,8 @@ public static partial class Gdi32
 	// LPCSTR pszPort, const DEVMODEA *pdm );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "dcb08ce7-9ded-497c-936c-48d3026a0004")]
-	public static extern SafeHDC CreateIC([Optional] string? pszDriver, [Optional] string? pszDevice, [Optional] string? pszPort, [Optional] IntPtr pdm);
+	[return: AddAsCtor]
+	public static extern SafeHDC CreateIC([Optional] string? pszDriver, [Optional] string? pszDevice, [Optional] string? pszPort, [Optional, Ignore] IntPtr pdm);
 
 	/// <summary>The DeleteDC function deletes the specified device context (DC).</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -612,7 +614,7 @@ public static partial class Gdi32
 	// LPCSTR lpIn );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "306eec06-6d29-43bc-aff0-a267efa52ccd")]
-	public static extern int DrawEscape(HDC hdc, int iEscape, int cjIn, [MarshalAs(UnmanagedType.LPStr)] string lpIn);
+	public static extern int DrawEscape([In, AddAsMember] HDC hdc, EscapeFunction iEscape, int cjIn, [MarshalAs(UnmanagedType.LPStr)] string lpIn);
 
 	/// <summary>
 	/// The <c>EnumObjects</c> function enumerates the pens or brushes available for the specified device context (DC). This function
@@ -642,32 +644,26 @@ public static partial class Gdi32
 	public static extern int EnumObjects(HDC hdc, ObjType nType, EnumObjectsProc lpFunc, [Optional] IntPtr lParam);
 
 	/// <summary>
-	/// The <c>EnumObjects</c> function enumerates the pens or brushes available for the specified device context (DC). This function
-	/// calls the application-defined callback function once for each available object, supplying data describing that object.
-	/// <c>EnumObjects</c> continues calling the callback function until the callback function returns zero or until all of the objects
-	/// have been enumerated.
+	/// The <c>EnumObjects</c> function enumerates the pens or brushes available for the specified device context (DC).
 	/// </summary>
-	/// <typeparam name="T">The type of the handle to enumerate. Currently, only HPEN and HBRUSH are supported.</typeparam>
+	/// <typeparam name="T">The type of the object to enumerate. Currently, only <see cref="LOGBRUSH"/> and <see cref="LOGPEN"/> are supported.</typeparam>
 	/// <param name="hdc">A handle to the DC.</param>
 	/// <returns>An enumeration of the object handles for the <paramref name="hdc"/>.</returns>
 	/// <exception cref="ArgumentException">The supplied type cannot be enumerated by this function.</exception>
 	[PInvokeData("wingdi.h", MSDNShortId = "2a7b60b2-9a68-4c56-9376-c1b780488535")]
-	public static IEnumerable<T> EnumObjects<T>(HDC hdc) where T : IHandle
+	public static IEnumerable<T> EnumObjects<T>([In, AddAsMember] HDC hdc) where T : struct
 	{
-		ObjType ev = 0;
-		if ((int)Enum.GetValues(typeof(ObjType)).Cast<ObjType>().FirstOrDefault(v => CorrespondingTypeAttribute.CanGet(ev = v, typeof(T))) == 0)
-			throw new ArgumentException($"The supplied type cannot be enumerated by this function.");
-		var l = new List<IntPtr>();
-		EnumObjects(hdc, ev, EnumProc);
-#pragma warning disable CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
-		return l.Cast<T>();
-#pragma warning restore CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
-
-		int EnumProc(IntPtr Arg1, IntPtr Arg2)
+		ObjType ev = typeof(T) switch
 		{
-			l.Add(Arg1);
-			return 1;
-		}
+			var t when t == typeof(LOGBRUSH) => ObjType.OBJ_BRUSH,
+			var t when t == typeof(LOGPEN) => ObjType.OBJ_PEN,
+			_ => 0
+		};
+		if (ev == 0)
+			throw new ArgumentException($"The supplied type cannot be enumerated by this function.");
+		List<T> l = [];
+		_ = EnumObjects(hdc, ev, (a1, _) => { l.Add(a1.ToStructure<T>()); return 1; });
+		return l;
 	}
 
 	/// <summary>
@@ -723,7 +719,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getcurrentobject HGDIOBJ GetCurrentObject( HDC hdc, UINT type );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d7e2310c-6a9e-4195-824c-1a83382a5c5b")]
-	public static extern HGDIOBJ GetCurrentObject(HDC hdc, ObjType type);
+	public static extern HGDIOBJ GetCurrentObject([In, AddAsMember] HDC hdc, ObjType type);
 
 	/// <summary>The <c>GetDCBrushColor</c> function retrieves the current brush color for the specified device context (DC).</summary>
 	/// <param name="hdc">A handle to the DC whose brush color is to be returned.</param>
@@ -738,7 +734,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdcbrushcolor COLORREF GetDCBrushColor( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "98844fb1-7ad8-4fbd-be59-9a19065253da")]
-	public static extern COLORREF GetDCBrushColor(HDC hdc);
+	public static extern COLORREF GetDCBrushColor([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>GetDCOrgEx</c> function retrieves the final translation origin for a specified device context (DC). The final translation
@@ -756,7 +752,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "795c6a69-7146-4d1a-abf9-ce1d740ca946")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetDCOrgEx(HDC hdc, out POINT lppt);
+	public static extern bool GetDCOrgEx([In, AddAsMember] HDC hdc, out POINT lppt);
 
 	/// <summary>The <c>GetDCPenColor</c> function retrieves the current pen color for the specified device context (DC).</summary>
 	/// <param name="hdc">A handle to the DC whose brush color is to be returned.</param>
@@ -771,7 +767,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdcpencolor COLORREF GetDCPenColor( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3a1d579f-fbc6-4021-a37e-0184b2cc7d5d")]
-	public static extern COLORREF GetDCPenColor(HDC hdc);
+	public static extern COLORREF GetDCPenColor([In, AddAsMember] HDC hdc);
 
 	/// <summary>The GetDeviceCaps function retrieves device-specific information for the specified device.</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -783,7 +779,7 @@ public static partial class Gdi32
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144877(v=vs.85).aspx
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd144877")]
-	public static extern int GetDeviceCaps(HDC hdc, DeviceCap index);
+	public static extern int GetDeviceCaps([In, AddAsMember] HDC hdc, DeviceCap index);
 
 	/// <summary>The <c>GetLayout</c> function returns the layout of a device context (DC).</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -799,7 +795,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getlayout DWORD GetLayout( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2bbc0bef-55e5-4f11-a195-d379e95e44bf")]
-	public static extern DCLayout GetLayout(HDC hdc);
+	public static extern DCLayout GetLayout([In, AddAsMember] HDC hdc);
 
 	/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
 	/// <param name="hgdiobj">
@@ -850,7 +846,7 @@ public static partial class Gdi32
 	// int GetObject( HANDLE h, int c, LPVOID pv );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "555ab876-d990-426d-915c-f98df82a10aa")]
-	public static extern int GetObject(HGDIOBJ hgdiobj, int cbBuffer, IntPtr lpvObject);
+	public static extern int GetObject([In] HGDIOBJ hgdiobj, int cbBuffer, IntPtr lpvObject);
 
 	/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
 	/// <typeparam name="T">The output structure type.</typeparam>
@@ -862,32 +858,16 @@ public static partial class Gdi32
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
 	public static T GetObject<T>(IGraphicsObjectHandle hgdiobj) where T : struct
 	{
-		using var ptr = GetObject(hgdiobj, Marshal.SizeOf(typeof(T)));
 		var ot = GetObjectType(hgdiobj.DangerousGetHandle());
-		switch (ot)
+		if (CorrespondingTypeAttribute.CanGet<T, ObjType>(out var otl) && otl == ot)
 		{
-			case ObjType.OBJ_PEN:
-				if (typeof(T) == typeof(EXTLOGPEN) || typeof(T) == typeof(LOGPEN))
-					return ptr.ToStructure<T>();
-				break;
-			case ObjType.OBJ_BRUSH:
-				if (typeof(T) == typeof(LOGBRUSH))
-					return ptr.ToStructure<T>();
-				break;
-			case ObjType.OBJ_PAL:
-				if (typeof(T) == typeof(ushort))
-					return ptr.ToStructure<T>();
-				break;
-			case ObjType.OBJ_FONT:
-				if (typeof(T) == typeof(LOGFONT))
-					return ptr.ToStructure<T>();
-				break;
-			case ObjType.OBJ_BITMAP:
-				if (typeof(T) == typeof(BITMAP) && ptr.Size >= Marshal.SizeOf(typeof(BITMAP)))
-					return ptr.ToStructure<T>();
-				if (typeof(T) == typeof(DIBSECTION) && ptr.Size == Marshal.SizeOf(typeof(DIBSECTION)))
-					return ptr.ToStructure<T>();
-				break;
+			using var ptr = GetObject(hgdiobj, Marshal.SizeOf<T>());
+			return ot switch
+			{
+				ObjType.OBJ_BITMAP when typeof(T) == typeof(BITMAP) && ptr.Size >= Marshal.SizeOf<BITMAP>() => ptr.ToStructure<T>(),
+				ObjType.OBJ_BITMAP when typeof(T) == typeof(DIBSECTION) && ptr.Size == Marshal.SizeOf<DIBSECTION>() => ptr.ToStructure<T>(),
+				_ => ptr.ToStructure<T>(),
+			};
 		}
 		throw new ArgumentException($"The specified type ({typeof(T).Name}) cannot be retrieved from an object of type {ot}.");
 	}
@@ -985,7 +965,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getobjecttype DWORD GetObjectType( HGDIOBJ h );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "334a2c95-3bf4-44dc-abce-df3a3a2d37a8")]
-	public static extern ObjType GetObjectType(HGDIOBJ h);
+	public static extern ObjType GetObjectType([In, AddAsMember] HGDIOBJ h);
 
 	/// <summary>The <c>GetStockObject</c> function retrieves a handle to one of the stock pens, brushes, fonts, or palettes.</summary>
 	/// <param name="i">
@@ -1152,7 +1132,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-resetdca HDC ResetDCA( HDC hdc, const DEVMODEA *lpdm );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3f77db51-90d1-4a87-812b-1e129ae8fde9")]
-	public static extern HDC ResetDC(HDC hdc, ref DEVMODE lpdm);
+	public static extern HDC ResetDC([In, AddAsMember] HDC hdc, ref DEVMODE lpdm);
 
 	/// <summary>
 	/// The <c>RestoreDC</c> function restores a device context (DC) to the specified state. The DC is restored by popping state
@@ -1178,7 +1158,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7043edbb-b3ea-4946-a2ba-cae356b04d1d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RestoreDC(HDC hdc, int nSavedDC);
+	public static extern bool RestoreDC([In, AddAsMember] HDC hdc, int nSavedDC);
 
 	/// <summary>
 	/// The <c>SaveDC</c> function saves the current state of the specified device context (DC) by copying data describing selected
@@ -1196,7 +1176,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-savedc int SaveDC( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "f438cd7f-436f-436c-b32e-67f5558740cb")]
-	public static extern int SaveDC(HDC hdc);
+	public static extern int SaveDC([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <b>SelectObject</b> function selects an object into the specified device context (DC). The new object replaces the previous
@@ -1308,7 +1288,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdcpencolor COLORREF SetDCPenColor( HDC hdc, COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "057608eb-7209-4714-bf02-660a13d59016")]
-	public static extern COLORREF SetDCPenColor(HDC hdc, COLORREF color);
+	public static extern COLORREF SetDCPenColor([In, AddAsMember] HDC hdc, COLORREF color);
 
 	/// <summary>The SetLayout function changes the layout of a device context (DC).</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -1320,5 +1300,5 @@ public static partial class Gdi32
 	/// </remarks>
 	[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd162979")]
-	public static extern DCLayout SetLayout(HDC hdc, DCLayout dwLayout);
+	public static extern DCLayout SetLayout([In, AddAsMember] HDC hdc, DCLayout dwLayout);
 }

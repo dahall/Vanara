@@ -1128,7 +1128,7 @@ public static partial class ShlwApi
 	/// <para>Retrieves a string used with websites when specifying language preferences.</para>
 	/// </summary>
 	/// <param name="pszLanguages">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a string that, when this function returns successfully, receives the language preferences information. We recommend
 	/// that this buffer be of size 2048 characters to ensure sufficient space to return the full string. You can also call this function
@@ -1161,7 +1161,7 @@ public static partial class ShlwApi
 	/// Microsoft .NET, it must first convert the tags through the ResolveLocaleName function.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-getacceptlanguagesa LWSTDAPI GetAcceptLanguagesA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-getacceptlanguagesa LWSTDAPI GetAcceptLanguagesA( StrPtrAnsi
 	// pszLanguages, DWORD *pcchLanguages );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "a680a7fd-f980-485d-b52a-eb4d482ebc17")]
@@ -1620,7 +1620,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the stream from which to read.</para>
 	/// </param>
 	/// <param name="ppsz">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>A pointer to the null-terminated, Unicode string into which the stream is written.</para>
 	/// </param>
 	/// <returns>
@@ -1628,7 +1628,7 @@ public static partial class ShlwApi
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_readstr LWSTDAPI IStream_ReadStr( IStream *pstm,
-	// PWSTR *ppsz );
+	// StrPtrUni *ppsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e3f140c4-4033-4c82-af2c-4a7744461920")]
 	public static extern HRESULT IStream_ReadStr([In] IStream pstm, out StrPtrUni ppsz);
@@ -2177,7 +2177,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to a null-terminated ANSI string to be converted to Unicode.</para>
 	/// </param>
 	/// <param name="pszDst">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the characters copied from pszSrc. The buffer must
 	/// be large enough to contain the number of characters specified by the cchBuf parameter, including a room for a terminating null character.
@@ -2214,7 +2214,7 @@ public static partial class ShlwApi
 	/// to and including the last character in the buffer.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shansitoansi int SHAnsiToAnsi( PCSTR pszSrc, PSTR pszDst,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shansitoansi int SHAnsiToAnsi( PCSTR pszSrc, StrPtrAnsi pszDst,
 	// int cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e57142ca-3098-4118-aac0-89724f711872")]
@@ -2232,7 +2232,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to a null-terminated ANSI string to be converted to Unicode.</para>
 	/// </param>
 	/// <param name="pwszDst">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the string specified by pszSrc, after the ANSI
 	/// characters have been converted to Unicode (WCHAR). The buffer must be large enough to contain the number of Unicode characters
@@ -2272,7 +2272,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para><c>SHAnsiToTChar</c> is defined to be the same as <c>SHAnsiToUnicode</c>.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shansitounicode int SHAnsiToUnicode( PCSTR pszSrc, PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shansitounicode int SHAnsiToUnicode( PCSTR pszSrc, StrPtrUni
 	// pwszDst, int cwchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "9578f26e-56ea-4f3b-b024-b2e285d0c4d2")]
@@ -2912,7 +2912,7 @@ public static partial class ShlwApi
 	/// <para>The index of the subkey to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
 	/// </param>
 	/// <param name="pszName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The address of a character buffer that receives the enumerated key name.</para>
 	/// </param>
 	/// <param name="pcchName">
@@ -2930,7 +2930,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shenumkeyexa LSTATUS SHEnumKeyExA( HKEY hkey, DWORD
-	// dwIndex, LPSTR pszName, LPDWORD pcchName );
+	// dwIndex, StrPtrAnsi pszName, LPDWORD pcchName );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "51bf9cf7-87bc-407c-b2ee-18db3cdfe1dc")]
 	public static extern Win32Error SHEnumKeyEx(HKEY hkey, uint dwIndex, StringBuilder pszName, ref uint pcchName);
@@ -2953,7 +2953,7 @@ public static partial class ShlwApi
 	/// <para>The index of the value to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
 	/// </param>
 	/// <param name="pszValueName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The address of a character buffer that receives the enumerated value name. The size of this buffer is specified in pcchValueName.</para>
 	/// </param>
 	/// <param name="pcchValueName">
@@ -2992,7 +2992,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shenumvaluea LSTATUS SHEnumValueA( HKEY hkey, DWORD
-	// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
+	// dwIndex, StrPtrAnsi pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
 	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
@@ -3016,7 +3016,7 @@ public static partial class ShlwApi
 	/// <para>The index of the value to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
 	/// </param>
 	/// <param name="pszValueName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The address of a character buffer that receives the enumerated value name. The size of this buffer is specified in pcchValueName.</para>
 	/// </param>
 	/// <param name="pcchValueName">
@@ -3055,7 +3055,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shenumvaluea LSTATUS SHEnumValueA( HKEY hkey, DWORD
-	// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
+	// dwIndex, StrPtrAnsi pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
 	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
@@ -3160,7 +3160,7 @@ public static partial class ShlwApi
 	/// <para>Relative notation was used for the date.</para>
 	/// </param>
 	/// <param name="pszBuf">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that receives the formatted date and time. The buffer must be large enough to contain the number of TCHAR
 	/// characters specified by the cchBuf parameter, including a terminating null character.
@@ -3177,7 +3177,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shformatdatetimew int SHFormatDateTimeW( const FILETIME
-	// *pft, DWORD *pdwFlags, LPWSTR pszBuf, UINT cchBuf );
+	// *pft, DWORD *pdwFlags, StrPtrUni pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2208ed29-6029-4051-bdcc-885c42fe5c1b")]
 	public static extern int SHFormatDateTime(in FILETIME pft, ref FDTF pdwFlags, StringBuilder pszBuf, uint cchBuf);
@@ -3481,7 +3481,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6852867a-30a5-4d4e-b790-3746104e3ed8")]
 	public static extern HRESULT SHGetViewStatePropertyBag([Optional] IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName,
-		SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+		SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -3547,7 +3547,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszOutBuf">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the text resource. Both pszOutBuf and pszSource
 	/// can point to the same buffer, in which case the original string will be overwritten.
@@ -3606,7 +3606,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shloadindirectstring LWSTDAPI SHLoadIndirectString( PCWSTR
-	// pszSource, PWSTR pszOutBuf, UINT cchOutBuf, void **ppvReserved );
+	// pszSource, StrPtrUni pszOutBuf, UINT cchOutBuf, void **ppvReserved );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f0265cd8-deb8-4bca-b379-39aff49c7df1")]
 	public static extern HRESULT SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
@@ -3623,7 +3623,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszOutBuf">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the text resource. Both pszOutBuf and pszSource
 	/// can point to the same buffer, in which case the original string will be overwritten.
@@ -3682,7 +3682,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-shloadindirectstring LWSTDAPI SHLoadIndirectString( PCWSTR
-	// pszSource, PWSTR pszOutBuf, UINT cchOutBuf, void **ppvReserved );
+	// pszSource, StrPtrUni pszOutBuf, UINT cchOutBuf, void **ppvReserved );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.SHLoadIndirectString")]
 	public static extern HRESULT SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, IntPtr pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
@@ -4148,7 +4148,7 @@ public static partial class ShlwApi
 	/// <para>The index of the subkey to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
 	/// </param>
 	/// <param name="pszName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a character buffer that receives the enumerated key name.</para>
 	/// </param>
 	/// <param name="pcchName">
@@ -4170,7 +4170,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shregenumuskeya LSTATUS SHRegEnumUSKeyA( HUSKEY hUSKey,
-	// DWORD dwIndex, LPSTR pszName, LPDWORD pcchName, SHREGENUM_FLAGS enumRegFlags );
+	// DWORD dwIndex, StrPtrAnsi pszName, LPDWORD pcchName, SHREGENUM_FLAGS enumRegFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "9418ad45-f451-4976-afd7-fa1e0088038d")]
 	public static extern Win32Error SHRegEnumUSKey(HUSKEY hUSKey, uint dwIndex, StringBuilder pszName, ref uint pcchName, SHREGENUM_FLAGS enumRegFlags);
@@ -4189,7 +4189,7 @@ public static partial class ShlwApi
 	/// <para>The index of the value to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
 	/// </param>
 	/// <param name="pszValueName">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a character buffer that receives the enumerated value name. The size of this buffer is specified in pcchValueNameLen.</para>
 	/// </param>
 	/// <param name="pcchValueNameLen">
@@ -4347,7 +4347,7 @@ public static partial class ShlwApi
 	/// <para>TBD</para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A buffer to hold the expanded path. You should set the size of this buffer to <c>MAX_PATH</c> to ensure that it is large enough
 	/// to hold the returned string.
@@ -4401,7 +4401,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shreggetpatha LSTATUS SHRegGetPathA( HKEY hKey, LPCSTR
-	// pcszSubKey, LPCSTR pcszValue, LPSTR pszPath, DWORD dwFlags );
+	// pcszSubKey, LPCSTR pcszValue, StrPtrAnsi pszPath, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2874b868-33f9-4f20-9e0b-136125cf268c")]
 	public static extern Win32Error SHRegGetPath(HKEY hKey, string pcszSubKey, string pcszValue, StringBuilder pszPath, uint dwFlags = 0);
@@ -5590,7 +5590,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the null-terminated string to be copied.</para>
 	/// </param>
 	/// <param name="ppwsz">
-	/// <para>Type: <c>LPTSTR*</c></para>
+	/// <para>Type: <c>StrPtrAuto*</c></para>
 	/// <para>
 	/// A pointer to an allocated Unicode string that contains the result. <c>SHStrDup</c> allocates memory for this string with
 	/// CoTaskMemAlloc. You should free the string with CoTaskMemFree when it is no longer needed.
@@ -5608,7 +5608,7 @@ public static partial class ShlwApi
 	/// is no longer needed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shstrdupa LWSTDAPI SHStrDupA( LPCSTR psz, LPWSTR *ppwsz );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shstrdupa LWSTDAPI SHStrDupA( LPCSTR psz, StrPtrUni *ppwsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6f014fb4-7637-48a8-9bec-d3278c46a6d8")]
 	public static extern HRESULT SHStrDup(string psz, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler), MarshalCookie = "Auto")] out string? ppwsz);
@@ -5621,7 +5621,7 @@ public static partial class ShlwApi
 	/// <para>Removes the mnemonic marker from a string.</para>
 	/// </summary>
 	/// <param name="pszMenu">
-	/// <para>Type: <c>LPTSTR*</c></para>
+	/// <para>Type: <c>StrPtrAuto*</c></para>
 	/// <para>A pointer to the null-terminated string that contains the mnemonic marker.</para>
 	/// </param>
 	/// <returns>
@@ -5652,7 +5652,7 @@ public static partial class ShlwApi
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shstripmneumonica CHAR SHStripMneumonicA( LPSTR pszMenu );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shstripmneumonica CHAR SHStripMneumonicA( StrPtrAnsi pszMenu );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "25479814-825a-4af2-8751-b35cf39bbb80")]
 	public static extern char SHStripMneumonic(StringBuilder pszMenu);
@@ -5669,7 +5669,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the null-terminated Unicode string to be converted to ANSI.</para>
 	/// </param>
 	/// <param name="pszDst">
-	/// <para>Type: <c>PSTR</c></para>
+	/// <para>Type: <c>StrPtrAnsi</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the converted characters. The buffer must be large
 	/// enough to contain the number of <c>CHAR</c> characters specified by the cchBuf parameter, including room for a terminating null character.
@@ -5710,7 +5710,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para><c>SHTCharToAnsi</c> is defined to be the same as <c>SHUnicodeToAnsi</c>.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shunicodetoansi int SHUnicodeToAnsi( PCWSTR pwszSrc, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shunicodetoansi int SHUnicodeToAnsi( PCWSTR pwszSrc, StrPtrAnsi
 	// pszDst, int cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f0db3976-9956-418f-8432-7755b140050f")]
@@ -5728,7 +5728,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to a null-terminated Unicode string to be copied to the output buffer.</para>
 	/// </param>
 	/// <param name="pwzDst">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to an output buffer to receive the copied characters. The buffer must be large enough to contain the number of
 	/// <c>WCHAR</c> characters specified by cwchBuf, including room for a terminating null character.
@@ -5775,7 +5775,7 @@ public static partial class ShlwApi
 	/// <para><c>SHUnicodeToTChar</c> is defined to be the same as <c>SHUnicodeToUnicode</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shunicodetounicode int SHUnicodeToUnicode( PCWSTR pwzSrc,
-	// PWSTR pwzDst, int cwchBuf );
+	// StrPtrUni pwzDst, int cwchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "1a208c2d-e627-4aac-9a28-b579c734a2a8")]
 	public static extern int SHUnicodeToUnicode(string pwzSrc, StringBuilder pwzDst, int cwchBuf);

@@ -97,6 +97,17 @@ public class MessagePump : IMessagePump
 /// <seealso cref="MessagePump"/>
 public class ExaminedMessagePump : MessagePump
 {
+	/// <summary>Initializes a new instance of the <see cref="ExaminedMessagePump"/> class.</summary>
+	/// <param name="preProcess">A delegate that is called immediately after <c>GetMessage</c> whose result determines if <c>TranslateMessage</c> is called.</param>
+	/// <param name="postTranslate">A delegate that is called immediately after <c>TranslateMessage</c> whose result determines if <c>DispatchMessage</c> is called.</param>
+	/// <param name="postProcess">A delegate that is called after each <c>DispatchMessage</c>.</param>
+	public ExaminedMessagePump(MsgPumpPredicateDelegate? preProcess = null, MsgPumpPredicateDelegate? postTranslate = null, MsgPumpDelegate? postProcess = null)
+	{
+		if (preProcess is not null) PreProcess += preProcess;
+		if (postTranslate is not null) PostTranslate += postTranslate;
+		if (postProcess is not null) PostProcess += postProcess;
+	}
+
 	/// <summary>Occurs after <see cref="DispatchMessage(in MSG)"/>.</summary>
 	public event MsgPumpDelegate? PostProcess;
 
@@ -111,17 +122,55 @@ public class ExaminedMessagePump : MessagePump
 	/// <inhertdoc/>
 	protected override int RunLoop()
 	{
-		MSG msg;
-		do
+		int bRet;
+		while ((bRet = GetMessage(out MSG msg)) != 0)
 		{
-			if (PeekMessage(out msg, default, 0, 0, PM.PM_REMOVE) && (PreProcess?.Invoke(ref msg) ?? true))
+			if (bRet == -1)
+				Win32Error.ThrowLastError();
+			if (PreProcess?.Invoke(ref msg) ?? true)
 			{
 				TranslateMessage(msg);
 				if (PostTranslate?.Invoke(ref msg) ?? true)
 					DispatchMessage(msg);
-				PostProcess?.Invoke(ref msg);
 			}
-		} while (Macros.LOWORD(msg.message) != quitMsg);
-		return 0;
+			PostProcess?.Invoke(ref msg);
+		}
+		return bRet;
+	}
+}
+
+/// <summary>Represents a message pump that processes Windows messages and supports keyboard accelerators.</summary>
+/// <remarks>
+/// This class extends the functionality of a standard message pump by integrating an accelerator table, allowing the application to handle
+/// keyboard shortcuts efficiently. It processes messages in a loop, invoking pre-processing, post-processing, and accelerator key handling
+/// as needed.
+/// </remarks>
+/// <remarks>Initializes a new instance of the <see cref="MessagePumpWithAccelerators"/> class.</remarks>
+/// <param name="hWndParent">The handle to the parent window of the message pump.</param>
+/// <param name="hAccel">The handle to the accelerator table associated with the application.</param>
+public class MessagePumpWithAccelerators(HWND hWndParent, HACCEL hAccel = default) : MessagePump
+{
+
+	/// <summary>Gets or sets the handle to the accelerator table associated with the application.</summary>
+	public virtual HACCEL AcceleratorTableHandle { get; set; } = hAccel;
+
+	/// <summary>Gets or sets the handle to the parent window of the message pump.</summary>
+	public virtual HWND ParentWindowHandle { get; set; } = hWndParent;
+
+	/// <inheritdoc/>
+	protected override int RunLoop()
+	{
+		int bRet;
+		while ((bRet = GetMessage(out MSG msg)) != 0)
+		{
+			if (bRet == -1)
+				Win32Error.ThrowLastError();
+			if (AcceleratorTableHandle.IsNull || TranslateAccelerator(ParentWindowHandle, AcceleratorTableHandle, msg) == 0)
+			{
+				TranslateMessage(msg);
+				DispatchMessage(msg);
+			}
+		}
+		return bRet;
 	}
 }

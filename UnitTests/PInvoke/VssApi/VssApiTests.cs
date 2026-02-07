@@ -1,6 +1,10 @@
-﻿using NUnit.Framework;
+﻿using ICSharpCode.Decompiler.Metadata;
+using Microsoft.CodeAnalysis;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.IO.Pipelines;
 using System.Linq;
+using System.Threading.Tasks;
 using Vanara.PInvoke.VssApi;
 using static Vanara.PInvoke.Kernel32;
 
@@ -23,43 +27,69 @@ public class VssApiTests
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
-	public void _Setup()
-	{
-		vols = EnumVolumes().ToArray();
-	}
+	public void _Setup() => vols = [.. EnumVolumes()];
 
 	[OneTimeTearDown]
 	public void _TearDown()
 	{
 	}
 
-	[Test]
-	public void OpenStreamOnVSSCopy()
+	[TestWhenElevated]
+	public void GetMetadataComponentInfo()
+	{
+		string metadataFile = TestCaseSources.GetFilePath("vss_metadata.xml");
+		Assert.That(VssFactory.CreateVssExamineWriterMetadata(metadataFile, out var ppMetadata), ResultIs.Successful);
+		int i = 0;
+		foreach (var info in ppMetadata.Components.Select(c => c.GetComponentInfo()))
+			TestContext.WriteLine($"{++i}: {info.bstrComponentName}={info.bstrLogicalPath}");
+	}
+
+	[TestWhenElevated]
+	public async Task OpenStreamOnVSSCopy()
 	{
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
 		backup.InitializeForBackup();
-		backup.GatherWriterMetadata();
+		backup.SetContext(VSS_SNAPSHOT_CONTEXT.VSS_CTX_BACKUP);
+		backup.SetBackupState(true, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
+		Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
+		await backup.GatherWriterMetadata().AsTask();
+		foreach (var writer in backup.WriterMetadata)
+		{
+			writer.GetIdentity(out var pidInstance, out var pidWriter, out var pbstrWriter, out var pInstanceName, out var usage, out var source);
+			TestContext.WriteLine($"Writer: {pbstrWriter} ({pInstanceName})");
+			int i = 0;
+			foreach (var c in writer.Components)
+			{
+				var info = c.GetComponentInfo();
+				TestContext.WriteLine($"  {++i}: {info.bstrCaption}={info.bstrComponentName} ({info.bstrLogicalPath})");
+				foreach (var f in c.Files)
+					TestContext.WriteLine($"    File: {f.Path} ({f.BackupTypeMask})");
+			}
+		}
 		backup.FreeWriterMetadata();
-		backup.SetBackupState(false, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
-		var setId = backup.StartSnapshotSet();
+		Guid snapshotSetId = backup.StartSnapshotSet();
 		try
 		{
-			Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
 			var snapId = backup.AddToSnapshotSet("C:\\");
+			backup.PrepareForBackup();
+
+			await backup.DoSnapshotSet().AsTask();
+
 			var props = backup.GetSnapshotProperties(snapId);
 			TestContext.WriteLine(props.m_pwszSnapshotDeviceObject);
 			props.Dispose();
+
+			await backup.BackupComplete().AsTask();
 		}
 		finally
 		{
-			HRESULT hr = backup.DeleteSnapshots(setId, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT_SET, true, out _, out var badId);
+			HRESULT hr = backup.DeleteSnapshots(snapshotSetId, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT_SET, true, out _, out var badId);
 			if (hr.Failed)
 				TestContext.WriteLine($"Failed to delete snapshot {badId}");
 		}
-		_ = backup.PrepareForBackup();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void QueryDiffAreasForVolumeTest()
 	{
 		Assert.That(vols, Has.Length.GreaterThan(0));
@@ -98,7 +128,7 @@ public class VssApiTests
 		}
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void TestBackupSnapshots()
 	{
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);

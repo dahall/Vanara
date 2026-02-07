@@ -1,4 +1,5 @@
 using Microsoft.Win32.SafeHandles;
+using System.ComponentModel.DataAnnotations;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -1478,10 +1479,11 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtreew CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder? pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, out PNP_VETO_TYPE pVetoType,
+		[Optional, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName, [Range(0, Kernel32.MAX_PATH)] uint ulNameLength, CM_REMOVE ulFlags);
 
 	/// <summary>
 	/// The <c>CM_Query_And_Remove_SubTree</c> function checks whether a device instance and its children can be removed and, if so, it
@@ -1535,10 +1537,11 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtreew CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder? pszVetoName, uint ulNameLength, CM_REMOVE ulFlags);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, [In, Optional] IntPtr pVetoType,
+		[Optional, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName, [Range(0, Kernel32.MAX_PATH)] uint ulNameLength, CM_REMOVE ulFlags);
 
 	/// <summary>
 	/// <para>
@@ -1607,12 +1610,13 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtree_exw CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG
+	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, out PNP_VETO_TYPE pVetoType, [Optional] StringBuilder? pszVetoName,
-		uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, out PNP_VETO_TYPE pVetoType,
+		[Optional, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// <para>
@@ -1681,12 +1685,13 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtree_exw CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG
+	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
-	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, [In, Optional] IntPtr pVetoType, [Optional] StringBuilder? pszVetoName,
-		uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Query_And_Remove_SubTree_Ex(uint dnAncestor, [In, Optional] IntPtr pVetoType,
+		[Optional, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, CM_REMOVE ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Query_Resource_Conflict_List</c> function identifies device instances having resource requirements that conflict with
@@ -2030,10 +2035,12 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_ejectw CMAPI CONFIGRET
-	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
-	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder? pszVetoName, uint ulNameLength, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType,
+		[Out, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, [Optional, Ignore] uint ulFlags);
 
 	/// <summary>
 	/// The <c>CM_Request_Device_Eject</c> function prepares a local device instance for safe removal, if the device is removable. If
@@ -2084,10 +2091,12 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_ejectw CMAPI CONFIGRET
-	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
-	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder? pszVetoName, uint ulNameLength, uint ulFlags = 0);
+	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, [In, Optional] IntPtr pVetoType,
+		[Out, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, [Optional, Ignore] uint ulFlags);
 
 	/// <summary>
 	/// <para>
@@ -2156,12 +2165,13 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_eject_exw CMAPI CONFIGRET
-	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
+	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags,
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]
-	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, out PNP_VETO_TYPE pVetoType, [Out] StringBuilder? pszVetoName,
-		uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, out PNP_VETO_TYPE pVetoType,
+		[Out, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, [Optional, Ignore] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// <para>
@@ -2230,12 +2240,13 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_eject_exw CMAPI CONFIGRET
-	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
+	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, StrPtrUni pszVetoName, ULONG ulNameLength, ULONG ulFlags,
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]
-	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, [In, Optional] IntPtr pVetoType, [Out] StringBuilder? pszVetoName,
-		uint ulNameLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Request_Device_Eject_Ex(uint dnDevInst, [In, Optional] IntPtr pVetoType,
+		[Out, SizeDef(nameof(ulNameLength), SizingMethod.InclNullTerm)] StringBuilder? pszVetoName,
+		[Range(0, Kernel32.MAX_PATH)] uint ulNameLength, [Optional, Ignore] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Request_Eject_PC</c> function requests that a portable PC, which is inserted in a local docking station, be ejected.

@@ -500,7 +500,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "appendmenu")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
+	public static extern bool AppendMenu([In, AddAsMember] HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
 
 	/// <summary>
 	/// <para>
@@ -663,7 +663,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "appendmenu")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AppendMenu(HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
+	public static extern bool AppendMenu([In, AddAsMember] HMENU hMenu, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
 
 	/// <summary>
 	/// <para>
@@ -733,7 +733,7 @@ public static partial class User32
 	// uIDCheckItem, UINT uCheck );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "checkmenuitem.htm")]
-	public static extern uint CheckMenuItem(HMENU hMenu, uint uIDCheckItem, MenuFlags uCheck);
+	public static extern uint CheckMenuItem([In, AddAsMember] HMENU hMenu, uint uIDCheckItem, MenuFlags uCheck);
 
 	/// <summary>
 	/// <para>
@@ -784,7 +784,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "checkmenuradioitem.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckMenuRadioItem(HMENU hmenu, uint first, uint last, uint check, MenuFlags flags);
+	public static extern bool CheckMenuRadioItem([In, AddAsMember] HMENU hmenu, uint first, uint last, uint check, MenuFlags flags);
 
 	/// <summary>
 	/// <para>
@@ -807,6 +807,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createmenu HMENU CreateMenu( );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createmenu.htm")]
+	[return: AddAsCtor]
 	public static extern SafeHMENU CreateMenu();
 
 	/// <summary>
@@ -837,6 +838,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createpopupmenu HMENU CreatePopupMenu( );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createpopupmenu.htm")]
+	[return: AddAsCtor]
 	public static extern SafeHMENU CreatePopupMenu();
 
 	/// <summary>
@@ -889,7 +891,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deletemenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeleteMenu(HMENU hMenu, uint uPosition, MenuFlags uFlags);
+	public static extern bool DeleteMenu([In, AddAsMember] HMENU hMenu, uint uPosition, MenuFlags uFlags);
 
 	/// <summary>
 	/// <para>Destroys the specified menu and frees any memory that the menu occupies.</para>
@@ -937,7 +939,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "drawmenubar.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawMenuBar(HWND hWnd);
+	public static extern bool DrawMenuBar([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Enables, disables, or grays the specified menu item.</para>
@@ -1017,7 +1019,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enablemenuitem.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnableMenuItem(HMENU hMenu, uint uIDEnableItem, MenuFlags uEnable);
+	public static extern bool EnableMenuItem([In, AddAsMember] HMENU hMenu, uint uIDEnableItem, MenuFlags uEnable);
 
 	/// <summary>
 	/// <para>Ends the calling thread's active menu.</para>
@@ -1116,7 +1118,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenubarinfo.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMenuBarInfo(HWND hwnd, int idObject, int idItem, ref MENUBARINFO pmbi);
+	public static extern bool GetMenuBarInfo([In, AddAsMember] HWND hwnd, int idObject, int idItem, ref MENUBARINFO pmbi);
 
 	/// <summary>
 	/// <para>
@@ -1156,7 +1158,7 @@ public static partial class User32
 	// Arg1 );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "2b8d3e94-6860-4a75-8373-38afb641eb3b")]
-	public static extern uint GetMenuContextHelpId(HMENU Arg1);
+	public static extern uint GetMenuContextHelpId([In, AddAsMember] HMENU Arg1);
 
 	/// <summary>
 	/// <para>Determines the default menu item on the specified menu.</para>
@@ -1203,7 +1205,7 @@ public static partial class User32
 	// UINT fByPos, UINT gmdiFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenudefaultitem.htm")]
-	public static extern uint GetMenuDefaultItem(HMENU hMenu, [MarshalAs(UnmanagedType.Bool)] bool fByPos, GetMenuDefaultItemFlags gmdiFlags);
+	public static extern uint GetMenuDefaultItem([In, AddAsMember] HMENU hMenu, [MarshalAs(UnmanagedType.Bool)] bool fByPos, GetMenuDefaultItemFlags gmdiFlags);
 
 	/// <summary>
 	/// <para>Retrieves information about a specified menu.</para>
@@ -1222,7 +1224,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuinfo.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMenuInfo(HMENU hmenu, ref MENUINFO lpcmi);
+	public static extern bool GetMenuInfo([In, AddAsMember] HMENU hmenu, ref MENUINFO lpcmi);
 
 	/// <summary>
 	/// <para>Determines the number of items in the specified menu.</para>
@@ -1239,7 +1241,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenuitemcount int GetMenuItemCount( HMENU hMenu );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuitemcount.htm")]
-	public static extern int GetMenuItemCount(HMENU hMenu);
+	public static extern int GetMenuItemCount([In, AddAsMember] HMENU hMenu);
 
 	/// <summary>
 	/// <para>Retrieves the menu item identifier of a menu item located at the specified position in a menu.</para>
@@ -1262,7 +1264,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenuitemid UINT GetMenuItemID( HMENU hMenu, int nPos );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuitemid.htm")]
-	public static extern uint GetMenuItemID(HMENU hMenu, int nPos);
+	public static extern uint GetMenuItemID([In, AddAsMember] HMENU hMenu, int nPos);
 
 	/// <summary>
 	/// <para>Retrieves information about a menu item.</para>
@@ -1315,7 +1317,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuiteminfo.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMenuItemInfo(HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPosition, ref MENUITEMINFO lpmii);
+	public static extern bool GetMenuItemInfo([In, AddAsMember] HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPosition, ref MENUITEMINFO lpmii);
 
 	/// <summary>
 	/// <para>Retrieves the bounding rectangle for the specified menu item.</para>
@@ -1353,7 +1355,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenuitemrect.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMenuItemRect([Optional] HWND hWnd, HMENU hMenu, uint uItem, out RECT lprcItem);
+	public static extern bool GetMenuItemRect([Optional] HWND hWnd, [In, AddAsMember] HMENU hMenu, uint uItem, out RECT lprcItem);
 
 	/// <summary>
 	/// <para>
@@ -1487,7 +1489,7 @@ public static partial class User32
 	// UINT uFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenustate.htm")]
-	public static extern uint GetMenuState(HMENU hMenu, uint uId, MenuFlags uFlags);
+	public static extern uint GetMenuState([In, AddAsMember] HMENU hMenu, uint uId, MenuFlags uFlags);
 
 	/// <summary>
 	/// <para>Copies the text string of the specified menu item into the specified buffer.</para>
@@ -1504,7 +1506,7 @@ public static partial class User32
 	/// <para>The menu item to be changed, as determined by the uFlag parameter.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The buffer that receives the null-terminated string. If the string is as long or longer than lpString, the string is truncated
 	/// and the terminating null character is added. If lpString is <c>NULL</c>, the function returns the length of the menu string.
@@ -1561,10 +1563,10 @@ public static partial class User32
 	/// <para>For an example, see Creating User Editable Accelerators.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenustringa int GetMenuStringA( HMENU hMenu, UINT
-	// uIDItem, LPSTR lpString, int cchMax, UINT flags );
+	// uIDItem, StrPtrAnsi lpString, int cchMax, UINT flags );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenustring.htm")]
-	public static extern int GetMenuString(HMENU hMenu, uint uIDItem, StringBuilder? lpString, int cchMax, MenuFlags flags);
+	public static extern int GetMenuString([In, AddAsMember] HMENU hMenu, uint uIDItem, [SizeDef(nameof(cchMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int cchMax, MenuFlags flags);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the drop-down menu or submenu activated by the specified menu item.</para>
@@ -1587,7 +1589,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getsubmenu HMENU GetSubMenu( HMENU hMenu, int nPos );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getsubmenu.htm")]
-	public static extern HMENU GetSubMenu(HMENU hMenu, int nPos);
+	public static extern HMENU GetSubMenu([In, AddAsMember] HMENU hMenu, int nPos);
 
 	/// <summary>
 	/// <para>
@@ -1699,7 +1701,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "hilitemenuitem.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HiliteMenuItem(HWND hWnd, HMENU hMenu, uint uIDHiliteItem, MenuFlags uHilite);
+	public static extern bool HiliteMenuItem(HWND hWnd, [In, AddAsMember] HMENU hMenu, uint uIDHiliteItem, MenuFlags uHilite);
 
 	/// <summary>
 	/// <para>Inserts a new menu item into a menu, moving other items down the menu.</para>
@@ -1888,7 +1890,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "insertmenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InsertMenu(HMENU hMenu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
+	public static extern bool InsertMenu([In, AddAsMember] HMENU hMenu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
 
 	/// <summary>
 	/// <para>Inserts a new menu item into a menu, moving other items down the menu.</para>
@@ -2077,7 +2079,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "insertmenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InsertMenu(HMENU hMenu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
+	public static extern bool InsertMenu([In, AddAsMember] HMENU hMenu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
 
 	/// <summary>
 	/// <para>Inserts a new menu item at the specified position in a menu.</para>
@@ -2123,7 +2125,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "insertmenuitem.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InsertMenuItem(HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPosition, ref MENUITEMINFO lpmi);
+	public static extern bool InsertMenuItem([In, AddAsMember] HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPosition, ref MENUITEMINFO lpmi);
 
 	/// <summary>
 	/// <para>Determines whether a handle is a menu handle.</para>
@@ -2141,7 +2143,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "ismenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsMenu(HMENU hMenu);
+	public static extern bool IsMenu([In, AddAsMember] HMENU hMenu);
 
 	/// <summary>
 	/// <para>Loads the specified menu resource from the executable (.exe) file associated with an application instance.</para>
@@ -2173,6 +2175,7 @@ public static partial class User32
 	// lpMenuName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadmenu.htm")]
+	[return: AddAsCtor]
 	public static extern SafeHMENU LoadMenu(HINSTANCE hInstance, SafeResourceId lpMenuName);
 
 	/// <summary>
@@ -2200,7 +2203,64 @@ public static partial class User32
 	// MENUTEMPLATEA *lpMenuTemplate );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadmenuindirect.htm")]
-	public static extern SafeHMENU LoadMenuIndirect(IntPtr lpMenuTemplate);
+	[return: AddAsCtor]
+	public static unsafe extern SafeHMENU LoadMenuIndirect([In] MENUITEMTEMPLATEHEADER* lpMenuTemplate);
+
+	/// <summary>
+	/// <para>Loads the specified menu template in memory.</para>
+	/// </summary>
+	/// <param name="lpMenuTemplate">
+	/// <para>Type: <c>const MENUTEMPLATE*</c></para>
+	/// <para>
+	/// A pointer to a menu template or an extended menu template. A menu template consists of a MENUITEMTEMPLATEHEADER structure
+	/// followed by one or more contiguous MENUITEMTEMPLATE structures. An extended menu template consists of a MENUEX_TEMPLATE_HEADER
+	/// structure followed by one or more contiguous MENUEX_TEMPLATE_ITEM structures.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HMENU</c></para>
+	/// <para>If the function succeeds, the return value is a handle to the menu.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// For both the ANSI and the Unicode version of this function, the strings in the MENUITEMTEMPLATE structure must be Unicode strings.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadmenuindirecta HMENU LoadMenuIndirectA( CONST
+	// MENUTEMPLATEA *lpMenuTemplate );
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "loadmenuindirect.htm")]
+	[return: AddAsCtor]
+	public static unsafe extern SafeHMENU LoadMenuIndirect([In] MENUEX_TEMPLATE_HEADER* lpMenuTemplate);
+
+	/// <summary>
+	/// <para>Loads the specified menu template in memory.</para>
+	/// </summary>
+	/// <param name="lpMenuTemplate">
+	/// <para>Type: <c>const MENUTEMPLATE*</c></para>
+	/// <para>
+	/// A pointer to a menu template or an extended menu template. A menu template consists of a MENUITEMTEMPLATEHEADER structure
+	/// followed by one or more contiguous MENUITEMTEMPLATE structures. An extended menu template consists of a MENUEX_TEMPLATE_HEADER
+	/// structure followed by one or more contiguous MENUEX_TEMPLATE_ITEM structures.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HMENU</c></para>
+	/// <para>If the function succeeds, the return value is a handle to the menu.</para>
+	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// For both the ANSI and the Unicode version of this function, the strings in the MENUITEMTEMPLATE structure must be Unicode strings.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadmenuindirecta HMENU LoadMenuIndirectA( CONST
+	// MENUTEMPLATEA *lpMenuTemplate );
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "loadmenuindirect.htm")]
+	[return: AddAsCtor]
+	public static extern SafeHMENU LoadMenuIndirect([In] IntPtr lpMenuTemplate);
 
 	/// <summary>
 	/// <para>Determines which menu item, if any, is at the specified location.</para>
@@ -2231,7 +2291,7 @@ public static partial class User32
 	// hMenu, POINT ptScreen );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "menuitemfrompoint.htm")]
-	public static extern int MenuItemFromPoint([Optional] HWND hWnd, HMENU hMenu, POINT ptScreen);
+	public static extern int MenuItemFromPoint([Optional] HWND hWnd, [In, AddAsMember] HMENU hMenu, POINT ptScreen);
 
 	/// <summary>
 	/// <para>Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.</para>
@@ -2430,7 +2490,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "modifymenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ModifyMenu(HMENU hMnu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
+	public static extern bool ModifyMenu([In, AddAsMember] HMENU hMnu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, IntPtr lpNewItem);
 
 	/// <summary>
 	/// <para>Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.</para>
@@ -2629,7 +2689,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "modifymenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ModifyMenu(HMENU hMnu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
+	public static extern bool ModifyMenu([In, AddAsMember] HMENU hMnu, uint uPosition, MenuFlags uFlags, IntPtr uIDNewItem, string lpNewItem);
 
 	/// <summary>
 	/// <para>
@@ -2680,7 +2740,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "removemenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RemoveMenu(HMENU hMenu, uint uPosition, MenuFlags uFlags);
+	public static extern bool RemoveMenu([In, AddAsMember] HMENU hMenu, uint uPosition, MenuFlags uFlags);
 
 	/// <summary>
 	/// <para>Assigns a new menu to the specified window.</para>
@@ -2709,7 +2769,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenu(HWND hWnd, [Optional] HMENU hMenu);
+	public static extern bool SetMenu([In, AddAsMember] HWND hWnd, [Optional] HMENU hMenu);
 
 	/// <summary>Associates a Help context identifier with a menu.</summary>
 	/// <param name="arg1">
@@ -2731,7 +2791,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "55d944db-d889-468a-991a-b9779c90b44f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuContextHelpId(HMENU arg1, uint arg2);
+	public static extern bool SetMenuContextHelpId([In, AddAsMember] HMENU arg1, uint arg2);
 
 	/// <summary>
 	/// <para>Sets the default menu item for the specified menu.</para>
@@ -2764,7 +2824,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenudefaultitem.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuDefaultItem(HMENU hMenu, uint uItem, [MarshalAs(UnmanagedType.Bool)] bool fByPos);
+	public static extern bool SetMenuDefaultItem([In, AddAsMember] HMENU hMenu, uint uItem, [MarshalAs(UnmanagedType.Bool)] bool fByPos);
 
 	/// <summary>
 	/// <para>Sets information for a specified menu.</para>
@@ -2780,7 +2840,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenuinfo.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuInfo(HMENU hMenu, in MENUINFO lpcmi);
+	public static extern bool SetMenuInfo([In, AddAsMember] HMENU hMenu, in MENUINFO lpcmi);
 
 	/// <summary>
 	/// <para>
@@ -2851,7 +2911,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenuitembitmaps.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuItemBitmaps(HMENU hMenu, uint uPosition, MenuFlags uFlags, [Optional] HBITMAP hBitmapUnchecked, [Optional] HBITMAP hBitmapChecked);
+	public static extern bool SetMenuItemBitmaps([In, AddAsMember] HMENU hMenu, uint uPosition, MenuFlags uFlags, [Optional] HBITMAP hBitmapUnchecked, [Optional] HBITMAP hBitmapChecked);
 
 	/// <summary>
 	/// <para>Changes information about a menu item.</para>
@@ -2896,7 +2956,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setmenuiteminfo.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMenuItemInfo(HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPositon, in MENUITEMINFO lpmii);
+	public static extern bool SetMenuItemInfo([In, AddAsMember] HMENU hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPositon, in MENUITEMINFO lpmii);
 
 	/// <summary>
 	/// <para>
@@ -3086,7 +3146,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "trackpopupmenu.htm")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TrackPopupMenu(HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, [Optional] int nReserved, HWND hWnd, [Optional] PRECT prcRect);
+	public static extern bool TrackPopupMenu([In, AddAsMember] HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, [Optional, Ignore] int nReserved, HWND hWnd, [Optional] PRECT? prcRect);
 
 	/// <summary>
 	/// <para>
@@ -3287,7 +3347,7 @@ public static partial class User32
 	// uFlags, int x, int y, HWND hwnd, LPTPMPARAMS lptpm );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "trackpopupmenuex.htm")]
-	public static extern uint TrackPopupMenuEx(HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, HWND hwnd, [In, Optional] TPMPARAMS lptpm);
+	public static extern uint TrackPopupMenuEx([In, AddAsMember] HMENU hMenu, TrackPopupMenuFlags uFlags, int x, int y, HWND hwnd, [In, Optional] TPMPARAMS? lptpm);
 
 	/// <summary>
 	/// <para>Contains information about the menu to be activated.</para>
@@ -3356,13 +3416,13 @@ public static partial class User32
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>If the menu bar or popup menu has the focus, this member is <c>TRUE</c>. Otherwise, the member is <c>FALSE</c>.</para>
 		/// </summary>
-		public bool fBarFocused { get => BitHelper.GetBit(uFlags, 0); set => BitHelper.SetBit(ref uFlags, 0, value); }
+		public bool fBarFocused { readonly get => BitHelper.GetBit(uFlags, 0); set => BitHelper.SetBit(ref uFlags, 0, value); }
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>If the menu item has the focus, this member is <c>TRUE</c>. Otherwise, the member is <c>FALSE</c>.</para>
 		/// </summary>
-		public bool fFocused { get => BitHelper.GetBit(uFlags, 1); set => BitHelper.SetBit(ref uFlags, 1, value); }
+		public bool fFocused { readonly get => BitHelper.GetBit(uFlags, 1); set => BitHelper.SetBit(ref uFlags, 1, value); }
 	}
 
 	/// <summary>
@@ -3382,16 +3442,16 @@ public static partial class User32
 	// dwHelpId; } MENUEX_TEMPLATE_HEADER;
 	[PInvokeData("winuser.h", MSDNShortId = "df763349-7127-482e-8613-74e68addde5d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct MENUEX_TEMPLATE_HEADER
+	public struct MENUEX_TEMPLATE_HEADER()
 	{
 		/// <summary>The template version number. This member must be 1 for extended menu templates.</summary>
-		public ushort wVersion;
+		public ushort wVersion = 1;
 
 		/// <summary>
 		/// The offset to the first MENUEX_TEMPLATE_ITEM structure, relative to the end of this structure member. If the first item
 		/// definition immediately follows the dwHelpId member, this member should be 4.
 		/// </summary>
-		public ushort wOffset;
+		public ushort wOffset = 4;
 
 		/// <summary>The help identifier of menu bar.</summary>
 		public uint dwHelpId;
@@ -3443,6 +3503,7 @@ public static partial class User32
 		/// The menu item text. This member is a null-terminated Unicode string, aligned on a word boundary. The size of the menu item
 		/// definition varies depending on the length of this string.
 		/// </summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string szText;
 
 		/// <summary>
@@ -3507,7 +3568,7 @@ public static partial class User32
 		/// <para>Type: <c>PVOID</c></para>
 		/// <para>The identifier of the requested interface. Currently it can only be IDropTarget.</para>
 		/// </summary>
-		public IntPtr riid;
+		public GuidPtr riid;
 
 		/// <summary>
 		/// <para>Type: <c>PVOID</c></para>
@@ -3653,18 +3714,19 @@ public static partial class User32
 	/// <para>The <c>MENUITEMINFO</c> structure is used with the GetMenuItemInfo, InsertMenuItem, and SetMenuItemInfo functions.</para>
 	/// <para>The menu can display items using text, bitmaps, or both.</para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmenuiteminfoa typedef struct tagMENUITEMINFOA { UINT
 	// cbSize; UINT fMask; UINT fType; UINT fState; UINT wID; HMENU hSubMenu; HBITMAP hbmpChecked; HBITMAP hbmpUnchecked; ULONG_PTR
-	// dwItemData; LPSTR dwTypeData; UINT cch; HBITMAP hbmpItem; } MENUITEMINFOA, *LPMENUITEMINFOA;
+	// dwItemData; StrPtrAnsi dwTypeData; UINT cch; HBITMAP hbmpItem; } MENUITEMINFOA, *LPMENUITEMINFOA;
 	[PInvokeData("winuser.h", MSDNShortId = "menuiteminfo.htm")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct MENUITEMINFO
+	public struct MENUITEMINFO(MenuItemInfoMask mask)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The size of the structure, in bytes. The caller must set this member to .</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<MENUITEMINFO>();
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -3712,7 +3774,7 @@ public static partial class User32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public MenuItemInfoMask fMask;
+		public MenuItemInfoMask fMask = mask;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -3878,7 +3940,7 @@ public static partial class User32
 		public IntPtr dwItemData;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// The contents of the menu item. The meaning of this member depends on the value of <c>fType</c> and is used only if the
 		/// <c>MIIM_TYPE</c> flag is set in the <c>fMask</c> member.
@@ -3975,7 +4037,6 @@ public static partial class User32
 		/// </summary>
 		public HBITMAP hbmpItem;
 
-		/// <summary>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</summary>
 		/// <param name="id">An application-defined value that identifies the menu item.</param>
 		/// <param name="type">The menu type.</param>
 		/// <param name="state">The menu state.</param>
@@ -3983,17 +4044,13 @@ public static partial class User32
 		/// A handle to the drop-down menu or submenu associated with the menu item. If the menu item is not an item that opens a
 		/// drop-down menu or submenu, this member is <see cref="HMENU.NULL"/>.
 		/// </param>
-		public MENUITEMINFO(uint id, MenuItemType type = MenuItemType.MFT_STRING, MenuItemState state = MenuItemState.MFS_ENABLED, HMENU subMenu = default) : this()
+		public MENUITEMINFO(uint id, MenuItemType type = MenuItemType.MFT_STRING, MenuItemState state = MenuItemState.MFS_ENABLED, HMENU subMenu = default) : this(0)
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO));
-			wID = id;
-			fMask = MenuItemInfoMask.MIIM_ID;
+			fMask = MenuItemInfoMask.MIIM_ID | (type == 0 ? 0 : MenuItemInfoMask.MIIM_TYPE) | (state == 0 ? 0 : MenuItemInfoMask.MIIM_STATE) | (subMenu.IsNull ? 0 : MenuItemInfoMask.MIIM_SUBMENU);
 			fType = type;
-			if (type != 0) fMask |= MenuItemInfoMask.MIIM_TYPE;
 			fState = state;
-			if (state != 0) fMask |= MenuItemInfoMask.MIIM_STATE;
+			wID = id;
 			hSubMenu = subMenu;
-			if (subMenu != default) fMask |= MenuItemInfoMask.MIIM_SUBMENU;
 		}
 	}
 
@@ -4049,7 +4106,7 @@ public static partial class User32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ushort mtOption;
+		public EnumRebase<MenuFlags, ushort> mtOption;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -4077,13 +4134,13 @@ public static partial class User32
 	// MENUITEMTEMPLATEHEADER { WORD versionNumber; WORD offset; } *PMENUITEMTEMPLATEHEADER;
 	[PInvokeData("winuser.h", MSDNShortId = "menuitemtemplateheader.htm")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-	public struct MENUITEMTEMPLATEHEADER
+	public struct MENUITEMTEMPLATEHEADER()
 	{
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
 		/// <para>The version number. This member must be zero.</para>
 		/// </summary>
-		public ushort versionNumber;
+		public ushort versionNumber = 0;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -4092,42 +4149,37 @@ public static partial class User32
 		/// the menu item list follows immediately after the header.
 		/// </para>
 		/// </summary>
-		public ushort offset;
+		public ushort offset = 0;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMENU"/> that is disposed using <see cref="DestroyMenu"/>.</summary>
 	[AutoSafeHandle("DestroyMenu(handle)", typeof(HMENU))]
+	[DeferAutoMethodFrom(typeof(HMENU)), AdjustAutoMethodNamePattern("Menu|Indirect|Ex$", "")]
 	public partial class SafeHMENU : IUserHandle { }
 
 	/// <summary>
 	/// <para>Contains extended parameters for the TrackPopupMenuEx function.</para>
 	/// </summary>
+	/// <remarks>
+	/// Initializes a new instance of the <see cref="TPMPARAMS"/> class.
+	/// </remarks>
+	/// <param name="rExclude">The rectangle to exclude.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagtpmparams typedef struct tagTPMPARAMS { UINT cbSize;
 	// RECT rcExclude; } TPMPARAMS;
 	[PInvokeData("winuser.h", MSDNShortId = "tpmparams.htm")]
 	[StructLayout(LayoutKind.Sequential)]
-	public class TPMPARAMS
+	public class TPMPARAMS(RECT rExclude)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The size of structure, in bytes.</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<TPMPARAMS>();
 
 		/// <summary>
 		/// <para>Type: <c>RECT</c></para>
 		/// <para>The rectangle to be excluded when positioning the window, in screen coordinates.</para>
 		/// </summary>
-		public RECT rcExclude;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TPMPARAMS"/> class.
-		/// </summary>
-		/// <param name="rExclude">The rectangle to exclude.</param>
-		public TPMPARAMS(RECT rExclude)
-		{
-			cbSize = (uint)Marshal.SizeOf(typeof(TPMPARAMS));
-			rcExclude = rExclude;
-		}
+		public RECT rcExclude = rExclude;
 	}
 }

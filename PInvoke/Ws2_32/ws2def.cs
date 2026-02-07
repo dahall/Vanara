@@ -404,8 +404,8 @@ public static partial class Ws2_32
 	/// a fully qualified domain name have been requested.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-addrinfoex2w typedef struct addrinfoex2W { int ai_flags; int
-	// ai_family; int ai_socktype; int ai_protocol; size_t ai_addrlen; PWSTR ai_canonname; struct sockaddr *ai_addr; void *ai_blob;
-	// size_t ai_bloblen; LPGUID ai_provider; struct addrinfoex2W *ai_next; int ai_version; PWSTR ai_fqdn; } ADDRINFOEX2W,
+	// ai_family; int ai_socktype; int ai_protocol; size_t ai_addrlen; StrPtrUni ai_canonname; struct sockaddr *ai_addr; void *ai_blob;
+	// size_t ai_bloblen; LPGUID ai_provider; struct addrinfoex2W *ai_next; int ai_version; StrPtrUni ai_fqdn; } ADDRINFOEX2W,
 	// *PADDRINFOEX2W, *LPADDRINFOEX2W;
 	[PInvokeData("ws2def.h", MSDNShortId = "9CB33347-A838-473D-B5CD-1149D6632CF2")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -731,7 +731,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>addrinfoex</c> is defined to <c>addrinfoexW</c>, the Unicode version of this structure.
-	/// The string parameters are defined to the <c>PWSTR</c> data type and the <c>addrinfoexW</c> structure is used.
+	/// The string parameters are defined to the <c>StrPtrUni</c> data type and the <c>addrinfoexW</c> structure is used.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>addrinfoex</c> is defined to <c>addrinfoexA</c>, the ANSI version of this structure.
@@ -1117,7 +1117,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>addrinfoex2</c> is defined to <c>addrinfoex2W</c>, the Unicode version of this
-	/// structure. The string parameters are defined to the <c>PWSTR</c> data type and the <c>addrinfoex2W</c> structure is used.
+	/// structure. The string parameters are defined to the <c>StrPtrUni</c> data type and the <c>addrinfoex2W</c> structure is used.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>addrinfoex2</c> is defined to <c>addrinfoex2A</c>, the ANSI version of this
@@ -1828,7 +1828,7 @@ public static partial class Ws2_32
 	/// The control information data that is associated with a datagram is made up of one or more control data objects. Each object
 	/// begins with a CMSGHDR structure.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsacmsghdr typedef struct _WSACMSGHDR { SIZE_T cmsg_len; INT
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsacmsghdr typedef struct _WSACMSGHDR { SizeT cmsg_len; INT
 	// cmsg_level; INT cmsg_type; } WSACMSGHDR, *PWSACMSGHDR, *LPWSACMSGHDR;
 	[PInvokeData("ws2def.h", MSDNShortId = "NS:ws2def._WSACMSGHDR")]
 	[StructLayout(LayoutKind.Sequential)]

@@ -14,7 +14,7 @@ public static partial class User32
 	/// <param name="lpszDesktop">The name of the desktop.</param>
 	/// <param name="lParam">An application-defined value specified in the <c>EnumDesktops</c> function.</param>
 	/// <returns>To continue enumeration, the callback function must return TRUE. To stop enumeration, it must return FALSE.</returns>
-	// BOOL CALLBACK EnumDesktopProc( _In_ LPTSTR lpszDesktop, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682612(v=vs.85).aspx
+	// BOOL CALLBACK EnumDesktopProc( _In_ StrPtrAuto lpszDesktop, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682612(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms682612")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -32,7 +32,7 @@ public static partial class User32
 	/// <param name="lpszWindowStation">The name of the window station.</param>
 	/// <param name="lParam">An application-defined value specified in the <c>EnumWindowStations</c> function.</param>
 	/// <returns>To continue enumeration, the callback function must return TRUE. To stop enumeration, it must return FALSE.</returns>
-	// BOOL CALLBACK EnumWindowStationProc( _In_ LPTSTR lpszWindowStation, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682643(v=vs.85).aspx
+	// BOOL CALLBACK EnumWindowStationProc( _In_ StrPtrAuto lpszWindowStation, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682643(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms682643")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -55,6 +55,166 @@ public static partial class User32
 		/// exists, the function succeeds and returns a new handle to the existing window station.
 		/// </summary>
 		CWF_CREATE_ONLY = 0x00000001,
+	}
+
+	/// <summary>
+	/// <para>Security enables you to control access to desktop objects. For more information about security, see <c>Access-Control Model</c>.</para>
+	/// <para>
+	/// You can specify a <c>security descriptor</c> for a desktop object when you call the <c><b>CreateDesktop</b></c> or
+	/// <c><b>CreateDesktopEx</b></c> function. If you specify NULL, the desktop gets a default security descriptor. The ACLs in the default
+	/// security descriptor for a desktop come from its parent window station.
+	/// </para>
+	/// <para>
+	/// To get or set the security descriptor of a window station object, call the <c><b>GetSecurityInfo</b></c> and
+	/// <c><b>SetSecurityInfo</b></c> functions.
+	/// </para>
+	/// <para>
+	/// When you call the <c><b>OpenDesktop</b></c> or <c><b>OpenInputDesktop</b></c> function, the system checks the requested access rights
+	/// against the object's security descriptor.
+	/// </para>
+	/// <para>
+	/// The valid access rights for desktop objects include the <c>standard access rights</c> and some object-specific access rights. The
+	/// following table lists the standard access rights used by all objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description>DELETE (0x00010000L)</description>
+	/// <description>Required to delete the object.</description>
+	/// </item>
+	/// <item>
+	/// <description>READ_CONTROL (0x00020000L)</description>
+	/// <description>
+	/// Required to read information in the security descriptor for the object, not including the information in the SACL. To read or write
+	/// the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see <c>SACL Access Right</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>SYNCHRONIZE (0x00100000L)</description>
+	/// <description>Not supported for desktop objects.</description>
+	/// </item>
+	/// <item>
+	/// <description>WRITE_DAC (0x00040000L)</description>
+	/// <description>Required to modify the DACL in the security descriptor for the object.</description>
+	/// </item>
+	/// <item>
+	/// <description>WRITE_OWNER (0x00080000L)</description>
+	/// <description>Required to change the owner in the security descriptor for the object.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table lists the object-specific access rights.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Access right</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>DESKTOP_CREATEMENU (0x0004L)</description>
+	/// <description>Required to create a menu on the desktop.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_CREATEWINDOW (0x0002L)</description>
+	/// <description>Required to create a window on the desktop.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_ENUMERATE (0x0040L)</description>
+	/// <description>Required for the desktop to be enumerated.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_HOOKCONTROL (0x0008L)</description>
+	/// <description>Required to establish any of the window hooks.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_JOURNALPLAYBACK (0x0020L)</description>
+	/// <description>Required to perform journal playback on a desktop.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_JOURNALRECORD (0x0010L)</description>
+	/// <description>Required to perform journal recording on a desktop.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_READOBJECTS (0x0001L)</description>
+	/// <description>Required to read objects on the desktop.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_SWITCHDESKTOP (0x0100L)</description>
+	/// <description>Required to activate the desktop using the <c><b>SwitchDesktop</b></c> function.</description>
+	/// </item>
+	/// <item>
+	/// <description>DESKTOP_WRITEOBJECTS (0x0080L)</description>
+	/// <description>Required to write objects on the desktop.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The following are the <c>generic access rights</c> for a desktop object contained in the interactive window station of the user's
+	/// logon session.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Access right</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>GENERIC_READ</description>
+	/// <description>DESKTOP_ENUMERATE DESKTOP_READOBJECTS STANDARD_RIGHTS_READ</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_WRITE</description>
+	/// <description>
+	/// DESKTOP_CREATEMENU DESKTOP_CREATEWINDOW DESKTOP_HOOKCONTROL DESKTOP_JOURNALPLAYBACK DESKTOP_JOURNALRECORD DESKTOP_WRITEOBJECTS STANDARD_RIGHTS_WRITE
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_EXECUTE</description>
+	/// <description>DESKTOP_SWITCHDESKTOP STANDARD_RIGHTS_EXECUTE</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_ALL</description>
+	/// <description>
+	/// DESKTOP_CREATEMENU DESKTOP_CREATEWINDOW DESKTOP_ENUMERATE DESKTOP_HOOKCONTROL DESKTOP_JOURNALPLAYBACK DESKTOP_JOURNALRECORD
+	/// DESKTOP_READOBJECTS DESKTOP_SWITCHDESKTOP DESKTOP_WRITEOBJECTS STANDARD_RIGHTS_REQUIRED
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// You can request the ACCESS_SYSTEM_SECURITY access right to a desktop object if you want to read or write the object's SACL. For more
+	/// information, see <c>Access-Control Lists (ACLs)</c> and <c>SACL Access Right</c>.
+	/// </para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/winstation/desktop-security-and-access-rights
+	[PInvokeData("winuser.h")]
+	[Flags]
+	public enum DesktopAccess : uint
+	{
+		/// <summary>Required to read objects on the desktop.</summary>
+		DESKTOP_READOBJECTS = 0x0001,
+
+		/// <summary>Required to create a window on the desktop.</summary>
+		DESKTOP_CREATEWINDOW = 0x0002,
+
+		/// <summary>Required to create a menu on the desktop.</summary>
+		DESKTOP_CREATEMENU = 0x0004,
+
+		/// <summary>Required to establish any of the window hooks.</summary>
+		DESKTOP_HOOKCONTROL = 0x0008,
+
+		/// <summary>Required to perform journal recording on a desktop.</summary>
+		DESKTOP_JOURNALRECORD = 0x0010,
+
+		/// <summary>Required to perform journal playback on a desktop.</summary>
+		DESKTOP_JOURNALPLAYBACK = 0x0020,
+
+		/// <summary>Required for the desktop to be enumerated.</summary>
+		DESKTOP_ENUMERATE = 0x0040,
+
+		/// <summary>Required to write objects on the desktop.</summary>
+		DESKTOP_WRITEOBJECTS = 0x0080,
+
+		/// <summary>Required to activate the desktop using the SwitchDesktop function.</summary>
+		DESKTOP_SWITCHDESKTOP = 0x0100,
 	}
 
 	/// <summary>The information to be retrieved by GetUserObjectInformation or set by SetUserObjectInformation.</summary>
@@ -96,6 +256,221 @@ public static partial class User32
 		[CorrespondingType(typeof(IntPtr))]
 		UOI_USER_SID = 4,
 	}
+
+	/// <summary>
+	/// <para>
+	/// Security enables you to control access to window station objects. For more information about security, see <c>Access-Control Model</c>.
+	/// </para>
+	/// <para>
+	/// You can specify a <c>security descriptor</c> for a window station object when you call the <c><b>CreateWindowStation</b></c>
+	/// function. If you specify NULL, the window station gets a default security descriptor. The ACLs in the default security descriptor for
+	/// a window station come from the primary or impersonation token of the creator.
+	/// </para>
+	/// <para>
+	/// To get or set the security descriptor of a window station object, call the <c><b>GetSecurityInfo</b></c> and
+	/// <c><b>SetSecurityInfo</b></c> functions.
+	/// </para>
+	/// <para>
+	/// When you call the <c><b>OpenWindowStation</b></c> function, the system checks the requested access rights against the object's
+	/// security descriptor.
+	/// </para>
+	/// <para>
+	/// The valid access rights for window station objects include the <c>standard access rights</c> and some object-specific access rights.
+	/// The following table lists the standard access rights used by all objects.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description>DELETE (0x00010000L)</description>
+	/// <description>Required to delete the object.</description>
+	/// </item>
+	/// <item>
+	/// <description>READ_CONTROL (0x00020000L)</description>
+	/// <description>
+	/// Required to read information in the security descriptor for the object, not including the information in the SACL. To read or write
+	/// the SACL, you must request the ACCESS_SYSTEM_SECURITY access right. For more information, see <c>SACL Access Right</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>SYNCHRONIZE (0x00100000L)</description>
+	/// <description>Not supported for window station objects.</description>
+	/// </item>
+	/// <item>
+	/// <description>WRITE_DAC (0x00040000L)</description>
+	/// <description>Required to modify the DACL in the security descriptor for the object.</description>
+	/// </item>
+	/// <item>
+	/// <description>WRITE_OWNER (0x00080000L)</description>
+	/// <description>Required to change the owner in the security descriptor for the object.</description>
+	/// </item>
+	/// </list>
+	/// <para>The following table lists the object-specific access rights.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Access right</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>WINSTA_ALL_ACCESS (0x37F)</description>
+	/// <description>All possible access rights for the window station.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_ACCESSCLIPBOARD (0x0004L)</description>
+	/// <description>Required to use the clipboard.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_ACCESSGLOBALATOMS (0x0020L)</description>
+	/// <description>Required to manipulate global atoms.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_CREATEDESKTOP (0x0008L)</description>
+	/// <description>Required to create new desktop objects on the window station.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_ENUMDESKTOPS (0x0001L)</description>
+	/// <description>Required to enumerate existing desktop objects.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_ENUMERATE (0x0100L)</description>
+	/// <description>Required for the window station to be enumerated.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_EXITWINDOWS (0x0040L)</description>
+	/// <description>
+	/// Required to successfully call the <c><b>ExitWindows</b></c> or <c><b>ExitWindowsEx</b></c> function. Window stations can be shared by
+	/// users and this access type can prevent other users of a window station from logging off the window station owner.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_READATTRIBUTES (0x0002L)</description>
+	/// <description>
+	/// Required to read the attributes of a window station object. This attribute includes color settings and other global window station properties.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_READSCREEN (0x0200L)</description>
+	/// <description>Required to access screen contents.</description>
+	/// </item>
+	/// <item>
+	/// <description>WINSTA_WRITEATTRIBUTES (0x0010L)</description>
+	/// <description>
+	/// Required to modify the attributes of a window station object. The attributes include color settings and other global window station properties.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The following are the <c>generic access rights</c> for the interactive window station object, which is the window station assigned to
+	/// the logon session of the interactive user.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Access right</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>GENERIC_READ</description>
+	/// <description>STANDARD_RIGHTS_READ WINSTA_ENUMDESKTOPS WINSTA_ENUMERATE WINSTA_READATTRIBUTES WINSTA_READSCREEN</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_WRITE</description>
+	/// <description>STANDARD_RIGHTS_WRITE WINSTA_ACCESSCLIPBOARD WINSTA_CREATEDESKTOP WINSTA_WRITEATTRIBUTES</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_EXECUTE</description>
+	/// <description>STANDARD_RIGHTS_EXECUTE WINSTA_ACCESSGLOBALATOMS WINSTA_EXITWINDOWS</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_ALL</description>
+	/// <description>
+	/// STANDARD_RIGHTS_REQUIRED WINSTA_ACCESSCLIPBOARD WINSTA_ACCESSGLOBALATOMS WINSTA_CREATEDESKTOP WINSTA_ENUMDESKTOPS WINSTA_ENUMERATE
+	/// WINSTA_EXITWINDOWS WINSTA_READATTRIBUTES WINSTA_READSCREEN WINSTA_WRITEATTRIBUTES
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The following are the <c>generic access rights</c> for a noninteractive window station object. The system assigns noninteractive
+	/// window stations to all logon sessions other than that of the interactive user.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Access right</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>GENERIC_READ</description>
+	/// <description>STANDARD_RIGHTS_READ WINSTA_ENUMDESKTOPS WINSTA_ENUMERATE WINSTA_READATTRIBUTES</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_WRITE</description>
+	/// <description>STANDARD_RIGHTS_WRITE WINSTA_ACCESSCLIPBOARD WINSTA_CREATEDESKTOP</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_EXECUTE</description>
+	/// <description>STANDARD_RIGHTS_EXECUTE WINSTA_ACCESSGLOBALATOMS WINSTA_EXITWINDOWS</description>
+	/// </item>
+	/// <item>
+	/// <description>GENERIC_ALL</description>
+	/// <description>
+	/// STANDARD_RIGHTS_REQUIRED WINSTA_ACCESSCLIPBOARD WINSTA_ACCESSGLOBALATOMS WINSTA_CREATEDESKTOP WINSTA_ENUMDESKTOPS WINSTA_ENUMERATE
+	/// WINSTA_EXITWINDOWS WINSTA_READATTRIBUTES
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// You can request the ACCESS_SYSTEM_SECURITY access right to a window station object if you want to read or write the object's SACL.
+	/// For more information, see <c>Access-Control Lists (ACLs)</c> and <c>SACL Access Right</c>.
+	/// </para>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/winstation/window-station-security-and-access-rights
+	[PInvokeData("winuser.h")]
+	[Flags]
+	public enum WindowStationAccess : uint
+	{
+		/// <summary>Required to enumerate existing desktop objects.</summary>
+		WINSTA_ENUMDESKTOPS = 0x0001,
+
+		/// <summary>
+		/// Required to read the attributes of a window station object. This attribute includes color settings and other global window
+		/// station properties.
+		/// </summary>
+		WINSTA_READATTRIBUTES = 0x0002,
+
+		/// <summary>Required to use the clipboard.</summary>
+		WINSTA_ACCESSCLIPBOARD = 0x0004,
+
+		/// <summary>Required to create new desktop objects on the window station.</summary>
+		WINSTA_CREATEDESKTOP = 0x0008,
+
+		/// <summary>
+		/// Required to modify the attributes of a window station object. The attributes include color settings and other global window
+		/// station properties.
+		/// </summary>
+		WINSTA_WRITEATTRIBUTES = 0x0010,
+
+		/// <summary>Required to manipulate global atoms.</summary>
+		WINSTA_ACCESSGLOBALATOMS = 0x0020,
+
+		/// <summary>
+		/// Required to successfully call the ExitWindows or ExitWindowsEx function. Window stations can be shared by users and this access
+		/// type can prevent other users of a window station from logging off the window station owner.
+		/// </summary>
+		WINSTA_EXITWINDOWS = 0x0040,
+
+		/// <summary>Required for the window station to be enumerated.</summary>
+		WINSTA_ENUMERATE = 0x0100,
+
+		/// <summary>Required to access screen contents.</summary>
+		WINSTA_READSCREEN = 0x0200,
+
+		/// <summary>All possible access rights for the window station.</summary>
+		WINSTA_ALL_ACCESS = (WINSTA_ENUMDESKTOPS | WINSTA_READATTRIBUTES | WINSTA_ACCESSCLIPBOARD | WINSTA_CREATEDESKTOP | WINSTA_WRITEATTRIBUTES | WINSTA_ACCESSGLOBALATOMS | WINSTA_EXITWINDOWS | WINSTA_ENUMERATE | WINSTA_READSCREEN),
+	}
+
+	/// <summary>Signals that a structure or class holds a handle to a workstation or desktop object.</summary>
+	public interface IUserObjectHandle : IKernelHandle { }
 
 	/// <summary>
 	/// <para>Closes an open handle to a desktop object.</para>
@@ -243,7 +618,8 @@ public static partial class User32
 	// LPCSTR lpszDevice, DEVMODEA *pDevmode, DWORD dwFlags, ACCESS_MASK dwDesiredAccess, LPSECURITY_ATTRIBUTES lpsa );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "c6ed40c5-13a9-4697-a727-730adc6a912d")]
-	public static extern SafeHDESK CreateDesktop(string lpszDesktop, [Optional] string? lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
+	[return: AddAsCtor]
+	public static extern SafeHDESK CreateDesktop(string lpszDesktop, [Optional, Ignore] string? lpszDevice, [Optional, Ignore] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, [In, Optional] SECURITY_ATTRIBUTES? lpsa);
 
 	/// <summary>
 	/// <para>
@@ -349,7 +725,8 @@ public static partial class User32
 	// ulHeapSize, PVOID pvoid );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "2fe8859d-1fe3-4f44-aa97-58e61779c4cc")]
-	public static extern SafeHDESK CreateDesktopEx(string lpszDesktop, [Optional] string? lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa, uint ulHeapSize, [Optional] IntPtr pvoid);
+	[return: AddAsCtor]
+	public static extern SafeHDESK CreateDesktopEx(string lpszDesktop, [Optional, Ignore] string? lpszDevice, [Optional, Ignore] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, [In, Optional] SECURITY_ATTRIBUTES? lpsa, uint ulHeapSize, [Optional, Ignore] IntPtr pvoid);
 
 	/// <summary>
 	/// <para>Creates a window station object, associates it with the calling process, and assigns it to the current session.</para>
@@ -401,7 +778,8 @@ public static partial class User32
 	// lpwinsta, DWORD dwFlags, ACCESS_MASK dwDesiredAccess, LPSECURITY_ATTRIBUTES lpsa );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "c1aee546-decd-46c9-8d02-d6792f5a6a0d")]
-	public static extern SafeHWINSTA CreateWindowStation(string? lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
+	[return: AddAsCtor]
+	public static extern SafeHWINSTA CreateWindowStation(string? lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, [In, Optional] SECURITY_ATTRIBUTES? lpsa);
 
 	/// <summary>
 	/// <para>
@@ -466,7 +844,7 @@ public static partial class User32
 	/// right. For more information, see Desktop Security and Access Rights.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<string> EnumDesktops([Optional] HWINSTA hwinsta)
+	public static IEnumerable<string> EnumDesktops([Optional, AddAsMember] HWINSTA hwinsta)
 	{
 		var ret = new List<string>();
 		if (!EnumDesktops(hwinsta, EnumProc, IntPtr.Zero))
@@ -517,7 +895,28 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b399ff19-e2e5-4509-8bb5-9647734881b3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumDesktopWindows([Optional] HDESK hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
+	public static extern bool EnumDesktopWindows([Optional] HDESK hDesktop, EnumWindowsProc lpfn, [Optional] IntPtr lParam);
+
+	/// <summary>
+	/// Enumerates all top-level windows associated with the specified desktop. It passes the handle to each window, in turn, to an
+	/// application-defined callback function.
+	/// </summary>
+	/// <param name="hDesktop">
+	/// <para>
+	/// A handle to the desktop whose top-level windows are to be enumerated. This handle is returned by the CreateDesktop, GetThreadDesktop,
+	/// OpenDesktop, or OpenInputDesktop function, and must have the <c>DESKTOP_READOBJECTS</c> access right. For more information, see
+	/// Desktop Security and Access Rights.
+	/// </para>
+	/// <para>If this parameter is NULL, the current desktop is used.</para>
+	/// </param>
+	/// <returns>A sequence of window handles for the top-level windows on the specified desktop.</returns>
+	[PInvokeData("winuser.h", MSDNShortId = "b399ff19-e2e5-4509-8bb5-9647734881b3")]
+	public static IEnumerable<HWND> EnumDesktopWindows([Optional, AddAsMember] HDESK hDesktop)
+	{
+		List<HWND> ret = [];
+		Win32Error.ThrowLastErrorIf(EnumDesktopWindows(hDesktop, (h, p) => { ret.Add(h); return true; }), b => !b && Win32Error.GetLastError() != Win32Error.ERROR_INVALID_HANDLE);
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -556,7 +955,24 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "418d4d6a-9e4d-4fe3-8e1b-398c732c6e23")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnumWindowStations(EnumWindowStationProc lpEnumFunc, IntPtr lParam);
+	public static extern bool EnumWindowStations(EnumWindowStationProc lpEnumFunc, [Optional] IntPtr lParam);
+
+	/// <summary>
+	/// Enumerates all window stations in the current session. The function passes the name of each window station, in turn, to an
+	/// application-defined callback function.
+	/// </summary>
+	/// <returns>A sequence of window station names in the current session.</returns>
+	/// <remarks>
+	/// The <c>EnumWindowStations</c> function enumerates only those window stations for which the calling process has the WINSTA_ENUMERATE
+	/// access right. For more information, see Window Station Security and Access Rights.
+	/// </remarks>
+	[PInvokeData("winuser.h", MSDNShortId = "418d4d6a-9e4d-4fe3-8e1b-398c732c6e23")]
+	public static IEnumerable<string> EnumWindowStations()
+	{
+		List<string> ret = [];
+		Win32Error.ThrowLastErrorIfFalse(EnumWindowStations((s, p) => { ret.Add(s); return true; }));
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>Retrieves a handle to the current window station for the calling process.</para>
@@ -696,6 +1112,44 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetUserObjectInformation(IntPtr hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength, out uint lpnLengthNeeded);
 
+	/// <summary>The <c>GetUserObjectSecurity</c> function retrieves security information for the specified user object.</summary>
+	/// <param name="hObj">A handle to the user object for which to return security information.</param>
+	/// <param name="pSIRequested">A pointer to a SECURITY_INFORMATION value that specifies the security information being requested.</param>
+	/// <param name="pSID">
+	/// A pointer to a SECURITY_DESCRIPTOR structure in self-relative format that contains the requested information when the function
+	/// returns. This buffer must be aligned on a 4-byte boundary.
+	/// </param>
+	/// <param name="nLength">The length, in bytes, of the buffer pointed to by the pSD parameter.</param>
+	/// <param name="lpnLengthNeeded">
+	/// A pointer to a variable to receive the number of bytes required to store the complete security descriptor. If this variable's
+	/// value is greater than the value of the nLength parameter when the function returns, the function returns <c>FALSE</c> and none of
+	/// the security descriptor is copied to the buffer. Otherwise, the entire security descriptor is copied.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns nonzero.</para>
+	/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To read the owner, group, or discretionary access control list (DACL) from the user object's security descriptor, the calling
+	/// process must have been granted READ_CONTROL access when the handle was opened.
+	/// </para>
+	/// <para>
+	/// To read the system access control list (SACL) from the security descriptor, the calling process must have been granted
+	/// ACCESS_SYSTEM_SECURITY access when the handle was opened. The correct way to get this access is to enable the SE_SECURITY_NAME
+	/// privilege in the caller's current token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getuserobjectsecurity BOOL GetUserObjectSecurity( HANDLE
+	// hObj, PSECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID, DWORD nLength, LPDWORD lpnLengthNeeded );
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winuser.h", MSDNShortId = "998c2520-7833-4efd-a794-b13b528f0485")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID,
+		uint nLength, out uint lpnLengthNeeded);
+
 	/// <summary>
 	/// <para>Retrieves information about the specified window station or desktop object.</para>
 	/// </summary>
@@ -750,12 +1204,12 @@ public static partial class User32
 	/// </param>
 	/// <returns>The value specified by <typeparamref name="T"/> and <paramref name="nIndex"/>.</returns>
 	[PInvokeData("winuser.h", MSDNShortId = "64f7361d-1a94-4d5b-86f1-a2a21737668a")]
-	public static T GetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex)
+	public static T GetUserObjectInformation<T>(this IUserObjectHandle hObj, UserObjectInformationType nIndex)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
-		GetUserObjectInformation(hObj, nIndex, IntPtr.Zero, 0, out var sz);
+		GetUserObjectInformation(hObj.DangerousGetHandle(), nIndex, IntPtr.Zero, 0, out var sz);
 		var mem = new SafeHGlobalHandle((int)sz);
-		if (!GetUserObjectInformation(hObj, nIndex, (IntPtr)mem, sz, out var _))
+		if (!GetUserObjectInformation(hObj.DangerousGetHandle(), nIndex, (IntPtr)mem, sz, out var _))
 			Win32Error.ThrowLastError();
 		return typeof(T) == typeof(string) ? (T)(object)mem.ToString(-1)! : mem.ToStructure<T>()!;
 	}
@@ -810,6 +1264,7 @@ public static partial class User32
 	// dwFlags, BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "7f805f47-1737-4f4b-a74a-9c1423b65f2c")]
+	[return: AddAsCtor]
 	public static extern SafeHDESK OpenDesktop(string lpszDesktop, CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 	/// <summary>
@@ -863,6 +1318,7 @@ public static partial class User32
 	// BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "023d421e-bf32-4e08-b5b3-b7b2ca6c4e00")]
+	[return: AddAsCtor]
 	public static extern SafeHDESK OpenInputDesktop(CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 	/// <summary>
@@ -892,6 +1348,7 @@ public static partial class User32
 	// lpszWinSta, BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "78ee7100-1bad-4c2d-b923-c5e67191bd41")]
+	[return: AddAsCtor]
 	public static extern SafeHWINSTA OpenWindowStation(string lpszWinSta, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 	/// <summary>
@@ -917,7 +1374,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "d64814a7-945c-4e73-a977-5f696d60610e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessWindowStation(HWINSTA hWinSta);
+	public static extern bool SetProcessWindowStation([In, AddAsMember] HWINSTA hWinSta);
 
 	/// <summary>
 	/// <para>
@@ -951,7 +1408,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "619c591f-54b7-4b61-aa07-fc57e05ee37a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadDesktop(HDESK hDesktop);
+	public static extern bool SetThreadDesktop([In, AddAsMember] HDESK hDesktop);
 
 	/// <summary>
 	/// <para>Sets information about the specified window station or desktop object.</para>
@@ -1035,11 +1492,11 @@ public static partial class User32
 	/// </param>
 	/// <param name="info">A buffer containing the object information, or a BOOL.</param>
 	/// <exception cref="ArgumentException">Type mismatch</exception>
-	public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
+	public static void SetUserObjectInformation<T>(this IUserObjectHandle hObj, UserObjectInformationType nIndex, T info)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
 		var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info?.ToString() ?? "") : SafeHGlobalHandle.CreateFromStructure(info);
-		if (!SetUserObjectInformation(hObj, nIndex, (IntPtr)mem, (uint)mem.Size))
+		if (!SetUserObjectInformation(hObj.DangerousGetHandle(), nIndex, (IntPtr)mem, (uint)mem.Size))
 			Win32Error.ThrowLastError();
 	}
 
@@ -1081,7 +1538,19 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "401be515-ada9-42be-b8e8-4e86f513bb8d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SwitchDesktop(HDESK hDesktop);
+	public static extern bool SwitchDesktop([In, AddAsMember] HDESK hDesktop);
+
+	public partial struct HDESK
+	{
+		/// <summary>Gets a handle to the desktop assigned to the specified thread.</summary>
+		public static HDESK ForThread(uint threadId) => GetThreadDesktop(threadId);
+	}
+
+	public partial struct HWINSTA
+	{
+		/// <summary>Gets a handle to the current window station for the calling process.</summary>
+		public static HWINSTA Current => GetProcessWindowStation();
+	}
 
 	/// <summary>
 	/// <para>Contains information about a window station or desktop handle.</para>
@@ -1129,5 +1598,17 @@ public static partial class User32
 		/// </list>
 		/// </summary>
 		public uint dwFlags;
+	}
+
+	public partial class SafeHDESK
+	{
+		/// <summary>Gets a handle to the desktop assigned to the specified thread.</summary>
+		public static SafeHDESK ForThread(uint threadId) => new(GetThreadDesktop(threadId), false);
+	}
+
+	public partial class SafeHWINSTA
+	{
+		/// <summary>Gets a handle to the current window station for the calling process.</summary>
+		public static SafeHWINSTA Current => new(GetProcessWindowStation(), false);
 	}
 }

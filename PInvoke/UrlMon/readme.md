@@ -65,8 +65,11 @@ Native Enum | Header | Managed Enum
 [COMPAT](https://www.google.com/search?num=5&q=COMPAT+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.UrlMon.COMPAT](https://github.com/dahall/Vanara/search?l=C%23&q=COMPAT)  
 [FIEF_FLAG](https://www.google.com/search?num=5&q=FIEF_FLAG+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FIEF_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=FIEF_FLAG)  
 [FMFD](https://www.google.com/search?num=5&q=FMFD+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.FMFD](https://github.com/dahall/Vanara/search?l=C%23&q=FMFD)  
+[MUTZ](https://www.google.com/search?num=5&q=MUTZ+site%3Alearn.microsoft.com) | urlmon.h | [Vanara.PInvoke.UrlMon.MUTZ](https://github.com/dahall/Vanara/search?l=C%23&q=MUTZ)  
 [PARSEACTION](https://www.google.com/search?num=5&q=PARSEACTION+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.PARSEACTION](https://github.com/dahall/Vanara/search?l=C%23&q=PARSEACTION)  
+[PUAF](https://www.google.com/search?num=5&q=PUAF+site%3Alearn.microsoft.com) | urlmon.h | [Vanara.PInvoke.UrlMon.PUAF](https://github.com/dahall/Vanara/search?l=C%23&q=PUAF)  
 [QUERYOPTION](https://www.google.com/search?num=5&q=QUERYOPTION+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.QUERYOPTION](https://github.com/dahall/Vanara/search?l=C%23&q=QUERYOPTION)  
+[SZM_FLAGS](https://www.google.com/search?num=5&q=SZM_FLAGS+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.SZM_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=SZM_FLAGS)  
 [Uri_CREATE](https://www.google.com/search?num=5&q=Uri_CREATE+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_CREATE](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_CREATE)  
 [Uri_DISPLAY](https://www.google.com/search?num=5&q=Uri_DISPLAY+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_DISPLAY](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_DISPLAY)  
 [Uri_ENCODING](https://www.google.com/search?num=5&q=Uri_ENCODING+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_ENCODING](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_ENCODING)  
@@ -75,6 +78,7 @@ Native Enum | Header | Managed Enum
 [Uri_PROPERTY](https://www.google.com/search?num=5&q=Uri_PROPERTY+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.Uri_PROPERTY](https://github.com/dahall/Vanara/search?l=C%23&q=Uri_PROPERTY)  
 [URL_MK](https://www.google.com/search?num=5&q=URL_MK+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.URL_MK](https://github.com/dahall/Vanara/search?l=C%23&q=URL_MK)  
 [URL_SCHEME](https://www.google.com/search?num=5&q=URL_SCHEME+site%3Alearn.microsoft.com) | shlwapi.h | [Vanara.PInvoke.UrlMon.URL_SCHEME](https://github.com/dahall/Vanara/search?l=C%23&q=URL_SCHEME)  
+[URLPOLICY](https://www.google.com/search?num=5&q=URLPOLICY+site%3Alearn.microsoft.com) | urlmon.h | [Vanara.PInvoke.UrlMon.URLPOLICY](https://github.com/dahall/Vanara/search?l=C%23&q=URLPOLICY)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -88,6 +92,8 @@ Native Interface | Header | Managed Interface
 [IBindHost](https://www.google.com/search?num=5&q=IBindHost+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBindHost](https://github.com/dahall/Vanara/search?l=C%23&q=IBindHost)  
 [IBinding](https://www.google.com/search?num=5&q=IBinding+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBinding](https://github.com/dahall/Vanara/search?l=C%23&q=IBinding)  
 [IBindStatusCallback](https://www.google.com/search?num=5&q=IBindStatusCallback+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IBindStatusCallback](https://github.com/dahall/Vanara/search?l=C%23&q=IBindStatusCallback)  
+[IInternetSecurityManager](https://www.google.com/search?num=5&q=IInternetSecurityManager+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IInternetSecurityManager](https://github.com/dahall/Vanara/search?l=C%23&q=IInternetSecurityManager)  
+[IInternetSecurityMgrSite](https://www.google.com/search?num=5&q=IInternetSecurityMgrSite+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IInternetSecurityMgrSite](https://github.com/dahall/Vanara/search?l=C%23&q=IInternetSecurityMgrSite)  
 [IInternetSession](https://www.google.com/search?num=5&q=IInternetSession+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IInternetSession](https://github.com/dahall/Vanara/search?l=C%23&q=IInternetSession)  
 [IPersistMoniker](https://www.google.com/search?num=5&q=IPersistMoniker+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IPersistMoniker](https://github.com/dahall/Vanara/search?l=C%23&q=IPersistMoniker)  
 [IUri](https://www.google.com/search?num=5&q=IUri+site%3Alearn.microsoft.com) | Urlmon.h | [Vanara.PInvoke.UrlMon.IUri](https://github.com/dahall/Vanara/search?l=C%23&q=IUri)  

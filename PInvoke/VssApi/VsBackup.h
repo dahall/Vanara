@@ -16,7 +16,7 @@ namespace Vanara {
 			{
 			public:
 				CVssWMComponent(::IVssWMComponent* ptr) : BaseWrapper(ptr) {}
-				~CVssWMComponent() { if (pInfo && pNative) { pin_ptr<::VSS_COMPONENTINFO> p = pInfo; pNative->FreeComponentInfo(p); } }
+				~CVssWMComponent() { if (pInfo && pNative) { pNative->FreeComponentInfo(pInfo); } }
 
 				virtual VSS_COMPONENTINFO GetComponentInfo();
 
@@ -36,13 +36,13 @@ namespace Vanara {
 				DEFINE_WM_COMP_ROLIST(Dependencies, IVssWMDependency, cDependencies, GetDependency, CVssWMDependency)
 
 			private:
-				::VSS_COMPONENTINFO* pInfo;
+				::PVSSCOMPONENTINFO pInfo = nullptr;
 				void RefreshInfo()
 				{
-					pin_ptr<::VSS_COMPONENTINFO> p = pInfo;
 					if (pInfo != nullptr)
-						pNative->FreeComponentInfo(p);
-					Utils::ThrowIfFailed(pNative->GetComponentInfo((::PVSSCOMPONENTINFO*)&p));
+						pNative->FreeComponentInfo(pInfo);
+					pin_ptr<::PVSSCOMPONENTINFO> pp = &pInfo;
+					Utils::ThrowIfFailed(pNative->GetComponentInfo(pp));
 				}
 			};
 

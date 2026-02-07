@@ -8,6 +8,7 @@ using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.Windows.Shell;
 
@@ -21,6 +22,8 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 
 	/// <summary>If specified, the path to the file system item.</summary>
 	protected PIDL? item = null;
+
+	private bool disposed = false;
 
 	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 	/// <param name="path">A string that specifies the item path.</param>
@@ -45,6 +48,9 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
 	protected PropertyStore() { }
 
+	/// <summary>Finalizes an instance of the <see cref="PropertyStore"/> class.</summary>
+	~PropertyStore() => Dispose(false);
+
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -53,7 +59,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 
 	/// <summary>Value that allows matching this property store's keys to their property descriptions.</summary>
 	/// <value>The property descriptions.</value>
-	public virtual IReadOnlyDictionary<PROPERTYKEY, PropertyDescription> Descriptions => new PropertyDescriptionDictionary(this);
+	public virtual IReadOnlyDictionary<PROPERTYKEY, PropertyDescription?> Descriptions => new PropertyDescriptionDictionary(this);
 
 	/// <summary>Gets or sets a value indicating whether to include slow properties.</summary>
 	/// <value><c>true</c> if including slow properties; otherwise, <c>false</c>.</value>
@@ -75,7 +81,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	public bool IsDirty { get; protected set; }
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the keys of the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public ICollection<PROPERTYKEY> Keys => Run(ps => GetKeyEnum(ps).ToList())!;
+	public virtual ICollection<PROPERTYKEY> Keys => Run(ps => ps.EnumKeys().ToList()) ?? [];
 
 	/// <summary>Gets or sets a value indicating whether to include only properties directly from the property handler.</summary>
 	/// <value><c>true</c> if no inherited properties; otherwise, <c>false</c>.</value>
@@ -122,22 +128,17 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 		{
 			if (Temporary == value) return;
 			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY, value);
-			if (value)
-			{
-				flags = GETPROPERTYSTOREFLAGS.GPS_TEMPORARY;
-				ReadOnly = false;
-			}
-			else
-			{
-				flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_TEMPORARY, false);
-			}
+			flags = flags.SetFlags(GETPROPERTYSTOREFLAGS.GPS_READWRITE, !value);
 		}
 	}
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the values in the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public ICollection<object?> Values => Run(ps => GetKeyEnum(ps).Select(k => TryGetValue(ps, k, out object? v) ? v : null).ToList())!;
+	public ICollection<object?> Values => [.. this.Select(kv => kv.Value)];
 
 	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.IsReadOnly => ReadOnly;
+
+	/// <summary>Gets a value indicating whether to release the IPropertyStore after each use.</summary>
+	protected virtual bool ReleaseAfterUse => true;
 
 	/// <summary>Gets or sets the value of the property with the specified known key.</summary>
 	/// <value>The value.</value>
@@ -179,7 +180,8 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>Adds a property with the provided key and value to the property store.</summary>
 	/// <param name="key">The PROPERTYKEY for the new property.</param>
 	/// <param name="value">The value of the new property.</param>
-	public virtual void Add(PROPERTYKEY key, object? value)
+	/// <param name="commit">If set to <see langword="true"/>, commits the change immediately.</param>
+	public virtual void Add(PROPERTYKEY key, object? value, bool commit = false)
 	{
 		ReadOnly = false;
 		Run(ps =>
@@ -188,6 +190,11 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 				throw new InvalidOperationException("Property store does not exist.");
 			ps.SetValue(key, value, false);
 			OnPropertyChanged(key.ToString());
+			if (commit)
+			{
+				ps.Commit();
+				IsDirty = false;
+			}
 		});
 	}
 
@@ -217,20 +224,30 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <exception cref="ArgumentNullException">array</exception>
 	public void CopyTo(KeyValuePair<PROPERTYKEY, object?>[] array, int arrayIndex)
 	{
-		if (array.Length < arrayIndex + Count)
-			throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The number of items exceeds the length of the supplied array.");
 		if (array is null)
 			throw new ArgumentNullException(nameof(array));
+		if (array.Length < arrayIndex + Count)
+			throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The number of items exceeds the length of the supplied array.");
 		var i = arrayIndex;
 		foreach (var kv in this)
 			array[i++] = kv;
 	}
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
+	/// <inheritdoc/>
+	public void Dispose()
 	{
-		Commit();
+		Dispose(true);
 		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		Commit();
+		item = null;
+		disposed = true;
 	}
 
 	/// <summary>Gets the property.</summary>
@@ -309,6 +326,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <see langword="true"/> if the object that implements <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the
 	/// specified key; otherwise, <see langword="false"/>.
 	/// </returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool TryGetValue(PROPERTYKEY key, [NotNullWhen(true)] out object? value) => TryGetValue<object>(key, out value);
 
 	/// <summary>Gets the value associated with the specified key.</summary>
@@ -335,7 +353,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 
 	/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>
 	/// <param name="item">The object to add to the <see cref="ICollection{T}"/>.</param>
-	void ICollection<KeyValuePair<PROPERTYKEY, object?>>.Add(KeyValuePair<PROPERTYKEY, object?> item) => Add(item.Key, item.Value);
+	void ICollection<KeyValuePair<PROPERTYKEY, object?>>.Add(KeyValuePair<PROPERTYKEY, object?> item) => Add(item.Key, item.Value, false);
 
 	/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 	/// <exception cref="InvalidOperationException"></exception>
@@ -351,7 +369,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
 	IEnumerator<KeyValuePair<PROPERTYKEY, object?>> IEnumerable<KeyValuePair<PROPERTYKEY, object?>>.GetEnumerator() =>
-		(Run(ps => GetKeyEnum(ps).Select(k => new KeyValuePair<PROPERTYKEY, object?>(k, TryGetValue(ps, k, out object? pv) ? pv : null))) ?? []).GetEnumerator();
+		(GetIPropertyStore() is IPropertyStore ps ? new PropertyStoreKeyValueEnumerator(ps) : Enumerable.Empty<KeyValuePair<PROPERTYKEY, object?>>()).GetEnumerator();
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
@@ -393,15 +411,6 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
 	protected virtual IPropertyStore? GetIPropertyStore() => item is not null ? SHGetPropertyStoreFromIDList<IPropertyStore>(item, flags) : null;
 
-	/// <summary>Gets an enumeration of the keys in the property store.</summary>
-	/// <returns>Keys in the property store.</returns>
-	protected virtual IEnumerable<PROPERTYKEY> GetKeyEnum(IPropertyStore ps)
-	{
-		if (ps is null) yield break;
-		for (uint i = 0; i < Count; i++)
-			yield return ps.GetAt(i);
-	}
-
 	/// <summary>Called when a property has changed.</summary>
 	protected virtual void OnPropertyChanged(string propertyName)
 	{
@@ -417,7 +426,13 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 		if (iPropertyStore is not null)
 		{
 			try { action(iPropertyStore); }
-			finally { Marshal.FinalReleaseComObject(iPropertyStore); }
+			finally
+			{
+				if (ReleaseAfterUse)
+				{
+					Marshal.ReleaseComObject(iPropertyStore);
+				}
+			}
 		}
 	}
 
@@ -430,36 +445,53 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 		var iPropertyStore = GetIPropertyStore();
 		if (iPropertyStore is not null)
 		{
-			try
-			{
-				return action(iPropertyStore);
-			}
+			try { return action(iPropertyStore); }
 			finally
 			{
-				Marshal.FinalReleaseComObject(iPropertyStore);
+				if (ReleaseAfterUse)
+				{
+					Marshal.ReleaseComObject(iPropertyStore);
+				}
 			}
 		}
 		return default;
 	}
 
-	private class PropertyDescriptionDictionary(PropertyStore ps) : IReadOnlyDictionary<PROPERTYKEY, PropertyDescription>
+	void IDictionary<PROPERTYKEY, object?>.Add(PROPERTYKEY key, object? value) => throw new NotImplementedException();
+
+	private class PropertyStoreKeyValueEnumerator(IPropertyStore ps) : IReadOnlyCollection<KeyValuePair<PROPERTYKEY, object?>>
+	{
+		public int Count => (int)ps.GetCount();
+		public IEnumerator<KeyValuePair<PROPERTYKEY, object?>> GetEnumerator()
+		{
+			for (uint i = 0; i < Count; i++)
+			{
+				var key = ps.GetAt(i);
+				object? val = null;
+				try { val = ps.GetValue(key); } catch { }
+				yield return new KeyValuePair<PROPERTYKEY, object?>(key, val);
+			}
+		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	private class PropertyDescriptionDictionary(PropertyStore ps) : IReadOnlyDictionary<PROPERTYKEY, PropertyDescription?>
 	{
 		public int Count => ps.Count;
 		public IEnumerable<PROPERTYKEY> Keys => ps.Keys;
-		public IEnumerable<PropertyDescription> Values => ps.Keys.Select(GetPropertyDescription).ToList();
-		public PropertyDescription this[PROPERTYKEY key] => GetPropertyDescription(key);
-
+		public IEnumerable<PropertyDescription?> Values => [.. ps.Keys.Select(GetDesc)];
+		public PropertyDescription? this[PROPERTYKEY key] => GetDesc(key);
 		public bool ContainsKey(PROPERTYKEY key) => ps.ContainsKey(key);
 
-		public IEnumerator<KeyValuePair<PROPERTYKEY, PropertyDescription>> GetEnumerator() =>
-			ps.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription>(k, GetPropertyDescription(k))).ToList().GetEnumerator();
+		public IEnumerator<KeyValuePair<PROPERTYKEY, PropertyDescription?>> GetEnumerator() =>
+			ps.Keys.Select(k => new KeyValuePair<PROPERTYKEY, PropertyDescription?>(k, GetDesc(k))).ToList().GetEnumerator();
 
 #if NET40_OR_GREATER || NETSTANDARD2_0_OR_GREATER && !NET5_0_OR_GREATER
 #nullable disable
 		public bool TryGetValue(PROPERTYKEY key, out PropertyDescription value)
 #nullable restore
 #else
-		public bool TryGetValue(PROPERTYKEY key, [MaybeNullWhen(false)] out PropertyDescription value)
+		public bool TryGetValue(PROPERTYKEY key, [MaybeNullWhen(false)] out PropertyDescription? value)
 #endif
 		{
 			if (ps.ContainsKey(key))
@@ -472,5 +504,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private static PropertyDescription? GetDesc(PROPERTYKEY key) => PropertyDescription.Create(key);
 	}
 }

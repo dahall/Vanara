@@ -250,8 +250,8 @@ public static partial class D3D11
 		// AttachBuffersAndPrecompute( [in] UINT NumTempBuffers, [in] ID3D11UnorderedAccessView * const *ppTempBuffers, [in] UINT
 		// NumPrecomputeBuffers, [in] ID3D11UnorderedAccessView * const *ppPrecomputeBufferSizes );
 		[PreserveSig]
-		HRESULT AttachBuffersAndPrecompute(int NumTempBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ID3D11UnorderedAccessView[] ppTempBuffers,
-			int NumPrecomputeBuffers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11UnorderedAccessView[] ppPrecomputeBufferSizes);
+		HRESULT AttachBuffersAndPrecompute(int NumTempBuffers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ID3D11UnorderedAccessView[] ppTempBuffers,
+			int NumPrecomputeBuffers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ID3D11UnorderedAccessView[] ppPrecomputeBufferSizes);
 
 		/// <summary>Performs a forward FFT.</summary>
 		/// <param name="pInputBuffer">

@@ -116,7 +116,7 @@ public static partial class WinSpool
 	/// <para>To determine the port monitors that are currently installed, call the <c>EnumMonitors</c> function.</para>
 	/// <para>To remove a monitor added by <c>AddMonitor</c>, call the <c>DeleteMonitor</c> function.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addmonitor BOOL AddMonitor( _In_ LPTSTR pName, _In_ DWORD Level, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addmonitor BOOL AddMonitor( _In_ StrPtrAuto pName, _In_ DWORD Level, _In_
 	// LPBYTE pMonitors );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "6a556422-5360-42d2-b177-dba0498c06d8")]
@@ -188,7 +188,7 @@ public static partial class WinSpool
 	/// about <c>XcvData</c>, see the Microsoft Windows Driver Development Kit (DDK).
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addport BOOL AddPort( _In_ LPTSTR pName, _In_ HWND hWnd, _In_ LPTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addport BOOL AddPort( _In_ StrPtrAuto pName, _In_ HWND hWnd, _In_ StrPtrAuto
 	// pMonitorName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "9191d507-9167-4488-a4b4-286590a8a62a")]
@@ -259,7 +259,7 @@ public static partial class WinSpool
 	/// </para>
 	/// <para>An application can determine which printer drivers are currently installed by calling the <c>EnumPrinterDrivers</c> function.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterdriver BOOL AddPrinterDriver( _In_ LPTSTR pName, _In_ DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterdriver BOOL AddPrinterDriver( _In_ StrPtrAuto pName, _In_ DWORD
 	// Level, _In_ LPBYTE pDriverInfo );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0f762800-f5a5-40ea-8be1-7fd8bda23788")]
@@ -543,7 +543,7 @@ public static partial class WinSpool
 	/// file name can be a UNC name as long as the UNC name is the local machine.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterdriverex BOOL AddPrinterDriverEx( _In_ LPTSTR pName, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterdriverex BOOL AddPrinterDriverEx( _In_ StrPtrAuto pName, _In_
 	// DWORD Level, _Inout_ LPBYTE pDriverInfo, _In_ DWORD dwFileCopyFlags );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "472adb7d-39cc-4c76-b96c-610ff9d276ad")]
@@ -580,8 +580,8 @@ public static partial class WinSpool
 	/// </para>
 	/// <para>An application can determine the name of existing print processors by calling the <c>EnumPrintProcessors</c> function.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprocessor BOOL AddPrintProcessor( _In_ LPTSTR pName, _In_ LPTSTR
-	// pEnvironment, _In_ LPTSTR pPathName, _In_ LPTSTR pPrintProcessorName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprocessor BOOL AddPrintProcessor( _In_ StrPtrAuto pName, _In_ StrPtrAuto
+	// pEnvironment, _In_ StrPtrAuto pPathName, _In_ StrPtrAuto pPrintProcessorName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "99899cee-f74d-4405-8ea5-616e3769aba9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -623,7 +623,7 @@ public static partial class WinSpool
 	/// </para>
 	/// <para>A provider added by <c>AddPrintProvidor</c> may be removed by calling <c>DeletePrintProvidor</c>.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprovidor BOOL AddPrintProvidor( _In_ LPTSTR pName, _In_ DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprovidor BOOL AddPrintProvidor( _In_ StrPtrAuto pName, _In_ DWORD
 	// Level, _In_ LPBYTE pProviderInfo );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "f34549c3-0474-48ba-9307-5b36f02dbe1c")]
@@ -712,8 +712,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks>The caller must have SeLoadDriverPrivilege.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deletemonitor BOOL DeleteMonitor( _In_ LPTSTR pName, _In_ LPTSTR
-	// pEnvironment, _In_ LPTSTR pMonitorName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deletemonitor BOOL DeleteMonitor( _In_ StrPtrAuto pName, _In_ StrPtrAuto
+	// pEnvironment, _In_ StrPtrAuto pMonitorName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "32548d4f-830a-471d-8a72-c0f62f43ffa2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -737,8 +737,8 @@ public static partial class WinSpool
 	/// The caller of the <c>DeletePort</c> function must have SERVER_ACCESS_ADMINISTER access to the server to which the port is connected.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteport BOOL DeletePort( _In_ LPTSTR pName, _In_ HWND hWnd, _In_
-	// LPTSTR pPortName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteport BOOL DeletePort( _In_ StrPtrAuto pName, _In_ HWND hWnd, _In_
+	// StrPtrAuto pPortName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "5f5788c2-c781-4106-abd2-98556d0a22de")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -780,8 +780,8 @@ public static partial class WinSpool
 	/// </para>
 	/// <para>Before calling <c>DeletePrinterDriver</c>, you must delete all printer objects that use the printer driver.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterdriver BOOL DeletePrinterDriver( _In_ LPTSTR pName, _In_
-	// LPTSTR pEnvironment, _In_ LPTSTR pDriverName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterdriver BOOL DeletePrinterDriver( _In_ StrPtrAuto pName, _In_
+	// StrPtrAuto pEnvironment, _In_ StrPtrAuto pDriverName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "b159bd8b-3416-44a5-91bf-c0447ed6b465")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -849,8 +849,8 @@ public static partial class WinSpool
 	/// <para>If the driver files are currently loaded, the function moves them to a temp directory and marks them for deletion on restart.</para>
 	/// <para>Before calling <c>DeletePrinterDriverEx</c>, you must delete all printer objects that use the printer driver.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterdriverex BOOL DeletePrinterDriverEx( _In_ LPTSTR pName,
-	// _In_ LPTSTR pEnvironment, _In_ LPTSTR pDriverName, _In_ DWORD dwDeleteFlag, _In_ DWORD dwVersionFlag );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterdriverex BOOL DeletePrinterDriverEx( _In_ StrPtrAuto pName,
+	// _In_ StrPtrAuto pEnvironment, _In_ StrPtrAuto pDriverName, _In_ DWORD dwDeleteFlag, _In_ DWORD dwVersionFlag );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "1a3d7c7f-1d45-4877-a8f7-a77f40e3c319")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -901,8 +901,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks>The caller must have the SeLoadDriverPrivilege.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprintprocessor BOOL DeletePrintProcessor( _In_ LPTSTR pName, _In_
-	// LPTSTR pEnvironment, _In_ LPTSTR pPrintProcessorName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprintprocessor BOOL DeletePrintProcessor( _In_ StrPtrAuto pName, _In_
+	// StrPtrAuto pEnvironment, _In_ StrPtrAuto pPrintProcessorName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "65c77874-aa2c-4b4c-b218-fad361270a3e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -922,8 +922,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprintprovidor BOOL DeletePrintProvidor( _In_ LPTSTR pName, _In_
-	// LPTSTR pEnvironment, _In_ LPTSTR pPrintProviderName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprintprovidor BOOL DeletePrintProvidor( _In_ StrPtrAuto pName, _In_
+	// StrPtrAuto pEnvironment, _In_ StrPtrAuto pPrintProviderName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "b7104f9a-111c-4904-a355-063bb4cc81f1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -995,7 +995,7 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enummonitors BOOL EnumMonitors( _In_ LPTSTR pName, _In_ DWORD Level,
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enummonitors BOOL EnumMonitors( _In_ StrPtrAuto pName, _In_ DWORD Level,
 	// _Out_ LPBYTE pMonitors, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "4d4fbed2-193f-426c-8463-eeb6b1eaf316")]
@@ -1048,7 +1048,7 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks>The <c>EnumPorts</c> function can succeed even if the server specified by pName does not have a printer defined.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumports BOOL EnumPorts( _In_ LPTSTR pName, _In_ DWORD Level, _Out_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumports BOOL EnumPorts( _In_ StrPtrAuto pName, _In_ DWORD Level, _Out_
 	// LPBYTE pPorts, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "72ea0e35-bf26-4c12-9451-8f6941990d82")]
@@ -1145,8 +1145,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinterdrivers BOOL EnumPrinterDrivers( _In_ LPTSTR pName, _In_
-	// LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinterdrivers BOOL EnumPrinterDrivers( _In_ StrPtrAuto pName, _In_
+	// StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD
 	// pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "fa3d8cf4-70bc-4362-833e-e4217ed5d43b")]
@@ -1219,7 +1219,7 @@ public static partial class WinSpool
 	/// <para>Starting with Windows Vista, the data type information from remote print servers is retrieved from a local cache.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprintprocessordatatypes BOOL EnumPrintProcessorDatatypes( _In_
-	// LPTSTR pName, _In_ LPTSTR pPrintProcessorName, _In_ DWORD Level, _Out_ LPBYTE pDatatypes, _In_ DWORD cbBuf, _Out_ LPDWORD
+	// StrPtrAuto pName, _In_ StrPtrAuto pPrintProcessorName, _In_ DWORD Level, _Out_ LPBYTE pDatatypes, _In_ DWORD cbBuf, _Out_ LPDWORD
 	// pcbNeeded, _Out_ LPDWORD pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "27b6e074-d303-446b-9e5f-6cfa55c30d26")]
@@ -1277,8 +1277,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprintprocessors BOOL EnumPrintProcessors( _In_ LPTSTR pName, _In_
-	// LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pPrintProcessorInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprintprocessors BOOL EnumPrintProcessors( _In_ StrPtrAuto pName, _In_
+	// StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pPrintProcessorInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD
 	// pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "98c9185c-c89d-4b4e-8c1e-7e22b315f188")]
@@ -1420,7 +1420,7 @@ public static partial class WinSpool
 	/// name as the single argument.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdriver BOOL GetPrinterDriver( _In_ HANDLE hPrinter, _In_
-	// LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
+	// StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "93f859b4-1005-4359-8029-9536d6eeb7e7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1548,7 +1548,7 @@ public static partial class WinSpool
 	/// <para>The ANSI version of this function, <c>GetPrinterDriver2A</c> is not supported and returns <c>ERROR_NOT_SUPPORTED</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdriver2 BOOL GetPrinterDriver2( _In_opt_ HWND hWnd, _In_
-	// HANDLE hPrinter, _In_opt_ LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD
+	// HANDLE hPrinter, _In_opt_ StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverInfo, _In_ DWORD cbBuf, _Out_ LPDWORD
 	// pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0d482d28-7668-4734-ba71-5b355c18ddec")]
@@ -1623,8 +1623,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdriverdirectory BOOL GetPrinterDriverDirectory( _In_ LPTSTR
-	// pName, _In_ LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverDirectory, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdriverdirectory BOOL GetPrinterDriverDirectory( _In_ StrPtrAuto
+	// pName, _In_ StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pDriverDirectory, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "69c9cc87-d7e3-496a-b631-b3ae30cdb3fd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1661,7 +1661,7 @@ public static partial class WinSpool
 	/// <para>The pszPackageID is typically obtained from a call to <c>GetCorePrinterDrivers</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdriverpackagepath HRESULT GetPrinterDriverPackagePath( _In_
-	// LPCTSTR pszServer, _In_ LPCTSTR pszEnvironment, _In_ LPCTSTR pszLanguage, _In_ LPCTSTR pszPackageID, _Inout_ LPTSTR
+	// LPCTSTR pszServer, _In_ LPCTSTR pszEnvironment, _In_ LPCTSTR pszLanguage, _In_ LPCTSTR pszPackageID, _Inout_ StrPtrAuto
 	// pszDriverPackageCab, _In_ DWORD cchDriverPackageCab, _Out_ LPDWORD pcchRequiredSize );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e88e984b-d2c0-43b4-8f70-b05ec202ab14")]
@@ -1696,8 +1696,8 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprintprocessordirectory BOOL GetPrintProcessorDirectory( _In_ LPTSTR
-	// pName, _In_ LPTSTR pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pPrintProcessorInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprintprocessordirectory BOOL GetPrintProcessorDirectory( _In_ StrPtrAuto
+	// pName, _In_ StrPtrAuto pEnvironment, _In_ DWORD Level, _Out_ LPBYTE pPrintProcessorInfo, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "a2443cfd-e5ba-41c6-aaf4-45051a3d0e26")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1793,7 +1793,7 @@ public static partial class WinSpool
 	/// <para>Only signed driver packages can be uploaded.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/uploadprinterdriverpackage HRESULT UploadPrinterDriverPackage( _In_
-	// LPCTSTR pszServer, _In_ LPCTSTR pszInfPath, _In_ LPCTSTR pszEnvironment, _In_ DWORD dwFlags, _In_ HWND hwnd, _Out_ LPTSTR
+	// LPCTSTR pszServer, _In_ LPCTSTR pszInfPath, _In_ LPCTSTR pszEnvironment, _In_ DWORD dwFlags, _In_ HWND hwnd, _Out_ StrPtrAuto
 	// pszDestInfPath, _Inout_ PULONG pcchDestInfPath );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "dd3b3a3b-8ded-44ae-85dd-e630bc62e898")]

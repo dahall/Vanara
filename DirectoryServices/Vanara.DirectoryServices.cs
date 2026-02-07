@@ -132,7 +132,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 	/// <param name="password">The string that specifies the password to supply to the directory service to use for credentials.</param>
 	protected ADsBaseObject(string pathName, ADS_AUTHENTICATION auth, [Optional] string? userName, [Optional] string? password)
 	{
-		ADsOpenObject<TInterface>(pathName, out var o, auth, userName, password).ThrowIfFailed();
+		ADsOpenObject<TInterface>(pathName, userName, password, auth, out var o).ThrowIfFailed();
 		Interface = o!;
 	}
 
@@ -1209,7 +1209,7 @@ public class ADsObject : ADsBaseObject<IADs>
 	public static IADsObject OpenObject(string path, [Optional] ADS_AUTHENTICATION auth, [Optional] string? userName,
 		[Optional] string? password)
 	{
-		ADsOpenObject(path, out IADs? o, auth, userName, password).ThrowIfFailed();
+		ADsOpenObject(path, userName, password, auth, out IADs? o).ThrowIfFailed();
 		return GetTypedObj(o!);
 	}
 
@@ -1559,8 +1559,8 @@ public class ADsPropertyCache : /*DynamicObject,*/ IDictionary<string, object?>
 
 	private static SafePSECURITY_DESCRIPTOR ISD2SD(object isd)
 	{
-		SecurityDescriptorToBinarySD((IADsSecurityDescriptor)isd, out var sd, out _).ThrowIfFailed();
-		return new SafePSECURITY_DESCRIPTOR(sd, true);
+		SecurityDescriptorToBinarySD((IADsSecurityDescriptor)isd, out var sd).ThrowIfFailed();
+		return sd!;
 	}
 
 	private IEnumerable<IADsPropertyEntry> EnumProps()

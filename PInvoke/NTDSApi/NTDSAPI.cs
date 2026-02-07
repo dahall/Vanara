@@ -1490,7 +1490,7 @@ public static partial class NTDSApi
 	/// <para>The instance name portion (second position) is always set to default. The port and referrer fields are not used.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsclientmakespnfortargetserverw NTDSAPI DWORD
-	// DsClientMakeSpnForTargetServerW( LPCWSTR ServiceClass, LPCWSTR ServiceName, DWORD *pcSpnLength, LPWSTR pszSpn );
+	// DsClientMakeSpnForTargetServerW( LPCWSTR ServiceClass, LPCWSTR ServiceName, DWORD *pcSpnLength, StrPtrUni pszSpn );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "d205e7cc-4879-41a4-baa7-75e7dd177cd0")]
 	public static extern Win32Error DsClientMakeSpnForTargetServer(string ServiceClass, string ServiceName, ref uint pcSpnLength, StringBuilder pszSpn);
@@ -1518,7 +1518,7 @@ public static partial class NTDSApi
 	[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, SetLastError = true)]
 	[PInvokeData("NTDSApi.h", MSDNShortId = "ms675970")]
 	public static extern Win32Error DsCrackNames(SafeDsHandle hSafeDs, DS_NAME_FLAGS flags, DS_NAME_FORMAT formatOffered, DS_NAME_FORMAT formatDesired, uint cNames,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 4)] string[] rpNames, out SafeDsNameResult ppResult);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 4)] string[] rpNames, out SafeDsNameResult ppResult);
 
 	/// <summary>A wrapper function for the DsCrackNames OS call</summary>
 	/// <param name="hSafeDs">Contains a directory service handle obtained from either the DSBind or DSBindWithCred function. If flags contains
@@ -1591,7 +1591,7 @@ public static partial class NTDSApi
 	/// </summary>
 	/// <param name="cSpn">Specifies the number of elements contained in rpszSpn.</param>
 	/// <param name="rpszSpn">Pointer to an array returned from DsGetSpn.</param>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsfreespnarraya void DsFreeSpnArrayA( DWORD cSpn, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsfreespnarraya void DsFreeSpnArrayA( DWORD cSpn, StrPtrAnsi
 	// *rpszSpn );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "1c229933-432d-4ded-be3b-3bd339a0abe4")]
@@ -1750,7 +1750,7 @@ public static partial class NTDSApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsgetspna NTDSAPI DWORD DsGetSpnA( DS_SPN_NAME_TYPE
 	// ServiceType, LPCSTR ServiceClass, LPCSTR ServiceName, USHORT InstancePort, USHORT cInstanceNames, LPCSTR *pInstanceNames, const
-	// USHORT *pInstancePorts, DWORD *pcSpn, LPSTR **prpszSpn );
+	// USHORT *pInstancePorts, DWORD *pcSpn, StrPtrAnsi **prpszSpn );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "cbd53850-9b05-4f74-ab07-30dcad583fc5")]
 	public static extern Win32Error DsGetSpn(DS_SPN_NAME_TYPE ServiceType, string ServiceClass, [Optional] string? ServiceName, ushort InstancePort, ushort cInstanceNames,
@@ -2041,7 +2041,7 @@ public static partial class NTDSApi
 	/// site 1 can be compared to the cost for site 2, but the cost for site 1 cannot be compared to a fixed value.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsquerysitesbycosta NTDSAPI_POSTXP DWORD
-	// DsQuerySitesByCostA( HANDLE hDS, LPSTR pszFromSite, LPSTR *rgszToSites, DWORD cToSites, DWORD dwFlags, PDS_SITE_COST_INFO
+	// DsQuerySitesByCostA( HANDLE hDS, StrPtrAnsi pszFromSite, StrPtrAnsi *rgszToSites, DWORD cToSites, DWORD dwFlags, PDS_SITE_COST_INFO
 	// *prgSiteInfo );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "7a4cbd1c-8445-4882-8559-d44b6e5693e7")]
@@ -2067,7 +2067,7 @@ public static partial class NTDSApi
 	/// Returns <c>ERROR_SUCCESS</c> if successful or a Win32 or RPC error code if unsuccessful. Possible error codes include the following.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsremovedsdomaina NTDSAPI DWORD DsRemoveDsDomainA( HANDLE
-	// hDs, LPSTR DomainDN );
+	// hDs, StrPtrAnsi DomainDN );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "0639cc04-2821-4421-8aa7-363621c1d6b5")]
 	public static extern Win32Error DsRemoveDsDomain(SafeDsHandle hDs, string DomainDN);
@@ -2088,7 +2088,7 @@ public static partial class NTDSApi
 	/// Returns <c>ERROR_SUCCESS</c> if successful or a Win32 or RPC error code if unsuccessful. Possible error codes include the following.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsremovedsserverw NTDSAPI DWORD DsRemoveDsServerW( HANDLE
-	// hDs, LPWSTR ServerDN, LPWSTR DomainDN, BOOL *fLastDcInDomain, BOOL fCommit );
+	// hDs, StrPtrUni ServerDN, StrPtrUni DomainDN, BOOL *fLastDcInDomain, BOOL fCommit );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntdsapi.h", MSDNShortId = "a79a2b71-10c7-495b-861f-0c7a4d86f720")]
 	public static extern Win32Error DsRemoveDsServer(SafeDsHandle hDs, string ServerDN, [Optional] string? DomainDN, [MarshalAs(UnmanagedType.Bool)] out bool fLastDcInDomain, [MarshalAs(UnmanagedType.Bool)] bool fCommit);
@@ -2966,8 +2966,8 @@ public static partial class NTDSApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-ds_domain_controller_info_1a typedef struct
 	// DS_DOMAIN_CONTROLLER_INFO_1A { #if ... CHAR *NetbiosName; #if ... CHAR *DnsHostName; #if ... CHAR *SiteName; #if ... CHAR
-	// *ComputerObjectName; #if ... CHAR *ServerObjectName; #else LPSTR NetbiosName; #endif #else LPSTR DnsHostName; #endif #else LPSTR
-	// SiteName; #endif #else LPSTR ComputerObjectName; #endif #else LPSTR ServerObjectName; #endif BOOL fIsPdc; BOOL fDsEnabled; } *PDS_DOMAIN_CONTROLLER_INFO_1A;
+	// *ComputerObjectName; #if ... CHAR *ServerObjectName; #else StrPtrAnsi NetbiosName; #endif #else StrPtrAnsi DnsHostName; #endif #else StrPtrAnsi
+	// SiteName; #endif #else StrPtrAnsi ComputerObjectName; #endif #else StrPtrAnsi ServerObjectName; #endif BOOL fIsPdc; BOOL fDsEnabled; } *PDS_DOMAIN_CONTROLLER_INFO_1A;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "6cc829ac-2aa6-49ef-b1ab-9c249249e0d6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DS_DOMAIN_CONTROLLER_INFO_1 : IDsGetDCResult
@@ -3023,9 +3023,9 @@ public static partial class NTDSApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-ds_domain_controller_info_2a typedef struct
 	// DS_DOMAIN_CONTROLLER_INFO_2A { #if ... CHAR *NetbiosName; #if ... CHAR *DnsHostName; #if ... CHAR *SiteName; #if ... CHAR
-	// *SiteObjectName; #if ... CHAR *ComputerObjectName; #if ... CHAR *ServerObjectName; #if ... CHAR *NtdsDsaObjectName; #else LPSTR
-	// NetbiosName; #endif #else LPSTR DnsHostName; #endif #else LPSTR SiteName; #endif #else LPSTR SiteObjectName; #endif #else LPSTR
-	// ComputerObjectName; #endif #else LPSTR ServerObjectName; #endif #else LPSTR NtdsDsaObjectName; #endif BOOL fIsPdc; BOOL
+	// *SiteObjectName; #if ... CHAR *ComputerObjectName; #if ... CHAR *ServerObjectName; #if ... CHAR *NtdsDsaObjectName; #else StrPtrAnsi
+	// NetbiosName; #endif #else StrPtrAnsi DnsHostName; #endif #else StrPtrAnsi SiteName; #endif #else StrPtrAnsi SiteObjectName; #endif #else StrPtrAnsi
+	// ComputerObjectName; #endif #else StrPtrAnsi ServerObjectName; #endif #else StrPtrAnsi NtdsDsaObjectName; #endif BOOL fIsPdc; BOOL
 	// fDsEnabled; BOOL fIsGc; GUID SiteObjectGuid; GUID ComputerObjectGuid; GUID ServerObjectGuid; GUID NtdsDsaObjectGuid; } *PDS_DOMAIN_CONTROLLER_INFO_2A;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "9d45b732-363d-4b20-ae5c-e9e76264bf1f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3119,9 +3119,9 @@ public static partial class NTDSApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-ds_domain_controller_info_3a typedef struct
 	// DS_DOMAIN_CONTROLLER_INFO_3A { #if ... CHAR *NetbiosName; #if ... CHAR *DnsHostName; #if ... CHAR *SiteName; #if ... CHAR
-	// *SiteObjectName; #if ... CHAR *ComputerObjectName; #if ... CHAR *ServerObjectName; #if ... CHAR *NtdsDsaObjectName; #else LPSTR
-	// NetbiosName; #endif #else LPSTR DnsHostName; #endif #else LPSTR SiteName; #endif #else LPSTR SiteObjectName; #endif #else LPSTR
-	// ComputerObjectName; #endif #else LPSTR ServerObjectName; #endif #else LPSTR NtdsDsaObjectName; #endif BOOL fIsPdc; BOOL
+	// *SiteObjectName; #if ... CHAR *ComputerObjectName; #if ... CHAR *ServerObjectName; #if ... CHAR *NtdsDsaObjectName; #else StrPtrAnsi
+	// NetbiosName; #endif #else StrPtrAnsi DnsHostName; #endif #else StrPtrAnsi SiteName; #endif #else StrPtrAnsi SiteObjectName; #endif #else StrPtrAnsi
+	// ComputerObjectName; #endif #else StrPtrAnsi ServerObjectName; #endif #else StrPtrAnsi NtdsDsaObjectName; #endif BOOL fIsPdc; BOOL
 	// fDsEnabled; BOOL fIsGc; BOOL fIsRodc; GUID SiteObjectGuid; GUID ComputerObjectGuid; GUID ServerObjectGuid; GUID NtdsDsaObjectGuid;
 	// } *PDS_DOMAIN_CONTROLLER_INFO_3A;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "510f458e-4c08-41c7-b290-1372ac9c8beb")]
@@ -3267,7 +3267,7 @@ public static partial class NTDSApi
 	/// replication state data for an object attribute.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_attr_meta_data typedef struct
-	// _DS_REPL_ATTR_META_DATA { LPWSTR pszAttributeName; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
+	// _DS_REPL_ATTR_META_DATA { StrPtrUni pszAttributeName; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
 	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; } DS_REPL_ATTR_META_DATA;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "27ccc1c9-03d7-4d13-b9ec-65d6b8bdfd37")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3314,8 +3314,8 @@ public static partial class NTDSApi
 	/// replication state data for an object attribute.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_attr_meta_data_2 typedef struct
-	// _DS_REPL_ATTR_META_DATA_2 { LPWSTR pszAttributeName; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
-	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; LPWSTR pszLastOriginatingDsaDN; } DS_REPL_ATTR_META_DATA_2;
+	// _DS_REPL_ATTR_META_DATA_2 { StrPtrUni pszAttributeName; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
+	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; StrPtrUni pszLastOriginatingDsaDN; } DS_REPL_ATTR_META_DATA_2;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "392457b7-df69-44d0-82b2-8381d5877354")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DS_REPL_ATTR_META_DATA_2
@@ -3580,7 +3580,7 @@ public static partial class NTDSApi
 	/// DS_REPL_CURSOR_2 structures.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_cursor_3w typedef struct _DS_REPL_CURSOR_3W {
-	// UUID uuidSourceDsaInvocationID; USN usnAttributeFilter; FILETIME ftimeLastSyncSuccess; LPWSTR pszSourceDsaDN; } DS_REPL_CURSOR_3W;
+	// UUID uuidSourceDsaInvocationID; USN usnAttributeFilter; FILETIME ftimeLastSyncSuccess; StrPtrUni pszSourceDsaDN; } DS_REPL_CURSOR_3W;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "0361a3e1-814c-4ef2-b574-2870a9289e52")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DS_REPL_CURSOR_3W
@@ -3777,7 +3777,7 @@ public static partial class NTDSApi
 	/// Consistency Checker (KCC) to decide when alternate replication routes must be added to account for unreachable servers.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_kcc_dsa_failurew typedef struct
-	// _DS_REPL_KCC_DSA_FAILUREW { LPWSTR pszDsaDN; UUID uuidDsaObjGuid; FILETIME ftimeFirstFailure; DWORD cNumFailures; DWORD
+	// _DS_REPL_KCC_DSA_FAILUREW { StrPtrUni pszDsaDN; UUID uuidDsaObjGuid; FILETIME ftimeFirstFailure; DWORD cNumFailures; DWORD
 	// dwLastResult; } DS_REPL_KCC_DSA_FAILUREW;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "7a7131ce-a647-4b3d-a9f3-091b6dcebff7")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3867,7 +3867,7 @@ public static partial class NTDSApi
 	/// pair, as returned by the DsReplicaGetInfo and DsReplicaGetInfo2 functions.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_neighborw typedef struct _DS_REPL_NEIGHBORW {
-	// LPWSTR pszNamingContext; LPWSTR pszSourceDsaDN; LPWSTR pszSourceDsaAddress; LPWSTR pszAsyncIntersiteTransportDN; DWORD
+	// StrPtrUni pszNamingContext; StrPtrUni pszSourceDsaDN; StrPtrUni pszSourceDsaAddress; StrPtrUni pszAsyncIntersiteTransportDN; DWORD
 	// dwReplicaFlags; DWORD dwReserved; UUID uuidNamingContextObjGuid; UUID uuidSourceDsaObjGuid; UUID uuidSourceDsaInvocationID; UUID
 	// uuidAsyncIntersiteTransportObjGuid; USN usnLastObjChangeSynced; USN usnAttributeFilter; FILETIME ftimeLastSyncSuccess; FILETIME
 	// ftimeLastSyncAttempt; DWORD dwLastSyncResult; DWORD cNumConsecutiveSyncFailures; } DS_REPL_NEIGHBORW;
@@ -4298,8 +4298,8 @@ public static partial class NTDSApi
 	/// DsReplicaGetInfo or DsReplicaGetInfo2 function.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_opw typedef struct _DS_REPL_OPW { FILETIME
-	// ftimeEnqueued; ULONG ulSerialNumber; ULONG ulPriority; DS_REPL_OP_TYPE OpType; ULONG ulOptions; LPWSTR pszNamingContext; LPWSTR
-	// pszDsaDN; LPWSTR pszDsaAddress; UUID uuidNamingContextObjGuid; UUID uuidDsaObjGuid; } DS_REPL_OPW;
+	// ftimeEnqueued; ULONG ulSerialNumber; ULONG ulPriority; DS_REPL_OP_TYPE OpType; ULONG ulOptions; StrPtrUni pszNamingContext; StrPtrUni
+	// pszDsaDN; StrPtrUni pszDsaAddress; UUID uuidNamingContextObjGuid; UUID uuidDsaObjGuid; } DS_REPL_OPW;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "9ea783b3-1529-4424-a582-f46f2a239a60")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DS_REPL_OPW
@@ -4577,7 +4577,7 @@ public static partial class NTDSApi
 	/// replication metadata.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_value_meta_data typedef struct
-	// _DS_REPL_VALUE_META_DATA { LPWSTR pszAttributeName; LPWSTR pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE *pbData;
+	// _DS_REPL_VALUE_META_DATA { StrPtrUni pszAttributeName; StrPtrUni pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE *pbData;
 	// #endif FILETIME ftimeDeleted; FILETIME ftimeCreated; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
 	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; } DS_REPL_VALUE_META_DATA;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "294a466e-8a83-4b33-a8a8-ac7b51d081d4")]
@@ -4649,9 +4649,9 @@ public static partial class NTDSApi
 	/// value replication metadata.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_value_meta_data_2 typedef struct
-	// _DS_REPL_VALUE_META_DATA_2 { LPWSTR pszAttributeName; LPWSTR pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE *pbData;
+	// _DS_REPL_VALUE_META_DATA_2 { StrPtrUni pszAttributeName; StrPtrUni pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE *pbData;
 	// #endif FILETIME ftimeDeleted; FILETIME ftimeCreated; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
-	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; LPWSTR pszLastOriginatingDsaDN; } DS_REPL_VALUE_META_DATA_2;
+	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; StrPtrUni pszLastOriginatingDsaDN; } DS_REPL_VALUE_META_DATA_2;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "747e32b8-2cc0-4fcd-88dc-027188598361")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DS_REPL_VALUE_META_DATA_2
@@ -4900,9 +4900,9 @@ public static partial class NTDSApi
 	/// Contains attribute replication meta data for the DS_REPL_ATTR_VALUE_META_DATA_EXT structure.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-_ds_repl_value_meta_data_ext typedef struct
-	// _DS_REPL_VALUE_META_DATA_EXT { LPWSTR pszAttributeName; LPWSTR pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE
+	// _DS_REPL_VALUE_META_DATA_EXT { StrPtrUni pszAttributeName; StrPtrUni pszObjectDn; DWORD cbData; #if ... BYTE *pbData; #else BYTE
 	// *pbData; #endif FILETIME ftimeDeleted; FILETIME ftimeCreated; DWORD dwVersion; FILETIME ftimeLastOriginatingChange; UUID
-	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; LPWSTR pszLastOriginatingDsaDN; DWORD
+	// uuidLastOriginatingDsaInvocationID; USN usnOriginatingChange; USN usnLocalChange; StrPtrUni pszLastOriginatingDsaDN; DWORD
 	// dwUserIdentifier; DWORD dwPriorLinkState; DWORD dwCurrentLinkState; } DS_REPL_VALUE_META_DATA_EXT;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "2BE0F9C4-D688-4DE6-8DB2-15666D8BD070")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -4988,7 +4988,7 @@ public static partial class NTDSApi
 	/// DsReplicaSyncAll function during replication.
 	/// </summary>
 	// https://webcache.googleusercontent.com/search?q=cache:0plHTsXYeJ0J:https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/ns-ntdsapi-ds_repsyncall_errinfoa+&cd=1&hl=en&ct=clnk&gl=us
-	// typedef struct DS_REPSYNCALL_ERRINFOA { LPSTR pszSvrId; DS_REPSYNCALL_ERROR error; DWORD dwWin32Err; LPSTR pszSrcId; } *PDS_REPSYNCALL_ERRINFOA;
+	// typedef struct DS_REPSYNCALL_ERRINFOA { StrPtrAnsi pszSvrId; DS_REPSYNCALL_ERROR error; DWORD dwWin32Err; StrPtrAnsi pszSrcId; } *PDS_REPSYNCALL_ERRINFOA;
 	[PInvokeData("ntdsapi.h", MSDNShortId = "70af4e3e-1f0e-49c5-b8c6-5e89114ed4ea")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DS_REPSYNCALL_ERRINFO

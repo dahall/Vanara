@@ -288,7 +288,7 @@ public static partial class Shell32
 	{
 		/// <summary>Gets the current working directory.</summary>
 		/// <param name="pwzPath">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a buffer that, when this method returns successfully, receives the current working directory's fully qualified path as
 		/// a null-terminated Unicode string.
@@ -303,7 +303,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/shlobj/nf-shlobj-icurrentworkingdirectory-getdirectory HRESULT GetDirectory(
-		// [out] PWSTR pwzPath, DWORD cchSize );
+		// [out] StrPtrUni pwzPath, DWORD cchSize );
 		[PreserveSig]
 		HRESULT GetDirectory(out StringBuilder pwzPath, uint cchSize);
 

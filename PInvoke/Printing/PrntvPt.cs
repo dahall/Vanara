@@ -54,7 +54,7 @@ public static partial class PrntvPt
 	/// COM error codes, see Error Handling.
 	/// </returns>
 	/// <remarks>Before calling this function, the calling thread must initialize COM by calling <c>CoInitializeEx</c>.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/bindptproviderthunk HRESULT BindPTProviderThunk( _In_ LPTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/bindptproviderthunk HRESULT BindPTProviderThunk( _In_ StrPtrAuto
 	// pszPrinterName, _In_ INT maxVersion, _In_ INT prefVersion, _Out_ HPTPROVIDER *phProvider, _Out_ INT *usedVersion );
 	[DllImport(Lib.PrntvPt, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("prntvpt.h", MSDNShortId = "815cc360-8dcd-4c58-a64d-5d77436a8623")]

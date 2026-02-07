@@ -2466,7 +2466,7 @@ public static partial class IpHlpApi
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
 	/// <para>If the function fails, use <c>FormatMessage</c> to obtain the message string for the returned error.</para>
 	/// </returns>
-	// DWORD GetAdapterIndex( _In_ LPWSTR AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
+	// DWORD GetAdapterIndex( _In_ StrPtrUni AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("IpHlpApi.h", MSDNShortId = "aa365909")]
 	public static extern Win32Error GetAdapterIndex([MarshalAs(UnmanagedType.LPWStr)] string AdapterName, out uint IfIndex);
@@ -3933,11 +3933,11 @@ public static partial class IpHlpApi
 	/// </para>
 	/// <para>
 	/// The syntax for the <c>GetIpErrorString</c> function was slightly changed on the Microsoft Windows Software Development Kit (SDK)
-	/// released for Windows Vista and later. The data type for the Buffer parameter was changed from <c>PWCHAR</c> to <c>PWSTR</c>.
+	/// released for Windows Vista and later. The data type for the Buffer parameter was changed from <c>PWCHAR</c> to <c>StrPtrUni</c>.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getiperrorstring DWORD GetIpErrorString( IP_STATUS
-	// ErrorCode, PWSTR Buffer, PDWORD Size );
+	// ErrorCode, StrPtrUni Buffer, PDWORD Size );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "4f71777a-2e87-4411-89fd-12c165d4d8ae")]
 	public static extern Win32Error GetIpErrorString(Win32Error ErrorCode, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, ref uint Size);
@@ -4589,7 +4589,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcp6Entry(in MIB_TCP6ROW_OWNER_MODULE pTcpEntry)
 	{
 		MIB_TCP6ROW_OWNER_MODULE s = pTcpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4790,7 +4790,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcpEntry(in MIB_TCPROW_OWNER_MODULE pTcpEntry)
 	{
 		MIB_TCPROW_OWNER_MODULE s = pTcpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4887,7 +4887,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdp6Entry(in MIB_UDP6ROW_OWNER_MODULE pUdpEntry)
 	{
 		MIB_UDP6ROW_OWNER_MODULE s = pUdpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4982,7 +4982,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdpEntry(in MIB_UDPROW_OWNER_MODULE pUdpEntry)
 	{
 		MIB_UDPROW_OWNER_MODULE s = pUdpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}

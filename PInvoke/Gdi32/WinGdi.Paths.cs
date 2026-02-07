@@ -41,7 +41,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "49299a11-910b-40e0-b02e-80a244cfc978")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AbortPath(HDC hdc);
+	public static extern bool AbortPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>BeginPath</c> function opens a path bracket in the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -130,7 +130,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "88be3405-a420-4eb1-935b-099dc3067530")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BeginPath(HDC hdc);
+	public static extern bool BeginPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>CloseFigure</c> function closes an open figure in a path.</summary>
 	/// <param name="hdc">Handle to the device context in which the figure will be closed.</param>
@@ -156,7 +156,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2532227c-35c9-4a46-b4eb-4a156ef28219")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CloseFigure(HDC hdc);
+	public static extern bool CloseFigure([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>EndPath</c> function closes a path bracket and selects the path defined by the bracket into the specified device context.
@@ -170,7 +170,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0b4daf81-d1d6-45c1-b081-855b7cd8527a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndPath(HDC hdc);
+	public static extern bool EndPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>FillPath</c> function closes any open figures in the current path and fills the path's interior by using the current brush
@@ -186,7 +186,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a80b299a-c3f9-411b-9936-33d32fc71853")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FillPath(HDC hdc);
+	public static extern bool FillPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>FlattenPath</c> function transforms any curves in the path that is selected into the current device context (DC), turning
@@ -201,7 +201,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "267b0c9a-25d4-4b04-95d3-6b0856bed022")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlattenPath(HDC hdc);
+	public static extern bool FlattenPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>GetMiterLimit</c> function retrieves the miter limit for the specified device context.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
@@ -215,7 +215,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "51b1fb95-dd44-47f8-9311-2c6dc9c57bbc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMiterLimit(HDC hdc, out float plimit);
+	public static extern bool GetMiterLimit([In, AddAsMember] HDC hdc, out float plimit);
 
 	/// <summary>
 	/// The <c>GetPath</c> function retrieves the coordinates defining the endpoints of lines and the control points of curves found in
@@ -287,7 +287,8 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getpath int GetPath( HDC hdc, LPPOINT apt, LPBYTE aj, int cpt );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2dc7736a-03fc-4623-a566-6c3e368da174")]
-	public static extern int GetPath(HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
+	public static extern int GetPath([In, AddAsMember] HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
 
 	/// <summary>
 	/// The <c>PathToRegion</c> function creates a region from the path that is selected into the specified device context. The resulting
@@ -308,7 +309,8 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-pathtoregion HRGN PathToRegion( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9fe31925-3d5d-42e5-aa9b-405610f13de4")]
-	public static extern SafeHRGN PathToRegion(HDC hdc);
+	[return: AddAsCtor]
+	public static extern SafeHRGN PathToRegion([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>SetMiterLimit</c> function sets the limit for the length of miter joins for the specified device context.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
@@ -334,7 +336,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "4bed113b-9e3f-441f-96d7-71630bf9298e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMiterLimit(HDC hdc, float limit, out float old);
+	public static extern bool SetMiterLimit([In, AddAsMember] HDC hdc, float limit, out float old);
 
 	/// <summary>
 	/// The <c>StrokeAndFillPath</c> function closes any open figures in a path, strokes the outline of the path by using the current
@@ -358,7 +360,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "936af9e5-707d-4d43-9035-e8239e3759a2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool StrokeAndFillPath(HDC hdc);
+	public static extern bool StrokeAndFillPath([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>StrokePath</c> function renders the specified path by using the current pen.</summary>
 	/// <param name="hdc">Handle to a device context that contains the completed path.</param>
@@ -376,7 +378,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5a9f1509-0a69-4db8-8d74-9bf360aca64d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool StrokePath(HDC hdc);
+	public static extern bool StrokePath([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>WidenPath</c> function redefines the current path as the area that would be painted if the path were stroked using the pen
@@ -402,5 +404,5 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c994bd1b-c5e8-46e6-a6a6-59e2d9106d75")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WidenPath(HDC hdc);
+	public static extern bool WidenPath([In, AddAsMember] HDC hdc);
 }

@@ -16,7 +16,14 @@ public sealed class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerabl
 	/// <param name="first">The first list of type T to compare.</param>
 	/// <param name="second">The second list of type T to compare.</param>
 	/// <returns><see langword="true"/> if the two lists are equal; <see langword="false"/> otherwise.</returns>
-	public bool Equals(IEnumerable<T>? first, IEnumerable<T>? second)
+	public bool Equals(IEnumerable<T>? first, IEnumerable<T>? second) => Equals(first, second, elementComparer);
+
+	/// <summary>Determines whether the specified lists are equal.</summary>
+	/// <param name="first">The first list of type T to compare.</param>
+	/// <param name="second">The second list of type T to compare.</param>
+	/// <param name="comparer">The comparer to use for each element.</param>
+	/// <returns><see langword="true"/> if the two lists are equal; <see langword="false"/> otherwise.</returns>
+	public bool Equals(IEnumerable<T>? first, IEnumerable<T>? second, EqualityComparer<T> comparer)
 	{
 		if (ReferenceEquals(first, second))
 			return true;
@@ -27,7 +34,7 @@ public sealed class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerabl
 		bool move1, move2 = false;
 		while ((move1 = e1.MoveNext()) && (move2 = e2.MoveNext()))
 		{
-			if (!elementComparer.Equals(e1.Current, e2.Current))
+			if (!comparer.Equals(e1.Current, e2.Current))
 				return false;
 		}
 		return move1 == move2;

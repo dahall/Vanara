@@ -1359,7 +1359,7 @@ public static partial class MSCTF
 		// https://docs.microsoft.com/en-us/windows/win32/api/textstor/nf-textstor-itextstoreacp-getembedded HRESULT GetEmbedded( LONG
 		// acpPos, REFGUID rguidService, REFIID riid, IUnknown **ppunk );
 		[PreserveSig]
-		HRESULT GetEmbedded([In] int acpPos, in Guid rguidService, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppunk);
+		HRESULT GetEmbedded([In] int acpPos, in Guid rguidService, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppunk);
 
 		/// <summary>Gets a value indicating whether the specified object can be inserted into the document.</summary>
 		/// <param name="pguidService">Pointer to the object type. Can be <c>NULL</c>.</param>

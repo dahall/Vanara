@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 
 namespace Vanara.PInvoke;
 
@@ -2343,8 +2344,8 @@ public static partial class Ole32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ole2/nf-ole2-olegetclipboardwithenterpriseinfo HRESULT
-	// OleGetClipboardWithEnterpriseInfo( IDataObject **dataObject, PWSTR *dataEnterpriseId, PWSTR *sourceDescription, PWSTR
-	// *targetDescription, PWSTR *dataDescription );
+	// OleGetClipboardWithEnterpriseInfo( IDataObject **dataObject, StrPtrUni *dataEnterpriseId, StrPtrUni *sourceDescription, StrPtrUni
+	// *targetDescription, StrPtrUni *dataDescription );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ole2.h", MSDNShortId = "1DAD2A9A-EDA2-49D2-90F7-2A9022988177")]
 	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out StrPtrUni dataEnterpriseId,
@@ -3432,7 +3433,7 @@ public static partial class Ole32
 	/// to the caller.
 	/// </param>
 	/// <param name="lplpszUserType">
-	/// Address of <c>LPWSTR</c> pointer variable that receives a pointer to the null-terminated Unicode user-type string. The caller can
+	/// Address of <c>StrPtrUni</c> pointer variable that receives a pointer to the null-terminated Unicode user-type string. The caller can
 	/// specify <c>NULL</c> for this parameter, which indicates that the user type is of no interest. This function allocates memory for
 	/// the string. The caller is responsible for freeing the memory with CoTaskMemFree.
 	/// </param>
@@ -3662,5 +3663,88 @@ public static partial class Ole32
 	{
 		/// <summary>A pointer to an OLESTREAMVTBL instance.</summary>
 		public IntPtr lpstbl;
+	}
+
+	/// <summary>Undocumented.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct OLE1STREAM
+	{
+		/// <summary>Undocumented.</summary>
+		public IntPtr pvt;
+
+		/// <summary>Undocumented.</summary>
+		public HFILE hFile;
+	}
+
+	/// <summary>
+	/// Represents the virtual function table (vtable) for an OLE stream, providing function pointers for reading from and
+	/// writing to the stream.
+	/// </summary>
+	[PInvokeData("ole2.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct OLESTREAMVTBL
+	{
+		/// <summary>
+		/// Represents a delegate or function pointer used to retrieve a value from a COM object.
+		/// </summary>
+		/// <remarks>This field is typically used in interop scenarios where a COM object's virtual table (vtable) 
+		/// provides a method for retrieving a value. The delegate or function pointer must match the  expected signature
+		/// defined by the COM interface.</remarks>
+		public IntPtr Get;
+
+		/// <summary>
+		/// Represents a delegate or function pointer used to set a value in a COM object.
+		/// </summary>
+		/// <remarks>This field is typically used in interop scenarios where a COM object's method is exposed as a
+		/// function pointer. The delegate signature must match the expected method signature defined by the COM
+		/// interface.</remarks>
+		public IntPtr Put;
+
+		/// <summary>
+		/// Represents a delegate that reads data from an OLE stream into a specified buffer.
+		/// </summary>
+		/// <remarks>This delegate is typically used in scenarios involving OLE (Object Linking and Embedding)
+		/// streams,  where data needs to be read in a structured manner. The caller is responsible for ensuring that  the
+		/// buffer specified by <paramref name="pv"/> is large enough to hold the requested number of bytes.</remarks>
+		/// <param name="pstr">A reference to the <see cref="OLESTREAM"/> structure representing the OLE stream to read from.</param>
+		/// <param name="pv">A pointer to the buffer where the data will be written. The buffer must be allocated by the caller.</param>
+		/// <param name="cb">The number of bytes to read from the stream into the buffer.</param>
+		/// <returns>The actual number of bytes read from the stream. This value may be less than <paramref name="cb"/> if the end of
+		/// the stream is reached.</returns>
+		public delegate uint VTblGet(in OLESTREAM pstr, [In, Out] IntPtr pv, uint cb);
+
+		/// <summary>
+		/// Represents a delegate that writes data to an OLE stream.
+		/// </summary>
+		/// <remarks>This delegate is typically used in scenarios involving OLE (Object Linking and Embedding) stream
+		/// operations. The caller is responsible for ensuring that the buffer and stream are valid and properly
+		/// initialized.</remarks>
+		/// <param name="pstr">A reference to the <see cref="OLESTREAM"/> structure that represents the target stream.</param>
+		/// <param name="pv">A pointer to the buffer containing the data to be written to the stream.</param>
+		/// <param name="cb">The number of bytes to write from the buffer to the stream.</param>
+		/// <returns>The number of bytes successfully written to the stream.</returns>
+		public delegate uint VTblPut(in OLESTREAM pstr, [In] IntPtr pv, uint cb);
+	}
+
+	/// <summary>Holds the thread-specific state of OLE initialization and helper methods.</summary>
+	public static class OleThreadState
+	{
+		private static readonly ThreadLocal<HRESULT> _oleInitialized = new(() => OleInitialize(default));
+		private static readonly ThreadLocal<ApartmentState> _oleRequired = new(() =>
+			_oleInitialized.Value.Succeeded ? ApartmentState.STA : (_oleInitialized.Value == HRESULT.RPC_E_CHANGED_MODE ? ApartmentState.MTA : ApartmentState.Unknown));
+
+		/// <summary>Gets the required OLE thread state for the current apartment.</summary>
+		/// <returns>The apartment thread state.</returns>
+		public static ApartmentState State => _oleRequired.Value;
+
+		/// <summary>Ensures that OLE is initialized for a single threaded apartment and throws an exception if not.</summary>
+		public static void EnsureSTA()
+		{
+			switch (_oleRequired.Value)
+			{
+				case ApartmentState.MTA: throw new ThreadStateException("Thread must be an STA.");
+				case ApartmentState.Unknown: throw _oleInitialized.Value.GetException()!;
+			};
+		}
 	}
 }

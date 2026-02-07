@@ -3,7 +3,7 @@
     <AssemblyName>UnitTest.PInvoke.UserEnv</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <!--Reference Include="System.Windows.Forms" />-->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />

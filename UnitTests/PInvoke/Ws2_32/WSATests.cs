@@ -9,7 +9,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class WSATests
 {
-	const string saddr4 = "192.168.0.1";
+	static readonly string saddr4 = TestCaseSources.GetValueOrDefault("IPv4Host", "192.168.0.1")!;
 	const string saddr6 = "2001:db8:aaaa:1::100";
 
 	public static readonly IPAddress? localIP4 = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);

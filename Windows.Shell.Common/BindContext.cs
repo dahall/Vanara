@@ -474,7 +474,7 @@ public class BindContext : IDisposable, IBindCtxV, IBindCtx
 	/// moniker class. (See the StringFromCLSID function.)
 	/// </para>
 	/// </remarks>
-	HRESULT IBindCtxV.GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.Interface)] out object? ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
+	HRESULT IBindCtxV.GetObjectParam([MarshalAs(UnmanagedType.LPWStr)] string pszKey, [MarshalAs(UnmanagedType.IUnknown)] out object? ppunk) => iBindCtx.GetObjectParam(pszKey, out ppunk);
 
 	/// <summary>
 	/// Retrieves an interface pointer to the object associated with the specified key in the bind context's string-keyed table of pointers.

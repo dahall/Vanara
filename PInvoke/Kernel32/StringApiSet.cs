@@ -316,7 +316,109 @@ public static partial class Kernel32
 	// lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/dd317761(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd317761")]
-	public static extern int CompareStringEx(string lpLocaleName, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2, int cchCount2, [Optional] IntPtr lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr lParam);
+	public static extern int CompareStringEx(string lpLocaleName, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2,
+		int cchCount2, [Optional] IntPtr lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr lParam);
+
+	/// <summary>Compares two Unicode (wide character) strings, for a locale specified by name.</summary>
+	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
+	/// <param name="dwCmpFlags">
+	/// <para>
+	/// Flags that indicate how the function compares the two strings. By default, these flags are not set. This parameter can specify a
+	/// combination of any of the following values, or it can be set to 0 to obtain the default behavior.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Flag</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>LINGUISTIC_IGNORECASE</term>
+	/// <term>Ignore case, as linguistically appropriate.</term>
+	/// </item>
+	/// <item>
+	/// <term>LINGUISTIC_IGNOREDIACRITIC</term>
+	/// <term>Ignore nonspacing characters, as linguistically appropriate.</term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_IGNORECASE</term>
+	/// <term>Ignore case. For many scripts (notably Latin scripts), NORM_IGNORECASE coincides with LINGUISTIC_IGNORECASE.</term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_IGNOREKANATYPE</term>
+	/// <term>
+	/// Do not differentiate between hiragana and katakana characters. Corresponding hiragana and katakana characters compare as equal.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_IGNORENONSPACE</term>
+	/// <term>Ignore nonspacing characters. For many scripts (notably Latin scripts), NORM_IGNORENONSPACE coincides with LINGUISTIC_IGNOREDIACRITIC.</term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_IGNORESYMBOLS</term>
+	/// <term>Ignore symbols and punctuation.</term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_IGNOREWIDTH</term>
+	/// <term>
+	/// Ignore the difference between half-width and full-width characters, for example, C a t == cat. The full-width form is a
+	/// formatting distinction used in Chinese and Japanese scripts.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NORM_LINGUISTIC_CASING</term>
+	/// <term>
+	/// Use the default linguistic rules for casing, instead of file system rules. Note that most scenarios for CompareStringEx use this
+	/// flag. This flag does not have to be used when your application calls CompareStringOrdinal.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>SORT_DIGITSASNUMBERS</term>
+	/// <term>Windows 7: Treat digits as numbers during sorting, for example, sort &amp;quot;2&amp;quot; before &amp;quot;10&amp;quot;.</term>
+	/// </item>
+	/// <item>
+	/// <term>SORT_STRINGSORT</term>
+	/// <term>Treat punctuation the same as symbols.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpString1">Pointer to the first string to compare.</param>
+	/// <param name="cchCount1">
+	/// Length of the string indicated by lpString1, excluding the terminating null character. The application can supply a negative
+	/// value if the string is null-terminated. In this case, the function determines the length automatically.
+	/// </param>
+	/// <param name="lpString2">Pointer to the second string to compare.</param>
+	/// <param name="cchCount2">
+	/// Length of the string indicated by lpString2, excluding the terminating null character. The application can supply a negative
+	/// value if the string is null-terminated. In this case, the function determines the length automatically.
+	/// </param>
+	/// <param name="lpVersionInformation">
+	/// <para>
+	/// Pointer to an <c>NLSVERSIONINFOEX</c> structure that contains the version information about the relevant NLS capability; usually
+	/// retrieved from <c>GetNLSVersionEx</c>.
+	/// </para>
+	/// <para><c>Windows Vista, Windows 7:</c> Reserved; must set to <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="lpReserved">Reserved; must set to <c>NULL</c>.</param>
+	/// <param name="lParam">Reserved; must be set to 0.</param>
+	/// <returns>
+	/// <para>
+	/// Returns one of the following values if successful. To maintain the C runtime convention of comparing strings, the value 2 can be
+	/// subtracted from a nonzero return value. Then, the meaning of &lt;0, ==0, and &gt;0 is consistent with the C runtime.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+	/// which can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	// int CompareStringEx( _In_opt_ LPCWSTR lpLocaleName, _In_ DWORD dwCmpFlags, _In_ LPCWSTR lpString1, _In_ int cchCount1, _In_
+	// LPCWSTR lpString2, _In_ int cchCount2, _In_opt_ LPNLSVERSIONINFO lpVersionInformation, _In_opt_ LPVOID lpReserved, _In_opt_ LPARAM
+	// lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/dd317761(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd317761")]
+	public static extern int CompareStringEx(string lpLocaleName, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2,
+		int cchCount2, in NLSVERSIONINFO lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr lParam);
 
 	/// <summary>Compares two Unicode strings to test binary equivalence.</summary>
 	/// <param name="lpString1">Pointer to the first string to compare.</param>
@@ -432,10 +534,11 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ LPTSTR lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
+	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ StrPtrAuto lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
-	public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder? lpDestStr, int cchDest);
+	public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc,
+		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest);
 
 	/// <summary>
 	/// Maps one Unicode string to another, performing the specified transformation. For an overview of the use of the string functions, see Strings.
@@ -491,7 +594,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>The translated string if successful.</returns>
-	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ LPTSTR lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
+	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ StrPtrAuto lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
 	public static string Fold(this string lpSrcStr, STRING_MAPPING dwMapFlags)
 	{
@@ -541,6 +644,7 @@ public static partial class Kernel32
 	// BOOL GetStringTypeA( _In_ LCID Locale, _In_ DWORD dwInfoType, _In_ LPCSTR lpSrcStr, _In_ int cchSrc, _Out_ LPWORD lpCharType); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318117(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318117")]
+	[Obsolete("Use GetStringTypeEx instead.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetStringTypeA(LCID Locale, CHAR_TYPE_INFO dwInfoType, string lpSrcStr, int cchSrc,
 		[In, Out, MarshalAs(UnmanagedType.LPArray)] ushort[] lpCharType);
@@ -660,8 +764,9 @@ public static partial class Kernel32
 	// dwInfoType, LPCSTR lpSrcStr, int cchSrc, LPWORD lpCharType );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winnls.h", MSDNShortId = "e0cd051f-6627-457a-9a83-d71de607f67f")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetStringTypeEx(LCID Locale, CHAR_TYPE_INFO dwInfoType, string lpSrcStr, int cchSrc,
+	public static extern bool GetStringTypeEx(LCID Locale, CHAR_TYPE_INFO dwInfoType, [SizeDef(nameof(cchSrc))] string lpSrcStr, int cchSrc,
 		[In, Out, MarshalAs(UnmanagedType.LPArray)] ushort[] lpCharType);
 
 	/// <summary>
@@ -784,8 +889,9 @@ public static partial class Kernel32
 	// BOOL GetStringTypeW( _In_ DWORD dwInfoType, _In_ LPCWSTR lpSrcStr, _In_ int cchSrc, _Out_ LPWORD lpCharType); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318119(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd318119")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, string lpSrcStr, int cchSrc,
+	public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, [SizeDef(nameof(cchSrc))] string lpSrcStr, int cchSrc,
 		[In, Out, MarshalAs(UnmanagedType.LPArray)] ushort[] lpCharType);
 
 	/// <summary>
@@ -914,11 +1020,11 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// LPWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
-	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [MarshalAs(UnmanagedType.LPStr)] string lpMultiByteStr,
-		int cbMultiByte, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpWideCharStr, int cchWideChar);
+	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In, SizeDef(nameof(cbMultiByte))] IntPtr lpMultiByteStr,
+		[Optional, DefaultParameterValue(-1)] int cbMultiByte, [Out, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr, int cchWideChar);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
@@ -1046,11 +1152,274 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// LPWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
-	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [MarshalAs(UnmanagedType.LPStr)] string lpMultiByteStr,
-		int cbMultiByte, [Out, Optional] byte[]? lpWideCharStr, [Optional] int cchWideChar);
+	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, int cbMultiByte,
+		[Out, Optional, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cchWideChar), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpWideCharStr, [Optional] int cchWideChar);
+
+	/// <summary>
+	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+	/// </summary>
+	/// <param name="CodePage">
+	/// <para>
+	/// Code page to use in performing the conversion. This parameter can be set to the value of any code page that is installed or
+	/// available in the operating system. For a list of code pages, see Code Page Identifiers. Your application can also specify one of
+	/// the values shown in the following table.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CP_ACP</term>
+	/// <term>The system default Windows ANSI code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_MACCP</term>
+	/// <term>The current system Macintosh code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_OEMCP</term>
+	/// <term>The current system OEM code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_SYMBOL</term>
+	/// <term>Symbol code page (42).</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_THREAD_ACP</term>
+	/// <term>The Windows ANSI code page for the current thread.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF7</term>
+	/// <term>UTF-7. Use this value only when forced by a 7-bit transport mechanism. Use of UTF-8 is preferred.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF8</term>
+	/// <term>UTF-8.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags indicating the conversion type. The application can specify a combination of the following values, with MB_PRECOMPOSED
+	/// being the default. MB_PRECOMPOSED and MB_COMPOSITE are mutually exclusive. MB_USEGLYPHCHARS and MB_ERR_INVALID_CHARS can be set
+	/// regardless of the state of the other flags.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>MB_COMPOSITE</term>
+	/// <term>
+	/// Always use decomposed characters, that is, characters in which a base character and one or more nonspacing characters each have
+	/// distinct code point values. For example, &amp;#196; is represented by A + &amp;#168;: LATIN CAPITAL LETTER A (U+0041) + COMBINING
+	/// DIAERESIS (U+0308). Note that this flag cannot be used with MB_PRECOMPOSED.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_ERR_INVALID_CHARS</term>
+	/// <term>
+	/// Fail if an invalid input character is encountered. Starting with Windows Vista, the function does not drop illegal code points if
+	/// the application does not set this flag, but instead replaces illegal sequences with U+FFFD (encoded as appropriate for the
+	/// specified codepage).Windows 2000 with SP4 and later, Windows XP: If this flag is not set, the function silently drops illegal
+	/// code points. A call to GetLastError returns ERROR_NO_UNICODE_TRANSLATION.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_PRECOMPOSED</term>
+	/// <term>
+	/// Default; do not use with MB_COMPOSITE. Always use precomposed characters, that is, characters having a single character value for
+	/// a base or nonspacing character combination. For example, in the character &amp;#232;, the e is the base character and the accent
+	/// grave mark is the nonspacing character. If a single Unicode code point is defined for a character, the application should use it
+	/// instead of a separate base character and a nonspacing character. For example, &amp;#196; is represented by the single Unicode
+	/// code point LATIN CAPITAL LETTER A WITH DIAERESIS (U+00C4).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_USEGLYPHCHARS</term>
+	/// <term>Use glyph characters instead of control characters.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>For the code pages listed below, dwFlags must be set to 0. Otherwise, the function fails with ERROR_INVALID_FLAGS.</para>
+	/// </param>
+	/// <param name="lpMultiByteStr">Pointer to the character string to convert.</param>
+	/// <param name="cbMultiByte">
+	/// <para>
+	/// Size, in bytes, of the string indicated by the lpMultiByteStr parameter. Alternatively, this parameter can be set to -1 if the
+	/// string is null-terminated. Note that, if cbMultiByte is 0, the function fails.
+	/// </para>
+	/// <para>
+	/// If this parameter is -1, the function processes the entire input string, including the terminating null character. Therefore, the
+	/// resulting Unicode string has a terminating null character, and the length returned by the function includes this character.
+	/// </para>
+	/// <para>
+	/// If this parameter is set to a positive integer, the function processes exactly the specified number of bytes. If the provided
+	/// size does not include a terminating null character, the resulting Unicode string is not null-terminated, and the returned length
+	/// does not include this character.
+	/// </para>
+	/// </param>
+	/// <param name="lpWideCharStr">Pointer to a buffer that receives the converted string.</param>
+	/// <param name="cchWideChar">
+	/// Size, in characters, of the buffer indicated by lpWideCharStr. If this value is 0, the function returns the required buffer size,
+	/// in characters, including any terminating null character, and makes no use of the lpWideCharStr buffer.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns the number of characters written to the buffer indicated by lpWideCharStr if successful. If the function succeeds and
+	/// cchWideChar is 0, the return value is the required size, in characters, for the buffer indicated by lpWideCharStr. Also see
+	/// dwFlags for info about how the MB_ERR_INVALID_CHARS flag affects the return value when invalid sequences are input.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+	/// which can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
+	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, [Optional, DefaultParameterValue(-1)] int cbMultiByte,
+		[Out, Optional, SizeDef(nameof(cchWideChar), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] byte[]? lpWideCharStr, [Optional] int cchWideChar);
+
+	/// <summary>
+	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+	/// </summary>
+	/// <param name="CodePage">
+	/// <para>
+	/// Code page to use in performing the conversion. This parameter can be set to the value of any code page that is installed or available
+	/// in the operating system. For a list of code pages, see Code Page Identifiers. Your application can also specify one of the values
+	/// shown in the following table.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CP_ACP</term>
+	/// <term>The system default Windows ANSI code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_MACCP</term>
+	/// <term>The current system Macintosh code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_OEMCP</term>
+	/// <term>The current system OEM code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_SYMBOL</term>
+	/// <term>Symbol code page (42).</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_THREAD_ACP</term>
+	/// <term>The Windows ANSI code page for the current thread.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF7</term>
+	/// <term>UTF-7. Use this value only when forced by a 7-bit transport mechanism. Use of UTF-8 is preferred.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF8</term>
+	/// <term>UTF-8.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpMultiByteStr">Pointer to the character string to convert.</param>
+	/// <param name="cbMultiByte">
+	/// <para>
+	/// Size, in bytes, of the string indicated by the lpMultiByteStr parameter. Alternatively, this parameter can be set to -1 if the string
+	/// is null-terminated. Note that, if cbMultiByte is 0, the function fails.
+	/// </para>
+	/// <para>
+	/// If this parameter is -1, the function processes the entire input string, including the terminating null character. Therefore, the
+	/// resulting Unicode string has a terminating null character, and the length returned by the function includes this character.
+	/// </para>
+	/// <para>
+	/// If this parameter is set to a positive integer, the function processes exactly the specified number of bytes. If the provided size
+	/// does not include a terminating null character, the resulting Unicode string is not null-terminated, and the returned length does not
+	/// include this character.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags indicating the conversion type. The application can specify a combination of the following values, with MB_PRECOMPOSED being
+	/// the default. MB_PRECOMPOSED and MB_COMPOSITE are mutually exclusive. MB_USEGLYPHCHARS and MB_ERR_INVALID_CHARS can be set regardless
+	/// of the state of the other flags.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>MB_COMPOSITE</term>
+	/// <term>
+	/// Always use decomposed characters, that is, characters in which a base character and one or more nonspacing characters each have
+	/// distinct code point values. For example, &amp;#196; is represented by A + &amp;#168;: LATIN CAPITAL LETTER A (U+0041) + COMBINING
+	/// DIAERESIS (U+0308). Note that this flag cannot be used with MB_PRECOMPOSED.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_ERR_INVALID_CHARS</term>
+	/// <term>
+	/// Fail if an invalid input character is encountered. Starting with Windows Vista, the function does not drop illegal code points if the
+	/// application does not set this flag, but instead replaces illegal sequences with U+FFFD (encoded as appropriate for the specified
+	/// codepage).Windows 2000 with SP4 and later, Windows XP: If this flag is not set, the function silently drops illegal code points. A
+	/// call to GetLastError returns ERROR_NO_UNICODE_TRANSLATION.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_PRECOMPOSED</term>
+	/// <term>
+	/// Default; do not use with MB_COMPOSITE. Always use precomposed characters, that is, characters having a single character value for a
+	/// base or nonspacing character combination. For example, in the character &amp;#232;, the e is the base character and the accent grave
+	/// mark is the nonspacing character. If a single Unicode code point is defined for a character, the application should use it instead of
+	/// a separate base character and a nonspacing character. For example, &amp;#196; is represented by the single Unicode code point LATIN
+	/// CAPITAL LETTER A WITH DIAERESIS (U+00C4).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>MB_USEGLYPHCHARS</term>
+	/// <term>Use glyph characters instead of control characters.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>For the code pages listed below, dwFlags must be set to 0. Otherwise, the function fails with ERROR_INVALID_FLAGS.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns the number of characters written to the buffer indicated by lpWideCharStr if successful. If the function succeeds and
+	/// cchWideChar is 0, the return value is the required size, in characters, for the buffer indicated by lpWideCharStr. Also see dwFlags
+	/// for info about how the MB_ERR_INVALID_CHARS flag affects the return value when invalid sequences are input.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>, which
+	/// can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
+	public static byte[] MultiByteToWideChar(uint CodePage, [In] byte[] lpMultiByteStr, int cbMultiByte = -1, MBCONV dwFlags = MBCONV.MB_PRECOMPOSED)
+	{
+		int cchWideChar = Win32Error.ThrowLastErrorIf(MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr), i => i == 0);
+		var buffer = new byte[cchWideChar * 2];
+		Win32Error.ThrowLastErrorIf(MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, buffer, cchWideChar), i => i == 0);
+		return buffer;
+	}
 
 	/// <summary>
 	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
@@ -1205,13 +1574,13 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ LPSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
-	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
-		int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, int cbMultiByte,
-		[Optional, MarshalAs(UnmanagedType.LPStr)] string? lpDefaultChar, [MarshalAs(UnmanagedType.Bool)] out bool lpUsedDefaultChar);
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr,
+		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] StrPtrAnsi lpMultiByteStr,
+		[Optional] int cbMultiByte, [In, Optional] IntPtr lpDefaultChar, [MarshalAs(UnmanagedType.Bool)] out bool lpUsedDefaultChar);
 
 	/// <summary>
 	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
@@ -1366,12 +1735,12 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ LPSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
 	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In][MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
-		int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, int cbMultiByte,
+		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpMultiByteStr, [Optional] int cbMultiByte,
 		IntPtr lpDefaultChar = default, IntPtr lpUsedDefaultChar = default);
 
 	/// <summary>
@@ -1527,10 +1896,469 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ LPSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
 	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [MarshalAs(UnmanagedType.LPWStr)] string lpWideCharStr,
-		int cchWideChar, [Out, Optional] byte[]? lpMultiByteStr, int cbMultiByte, IntPtr lpDefaultChar = default, IntPtr lpUsedDefaultChar = default);
+		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional] byte[]? lpMultiByteStr, [Optional] int cbMultiByte, IntPtr lpDefaultChar = default, IntPtr lpUsedDefaultChar = default);
+
+	/// <summary>
+	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
+	/// character set.
+	/// </summary>
+	/// <param name="CodePage">
+	/// <para>
+	/// Code page to use in performing the conversion. This parameter can be set to the value of any code page that is installed or
+	/// available in the operating system. For a list of code pages, see Code Page Identifiers. Your application can also specify one of
+	/// the values shown in the following table.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CP_ACP</term>
+	/// <term>The system default Windows ANSI code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_MACCP</term>
+	/// <term>The current system Macintosh code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_OEMCP</term>
+	/// <term>The current system OEM code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_SYMBOL</term>
+	/// <term>Windows 2000: Symbol code page (42).</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_THREAD_ACP</term>
+	/// <term>Windows 2000: The Windows ANSI code page for the current thread.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF7</term>
+	/// <term>
+	/// UTF-7. Use this value only when forced by a 7-bit transport mechanism. Use of UTF-8 is preferred. With this value set,
+	/// lpDefaultChar and lpUsedDefaultChar must be set to NULL.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF8</term>
+	/// <term>UTF-8. With this value set, lpDefaultChar and lpUsedDefaultChar must be set to NULL.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags indicating the conversion type. The application can specify a combination of the following values. The function performs
+	/// more quickly when none of these flags is set. The application should specify WC_NO_BEST_FIT_CHARS and WC_COMPOSITECHECK with the
+	/// specific value WC_DEFAULTCHAR to retrieve all possible conversion results. If all three values are not provided, some results
+	/// will be missing.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WC_COMPOSITECHECK</term>
+	/// <term>
+	/// Convert composite characters, consisting of a base character and a nonspacing character, each with different character values.
+	/// Translate these characters to precomposed characters, which have a single character value for a base-nonspacing character
+	/// combination. For example, in the character &amp;#232;, the e is the base character and the accent grave mark is the nonspacing
+	/// character.Your application can combine WC_COMPOSITECHECK with any one of the following flags, with the default being WC_SEPCHARS.
+	/// These flags determine the behavior of the function when no precomposed mapping for a base-nonspacing character combination in a
+	/// Unicode string is available. If none of these flags is supplied, the function behaves as if the WC_SEPCHARS flag is set. For more
+	/// information, see WC_COMPOSITECHECK and related flags in the Remarks section.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_ERR_INVALID_CHARS</term>
+	/// <term>
+	/// Windows Vista and later: Fail (by returning 0 and setting the last-error code to ERROR_NO_UNICODE_TRANSLATION) if an invalid
+	/// input character is encountered. You can retrieve the last-error code with a call to GetLastError. If this flag is not set, the
+	/// function replaces illegal sequences with U+FFFD (encoded as appropriate for the specified codepage) and succeeds by returning the
+	/// length of the converted string. Note that this flag only applies when CodePage is specified as CP_UTF8 or 54936. It cannot be
+	/// used with other code page values.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_NO_BEST_FIT_CHARS</term>
+	/// <term>
+	/// Translate any Unicode characters that do not translate directly to multibyte equivalents to the default character specified by
+	/// lpDefaultChar. In other words, if translating from Unicode to multibyte and back to Unicode again does not yield the same Unicode
+	/// character, the function uses the default character. This flag can be used by itself or in combination with the other defined
+	/// flags.For strings that require validation, such as file, resource, and user names, the application should always use the
+	/// WC_NO_BEST_FIT_CHARS flag. This flag prevents the function from mapping characters to characters that appear similar but have
+	/// very different semantics. In some cases, the semantic change can be extreme. For example, the symbol for &amp;quot;∞&amp;quot;
+	/// (infinity) maps to 8 (eight) in some code pages.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>For the code pages listed below, dwFlags must be 0. Otherwise, the function fails with ERROR_INVALID_FLAGS.</para>
+	/// </param>
+	/// <param name="lpWideCharStr">Pointer to the Unicode string to convert.</param>
+	/// <param name="cchWideChar">
+	/// <para>
+	/// Size, in characters, of the string indicated by lpWideCharStr. Alternatively, this parameter can be set to -1 if the string is
+	/// null-terminated. If cchWideChar is set to 0, the function fails.
+	/// </para>
+	/// <para>
+	/// If this parameter is -1, the function processes the entire input string, including the terminating null character. Therefore, the
+	/// resulting character string has a terminating null character, and the length returned by the function includes this character.
+	/// </para>
+	/// <para>
+	/// If this parameter is set to a positive integer, the function processes exactly the specified number of characters. If the
+	/// provided size does not include a terminating null character, the resulting character string is not null-terminated, and the
+	/// returned length does not include this character.
+	/// </para>
+	/// </param>
+	/// <param name="lpMultiByteStr">Pointer to a buffer that receives the converted string.</param>
+	/// <param name="cbMultiByte">
+	/// Size, in bytes, of the buffer indicated by lpMultiByteStr. If this parameter is set to 0, the function returns the required
+	/// buffer size for lpMultiByteStr and makes no use of the output parameter itself.
+	/// </param>
+	/// <param name="lpDefaultChar">
+	/// <para>
+	/// Pointer to the character to use if a character cannot be represented in the specified code page. The application sets this
+	/// parameter to <c>NULL</c> if the function is to use a system default value. To obtain the system default character, the
+	/// application can call the <c>GetCPInfo</c> or <c>GetCPInfoEx</c> function.
+	/// </para>
+	/// <para>
+	/// For the CP_UTF7 and CP_UTF8 settings for CodePage, this parameter must be set to <c>NULL</c>. Otherwise, the function fails with ERROR_INVALID_PARAMETER.
+	/// </para>
+	/// </param>
+	/// <param name="lpUsedDefaultChar">
+	/// <para>
+	/// Pointer to a flag that indicates if the function has used a default character in the conversion. The flag is set to <c>TRUE</c>
+	/// if one or more characters in the source string cannot be represented in the specified code page. Otherwise, the flag is set to
+	/// <c>FALSE</c>. This parameter can be set to <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// For the CP_UTF7 and CP_UTF8 settings for CodePage, this parameter must be set to <c>NULL</c>. Otherwise, the function fails with ERROR_INVALID_PARAMETER.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If successful, returns the number of bytes written to the buffer pointed to by lpMultiByteStr. If the function succeeds and
+	/// cbMultiByte is 0, the return value is the required size, in bytes, for the buffer indicated by lpMultiByteStr. Also see dwFlags
+	/// for info about how the WC_ERR_INVALID_CHARS flag affects the return value when invalid sequences are input.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>,
+	/// which can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
+	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In] byte[] lpWideCharStr, [Optional, DefaultParameterValue(-1)] int cchWideChar,
+		[Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] byte[]? lpMultiByteStr,
+		[Optional] int cbMultiByte, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? lpDefaultChar, [Out, Optional] StructPointer<BOOL> lpUsedDefaultChar);
+
+	/// <summary>
+	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
+	/// character set.
+	/// </summary>
+	/// <param name="CodePage">
+	/// <para>
+	/// Code page to use in performing the conversion. This parameter can be set to the value of any code page that is installed or available
+	/// in the operating system. For a list of code pages, see Code Page Identifiers. Your application can also specify one of the values
+	/// shown in the following table.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CP_ACP</term>
+	/// <term>The system default Windows ANSI code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_MACCP</term>
+	/// <term>The current system Macintosh code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_OEMCP</term>
+	/// <term>The current system OEM code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_SYMBOL</term>
+	/// <term>Windows 2000: Symbol code page (42).</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_THREAD_ACP</term>
+	/// <term>Windows 2000: The Windows ANSI code page for the current thread.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF7</term>
+	/// <term>
+	/// UTF-7. Use this value only when forced by a 7-bit transport mechanism. Use of UTF-8 is preferred. With this value set, lpDefaultChar
+	/// and lpUsedDefaultChar must be set to NULL.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF8</term>
+	/// <term>UTF-8. With this value set, lpDefaultChar and lpUsedDefaultChar must be set to NULL.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpWideCharStr">Pointer to the Unicode string to convert.</param>
+	/// <param name="cchWideChar">
+	/// <para>
+	/// Size, in characters, of the string indicated by lpWideCharStr. Alternatively, this parameter can be set to -1 if the string is
+	/// null-terminated. If cchWideChar is set to 0, the function fails.
+	/// </para>
+	/// <para>
+	/// If this parameter is -1, the function processes the entire input string, including the terminating null character. Therefore, the
+	/// resulting character string has a terminating null character, and the length returned by the function includes this character.
+	/// </para>
+	/// <para>
+	/// If this parameter is set to a positive integer, the function processes exactly the specified number of characters. If the provided
+	/// size does not include a terminating null character, the resulting character string is not null-terminated, and the returned length
+	/// does not include this character.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags indicating the conversion type. The application can specify a combination of the following values. The function performs more
+	/// quickly when none of these flags is set. The application should specify WC_NO_BEST_FIT_CHARS and WC_COMPOSITECHECK with the specific
+	/// value WC_DEFAULTCHAR to retrieve all possible conversion results. If all three values are not provided, some results will be missing.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WC_COMPOSITECHECK</term>
+	/// <term>
+	/// Convert composite characters, consisting of a base character and a nonspacing character, each with different character values.
+	/// Translate these characters to precomposed characters, which have a single character value for a base-nonspacing character
+	/// combination. For example, in the character &amp;#232;, the e is the base character and the accent grave mark is the nonspacing
+	/// character.Your application can combine WC_COMPOSITECHECK with any one of the following flags, with the default being WC_SEPCHARS.
+	/// These flags determine the behavior of the function when no precomposed mapping for a base-nonspacing character combination in a
+	/// Unicode string is available. If none of these flags is supplied, the function behaves as if the WC_SEPCHARS flag is set. For more
+	/// information, see WC_COMPOSITECHECK and related flags in the Remarks section.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_ERR_INVALID_CHARS</term>
+	/// <term>
+	/// Windows Vista and later: Fail (by returning 0 and setting the last-error code to ERROR_NO_UNICODE_TRANSLATION) if an invalid input
+	/// character is encountered. You can retrieve the last-error code with a call to GetLastError. If this flag is not set, the function
+	/// replaces illegal sequences with U+FFFD (encoded as appropriate for the specified codepage) and succeeds by returning the length of
+	/// the converted string. Note that this flag only applies when CodePage is specified as CP_UTF8 or 54936. It cannot be used with other
+	/// code page values.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_NO_BEST_FIT_CHARS</term>
+	/// <term>
+	/// Translate any Unicode characters that do not translate directly to multibyte equivalents to the default character specified by
+	/// lpDefaultChar. In other words, if translating from Unicode to multibyte and back to Unicode again does not yield the same Unicode
+	/// character, the function uses the default character. This flag can be used by itself or in combination with the other defined
+	/// flags.For strings that require validation, such as file, resource, and user names, the application should always use the
+	/// WC_NO_BEST_FIT_CHARS flag. This flag prevents the function from mapping characters to characters that appear similar but have very
+	/// different semantics. In some cases, the semantic change can be extreme. For example, the symbol for &amp;quot;∞&amp;quot; (infinity)
+	/// maps to 8 (eight) in some code pages.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>For the code pages listed below, dwFlags must be 0. Otherwise, the function fails with ERROR_INVALID_FLAGS.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If successful, returns the number of bytes written to the buffer pointed to by lpMultiByteStr. If the function succeeds and
+	/// cbMultiByte is 0, the return value is the required size, in bytes, for the buffer indicated by lpMultiByteStr. Also see dwFlags for
+	/// info about how the WC_ERR_INVALID_CHARS flag affects the return value when invalid sequences are input.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>, which
+	/// can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
+	public static byte[] WideCharToMultiByte(uint CodePage, [In] byte[] lpWideCharStr, [Optional, DefaultParameterValue(-1)] int cchWideChar, [Optional] WCCONV dwFlags)
+	{
+		var cbMultiByte = Win32Error.ThrowLastErrorIf(WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar), i => i == 0);
+		var buf = new byte[cbMultiByte];
+		Win32Error.ThrowLastErrorIf(WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, buf, buf.Length), i => i == 0);
+		return buf;
+	}
+
+	/// <summary>
+	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte
+	/// character set.
+	/// </summary>
+	/// <param name="CodePage">
+	/// <para>
+	/// Code page to use in performing the conversion. This parameter can be set to the value of any code page that is installed or available
+	/// in the operating system. For a list of code pages, see Code Page Identifiers. Your application can also specify one of the values
+	/// shown in the following table.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CP_ACP</term>
+	/// <term>The system default Windows ANSI code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_MACCP</term>
+	/// <term>The current system Macintosh code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_OEMCP</term>
+	/// <term>The current system OEM code page.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_SYMBOL</term>
+	/// <term>Windows 2000: Symbol code page (42).</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_THREAD_ACP</term>
+	/// <term>Windows 2000: The Windows ANSI code page for the current thread.</term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF7</term>
+	/// <term>
+	/// UTF-7. Use this value only when forced by a 7-bit transport mechanism. Use of UTF-8 is preferred. With this value set, lpDefaultChar
+	/// and lpUsedDefaultChar must be set to NULL.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CP_UTF8</term>
+	/// <term>UTF-8. With this value set, lpDefaultChar and lpUsedDefaultChar must be set to NULL.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpWideCharStr">Pointer to the Unicode string to convert.</param>
+	/// <param name="cchWideChar">
+	/// <para>
+	/// Size, in characters, of the string indicated by lpWideCharStr. Alternatively, this parameter can be set to -1 if the string is
+	/// null-terminated. If cchWideChar is set to 0, the function fails.
+	/// </para>
+	/// <para>
+	/// If this parameter is -1, the function processes the entire input string, including the terminating null character. Therefore, the
+	/// resulting character string has a terminating null character, and the length returned by the function includes this character.
+	/// </para>
+	/// <para>
+	/// If this parameter is set to a positive integer, the function processes exactly the specified number of characters. If the provided
+	/// size does not include a terminating null character, the resulting character string is not null-terminated, and the returned length
+	/// does not include this character.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags indicating the conversion type. The application can specify a combination of the following values. The function performs more
+	/// quickly when none of these flags is set. The application should specify WC_NO_BEST_FIT_CHARS and WC_COMPOSITECHECK with the specific
+	/// value WC_DEFAULTCHAR to retrieve all possible conversion results. If all three values are not provided, some results will be missing.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>WC_COMPOSITECHECK</term>
+	/// <term>
+	/// Convert composite characters, consisting of a base character and a nonspacing character, each with different character values.
+	/// Translate these characters to precomposed characters, which have a single character value for a base-nonspacing character
+	/// combination. For example, in the character &amp;#232;, the e is the base character and the accent grave mark is the nonspacing
+	/// character.Your application can combine WC_COMPOSITECHECK with any one of the following flags, with the default being WC_SEPCHARS.
+	/// These flags determine the behavior of the function when no precomposed mapping for a base-nonspacing character combination in a
+	/// Unicode string is available. If none of these flags is supplied, the function behaves as if the WC_SEPCHARS flag is set. For more
+	/// information, see WC_COMPOSITECHECK and related flags in the Remarks section.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_ERR_INVALID_CHARS</term>
+	/// <term>
+	/// Windows Vista and later: Fail (by returning 0 and setting the last-error code to ERROR_NO_UNICODE_TRANSLATION) if an invalid input
+	/// character is encountered. You can retrieve the last-error code with a call to GetLastError. If this flag is not set, the function
+	/// replaces illegal sequences with U+FFFD (encoded as appropriate for the specified codepage) and succeeds by returning the length of
+	/// the converted string. Note that this flag only applies when CodePage is specified as CP_UTF8 or 54936. It cannot be used with other
+	/// code page values.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>WC_NO_BEST_FIT_CHARS</term>
+	/// <term>
+	/// Translate any Unicode characters that do not translate directly to multibyte equivalents to the default character specified by
+	/// lpDefaultChar. In other words, if translating from Unicode to multibyte and back to Unicode again does not yield the same Unicode
+	/// character, the function uses the default character. This flag can be used by itself or in combination with the other defined
+	/// flags.For strings that require validation, such as file, resource, and user names, the application should always use the
+	/// WC_NO_BEST_FIT_CHARS flag. This flag prevents the function from mapping characters to characters that appear similar but have very
+	/// different semantics. In some cases, the semantic change can be extreme. For example, the symbol for &amp;quot;∞&amp;quot; (infinity)
+	/// maps to 8 (eight) in some code pages.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>For the code pages listed below, dwFlags must be 0. Otherwise, the function fails with ERROR_INVALID_FLAGS.</para>
+	/// </param>
+	/// <param name="lpDefaultChar">
+	/// <para>
+	/// Pointer to the character to use if a character cannot be represented in the specified code page. The application sets this parameter
+	/// to <c>NULL</c> if the function is to use a system default value. To obtain the system default character, the application can call the
+	/// <c>GetCPInfo</c> or <c>GetCPInfoEx</c> function.
+	/// </para>
+	/// <para>
+	/// For the CP_UTF7 and CP_UTF8 settings for CodePage, this parameter must be set to <c>NULL</c>. Otherwise, the function fails with ERROR_INVALID_PARAMETER.
+	/// </para>
+	/// </param>
+	/// <param name="lpUsedDefaultChar">
+	/// <para>
+	/// Pointer to a flag that indicates if the function has used a default character in the conversion. The flag is set to <c>TRUE</c> if
+	/// one or more characters in the source string cannot be represented in the specified code page. Otherwise, the flag is set to
+	/// <c>FALSE</c>. This parameter can be set to <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// For the CP_UTF7 and CP_UTF8 settings for CodePage, this parameter must be set to <c>NULL</c>. Otherwise, the function fails with ERROR_INVALID_PARAMETER.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If successful, returns the number of bytes written to the buffer pointed to by lpMultiByteStr. If the function succeeds and
+	/// cbMultiByte is 0, the return value is the required size, in bytes, for the buffer indicated by lpMultiByteStr. Also see dwFlags for
+	/// info about how the WC_ERR_INVALID_CHARS flag affects the return value when invalid sequences are input.
+	/// </para>
+	/// <para>
+	/// The function returns 0 if it does not succeed. To get extended error information, the application can call <c>GetLastError</c>, which
+	/// can return one of the following error codes:
+	/// </para>
+	/// </returns>
+	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
+	public static byte[] WideCharToMultiByte(uint CodePage, [In] byte[] lpWideCharStr, [Optional, DefaultParameterValue(-1)] int cchWideChar, [Optional] WCCONV dwFlags, [Optional] char? lpDefaultChar, out bool? lpUsedDefaultChar)
+	{
+		lpUsedDefaultChar = null;
+		var cbMultiByte = Win32Error.ThrowLastErrorIf(WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar), i => i == 0);
+		var buf = new byte[cbMultiByte];
+		var utf7or8 = CodePage is CP_UTF7 or CP_UTF8;
+		byte[]? charbuf = lpDefaultChar is null || utf7or8 ? null : Encoding.GetEncoding((int)CodePage).GetBytes([lpDefaultChar.Value]);
+		BOOL usedDef = false;
+		using PinnedObject pUsedDef = new(usedDef);
+		Win32Error.ThrowLastErrorIf(WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, buf, buf.Length, charbuf, utf7or8 ? IntPtr.Zero : pUsedDef), i => i == 0);
+		if (!utf7or8) lpUsedDefaultChar = usedDef;
+		return buf;
+	}
 }

@@ -3,7 +3,7 @@
 public static partial class Kernel32
 {
 	/// <summary>
-	/// Applications implement this callback if they call the SetThreadpoolCallbackCleanupGroup function to specify the callback to use
+	/// Applications implement this callback if they call the <see cref="SetThreadpoolCallbackCleanupGroup"/> function to specify the callback to use
 	/// when CloseThreadpoolCleanupGroup is called.
 	/// </summary>
 	/// <param name="ObjectContext">Optional application-defined data specified during creation of the object.</param>
@@ -29,8 +29,8 @@ public static partial class Kernel32
 	/// <param name="NumberOfBytesTransferred">The number of bytes transferred during the I/O operation that has completed.</param>
 	/// <param name="Io">A TP_IO structure that defines the I/O completion object that generated the callback.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void IoCompletionCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, IntPtr Overlapped, uint IoResult,
-		nuint NumberOfBytesTransferred, PTP_IO Io);
+	public delegate void IoCompletionCallback([In, Out] PTP_CALLBACK_INSTANCE Instance, [In, Out, Optional] IntPtr Context, [In, Out, Optional] IntPtr Overlapped,
+		uint IoResult, nuint NumberOfBytesTransferred, [In, Out] PTP_IO Io);
 
 	/// <summary>Applications implement this callback if they call the TrySubmitThreadpoolCallback function to start a worker thread.</summary>
 	/// <param name="Instance">
@@ -38,7 +38,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="Context">The application-defined data.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void SimpleCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context);
+	public delegate void SimpleCallback([In, Out] PTP_CALLBACK_INSTANCE Instance, [In, Out, Optional] IntPtr Context);
 
 	/// <summary>
 	/// Applications implement this callback if they call the SetThreadpoolTimer function to start a worker thread for the timer object.
@@ -49,7 +49,7 @@ public static partial class Kernel32
 	/// <param name="Context">The application-defined data.</param>
 	/// <param name="Timer">A TP_TIMER structure that defines the timer object that generated the callback.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void TimerCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_TIMER Timer);
+	public delegate void TimerCallback([In, Out] PTP_CALLBACK_INSTANCE Instance, [In, Out, Optional] IntPtr Context, PTP_TIMER Timer);
 
 	/// <summary>
 	/// Applications implement this callback if they call the SetThreadpoolWait function to start a worker thread for the wait object.
@@ -63,7 +63,7 @@ public static partial class Kernel32
 	/// The result of the wait operation. This parameter can be one of the following values from WaitForMultipleObjects: WAIT_OBJECT_0, WAIT_TIMEOUT
 	/// </param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void WaitCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WAIT Wait, uint WaitResult);
+	public delegate void WaitCallback([In, Out] PTP_CALLBACK_INSTANCE Instance, [In, Out, Optional] IntPtr Context, [In, Out] PTP_WAIT Wait, uint WaitResult);
 
 	/// <summary>
 	/// Applications implement this callback if they call the SubmitThreadpoolWork function to start a worker thread for the work object.
@@ -74,7 +74,7 @@ public static partial class Kernel32
 	/// <param name="Context">The application-defined data.</param>
 	/// <param name="Work">A TP_WORK structure that defines the work object that generated the callback.</param>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate void WorkCallback(PTP_CALLBACK_INSTANCE Instance, IntPtr Context, PTP_WORK Work);
+	public delegate void WorkCallback([In, Out] PTP_CALLBACK_INSTANCE Instance, [In, Out, Optional] IntPtr Context, [In, Out] PTP_WORK Work);
 
 	/// <summary/>
 	[Flags]
@@ -125,7 +125,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681981")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CallbackMayRunLong(PTP_CALLBACK_INSTANCE pci);
+	public static extern bool CallbackMayRunLong([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci);
 
 	/// <summary>Cancels the notification from the <c>StartThreadpoolIo</c> function.</summary>
 	/// <param name="pio">
@@ -135,7 +135,7 @@ public static partial class Kernel32
 	// VOID WINAPI CancelThreadpoolIo( _Inout_ PTP_IO pio); https://msdn.microsoft.com/en-us/library/windows/desktop/ms681983(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681983")]
-	public static extern void CancelThreadpoolIo(PTP_IO pio);
+	public static extern void CancelThreadpoolIo([In, Out, AddAsMember] PTP_IO pio);
 
 	/// <summary>Closes the specified thread pool.</summary>
 	/// <param name="ptpp">
@@ -145,7 +145,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpool( _Inout_ PTP_POOL ptpp); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682030(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682030")]
-	public static extern void CloseThreadpool(PTP_POOL ptpp);
+	public static extern void CloseThreadpool([In, Out] PTP_POOL ptpp);
 
 	/// <summary>Closes the specified cleanup group.</summary>
 	/// <param name="ptpcg">
@@ -155,7 +155,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpoolCleanupGroup( _Inout_ PTP_CLEANUP_GROUP ptpcg); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682033(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682033")]
-	public static extern void CloseThreadpoolCleanupGroup(PTP_CLEANUP_GROUP ptpcg);
+	public static extern void CloseThreadpoolCleanupGroup([In, Out] PTP_CLEANUP_GROUP ptpcg);
 
 	/// <summary>
 	/// Releases the members of the specified cleanup group, waits for all callback functions to complete, and optionally cancels any
@@ -177,7 +177,7 @@ public static partial class Kernel32
 	// PVOID pvCleanupContext); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682036(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682036")]
-	public static extern void CloseThreadpoolCleanupGroupMembers(PTP_CLEANUP_GROUP ptpcg, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks, [Optional] IntPtr pvCleanupContext);
+	public static extern void CloseThreadpoolCleanupGroupMembers([In, Out] PTP_CLEANUP_GROUP ptpcg, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks, [In, Out, Optional] IntPtr pvCleanupContext);
 
 	/// <summary>Releases the specified I/O completion object.</summary>
 	/// <param name="pio">
@@ -187,7 +187,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpoolIo( _Inout_ PTP_IO pio); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682038(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682038")]
-	public static extern void CloseThreadpoolIo(PTP_IO pio);
+	public static extern void CloseThreadpoolIo([In, Out] PTP_IO pio);
 
 	/// <summary>Releases the specified timer object.</summary>
 	/// <param name="pti">
@@ -197,7 +197,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpoolTimer( _Inout_ PTP_TIMER pti); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682040(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682040")]
-	public static extern void CloseThreadpoolTimer(PTP_TIMER pti);
+	public static extern void CloseThreadpoolTimer([In, Out] PTP_TIMER pti);
 
 	/// <summary>Releases the specified wait object.</summary>
 	/// <param name="pwa">
@@ -207,7 +207,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpoolWait( _Inout_ PTP_WAIT pwa); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682042(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682042")]
-	public static extern void CloseThreadpoolWait(PTP_WAIT pwa);
+	public static extern void CloseThreadpoolWait([In, Out] PTP_WAIT pwa);
 
 	/// <summary>Releases the specified work object.</summary>
 	/// <param name="pwk">
@@ -217,7 +217,7 @@ public static partial class Kernel32
 	// VOID WINAPI CloseThreadpoolWork( _Inout_ PTP_WORK pwk); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682043(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682043")]
-	public static extern void CloseThreadpoolWork(PTP_WORK pwk);
+	public static extern void CloseThreadpoolWork([In, Out] PTP_WORK pwk);
 
 	/// <summary>Allocates a new pool of threads to execute callbacks.</summary>
 	/// <param name="reserved">This parameter is reserved and must be NULL.</param>
@@ -247,6 +247,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("threadpoolapiset.h", MSDNShortId = "cc00d7bf-ac52-44ff-a6a8-76c8eaace5e6")]
 	// public static extern PTP_POOL CreateThreadpool(IntPtr reserved);
+	[return: AddAsCtor]
 	public static extern SafePTP_POOL CreateThreadpool(IntPtr reserved = default);
 
 	/// <summary>Creates a cleanup group that applications can use to track one or more thread pool callbacks.</summary>
@@ -260,6 +261,7 @@ public static partial class Kernel32
 	// PTP_CLEANUP_GROUP WINAPI CreateThreadpoolCleanupGroup(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682462(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682462")]
+	[return: AddAsCtor]
 	public static extern SafePTP_CLEANUP_GROUP CreateThreadpoolCleanupGroup();
 
 	/// <summary>Creates a new I/O completion object.</summary>
@@ -286,7 +288,8 @@ public static partial class Kernel32
 	// PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682464(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682464")]
-	public static extern SafePTP_IO CreateThreadpoolIo(HFILE fl, IoCompletionCallback pfnio, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+	[return: AddAsCtor]
+	public static extern SafePTP_IO CreateThreadpoolIo([In] HFILE fl, [In] IoCompletionCallback pfnio, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>Creates a new timer object.</summary>
 	/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>
@@ -308,7 +311,8 @@ public static partial class Kernel32
 	// PTP_TIMER WINAPI CreateThreadpoolTimer( _In_ TimerCallback pfnti, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682466(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682466")]
-	public static extern SafePTP_TIMER CreateThreadpoolTimer(TimerCallback pfnti, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	[return: AddAsCtor]
+	public static extern SafePTP_TIMER CreateThreadpoolTimer([In] TimerCallback pfnti, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>Creates a new wait object.</summary>
 	/// <param name="pfnwa">The callback function to call when the wait completes or times out. For details, see <c>WaitCallback</c>.</param>
@@ -330,7 +334,8 @@ public static partial class Kernel32
 	// PTP_WAIT WINAPI CreateThreadpoolWait( _In_ WaitCallback pfnwa, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682474(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682474")]
-	public static extern SafePTP_WAIT CreateThreadpoolWait(WaitCallback pfnwa, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	[return: AddAsCtor]
+	public static extern SafePTP_WAIT CreateThreadpoolWait([In] WaitCallback pfnwa, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>Creates a new work object.</summary>
 	/// <param name="pfnwk">
@@ -355,7 +360,8 @@ public static partial class Kernel32
 	// PTP_WORK WINAPI CreateThreadpoolWork( _In_ WorkCallback pfnwk, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682478(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682478")]
-	public static extern SafePTP_WORK CreateThreadpoolWork(WorkCallback pfnwk, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	[return: AddAsCtor]
+	public static extern SafePTP_WORK CreateThreadpoolWork([In] WorkCallback pfnwk, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>
 	/// Removes the association between the currently executing callback function and the object that initiated the callback. The current
@@ -368,7 +374,7 @@ public static partial class Kernel32
 	// VOID WINAPI DisassociateCurrentThreadFromCallback( _Inout_ PTP_CALLBACK_INSTANCE pci); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682581(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682581")]
-	public static extern void DisassociateCurrentThreadFromCallback(PTP_CALLBACK_INSTANCE pci);
+	public static extern void DisassociateCurrentThreadFromCallback([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci);
 
 	/// <summary>Specifies the DLL that the thread pool will unload when the current callback completes.</summary>
 	/// <param name="pci">
@@ -379,14 +385,14 @@ public static partial class Kernel32
 	// VOID WINAPI FreeLibraryWhenCallbackReturns( _Inout_ PTP_CALLBACK_INSTANCE pci, _In_ HMODULE mod); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683154(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683154")]
-	public static extern void FreeLibraryWhenCallbackReturns(PTP_CALLBACK_INSTANCE pci, HINSTANCE mod);
+	public static extern void FreeLibraryWhenCallbackReturns([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci, [In] HINSTANCE mod);
 
 	/// <summary>Initializes a callback environment.</summary>
 	/// <param name="pcbe">A <c>TP_CALLBACK_ENVIRON</c> structure that defines a callback environment.</param>
 	/// <returns>This function does not return a value.</returns>
 	// VOID InitializeThreadpoolEnvironment( _Out_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683486(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683486")]
-	public static void InitializeThreadpoolEnvironment(out PTP_CALLBACK_ENVIRON pcbe) => pcbe = new PTP_CALLBACK_ENVIRON();
+	public static void InitializeThreadpoolEnvironment(out PTP_CALLBACK_ENVIRON pcbe) => pcbe = new();
 
 	/// <summary>Determines whether the specified timer object is currently set.</summary>
 	/// <param name="pti">
@@ -397,7 +403,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684133")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsThreadpoolTimerSet(PTP_TIMER pti);
+	public static extern bool IsThreadpoolTimerSet([In, Out, AddAsMember] PTP_TIMER pti);
 
 	/// <summary>Specifies the critical section that the thread pool will release when the current callback completes.</summary>
 	/// <param name="pci">
@@ -408,7 +414,7 @@ public static partial class Kernel32
 	// VOID WINAPI LeaveCriticalSectionWhenCallbackReturns( _Inout_ PTP_CALLBACK_INSTANCE pci, _Inout_ PCRITICAL_SECTION pcs); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684171(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684171")]
-	public static extern void LeaveCriticalSectionWhenCallbackReturns(PTP_CALLBACK_INSTANCE pci, ref CRITICAL_SECTION pcs);
+	public static extern void LeaveCriticalSectionWhenCallbackReturns([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci, ref CRITICAL_SECTION pcs);
 
 	/// <summary>Retrieves the stack reserve and commit sizes for threads in the specified thread pool.</summary>
 	/// <param name="ptpp">
@@ -423,7 +429,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405508")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryThreadpoolStackInformation(PTP_POOL ptpp, out TP_POOL_STACK_INFORMATION ptpsi);
+	public static extern bool QueryThreadpoolStackInformation([In] PTP_POOL ptpp, out TP_POOL_STACK_INFORMATION ptpsi);
 
 	/// <summary>Specifies the mutex that the thread pool will release when the current callback completes.</summary>
 	/// <param name="pci">
@@ -434,7 +440,7 @@ public static partial class Kernel32
 	// VOID WINAPI ReleaseMutexWhenCallbackReturns( _Inout_ PTP_CALLBACK_INSTANCE pci, _In_ HANDLE mut); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685070(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685070")]
-	public static extern void ReleaseMutexWhenCallbackReturns(PTP_CALLBACK_INSTANCE pci, SafeMutexHandle mut);
+	public static extern void ReleaseMutexWhenCallbackReturns([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci, [In] SafeMutexHandle mut);
 
 	/// <summary>Specifies the semaphore that the thread pool will release when the current callback completes.</summary>
 	/// <param name="pci">
@@ -446,7 +452,7 @@ public static partial class Kernel32
 	// VOID WINAPI ReleaseSemaphoreWhenCallbackReturns( _Inout_ PTP_CALLBACK_INSTANCE pci, _In_ HANDLE sem, _In_ DWORD crel); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685073(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685073")]
-	public static extern void ReleaseSemaphoreWhenCallbackReturns(PTP_CALLBACK_INSTANCE pci, SafeSemaphoreHandle sem, uint crel);
+	public static extern void ReleaseSemaphoreWhenCallbackReturns([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci, [In] SafeSemaphoreHandle sem, uint crel);
 
 	/// <summary>Specifies the event that the thread pool will set when the current callback completes.</summary>
 	/// <param name="pci">
@@ -457,7 +463,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetEventWhenCallbackReturns( _Inout_ PTP_CALLBACK_INSTANCE pci, _In_ HANDLE evt); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686214(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686214")]
-	public static extern void SetEventWhenCallbackReturns(PTP_CALLBACK_INSTANCE pci, SafeEventHandle evt);
+	public static extern void SetEventWhenCallbackReturns([In, Out, AddAsMember] PTP_CALLBACK_INSTANCE pci, [In] HEVENT evt);
 
 	/// <summary>Associates the specified cleanup group with the specified callback environment.</summary>
 	/// <param name="pcbe">
@@ -475,7 +481,7 @@ public static partial class Kernel32
 	// VOID SetThreadpoolCallbackCleanupGroup( _Inout_ PTP_CALLBACK_ENVIRON pcbe, _In_ PTP_CLEANUP_GROUP ptpcg, _In_opt_
 	// PTP_CLEANUP_GROUP_CANCEL_CALLBACK pfng); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686255(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686255")]
-	public static void SetThreadpoolCallbackCleanupGroup(this PTP_CALLBACK_ENVIRON pcbe, PTP_CLEANUP_GROUP ptpcg, [Optional] CleanupGroupCancelCallback? pfng)
+	public static void SetThreadpoolCallbackCleanupGroup(this PTP_CALLBACK_ENVIRON pcbe, [In] PTP_CLEANUP_GROUP ptpcg, [In, Optional] CleanupGroupCancelCallback? pfng)
 	{
 		pcbe.CleanupGroup = ptpcg;
 		pcbe.CleanupGroupCancelCallback = pfng;
@@ -490,7 +496,7 @@ public static partial class Kernel32
 	/// <returns>This function does not return a value.</returns>
 	// VOID SetThreadpoolCallbackLibrary( _Inout_ PTP_CALLBACK_ENVIRON pcbe, _In_ PVOID mod); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686258(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686258")]
-	public static void SetThreadpoolCallbackLibrary(this PTP_CALLBACK_ENVIRON pcbe, HINSTANCE mod) => pcbe.RaceDll = mod;
+	public static void SetThreadpoolCallbackLibrary(this PTP_CALLBACK_ENVIRON pcbe, [In] HINSTANCE mod) => pcbe.RaceDll = mod;
 
 	/// <summary>Specifies that the callback should run on a persistent thread.</summary>
 	/// <param name="pcbe">
@@ -513,7 +519,7 @@ public static partial class Kernel32
 	/// <returns>This function does not return a value.</returns>
 	// VOID SetThreadpoolCallbackPool( _Inout_ PTP_CALLBACK_ENVIRON pcbe, _In_ PTP_POOL ptpp); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686261(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686261")]
-	public static void SetThreadpoolCallbackPool(this PTP_CALLBACK_ENVIRON pcbe, PTP_POOL ptpp) => pcbe.Pool = ptpp;
+	public static void SetThreadpoolCallbackPool(this PTP_CALLBACK_ENVIRON pcbe, [In] PTP_POOL ptpp) => pcbe.Pool = ptpp;
 
 	/// <summary>Specifies the priority of a callback function relative to other work items in the same thread pool.</summary>
 	/// <param name="pcbe">
@@ -579,7 +585,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405520")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolStackInformation(PTP_POOL ptpp, in TP_POOL_STACK_INFORMATION ptpsi);
+	public static extern bool SetThreadpoolStackInformation([In, Out, AddAsMember] PTP_POOL ptpp, in TP_POOL_STACK_INFORMATION ptpsi);
 
 	/// <summary>Sets the maximum number of threads that the specified thread pool can allocate to process callbacks.</summary>
 	/// <param name="ptpp">
@@ -590,7 +596,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetThreadpoolThreadMaximum( _Inout_ PTP_POOL ptpp, _In_ DWORD cthrdMost); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686266(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686266")]
-	public static extern void SetThreadpoolThreadMaximum(PTP_POOL ptpp, uint cthrdMost);
+	public static extern void SetThreadpoolThreadMaximum([In, Out, AddAsMember] PTP_POOL ptpp, uint cthrdMost);
 
 	/// <summary>Sets the minimum number of threads that the specified thread pool must make available to process callbacks.</summary>
 	/// <param name="ptpp">
@@ -605,7 +611,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686268")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolThreadMinimum(PTP_POOL ptpp, uint cthrdMic);
+	public static extern bool SetThreadpoolThreadMinimum([In, Out, AddAsMember] PTP_POOL ptpp, uint cthrdMic);
 
 	/// <summary>
 	/// Sets the timer object—, replacing the previous timer, if any. A worker thread calls the timer object's callback after the
@@ -639,41 +645,7 @@ public static partial class Kernel32
 	// msWindowLength); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686271(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686271")]
-	public static extern void SetThreadpoolTimer(PTP_TIMER pti, in FILETIME pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
-
-	/// <summary>
-	/// Sets the timer object—, replacing the previous timer, if any. A worker thread calls the timer object's callback after the
-	/// specified timeout expires.
-	/// </summary>
-	/// <param name="pti">
-	/// A pointer to a <c>TP_TIMER</c> structure that defines the timer object to set. The <c>CreateThreadpoolTimer</c> function returns
-	/// this structure.
-	/// </param>
-	/// <param name="pftDueTime">
-	/// <para>
-	/// A pointer to a <c>FILETIME</c> structure that specifies the absolute or relative time at which the timer should expire. If
-	/// positive or zero, it indicates the absolute time since January 1, 1601 (UTC), measured in 100 nanosecond units. If negative, it
-	/// indicates the amount of time to wait relative to the current time. For more information about time values, see File Times.
-	/// </para>
-	/// <para>
-	/// If this parameter is NULL, the timer object will cease to queue new callbacks (but callbacks already queued will still occur).
-	/// Note that if this parameter is zero, the timer will expire immediately.
-	/// </para>
-	/// </param>
-	/// <param name="msPeriod">
-	/// The timer period, in milliseconds. If this parameter is zero, the timer is signaled once. If this parameter is greater than zero,
-	/// the timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled.
-	/// </param>
-	/// <param name="msWindowLength">
-	/// The maximum amount of time the system can delay before calling the timer callback. If this parameter is set, the system can batch
-	/// calls to conserve power.
-	/// </param>
-	/// <returns>This function does not return a value.</returns>
-	// VOID WINAPI SetThreadpoolTimer( _Inout_ PTP_TIMER pti, _In_opt_ PFILETIME pftDueTime, _In_ DWORD msPeriod, _In_opt_ DWORD
-	// msWindowLength); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686271(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms686271")]
-	public static extern void SetThreadpoolTimer(PTP_TIMER pti, [In, Optional] IntPtr pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
+	public static extern void SetThreadpoolTimer([In, Out, AddAsMember] PTP_TIMER pti, [In, Optional] PFILETIME? pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
 
 	/// <summary>
 	/// Sets the timer object—, replacing the previous timer, if any. A worker thread calls the timer object's callback after the
@@ -711,45 +683,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "dn894018")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolTimerEx(PTP_TIMER pti, in FILETIME pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
-
-	/// <summary>
-	/// Sets the timer object—, replacing the previous timer, if any. A worker thread calls the timer object's callback after the
-	/// specified timeout expires.
-	/// </summary>
-	/// <param name="pti">
-	/// A pointer to a <c>TP_TIMER</c> structure that defines the timer object to set. The <c>CreateThreadpoolTimer</c> function returns
-	/// this structure.
-	/// </param>
-	/// <param name="pftDueTime">
-	/// <para>
-	/// A pointer to a <c>FILETIME</c> structure that specifies the absolute or relative time at which the timer should expire. If
-	/// positive or zero, it indicates the absolute time since January 1, 1601 (UTC), measured in 100 nanosecond units. If negative, it
-	/// indicates the amount of time to wait relative to the current time. For more information about time values, see File Times.
-	/// </para>
-	/// <para>
-	/// If this parameter is NULL, the timer object will cease to queue new callbacks (but callbacks already queued will still occur).
-	/// Note that if this parameter is zero, the timer will expire immediately.
-	/// </para>
-	/// </param>
-	/// <param name="msPeriod">
-	/// The timer period, in milliseconds. If this parameter is zero, the timer is signaled once. If this parameter is greater than zero,
-	/// the timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled.
-	/// </param>
-	/// <param name="msWindowLength">
-	/// The maximum amount of time the system can delay before calling the timer callback. If this parameter is set, the system can batch
-	/// calls to conserve power.
-	/// </param>
-	/// <returns>
-	/// If the timer was previously active and was canceled, a value of TRUE is returned. Otherwise a value of FALSE is returned. If
-	/// FALSE is returned, a callback may be in progress or about to commence. If this is the case, a subsequent SetThreadpoolTimerEx
-	/// operation will be properly synchronized with completion of the timer callback.
-	/// </returns>
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/dn894018(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "dn894018")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolTimerEx(PTP_TIMER pti, [In, Optional] IntPtr pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
+	public static extern bool SetThreadpoolTimerEx([In, Out, AddAsMember] PTP_TIMER pti, [In, Optional] PFILETIME? pftDueTime, [Optional] uint msPeriod, [Optional] uint msWindowLength);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -782,7 +716,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
-	public static extern void SetThreadpoolWait(PTP_WAIT pwa, SafeSyncHandle h, in FILETIME pftTimeout);
+	public static extern void SetThreadpoolWait([In, Out] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -815,40 +749,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
-	public static extern void SetThreadpoolWait(PTP_WAIT pwa, SafeSyncHandle h, [Optional] IntPtr pftTimeout);
-
-	/// <summary>
-	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
-	/// the handle becomes signaled or after the specified timeout expires.
-	/// </summary>
-	/// <param name="pwa">
-	/// A pointer to a <c>TP_WAIT</c> structure that defines the wait object. The <c>CreateThreadpoolWait</c> function returns this structure.
-	/// </param>
-	/// <param name="h">
-	/// <para>A handle.</para>
-	/// <para>
-	/// If this parameter is NULL, the wait object will cease to queue new callbacks (but callbacks already queued will still occur).
-	/// </para>
-	/// <para>If this parameter is not NULL, it must refer to a valid waitable object.</para>
-	/// <para>
-	/// If this handle is closed while the wait is still pending, the function's behavior is undefined. If the wait is still pending and
-	/// the handle must be closed, use <c>CloseThreadpoolWait</c> to cancel the wait and then close the handle.
-	/// </para>
-	/// </param>
-	/// <param name="pftTimeout">
-	/// <para>
-	/// A pointer to a <c>FILETIME</c> structure that specifies the absolute or relative time at which the wait operation should time
-	/// out. If this parameter points to a positive value, it indicates the absolute time since January 1, 1601 (UTC), in 100-nanosecond
-	/// intervals. If this parameter points to a negative value, it indicates the amount of time to wait relative to the current time.
-	/// For more information about time values, see File Times.
-	/// </para>
-	/// <para>If this parameter points to 0, the wait times out immediately. If this parameter is NULL, the wait will not time out.</para>
-	/// </param>
-	/// <returns>This function does not return a value.</returns>
-	// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
-	public static extern void SetThreadpoolWait(PTP_WAIT pwa, [Optional] IntPtr h, [Optional] IntPtr pftTimeout);
+	public static extern void SetThreadpoolWait([In, Out] PTP_WAIT pwa, [Optional] IntPtr h, [Optional] IntPtr pftTimeout);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -887,7 +788,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "mt186618")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolWaitEx(PTP_WAIT pwa, SafeSyncHandle h, in FILETIME pftTimeout, IntPtr Reserved = default);
+	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -926,7 +827,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "mt186618")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolWaitEx(PTP_WAIT pwa, [Optional] IntPtr h, in FILETIME pftTimeout, IntPtr Reserved = default);
+	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, [Optional] IntPtr h, [In, Optional] PFILETIME? pftTimeout, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>
 	/// Notifies the thread pool that I/O operations may possibly begin for the specified I/O completion object. A worker thread calls
@@ -939,7 +840,7 @@ public static partial class Kernel32
 	// VOID WINAPI StartThreadpoolIo( _Inout_ PTP_IO pio); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686326(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686326")]
-	public static extern void StartThreadpoolIo(PTP_IO pio);
+	public static extern void StartThreadpoolIo([In, Out, AddAsMember] PTP_IO pio);
 
 	/// <summary>Posts a work object to the thread pool. A worker thread calls the work object's callback function.</summary>
 	/// <param name="pwk">
@@ -949,7 +850,7 @@ public static partial class Kernel32
 	// VOID WINAPI SubmitThreadpoolWork( _Inout_ PTP_WORK pwk); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686338(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686338")]
-	public static extern void SubmitThreadpoolWork(PTP_WORK pwk);
+	public static extern void SubmitThreadpoolWork([In, Out, AddAsMember] PTP_WORK pwk);
 
 	/// <summary>Requests that a thread pool worker thread call the specified callback function.</summary>
 	/// <param name="pfns">The callback function. For details, see <c>SimpleCallback</c>.</param>
@@ -969,7 +870,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686862")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TrySubmitThreadpoolCallback(SimpleCallback pfns, [Optional] IntPtr pv, [Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	public static extern bool TrySubmitThreadpoolCallback([In] SimpleCallback pfns, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>
 	/// Waits for outstanding I/O completion callbacks to complete and optionally cancels pending callbacks that have not yet started to execute.
@@ -982,7 +883,7 @@ public static partial class Kernel32
 	// VOID WINAPI WaitForThreadpoolIoCallbacks( _Inout_ PTP_IO pio, _In_ BOOL fCancelPendingCallbacks); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687038(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms687038")]
-	public static extern void WaitForThreadpoolIoCallbacks(PTP_IO pio, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
+	public static extern void WaitForThreadpoolIoCallbacks([In, Out, AddAsMember] PTP_IO pio, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
 
 	/// <summary>
 	/// Waits for outstanding timer callbacks to complete and optionally cancels pending callbacks that have not yet started to execute.
@@ -995,7 +896,7 @@ public static partial class Kernel32
 	// VOID WINAPI WaitForThreadpoolTimerCallbacks( _Inout_ PTP_TIMER pti, _In_ BOOL fCancelPendingCallbacks); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687042(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms687042")]
-	public static extern void WaitForThreadpoolTimerCallbacks(PTP_TIMER pti, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
+	public static extern void WaitForThreadpoolTimerCallbacks([In, Out, AddAsMember] PTP_TIMER pti, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
 
 	/// <summary>
 	/// Waits for outstanding wait callbacks to complete and optionally cancels pending callbacks that have not yet started to execute.
@@ -1008,7 +909,7 @@ public static partial class Kernel32
 	// VOID WINAPI WaitForThreadpoolWaitCallbacks( _Inout_ PTP_WAIT pwa, _In_ BOOL fCancelPendingCallbacks); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687047(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms687047")]
-	public static extern void WaitForThreadpoolWaitCallbacks(PTP_WAIT pwa, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
+	public static extern void WaitForThreadpoolWaitCallbacks([In, Out, AddAsMember] PTP_WAIT pwa, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
 
 	/// <summary>
 	/// Waits for outstanding work callbacks to complete and optionally cancels pending callbacks that have not yet started to execute.
@@ -1021,7 +922,7 @@ public static partial class Kernel32
 	// VOID WINAPI WaitForThreadpoolWorkCallbacks( _Inout_ PTP_WORK pwk, _In_ BOOL fCancelPendingCallbacks); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687053(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms687053")]
-	public static extern void WaitForThreadpoolWorkCallbacks(PTP_WORK pwk, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
+	public static extern void WaitForThreadpoolWorkCallbacks([In, Out, AddAsMember] PTP_WORK pwk, [MarshalAs(UnmanagedType.Bool)] bool fCancelPendingCallbacks);
 
 	/// <summary>Creates a new timer object.</summary>
 	/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>
@@ -1043,7 +944,7 @@ public static partial class Kernel32
 	// PTP_TIMER WINAPI CreateThreadpoolTimer( _In_ TimerCallback pfnti, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682466(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolTimer")]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682466")]
-	internal static extern PTP_TIMER InternalCreateThreadpoolTimer(TimerCallback pfnti, [Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	internal static extern PTP_TIMER InternalCreateThreadpoolTimer([In] TimerCallback pfnti, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>Creates a new wait object.</summary>
 	/// <param name="pfnwa">The callback function to call when the wait completes or times out. For details, see <c>WaitCallback</c>.</param>
@@ -1065,7 +966,7 @@ public static partial class Kernel32
 	// PTP_WAIT WINAPI CreateThreadpoolWait( _In_ WaitCallback pfnwa, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682474(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolWait")]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682474")]
-	internal static extern PTP_WAIT InternalCreateThreadpoolWait(WaitCallback pfnwa, [Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	internal static extern PTP_WAIT InternalCreateThreadpoolWait([In] WaitCallback pfnwa, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary>Creates a new work object.</summary>
 	/// <param name="pfnwk">
@@ -1090,11 +991,11 @@ public static partial class Kernel32
 	// PTP_WORK WINAPI CreateThreadpoolWork( _In_ WorkCallback pfnwk, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682478(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "CreateThreadpoolWork")]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682478")]
-	internal static extern PTP_WORK InternalCreateThreadpoolWork(WorkCallback pfnwk, [Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
+	internal static extern PTP_WORK InternalCreateThreadpoolWork([In] WorkCallback pfnwk, [In, Out, Optional] IntPtr pv, [In, Optional] PTP_CALLBACK_ENVIRON? pcbe);
 
 	/// <summary/>
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PTP_CALLBACK_INSTANCE
+	public readonly partial struct PTP_CALLBACK_INSTANCE
 	{
 		/// <summary/>
 		private readonly IntPtr handle;
@@ -1136,7 +1037,7 @@ public static partial class Kernel32
 			if (isMin7)
 			{
 				CallbackPriority = TP_CALLBACK_PRIORITY.TP_CALLBACK_PRIORITY_NORMAL;
-				Size = (uint)Marshal.SizeOf(typeof(PTP_CALLBACK_ENVIRON));
+				Size = (uint)Marshal.SizeOf<PTP_CALLBACK_ENVIRON>();
 			}
 		}
 

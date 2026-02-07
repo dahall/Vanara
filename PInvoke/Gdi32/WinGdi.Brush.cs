@@ -33,6 +33,7 @@ public static partial class Gdi32
 	// LOGBRUSH *plbrush );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "75f94ad1-ca25-4ad1-9e8c-ad1a4b8475a7")]
+	[return: AddAsCtor]
 	public static extern SafeHBRUSH CreateBrushIndirect(in LOGBRUSH plbrush);
 
 	/// <summary>
@@ -155,6 +156,7 @@ public static partial class Gdi32
 	// const VOID *lpPackedDIB, UINT iUsage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0e34d108-fd35-4512-9eb3-c7710af36e95")]
+	[return: AddAsCtor]
 	public static extern SafeHBRUSH CreateDIBPatternBrushPt(IntPtr lpPackedDIB, DIBColorMode iUsage);
 
 	/// <summary>
@@ -226,6 +228,7 @@ public static partial class Gdi32
 	// COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0b5849d6-1e22-4ac5-980c-2f2a73b16adb")]
+	[return: AddAsCtor]
 	public static extern SafeHBRUSH CreateHatchBrush(HatchStyle iHatch, COLORREF color);
 
 	/// <summary>
@@ -266,6 +269,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-createpatternbrush HBRUSH CreatePatternBrush( HBITMAP hbm );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a3cf347e-9803-4bb0-bdb3-98929ef859ab")]
+	[return: AddAsCtor]
 	public static extern SafeHBRUSH CreatePatternBrush(HBITMAP hbm);
 
 	/// <summary>
@@ -299,6 +303,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-createsolidbrush HBRUSH CreateSolidBrush( COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e39b5f77-97d8-4ea6-8277-7da12b3367f3")]
+	[return: AddAsCtor]
 	public static extern SafeHBRUSH CreateSolidBrush(COLORREF color);
 
 	/// <summary>
@@ -340,7 +345,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0b938237-cb06-4776-86f8-14478abcee00")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetBrushOrgEx(HDC hdc, out POINT lppt);
+	public static extern bool GetBrushOrgEx([In, AddAsMember] HDC hdc, out POINT lppt);
 
 	/// <summary>
 	/// <para>
@@ -419,7 +424,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6deea8ef-b55d-4086-a54e-3f89bb17c6cd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PatBlt(HDC hdc, int x, int y, int w, int h, RasterOperationMode rop);
+	public static extern bool PatBlt([In, AddAsMember] HDC hdc, int x, int y, int w, int h, RasterOperationMode rop);
 
 	/// <summary>
 	/// <para>
@@ -477,7 +482,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "dcc7575a-49fd-4306-8baa-57e9e0d5ed1f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, in POINT lppt);
+	public static extern bool SetBrushOrgEx([In, AddAsMember] HDC hdc, int x, int y, in POINT lppt);
 
 	/// <summary>
 	/// <para>
@@ -535,7 +540,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "dcc7575a-49fd-4306-8baa-57e9e0d5ed1f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetBrushOrgEx(HDC hdc, int x, int y, [In, Optional] IntPtr lppt);
+	public static extern bool SetBrushOrgEx([In, AddAsMember] HDC hdc, int x, int y, [In, Optional] IntPtr lppt);
 
 	/// <summary>
 	/// <c>SetDCBrushColor</c> function sets the current device context (DC) brush color to the specified color value. If the device
@@ -568,7 +573,7 @@ public static partial class Gdi32
 	// COLORREF SetDCBrushColor( HDC hdc, COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "4feed536-2f1d-4a25-8311-7cae303167ca")]
-	public static extern COLORREF SetDCBrushColor(HDC hdc, COLORREF color);
+	public static extern COLORREF SetDCBrushColor([In, AddAsMember] HDC hdc, COLORREF color);
 
 	/// <summary>
 	/// The <c>LOGBRUSH</c> structure defines the style, color, and pattern of a physical brush. It is used by the CreateBrushIndirect

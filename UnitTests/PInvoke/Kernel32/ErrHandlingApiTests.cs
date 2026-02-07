@@ -14,10 +14,7 @@ public class ErrHandlingApiTests
 	}
 
 	[SetUp]
-	public void _TestSetup()
-	{
-		sb.Clear();
-	}
+	public void _TestSetup() => sb.Clear();
 
 	//[Test]
 	public void AddVectoredContinueHandlerTest()
@@ -38,18 +35,18 @@ public class ErrHandlingApiTests
 	[Test]
 	public void FormatMessageStringTest()
 	{
-		string[] objs = new string[] { "Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry" };
+		string[] objs = ["Alan", "Bob", "Chuck", "Dave", "Ed", "Frank", "Gary", "Harry"];
 		Assert.That(FormatMessage(null, objs), Is.Null);
 		Assert.That(FormatMessage("X", null), Is.EqualTo("X"));
 		Assert.That(FormatMessage("X", objs), Is.EqualTo("X"));
 		Assert.That(FormatMessage("X %1", new[] { "YZ" }), Is.EqualTo("X YZ"));
 		string? s = FormatMessage("%1 %2 %3 %4 %5 %6 %7 %8", objs);
 		Assert.That(s, Is.EqualTo(string.Join(" ", objs)));
-		s = FormatMessage("%1 %2", new object[] { 4, "Alan" }, FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
+		s = FormatMessage("%1 %2", [4, "Alan"], FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS);
 		Assert.That(s, Is.EqualTo("%1 %2"));
 		//s = FormatMessage("%1!*.*s! %4 %5!*s!", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
 		//Assert.That(s, Is.EqualTo("  Bi Bob   Bill"));
-		s = FormatMessage("%1 %2 %3 %4 %5 %6", new object[] { 4, 2, "Bill", "Bob", 6, "Bill" });
+		s = FormatMessage("%1 %2 %3 %4 %5 %6", [4, 2, "Bill", "Bob", 6, "Bill"]);
 		Assert.That(s, Is.EqualTo("\u0004 \u0002 Bill Bob \u0006 Bill"));
 	}
 
@@ -64,7 +61,7 @@ public class ErrHandlingApiTests
 	[Test]
 	public void FormatMessageWinErrTest2()
 	{
-		string s = FormatMessage(Win32Error.ERROR_BAD_EXE_FORMAT, new object[] { "Test.exe" });
+		string s = FormatMessage(Win32Error.ERROR_BAD_EXE_FORMAT, ["Test.exe"]);
 		Assert.That(s, Contains.Substring("Test.exe"));
 		TestContext.WriteLine(s);
 	}

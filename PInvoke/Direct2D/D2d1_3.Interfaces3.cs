@@ -228,7 +228,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, [Optional] D2D1_GAMMA colorInterpolationGamma, [Optional] D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -1323,7 +1323,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -1332,7 +1333,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -1382,12 +1383,12 @@ public static partial class D2d1
 
 		/// <summary>Returns the size of the render target in device-independent pixels.</summary>
 		/// <returns>
-		/// <para>Type: <c>D2D1_SIZE_F</c></para>
+		/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
 		/// <para>The current size of the render target in device-independent pixels.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size of the render target in device pixels.</summary>
 		/// <returns>
@@ -1396,7 +1397,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
 		/// <returns>
@@ -2685,7 +2686,7 @@ public static partial class D2d1
 		// const UINT32 *strides, [out] ID2D1LookupTable3D **lookupTable );
 		new void CreateLookupTable3D(D2D1_BUFFER_PRECISION precision, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] uint[] extents,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint dataCount,
-			[MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
 
 		/// <summary>
 		/// Creates an image source from a set of DXGI surface(s). The YCbCr surface(s) are converted to RGBA automatically during
@@ -3904,7 +3905,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -4542,7 +4543,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -5193,7 +5194,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -5861,7 +5862,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -6549,7 +6550,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -7257,7 +7258,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -8054,7 +8055,7 @@ public static partial class D2d1
 		// HRESULT StreamAsGeometry( [in, optional] ID2D1InkStyle *inkStyle, [in, optional] const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, [in] ID2D1SimplifiedGeometrySink *geometrySink );
 		void StreamAsGeometry([In, Optional] ID2D1InkStyle? inkStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform,
-			float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+			float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Retrieve the bounds of the geometry, with an optional applied transform.</summary>
 		/// <param name="inkStyle">
@@ -8366,11 +8367,11 @@ public static partial class D2d1
 		// *sourceRectangles, [in, optional] const D2D1_COLOR_F *colors, [in, optional] const D2D1_MATRIX_3X2_F *transforms, UINT32
 		// destinationRectanglesStride, UINT32 sourceRectanglesStride, UINT32 colorsStride, UINT32 transformsStride );
 		void SetSprites(uint startIndex, uint spriteCount,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D_RECT_F[]? destinationRectangles,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D_RECT_U[]? sourceRectangles,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D1_COLOR_F[]? colors,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D1_MATRIX_3X2_F[]? transforms,
-			uint destinationRectanglesStride, uint sourceRectanglesStride, uint colorsStride, uint transformsStride);
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_RECT_F[]? destinationRectangles,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_RECT_U[]? sourceRectangles,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_COLOR_F[]? colors,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_MATRIX_3X2_F[]? transforms,
+			[Optional] uint destinationRectanglesStride, [Optional] uint sourceRectanglesStride, [Optional] uint colorsStride, [Optional] uint transformsStride);
 
 		/// <summary>
 		/// Retrieves the specified subset of sprites from this sprite batch. For the best performance, use nullptr for properties that you
@@ -8674,8 +8675,8 @@ public static partial class D2d1
 	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/nf-d2d1_3-id2d1ink-streamasgeometry(id2d1inkstyle_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink)
 	// HRESULT StreamAsGeometry( [in, optional] ID2D1InkStyle *inkStyle, [in, optional] const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 	// flatteningTolerance, [in] ID2D1SimplifiedGeometrySink *geometrySink );
-	public static void StreamAsGeometry(this ID2D1Ink ink, [In] ID2D1SimplifiedGeometrySink geometrySink, float flatteningTolerance,
-		[In, Optional] ID2D1InkStyle? inkStyle, [In, Optional] D2D1_MATRIX_3X2_F? worldTransform)
+	public static void StreamAsGeometry(this ID2D1Ink ink, [In] ID2D1SimplifiedGeometrySink geometrySink, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE,
+		[In] ID2D1InkStyle? inkStyle = null, [In] D2D1_MATRIX_3X2_F? worldTransform = null)
 	{
 		SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> m = worldTransform;
 		ink.StreamAsGeometry(inkStyle, m, flatteningTolerance, geometrySink);

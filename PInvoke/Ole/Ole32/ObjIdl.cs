@@ -713,7 +713,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iclassactivator-getclassobject HRESULT GetClassObject(
 		// REFCLSID rclsid, DWORD dwClassContext, LCID locale, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetClassObject(in Guid rclsid, CLSCTX dwClassContext, LCID locale, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+		HRESULT GetClassObject(in Guid rclsid, CLSCTX dwClassContext, LCID locale, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 	}
 
 	/// <summary>

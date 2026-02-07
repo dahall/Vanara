@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions;
 using BIND_OPTS = System.Runtime.InteropServices.ComTypes.BIND_OPTS;
 using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
 
@@ -670,67 +671,78 @@ public static partial class Ole32
 	// tdSize; WORD tdDriverNameOffset; WORD tdDeviceNameOffset; WORD tdPortNameOffset; WORD tdExtDevmodeOffset; BYTE tdData[1]; } DVTARGETDEVICE;
 	[PInvokeData("objidl.h", MSDNShortId = "724ff714-c170-4d06-92cb-e042e41c0af2")]
 	[StructLayout(LayoutKind.Sequential)]
-	public class DVTARGETDEVICE : SafeCoTaskMemHandle
+	public class DVTARGETDEVICE
 	{
-		private const int structSz = 13;
-		private readonly List<string?> names = new() { "", null, null };
-		private readonly ushort dataOff = 12, nameOff;
-
-		/// <summary>Initializes a new instance of the <see cref="DVTARGETDEVICE"/> class.</summary>
-		public DVTARGETDEVICE() : base(structSz + Marshal.SizeOf(typeof(DEVMODE)) + 8)
-		{
-			nameOff = (ushort)(dataOff + Marshal.SizeOf(typeof(DEVMODE)));
-			Write((uint)structSz, false, 0); // tdSize
-			Write(dataOff, false, 10); // tdExtDevmodeOffset
-			UpdateNames();
-		}
+		private const int bufSz = 1012, devOff = 12;
+		private readonly uint tdSize = 16;
+		private ushort tdDriverNameOffset = (ushort)(devOff + Marshal.SizeOf<DEVMODE>());
+		private ushort tdDeviceNameOffset;
+		private ushort tdPortNameOffset;
+		private readonly ushort tdExtDevmodeOffset = devOff;
+		/// <summary>The DEVMODE structure reference retrieved by calling DocumentProperties.</summary>
+		public DEVMODE tdExtDevmode;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = bufSz)]
+		private byte[] driverName = new byte[bufSz];
 
 		/// <summary>Initializes a new instance of the <see cref="DVTARGETDEVICE"/> class with values.</summary>
 		/// <param name="driverName">Name of the driver.</param>
 		/// <param name="deviceName">Name of the device.</param>
 		/// <param name="portName">Name of the port.</param>
 		/// <param name="devMode">The DEVMODE structure reference retrieved by calling DocumentProperties.</param>
-		public DVTARGETDEVICE(string driverName, string? deviceName, string? portName, DEVMODE? devMode = null) : this()
+		public DVTARGETDEVICE(string driverName, string? deviceName = null, string? portName = null, DEVMODE? devMode = null)
 		{
-			names[0] = driverName;
-			names[1] = deviceName;
-			names[2] = portName;
-			UpdateNames();
-			if (devMode.HasValue)
-				Write(devMode.Value, false, dataOff);
+			tdExtDevmode = devMode.GetValueOrDefault();
+			WriteNames([driverName, deviceName, portName]);
 		}
 
-		private void UpdateNames()
-		{
-			using SafeCoTaskMemHandle mem = CreateFromStringList(names.Select(n => n ?? ""), StringListPackMethod.Concatenated, CharSet.Unicode);
-			Size = (uint)nameOff + mem.Size;
-			mem.DangerousGetHandle().CopyTo(handle.Offset(nameOff), mem.Size);
+		/// <summary>The device driver name.</summary>
+		public string tdDriverName { get => ReadName(tdDriverNameOffset) ?? ""; set { var names = Names; names[0] = value ?? throw new ArgumentNullException(nameof(tdDriverName)); WriteNames(names); } }
 
-			var off = nameOff;
-			mem.Write(off, false, 4); // tdDriverNameOffset
-			off += (ushort)names[0].GetByteCount(true, CharSet.Unicode);
-			mem.Write(names[1] is null ? 0 : off, false, 6); // tdDeviceNameOffset
-			off += (ushort)(names[1] ?? "").GetByteCount(true, CharSet.Unicode);
-			mem.Write(names[2] is null ? 0 : off, false, 8); // tdPortNameOffset
+		/// <summary>The device name, which can be <see langword="null"/> to indicate no device name.</summary>
+		public string? tdDeviceName { get => ReadName(tdDeviceNameOffset); set { var names = Names; names[1] = value; WriteNames(names); } }
+
+		/// <summary>The port name, which can be <see langword="null"/> to indicate no port name.</summary>
+		public string? tdPortName { get => ReadName(tdPortNameOffset); set { var names = Names; names[2] = value; WriteNames(names); } }
+
+		private string?[] Names
+		{
+			get
+			{
+				using SafeCoTaskMemHandle mem = new(driverName);
+				string[] names = mem.ToStringEnum(CharSet.Unicode).ToArray();
+				string?[] ret = ["", null, null];
+				for (int i = 0; i < names.Length; i++)
+					ret[i] = string.IsNullOrWhiteSpace(names[i]) ? null : names[i];
+				return ret;
+			}
 		}
 
-		/// <summary>
-		/// The device driver name.
-		/// </summary>
-		public string tdDriverName { get => names[0]!; set { names[0] = value ?? throw new ArgumentNullException(); UpdateNames(); } }
+		private string? ReadName(ushort offset)
+		{
+			if (offset == 0) return null;
+			unsafe
+			{
+				fixed (byte* p = driverName)
+				{
+					var namePtr = p + offset - tdDriverNameOffset;
+					var s = Marshal.PtrToStringUni((IntPtr)namePtr);
+					return string.IsNullOrWhiteSpace(s) ? null : s;
+				}
+			}
+		}
 
-		/// <summary>
-		/// The device name, which can be <see langword="null"/> to indicate no device name.
-		/// </summary>
-		public string? tdDeviceName { get => names[1] == string.Empty ? null : names[1]; set { names[1] = value; UpdateNames(); } }
-
-		/// <summary>
-		/// The port name, which can be <see langword="null"/> to indicate no port name.
-		/// </summary>
-		public string? tdPortName { get => names[2] == string.Empty ? null : names[2]; set { names[2] = value; UpdateNames(); } }
-
-		/// <summary>The DEVMODE structure reference retrieved by calling DocumentProperties.</summary>
-		public ref DEVMODE tdExtDevmode => ref handle.AsRef<DEVMODE>(dataOff, Size);
+		private void WriteNames(string?[] names)
+		{
+			using var mem = SafeCoTaskMemHandle.CreateFromStringList([names[0], names[1] ?? " ", names[2] ?? " "], StringListPackMethod.Concatenated, CharSet.Unicode);
+			if (mem.Size > bufSz)
+				throw new ArgumentException($"The combined length of the driver, device, and port names exceeds the maximum allowed size of {(bufSz - 8) / 2} characters.", nameof(driverName));
+			mem.Size = bufSz;
+			if (names[1] is not null)
+				tdDeviceNameOffset = (ushort)(tdDriverNameOffset + names[0].GetByteCount(true, CharSet.Unicode));
+			if (names[2] is not null)
+				tdPortNameOffset = (ushort)(tdDriverNameOffset + names[0].GetByteCount(true, CharSet.Unicode) + (names[1] ?? " ").GetByteCount(true, CharSet.Unicode));
+			driverName = mem.GetBytes()!;
+		}
 	}
 
 	/// <summary>
@@ -868,7 +880,7 @@ public static partial class Ole32
 		public uint dwTickCountDeadline;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS_V"/> class.</summary>
-		public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS_V));
+		public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS_V>();
 
 		/// <summary>Performs an implicit conversion from <see cref="BIND_OPTS_V"/> to <see cref="BIND_OPTS"/>.</summary>
 		/// <param name="bo">The <see cref="BIND_OPTS_V"/> instance.</param>
@@ -942,7 +954,7 @@ public static partial class Ole32
 		public IntPtr pServerInfo;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS2"/> class.</summary>
-		public BIND_OPTS2() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS2));
+		public BIND_OPTS2() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS2>();
 	}
 
 	/// <summary>Contains parameters used during a moniker-binding operation.</summary>
@@ -976,7 +988,7 @@ public static partial class Ole32
 		public HWND hwnd;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS3"/> class.</summary>
-		public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS3));
+		public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS3>();
 	}
 
 	/// <summary>Simple generic implementation of <see cref="IEnumUnknown"/>.</summary>

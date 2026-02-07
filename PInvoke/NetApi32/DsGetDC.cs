@@ -333,10 +333,10 @@ public static partial class NetApi32
 	/// Returns <c>NO_ERROR</c> if successful or a Win32 or RPC error otherwise. The following list lists possible error codes.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsaddresstositenamesa DSGETDCAPI DWORD
-	// DsAddressToSiteNamesA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPSTR **SiteNames );
+	// DsAddressToSiteNamesA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT StrPtrAnsi **SiteNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "4d70dbee-be33-4d2a-a200-3696443fa853")]
-	public static extern Win32Error DsAddressToSiteNames(string ComputerName, uint EntryCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames);
+	public static extern Win32Error DsAddressToSiteNames(string ComputerName, uint EntryCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames);
 
 	/// <summary>The <c>DsAddressToSiteNamesEx</c> function obtains the site and subnet names corresponding to the addresses specified.</summary>
 	/// <param name="ComputerName">
@@ -363,10 +363,11 @@ public static partial class NetApi32
 	/// </param>
 	/// <returns>Returns <c>NO_ERROR</c> if successful or a Win32 or RPC error otherwise. The following are possible error codes.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsaddresstositenamesexw
-	// DSGETDCAPI DWORD DsAddressToSiteNamesExW( IN LPCWSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPWSTR **SiteNames, OUT LPWSTR **SubnetNames );
+	// DSGETDCAPI DWORD DsAddressToSiteNamesExW( IN LPCWSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT StrPtrUni **SiteNames, OUT StrPtrUni **SubnetNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
-	public static extern Win32Error DsAddressToSiteNamesEx(string ComputerName, uint EntryCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames, out SafeNetApiBuffer SubnetNames);
+	[SuppressAutoGen]
+	public static extern Win32Error DsAddressToSiteNamesEx(string ComputerName, uint EntryCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames, out SafeNetApiBuffer SubnetNames);
 
 	/// <summary>
 	/// <para>
@@ -411,7 +412,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsderegisterdnshostrecordsa DSGETDCAPI DWORD
-	// DsDeregisterDnsHostRecordsA( LPSTR ServerName, LPSTR DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, LPSTR DnsHostName );
+	// DsDeregisterDnsHostRecordsA( StrPtrAnsi ServerName, StrPtrAnsi DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, StrPtrAnsi DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "18ab6455-dab2-42d9-b68e-a8f0ad2d8091")]
 	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, [Optional] string? DnsDomainName, in Guid DomainGuid, in Guid DsaGuid, string DnsHostName);
@@ -459,7 +460,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsderegisterdnshostrecordsa DSGETDCAPI DWORD
-	// DsDeregisterDnsHostRecordsA( LPSTR ServerName, LPSTR DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, LPSTR DnsHostName );
+	// DsDeregisterDnsHostRecordsA( StrPtrAnsi ServerName, StrPtrAnsi DnsDomainName, GUID *DomainGuid, GUID *DsaGuid, StrPtrAnsi DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "18ab6455-dab2-42d9-b68e-a8f0ad2d8091")]
 	public static extern Win32Error DsDeregisterDnsHostRecords([Optional] string? ServerName, [Optional] string? DnsDomainName, IntPtr DomainGuid, [Optional] IntPtr DsaGuid, string DnsHostName);
@@ -499,7 +500,7 @@ public static partial class NetApi32
 	/// following list.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsenumeratedomaintrustsa DSGETDCAPI DWORD
-	// DsEnumerateDomainTrustsA( LPSTR ServerName, ULONG Flags, PDS_DOMAIN_TRUSTSA *Domains, PULONG DomainCount );
+	// DsEnumerateDomainTrustsA( StrPtrAnsi ServerName, ULONG Flags, PDS_DOMAIN_TRUSTSA *Domains, PULONG DomainCount );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "6c3b788f-ee53-4637-acdb-04316e8464fe")]
 	public static extern Win32Error DsEnumerateDomainTrusts([Optional] string? ServerName, [Optional] DomainTrustFlag Flags, out SafeNetApiBuffer Domains, out uint DomainCount);
@@ -979,7 +980,7 @@ public static partial class NetApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/Dsgetdc/nf-dsgetdc-dsgetdcnexta DSGETDCAPI DWORD DsGetDcNextA( IN HANDLE
-	// GetDcContextHandle, OUT PULONG SockAddressCount, OUT LPSOCKET_ADDRESS *SockAddresses, OUT LPSTR *DnsHostName );
+	// GetDcContextHandle, OUT PULONG SockAddressCount, OUT LPSOCKET_ADDRESS *SockAddresses, OUT StrPtrAnsi *DnsHostName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2906772f-4391-411b-b0a9-5a20ebb6c0ee")]
 	public static extern Win32Error DsGetDcNext(SafeDCEnumHandle GetDcContextHandle, out uint SockAddressCount,
@@ -1198,7 +1199,7 @@ public static partial class NetApi32
 	/// <para>This function returns DSGETDCAPI DWORD.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsgetdcsitecoveragew DSGETDCAPI DWORD
-	// DsGetDcSiteCoverageW( IN LPCWSTR ServerName, OUT PULONG EntryCount, OUT LPWSTR **SiteNames );
+	// DsGetDcSiteCoverageW( IN LPCWSTR ServerName, OUT PULONG EntryCount, OUT StrPtrUni **SiteNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "e0f757d9-36b6-40f8-a1db-fb5b9862b46a")]
 	public static extern Win32Error DsGetDcSiteCoverage([Optional] string? ServerName, out uint EntryCount, out SafeNetApiBuffer SiteNames);
@@ -1275,7 +1276,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/nf-dsgetdc-dsgetsitenamea DSGETDCAPI DWORD DsGetSiteNameA( IN LPCSTR
-	// ComputerName, OUT LPSTR *SiteName );
+	// ComputerName, OUT StrPtrAnsi *SiteName );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "2dfffd9a-af4f-4a93-8b3c-966e4f7c455f")]
 	public static extern Win32Error DsGetSiteName([Optional] string? ComputerName,
@@ -1438,7 +1439,7 @@ public static partial class NetApi32
 	/// <para>The <c>DS_DOMAIN_TRUSTS</c> structure is used with the DsEnumerateDomainTrusts function to contain trust data for a domain.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsgetdc/ns-dsgetdc-_ds_domain_trustsa typedef struct _DS_DOMAIN_TRUSTSA {
-	// LPSTR NetbiosDomainName; LPSTR DnsDomainName; ULONG Flags; ULONG ParentIndex; ULONG TrustType; ULONG TrustAttributes; PSID
+	// StrPtrAnsi NetbiosDomainName; StrPtrAnsi DnsDomainName; ULONG Flags; ULONG ParentIndex; ULONG TrustType; ULONG TrustAttributes; PSID
 	// DomainSid; GUID DomainGuid; } DS_DOMAIN_TRUSTSA, *PDS_DOMAIN_TRUSTSA;
 	[PInvokeData("dsgetdc.h", MSDNShortId = "cd260fd1-dc38-4405-95ba-097a23faf668")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

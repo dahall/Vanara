@@ -1,7 +1,7 @@
 ﻿![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/VanaraHeading.png)
 ### **Vanara.PInvoke.WTSApi32 NuGet Package**
 [![Version](https://img.shields.io/nuget/v/Vanara.PInvoke.WTSApi32?label=NuGet&style=flat-square)](https://github.com/dahall/Vanara/releases)
-[![Build status](https://img.shields.io/appveyor/build/dahall/vanara?label=AppVeyor%20build&style=flat-square)](https://ci.appveyor.com/project/dahall/vanara)
+[![Build status](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml/badge.svg?branch=master)](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml)
 
 PInvoke API (methods, structures and constants) imported from Windows WTSApi32.dll.
 
@@ -11,11 +11,11 @@ PInvoke API (methods, structures and constants) imported from Windows WTSApi32.d
 
 ### **Issues?**
 
-First check if it's already fixed by trying the [AppVeyor build](https://ci.appveyor.com/nuget/vanara-prerelease).
+First check if it's already fixed by trying the [MyGet build](https://www.myget.org/feed/Packages/vanara).
 If you're still running into problems, file an [issue](https://github.com/dahall/Vanara/issues).
 
 ### **Included in Vanara.PInvoke.WTSApi32**
 
 Functions | Enumerations | Structures
 --- | --- | ---
-WTSCloseServer WTSConnectSession WTSCreateListener WTSDisconnectSession WTSEnableChildSessions WTSEnumerateListeners WTSEnumerateProcesses WTSEnumerateProcessesEx WTSEnumerateServers WTSEnumerateSessions WTSEnumerateSessionsEx WTSFreeMemory WTSFreeMemoryEx WTSGetChildSessionId WTSGetListenerSecurity WTSIsChildSessionsEnabled WTSLogoffSession WTSOpenServer WTSOpenServerEx WTSQueryListenerConfig WTSQuerySessionInformation WTSQueryUserConfig WTSQueryUserToken WTSRegisterSessionNotification WTSRegisterSessionNotificationEx WTSSendMessage WTSSetListenerSecurity WTSSetRenderHint WTSSetUserConfig WTSShutdownSystem WTSStartRemoteControlSession WTSStopRemoteControlSession WTSTerminateProcess WTSUnRegisterSessionNotification WTSUnRegisterSessionNotificationEx WTSVirtualChannelClose WTSVirtualChannelOpen WTSVirtualChannelOpenEx WTSVirtualChannelPurgeInput WTSVirtualChannelPurgeOutput WTSVirtualChannelQuery WTSVirtualChannelRead WTSVirtualChannelWrite WTSWaitSystemEvent  | REMOTECONTROL_HOTKEY SessionProtocolType WTS_CHANNEL_OPTION WTS_CONFIG_CLASS WTS_CONFIG_SOURCE WTS_CONNECTSTATE_CLASS WTS_EVENT WTS_INFO_CLASS WTS_LISTENER WTS_SESSIONSTATE WTS_TYPE_CLASS WTS_VIRTUAL_CLASS WTS_WSD WTSNotification RENDER_HINT                               | HVIRTUALCHANNEL HWTSSERVER WTS_CLIENT_ADDRESS WTS_CLIENT_DISPLAY WTS_PROCESS_INFO WTS_PROCESS_INFO_EX WTS_SERVER_INFO WTS_SESSION_ADDRESS WTS_SESSION_INFO WTS_SESSION_INFO_1 WTSCLIENT WTSCONFIGINFO WTSINFO WTSINFOEX WTSINFOEX_LEVEL WTSINFOEX_LEVEL1 WTSLISTENERCONFIG WTSLISTENERNAME WTSUSERCONFIG                          
+WTSActiveSessionExists WTSCloseServer WTSConnectSession WTSCreateListener WTSDisconnectSession WTSEnableChildSessions WTSEnumerateListeners WTSEnumerateProcesses WTSEnumerateProcessesEx WTSEnumerateServers WTSEnumerateSessions WTSEnumerateSessionsEx WTSFreeMemory WTSFreeMemoryEx WTSGetChildSessionId WTSGetListenerSecurity WTSIsChildSessionsEnabled WTSLogoffSession WTSOpenServer WTSOpenServerEx WTSQueryListenerConfig WTSQuerySessionInformation WTSQueryUserConfig WTSQueryUserToken WTSRegisterSessionNotification WTSRegisterSessionNotificationEx WTSSendMessage WTSSetListenerSecurity WTSSetRenderHint WTSSetUserConfig WTSShutdownSystem WTSStartRemoteControlSession WTSStopRemoteControlSession WTSTerminateProcess WTSUnRegisterSessionNotification WTSUnRegisterSessionNotificationEx WTSVirtualChannelClose WTSVirtualChannelOpen WTSVirtualChannelOpenEx WTSVirtualChannelPurgeInput WTSVirtualChannelPurgeOutput WTSVirtualChannelQuery WTSVirtualChannelRead WTSVirtualChannelWrite WTSWaitSystemEvent  | REMOTECONTROL_HOTKEY SessionProtocolType WTS_CHANNEL_OPTION WTS_CONFIG_CLASS WTS_CONFIG_SOURCE WTS_CONNECTSTATE_CLASS WTS_EVENT WTS_INFO_CLASS WTS_LISTENER WTS_SESSIONSTATE WTS_TYPE_CLASS WTS_VIRTUAL_CLASS WTS_WSD WTSNotification RENDER_HINT                                | HWTSSERVER WTS_CLIENT_ADDRESS WTS_CLIENT_DISPLAY WTS_PROCESS_INFO WTS_PROCESS_INFO_EX WTS_SERVER_INFO WTS_SESSION_ADDRESS WTS_SESSION_INFO WTS_SESSION_INFO_1 WTSCLIENT WTSCONFIGINFO WTSINFO WTSINFOEX WTSINFOEX_LEVEL WTSINFOEX_LEVEL1 WTSLISTENERCONFIG WTSLISTENERNAME WTSUSERCONFIG HVIRTUALCHANNEL                           

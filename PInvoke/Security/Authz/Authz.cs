@@ -642,7 +642,7 @@ public static partial class Authz
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
 		[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
-		[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
 		uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, out SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE phAccessCheckResults);
 
 	/// <summary>
@@ -766,7 +766,7 @@ public static partial class Authz
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
 		[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
-		[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
 		uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, [Optional] IntPtr phAccessCheckResults);
 
 	/// <summary>
@@ -1412,8 +1412,8 @@ public static partial class Authz
 	/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeobjectaccessauditevent AUTHZAPI BOOL
-	// AuthzInitializeObjectAccessAuditEvent( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
-	// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
+	// AuthzInitializeObjectAccessAuditEvent( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, StrPtrUni szOperationType, StrPtrUni
+	// szObjectType, StrPtrUni szObjectName, StrPtrUni szAdditionalInfo, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
 	// dwAdditionalParameterCount, ... );
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("authz.h", MSDNShortId = "cf79a92f-31e0-47cf-8990-4dbd46056a90")]
@@ -1463,8 +1463,8 @@ public static partial class Authz
 	/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeobjectaccessauditevent2 AUTHZAPI BOOL
-	// AuthzInitializeObjectAccessAuditEvent2( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
-	// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PWSTR szAdditionalInfo2, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
+	// AuthzInitializeObjectAccessAuditEvent2( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, StrPtrUni szOperationType, StrPtrUni
+	// szObjectType, StrPtrUni szObjectName, StrPtrUni szAdditionalInfo, StrPtrUni szAdditionalInfo2, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
 	// dwAdditionalParameterCount, ... );
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("authz.h", MSDNShortId = "c65bb799-0158-496a-b428-0331c4474b74")]
@@ -1707,8 +1707,8 @@ public static partial class Authz
 	[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifyClaims(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS ClaimClass,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
-		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pClaims);
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION? pClaims);
 
 	/// <summary>
 	/// <para>
@@ -1741,7 +1741,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "d84873e2-ecfe-45cf-9048-7ed173117efa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySecurityAttributes(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAttributes);
 
 	/// <summary>
@@ -1782,7 +1782,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "740569A5-6159-409B-B8CB-B3A8BAE4F398")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySids(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
 
 	/// <summary>
 	/// The <c>AuthzOpenObjectAudit</c> function reads the system access control list (SACL) of the specified security descriptor and
@@ -2163,7 +2163,7 @@ public static partial class Authz
 	/// The <c>AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET</c> structure specifies the offset of a registration object type name.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-authz_registration_object_type_name_offset typedef struct
-	// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { PWSTR szObjectTypeName; DWORD dwOffset; }
+	// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { StrPtrUni szObjectTypeName; DWORD dwOffset; }
 	// AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET, *PAUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET;
 	[PInvokeData("authz.h", MSDNShortId = "2ec39edc-7819-41a5-8798-dc51c00ba85e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2250,7 +2250,7 @@ public static partial class Authz
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attribute_fqbn_value typedef struct
-	// _AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE { ULONG64 Version; PWSTR pName; } AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE, *PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE;
+	// _AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE { ULONG64 Version; StrPtrUni pName; } AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE, *PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE;
 	[PInvokeData("authz.h", MSDNShortId = "05b4bf7d-a0d9-473c-b215-9cf566b2a996")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE
@@ -2287,8 +2287,8 @@ public static partial class Authz
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attribute_v1 typedef struct
-	// _AUTHZ_SECURITY_ATTRIBUTE_V1 { PWSTR pName; USHORT ValueType; USHORT Reserved; ULONG Flags; ULONG ValueCount; union { PLONG64
-	// pInt64; PULONG64 pUint64; PWSTR *ppString; PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn;
+	// _AUTHZ_SECURITY_ATTRIBUTE_V1 { StrPtrUni pName; USHORT ValueType; USHORT Reserved; ULONG Flags; ULONG ValueCount; union { PLONG64
+	// pInt64; PULONG64 pUint64; StrPtrUni *ppString; PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn;
 	// PAUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE pOctetString; } Values; } AUTHZ_SECURITY_ATTRIBUTE_V1, *PAUTHZ_SECURITY_ATTRIBUTE_V1;
 	[PInvokeData("authz.h", MSDNShortId = "0c4778bb-1b5d-4422-b066-d2a6aaa1f351")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2373,8 +2373,8 @@ public static partial class Authz
 
 	/// <summary>The <c>AUTHZ_SOURCE_SCHEMA_REGISTRATION</c> structure specifies information about source schema registration.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_source_schema_registration typedef struct
-	// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; PWSTR szEventSourceName; PWSTR szEventMessageFile; PWSTR
-	// szEventSourceXmlSchemaFile; PWSTR szEventAccessStringsFile; PWSTR szExecutableImagePath; union { PVOID pReserved; GUID
+	// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; StrPtrUni szEventSourceName; StrPtrUni szEventMessageFile; StrPtrUni
+	// szEventSourceXmlSchemaFile; StrPtrUni szEventAccessStringsFile; StrPtrUni szExecutableImagePath; union { PVOID pReserved; GUID
 	// *pProviderGuid; } DUMMYUNIONNAME; DWORD dwObjectTypeNameCount; AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
 	// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
 	[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
@@ -2479,7 +2479,7 @@ public static partial class Authz
 		{
 			if (count == 0) return;
 			ResultListLength = (int)count;
-			var sz = Marshal.SizeOf(typeof(uint)) * (int)count;
+			var sz = Marshal.SizeOf<uint>() * (int)count;
 			GrantedAccessMask = Marshal.AllocHGlobal(sz);
 			SaclEvaluationResults = Marshal.AllocHGlobal(sz);
 			Error = Marshal.AllocHGlobal(sz);
@@ -2555,33 +2555,25 @@ public static partial class Authz
 	/// <summary>
 	/// <para>The <c>AUTHZ_SECURITY_ATTRIBUTES_INFORMATION</c> structure specifies one or more security attributes.</para>
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTES_INFORMATION"/> class.</remarks>
+	/// <param name="attributes">The attributes.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attributes_information typedef struct
 	// _AUTHZ_SECURITY_ATTRIBUTES_INFORMATION { USHORT Version; USHORT Reserved; ULONG AttributeCount; union {
 	// PAUTHZ_SECURITY_ATTRIBUTE_V1 pAttributeV1; } Attribute; } AUTHZ_SECURITY_ATTRIBUTES_INFORMATION, *PAUTHZ_SECURITY_ATTRIBUTES_INFORMATION;
 	[PInvokeData("authz.h", MSDNShortId = "1db95ab0-951f-488c-b522-b3f38fc74c7c")]
-	public class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION
+	public class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[]? attributes)
 	{
-		/// <summary>The number of attributes specified by the Attribute member.</summary>
-		public uint AttributeCount;
-
-		/// <summary>An array of AUTHZ_SECURITY_ATTRIBUTE_V1 structures of the length of the AttributeCount member.</summary>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1[] pAttributeV1;
+		/// <summary>The version of this structure. Currently the only value supported is 1.</summary>
+		public ushort Version = 1;
 
 		/// <summary>Reserved. Do not use.</summary>
-		public ushort Reserved;
+		public ushort Reserved = 0;
 
-		/// <summary>The version of this structure. Currently the only value supported is 1.</summary>
-		public ushort Version;
+		/// <summary>The number of attributes specified by the Attribute member.</summary>
+		public uint AttributeCount = (uint)(attributes?.Length ?? 0);
 
-		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTES_INFORMATION"/> class.</summary>
-		/// <param name="attributes">The attributes.</param>
-		public AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[]? attributes)
-		{
-			Version = 1;
-			Reserved = 0;
-			AttributeCount = (uint)(attributes?.Length ?? 0);
-			pAttributeV1 = attributes ?? new AUTHZ_SECURITY_ATTRIBUTE_V1[0];
-		}
+		/// <summary>An array of AUTHZ_SECURITY_ATTRIBUTE_V1 structures of the length of the AttributeCount member.</summary>
+		public AUTHZ_SECURITY_ATTRIBUTE_V1[] pAttributeV1 = attributes ?? [];
 
 		/// <summary>Create a AUTHZ_SECURITY_ATTRIBUTES_INFORMATION from a pointer.</summary>
 		/// <param name="ptr">The pointer to a block of memory.</param>
@@ -2605,8 +2597,8 @@ public static partial class Authz
 		{
 			// Determine size
 			if (ManagedObj is not AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrInfo) throw new InvalidOperationException("This marshaler only works on AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structures.");
-			var sz1 = Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)) +
-					 attrInfo.AttributeCount * Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1));
+			var sz1 = Marshal.SizeOf<Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION>() +
+					 attrInfo.AttributeCount * Marshal.SizeOf<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>();
 			var sz2 = 0L;
 			for (var i = 0; i < attrInfo.AttributeCount; i++)
 			{
@@ -2619,7 +2611,7 @@ public static partial class Authz
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64:
-						sz2 += Marshal.SizeOf(typeof(long)) * v1.ValueCount;
+						sz2 += Marshal.SizeOf<long>() * v1.ValueCount;
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING:

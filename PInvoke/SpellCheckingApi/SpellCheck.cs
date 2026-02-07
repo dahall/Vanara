@@ -161,7 +161,7 @@ public static partial class SpellCheck
 		/// semantics for values 0 and 1 do not change.
 		/// </para>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ioptiondescription-get_id HRESULT get_Id( LPWSTR
+		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ioptiondescription-get_id HRESULT get_Id( StrPtrUni
 		// *value );
 		string Id { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
@@ -174,7 +174,7 @@ public static partial class SpellCheck
 		/// language of the spell checker or localized to the user's UI language.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ioptiondescription-get_heading HRESULT get_Heading(
-		// LPWSTR *value );
+		// StrPtrUni *value );
 		string Heading { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>
@@ -186,7 +186,7 @@ public static partial class SpellCheck
 		/// language of the spell checker or localized to the user's UI language.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ioptiondescription-get_description HRESULT
-		// get_Description( LPWSTR *value );
+		// get_Description( StrPtrUni *value );
 		string Description { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>
@@ -217,7 +217,7 @@ public static partial class SpellCheck
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_languagetag HRESULT
-		// get_LanguageTag( LPWSTR *value );
+		// get_LanguageTag( StrPtrUni *value );
 		string LanguageTag { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Checks the spelling of the supplied text and returns a collection of spelling errors.</summary>
@@ -285,7 +285,7 @@ public static partial class SpellCheck
 		/// <para>Gets the identifier for this spell checker.</para>
 		/// <para>This property is read-only.</para>
 		/// </summary>
-		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_id HRESULT get_Id( LPWSTR *value );
+		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_id HRESULT get_Id( StrPtrUni *value );
 		string Id { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>
@@ -293,7 +293,7 @@ public static partial class SpellCheck
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_localizedname HRESULT
-		// get_LocalizedName( LPWSTR *value );
+		// get_LocalizedName( StrPtrUni *value );
 		string LocalizedName { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Adds an event handler (ISpellCheckerChangedEventHandler) for the SpellCheckerChanged event.</summary>
@@ -371,7 +371,7 @@ public static partial class SpellCheck
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_languagetag HRESULT
-		// get_LanguageTag( LPWSTR *value );
+		// get_LanguageTag( StrPtrUni *value );
 		new string LanguageTag { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Checks the spelling of the supplied text and returns a collection of spelling errors.</summary>
@@ -439,7 +439,7 @@ public static partial class SpellCheck
 		/// <para>Gets the identifier for this spell checker.</para>
 		/// <para>This property is read-only.</para>
 		/// </summary>
-		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_id HRESULT get_Id( LPWSTR *value );
+		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_id HRESULT get_Id( StrPtrUni *value );
 		new string Id { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>
@@ -447,7 +447,7 @@ public static partial class SpellCheck
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellchecker-get_localizedname HRESULT
-		// get_LocalizedName( LPWSTR *value );
+		// get_LocalizedName( StrPtrUni *value );
 		new string LocalizedName { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 
 		/// <summary>Adds an event handler (ISpellCheckerChangedEventHandler) for the SpellCheckerChanged event.</summary>
@@ -617,7 +617,7 @@ public static partial class SpellCheck
 		/// If the CORRECTIVE_ACTION returned by CorrectiveAction is not <c>CORRECTIVE_ACTION_REPLACE</c>, <c>value</c> is the empty string.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheck/nf-spellcheck-ispellingerror-get_replacement HRESULT
-		// get_Replacement( LPWSTR *value );
+		// get_Replacement( StrPtrUni *value );
 		string Replacement { [return: MarshalAs(UnmanagedType.LPWStr)] get; }
 	}
 

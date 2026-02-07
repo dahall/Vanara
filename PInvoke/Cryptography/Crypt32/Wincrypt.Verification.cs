@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using Vanara.PInvoke.Collections;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in Crypt32.dll.</summary>
 public static partial class Crypt32
@@ -52,7 +55,59 @@ public static partial class Crypt32
 		CERT_CHAIN_DISABLE_AIA = 0x00002000,
 	}
 
-	/// <summary>Flags used by <see cref="CertGetCertificateChain(HCERTCHAINENGINE, PCCERT_CONTEXT, in FILETIME, HCERTSTORE, in CERT_CHAIN_PARA, CertChainFlags, IntPtr, out SafePCCERT_CHAIN_CONTEXT)"/>.</summary>
+	/// <summary>
+	/// <para>
+	/// Contains additional options for the search. The possible values for this parameter depend on the value of the dwFindType parameter.
+	/// </para>
+	/// <para>This parameter can contain zero or a combination of one or more of the following values when dwFindType contains <c>CERT_CHAIN_FIND_BY_ISSUER</c>.</para>
+	/// </summary>
+	[Flags]
+	public enum CertChainFindFlags : uint
+	{
+		/// <summary>
+		/// Compares the public key in the certificate with the cryptographic service provider's public key. This comparison is the last
+		/// check made on the chain when it is built. Because the hCryptProv member of an issuer contains a private key, it might need to be
+		/// checked several times during this process; to facilitate this checking, the dwAcquirePrivateKeyFlags member can be set in the
+		/// CERT_CHAIN_FIND_BY_ISSUER_PARA structure to enable caching of that hCryptProv.
+		/// </summary>
+		CERT_CHAIN_FIND_BY_ISSUER_COMPARE_KEY_FLAG = 0x0001,
+
+		/// <summary>
+		/// By default, only the first simple chain is checked for issuer name matches. With this flag set, the default is overridden and
+		/// subsequent simple chains are also checked for issuer name matches.
+		/// </summary>
+		CERT_CHAIN_FIND_BY_ISSUER_COMPLEX_CHAIN_FLAG = 0x0002,
+
+		/// <summary>Only the URL cache is searched. The Internet is not searched.</summary>
+		CERT_CHAIN_FIND_BY_ISSUER_CACHE_ONLY_URL_FLAG = 0x0004,
+
+		/// <summary>Only opens the Local Machine certificate stores. The certificate stores of the current user are not opened.</summary>
+		CERT_CHAIN_FIND_BY_ISSUER_LOCAL_MACHINE_FLAG = 0x0008,
+
+		/// <summary>No check is made to determine whether the certificate has an associated private key.</summary>
+		CERT_CHAIN_FIND_BY_ISSUER_NO_KEY_FLAG = 0x4000,
+
+		/// <summary>
+		/// Improves the performance of this function by causing it to search only the cached system stores (Root, My, Ca, Trust) to find
+		/// issuer certificates. If this flag is not set, the function searches the cached system stores and the store represented by the
+		/// hCertStore parameter.
+		/// </summary>
+		CERT_CHAIN_FIND_BY_ISSUER_CACHE_ONLY_FLAG = 0x8000,
+	}
+
+	/// <summary>
+	/// Determines what criteria to use to find a certificate in the store.
+	/// </summary>
+	public enum CertChainFindType : uint
+	{
+		/// <summary>
+		/// Finds the certificate based on the name of the issuer. The pvFindPara parameter is a pointer to a CERT_CHAIN_FIND_BY_ISSUER_PARA
+		/// structure that contains members that modify the search.
+		/// </summary>
+		CERT_CHAIN_FIND_BY_ISSUER = 1,
+	}
+
+	/// <summary>Flags used by <c>CertGetCertificateChain</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "8c93036c-0b93-40d4-b0e3-ba1f2fc72db1")]
 	[Flags]
 	public enum CertChainFlags : uint
@@ -250,7 +305,7 @@ public static partial class Crypt32
 		CERT_CHAIN_STRONG_SIGN_DISABLE_END_CHECK_FLAG = 0x00000001,
 	}
 
-	/// <summary>Flags used by <see cref="CertCreateCTLEntryFromCertificateContextProperties"/>.</summary>
+	/// <summary>Flags used by <see cref="CertCreateCTLEntryFromCertificateContextProperties(PCCERT_CONTEXT, uint, CRYPT_ATTRIBUTE[], CertCreateCTLEntryFlags, IntPtr, IntPtr, ref uint)"/>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "90ac512f-3cbe-4543-9b34-8e384f730cfe")]
 	[Flags]
 	public enum CertCreateCTLEntryFlags
@@ -288,7 +343,7 @@ public static partial class Crypt32
 		CERT_VERIFY_ALLOW_MORE_USAGE_FLAG = 0x8,
 	}
 
-	/// <summary>Flags used by <see cref="CryptMsgEncodeAndSignCTL"/>.</summary>
+	/// <summary>Flags used by <c>CryptMsgEncodeAndSignCTL</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "5c0e9e2e-a50d-45d0-b51d-065784d1d912")]
 	[Flags]
 	public enum CryptMsgEncodeFlags
@@ -305,7 +360,7 @@ public static partial class Crypt32
 		CMSG_ENCODE_HASHED_SUBJECT_IDENTIFIER_FLAG = 0x2,
 	}
 
-	/// <summary>Flags for <see cref="CryptMsgGetAndVerifySigner"/>.</summary>
+	/// <summary>Flags for <see cref="CryptMsgGetAndVerifySigner(HCRYPTMSG, uint, HCERTSTORE[], CryptMsgSignerFlags, out SafePCCERT_CONTEXT, ref uint)"/>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "380c9cf3-27a2-4354-b1c8-97cec33f4e44")]
 	[Flags]
 	public enum CryptMsgSignerFlags
@@ -327,7 +382,7 @@ public static partial class Crypt32
 		CMSG_USE_SIGNER_INDEX_FLAG = 0x4,
 	}
 
-	/// <summary>Flags for <see cref="CryptMsgSignCTL"/>.</summary>
+	/// <summary>Flags for <c>CryptMsgSignCTL</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "85ae8ce3-d0a7-4fcb-beaa-ede09d30930e")]
 	[Flags]
 	public enum CryptMsgSignFlags
@@ -382,7 +437,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e173016a-d3d7-42e0-aad8-e738abaf1df9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertCreateCertificateChainEngine(in CERT_CHAIN_ENGINE_CONFIG pConfig, out SafeHCERTCHAINENGINE phChainEngine);
+	public static extern bool CertCreateCertificateChainEngine(in CERT_CHAIN_ENGINE_CONFIG pConfig, [AddAsCtor] out SafeHCERTCHAINENGINE phChainEngine);
 
 	/// <summary>
 	/// <para>
@@ -424,8 +479,10 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "90ac512f-3cbe-4543-9b34-8e384f730cfe")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertCreateCTLEntryFromCertificateContextProperties([In] PCCERT_CONTEXT pCertContext, uint cOptAttr, [In, MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[] rgOptAttr,
-		CertCreateCTLEntryFlags dwFlags, [Optional] IntPtr pvReserved, [Out, Optional] IntPtr pCtlEntry, ref uint pcbCtlEntry);
+	public static extern bool CertCreateCTLEntryFromCertificateContextProperties([In] PCCERT_CONTEXT pCertContext, uint cOptAttr,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CRYPT_ATTRIBUTE[] rgOptAttr,
+		CertCreateCTLEntryFlags dwFlags, [Optional, Ignore] IntPtr pvReserved,
+		[Out, Optional, SizeDef(nameof(pcbCtlEntry), SizingMethod.Query)] IntPtr pCtlEntry, ref uint pcbCtlEntry);
 
 	/// <summary>
 	/// The <c>CertDuplicateCertificateChain</c> function duplicates a pointer to a certificate chain by incrementing the chain's
@@ -444,7 +501,7 @@ public static partial class Crypt32
 	// CertDuplicateCertificateChain( PCCERT_CHAIN_CONTEXT pChainContext );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fea72a3e-5a22-47c7-8f6e-0d76fc3339f8")]
-	public static extern PCCERT_CHAIN_CONTEXT CertDuplicateCertificateChain(PCCERT_CHAIN_CONTEXT pChainContext);
+	public static extern SafePCCERT_CHAIN_CONTEXT CertDuplicateCertificateChain([In, AddAsMember] PCCERT_CHAIN_CONTEXT pChainContext);
 
 	/// <summary>
 	/// The <c>CertFindChainInStore</c> function finds the first or next certificate in a store that meets the specified criteria. It
@@ -575,7 +632,8 @@ public static partial class Crypt32
 	// *pvFindPara, PCCERT_CHAIN_CONTEXT pPrevChainContext );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "698cece8-71a8-4bfa-8ee6-8035a6dcbe05")]
-	public static extern SafePCCERT_CHAIN_CONTEXT CertFindChainInStore(HCERTSTORE hCertStore, uint dwCertEncodingType, uint dwFindFlags, uint dwFindType, IntPtr pvFindPara, PCCERT_CHAIN_CONTEXT pPrevChainContext);
+	public static extern SafePCCERT_CHAIN_CONTEXT CertFindChainInStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwCertEncodingType,
+		CertChainFindType dwFindFlags, CertChainFindType dwFindType, [In] IntPtr pvFindPara, PCCERT_CHAIN_CONTEXT pPrevChainContext);
 
 	/// <summary>
 	/// <para>
@@ -829,219 +887,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "8c93036c-0b93-40d4-b0e3-ba1f2fc72db1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCertificateChain([Optional] HCERTCHAINENGINE hChainEngine, [In] PCCERT_CONTEXT pCertContext, in FILETIME pTime,
-		[Optional] HCERTSTORE hAdditionalStore, in CERT_CHAIN_PARA pChainPara, CertChainFlags dwFlags, [Optional] IntPtr pvReserved, out SafePCCERT_CHAIN_CONTEXT ppChainContext);
-
-	/// <summary>
-	/// The <c>CertGetCertificateChain</c> function builds a certificate chain context starting from an end certificate and going back,
-	/// if possible, to a trusted root certificate.
-	/// </summary>
-	/// <param name="hChainEngine">
-	/// A handle of the chain engine (namespace and cache) to be used. If hChainEngine is <c>NULL</c>, the default chain engine,
-	/// HCCE_CURRENT_USER, is used. This parameter can be set to HCCE_LOCAL_MACHINE.
-	/// </param>
-	/// <param name="pCertContext">
-	/// A pointer to the CERT_CONTEXT of the end certificate, the certificate for which a chain is being built. This certificate context
-	/// will be the zero-index element in the first simple chain.
-	/// </param>
-	/// <param name="pTime">
-	/// A pointer to a FILETIME variable that indicates the time for which the chain is to be validated. Note that the time does not
-	/// affect trust list, revocation, or root store checking. The current system time is used if <c>NULL</c> is passed to this
-	/// parameter. Trust in a particular certificate being a trusted root is based on the current state of the root store and not the
-	/// state of the root store at a time passed in by this parameter. For revocation, a certificate revocation list (CRL), itself, must
-	/// be valid at the current time. The value of this parameter is used to determine whether a certificate listed in a CRL has been revoked.
-	/// </param>
-	/// <param name="hAdditionalStore">
-	/// A handle to any additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be
-	/// <c>NULL</c> if no additional store is to be searched.
-	/// </param>
-	/// <param name="pChainPara">A pointer to a CERT_CHAIN_PARA structure that includes chain-building parameters.</param>
-	/// <param name="dwFlags">
-	/// <para>Flag values that indicate special processing. This parameter can be a combination of one or more of the following flags.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CERT_CHAIN_CACHE_END_CERT 0x00000001</term>
-	/// <term>
-	/// When this flag is set, the end certificate is cached, which might speed up the chain-building process. By default, the end
-	/// certificate is not cached, and it would need to be verified each time a chain is built for it.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_CHECK_CACHE_ONLY 0x80000000</term>
-	/// <term>Revocation checking only accesses cached URLs.</term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_CHECK_OCSP_CERT 0x04000000</term>
-	/// <term>
-	/// This flag is used internally during chain building for an online certificate status protocol (OCSP) signer certificate to
-	/// prevent cyclic revocation checks. During chain building, if the OCSP response is signed by an independent OCSP signer, then, in
-	/// addition to the original chain build, there is a second chain built for the OCSP signer certificate itself. This flag is used
-	/// during this second chain build to inhibit a recursive independent OCSP signer certificate. If the signer certificate contains
-	/// the szOID_PKIX_OCSP_NOCHECK extension, revocation checking is skipped for the leaf signer certificate. Both OCSP and CRL
-	/// checking are allowed. Windows Server 2003 and Windows XP: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_CACHE_ONLY_URL_RETRIEVAL 0x00000004</term>
-	/// <term>
-	/// Uses only cached URLs in building a certificate chain. The Internet and intranet are not searched for URL-based objects. Note
-	/// This flag is not applicable to revocation checking. Set CERT_CHAIN_REVOCATION_CHECK_CACHE_ONLY to use only cached URLs for
-	/// revocation checking.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_DISABLE_PASS1_QUALITY_FILTERING 0x00000040</term>
-	/// <term>
-	/// For performance reasons, the second pass of chain building only considers potential chain paths that have quality greater than
-	/// or equal to the highest quality determined during the first pass. The first pass only considers valid signature, complete chain,
-	/// and trusted roots to calculate chain quality. This flag can be set to disable this optimization and consider all potential chain
-	/// paths during the second pass.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_DISABLE_MY_PEER_TRUST 0x00000800</term>
-	/// <term>This flag is not supported. Certificates in the "My" store are never considered for peer trust.</term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_ENABLE_PEER_TRUST 0x00000400</term>
-	/// <term>
-	/// End entity certificates in the "TrustedPeople" store are trusted without performing any chain building. This function does not
-	/// set the CERT_TRUST_IS_PARTIAL_CHAIN or CERT_TRUST_IS_UNTRUSTED_ROOT dwErrorStatus member bits of the ppChainContext parameter.
-	/// Windows Server 2003 Windows XP : This flag is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_OPT_IN_WEAK_SIGNATURE 0x00010000</term>
-	/// <term>
-	/// Setting this flag indicates the caller wishes to opt into weak signature checks. This flag is available in the rollup update for
-	/// each OS starting with Windows 7 and Windows Server 2008 R2.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_RETURN_LOWER_QUALITY_CONTEXTS 0x00000080</term>
-	/// <term>
-	/// The default is to return only the highest quality chain path. Setting this flag will return the lower quality chains. These are
-	/// returned in the cLowerQualityChainContext and rgpLowerQualityChainContext fields of the chain context.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_DISABLE_AUTH_ROOT_AUTO_UPDATE 0x00000100</term>
-	/// <term>Setting this flag inhibits the auto update of third-party roots from the Windows Update Web Server.</term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT 0x08000000</term>
-	/// <term>
-	/// When you set CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT and you also specify a value for the dwUrlRetrievalTimeout member of the
-	/// CERT_CHAIN_PARA structure, the value you specify in dwUrlRetrievalTimeout represents the cumulative timeout across all
-	/// revocation URL retrievals. If you set CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT but do not specify a dwUrlRetrievalTimeout
-	/// value, the maximum cumulative timeout is set, by default, to 20 seconds. Each URL tested will timeout after half of the
-	/// remaining cumulative balance has passed. That is, the first URL times out after 10 seconds, the second after 5 seconds, the
-	/// third after 2.5 seconds and so on until a URL succeeds, 20 seconds has passed, or there are no more URLs to test. If you do not
-	/// set CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT, each revocation URL in the chain is assigned a maximum timeout equal to the
-	/// value specified in dwUrlRetrievalTimeout. If you do not specify a value for the dwUrlRetrievalTimeout member, each revocation
-	/// URL is assigned a maximum default timeout of 15 seconds. If no URL succeeds, the maximum cumulative timeout value is 15 seconds
-	/// multiplied by the number of URLs in the chain. You can set the default values by using Group Policy.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_TIMESTAMP_TIME 0x00000200</term>
-	/// <term>
-	/// When this flag is set, pTime is used as the time stamp time to determine whether the end certificate was time valid. Current
-	/// time can also be used to determine whether the end certificate remains time valid. All other certification authority (CA) and
-	/// root certificates in the chain are checked by using current time and not pTime.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_DISABLE_AIA 0x00002000</term>
-	/// <term>Setting this flag explicitly turns off Authority Information Access (AIA) retrievals.</term>
-	/// </item>
-	/// </list>
-	/// <para>You can also set the following revocation flags, but only one flag from this group may be set at a time.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_CHECK_END_CERT 0x10000000</term>
-	/// <term>Revocation checking is done on the end certificate and only the end certificate.</term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_CHECK_CHAIN 0x20000000</term>
-	/// <term>Revocation checking is done on all of the certificates in every chain.</term>
-	/// </item>
-	/// <item>
-	/// <term>CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT 0x40000000</term>
-	/// <term>Revocation checking is done on all certificates in all of the chains except the root certificate.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="pvReserved">This parameter is reserved and must be <c>NULL</c>.</param>
-	/// <param name="ppChainContext">
-	/// The address of a pointer to the chain context created. When you have finished using the chain context, release the chain by
-	/// calling the CertFreeCertificateChain function.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
-	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// When an application requests a certificate chain, the structure returned is in the form of a CERT_CHAIN_CONTEXT. This context
-	/// contains an array of CERT_SIMPLE_CHAIN structures where each simple chain goes from an end certificate to a self-signed
-	/// certificate. The chain context connects simple chains through trust lists. Each simple chain contains the chain of certificates,
-	/// summary trust information about the chain, and trust information about each certificate element in the chain.
-	/// </para>
-	/// <para>The following remarks apply to strong signature checking:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// You can enable strong signature checking for this function by setting the <c>pStrongSignPara</c> member of the CERT_CHAIN_PARA
-	/// structure that is pointed to by the pChainPara parameter.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If a certificate without a strong signature is found in the chain, the <c>CERT_TRUST_HAS_WEAK_SIGNATURE</c> and
-	/// <c>CERT_TRUST_IS_NOT_SIGNATURE_VALID</c> errors are set in the <c>dwErrorStatus</c> field of the CERT_TRUST_STATUS structure.
-	/// The ppChainContext parameter points to a CERT_CHAIN_CONTEXT structure which, in turn, points to the <c>CERT_TRUST_STATUS</c> structure.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the chain is strong signed, the public key in the end certificate is checked to determine whether it satisfies the minimum
-	/// public key length requirements for a strong signature. If the condition is not satisfied, the
-	/// <c>CERT_TRUST_HAS_WEAK_SIGNATURE</c> and <c>CERT_TRUST_IS_NOT_SIGNATURE_VALID</c> errors are set in the <c>dwErrorStatus</c>
-	/// field of the CERT_TRUST_STATUS structure. To disable checking the key length, set the
-	/// <c>CERT_CHAIN_STRONG_SIGN_DISABLE_END_CHECK_FLAG</c> value in the <c>dwStrongSignFlags</c> member of the CERT_CHAIN_PARA
-	/// structure pointed to by the pChainPara parameter.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the <c>CERT_STRONG_SIGN_ENABLE_CRL_CHECK</c> or <c>CERT_STRONG_SIGN_ENABLE_OCSP_CHECK</c> flags are set in the
-	/// CERT_STRONG_SIGN_SERIALIZED_INFO structure and a CRL or OCSP response is found without a strong signature, the CRL or OCSP
-	/// response will be treated as being offline. That is, the <c>CERT_TRUST_IS_OFFLINE_REVOCATION</c> and
-	/// <c>CERT_TRUST_REVOCATION_STATUS_UNKNOWN</c> errors are set in the <c>dwErrorStatus</c> field of the CERT_TRUST_STATUS structure.
-	/// Also, the <c>dwRevocationResult</c> member of the CERT_REVOCATION_INFO structure is set to <c>NTE_BAD_ALGID</c>.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>For an example that uses this function, see Example C Program: Creating a Certificate Chain.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetcertificatechain BOOL CertGetCertificateChain(
-	// HCERTCHAINENGINE hChainEngine, PCCERT_CONTEXT pCertContext, LPFILETIME pTime, HCERTSTORE hAdditionalStore, PCERT_CHAIN_PARA
-	// pChainPara, DWORD dwFlags, LPVOID pvReserved, PCCERT_CHAIN_CONTEXT *ppChainContext );
-	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "8c93036c-0b93-40d4-b0e3-ba1f2fc72db1")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetCertificateChain([Optional] HCERTCHAINENGINE hChainEngine, [In] PCCERT_CONTEXT pCertContext, [In, Optional] IntPtr pTime,
-		[Optional] HCERTSTORE hAdditionalStore, in CERT_CHAIN_PARA pChainPara, CertChainFlags dwFlags, [Optional] IntPtr pvReserved, out SafePCCERT_CHAIN_CONTEXT ppChainContext);
+	public static extern bool CertGetCertificateChain([Optional] HCERTCHAINENGINE hChainEngine, [In] PCCERT_CONTEXT pCertContext, [In, Optional] PFILETIME? pTime,
+		[Optional] HCERTSTORE hAdditionalStore, in CERT_CHAIN_PARA pChainPara, CertChainFlags dwFlags, [Optional, Ignore] IntPtr pvReserved,
+		[AddAsCtor] out SafePCCERT_CHAIN_CONTEXT ppChainContext);
 
 	/// <summary>
 	/// The <c>CertIsValidCRLForCertificate</c> function checks a CRL to find out if it is a CRL that would include a specific
@@ -1704,7 +1552,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "5c0e9e2e-a50d-45d0-b51d-065784d1d912")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptMsgEncodeAndSignCTL(CertEncodingType dwMsgEncodingType, in CTL_INFO pCtlInfo, in CMSG_SIGNED_ENCODE_INFO pSignInfo,
-		CryptMsgEncodeFlags dwFlags, [Out, Optional] IntPtr pbEncoded, ref uint pcbEncoded);
+		CryptMsgEncodeFlags dwFlags, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>The <c>CryptMsgGetAndVerifySigner</c> function verifies a cryptographic message's signature.</summary>
 	/// <param name="hCryptMsg">Handle of a cryptographic message.</param>
@@ -1757,7 +1605,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "380c9cf3-27a2-4354-b1c8-97cec33f4e44")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgGetAndVerifySigner(HCRYPTMSG hCryptMsg, uint cSignerStore, [In, MarshalAs(UnmanagedType.LPArray)] HCERTSTORE[] rghSignerStore,
+	public static extern bool CryptMsgGetAndVerifySigner(HCRYPTMSG hCryptMsg, uint cSignerStore, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HCERTSTORE[] rghSignerStore,
 		CryptMsgSignerFlags dwFlags, out SafePCCERT_CONTEXT ppSigner, ref uint pdwSignerIndex);
 
 	/// <summary>The <c>CryptMsgSignCTL</c> function creates a signed message containing an encoded CTL.</summary>
@@ -1815,8 +1663,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "85ae8ce3-d0a7-4fcb-beaa-ede09d30930e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgSignCTL(CertEncodingType dwMsgEncodingType, [In] IntPtr pbCtlContent, uint cbCtlContent, in CMSG_SIGNED_ENCODE_INFO pSignInfo,
-		CryptMsgSignFlags dwFlags, [Out, Optional] IntPtr pbEncoded, ref uint pcbEncoded);
+	public static extern bool CryptMsgSignCTL(CertEncodingType dwMsgEncodingType, [In, SizeDef(nameof(cbCtlContent))] IntPtr pbCtlContent,
+		uint cbCtlContent, in CMSG_SIGNED_ENCODE_INFO pSignInfo, CryptMsgSignFlags dwFlags,
+		[Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CERT_CHAIN_ENGINE_CONFIG</c> structure sets parameters for building a non-default certificate chain engine. The engine
@@ -1852,10 +1701,10 @@ public static partial class Crypt32
 	// dwExclusiveFlags; } CERT_CHAIN_ENGINE_CONFIG, *PCERT_CHAIN_ENGINE_CONFIG;
 	[PInvokeData("wincrypt.h", MSDNShortId = "9e010eb9-2cbb-4fca-ba5c-4a5a50f23786")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CERT_CHAIN_ENGINE_CONFIG
+	public struct CERT_CHAIN_ENGINE_CONFIG(CertChainEngineFlags flags)
 	{
 		/// <summary>Size of this structure in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CERT_CHAIN_ENGINE_CONFIG>();
 
 		/// <summary>
 		/// This configuration parameter can be used to restrict the root store. If used, it can be the handle of any HCERTSTORE
@@ -1911,7 +1760,7 @@ public static partial class Crypt32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public CertChainEngineFlags dwFlags;
+		public CertChainEngineFlags dwFlags = flags;
 
 		/// <summary>
 		/// Number of milliseconds before a time-out for network based–URL object retrievals. Can be set to zero to use the default limit.
@@ -2028,17 +1877,17 @@ public static partial class Crypt32
 	// pStrongSignPara; DWORD dwStrongSignFlags; } CERT_CHAIN_PARA, *PCERT_CHAIN_PARA;
 	[PInvokeData("wincrypt.h", MSDNShortId = "86094e1c-be59-4a15-a05b-21769f80e653")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CERT_CHAIN_PARA
+	public struct CERT_CHAIN_PARA(in CERT_USAGE_MATCH reqUsage)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CERT_CHAIN_PARA>();
 
 		/// <summary>
 		/// Structure indicating the kind of matching necessary to find issuer certificates for building a certificate chain. The
 		/// structure pointed to indicates whether AND or OR logic is to be used in the matching process. The structure also includes an
 		/// array of OIDs to be matched.
 		/// </summary>
-		public CERT_USAGE_MATCH RequestedUsage;
+		public CERT_USAGE_MATCH RequestedUsage = reqUsage;
 
 		/// <summary>
 		/// <para>
@@ -2522,7 +2371,7 @@ public static partial class Crypt32
 	// dwType; CERT_ENHKEY_USAGE Usage; } CERT_USAGE_MATCH, *PCERT_USAGE_MATCH;
 	[PInvokeData("wincrypt.h", MSDNShortId = "6154f1f7-4293-4b8e-91ab-9f57bb6f5743")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CERT_USAGE_MATCH
+	public struct CERT_USAGE_MATCH(UsageMatchType type, in CTL_USAGE usage = default)
 	{
 		/// <summary>
 		/// <para>
@@ -2546,13 +2395,13 @@ public static partial class Crypt32
 		/// </list>
 		/// <para>Default usage match logic is USAGE_MATCH_TYPE_AND.</para>
 		/// </summary>
-		public UsageMatchType dwType;
+		public UsageMatchType dwType = type;
 
 		/// <summary>
 		/// CERT_ENHKEY_USAGE structure ( <c>CERT_ENHKEY_USAGE</c> is an alternate typedef name for the <c>CTL_USAGE</c> structure) that
 		/// includes an array of certificate object identifiers (OIDs) that a certificate must match in order to be valid.
 		/// </summary>
-		public CTL_USAGE Usage;
+		public CTL_USAGE Usage = usage;
 	}
 
 	/// <summary>
@@ -2572,20 +2421,20 @@ public static partial class Crypt32
 		/// <summary>Number of elements in the <c>rgSigners</c> array.</summary>
 		public uint cSigners;
 
-		/// <summary>Array of pointers to CMSG_SIGNER_ENCODE_INFOstructures each holding signer information.</summary>
-		public IntPtr rgSigners;
+		/// <summary>Array of pointers to CMSG_SIGNER_ENCODE_INFO structures each holding signer information.</summary>
+		public ArrayPointer<StructPointer<CMSG_SIGNER_ENCODE_INFO>> rgSigners;
 
 		/// <summary>Number of elements in the <c>rgCertEncoded</c> array.</summary>
 		public uint cCertEncoded;
 
 		/// <summary>Array of pointers to CERT_BLOB structures, each containing an encoded certificate.</summary>
-		public IntPtr rgCertEncoded;
+		public ArrayPointer<StructPointer<CRYPTOAPI_BLOB>> rgCertEncoded;
 
 		/// <summary>Number of elements in the <c>rgCrlEncoded</c> array.</summary>
 		public uint cCrlEncoded;
 
 		/// <summary>Array of pointers to CRL_BLOB structures, each containing an encoded CRL.</summary>
-		public IntPtr rgCrlEncoded;
+		public ArrayPointer<StructPointer<CRYPTOAPI_BLOB>> rgCrlEncoded;
 
 		/// <summary>
 		/// Number of elements in the <c>rgAttrCertEncoded</c> array. Used only if CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS is defined.
@@ -2596,7 +2445,7 @@ public static partial class Crypt32
 		/// Array of encoded attribute certificates. Used only if CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS is defined. This array of
 		/// encoded attribute certificates can be used with CMS for PKCS #7 processing.
 		/// </summary>
-		public IntPtr rgAttrCertEncoded;
+		public ArrayPointer<StructPointer<CRYPTOAPI_BLOB>> rgAttrCertEncoded;
 	}
 
 	/// <summary>
@@ -2630,13 +2479,13 @@ public static partial class Crypt32
 		public uint cCtlStore;
 
 		/// <summary>Array of handles of stores to be searched to find a matching CTL.</summary>
-		public IntPtr rghCtlStore;
+		public ArrayPointer<HCERTSTORE> rghCtlStore;
 
 		/// <summary>Count of stores to be searched for acceptable CTL signers.</summary>
 		public uint cSignerStore;
 
 		/// <summary>Array of handles of stores to be searched for acceptable CTL signers.</summary>
-		public IntPtr rghSignerStore;
+		public ArrayPointer<HCERTSTORE> rghSignerStore;
 	}
 
 	/// <summary>
@@ -2679,7 +2528,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para>If <c>ppCtl</c> is not <c>NULL</c>, the calling application must free the returned context using CertFreeCTLContext.</para>
 		/// </summary>
-		public IntPtr ppCtl;
+		public StructPointer<PCCTL_CONTEXT> ppCtl;
 
 		/// <summary>Returns the array location of the matching subject's entry in the CTL's array.</summary>
 		public uint dwCtlEntryIndex;
@@ -2691,7 +2540,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para>If <c>ppSigner</c> is not <c>NULL</c>, the calling application must free the returned context using CertFreeCTLContext.</para>
 		/// </summary>
-		public IntPtr ppSigner;
+		public StructPointer<PCCERT_CONTEXT> ppSigner;
 
 		/// <summary>Index of the signer actually used. Needed if a message has more than one signer.</summary>
 		public uint dwSignerIndex;
@@ -2699,10 +2548,86 @@ public static partial class Crypt32
 
 	public partial struct PCCERT_CHAIN_CONTEXT
 	{
-		/// <summary>Performs an explicit conversion from <see cref="PCCERT_CHAIN_CONTEXT"/> to <see cref="CERT_CHAIN_CONTEXT"/>.</summary>
-		/// <param name="h">The <see cref="PCCERT_CHAIN_CONTEXT"/> instance.</param>
-		/// <returns>The resulting <see cref="CERT_CHAIN_CONTEXT"/> instance from the conversion.</returns>
-		public static explicit operator CERT_CHAIN_CONTEXT(PCCERT_CHAIN_CONTEXT h) => h.handle.ToStructure<CERT_CHAIN_CONTEXT>();
+		/// <summary>Gets a reference to the underlying <see cref="CERT_CHAIN_CONTEXT"/> structure.</summary>
+		public ref CERT_CHAIN_CONTEXT AsRef() => ref handle.AsRef<CERT_CHAIN_CONTEXT>();
+
+		/// <summary>
+		/// Performs an implicit conversion from a <see cref="PCCERT_CHAIN_CONTEXT"/> to a <see cref="CERT_CHAIN_CONTEXT"/>* pointer.
+		/// </summary>
+		/// <remarks>
+		/// This operator enables seamless interoperation with native APIs that require a <see cref="CERT_CHAIN_CONTEXT"/>* pointer. Use with
+		/// caution, as working with unmanaged pointers can lead to memory safety issues if not handled properly.
+		/// </remarks>
+		/// <param name="v">The <see cref="PCCERT_CHAIN_CONTEXT"/> instance to convert.</param>
+		public static unsafe implicit operator CERT_CHAIN_CONTEXT*(PCCERT_CHAIN_CONTEXT v) => (CERT_CHAIN_CONTEXT*)v.handle;
+	}
+
+	/// <summary>
+	/// Provides a safe handle for a native list of certificate chain contexts, enabling managed access and enumeration of certificate chains.
+	/// </summary>
+	/// <remarks>
+	/// This class manages the lifetime of the underlying native certificate chain list and its elements. When disposed, it releases all
+	/// associated unmanaged resources. The collection is read-only and supports enumeration of individual certificate chain contexts.
+	/// Accessing elements after disposal will result in undefined behavior.
+	/// </remarks>
+	/// <param name="preexistingHandle">
+	/// A pointer to the native certificate chain list to wrap. Must reference a valid, unmanaged certificate chain list.
+	/// </param>
+	/// <param name="count">The number of certificate chain contexts contained in the native list.</param>
+	public partial class SafeCertificateChainList(IntPtr preexistingHandle, uint count) : IDisposable, IHandle, IReadOnlyList<PCCERT_CHAIN_CONTEXT>
+	{
+		private bool disposedValue;
+		private readonly IntPtr handle = preexistingHandle;
+
+		/// <summary>
+		/// Finalizes an instance of the SafeCertificateChainList class, releasing unmanaged resources before the object is reclaimed by
+		/// garbage collection.
+		/// </summary>
+		~SafeCertificateChainList()
+		{
+			Dispose(disposing: false);
+		}
+
+		/// <inheritdoc/>
+		public PCCERT_CHAIN_CONTEXT this[int index] => index >= 0 && index < Count ? handle.Offset(index * IntPtr.Size) : throw new IndexOutOfRangeException();
+
+		/// <inheritdoc/>
+		public int Count { get; } = (int)count;
+
+		bool IHandle.IsInvalid => handle == default;
+
+		/// <inheritdoc/>
+		public IEnumerator<PCCERT_CHAIN_CONTEXT> GetEnumerator() => new NativeMemoryEnumerator<PCCERT_CHAIN_CONTEXT>(handle, Count, 0, Count * IntPtr.Size);
+
+		/// <summary>Converts a SafeCertificateChainList instance to an IntPtr representing the underlying native handle.</summary>
+		/// <remarks>
+		/// Use this operator to obtain the native handle for interoperability scenarios. The returned IntPtr should not be released or
+		/// modified directly; use SafeCertificateChainList methods to manage the handle's lifetime.
+		/// </remarks>
+		/// <param name="v">The SafeCertificateChainList instance to convert.</param>
+		public static implicit operator IntPtr(SafeCertificateChainList v) => v.handle;
+
+		/// <inheritdoc/>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				foreach (var ctx in this)
+					CertFreeCertificateChain(ctx);
+				CertFreeCertificateChainList(handle);
+				disposedValue = true;
+			}
+		}
+
+		void IDisposable.Dispose()
+		{
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
+		IntPtr IHandle.DangerousGetHandle() => handle;
 	}
 
 	public partial class SafePCCERT_CHAIN_CONTEXT
@@ -2711,6 +2636,19 @@ public static partial class Crypt32
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The resulting <see cref="CERT_CHAIN_CONTEXT"/> instance from the conversion.</returns>
 		public static explicit operator CERT_CHAIN_CONTEXT(SafePCCERT_CHAIN_CONTEXT h) => h.handle.ToStructure<CERT_CHAIN_CONTEXT>();
+
+		/// <summary>Gets a reference to the underlying <see cref="CERT_CHAIN_CONTEXT"/> structure.</summary>
+		public ref CERT_CHAIN_CONTEXT AsRef() => ref handle.AsRef<CERT_CHAIN_CONTEXT>();
+
+		/// <summary>
+		/// Performs an implicit conversion from a <see cref="SafePCCERT_CHAIN_CONTEXT"/> to a <see cref="CERT_CHAIN_CONTEXT"/>* pointer.
+		/// </summary>
+		/// <remarks>
+		/// This operator enables seamless interoperation with native APIs that require a <see cref="CERT_CHAIN_CONTEXT"/>* pointer. Use with
+		/// caution, as working with unmanaged pointers can lead to memory safety issues if not handled properly.
+		/// </remarks>
+		/// <param name="v">The <see cref="PCCERT_CHAIN_CONTEXT"/> instance to convert.</param>
+		public static unsafe implicit operator CERT_CHAIN_CONTEXT*(SafePCCERT_CHAIN_CONTEXT v) => (CERT_CHAIN_CONTEXT*)v.DangerousGetHandle();
 	}
 
 	/// <summary>Predefined verify chain policies.</summary>

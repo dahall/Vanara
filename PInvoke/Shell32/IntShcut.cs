@@ -91,7 +91,7 @@ public static partial class Url
 
 		/// <summary>Retrieves an object's URL.</summary>
 		/// <param name="ppszUrl">
-		/// Address of an LPSTR that will be filled with a pointer to the object's URL. Because this method allocates memory for the
+		/// Address of an StrPtrAnsi that will be filled with a pointer to the object's URL. Because this method allocates memory for the
 		/// string, you must create and instance of an IMalloc interface and free the memory using IMalloc::Free when it is no longer needed.
 		/// </param>
 		void GetUrl([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszUrl);
@@ -150,7 +150,7 @@ public static partial class Url
 	/// <para>The address of a null-terminated string that contains the unregistered content type.</para>
 	/// </param>
 	/// <param name="pszAppBuf">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the path of the application specified by the user.
 	/// </para>
@@ -195,7 +195,7 @@ public static partial class Url
 	/// does not indicate that the specified MIME content type is valid.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/intshcut/nf-intshcut-mimeassociationdialoga INTSHCUTAPI HRESULT
-	// MIMEAssociationDialogA( HWND hwndParent, DWORD dwInFlags, PCSTR pcszFile, PCSTR pcszMIMEContentType, PSTR pszAppBuf, UINT
+	// MIMEAssociationDialogA( HWND hwndParent, DWORD dwInFlags, PCSTR pcszFile, PCSTR pcszMIMEContentType, StrPtrAnsi pszAppBuf, UINT
 	// ucAppBufLen );
 	[DllImport(Lib.Url, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("intshcut.h", MSDNShortId = "0f8ee95a-3f95-47ee-822b-740ba134cd3c")]
@@ -222,7 +222,7 @@ public static partial class Url
 	/// </para>
 	/// </param>
 	/// <param name="ppszTranslatedURL">
-	/// <para>Type: <c>PTSTR*</c></para>
+	/// <para>Type: <c>StrPtrAuto*</c></para>
 	/// <para>
 	/// A pointer variable that receives the pointer to the newly created, translated URL string, if any. The ppszTranslatedURL
 	/// parameter is valid only if the function returns S_OK.
@@ -257,7 +257,7 @@ public static partial class Url
 	/// This function does not validate the input URL string. A successful return value does not indicate that the URL strings are valid URLs.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/intshcut/nf-intshcut-translateurla INTSHCUTAPI HRESULT TranslateURLA( PCSTR
-	// pcszURL, DWORD dwInFlags, PSTR *ppszTranslatedURL );
+	// pcszURL, DWORD dwInFlags, StrPtrAnsi *ppszTranslatedURL );
 	[DllImport(Lib.Url, SetLastError = false, EntryPoint = "TranslateURLW")]
 	[PInvokeData("intshcut.h", MSDNShortId = "2f089f5a-4d7c-4bb7-961c-5c6e3e73c7b7")]
 	public static extern HRESULT TranslateURL([MarshalAs(UnmanagedType.LPWStr)] string pcszURL, TRANSLATEURL_IN_FLAGS dwInFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszTranslatedURL);
@@ -293,7 +293,7 @@ public static partial class Url
 	/// <para>The address of a constant zero-terminated string that contains the URL with an unknown protocol.</para>
 	/// </param>
 	/// <param name="pszAppBuf">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The address of a buffer that receives the path of the application specified by the user.</para>
 	/// </param>
 	/// <param name="ucAppBufLen">
@@ -309,7 +309,7 @@ public static partial class Url
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/intshcut/nf-intshcut-urlassociationdialoga INTSHCUTAPI HRESULT
-	// URLAssociationDialogA( HWND hwndParent, DWORD dwInFlags, PCSTR pcszFile, PCSTR pcszURL, PSTR pszAppBuf, UINT ucAppBufLen );
+	// URLAssociationDialogA( HWND hwndParent, DWORD dwInFlags, PCSTR pcszFile, PCSTR pcszURL, StrPtrAnsi pszAppBuf, UINT ucAppBufLen );
 	[DllImport(Lib.Url, SetLastError = false, EntryPoint = "URLAssociationDialogW")]
 	[PInvokeData("intshcut.h", MSDNShortId = "3158e819-f131-4f57-8516-998955100377")]
 	[Obsolete]

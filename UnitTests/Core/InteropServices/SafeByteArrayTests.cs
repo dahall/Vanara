@@ -112,7 +112,7 @@ public class SafeByteArrayTests
 		var sb2 = new SafeByteArray(3);
 		Assert.That(() => c.CompareTo(sb2, Comparer<byte>.Default), Throws.TypeOf<ArgumentOutOfRangeException>());
 		Assert.That(c.CompareTo(bytes, Comparer<byte>.Default), Is.EqualTo(0));
-		var sb3 = bytes.Reverse().ToArray();
+		var sb3 = Enumerable.Reverse(bytes).ToArray();
 		Assert.That(c.CompareTo(sb3, Comparer<byte>.Default), Is.LessThan(0));
 		Assert.That(c.CompareTo(new List<byte>(bytes), Comparer<byte>.Default), Is.EqualTo(0));
 	}
@@ -137,7 +137,7 @@ public class SafeByteArrayTests
 		Assert.That(() => e.Equals(sb2, iec), Throws.TypeOf<ArgumentOutOfRangeException>());
 		Assert.That(e.Equals(bytes, iec), Is.True);
 		Assert.That(e.Equals(new List<byte>(bytes), iec), Is.True);
-		var sb3 = new SafeByteArray(bytes.Reverse().ToArray());
+		var sb3 = new SafeByteArray(Enumerable.Reverse(bytes).ToArray());
 		Assert.That(e.Equals(sb3, iec), Is.False);
 		var h3 = ((IStructuralEquatable)sb3).GetHashCode(iec);
 

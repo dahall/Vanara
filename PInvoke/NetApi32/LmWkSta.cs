@@ -441,7 +441,7 @@ public static partial class NetApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmwksta/nf-lmwksta-netwkstatransportadd NET_API_STATUS NET_API_FUNCTION
-	// NetWkstaTransportAdd( LPTSTR servername, DWORD level, LPBYTE buf, LPDWORD parm_err );
+	// NetWkstaTransportAdd( StrPtrAuto servername, DWORD level, LPBYTE buf, LPDWORD parm_err );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("lmwksta.h", MSDNShortId = "016060ea-eae1-421f-b708-5c2ddd2000c1")]
 	public static extern Win32Error NetWkstaTransportAdd([Optional] string? servername, uint level, IntPtr buf, out uint parm_err);
@@ -601,7 +601,7 @@ public static partial class NetApi32
 	/// </returns>
 	/// <remarks>No special group membership is required to successfully execute the <c>NetWkstaTransportEnum</c> function.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmwksta/nf-lmwksta-netwkstatransportenum NET_API_STATUS NET_API_FUNCTION
-	// NetWkstaTransportEnum( LPTSTR servername, DWORD level, LPBYTE *bufptr, DWORD prefmaxlen, LPDWORD entriesread, LPDWORD
+	// NetWkstaTransportEnum( StrPtrAuto servername, DWORD level, LPBYTE *bufptr, DWORD prefmaxlen, LPDWORD entriesread, LPDWORD
 	// totalentries, LPDWORD resume_handle );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("lmwksta.h", MSDNShortId = "08bd22a9-00a7-4563-9353-c070ca9b2500")]

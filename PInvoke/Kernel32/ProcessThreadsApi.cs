@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
+	/// <summary>Disable</summary>
+	public const uint PME_FAILFAST_ON_COMMIT_FAIL_DISABLE = 0x0;
+
+	/// <summary>Enable</summary>
+	public const uint PME_FAILFAST_ON_COMMIT_FAIL_ENABLE = 0x1;
+
 	/// <summary>Value indicating that there are no thread local storage indexes to allocate.</summary>
 	public const uint TLS_OUT_OF_INDEXES = 0xFFFFFFFF;
 
@@ -1655,14 +1662,14 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 	public static bool CreateProcess([Optional] string? lpApplicationName, [Optional] StringBuilder? lpCommandLine, [In, Optional] SECURITY_ATTRIBUTES? lpProcessAttributes,
 		[In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[]? lpEnvironment,
-		[Optional] string? lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+		[Optional] string? lpCurrentDirectory, in STARTUPINFO lpStartupInfo, [AddAsCtor] out SafePROCESS_INFORMATION lpProcessInformation)
 	{
 		if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
 			dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
@@ -1696,6 +1703,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>A handle to the created process.</returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
+	[return: AddAsCtor]
 	public static SafeHPROCESS CreateProcess(string lpCommandLine)
 	{
 		if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), null, null, false, 0, null, null, STARTUPINFO.Default, out PROCESS_INFORMATION pi))
@@ -1870,14 +1878,14 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 	public static bool CreateProcess([Optional] string? lpApplicationName, [Optional] StringBuilder? lpCommandLine, [In, Optional] SECURITY_ATTRIBUTES? lpProcessAttributes,
 		[In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, bool bInheritHandles, [Optional] CREATE_PROCESS dwCreationFlags, [In, Optional] string[]? lpEnvironment,
-		[Optional] string? lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, out SafePROCESS_INFORMATION lpProcessInformation)
+		[Optional] string? lpCurrentDirectory, in STARTUPINFOEX lpStartupInfo, [AddAsCtor] out SafePROCESS_INFORMATION lpProcessInformation)
 	{
 		if (lpEnvironment != null && StringHelper.GetCharSize() == 2)
 			dwCreationFlags |= CREATE_PROCESS.CREATE_UNICODE_ENVIRONMENT;
@@ -1960,10 +1968,11 @@ public static partial class Kernel32
 	/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
+	[return: AddAsCtor]
 	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
@@ -2040,10 +2049,11 @@ public static partial class Kernel32
 	/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
+	[return: AddAsCtor]
 	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
@@ -2112,7 +2122,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
@@ -2186,7 +2196,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
@@ -2260,7 +2270,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
@@ -2334,7 +2344,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
@@ -2342,6 +2352,75 @@ public static partial class Kernel32
 	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] IntPtr lpAttributeList,
 		out uint lpThreadId);
+
+	/// <summary>
+	/// Creates a thread that runs in the virtual address space of another process and optionally specifies extended attributes such as
+	/// processor group affinity.
+	/// </summary>
+	/// <param name="hProcess">
+	/// A handle to the process in which the thread is to be created. The handle must have the PROCESS_CREATE_THREAD,
+	/// PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_WRITE, and PROCESS_VM_READ access rights. In Windows 10, version 1607,
+	/// your code must obtain these access rights for the new handle. However, starting in Windows 10, version 1703, if the new handle is
+	/// entitled to these access rights, the system obtains them for you. For more information, see Process Security and Access Rights.
+	/// </param>
+	/// <param name="lpThreadAttributes">
+	/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread and determines whether
+	/// child processes can inherit the returned handle. If lpThreadAttributes is NULL, the thread gets a default security descriptor and the
+	/// handle cannot be inherited. The access control lists (ACL) in the default security descriptor for a thread come from the primary
+	/// token of the creator.
+	/// </param>
+	/// <param name="lpStartAddress">
+	/// A pointer to the application-defined function of type <c>LPTHREAD_START_ROUTINE</c> to be executed by the thread and represents the
+	/// starting address of the thread in the remote process. The function must exist in the remote process. For more information, see <c>ThreadProc</c>.
+	/// </param>
+	/// <param name="lpParameter">
+	/// A pointer to a variable to be passed to the thread function pointed to by lpStartAddress. This parameter can be NULL.
+	/// </param>
+	/// <param name="dwStackSize">
+	/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is 0 (zero), the new
+	/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+	/// </param>
+	/// <param name="dwCreationFlags">
+	/// <para>The flags that control the creation of the thread.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>0</term>
+	/// <term>The thread runs immediately after creation.</term>
+	/// </item>
+	/// <item>
+	/// <term>CREATE_SUSPENDED = 0x00000004</term>
+	/// <term>The thread is created in a suspended state and does not run until the ResumeThread function is called.</term>
+	/// </item>
+	/// <item>
+	/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION = 0x00010000</term>
+	/// <term>
+	/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies the
+	/// commit size.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpThreadId">A pointer to a variable that receives the thread identifier.</param>
+	/// <param name="lpAttributeList">An attribute list that contains additional parameters for the new thread.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
+	[return: AddAsCtor]
+	public static SafeHTHREAD CreateRemoteThreadEx([In, AddAsMember] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes,
+		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] SizeT dwStackSize, [Optional] CREATE_THREAD_FLAGS dwCreationFlags,
+		out uint lpThreadId, params (PROC_THREAD_ATTRIBUTE attribute, object value)[] lpAttributeList)
+	{
+		using var al = SafeProcThreadAttributeList.Create(lpAttributeList.ToDictionary(x => x.attribute, x => x.value));
+		return CreateRemoteThreadEx(hProcess, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, al, out lpThreadId);
+	}
 
 	/// <summary>
 	/// <para>Creates a thread to execute within the virtual address space of the calling process.</para>
@@ -2406,10 +2485,11 @@ public static partial class Kernel32
 	/// the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_ LPTHREAD_START_ROUTINE
+	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_ LPTHREAD_START_ROUTINE
 	// lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
+	[return: AddAsCtor]
 	public static extern SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize, ThreadProc lpStartAddress,
 		[In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
@@ -2476,7 +2556,7 @@ public static partial class Kernel32
 	/// the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_ LPTHREAD_START_ROUTINE
+	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_ LPTHREAD_START_ROUTINE
 	// lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
@@ -2515,7 +2595,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI FlushInstructionCache( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _In_ SIZE_T dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679350(v=vs.85).aspx
+	// BOOL WINAPI FlushInstructionCache( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _In_ SizeT dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679350(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679350")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2660,7 +2740,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683189")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetExitCodeProcess([In] HPROCESS hProcess, out uint lpExitCode);
+	public static extern bool GetExitCodeProcess([In, AddAsMember] HPROCESS hProcess, out uint lpExitCode);
 
 	/// <summary>Retrieves the termination status of the specified thread.</summary>
 	/// <param name="hThread">
@@ -2680,7 +2760,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683190")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetExitCodeThread([In] HTHREAD hThread, out uint lpExitCode);
+	public static extern bool GetExitCodeThread([In, AddAsMember] HTHREAD hThread, out uint lpExitCode);
 
 	/// <summary>
 	/// Queries if the specified architecture is supported on the current system, either natively or by any form of compatibility or
@@ -2765,7 +2845,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetPriorityClass( _In_ HANDLE hProcess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683211(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683211")]
-	public static extern CREATE_PROCESS GetPriorityClass([In] HPROCESS hProcess);
+	public static extern CREATE_PROCESS GetPriorityClass([In, AddAsMember] HPROCESS hProcess);
 
 	/// <summary>Retrieves the list of CPU Sets in the process default set that was set by SetProcessDefaultCpuSetMasks or SetProcessDefaultCpuSets.</summary>
 	/// <param name="Process">
@@ -2802,8 +2882,9 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetProcessDefaultCpuSetMasks")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessDefaultCpuSetMasks([In] HPROCESS Process,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[]? CpuSetMasks,
+	public static extern bool GetProcessDefaultCpuSetMasks([In, AddAsMember] HPROCESS Process,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2),
+		SizeDef(nameof(CpuSetMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? CpuSetMasks,
 		ushort CpuSetMaskCount, out ushort RequiredMaskCount);
 
 	/// <summary>
@@ -2842,11 +2923,11 @@ public static partial class Kernel32
 	/// value returned by <c>GetCurrentProcess</c> can also be specified here.
 	/// </param>
 	/// <returns>The list of CPU Set identifiers.</returns>
-	public static uint[] GetProcessDefaultCpuSets(HPROCESS Process)
+	public static uint[] GetProcessDefaultCpuSets([In, AddAsMember] HPROCESS Process)
 	{
 		uint cnt = (uint)Environment.ProcessorCount;
-		if (cnt == 0) return new uint[0];
-		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf(typeof(uint)));
+		if (cnt == 0) return [];
+		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf<uint>());
 		if (!GetProcessDefaultCpuSets(Process, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
 		return iptr.ToArray<uint>((int)cnt);
 	}
@@ -2868,7 +2949,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683214")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessHandleCount([In] HPROCESS hProcess, out uint pdwHandleCount);
+	public static extern bool GetProcessHandleCount([In, AddAsMember] HPROCESS hProcess, out uint pdwHandleCount);
 
 	/// <summary>Retrieves the process identifier of the specified process.</summary>
 	/// <param name="Process">
@@ -2882,7 +2963,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetProcessId( _In_ HANDLE Process); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683215(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683215")]
-	public static extern uint GetProcessId([In] HPROCESS Process);
+	public static extern uint GetProcessId([In, AddAsMember] HPROCESS Process);
 
 	/// <summary>Retrieves the process identifier of the process associated with the specified thread.</summary>
 	/// <param name="Thread">
@@ -2899,7 +2980,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetProcessIdOfThread( _In_ HANDLE Thread); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683216(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683216")]
-	public static extern uint GetProcessIdOfThread(HTHREAD Thread);
+	public static extern uint GetProcessIdOfThread([In, AddAsMember] HTHREAD Thread);
 
 	/// <summary>Retrieves information about the specified process.</summary>
 	/// <param name="hProcess">
@@ -2994,7 +3075,7 @@ public static partial class Kernel32
 	/// If the ProcessInformationClass parameter is <c>ProcessAppMemoryInfo</c>, this parameter must point to a APP_MEMORY_INFORMATION structure.
 	/// </para>
 	/// </returns>
-	public static T GetProcessInformation<T>(HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass = (PROCESS_INFORMATION_CLASS)(-1)) where T : struct
+	public static T GetProcessInformation<T>([In, AddAsMember] HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass = (PROCESS_INFORMATION_CLASS)(-1)) where T : struct
 	{
 		if (!ProcessInformationClass.IsValid() && !CorrespondingTypeAttribute.CanGet<T, PROCESS_INFORMATION_CLASS>(out ProcessInformationClass))
 			throw new ArgumentException("The type specified by the type parameter cannot be retrieved for a process.", nameof(T));
@@ -3156,7 +3237,7 @@ public static partial class Kernel32
 	/// for this function, call <c>GetLastError</c>.
 	/// </returns>
 	// BOOL WINAPI GetProcessMitigationPolicy( _In_ HANDLE hProcess, _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _Out_ PVOID lpBuffer,
-	// _In_ SIZE_T dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769085(v=vs.85).aspx
+	// _In_ SizeT dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769085(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "hh769085")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3267,11 +3348,11 @@ public static partial class Kernel32
 	/// for this function, call <c>GetLastError</c>.
 	/// </returns>
 	/// <exception cref="ArgumentException"></exception>
-	public static bool GetProcessMitigationPolicy<T>(HPROCESS hProcess, PROCESS_MITIGATION_POLICY MitigationPolicy, [NotNullWhen(true)] out T? value)
+	public static bool GetProcessMitigationPolicy<T>([In, AddAsMember] HPROCESS hProcess, PROCESS_MITIGATION_POLICY MitigationPolicy, [NotNullWhen(true)] out T? value)
 	{
 		bool isMask = MitigationPolicy == PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask;
 		if (!isMask && !CorrespondingTypeAttribute.CanGet(MitigationPolicy, typeof(T))) throw new ArgumentException($"{MitigationPolicy} cannot be used to get values of type {typeof(T)}.");
-		int sz = isMask ? 16 : Marshal.SizeOf(typeof(T));
+		int sz = isMask ? 16 : Marshal.SizeOf<T>();
 		using SafeCoTaskMemHandle ptr = new(sz);
 		if (!isMask)
 		{
@@ -3321,7 +3402,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683220")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessPriorityBoost([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+	public static extern bool GetProcessPriorityBoost([In, AddAsMember] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 
 	/// <summary>Retrieves the shutdown parameters for the currently calling process.</summary>
 	/// <param name="lpdwLevel">
@@ -3420,7 +3501,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessTimes([In] HPROCESS hProcess, out FILETIME lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
+	public static extern bool GetProcessTimes([In, AddAsMember] HPROCESS hProcess, out FILETIME lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
 		out FILETIME lpUserTime);
 
 	/// <summary>Retrieves the major and minor version numbers of the system on which the specified process expects to run.</summary>
@@ -3557,7 +3638,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679362")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetThreadContext([In] HTHREAD hThread, ref CONTEXT lpContext);
+	public static extern bool GetThreadContext([In, AddAsMember] HTHREAD hThread, ref CONTEXT lpContext);
 
 	/// <summary>Retrieves the description that was assigned to a thread by calling SetThreadDescription.</summary>
 	/// <param name="hThread">
@@ -3576,7 +3657,7 @@ public static partial class Kernel32
 	/// <para>Thread descriptions do not need to be unique.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreaddescription HRESULT
-	// GetThreadDescription( HANDLE hThread, PWSTR *ppszThreadDescription );
+	// GetThreadDescription( HANDLE hThread, StrPtrUni *ppszThreadDescription );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8")]
 	public static extern HRESULT GetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszThreadDescription);
@@ -3593,7 +3674,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetThreadId( _In_ HANDLE Thread); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683233(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683233")]
-	public static extern uint GetThreadId(HTHREAD Thread);
+	public static extern uint GetThreadId([In, AddAsMember] HTHREAD Thread);
 
 	/// <summary>Retrieves the processor number of the ideal processor for the specified thread.</summary>
 	/// <param name="hThread">
@@ -3609,7 +3690,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405499")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetThreadIdealProcessorEx(HTHREAD hThread, out PROCESSOR_NUMBER lpIdealProcessor);
+	public static extern bool GetThreadIdealProcessorEx([In, AddAsMember] HTHREAD hThread, out PROCESSOR_NUMBER lpIdealProcessor);
 
 	/// <summary>Retrieves information about the specified thread.</summary>
 	/// <param name="hThread">
@@ -3666,7 +3747,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "hh448382")]
-	public static T GetThreadInformation<T>(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass) where T : struct
+	public static T GetThreadInformation<T>([In, AddAsMember] HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(ThreadInformationClass, typeof(T))) throw new ArgumentException($"{ThreadInformationClass} cannot be used to get values of type {typeof(T)}.");
 		using SafeHGlobalHandle mem = SafeHGlobalHandle.CreateFromStructure(ReflectionExtensions.CreateOrDefault<T>());
@@ -3691,7 +3772,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683234")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetThreadIOPendingFlag([In] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] out bool lpIOIsPending);
+	public static extern bool GetThreadIOPendingFlag([In, AddAsMember] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] out bool lpIOIsPending);
 
 	/// <summary>
 	/// Retrieves the priority value for the specified thread. This value, together with the priority class of the thread's process,
@@ -3760,7 +3841,7 @@ public static partial class Kernel32
 	// int WINAPI GetThreadPriority( _In_ HANDLE hThread);// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683235(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683235")]
-	public static extern int GetThreadPriority([In] HTHREAD hThread);
+	public static extern int GetThreadPriority([In, AddAsMember] HTHREAD hThread);
 
 	/// <summary>Retrieves the priority boost control state of the specified thread.</summary>
 	/// <param name="hThread">
@@ -3785,7 +3866,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683236")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetThreadPriorityBoost([In] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
+	public static extern bool GetThreadPriorityBoost([In, AddAsMember] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] out bool pDisablePriorityBoost);
 
 	/// <summary>
 	/// Returns the explicit CPU Set assignment of the specified thread, if any assignment was set using the <c>SetThreadSelectedCpuSets</c>
@@ -3824,11 +3905,11 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>The list of CPU Set identifiers.</returns>
 	[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186426")]
-	public static uint[] GetThreadSelectedCpuSets(HTHREAD Thread)
+	public static uint[] GetThreadSelectedCpuSets([In, AddAsMember] HTHREAD Thread)
 	{
 		uint cnt = (uint)Environment.ProcessorCount;
-		if (cnt == 0) return new uint[0];
-		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf(typeof(uint)));
+		if (cnt == 0) return [];
+		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf<uint>());
 		if (!GetThreadSelectedCpuSets(Thread, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
 		return iptr.ToArray<uint>((int)cnt);
 	}
@@ -3861,7 +3942,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683237")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetThreadTimes([In] HTHREAD hThread, out FILETIME lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
+	public static extern bool GetThreadTimes([In, AddAsMember] HTHREAD hThread, out FILETIME lpCreationTime, out FILETIME lpExitTime, out FILETIME lpKernelTime,
 		out FILETIME lpUserTime);
 
 	/// <summary>Initializes the specified list of attributes for process and thread creation.</summary>
@@ -3901,7 +3982,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "dn386160")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsProcessCritical([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Critical);
+	public static extern bool IsProcessCritical([In, AddAsMember] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Critical);
 
 	/// <summary>Determines whether the specified processor feature is supported by the current computer.</summary>
 	/// <param name="ProcessorFeature">
@@ -4149,7 +4230,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "bb309062")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryProcessAffinityUpdateMode(HPROCESS ProcessHandle, out PROCESS_AFFINITY_MODE lpdwFlags);
+	public static extern bool QueryProcessAffinityUpdateMode([In, AddAsMember] HPROCESS ProcessHandle, out PROCESS_AFFINITY_MODE lpdwFlags);
 
 	/// <summary>Queries the value associated with a protected policy.</summary>
 	/// <param name="PolicyGuid">The globally-unique identifier of the policy to query.</param>
@@ -4242,7 +4323,7 @@ public static partial class Kernel32
 	// DWORD WINAPI ResumeThread( _In_ HANDLE hThread); https://msdn.microsoft.com/en-us/library/windows/desktop/ms685086(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685086")]
-	public static extern uint ResumeThread([In] HTHREAD hThread);
+	public static extern uint ResumeThread([In, AddAsMember] HTHREAD hThread);
 
 	/// <summary>
 	/// Sets the priority class for the specified process. This value together with the priority value of each thread of the process
@@ -4326,7 +4407,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686219")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPriorityClass([In] HPROCESS hProcess, CREATE_PROCESS dwPriorityClass);
+	public static extern bool SetPriorityClass([In, AddAsMember] HPROCESS hProcess, CREATE_PROCESS dwPriorityClass);
 
 	/// <summary>Sets the affinity update mode of the specified process.</summary>
 	/// <param name="ProcessHandle">A handle to the process. This handle must be returned by the <c>GetCurrentProcess</c> function.</param>
@@ -4357,7 +4438,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "bb309063")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessAffinityUpdateMode([In] HPROCESS ProcessHandle, PROCESS_AFFINITY_MODE dwFlags);
+	public static extern bool SetProcessAffinityUpdateMode([In, AddAsMember] HPROCESS ProcessHandle, PROCESS_AFFINITY_MODE dwFlags);
 
 	/// <summary>Sets the default CPU Sets assignment for threads in the specified process.</summary>
 	/// <param name="Process">
@@ -4388,7 +4469,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetProcessDefaultCpuSetMasks")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessDefaultCpuSetMasks([In] HPROCESS Process,
+	public static extern bool SetProcessDefaultCpuSetMasks([In, AddAsMember] HPROCESS Process,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[]? CpuSetMasks, [Optional] ushort CpuSetMaskCount);
 
 	/// <summary>
@@ -4411,7 +4492,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186427")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessDefaultCpuSets([In] HPROCESS Process, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, uint CpuSetIdCound);
+	public static extern bool SetProcessDefaultCpuSets([In, AddAsMember] HPROCESS Process, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, uint CpuSetIdCound);
 
 	/// <summary>Sets dynamic exception handling continuation targets for the specified process.</summary>
 	/// <param name="Process">
@@ -4505,7 +4586,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "hh448389")]
-	public static bool SetProcessInformation<T>([In] HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, in T ProcessInformation) where T : struct
+	public static bool SetProcessInformation<T>([In, AddAsMember] HPROCESS hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, in T ProcessInformation) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(ProcessInformationClass, typeof(T))) throw new ArgumentException($"{ProcessInformationClass} cannot be used to set values of type {typeof(T)}.");
 		using SafeHGlobalHandle mem = SafeHGlobalHandle.CreateFromStructure(ProcessInformation);
@@ -4659,7 +4740,7 @@ public static partial class Kernel32
 	/// If the function succeeds, it returns <c>TRUE</c>. If the function fails, it returns <c>FALSE</c>. To retrieve error values defined
 	/// for this function, call <c>GetLastError</c>.
 	/// </returns>
-	// BOOL WINAPI SetProcessMitigationPolicy( _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _In_ PVOID lpBuffer, _In_ SIZE_T dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088(v=vs.85).aspx
+	// BOOL WINAPI SetProcessMitigationPolicy( _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _In_ PVOID lpBuffer, _In_ SizeT dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "hh769088")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4797,7 +4878,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686225")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessPriorityBoost([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] bool DisablePriorityBoost);
+	public static extern bool SetProcessPriorityBoost([In, AddAsMember] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] bool DisablePriorityBoost);
 
 	/// <summary>
 	/// Sets shutdown parameters for the currently calling process. This function sets a shutdown order for a process relative to the other
@@ -4898,7 +4979,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms680632")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadContext([In] HTHREAD hThread, in CONTEXT lpContext);
+	public static extern bool SetThreadContext([In, AddAsMember] HTHREAD hThread, in CONTEXT lpContext);
 
 	/// <summary>Assigns a description to a thread.</summary>
 	/// <param name="hThread">
@@ -4912,7 +4993,7 @@ public static partial class Kernel32
 	// HRESULT WINAPI SetThreadDescription( _In_ HANDLE hThread, _In_ PCWSTR lpThreadDescription); https://msdn.microsoft.com/en-us/library/windows/desktop/mt774976(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ProcessThreadsApi.h", MSDNShortId = "mt774976")]
-	public static extern HRESULT SetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.LPWStr)] string lpThreadDescription);
+	public static extern HRESULT SetThreadDescription([In, AddAsMember] HTHREAD hThread, [MarshalAs(UnmanagedType.LPWStr)] string lpThreadDescription);
 
 	/// <summary>
 	/// <para>Sets a preferred processor for a thread. The system schedules threads on their preferred processors whenever possible.</para>
@@ -4957,7 +5038,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405517")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadIdealProcessorEx([In] HTHREAD hThread, in PROCESSOR_NUMBER lpIdealProcessor, out PROCESSOR_NUMBER lpPreviousIdealProcessor);
+	public static extern bool SetThreadIdealProcessorEx([In, AddAsMember] HTHREAD hThread, in PROCESSOR_NUMBER lpIdealProcessor, out PROCESSOR_NUMBER lpPreviousIdealProcessor);
 
 	/// <summary>Sets information for the specified thread.</summary>
 	/// <param name="hThread">
@@ -5069,7 +5150,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "c0159bea-870a-46b7-a350-91fe52efae49")]
-	public static bool SetThreadInformation<T>(HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, in T ThreadInformation)
+	public static bool SetThreadInformation<T>([In, AddAsMember] HTHREAD hThread, THREAD_INFORMATION_CLASS ThreadInformationClass, in T ThreadInformation)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(ThreadInformationClass, typeof(T))) throw new ArgumentException($"{ThreadInformationClass} cannot be used to set values of type {typeof(T)}.");
 		using SafeHGlobalHandle mem = SafeHGlobalHandle.CreateFromStructure(ThreadInformation);
@@ -5165,7 +5246,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686277")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadPriority([In] HTHREAD hThread, int nPriority);
+	public static extern bool SetThreadPriority([In, AddAsMember] HTHREAD hThread, int nPriority);
 
 	/// <summary>Disables or enables the ability of the system to temporarily boost the priority of a thread.</summary>
 	/// <param name="hThread">
@@ -5186,7 +5267,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686280")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadPriorityBoost([In] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] bool DisablePriorityBoost);
+	public static extern bool SetThreadPriorityBoost([In, AddAsMember] HTHREAD hThread, [MarshalAs(UnmanagedType.Bool)] bool DisablePriorityBoost);
 
 	/// <summary>
 	/// Sets the selected CPU Sets assignment for the specified thread. This assignment overrides the process default assignment, if one is set.
@@ -5217,7 +5298,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.SetThreadSelectedCpuSetMasks")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadSelectedCpuSetMasks([In] HTHREAD Thread,
+	public static extern bool SetThreadSelectedCpuSetMasks([In, AddAsMember] HTHREAD Thread,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GROUP_AFFINITY[]? CpuSetMasks, [Optional] ushort CpuSetMaskCount);
 
 	/// <summary>
@@ -5239,7 +5320,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186428")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadSelectedCpuSets([In, Optional] HTHREAD Thread, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, [Optional] uint CpuSetIdCount);
+	public static extern bool SetThreadSelectedCpuSets([In, Optional] HTHREAD Thread, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, [Optional] uint CpuSetIdCount);
 
 	/// <summary>
 	/// Sets the minimum size of the stack associated with the calling thread or fiber that will be available during any stack overflow
@@ -5280,7 +5361,7 @@ public static partial class Kernel32
 	// DWORD WINAPI SuspendThread( _In_ HANDLE hThread); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686345(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686345")]
-	public static extern uint SuspendThread(HTHREAD hThread);
+	public static extern uint SuspendThread([In, AddAsMember] HTHREAD hThread);
 
 	/// <summary>
 	/// Causes the calling thread to yield execution to another thread that is ready to run on the current processor. The operating system
@@ -5318,7 +5399,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686714")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TerminateProcess([In] HPROCESS hProcess, uint uExitCode);
+	public static extern bool TerminateProcess([In, AddAsMember] HPROCESS hProcess, uint uExitCode);
 
 	/// <summary>Terminates a thread.</summary>
 	/// <param name="hThread">
@@ -5334,7 +5415,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686717")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TerminateThread([In] HTHREAD hThread, uint dwExitCode);
+	public static extern bool TerminateThread([In, AddAsMember] HTHREAD hThread, uint dwExitCode);
 
 	/// <summary>
 	/// Allocates a thread local storage (TLS) index. Any thread of the process can subsequently use this index to store and retrieve values
@@ -5670,7 +5751,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI UpdateProcThreadAttribute( _Inout_ LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _In_ DWORD dwFlags, _In_ DWORD_PTR
-	// Attribute, _In_ PVOID lpValue, _In_ SIZE_T cbSize, _Out_opt_ PVOID lpPreviousValue, _In_opt_ PSIZE_T lpReturnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686880(v=vs.85).aspx
+	// Attribute, _In_ PVOID lpValue, _In_ SizeT cbSize, _Out_opt_ PVOID lpPreviousValue, _In_opt_ PSIZE_T lpReturnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686880(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686880")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5845,7 +5926,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -6025,7 +6106,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -6079,10 +6160,12 @@ public static partial class Kernel32
 	/// Specifies the memory priority for a thread or process. This structure is used by the <c>GetProcessInformation</c>,
 	/// <c>SetProcessInformation</c>, <c>GetThreadInformation</c>, and <c>SetThreadInformation</c> functions.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="MEMORY_PRIORITY_INFORMATION"/> struct.</remarks>
+	/// <param name="memoryPriority">The memory priority for the thread or process.</param>
 	// typedef struct _MEMORY_PRIORITY_INFORMATION { ULONG MemoryPriority;} MEMORY_PRIORITY_INFORMATION, *PMEMORY_PRIORITY_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/hh448387(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "hh448387")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MEMORY_PRIORITY_INFORMATION
+	public struct MEMORY_PRIORITY_INFORMATION(MEMORY_PRIORITY memoryPriority)
 	{
 		/// <summary>
 		/// <para>The memory priority for the thread or process. This member can be one of the following values.</para>
@@ -6115,25 +6198,27 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public MEMORY_PRIORITY MemoryPriority;
-
-		/// <summary>Initializes a new instance of the <see cref="MEMORY_PRIORITY_INFORMATION"/> struct.</summary>
-		/// <param name="memoryPriority">The memory priority for the thread or process.</param>
-		public MEMORY_PRIORITY_INFORMATION(MEMORY_PRIORITY memoryPriority) => MemoryPriority = memoryPriority;
+		public MEMORY_PRIORITY MemoryPriority = memoryPriority;
 	}
 
 	/// <summary>Represents a process or thread attribute identifier.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</remarks>
+	/// <param name="type">The attribute type.</param>
+	/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
+	/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
+	/// <param name="Additive">if set to <c>true</c> this is additive.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PROC_THREAD_ATTRIBUTE : IEquatable<PROC_THREAD_ATTRIBUTE>, IEquatable<UIntPtr>
+	public struct PROC_THREAD_ATTRIBUTE(PROC_THREAD_ATTRIBUTE.AttrType type, bool Thread, bool Input, bool Additive) : IEquatable<PROC_THREAD_ATTRIBUTE>, IEquatable<UIntPtr>
 	{
-		private readonly UIntPtr value;
+		private readonly UIntPtr value = (UIntPtr)(((uint)type & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
+			(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
 
 		private const uint PROC_THREAD_ATTRIBUTE_NUMBER = 0x0000FFFF;
 		private const uint PROC_THREAD_ATTRIBUTE_THREAD = 0x00010000;
 		private const uint PROC_THREAD_ATTRIBUTE_INPUT = 0x00020000;
 		private const uint PROC_THREAD_ATTRIBUTE_ADDITIVE = 0x00040000;
 
-		private static readonly Dictionary<uint, Type?> typeLookup = new();
+		private static readonly Dictionary<uint, Type?> typeLookup = [];
 
 		static PROC_THREAD_ATTRIBUTE()
 		{
@@ -6308,15 +6393,6 @@ public static partial class Kernel32
 			[CorrespondingType(typeof(uint))]
 			ProcThreadAttributeDesktopAppPolicy = 18,
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</summary>
-		/// <param name="type">The attribute type.</param>
-		/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
-		/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
-		/// <param name="Additive">if set to <c>true</c> this is additive.</param>
-		public PROC_THREAD_ATTRIBUTE(AttrType type, bool Thread, bool Input, bool Additive) =>
-			value = (UIntPtr)(((uint)type & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
-			(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
 
 		/// <summary>Gets the type associated with this attribute.</summary>
 		public Type? ValidType => LookupType(this);
@@ -6778,11 +6854,14 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Specifies the throttling policies and how to apply them to a target process when that process is subject to power management.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROCESS_POWER_THROTTLING_STATE"/> struct.</remarks>
+	/// <param name="controlMask">The control mask.</param>
+	/// <param name="stateMask">The state mask.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-process_power_throttling_state typedef
 	// struct _PROCESS_POWER_THROTTLING_STATE { ULONG Version; ULONG ControlMask; ULONG StateMask; } PROCESS_POWER_THROTTLING_STATE, *PPROCESS_POWER_THROTTLING_STATE;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "394B6509-849C-4B4C-9A46-AF5011A03585")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PROCESS_POWER_THROTTLING_STATE
+	public struct PROCESS_POWER_THROTTLING_STATE(PROCESS_POWER_THROTTLING_MASK controlMask, PROCESS_POWER_THROTTLING_MASK stateMask)
 	{
 		/// <summary/>
 		public const uint PROCESS_POWER_THROTTLING_CURRENT_VERSION = 1;
@@ -6802,7 +6881,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public uint Version;
+		public uint Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
 
 		/// <summary>
 		/// <para>This field enables the caller to take control of the power throttling mechanism.</para>
@@ -6819,7 +6898,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public PROCESS_POWER_THROTTLING_MASK ControlMask;
+		public PROCESS_POWER_THROTTLING_MASK ControlMask = controlMask;
 
 		/// <summary>
 		/// <para>Manages the power throttling mechanism on/off state.</para>
@@ -6836,17 +6915,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public PROCESS_POWER_THROTTLING_MASK StateMask;
-
-		/// <summary>Initializes a new instance of the <see cref="PROCESS_POWER_THROTTLING_STATE"/> struct.</summary>
-		/// <param name="controlMask">The control mask.</param>
-		/// <param name="stateMask">The state mask.</param>
-		public PROCESS_POWER_THROTTLING_STATE(PROCESS_POWER_THROTTLING_MASK controlMask, PROCESS_POWER_THROTTLING_MASK stateMask)
-		{
-			Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
-			ControlMask = controlMask;
-			StateMask = stateMask;
-		}
+		public PROCESS_POWER_THROTTLING_MASK StateMask = stateMask;
 	}
 
 	/// <summary>Specifies whether Protected Process Light (PPL) is enabled.</summary>
@@ -6911,28 +6980,21 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Represents a logical processor in a processor group.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROCESSOR_NUMBER"/> struct.</remarks>
+	/// <param name="processorGroup">The processor group to which the logical processor is assigned.</param>
+	/// <param name="logicalProcessor">The number of the logical processor relative to the group.</param>
 	[PInvokeData("WinNT.h", MSDNShortId = "dd405505")]
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct PROCESSOR_NUMBER
+	public struct PROCESSOR_NUMBER(ushort processorGroup, byte logicalProcessor)
 	{
 		/// <summary>The processor group to which the logical processor is assigned.</summary>
-		public ushort Group;
+		public ushort Group = processorGroup;
 
 		/// <summary>The number of the logical processor relative to the group.</summary>
-		public byte Number;
+		public byte Number = logicalProcessor;
 
 		/// <summary>This parameter is reserved.</summary>
-		public byte Reserved;
-
-		/// <summary>Initializes a new instance of the <see cref="PROCESSOR_NUMBER"/> struct.</summary>
-		/// <param name="processorGroup">The processor group to which the logical processor is assigned.</param>
-		/// <param name="logicalProcessor">The number of the logical processor relative to the group.</param>
-		public PROCESSOR_NUMBER(ushort processorGroup, byte logicalProcessor)
-		{
-			Group = processorGroup;
-			Number = logicalProcessor;
-			Reserved = 0;
-		}
+		public byte Reserved = 0;
 	}
 
 	/// <summary>
@@ -6970,7 +7032,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; StrPtrAnsi lpReserved; StrPtrAnsi lpDesktop; StrPtrAnsi lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7275,7 +7337,7 @@ public static partial class Kernel32
 		public SIZE WindowSize { get => new((int)dwXSize, (int)dwYSize); set { dwXSize = (uint)value.cx; dwYSize = (uint)value.cy; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESIZE, value != SIZE.Empty); } }
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
-		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf(typeof(STARTUPINFO)) };
+		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf<STARTUPINFO>() };
 	}
 
 	/// <summary>
@@ -7304,7 +7366,7 @@ public static partial class Kernel32
 		public IntPtr lpAttributeList;
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
-		public static STARTUPINFOEX Default => new() { StartupInfo = new STARTUPINFO { cb = (uint)Marshal.SizeOf(typeof(STARTUPINFOEX)) } };
+		public static STARTUPINFOEX Default => new() { StartupInfo = new STARTUPINFO { cb = (uint)Marshal.SizeOf<STARTUPINFOEX>() } };
 	}
 
 	/// <summary>
@@ -7502,7 +7564,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; StrPtrAnsi lpReserved; StrPtrAnsi lpDesktop; StrPtrAnsi lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7791,6 +7853,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HPROCESS), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Process|Ex\b", "")]
 	public partial class SafeHPROCESS
 	{
 		/// <summary>Gets a handle to the current process that can be used across processes.</summary>
@@ -7800,8 +7863,91 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HTHREAD), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Thread|Ex\b", "")]
 	public partial class SafeHTHREAD
 	{
+		/// <summary>
+		/// <para>Creates a thread to execute within the virtual address space of the calling process.</para>
+		/// <para>To create a thread that runs in the virtual address space of another process, use the <c>CreateRemoteThread</c> function.</para>
+		/// </summary>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function to be executed by the thread. This pointer represents the starting address of the
+		/// thread. For more information on the thread function, see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">A pointer to a variable to be passed to the thread.</param>
+		/// <param name="lpThreadId">
+		/// A pointer to a variable that receives the thread identifier. If this parameter is <c>NULL</c>, the thread identifier is not returned.
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED 0x00000004</term>
+		/// <term>The thread is created in a suspended state, and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION 0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is zero, the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// <para>
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that determines whether the returned handle can be inherited by child
+		/// processes. If lpThreadAttributes is NULL, the handle cannot be inherited.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new thread. If lpThreadAttributes
+		/// is NULL, the thread gets a default security descriptor. The ACLs in the default security descriptor for a thread come from the
+		/// primary token of the creator.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that <c>CreateThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start address
+		/// is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid start
+		/// address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
+		/// </para>
+		/// </returns>
+		public static SafeHTHREAD Create(ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, out uint lpThreadId, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] SizeT dwStackSize, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes) =>
+			Kernel32.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, out lpThreadId);
+
+		/// <summary>
+		/// <para>Creates a thread to execute within the virtual address space of the calling process.</para>
+		/// <para>To create a thread that runs in the virtual address space of another process, use the <c>CreateRemoteThread</c> function.</para>
+		/// </summary>
+		/// <param name="lpStartAddress">A pointer to the application-defined function to be executed by the thread. This pointer represents the starting address of the
+		/// thread. For more information on the thread function, see <c>ThreadProc</c>.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that <c>CreateThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start address
+		/// is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid start
+		/// address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
+		/// </para>
+		/// </returns>
+		public static SafeHTHREAD Create(ThreadProc lpStartAddress) => Create(lpStartAddress, IntPtr.Zero, out _);
+
 		/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
 		/// <value>The current thread handle.</value>
 		public static SafeHTHREAD Current => new(GetCurrentThread().Duplicate());
@@ -7871,7 +8017,7 @@ public static partial class Kernel32
 	/// </summary>
 	public class SafeProcThreadAttributeList : SafeHANDLE
 	{
-		private readonly List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)> values = new();
+		private readonly List<(PROC_THREAD_ATTRIBUTE attr, object obj, PinnedObject ptr)> values = [];
 
 		/// <summary>Initializes a new instance of the <see cref="SafeProcThreadAttributeList"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -7920,7 +8066,7 @@ public static partial class Kernel32
 		/// <returns>A new instance of the list with all attributes and objects duplicated.</returns>
 		public SafeProcThreadAttributeList Clone()
 		{
-			Dictionary<PROC_THREAD_ATTRIBUTE, object> d = new();
+			Dictionary<PROC_THREAD_ATTRIBUTE, object> d = [];
 			foreach ((PROC_THREAD_ATTRIBUTE attr, object obj, _) in values) d.Add(attr, obj);
 			return Create(d);
 		}
