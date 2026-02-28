@@ -101,7 +101,7 @@ public enum StringEncoding
 /// Indicates that a struct has an alternative type that can be used for marshaling purposes.
 /// </summary>
 /// <remarks>Initializes a new instance of the <see cref="MarshaledAlternativeAttribute"/> class.</remarks>
-[System.AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
 public class MarshaledAlternativeAttribute(Type altType) : Attribute
 {
 
@@ -125,7 +125,7 @@ public class MarshaledAttribute(LayoutModel layout = LayoutModel.Sequential) : A
 
 	/// <summary>Gets or sets the pack.</summary>
 	/// <value>The pack.</value>
-	/// <exception cref="System.ArgumentOutOfRangeException">value</exception>
+	/// <exception cref="ArgumentOutOfRangeException">value</exception>
 	public int Pack { get => pack; set => pack = value >= 0 && (value == 0 || value.IsPow2()) ? value : throw new ArgumentOutOfRangeException(nameof(value)); }
 
 	/// <summary>Gets or sets the size.</summary>
@@ -155,8 +155,8 @@ public static class MarshalFieldAs
 	/// </param>
 	/// <param name="embeddedCharacters">The number of characters embedded in the structure's native size.</param>
 	/// <param name="stringEncoding">The character encoding of the string.</param>
-	/// <seealso cref="System.Attribute"/>
-	/// <seealso cref="Vanara.Marshaler.MarshalFieldAs.IMarshalAsAttr"/>
+	/// <seealso cref="Attribute"/>
+	/// <seealso cref="IMarshalAsAttr"/>
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 	public class AppendedStringAttribute(string? stringLenFieldName, int embeddedCharacters = 1, StringEncoding stringEncoding = StringEncoding.Unicode) : Attribute, IMarshalAsAttr
 	{
@@ -213,8 +213,8 @@ public static class MarshalFieldAs
 	{
 		/// <summary>Initializes a new instance of the <see cref="BitFieldAttribute{T}"/> class.</summary>
 		/// <param name="bitCount">The bit count.</param>
-		/// <exception cref="System.ArgumentException">Generic type must be an integral. - T</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">bitCount</exception>
+		/// <exception cref="ArgumentException">Generic type must be an integral. - T</exception>
+		/// <exception cref="ArgumentOutOfRangeException">bitCount</exception>
 		public BitFieldAttribute(int bitCount = 1)
 		{
 			if (!typeof(T).IsIntegral()) throw new ArgumentException("Generic type must be an integral.", nameof(T));

@@ -207,7 +207,7 @@ public static partial class Marshaler
 			var p = CreateSafeMemory<TMem>(ti.NativeSize + asz);
 
 			// Walk through each fd of each object recursively and pass value to the matched fd data
-			WriteFields(ti, value, p.DangerousGetHandle());
+			WriteFields(ti, value, p.DangerousGetHandle(), ti.NativeSize);
 			return p;
 
 			int Preprocess(MarshaledTypeInfo mti, object obj)
@@ -222,7 +222,7 @@ public static partial class Marshaler
 				return addSz;
 			}
 
-			void WriteFields(MarshaledTypeInfo mti, object obj, IntPtr ptr)
+			void WriteFields(MarshaledTypeInfo mti, object obj, IntPtr ptr, int nativeSize)
 			{
 				for (int i = 0; i < mti.Fields.Count; i++)
 				{
