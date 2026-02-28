@@ -5,7 +5,7 @@ using Vanara.Extensions.Reflection;
 namespace Vanara.PInvoke;
 
 /// <summary>Converts a handle to a string or an integer and vice versa. The string representation is the handle value as an integer.</summary>
-/// <seealso cref="System.ComponentModel.TypeConverter"/>
+/// <seealso cref="TypeConverter"/>
 public class HANDLEConverter : TypeConverter
 {
 	/// <inheritdoc/>

@@ -48,7 +48,7 @@ public static class VanaraMarshaler
 			marshaler = Activator.CreateInstance(t) as IVanaraMarshaler;
 			return marshaler != null;
 		}
-		var mattr = t.GetCustomAttributes<Vanara.Marshaler.MarshaledAttribute>(false).FirstOrDefault();
+		var mattr = t.GetCustomAttributes<Marshaler.MarshaledAttribute>(false).FirstOrDefault();
 		if (mattr != null)
 		{
 			marshaler = new MarshalerOnVanaraMarshaler(t);
@@ -121,9 +121,9 @@ public class VanaraMarshalerAttribute : Attribute
 	public Type MarshalType { get; }
 }
 
-/// <summary>Generic class implementing <see cref="IVanaraMarshaler"/> to process types that support the <see cref="Vanara.Marshaler.MarshaledAttribute"/>.</summary>
-/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
-internal class MarshalerOnVanaraMarshaler(Type type, Vanara.Marshaler.MarshalerOptions? opts = null) : IVanaraMarshaler
+/// <summary>Generic class implementing <see cref="IVanaraMarshaler"/> to process types that support the <see cref="Marshaler.MarshaledAttribute"/>.</summary>
+/// <seealso cref="IVanaraMarshaler"/>
+internal class MarshalerOnVanaraMarshaler(Type type, Marshaler.MarshalerOptions? opts = null) : IVanaraMarshaler
 {
 	SizeT IVanaraMarshaler.GetNativeSize() => Vanara.Marshaler.Marshaler.SizeOf(type, opts);
 	SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
