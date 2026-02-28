@@ -20,7 +20,7 @@ namespace System
 		/// If the Index constructed from the end, index value 1 means pointing at the last element and index value 0 means pointing at
 		/// beyond last element.
 		/// </remarks>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public Index(int value, bool fromEnd = false)
 		{
 			if (value < 0)
@@ -39,7 +39,7 @@ namespace System
 		/// which always have non negative length/count. If the returned offset is negative and then used to index a collection will get out
 		/// of range exception which will be same affect as the validation.
 		/// </remarks>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public int GetOffset(int length) => IsFromEnd ? length + _value + 1 : _value;
 		/// <summary>Converts integer number to an Index.</summary>
 		public static implicit operator Index(int value) => new(value);
@@ -69,7 +69,7 @@ namespace System
 		/// For performance reason, we don't validate the input length parameter against negative values. It is expected Range will be used
 		/// with collections which always have non negative length/count. We validate the range is inside the length scope though.
 		/// </remarks>
-		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+		[Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		public (int Offset, int Length) GetOffsetAndLength(int length)
 		{
 			int start = Start.GetOffset(length);
