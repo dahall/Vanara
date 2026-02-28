@@ -15,7 +15,7 @@ namespace Vanara {
 			ref class CVssWMComponent : IVssWMComponent, BaseWrapper<::IVssWMComponent>
 			{
 			public:
-				CVssWMComponent(::IVssWMComponent* ptr) : BaseWrapper(ptr) {}
+				CVssWMComponent(::IVssWMComponent* ptr) : BaseWrapper(ptr) { RefreshInfo(); }
 				~CVssWMComponent() { if (pInfo && pNative) { pNative->FreeComponentInfo(pInfo); } }
 
 				virtual VSS_COMPONENTINFO GetComponentInfo();
@@ -23,27 +23,33 @@ namespace Vanara {
 #define DEFINE_WM_COMP_ROLIST(prop, itf, cfield, gfunc, cwrap) \
 			private:\
 				ListImplBase<itf^>^ f##prop;\
-				int Get##prop##Count() { RefreshInfo(); return pInfo->cfield; }\
 				itf^ Get##prop(int i) { ::itf* p; Utils::ThrowIfFailed(pNative->gfunc(i, &p)); return gcnew cwrap(p); }\
 			public:\
 				property IReadOnlyList<itf^>^ prop { virtual IReadOnlyList<itf^>^ get() {\
-					if (!f##prop) f##prop = gcnew ListImplBase<itf^>(gcnew GetCount(this, &CVssWMComponent::Get##prop##Count), gcnew GetValue<itf^>(this, &CVssWMComponent::Get##prop));\
-					return f##prop; } }
+					if (f##prop == nullptr)\
+						f##prop = gcnew ListImplBase<itf^>(pInfo->cfield, gcnew GetValue<itf^>(this, &CVssWMComponent::Get##prop));\
+					return f##prop;\
+				} }
 
 				DEFINE_WM_COMP_ROLIST(DatabaseFiles, IVssWMFiledesc, cDatabases, GetDatabaseFile, CVssWMFiledesc)
 				DEFINE_WM_COMP_ROLIST(Files, IVssWMFiledesc, cFileCount, GetFile, CVssWMFiledesc)
 				DEFINE_WM_COMP_ROLIST(DatabaseLogFiles, IVssWMFiledesc, cLogFiles, GetDatabaseLogFile, CVssWMFiledesc)
 				DEFINE_WM_COMP_ROLIST(Dependencies, IVssWMDependency, cDependencies, GetDependency, CVssWMDependency)
 
-			private:
-				::PVSSCOMPONENTINFO pInfo = nullptr;
 				void RefreshInfo()
 				{
 					if (pInfo != nullptr)
 						pNative->FreeComponentInfo(pInfo);
+					fDatabaseFiles = nullptr;
+					fFiles = nullptr;
+					fDatabaseLogFiles = nullptr;
+					fDependencies = nullptr;
 					pin_ptr<::PVSSCOMPONENTINFO> pp = &pInfo;
 					Utils::ThrowIfFailed(pNative->GetComponentInfo(pp));
 				}
+
+			private:
+				::PVSSCOMPONENTINFO pInfo = nullptr;
 			};
 
 			ref class CVssBackupComponents : IVssBackupComponents, BaseWrapper<::IVssBackupComponents>
@@ -357,7 +363,7 @@ namespace Vanara {
 				int Get##prop##Count() { UINT c; Utils::ThrowIfFailed(pNative->ref(&c)); return c; }\
 			public:\
 				property IReadOnlyList<itf>^ prop { virtual IReadOnlyList<itf>^ get() {\
-					if (!f##prop) f##prop = gcnew ListImplBase<itf>(gcnew GetCount(this, &CVssBackupComponents::Get##prop##Count), gcnew GetValue<itf>(this, &CVssBackupComponents::Get##prop));\
+					if (!f##prop) f##prop = gcnew ListImplBase<itf>(Get##prop##Count(), gcnew GetValue<itf>(this, &CVssBackupComponents::Get##prop));\
 					return f##prop; } }
 
 				DEFINE_BC_ROLIST(WriterComponents, IVssWriterComponentsExt^, GetWriterComponentsCount)
@@ -397,11 +403,10 @@ namespace Vanara {
 #define DEFINE_EWM_ROLIST(prop, itf, gfunc, cwrap, ref, cexp) \
 			private:\
 				ListImplBase<itf^>^ f##prop;\
-				int Get##prop##Count() { ref(); return cexp; }\
 				itf^ Get##prop(int i) { ::itf* p; Utils::ThrowIfFailed(pNative->gfunc(i, &p)); return gcnew cwrap(p); }\
 			public:\
 				property IReadOnlyList<itf^>^ prop { virtual IReadOnlyList<itf^>^ get() {\
-					if (!f##prop) f##prop = gcnew ListImplBase<itf^>(gcnew GetCount(this, &CVssExamineWriterMetadata::Get##prop##Count), gcnew GetValue<itf^>(this, &CVssExamineWriterMetadata::Get##prop));\
+					if (!f##prop) { ref(); f##prop = gcnew ListImplBase<itf^>(cexp, gcnew GetValue<itf^>(this, &CVssExamineWriterMetadata::Get##prop)); }\
 					return f##prop; } }
 
 				DEFINE_EWM_ROLIST(AlternateLocationMappings, IVssWMFiledesc, GetAlternateLocationMapping, CVssWMFiledesc, RefreshRestoreMethod, restoreMethod.iMappings)
@@ -416,7 +421,7 @@ namespace Vanara {
 
 				property IReadOnlyList<IVssWMFiledesc^>^ ExcludeFromSnapshotFiles { virtual IReadOnlyList<IVssWMFiledesc^>^ get() {
 					if (!fExcludeFromSnapshotFiles)
-						fExcludeFromSnapshotFiles = gcnew ListImplBase<IVssWMFiledesc^>(gcnew GetCount(this, &CVssExamineWriterMetadata::GetExcludeFromSnapshotFilesCount),
+						fExcludeFromSnapshotFiles = gcnew ListImplBase<IVssWMFiledesc^>(CVssExamineWriterMetadata::GetExcludeFromSnapshotFilesCount(),
 							gcnew GetValue<IVssWMFiledesc^>(this, &CVssExamineWriterMetadata::GetExcludeFromSnapshotFiles));
 					return fExcludeFromSnapshotFiles;
 				} }

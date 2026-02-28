@@ -195,7 +195,7 @@ namespace Vanara { namespace PInvoke { namespace VssApi {
         {
             IReadOnlyList<IVssComponent^>^ get()
             {
-                return gcnew ListImplBase<IVssComponent^>(gcnew GetCount(this, &CVssWriterComponents::GetComponentsCount),
+                return gcnew ListImplBase<IVssComponent^>(CVssWriterComponents::GetComponentsCount(),
                     gcnew GetValue<IVssComponent^>(this, &CVssWriterComponents::GetComponent));
             }
         }

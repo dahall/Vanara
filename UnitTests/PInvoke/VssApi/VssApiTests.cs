@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.Diagnostics;
 using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
@@ -137,6 +138,43 @@ public class VssApiTests
 		{
 			TestContext.WriteLine($"Snapshot: {prop.Obj.Snap.m_pwszOriginalVolumeName} ({prop.Obj.Snap.m_SnapshotId})");
 			prop.Obj.Snap.Dispose();
+		}
+	}
+
+	[TestWhenElevated]
+	public async Task TestIssue580()
+	{
+		TestContext.WriteLine("Initializing VSS Backup Components...");
+		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents ppBack), ResultIs.Successful);
+		TestContext.WriteLine("Successfully created IVssBackupComponents instance.");
+		ppBack.InitializeForBackup(null);
+		ppBack.SetBackupState(true, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
+		ppBack.SetContext(VSS_SNAPSHOT_CONTEXT.VSS_CTX_BACKUP);
+		await ppBack.GatherWriterMetadata().AsTask();
+		foreach (IVssExamineWriterMetadata writeMeta in ppBack.WriterMetadata)
+		{
+			writeMeta.GetIdentity(out var pidInstance,
+					out var pidWriter,
+					out var WriteName,
+					out var pInstanceName,
+					out var usage,
+					out var source);
+			TestContext.WriteLine("Get compoment for '{0}'", WriteName);
+
+			foreach (IVssWMComponent component in writeMeta.Components)
+			{
+				//TestContext.WriteLine($"{DateTime.Now} start add expand path for '{WriteName}'");
+				Stopwatch stopwatch = new();
+				stopwatch.Start();
+				for (int k = 0; k < component.Files.Count; k++)
+				{
+					TestContext.WriteLine($"  {component.Files[k].Path} (recursive:{component.Files[k].Recursive})");
+					// DO nothing here;
+					// For system writer it took very very long time.
+				}
+				stopwatch.Stop();
+				TestContext.WriteLine($"{DateTime.Now:T} add expand path for '{WriteName}', file count:{component.Files.Count}, took:{stopwatch.Elapsed.TotalMilliseconds}ms");
+			}
 		}
 	}
 }
