@@ -8,70 +8,58 @@ namespace Vanara.InteropServices;
 
 /// <summary>Unmanaged memory methods for HGlobal.</summary>
 /// <seealso cref="IMemoryMethods"/>
-public sealed class HGlobalMemoryMethods : IMemoryMethods
+public sealed class HGlobalMemoryMethods : IMemoryMethods, IGetMemorySize
 {
 	/// <inheritdoc/>
 	bool ISimpleMemoryMethods.AllocZeroes => false;
 
-	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
-	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+	/// <inheritdoc/>
 	bool ISimpleMemoryMethods.Lockable => false;
 
-	/// <summary>Static instance to methods.</summary>
+	/// <inheritdoc/>
 	public static IMemoryMethods Instance { get; } = new HGlobalMemoryMethods();
 
-	/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
-	/// <param name="size">The size, in bytes, of memory to allocate.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr AllocMem(int size) => Marshal.AllocHGlobal(size);
 
-	/// <summary>Gets the Ansi <see cref="SecureString"/> allocation method.</summary>
-	/// <param name="secureString">The secure string.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr AllocSecureStringAnsi(SecureString? secureString) => secureString is null ? IntPtr.Zero : Marshal.SecureStringToGlobalAllocAnsi(secureString);
 
-	/// <summary>Gets the Unicode <see cref="SecureString"/> allocation method.</summary>
-	/// <param name="secureString">The secure string.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr AllocSecureStringUni(SecureString? secureString) => secureString is null ? IntPtr.Zero : Marshal.SecureStringToGlobalAllocUnicode(secureString);
 
-	/// <summary>Gets the Ansi string allocation method.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr AllocStringAnsi(string? value) => value is null ? IntPtr.Zero : Marshal.StringToHGlobalAnsi(value);
 
-	/// <summary>Gets the Unicode string allocation method.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr AllocStringUni(string? value) => value is null ? IntPtr.Zero : Marshal.StringToHGlobalUni(value);
 
-	/// <summary>Frees the memory associated with a handle.</summary>
-	/// <param name="hMem">A memory handle.</param>
+	/// <inheritdoc/>
 	public void FreeMem(IntPtr hMem) => Marshal.FreeHGlobal(hMem);
 
-	/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
-	/// <param name="hMem">A memory handle.</param>
+	/// <inheritdoc/>
 	public void FreeSecureStringAnsi(IntPtr hMem) => Marshal.ZeroFreeGlobalAllocAnsi(hMem);
 
-	/// <summary>Gets the Unicode <see cref="SecureString"/> free method.</summary>
-	/// <param name="hMem">A memory handle.</param>
+	/// <inheritdoc/>
 	public void FreeSecureStringUni(IntPtr hMem) => Marshal.ZeroFreeGlobalAllocUnicode(hMem);
 
-	/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
-	/// <param name="hMem">A memory handle.</param>
-	/// <returns>A pointer to the locked memory.</returns>
+	/// <inheritdoc/>
 	public IntPtr LockMem(IntPtr hMem) => hMem;
 
-	/// <summary>Gets the reallocation method.</summary>
-	/// <param name="hMem">A memory handle.</param>
-	/// <param name="size">The size, in bytes, of memory to allocate.</param>
-	/// <returns>A memory handle.</returns>
+	/// <inheritdoc/>
 	public IntPtr ReAllocMem(IntPtr hMem, int size) => Marshal.ReAllocHGlobal(hMem, (IntPtr)size);
 
-	/// <summary>Unlocks the memory of a specified handle.</summary>
-	/// <param name="hMem">A memory handle.</param>
-	/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+	/// <inheritdoc/>
 	public bool UnlockMem(IntPtr hMem) => false;
+
+	/// <inheritdoc/>
+	public SizeT GetSize(nint hMem)
+	{
+		return GlobalSize(hMem);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		static extern SizeT GlobalSize([In] IntPtr hMem);
+	}
 }
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
