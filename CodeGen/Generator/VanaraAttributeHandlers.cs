@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 using System.Xml;
+using System.Xml.Schema;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Vanara.Generators.TypeDeclarationSyntaxExtensions;
 
 namespace Vanara.Generators;
 
@@ -31,6 +33,11 @@ internal class TypeAttrHandler(string attr, Func<SyntaxNode, CancellationToken, 
 	public Func<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas), INamedTypeSymbol?> reftype => getRefType;
 }
 
+internal static class MBBExt
+{
+	public static List<(string, ModType)> Has(this Dictionary<string, List<(string, ModType)>> d, string key) => d.TryGetValue(key, out var v) ? v : [];
+}
+
 internal class MethodBodyBuilder
 {
 	public const string retVarName = "__ret";
@@ -58,6 +65,7 @@ internal class MethodBodyBuilder
 	public bool isCtor = false;
 	public string? ctorResultParamName = null;
 	public List<AttributeListSyntax> attributes = [];
+	public Dictionary<string, List<(string, ModType)>> paramReferences = [];
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 	private bool xmlInserted = false;
 #pragma warning restore CS0414
@@ -76,6 +84,42 @@ internal class MethodBodyBuilder
 		statements = new(methodDecl);
 		typeConstraints = [.. methodDecl.ConstraintClauses];
 		typeParameters = [.. methodDecl.TypeParameterList?.Parameters ?? []];
+
+		// For each parameter, get any references to it from other parameter attributes (SizeDef, ArrayPointer, and MarshalAs) and store them for reference in paramReferences
+		foreach (var param in parameters)
+		{
+			foreach (var attr in param.AttributeLists.SelectMany(al => al.Attributes))
+			{
+				switch (attr.Name.ToString())
+				{
+					case "SizeDef":
+						if (attr.ArgumentList?.Arguments.FirstOrDefault()?.Expression is InvocationExpressionSyntax le && le.ArgumentList.Arguments.FirstOrDefault()?.Expression is IdentifierNameSyntax n)
+							AddAttrRef(n.Identifier.Text, param);
+						break;
+					case "ArrayPointer":
+						if (attr.ArgumentList?.Arguments.ElementAtOrDefault(1)?.Expression is LiteralExpressionSyntax aple)
+							AddAttrRef(aple.Token.ValueText, param);
+						break;
+					case "MarshalAs":
+						if (attr.ArgumentList?.Arguments.FirstOrDefault()?.Expression is MemberAccessExpressionSyntax ma &&
+							ma.Name.Identifier.Text is "LPArray" or "Interface" or "IUnknown" &&
+							attr.ArgumentList.Arguments.Skip(1).FirstOrDefault(a => a.NameEquals?.Name.Identifier.Text is "SizeParamIndex" or "IidParameterIndex")?.Expression is LiteralExpressionSyntax male)
+							AddAttrRef(parameters[Convert.ToInt32(male.Token.Value)].Identifier.Text, param);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		void AddAttrRef(string refParamName, ParameterSyntax ps)
+		{
+			var input = (ps.Identifier.Text, GetModType(ps));
+			if (paramReferences.TryGetValue(refParamName, out var refs))
+				refs.Add(input);
+			else
+				paramReferences[refParamName] = [input];
+		}
 	}
 
 	public MemberDeclarationSyntax ToMethod()

@@ -319,6 +319,12 @@ public partial class CodeGenTests
 					/// <returns>The ret.</returns>
 					[DllImport("test32.dll")]
 					public static extern HRESULT F1SetObj(object? p1, in System.Guid p2, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object p3);
+
+					[DllImport("test32.dll")]
+					private static extern HRESULT IgnoreAsPrivate(object? p1, in System.Guid p2, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object p3);
+
+					[DllImport("test32.dll")]
+					public static unsafe extern HRESULT IgnoreAsUnsafe(object? p1, System.Guid* p2, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object p3);
 				}
 			}
 			""";
@@ -344,8 +350,53 @@ public partial class CodeGenTests
 		var compilation = GetCompilation(src, src2);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
 		WriteTrees(TestContext.Out, output.SyntaxTrees);
+		WriteDiags(diag);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(0));
+	}
+
+	const string marshalArrMult = /* lang=c#-test */ """
+		// marshalArrMult
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern bool CryptHashMessage(bool fDetachedHash, uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] rgpbToBeHashed,
+					[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] rgcbToBeHashed);
+				public static extern bool AccessCheckByTypeResultList([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OBJECT_TYPE_LIST[]? ObjectTypeList, uint ObjectTypeListLength,
+					[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ACCESS_MASK[] GrantedAccessList, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] AccessStatusList);
+				public static extern bool Method([SizeDef(nameof(cbLen))] string psz, uint cbLen, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] outList);
+			}
+		}
+		""";
+
+	const string marshalArrBad = /* lang=c#-test */ """
+		// marshalArrBad
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern bool Method(uint cToBeHashed, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpbToBeHashed);
+			}
+		}
+		""";
+
+	[TestCase(marshalArrMult, 2, 0)]
+	[TestCase(marshalArrBad, 1, 1)]
+	public void MarshalAsLPArrayTest(string src, int treeCount, int errCount)
+	{
+		var compilation = GetCompilation(src);
+		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
+		WriteTrees(TestContext.Out, output.SyntaxTrees);
+		WriteDiags(diag);
+		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
+		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 	}
 
 	const string sizeDefCount = /* lang=c#-test */ """
@@ -528,7 +579,7 @@ public partial class CodeGenTests
 		}
 		""";
 
-	const string sizeDefQuery = /* lang=c#-test */ """
+	const string sizeDefQueryFull = /* lang=c#-test */ """
 		// sizeDefQuery
 		using System;
 		using System.Runtime.InteropServices;
@@ -578,6 +629,25 @@ public partial class CodeGenTests
 				/// <returns>The ret.</returns>
 				[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
 				public static extern int GoodSizeDef06([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.CheckLastError)] StringBuilder? p1, ref int p2);
+
+				public static extern Win32Error GetCurrentPackageInfo([Out, SizeDef(nameof(count), SizingMethod.Query | SizingMethod.Bytes, BufferVarName = nameof(bufferLength))] uint[] buffer,
+					ref uint bufferLength, out uint count);
+			}
+		}
+		""";
+
+	const string sizeDefQuery = /* lang=c#-test */ """
+		// sizeDefQuery
+		using System;
+		using System.Runtime.InteropServices;
+		using System.ComponentModel.DataAnnotations;
+		namespace Vanara.PInvoke
+		{
+			/// <summary>A 64-bit test dll</summary>
+			public static partial class Test64
+			{
+				public static extern Win32Error GetCurrentPackageInfo([Out, SizeDef(nameof(szParam), SizingMethod.Query | SizingMethod.Bytes, OutVarName = nameof(byteSzParam))] uint[] buffer,
+					ref uint byteSzParam, out uint szParam);
 			}
 		}
 		""";
@@ -691,6 +761,137 @@ public partial class CodeGenTests
 		WriteTrees(TestContext.Out, output.SyntaxTrees);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
+	}
+
+	const string structPtrIn = /* lang=c#-test */ """
+		// structPtrIn
+		using System;
+		using System.Runtime.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public struct UNMGD { public string s; }
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethod([In, Optional, StructPointer(typeof(RECT))] IntPtr buffer);
+				public static extern void RaiseFailFastException([In, Optional, StructPointer(typeof(RECT))] IntPtr pExceptionRecord, [In, Optional, StructPointer(typeof(RECT))] IntPtr pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
+				public static extern bool ObjectPrivilegeAuditAlarm(string SubsystemName, [In, StructPointer(typeof(UNMGD))] IntPtr Privileges);
+			}
+		}
+		""";
+
+	const string structPtrInSize = /* lang=c#-test */ """
+		// structPtrInSize
+		using System;
+		using System.Runtime.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethod([In, SizeDef(nameof(bufferLength)), StructPointer(typeof(RECT))] IntPtr buffer, uint bufferLength);
+				public static extern Win32Error SampleMethod([In, Optional, SizeDef(nameof(bufferLength)), StructPointer(typeof(RECT))] IntPtr buffer, uint bufferLength);
+			}
+		}
+		""";
+
+	const string structPtrOutSize = /* lang=c#-test */ """
+		// structPtrOutSize
+		using System;
+		using System.Runtime.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethod([Out, SizeDef(nameof(bufferLength), SizingMethod.Query), StructPointer(typeof(RECT), false)] IntPtr buffer, ref uint bufferLength);
+				public static extern Win32Error SampleMethod([Out, SizeDef(nameof(bufferLength), SizingMethod.Query), StructPointer(typeof(RECT))] IntPtr buffer, ref uint bufferLength);
+			}
+		}
+		""";
+
+	const string structPtrOutOpt = /* lang=c#-test */ """
+		// structPtrOutOpt
+		using System;
+		using System.Runtime.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethodOptOut([Out, Optional, StructPointer(typeof(uint))] IntPtr buffer);
+			}
+		}
+		""";
+
+	const string structPtrHMEM = /* lang=c#-test */ """
+		// structPtrHMEM
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public struct TOKENBINDING_KEY_TYPES : IArrayStruct<uint>
+			{
+				public uint keyCount;
+				public ArrayPointer<uint> keyType;
+			}
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethodOptOut([Out, StructPointer(typeof(SYSTEMTIME)] out SafeHGlobalHandle buffer);
+				public static extern Win32Error SampleMethodOptOut2([Out, Optional, StructPointer(typeof(SYSTEMTIME)] out SafeHGlobalHandle buffer);
+				public static extern Win32Error SampleMethodOptOut3([StructPointer(typeof(TOKENBINDING_KEY_TYPES))] out SafeHGlobalHandle keyTypes);
+			}
+		}
+		""";
+
+	const string structPtrMemMgr = /* lang=c#-test */ """
+		// structPtrMemMgr
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern Win32Error SampleMethodOptOut([Out, Optional, StructPointer(typeof(SYSTEMTIME), MemoryManager = typeof(HGlobalMemoryMethods))] out IntPtr buffer);
+				public static extern Win32Error SampleMethodOptOut2([Out, StructPointer(typeof(SYSTEMTIME), MemoryManager = typeof(HGlobalMemoryMethods))] out IntPtr buffer);
+			}
+		}
+		""";
+
+	const string structPtrBad = /* lang=c#-test */ """
+		// structPtrBad
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				// Bad param type
+				public static extern Win32Error SampleMethodOptOut([Out, Optional, StructPointer(typeof(uint))] uint buffer);
+				// Type not ISafeMemoryHandleBase
+				public static extern Win32Error SampleMethodOptOut([Out, Optional, StructPointer(typeof(SYSTEMTIME))] out DateTime buffer);
+				// Mising MemoryManager
+				public static extern Win32Error SampleMethodOptOut([Out, Optional, StructPointer(typeof(SYSTEMTIME))] out IntPtr buffer);
+				// MemoryManager, bad param type
+				public static extern Win32Error SampleMethodOptOut([Out, StructPointer(typeof(SYSTEMTIME), MemoryManager = typeof(HGlobalMemoryMethods))] out uint buffer);
+			}
+		}
+		""";
+
+	[TestCase(structPtrIn, 2, 0)]
+	[TestCase(structPtrInSize, 2, 0)]
+	[TestCase(structPtrOutSize, 2, 0)]
+	[TestCase(structPtrOutOpt, 2, 0)]
+	[TestCase(structPtrHMEM, 2, 0)]
+	[TestCase(structPtrMemMgr, 2, 0)]
+	[TestCase(structPtrBad, 1, 4)]
+	public void StructPtrGenTest(string src, int treeCount, int errCount)
+	{
+		var compilation = GetCompilation(src);
+		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
+		WriteTrees(TestContext.Out, output.SyntaxTrees);
+		WriteDiags(diag);
+		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
+		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 	}
 
 	private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out ImmutableArray<Diagnostic> diag) =>

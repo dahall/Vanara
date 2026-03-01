@@ -644,6 +644,15 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
+
+		// If this an out parameter, there must be another parameter with the same SizeParamIndex value that is has an In attribute and the same SizeParamIndex and is integral, so look for that and if found, pass it along as well
+		if (attrInfo.ModType == ModType.Out && attrInfo.IidParameterIndex is null && (!tmpbuilder.paramReferences.Has(attrInfo!.RefParam!.Identifier.Text).Any(rd => rd.Item2.HasFlag(ModType.In))))
+		{
+			context.ReportError(decl, "VANGEN059", "An array with MarshalAs.LPArray and an Out attribute, must specify a SizeParamIndex value that is shared with another parameter marked with an In attribute.");
+			return;
+		}
+
+		// Setup some common values for use in the transformations
 		var argList = tmpbuilder.parameters;
 		bool isOutParam = decl.Modifiers.Any(SyntaxKind.OutKeyword);
 		bool paramTypeIsNullable = decl.Type is NullableTypeSyntax || decl.Type?.ToString().EndsWith("?") == true;
@@ -865,17 +874,17 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (isInParam)
 			attrInfo.SzValueExpr = szVarTypeDecl.ToString() == "int" ? string.Format(getLenExpr, decl.Identifier.Text) : $"({szVarTypeDecl})Convert.ChangeType({string.Format(getLenExpr, decl.Identifier.Text)}, typeof({szVarTypeDecl}))";
 		// Initialize size variable
-		tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
+		tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
 			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(szVarName))
 				.WithInitializer(EqualsValueClause(attrInfo.SizingMethod.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(attrInfo.SzValueExpr ?? "0")))))));
 		// If attrInfo.OutSzParam is specified, create statement that assigns attrInfo.OutSzParam to default value
 		if (attrInfo.OutSzParam is not null)
-			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.OutSzParam.Type!)
+			tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.OutSzParam.Type!)
 			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.OutSzParam.Identifier.Text))
 				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr))))));
 		// If attrInfo.ByteSzParam is specified, create statement that assigns attrInfo.ByteSzParam to default value
 		if (attrInfo.ByteSzParam is not null)
-			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.ByteSzParam.Type!)
+			tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.ByteSzParam.Type!)
 			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.ByteSzParam.Identifier.Text))
 				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr))))));
 		// If isInParam is true, create an assignment statement that assigns decl parameter to the appropriate value 
@@ -1306,20 +1315,6 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				{
 					if (refParam.Modifiers.Any(SyntaxKind.RefKeyword) || refParam.Modifiers.Any(SyntaxKind.OutKeyword))
 						return null;
-					// If this an out parameter, there must be another parameter with the same SizeParamIndex value that is has an In attribute and the same SizeParamIndex and is integral, so look for that and if found, pass it along as well
-					if (ret.ModType == ModType.Out)
-					{
-						var foundInSizeParam = methodDecl.ParameterList.Parameters.Any(p =>
-							p.AttributeLists.SelectMany(al => al.Attributes).Any(attr => attr.NameEquals("In")) &&
-							p.AttributeLists.SelectMany(al => al.Attributes).Any(attr => attr.NameEquals("MarshalAs") &&
-								attr.ArgumentList?.Arguments.FirstOrDefault(a => a.NameEquals?.Name.ToString() == "SizeParamIndex")?.Expression is LiteralExpressionSyntax les &&
-								les.IsKind(SyntaxKind.NumericLiteralExpression) && les.Token.Value is int i && i == refindex));
-						if (!foundInSizeParam)
-						{
-							err = ("VANGEN059", "An array with MarshalAs.LPArray and an Out attribute, must specify a SizeParamIndex value that is shared with another parameter marked with an In attribute.");
-							return null;
-						}
-					}
 					ret.RefParam = refParam;
 					return ret;
 				}

@@ -24,7 +24,7 @@ internal static partial class PointerMethods
 		public unsafe P* p2;
 	}
 
-	public static void Method([In, Optional] StructPointer<P> p) { }
+	public static void Method([In, Optional, StructPointer(typeof(P))] IntPtr p) { }
 
 	public static void Method(in P? p)
 	{
