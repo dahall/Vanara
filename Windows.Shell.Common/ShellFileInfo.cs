@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security;
-using static Vanara.PInvoke.Kernel32;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -67,8 +67,8 @@ public class ShellFileInfo : FileSystemInfo
 	/// <param name="pidl">The ID list.</param>
 	public ShellFileInfo(PIDL pidl)
 	{
-		StringBuilder sb = new(MAX_PATH, MAX_PATH);
-		if (!SHGetPathFromIDList(pidl, sb)) throw new ArgumentException("Invalid identifier list.");
+		StringBuilder sb = new(short.MaxValue, short.MaxValue);
+		if (!SHGetPathFromIDListEx(pidl, sb, (uint)sb.Capacity, 0)) throw new ArgumentException("Invalid identifier list.", Win32Error.GetExceptionForLastError());
 		OriginalPath = sb.ToString();
 		FullPath = sb.ToString();
 		SetName(Path.GetFileName(sb.ToString()));
