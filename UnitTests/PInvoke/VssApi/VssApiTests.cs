@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Vanara.PInvoke.VssApi;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -144,6 +145,9 @@ public class VssApiTests
 	[TestWhenElevated]
 	public async Task TestIssue580()
 	{
+		// Invoke CoInitializeSecurity to get system writer listed.
+		Assert.That(CoInitializeSecurity(null, -1, null, default, Rpc.RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE, Rpc.RPC_C_IMP_LEVEL.RPC_C_IMP_LEVEL_IMPERSONATE, dwCapabilities: 0), ResultIs.Successful);
+
 		TestContext.WriteLine("Initializing VSS Backup Components...");
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents ppBack), ResultIs.Successful);
 		TestContext.WriteLine("Successfully created IVssBackupComponents instance.");
