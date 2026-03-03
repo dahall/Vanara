@@ -2995,7 +2995,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-map HRESULT Map( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pReadRange, [out, optional] void **ppData );
 		[PreserveSig]
-		HRESULT Map(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pReadRange, [Out, Optional] IntPtr ppData);
+		HRESULT Map(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pReadRange, [Out, Optional] IntPtr ppData);
 
 		/// <summary>Invalidates the CPU pointer to the specified subresource in the resource.</summary>
 		/// <param name="Subresource">
@@ -3017,7 +3017,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-unmap void Unmap( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pWrittenRange );
 		[PreserveSig]
-		void Unmap(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pWrittenRange);
+		void Unmap(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pWrittenRange);
 
 		/// <summary>Gets the resource description.</summary>
 		/// <returns>
@@ -3112,7 +3112,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-writetosubresource HRESULT WriteToSubresource(
 		// UINT DstSubresource, [in, optional] const D3D12_BOX *pDstBox, [in] const void *pSrcData, UINT SrcRowPitch, UINT SrcDepthPitch );
 		[PreserveSig]
-		HRESULT WriteToSubresource(uint DstSubresource, [In, Optional] StructPointer<D3D12_BOX> pDstBox, [In] IntPtr pSrcData,
+		HRESULT WriteToSubresource(uint DstSubresource, [In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pDstBox, [In] IntPtr pSrcData,
 			uint SrcRowPitch, uint SrcDepthPitch);
 
 		/// <summary>
@@ -3156,7 +3156,7 @@ public static partial class D3D12
 		// D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		HRESULT ReadFromSubresource([Out] IntPtr pDstData, uint DstRowPitch, uint DstDepthPitch, uint SrcSubresource,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Retrieves the properties of the resource heap, for placed and committed resources.</summary>
 		/// <param name="pHeapProperties">
@@ -3473,7 +3473,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-map HRESULT Map( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pReadRange, [out, optional] void **ppData );
 		[PreserveSig]
-		new HRESULT Map(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pReadRange, [Out, Optional] IntPtr ppData);
+		new HRESULT Map(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pReadRange, [Out, Optional] IntPtr ppData);
 
 		/// <summary>Invalidates the CPU pointer to the specified subresource in the resource.</summary>
 		/// <param name="Subresource">
@@ -3495,7 +3495,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-unmap void Unmap( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pWrittenRange );
 		[PreserveSig]
-		new void Unmap(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pWrittenRange);
+		new void Unmap(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pWrittenRange);
 
 		/// <summary>Gets the resource description.</summary>
 		/// <returns>
@@ -3590,7 +3590,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-writetosubresource HRESULT WriteToSubresource(
 		// UINT DstSubresource, [in, optional] const D3D12_BOX *pDstBox, [in] const void *pSrcData, UINT SrcRowPitch, UINT SrcDepthPitch );
 		[PreserveSig]
-		new HRESULT WriteToSubresource(uint DstSubresource, [In, Optional] StructPointer<D3D12_BOX> pDstBox, [In] IntPtr pSrcData,
+		new HRESULT WriteToSubresource(uint DstSubresource, [In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pDstBox, [In] IntPtr pSrcData,
 			uint SrcRowPitch, uint SrcDepthPitch);
 
 		/// <summary>
@@ -3634,7 +3634,7 @@ public static partial class D3D12
 		// D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		new HRESULT ReadFromSubresource([Out] IntPtr pDstData, uint DstRowPitch, uint DstDepthPitch, uint SrcSubresource,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Retrieves the properties of the resource heap, for placed and committed resources.</summary>
 		/// <param name="pHeapProperties">
@@ -3959,7 +3959,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-map HRESULT Map( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pReadRange, [out, optional] void **ppData );
 		[PreserveSig]
-		new HRESULT Map(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pReadRange, [Out, Optional] IntPtr ppData);
+		new HRESULT Map(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pReadRange, [Out, Optional] IntPtr ppData);
 
 		/// <summary>Invalidates the CPU pointer to the specified subresource in the resource.</summary>
 		/// <param name="Subresource">
@@ -3981,7 +3981,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-unmap void Unmap( UINT Subresource, [in,
 		// optional] const D3D12_RANGE *pWrittenRange );
 		[PreserveSig]
-		new void Unmap(uint Subresource, [In, Optional] StructPointer<D3D12_RANGE> pWrittenRange);
+		new void Unmap(uint Subresource, [In, Optional, StructPointer(typeof(D3D12_RANGE))] IntPtr pWrittenRange);
 
 		/// <summary>Gets the resource description.</summary>
 		/// <returns>
@@ -4076,7 +4076,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12resource-writetosubresource HRESULT WriteToSubresource(
 		// UINT DstSubresource, [in, optional] const D3D12_BOX *pDstBox, [in] const void *pSrcData, UINT SrcRowPitch, UINT SrcDepthPitch );
 		[PreserveSig]
-		new HRESULT WriteToSubresource(uint DstSubresource, [In, Optional] StructPointer<D3D12_BOX> pDstBox, [In] IntPtr pSrcData,
+		new HRESULT WriteToSubresource(uint DstSubresource, [In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pDstBox, [In] IntPtr pSrcData,
 			uint SrcRowPitch, uint SrcDepthPitch);
 
 		/// <summary>
@@ -4120,7 +4120,7 @@ public static partial class D3D12
 		// D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		new HRESULT ReadFromSubresource([Out] IntPtr pDstData, uint DstRowPitch, uint DstDepthPitch, uint SrcSubresource,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Retrieves the properties of the resource heap, for placed and committed resources.</summary>
 		/// <param name="pHeapProperties">

@@ -2062,7 +2062,7 @@ public static partial class Kernel32
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
 	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In] byte[] lpWideCharStr, [Optional, DefaultParameterValue(-1)] int cchWideChar,
 		[Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] byte[]? lpMultiByteStr,
-		[Optional] int cbMultiByte, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? lpDefaultChar, [Out, Optional] StructPointer<BOOL> lpUsedDefaultChar);
+		[Optional] int cbMultiByte, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? lpDefaultChar, [Out, Optional, StructPointer(typeof(BOOL))] IntPtr lpUsedDefaultChar);
 
 	/// <summary>
 	/// Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte

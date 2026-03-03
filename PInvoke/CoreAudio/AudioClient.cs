@@ -4507,6 +4507,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudiostreamvolume-getallvolumes HRESULT
 		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
+		[SuppressAutoGen]
 		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
 
 		/// <summary>The <c>GetChannelCount</c> method retrieves the number of channels in the audio stream.</summary>
@@ -4657,6 +4658,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-ichannelaudiovolume-getallvolumes HRESULT
 		// GetAllVolumes( UINT32 dwCount, float *pfVolumes );
+		[SuppressAutoGen]
 		void GetAllVolumes([In] uint dwCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pfVolumes);
 
 		/// <summary>The <c>GetChannelCount</c> method retrieves the number of channels in the stream format for the audio session.</summary>

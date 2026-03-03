@@ -553,7 +553,7 @@ public static partial class AdvApi32
 	// PerfDecrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "5e8b40d6-b794-4bac-8832-3eb14c49ecec")]
-	public static extern NTStatus PerfDecrementULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfDecrementULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
 
 	/// <summary>Decrements the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -593,7 +593,7 @@ public static partial class AdvApi32
 	// PerfDecrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "38fd52a7-c2af-4c69-a104-aba6a602fbf4")]
-	public static extern NTStatus PerfDecrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfDecrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
 
 	/// <summary>Removes the specified performance counter specifications from the specified query.</summary>
 	/// <param name="hQuery">A handle to the query from which you want to remove performance counter specifications.</param>
@@ -663,7 +663,7 @@ public static partial class AdvApi32
 	// Provider, PPERF_COUNTERSET_INSTANCE InstanceBlock );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "8266e58c-c0a3-42dd-9f06-0d04dccfcf7c")]
-	public static extern NTStatus PerfDeleteInstance([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> InstanceBlock);
+	public static extern NTStatus PerfDeleteInstance([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE InstanceBlock);
 
 	/// <summary>
 	/// <para>Gets the counter set identifiers of the counter sets that are registered on the specified system.</para>
@@ -921,7 +921,7 @@ public static partial class AdvApi32
 	// PerfIncrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "002162a0-d782-4648-949e-178985fd1d44")]
-	public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
 
 	/// <summary>Increments the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -963,7 +963,7 @@ public static partial class AdvApi32
 	// PerfIncrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "6e701561-4036-4ae4-8d4e-667fa6a20d99")]
-	public static extern NTStatus PerfIncrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfIncrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
 
 	/// <summary>Creates a handle that references a query on the specified system. A query is a list of counter specifications.</summary>
 	/// <param name="szMachine">The name of the machine for which you want to get the query handle.</param>
@@ -1359,7 +1359,7 @@ public static partial class AdvApi32
 	// PerfQueryInstance( HANDLE ProviderHandle, LPCGUID CounterSetGuid, PCWSTR Name, ULONG Id );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "844f3f9e-8de2-4995-b13c-befe0da8a1ab")]
-	public static extern StructPointer<PERF_COUNTERSET_INSTANCE> PerfQueryInstance([In, AddAsMember] HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
+	public static extern PPERF_COUNTERSET_INSTANCE PerfQueryInstance([In, AddAsMember] HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
 
 	/// <summary>Updates the value of a counter whose value is a pointer to the actual data. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1409,7 +1409,7 @@ public static partial class AdvApi32
 	// HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, PVOID Address );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "0694ff8c-4c36-4bf7-a2b3-c032bf7a2f65")]
-	public static extern NTStatus PerfSetCounterRefValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, IntPtr Address);
+	public static extern NTStatus PerfSetCounterRefValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, IntPtr Address);
 
 	/// <summary>Specifies the layout of a particular counter set.</summary>
 	/// <param name="ProviderHandle">
@@ -1433,7 +1433,7 @@ public static partial class AdvApi32
 	// ProviderHandle, PPERF_COUNTERSET_INFO Template, ULONG TemplateSize );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "b4295503-5588-4898-816c-939a5920fc77")]
-	public static extern NTStatus PerfSetCounterSetInfo([In, AddAsMember] HPERFPROV ProviderHandle, [In] StructPointer<PERF_COUNTERSET_INFO> Template, uint TemplateSize);
+	public static extern NTStatus PerfSetCounterSetInfo([In, AddAsMember] HPERFPROV ProviderHandle, [In] IntPtr Template, uint TemplateSize);
 
 	/// <summary>Updates the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1475,7 +1475,7 @@ public static partial class AdvApi32
 	// HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "b790bea0-90d8-4894-bacb-a27f777cf240")]
-	public static extern NTStatus PerfSetULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfSetULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
 
 	/// <summary>Updates the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1517,7 +1517,7 @@ public static partial class AdvApi32
 	// PerfSetULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "c38f9efc-7ea8-4841-9a31-a88d4f87369c")]
-	public static extern NTStatus PerfSetULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfSetULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] PPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
 
 	/// <summary>Registers the provider.</summary>
 	/// <param name="ProviderGuid">
@@ -2909,7 +2909,7 @@ public static partial class AdvApi32
 
 	/// <summary>Managed version of PERF_COUNTERSET_INSTANCE with marshalling support.</summary>
 #if NET7_0_OR_GREATER
-	[System.Runtime.InteropServices.Marshalling.CustomMarshaller(typeof(PERF_COUNTERSET_INSTANCE_MGD), System.Runtime.InteropServices.Marshalling.MarshalMode.Default, typeof(LsaUnicodeStringMarshaler.CustomMarshaller))]
+	[System.Runtime.InteropServices.Marshalling.CustomMarshaller(typeof(PERF_COUNTERSET_INSTANCE_MGD), System.Runtime.InteropServices.Marshalling.MarshalMode.Default, typeof(PERF_COUNTERSET_INSTANCE_MGD.CustomMarshaller))]
 #endif
 	public class PERF_COUNTERSET_INSTANCE_MGD
 	{
@@ -3077,9 +3077,29 @@ public static partial class AdvApi32
 				StringHelper.Write(InstanceName, ptr.Offset(structSize), out _, true, CharSet.Unicode, id.Size - structSize);
 		}
 	}
+
+	/// <summary>Represents a pointer to an instance of a performance counter set, providing access to performance metrics.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PPERF_COUNTERSET_INSTANCE(IntPtr ptr)
+	{
+		private readonly IntPtr handle = ptr;
+
+		/// <summary>Gets a reference to the underlying structure.</summary>
+		public readonly ref PERF_COUNTERSET_INSTANCE Ref => ref handle.AsRef<PERF_COUNTERSET_INSTANCE>();
+
+		/// <summary>Gets the managed details of the instance.</summary>
+		public readonly PERF_COUNTERSET_INSTANCE_MGD GetDetails() { unsafe { return PERF_COUNTERSET_INSTANCE_MGD.CustomMarshaller.ConvertToManaged((PERF_COUNTERSET_INSTANCE*)handle)!; } }
+
+		/// <summary>Implictly converts a PPERF_COUNTERSET_INSTANCE to an IntPtr, providing access to the underlying handle.</summary>
+		public static implicit operator IntPtr(PPERF_COUNTERSET_INSTANCE inst) => inst.handle;
+
+		/// <summary>Implicitly converts an IntPtr to a PPERF_COUNTERSET_INSTANCE, allowing for easy creation of instances from raw pointers.</summary>
+		public static implicit operator PPERF_COUNTERSET_INSTANCE(IntPtr ptr) => new(ptr);
+	}
+
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PERF_COUNTERSET_INSTANCE"/> that is disposed using <see cref="PerfDeleteInstance"/>.</summary>
 	[AdjustAutoMethodNamePattern("Perf|Instance", "")]
-	public class SafePPERF_COUNTERSET_INSTANCE : SafeHANDLE
+	public partial class SafePPERF_COUNTERSET_INSTANCE : SafeHANDLE
 	{
 		private readonly HPERFPROV hProv;
 
@@ -3094,7 +3114,7 @@ public static partial class AdvApi32
 		public SafePPERF_COUNTERSET_INSTANCE(HPERFPROV ProviderHandle, IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => hProv = ProviderHandle;
 
 		/// <summary>Initializes a new instance of the <see cref="SafePPERF_COUNTERSET_INSTANCE"/> class.</summary>
-		private SafePPERF_COUNTERSET_INSTANCE() : base() { }
+		public SafePPERF_COUNTERSET_INSTANCE() : base() { }
 
 		/// <summary>Gets a reference to the underlying structure.</summary>
 		public ref PERF_COUNTERSET_INSTANCE Ref => ref handle.AsRef<PERF_COUNTERSET_INSTANCE>();
@@ -3102,11 +3122,14 @@ public static partial class AdvApi32
 		/// <summary>Gets the underlying structure values.</summary>
 		public PERF_COUNTERSET_INSTANCE Value => handle.ToStructure<PERF_COUNTERSET_INSTANCE>();
 
-		/// <summary>Performs an implicit conversion from <see cref="SafePPERF_COUNTERSET_INSTANCE"/> to <see cref="StructPointer{PERF_COUNTERSET_INSTANCE}"/>.</summary>
-		public static implicit operator StructPointer<PERF_COUNTERSET_INSTANCE>(SafePPERF_COUNTERSET_INSTANCE inst) => inst.DangerousGetHandle();
+		/// <summary>Performs an implicit conversion from <see cref="SafePPERF_COUNTERSET_INSTANCE"/> to <see cref="IntPtr"/>.</summary>
+		public static implicit operator IntPtr(SafePPERF_COUNTERSET_INSTANCE inst) => inst.DangerousGetHandle();
+
+		/// <summary>Performs an implicit conversion from <see cref="SafePPERF_COUNTERSET_INSTANCE"/> to <see cref="PPERF_COUNTERSET_INSTANCE"/>.</summary>
+		public static implicit operator PPERF_COUNTERSET_INSTANCE(SafePPERF_COUNTERSET_INSTANCE inst) => inst.DangerousGetHandle();
 
 		/// <summary>Gets the managed details of the instance.</summary>
-		public PERF_COUNTERSET_INSTANCE_MGD GetDetails() { unsafe { return PERF_COUNTERSET_INSTANCE_MGD.CustomMarshaller.ConvertToManaged((PERF_COUNTERSET_INSTANCE*)handle)!; } } 
+		public PERF_COUNTERSET_INSTANCE_MGD GetDetails() { unsafe { return PERF_COUNTERSET_INSTANCE_MGD.CustomMarshaller.ConvertToManaged((PERF_COUNTERSET_INSTANCE*)handle)!; } }
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => PerfDeleteInstance(hProv, handle).Succeeded;

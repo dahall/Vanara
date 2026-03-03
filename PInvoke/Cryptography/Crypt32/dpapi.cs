@@ -177,7 +177,7 @@ public static partial class Crypt32
 			CRYPTOAPI_BLOB oe = new(pOptionalEntropy);
 			using SafeCoTaskMemStruct<CRYPTPROTECT_PROMPTSTRUCT> ps = pPromptStruct;
 			CRYPTOAPI_BLOB dout = new();
-			if (!CryptProtectData(new CRYPTOAPI_BLOB(pDataIn), szDataDescr, pOptionalEntropy is null ? default : &oe, default, ps, dwFlags, &dout))
+			if (!CryptProtectData(new CRYPTOAPI_BLOB(pDataIn), szDataDescr, pOptionalEntropy is null ? IntPtr.Zero : (IntPtr)(void*)&oe, IntPtr.Zero, ps, dwFlags, (IntPtr)(void*)&dout))
 			{
 				pDataOut = [];
 				return false;
@@ -275,8 +275,8 @@ public static partial class Crypt32
 	[PInvokeData("dpapi.h", MSDNShortId = "765a68fd-f105-49fc-a738-4a8129eb0770")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptProtectData(in CRYPTOAPI_BLOB pDataIn, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szDataDescr,
-		[In, Optional] StructPointer<CRYPTOAPI_BLOB> pOptionalEntropy, [Optional] IntPtr pvReserved,
-		[In, Optional] ManagedStructPointer<CRYPTPROTECT_PROMPTSTRUCT> pPromptStruct, CryptProtectFlags dwFlags, [Out] StructPointer<CRYPTOAPI_BLOB> pDataOut);
+		[In, Optional] IntPtr pOptionalEntropy, [Optional] IntPtr pvReserved,
+		[In, Optional] IntPtr pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
 
 	/// <summary>
 	/// The <c>CryptProtectMemory</c> function encrypts memory to prevent others from viewing sensitive information in your process. For
@@ -534,8 +534,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, [Optional] IntPtr ppszDataDescr, [In, Optional] StructPointer<CRYPTOAPI_BLOB> pOptionalEntropy,
-		[Optional] IntPtr pvReserved, [In, Optional] ManagedStructPointer<CRYPTPROTECT_PROMPTSTRUCT> pPromptStruct, CryptProtectFlags dwFlags, [Out] StructPointer<CRYPTOAPI_BLOB> pDataOut);
+	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, [Optional] IntPtr ppszDataDescr, [In, Optional] IntPtr pOptionalEntropy,
+		[Optional] IntPtr pvReserved, [In, Optional] IntPtr pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
 
 	/// <summary>The <c>CryptUnprotectMemory</c> function decrypts memory that was encrypted using the CryptProtectMemory function.</summary>
 	/// <param name="pDataIn">

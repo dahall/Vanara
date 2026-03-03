@@ -4,7 +4,7 @@ using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests;
 
-[TestFixture()]
+[TestFixture(IgnoreReason = "Needs connection to AD.")]
 public class AppMgmtTests
 {
 	[Test] // TODO: Figure out how to test

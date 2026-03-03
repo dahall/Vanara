@@ -15,7 +15,7 @@ public class AdvApi32Tests
 	{
 		var pSD = GetSD(fn);
 		var b = ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1,
-			SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var s, out var len);
+			SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var s, out _);
 		Assert.That(b, Is.True);
 		Assert.That(s, Is.Not.Null);
 		TestContext.WriteLine(s);
@@ -73,7 +73,7 @@ public class AdvApi32Tests
 	[Test]
 	public void UserTest()
 	{
-		GetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out _, out _, out var ppDacl, out _, out var ppSecurityDescriptor).ThrowIfFailed();
+		GetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out _, out _, out var ppDacl, out _, out _).ThrowIfFailed();
 
 		var aceCount = ppDacl.GetAclInformation<ACL_SIZE_INFORMATION>().AceCount;
 		for (var i = 0U; i < aceCount; i++)

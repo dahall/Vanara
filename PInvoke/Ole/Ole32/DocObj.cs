@@ -718,7 +718,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/docobj/nf-docobj-ienumoledocumentviews-next HRESULT Next( ULONG cViews,
 		// IOleDocumentView **rgpView, ULONG *pcFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint cViews, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IOleDocumentView rgpView, out uint pcFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
@@ -1903,7 +1903,7 @@ public static partial class Ole32
 		public string? rgwz
 #pragma warning restore IDE1006 // Naming Styles
 		{
-			get => cwBuf > 0 ? _rgwz.ToString() : null;
+			readonly get => cwBuf > 0 ? _rgwz.ToString() : null;
 			set
 			{
 				value ??= string.Empty;

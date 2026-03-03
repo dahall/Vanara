@@ -4545,7 +4545,7 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyFile[] rgelt, ref uint pceltFetched);
 
 		/// <summary>
@@ -4614,7 +4614,7 @@ public static class BITS
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/bits/nf-bits-ienumbackgroundcopyjobs-next
 		// HRESULT Next( [in] ULONG celt, [out] IBackgroundCopyJob **rgelt, [out] ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyJob[] rgelt, [In, Out] ref uint pceltFetched);
 
 		/// <summary>
@@ -4684,7 +4684,7 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeerCacheRecord[] rgelt, ref uint pceltFetched);
 
 		/// <summary>
@@ -4735,7 +4735,7 @@ public static class BITS
 		/// Number of elements returned in rgelt. You can set pceltFetched to NULL if celt is one. Otherwise, initialize the value of
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeer[] rgelt, ref uint pceltFetched);
 
 		/// <summary>

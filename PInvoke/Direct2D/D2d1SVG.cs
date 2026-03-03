@@ -792,7 +792,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgdocument-createpaint(d2d1_svg_paint_type_constd2d1_color_f__pcwstr_id2d1svgpaint)
 		// HRESULT CreatePaint( D2D1_SVG_PAINT_TYPE paintType, [ref] const D2D1_COLOR_F &amp; color, [in, optional] PCWSTR id, [out]
 		// ID2D1SvgPaint **paint );
-		ID2D1SvgPaint CreatePaint(D2D1_SVG_PAINT_TYPE paintType, [In, Optional] StructPointer<D2D1_COLOR_F> color, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? id);
+		ID2D1SvgPaint CreatePaint(D2D1_SVG_PAINT_TYPE paintType, [In, Optional, StructPointer(typeof(D2D1_COLOR_F))] IntPtr color, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? id);
 
 		/// <summary>Creates a dash array object which can be used to set the stroke-dasharray property.</summary>
 		/// <param name="dashes">
@@ -1141,7 +1141,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-getspecifiedattributenamelength HRESULT
 		// GetSpecifiedAttributeNameLength( UINT32 index, [out] UINT32 *nameLength, [out, optional] BOOL *inherited );
-		void GetSpecifiedAttributeNameLength(uint index, out uint nameLength, [Out, Optional] StructPointer<BOOL> inherited);
+		void GetSpecifiedAttributeNameLength(uint index, out uint nameLength, [Out, Optional, StructPointer(typeof(BOOL))] IntPtr inherited);
 
 		/// <summary>Removes the attribute from this element. Also removes this attribute from within an inline style if present.</summary>
 		/// <param name="name">
@@ -1524,7 +1524,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpathdata-getsegmentdata HRESULT GetSegmentData(
 		// [out] FLOAT *data, UINT32 dataCount, UINT32 startIndex );
-		void GetSegmentData([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] data, int dataCount, uint startIndex = 0);
+		void GetSegmentData([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] data, int dataCount, uint startIndex = 0);
 
 		/// <summary>Gets the size of the segment data array.</summary>
 		/// <returns>
@@ -1579,7 +1579,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpathdata-getcommands HRESULT GetCommands( [out]
 		// D2D1_SVG_PATH_COMMAND *commands, UINT32 commandsCount, UINT32 startIndex );
-		void GetCommands([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
+		void GetCommands([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
 
 		/// <summary>Gets the size of the commands array.</summary>
 		/// <returns>
@@ -1686,7 +1686,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpointcollection-getpoints HRESULT GetPoints( [out]
 		// D2D1_POINT_2F *points, UINT32 pointsCount, UINT32 startIndex );
-		void GetPoints([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_POINT_2F[] points, int pointsCount, uint startIndex = 0);
+		void GetPoints([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_POINT_2F[] points, int pointsCount, uint startIndex = 0);
 
 		/// <summary>Gets the number of points in the array.</summary>
 		/// <returns>
@@ -1800,7 +1800,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgstrokedasharray-getdashes(float_uint32_uint32)
 		// HRESULT GetDashes( [out] FLOAT *dashes, UINT32 dashesCount, UINT32 startIndex );
-		void GetDashes([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_LENGTH[] dashes, int dashesCount, uint startIndex = 0);
+		void GetDashes([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_LENGTH[] dashes, int dashesCount, uint startIndex = 0);
 
 		/// <summary>Gets dashes from the array.</summary>
 		/// <param name="dashes">
@@ -1817,7 +1817,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgstrokedasharray-getdashes(float_uint32_uint32)
 		// HRESULT GetDashes( [out] FLOAT *dashes, UINT32 dashesCount, UINT32 startIndex );
-		void GetDashes([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] dashes, int dashesCount, uint startIndex = 0);
+		void GetDashes([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] dashes, int dashesCount, uint startIndex = 0);
 
 		/// <summary>Gets the number of the dashes in the array.</summary>
 		/// <returns>

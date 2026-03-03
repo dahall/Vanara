@@ -1418,7 +1418,7 @@ public static partial class Ole32
 	public static extern HRESULT CoInitializeSecurity(PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
-		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, [Optional, Ignore] IntPtr pReserved3);
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_NONE, [Ignore] IntPtr pReserved3 = default);
 
 	/// <summary>Registers security and sets the default security values for the process.</summary>
 	/// <param name="pSecDesc">
@@ -1504,9 +1504,9 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity([Optional] IAccessControl? pSecDesc, int cAuthSvc,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
-		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_ACCESS_CONTROL, IntPtr pReserved3 = default);
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_ACCESS_CONTROL, [Ignore] IntPtr pReserved3 = default);
 
 	/// <summary>Registers security and sets the default security values for the process.</summary>
 	/// <param name="pSecDesc">

@@ -26,7 +26,7 @@ public static partial class Gdi32
 	// HDC hDC, HANDLETABLE *lpHTable, const ENHMETARECORD *lpmr, int nHandles, LPARAM data ) {...}
 	[PInvokeData("wingdi.h", MSDNShortId = "c9f04b38-18bc-4b52-8c56-d9475bc30202")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate int EnhMetaFileProc([In] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HGDIOBJ[] lpht, [In] ENHMETARECORD lpmr, int nHandles, IntPtr data);
+	public delegate int EnhMetaFileProc([In] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HGDIOBJ[] lpht, [In] /*ENHMETARECORD*/ IntPtr lpmr, int nHandles, IntPtr data);
 
 	/// <summary>
 	/// <para>
@@ -1747,7 +1747,7 @@ public static partial class Gdi32
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="ENHMETARECORD"/> class.</summary>
-		private ENHMETARECORD(IntPtr ptr) : base(ptr, 0, false, 8, 0, true)
+		public ENHMETARECORD(IntPtr ptr) : base(ptr, 0, false, 8, 0, true)
 		{
 			sz = handle.ToStructure<uint>(0, 4);
 			base.Count = (int)(Size - HeaderSize) / 4;

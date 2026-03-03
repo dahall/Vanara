@@ -420,8 +420,8 @@ public static partial class D3D12
 			var pSrcSlice = pSrc.pData + pSrc.SlicePitch * z;
 			for (uint y = 0; y < NumRows; ++y)
 			{
-				IntPtr src = pSrcSlice + pSrc.RowPitch * y;
-				src.CopyTo(pDestSlice + pDest.RowPitch * y, RowSizeInBytes);
+				IntPtr src = new((long)pSrcSlice + (long)pSrc.RowPitch * y);
+				src.CopyTo(new((long)pDestSlice + (long)pDest.RowPitch * y), RowSizeInBytes);
 			}
 		}
 	}

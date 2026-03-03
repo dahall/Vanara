@@ -179,7 +179,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "3410e8b1-820f-4892-8d26-d803e3f943da")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGetDevmodeForPage([In, AddAsMember] HSPOOLFILE SpoolFileHandle, uint dwPageNumber, out ManagedStructPointer<DEVMODE> pCurrDM, out ManagedStructPointer<DEVMODE> pLastDM);
+	public static extern bool GdiGetDevmodeForPage([In, AddAsMember] HSPOOLFILE SpoolFileHandle, uint dwPageNumber, out /* DEVMODE* */ IntPtr pCurrDM, out /* DEVMODE* */ IntPtr pLastDM);
 
 	/// <summary>The <c>GdiGetPageCount</c> function returns the number of pages in a print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>

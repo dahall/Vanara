@@ -62,7 +62,7 @@ public static partial class Crypt32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] StructPointer<SIP_INDIRECT_DATA> pIndirectData);
+	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] IntPtr pIndirectData);
 
 	/// <summary>The <c>pCryptSIPGetCaps</c> function is implemented by an subject interface package (SIP) to report capabilities.</summary>
 	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFO structure that specifies subject information data to the SIP APIs.</param>
@@ -453,7 +453,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] StructPointer<SIP_INDIRECT_DATA> pIndirectData);
+	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out, StructPointer(typeof(SIP_INDIRECT_DATA), false), SizeDef(nameof(pcbIndirectData), SizingMethod.Query)] IntPtr pIndirectData);
 
 	/// <summary>The <c>CryptSIPGetCaps</c> function retrieves the capabilities of a subject interface package (SIP).</summary>
 	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFOa&gt; structure that specifies subject information data to the SIP APIs.</param>

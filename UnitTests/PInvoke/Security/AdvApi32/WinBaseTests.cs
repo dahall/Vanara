@@ -17,7 +17,7 @@ public class WinBaseTests
 	public void _SetupTests()
 	{
 		pCurSid = SafePSID.Current;
-		secPriv = new ElevPriv(new[] { "SeSecurityPrivilege", "SeAuditPrivilege" });
+		secPriv = new ElevPriv(["SeSecurityPrivilege", "SeAuditPrivilege"]);
 	}
 
 	[OneTimeTearDown]
@@ -102,7 +102,7 @@ public class WinBaseTests
 			(uint)FileAccess.FILE_GENERIC_READ, SafePSID.Everyone, "(exists Administrator)", out var ret), ResultIs.Successful);
 	}
 
-	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), new object[] { true, true })]
+	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), [true, true])]
 	public void CreateProcessWithLogonWTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 	{
 		var sti = new STARTUPINFO { ShowWindowCommand = ShowWindowCommand.SW_SHOWMINIMIZED };
@@ -216,7 +216,7 @@ public class WinBaseTests
 		using (new ElevPriv("SeTcbPrivilege"))
 		using (var hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS))
 		{
-			Assert.That(LsaAddAccountRights(hPol, pCurSid ?? PSID.NULL, new[] { "SeInteractiveLogonRight" }, 1), ResultIs.Successful);
+			Assert.That(LsaAddAccountRights(hPol, pCurSid ?? PSID.NULL, ["SeInteractiveLogonRight"], 1), ResultIs.Successful);
 			var grps = new TOKEN_GROUPS(1);
 			grps.Groups[0] = new SID_AND_ATTRIBUTES(pCurSid ?? PSID.NULL, 0);
 			Assert.That(LogonUserExExW(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, grps, out var hTok, out var pSid,

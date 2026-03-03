@@ -160,7 +160,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiBuildClassInfoList")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiBuildClassInfoList(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[]? ClassGuidList,
+	public static extern bool SetupDiBuildClassInfoList(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(ClassGuidListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] Guid[]? ClassGuidList,
 		uint ClassGuidListSize, out uint RequiredSize);
 
 	/// <summary>
@@ -200,8 +200,8 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiBuildClassInfoListExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiBuildClassInfoListEx(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[]? ClassGuidList,
-		uint ClassGuidListSize, out uint RequiredSize, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? MachineName, IntPtr Reserved = default);
+	public static extern bool SetupDiBuildClassInfoListEx(DIBCI Flags, [Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(ClassGuidListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] Guid[]? ClassGuidList,
+		uint ClassGuidListSize, out uint RequiredSize, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? MachineName, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>
 	/// The <c>SetupDiBuildDriverInfoList</c> function builds a list of drivers that is associated with a specific device or with the
@@ -635,7 +635,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiClassGuidsFromNameA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiClassGuidsFromName(string ClassName,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[]? ClassGuidList, uint ClassGuidListSize, out uint RequiredSize);
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(ClassGuidListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] Guid[]? ClassGuidList, uint ClassGuidListSize, out uint RequiredSize);
 
 	/// <summary>
 	/// The <c>SetupDiClassGuidsFromNameEx</c> function retrieves the GUIDs associated with the specified class name. This resulting
@@ -667,8 +667,8 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiClassGuidsFromNameExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiClassGuidsFromNameEx(string ClassName,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[]? ClassGuidList, uint ClassGuidListSize, out uint RequiredSize,
-		[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? MachineName, IntPtr Reserved = default);
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(ClassGuidListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] Guid[]? ClassGuidList,
+		uint ClassGuidListSize, out uint RequiredSize, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? MachineName, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>The <c>SetupDiClassNameFromGuid</c> function retrieves the class name associated with a class GUID.</summary>
 	/// <param name="ClassGuid">A pointer to the class GUID for the class name to retrieve.</param>

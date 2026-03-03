@@ -38,10 +38,11 @@ public class ProcessThreadsApiTests
 	[Test]
 	public void OpenThreadTokenTest()
 	{
-		Assert.That(OpenThreadToken(GetCurrentThread(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES, true, out SafeHTOKEN? hTok), ResultIs.FailureCode(Win32Error.ERROR_NO_TOKEN));
+		Assert.That(OpenThreadToken(GetCurrentThread(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES, true, out _), ResultIs.FailureCode(Win32Error.ERROR_NO_TOKEN));
 		Assert.That(OpenProcessToken(GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE, out SafeHTOKEN? hPrTok), ResultIs.Successful);
 		using (hPrTok)
 		{
+			SafeHTOKEN? hTok;
 			Assert.That(DuplicateTokenEx(hPrTok, TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_ADJUST_PRIVILEGES,
 			  default, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, TOKEN_TYPE.TokenImpersonation, out hTok), ResultIs.Successful);
 			using (hTok)

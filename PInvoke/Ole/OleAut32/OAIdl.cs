@@ -453,7 +453,7 @@ public static partial class OleAut32
 		public IntPtr prgCustData;
 
 		/// <summary>Gets the array of <see cref="CUSTDATAITEM"/> structures.</summary>
-		public CUSTDATAITEM[] Items => prgCustData.ToArray<CUSTDATAITEM>((int)cCustData) ?? new CUSTDATAITEM[0];
+		public readonly CUSTDATAITEM[] Items => prgCustData.ToArray<CUSTDATAITEM>((int)cCustData) ?? [];
 	}
 
 	/// <summary>Represents a custom data item.</summary>

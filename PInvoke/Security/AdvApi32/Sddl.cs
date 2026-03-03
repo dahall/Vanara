@@ -474,7 +474,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("sddl.h", MSDNShortId = "36140833-8e30-4c32-a88a-c10751b6c223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SDDL_REVISION RequestedStringSDRevision,
+	public static extern bool ConvertSecurityDescriptorToStringSecurityDescriptor([In] PSECURITY_DESCRIPTOR SecurityDescriptor, SDDL_REVISION RequestedStringSDRevision,
 		SECURITY_INFORMATION SecurityInformation, out SafeLocalHandle StringSecurityDescriptor, out uint StringSecurityDescriptorLen);
 
 	/// <summary>
@@ -511,7 +511,7 @@ public static partial class AdvApi32
 	// SECURITY_INFORMATION SecurityInformation, StrPtrAnsi *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
 	[PInvokeData("sddl.h", MSDNShortId = "36140833-8e30-4c32-a88a-c10751b6c223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static string ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation)
+	public static string ConvertSecurityDescriptorToStringSecurityDescriptor([In] PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation)
 	{
 		if (!ConvertSecurityDescriptorToStringSecurityDescriptor(SecurityDescriptor, SDDL_REVISION.SDDL_REVISION_1, SecurityInformation, out var sd, out var len))
 			throw new Win32Exception();

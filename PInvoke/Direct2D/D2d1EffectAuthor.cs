@@ -876,7 +876,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nf-d2d1effectauthor-id2d1transform-mapoutputrecttoinputrects
 		// HRESULT MapOutputRectToInputRects( const D2D1_RECT_L *outputRect, [out] D2D1_RECT_L *inputRects, UINT32 inputRectsCount );
-		new void MapOutputRectToInputRects(in RECT outputRect, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
+		new void MapOutputRectToInputRects(in RECT outputRect, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
 			int inputRectsCount);
 
 		/// <summary>Performs the inverse mapping to <c>MapOutputRectToInputRects</c>.</summary>
@@ -1204,9 +1204,10 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nf-d2d1effectauthor-id2d1drawinfo-setvertexprocessing
 		// HRESULT SetVertexProcessing( [in, optional] ID2D1VertexBuffer *vertexBuffer, D2D1_VERTEX_OPTIONS vertexOptions, [in, optional]
 		// const D2D1_BLEND_DESCRIPTION *blendDescription, [in, optional] const D2D1_VERTEX_RANGE *vertexRange, const GUID *vertexShader );
+		[SuppressAutoGen]
 		void SetVertexProcessing([In, Optional] ID2D1VertexBuffer? vertexBuffer, D2D1_VERTEX_OPTIONS vertexOptions,
-			[In, Optional] StructPointer<D2D1_BLEND_DESCRIPTION> blendDescription, [In, Optional] StructPointer<D2D1_VERTEX_RANGE> vertexRange,
-			[In, Optional] StructPointer<Guid> vertexShader);
+			[In, Optional, StructPointer(typeof(D2D1_BLEND_DESCRIPTION))] IntPtr blendDescription, [In, Optional, StructPointer(typeof(D2D1_VERTEX_RANGE))] IntPtr vertexRange,
+			[In, Optional, StructPointer(typeof(Guid))] IntPtr vertexShader);
 	}
 
 	/// <summary>
@@ -1263,7 +1264,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nf-d2d1effectauthor-id2d1transform-mapoutputrecttoinputrects
 		// HRESULT MapOutputRectToInputRects( const D2D1_RECT_L *outputRect, [out] D2D1_RECT_L *inputRects, UINT32 inputRectsCount );
-		new void MapOutputRectToInputRects(in RECT outputRect, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
+		new void MapOutputRectToInputRects(in RECT outputRect, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
 			int inputRectsCount);
 
 		/// <summary>Performs the inverse mapping to <c>MapOutputRectToInputRects</c>.</summary>
@@ -1704,7 +1705,7 @@ public static partial class D2d1
 		// *resourceId, [in, optional] const D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES *customVertexBufferProperties, [out] ID2D1VertexBuffer
 		// **buffer );
 		ID2D1VertexBuffer CreateVertexBuffer(in D2D1_VERTEX_BUFFER_PROPERTIES vertexBufferProperties, [In, Optional] GuidPtr resourceId,
-			[In, Optional] StructPointer<D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES> customVertexBufferProperties);
+			[In, Optional, StructPointer(typeof(D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES))] IntPtr customVertexBufferProperties);
 
 		/// <summary>
 		/// This finds the given vertex buffer if it has already been created with <c>ID2D1EffectContext::CreateVertexBuffer</c> with the
@@ -2187,7 +2188,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nf-d2d1effectauthor-id2d1transform-mapoutputrecttoinputrects
 		// HRESULT MapOutputRectToInputRects( const D2D1_RECT_L *outputRect, [out] D2D1_RECT_L *inputRects, UINT32 inputRectsCount );
-		new void MapOutputRectToInputRects(in RECT outputRect, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
+		new void MapOutputRectToInputRects(in RECT outputRect, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
 			int inputRectsCount);
 
 		/// <summary>Performs the inverse mapping to <c>MapOutputRectToInputRects</c>.</summary>
@@ -2357,7 +2358,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1effectauthor/nf-d2d1effectauthor-id2d1transform-mapoutputrecttoinputrects
 		// HRESULT MapOutputRectToInputRects( const D2D1_RECT_L *outputRect, [out] D2D1_RECT_L *inputRects, UINT32 inputRectsCount );
-		void MapOutputRectToInputRects(in RECT outputRect, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
+		void MapOutputRectToInputRects(in RECT outputRect, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] inputRects,
 			int inputRectsCount);
 
 		/// <summary>Performs the inverse mapping to <c>MapOutputRectToInputRects</c>.</summary>
@@ -2793,36 +2794,6 @@ public static partial class D2d1
 	}
 
 	/// <summary>
-	/// Creates a vertex buffer or finds a standard vertex buffer and optionally initializes it with vertices. The returned buffer can be
-	/// specified in the render info to specify both a vertex shader and or to pass custom vertices to the standard vertex shader used by <c>Direct2D</c>.
-	/// </summary>
-	/// <param name="ctx">The <see cref="ID2D1EffectContext"/> instance.</param>
-	/// <param name="vertexBufferProperties">
-	/// <para>Type: <b>const <c>D2D1_VERTEX_BUFFER_PROPERTIES</c>*</b></para>
-	/// <para>The properties used to describe the vertex buffer and vertex shader.</para>
-	/// </param>
-	/// <param name="resourceId">
-	/// <para>Type: <b>const GUID*</b></para>
-	/// <para>The unique id that identifies the vertex buffer.</para>
-	/// </param>
-	/// <param name="customVertexBufferProperties">
-	/// <para>Type: <b>const <c>D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES</c>*</b></para>
-	/// <para>
-	/// The properties used to define a custom vertex buffer. If you use a built-in vertex shader, you don't have to specify this property.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>ID2D1VertexBuffer</c>**</b></para>
-	/// <para>The returned vertex buffer.</para>
-	/// </returns>
-	public static ID2D1VertexBuffer CreateVertexBuffer(this ID2D1EffectContext ctx, in D2D1_VERTEX_BUFFER_PROPERTIES vertexBufferProperties,
-		[In, Optional] Guid? resourceId, [In, Optional] D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES? customVertexBufferProperties)
-	{
-		using SafeCoTaskMemStruct<Guid> rid = resourceId;
-		return ctx.CreateVertexBuffer(vertexBufferProperties, rid, new(customVertexBufferProperties, out _));
-	}
-
-	/// <summary>
 	/// Sets a vertex buffer, a corresponding vertex shader, and options to control how the vertices are to be handled by the Direct2D context.
 	/// </summary>
 	/// <param name="info">The <see cref="ID2D1DrawInfo"/> instance.</param>
@@ -2862,8 +2833,8 @@ public static partial class D2d1
 				destinationBlendAlpha = D2D1_BLEND.D2D1_BLEND_ZERO,
 				blendFactor = [1f, 1f, 1f, 1f]
 			};
-		info.SetVertexProcessing(vertexBuffer, vertexOptions, new(blendDescription, out _),
-			new(vertexRange, out _), new(vertexShader, out _));
+		info.SetVertexProcessing(vertexBuffer, vertexOptions, SafeCoTaskMemHandle.CreateFromStructure(blendDescription),
+			SafeCoTaskMemHandle.CreateFromStructure(vertexRange), SafeCoTaskMemHandle.CreateFromStructure(vertexShader));
 	}
 
 	/// <summary>Defines a blend description to be used in a particular blend transform.</summary>

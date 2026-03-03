@@ -116,7 +116,7 @@ public static partial class Hid
 	/// <param name="DeviceDescription">HIDP_DEVICE_DESC block that was previously filled in by a call to HidP_GetCollectionDescription.</param>
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("hidpddi.h")]
-	public static extern void HidP_FreeCollectionDescription([In, Out] StructPointer<HIDP_DEVICE_DESC> DeviceDescription);
+	public static extern void HidP_FreeCollectionDescription([In, Out] IntPtr DeviceDescription);
 
 	/// <summary>
 	/// Fills a device description block with collection description and the corresponding report ID information for the specified report
@@ -188,7 +188,7 @@ public static partial class Hid
 	// PHIDP_DEVICE_DESC DeviceDescription );
 	[PInvokeData("hidpddi.h", MSDNShortId = "NF:hidpddi.HidP_GetCollectionDescription")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus HidP_GetCollectionDescription([In] PHIDP_REPORT_DESCRIPTOR ReportDesc, uint DescLength, [In] POOL_TYPE PoolType, [Out] StructPointer<HIDP_DEVICE_DESC> DeviceDescription);
+	public static extern NTStatus HidP_GetCollectionDescription([In] PHIDP_REPORT_DESCRIPTOR ReportDesc, uint DescLength, [In] POOL_TYPE PoolType, [Out] IntPtr DeviceDescription);
 
 	/// <summary>
 	/// Contains the information of a top-level-collection. This structure is used in the <c>HidP_GetCollectionDescription</c> call.

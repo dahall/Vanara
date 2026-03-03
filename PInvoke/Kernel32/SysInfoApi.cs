@@ -728,7 +728,7 @@ public static partial class Kernel32
 	/// </returns>
 	public static Win32Error EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature, out uint[]? tableIdentifiers) =>
 		CallMethodWithTypedBuf(
-			(ref uint sz) => BoolToLastErr((sz = EnumSystemFirmwareTables(FirmwareTableProviderSignature, IntPtr.Zero, 0)) > 0),
+			(ref sz) => BoolToLastErr((sz = EnumSystemFirmwareTables(FirmwareTableProviderSignature, IntPtr.Zero, 0)) > 0),
 			(IntPtr p, ref uint sz) => BoolToLastErr((sz = EnumSystemFirmwareTables(FirmwareTableProviderSignature, p, sz)) > 0),
 			out tableIdentifiers,
 			(p, sz) => p.ToArray<uint>((int)sz / Marshal.SizeOf<uint>()));
@@ -981,9 +981,9 @@ public static partial class Kernel32
 	// BOOL WINAPI GetLogicalProcessorInformation( _Out_ PSYSTEM_LOGICAL_PROCESSOR_INFORMATION Buffer, _Inout_ PDWORD ReturnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683194(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683194")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLogicalProcessorInformation([SizeDef(nameof(ReturnLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] ArrayPointer<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> Buffer,
-		ref uint ReturnLength);
+	public static extern bool GetLogicalProcessorInformation([Out] IntPtr Buffer, ref uint ReturnLength);
 
 	/// <summary>
 	/// <para>Retrieves information about logical processors and related hardware.</para>
@@ -1002,11 +1002,18 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value has error information.</para>
 	/// </returns>
-	public static Win32Error GetLogicalProcessorInformation(out SYSTEM_LOGICAL_PROCESSOR_INFORMATION[]? info) => CallMethodWithTypedBuf(
-			(ref uint sz) => BoolToLastErr(GetLogicalProcessorInformation(IntPtr.Zero, ref sz) || sz > 0),
-			(IntPtr p, ref uint sz) => BoolToLastErr(GetLogicalProcessorInformation(p, ref sz)),
-			out info,
-			(p, sz) => p.ToArray<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>((int)sz / Marshal.SizeOf<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>()));
+	public static Win32Error GetLogicalProcessorInformation(out SYSTEM_LOGICAL_PROCESSOR_INFORMATION[] info)
+	{
+		uint len = 0;
+		info = [];
+		GetLogicalProcessorInformation(default, ref len);
+		if (len == 0) return Win32Error.GetLastError();
+		using var __info = new SafeHGlobalHandle(len);
+		if (!GetLogicalProcessorInformation(__info, ref len))
+			return Win32Error.GetLastError();
+		info = __info.ToArray<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>(len / Marshal.SizeOf<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>());
+		return Win32Error.ERROR_SUCCESS;
+	}
 
 	/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
 	/// <param name="RelationshipType">
@@ -1071,9 +1078,10 @@ public static partial class Kernel32
 	// PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX Buffer, _Inout_ PDWORD ReturnedLength); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405488(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405488")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType,
-		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] ArrayPointer<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX> Buffer, ref uint ReturnedLength);
+		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] IntPtr Buffer, ref uint ReturnedLength);
 
 	/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
 	/// <param name="RelationshipType">
@@ -1229,8 +1237,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405497")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessorSystemCycleTime(ushort Group,
-		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes)] ArrayPointer<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION> Buffer, ref uint ReturnedLength);
+	[SuppressAutoGen]
+	public static extern bool GetProcessorSystemCycleTime(ushort Group, [SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes)] IntPtr Buffer, ref uint ReturnedLength);
 
 	/// <summary>
 	/// Retrieves the cycle time each processor in the specified processor group spent executing deferred procedure calls (DPCs) and
@@ -1247,7 +1255,7 @@ public static partial class Kernel32
 	/// <para>If the error value is ERROR_INSUFFICIENT_BUFFER, the ReturnedLength parameter contains the required buffer size.</para>
 	/// </returns>
 	public static Win32Error GetProcessorSystemCycleTime(ushort Group, out SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION[]? cycleTimes) => CallMethodWithTypedBuf(
-			(ref uint sz) => BoolToLastErr(GetProcessorSystemCycleTime(Group, IntPtr.Zero, ref sz) || sz > 0),
+			(ref sz) => BoolToLastErr(GetProcessorSystemCycleTime(Group, IntPtr.Zero, ref sz) || sz > 0),
 			(IntPtr p, ref uint sz) => BoolToLastErr(GetProcessorSystemCycleTime(Group, p, ref sz)),
 			out cycleTimes,
 			(p, sz) => p.ToArray<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION>((int)sz / Marshal.SizeOf<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION>()));
@@ -3561,7 +3569,7 @@ public static partial class Kernel32
 			}
 		}
 
-		private ref T GetFieldRef<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r) where T : struct
+		private readonly ref T GetFieldRef<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r) where T : struct
 		{
 			if (!r.Contains(Relationship))
 				throw new Exception($"Invalid relationship type: {Relationship}");

@@ -101,7 +101,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 				ppv = SHCreateItemFromRelativeName<IShellItem>(iShellItem, childName, BindContext);
 			else
 			{
-				SFGAO attr = 0;
+				SFGAO? attr = 0;
 				iShellFolder.ParseDisplayName(HWND.NULL, BindContext, childName, out _, out var tempPidl, ref attr).ThrowIfFailed();
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, tempPidl), false);
 			}

@@ -543,7 +543,7 @@ public static partial class AdvApi32
 		PRIVILEGE_SET_ALL_NECESSARY = 1
 	}
 
-	/// <summary>Additional privilege options for <see cref="CreateRestrictedToken"/>.</summary>
+	/// <summary>Additional privilege options for <c>CreateRestrictedToken</c>.</summary>
 	[PInvokeData("winnt.h")]
 	public enum RestrictedPrivilegeOptions : uint
 	{
@@ -2429,11 +2429,15 @@ public static partial class AdvApi32
 	/// SYSTEM_ALARM_ACE structure.
 	/// </para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</remarks>
+	/// <param name="aceType">ACE type.</param>
+	/// <param name="aceFlags">Set of ACE type-specific control flags.</param>
+	/// <param name="aceSize">Size, in bytes, of the ACE.</param>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_ace_header typedef struct _ACE_HEADER {
 	// UCHAR AceType; UCHAR AceFlags; USHORT AceSize; } ACE_HEADER;
 	[PInvokeData("ntifs.h", MSDNShortId = "f5f39310-8b15-4d6b-a985-3f25522a16b1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACE_HEADER : IComparable<ACE_HEADER>
+	public struct ACE_HEADER(AceType aceType, AceFlags aceFlags, int aceSize) : IComparable<ACE_HEADER>
 	{
 		/// <summary>
 		/// <para>ACE type. This member can be one of the following values:</para>
@@ -2456,7 +2460,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public AceType AceType;
+		public AceType AceType = aceType;
 
 		/// <summary>
 		/// <para>Set of ACE type-specific control flags. This member can be a combination of the following values:</para>
@@ -2511,10 +2515,10 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public AceFlags AceFlags;
+		public AceFlags AceFlags = aceFlags;
 
 		/// <summary>Size, in bytes, of the ACE.</summary>
-		public ushort AceSize;
+		public ushort AceSize = (ushort)aceSize;
 
 		/// <summary>
 		/// <para>Set of ACE type-specific control flags. This member can be a combination of the following values:</para>
@@ -2569,21 +2573,10 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ACE_FLAG AceFlagsNative { get => (ACE_FLAG)AceFlags; set => AceFlags = (AceFlags)value; }
+		public ACE_FLAG AceFlagsNative { readonly get => (ACE_FLAG)AceFlags; set => AceFlags = (AceFlags)value; }
 
 		/// <summary>ACE type with full native definition.</summary>
-		public ACE_TYPE AceTypeNative { get => (ACE_TYPE)AceType; set => AceType = (AceType)value; }
-
-		/// <summary>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</summary>
-		/// <param name="aceType">ACE type.</param>
-		/// <param name="aceFlags">Set of ACE type-specific control flags.</param>
-		/// <param name="aceSize">Size, in bytes, of the ACE.</param>
-		public ACE_HEADER(AceType aceType, AceFlags aceFlags, int aceSize)
-		{
-			AceType = aceType;
-			AceFlags = aceFlags;
-			AceSize = (ushort)aceSize;
-		}
+		public ACE_TYPE AceTypeNative { readonly get => (ACE_TYPE)AceType; set => AceType = (AceType)value; }
 
 		/// <summary>Initializes a new instance of the <see cref="ACE_HEADER"/> struct.</summary>
 		/// <param name="aceType">ACE type.</param>
@@ -2592,7 +2585,7 @@ public static partial class AdvApi32
 		public ACE_HEADER(ACE_TYPE aceType, ACE_FLAG aceFlags, int aceSize) : this((AceType)aceType, (AceFlags)aceFlags, aceSize) { }
 
 		/// <inheritdoc/>
-		public int CompareTo(ACE_HEADER other)
+		public readonly int CompareTo(ACE_HEADER other)
 		{
 			var ba = AceFlags.IsFlagSet(AceFlags.Inherited);
 			var bb = other.AceFlags.IsFlagSet(AceFlags.Inherited);
@@ -3176,34 +3169,26 @@ public static partial class AdvApi32
 	/// Defines the mapping of generic access rights to specific and standard access rights for an object. When a client application
 	/// requests generic access to an object, that request is mapped to the access rights defined in this structure.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="GENERIC_MAPPING"/> structure.</remarks>
+	/// <param name="read">The read mapping.</param>
+	/// <param name="write">The write mapping.</param>
+	/// <param name="execute">The execute mapping.</param>
+	/// <param name="all">The 'all' mapping.</param>
 	[StructLayout(LayoutKind.Sequential)]
 	[PInvokeData("Winnt.h", MSDNShortId = "aa446633")]
-	public struct GENERIC_MAPPING
+	public struct GENERIC_MAPPING(uint read, uint write, uint execute, uint all)
 	{
 		/// <summary>Specifies an access mask defining read access to an object.</summary>
-		public uint GenericRead;
+		public uint GenericRead = read;
 
 		/// <summary>Specifies an access mask defining write access to an object.</summary>
-		public uint GenericWrite;
+		public uint GenericWrite = write;
 
 		/// <summary>Specifies an access mask defining execute access to an object.</summary>
-		public uint GenericExecute;
+		public uint GenericExecute = execute;
 
 		/// <summary>Specifies an access mask defining all possible types of access to an object.</summary>
-		public uint GenericAll;
-
-		/// <summary>Initializes a new instance of the <see cref="GENERIC_MAPPING"/> structure.</summary>
-		/// <param name="read">The read mapping.</param>
-		/// <param name="write">The write mapping.</param>
-		/// <param name="execute">The execute mapping.</param>
-		/// <param name="all">The 'all' mapping.</param>
-		public GENERIC_MAPPING(uint read, uint write, uint execute, uint all)
-		{
-			GenericRead = read;
-			GenericWrite = write;
-			GenericExecute = execute;
-			GenericAll = all;
-		}
+		public uint GenericAll = all;
 
 		/// <summary>The generic file mappings (FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_GENERIC_READ, FILE_ALL_ACCESS).</summary>
 		public static readonly GENERIC_MAPPING GenericFileMapping = new((uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_GENERIC_WRITE, (uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_ALL_ACCESS);
@@ -3215,30 +3200,24 @@ public static partial class AdvApi32
 	/// represent privileges in the PRIVILEGE_SET structure. Privileges are represented by LUIDs and have attributes indicating whether
 	/// they are currently enabled or disabled.
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="LUID_AND_ATTRIBUTES"/> struct.</remarks>
+	/// <param name="luid">The LUID value.</param>
+	/// <param name="attr">The attribute value.</param>
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct LUID_AND_ATTRIBUTES
+	public struct LUID_AND_ATTRIBUTES(LUID luid, AdvApi32.PrivilegeAttributes attr)
 	{
 		/// <summary>Specifies a LUID value.</summary>
-		public LUID Luid;
+		public LUID Luid = luid;
 
 		/// <summary>
 		/// Specifies attributes of the LUID. This value contains up to 32 one-bit flags. Its meaning is dependent on the definition and
 		/// use of the LUID.
 		/// </summary>
-		public PrivilegeAttributes Attributes;
-
-		/// <summary>Initializes a new instance of the <see cref="LUID_AND_ATTRIBUTES"/> struct.</summary>
-		/// <param name="luid">The LUID value.</param>
-		/// <param name="attr">The attribute value.</param>
-		public LUID_AND_ATTRIBUTES(LUID luid, PrivilegeAttributes attr)
-		{
-			Luid = luid;
-			Attributes = attr;
-		}
+		public PrivilegeAttributes Attributes = attr;
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => $"{Luid}:{Attributes}";
+		public override readonly string ToString() => $"{Luid}:{Attributes}";
 	}
 
 	/// <summary>The QUOTA_LIMITS structure describes the amount of system resources available to a user.</summary>
@@ -3371,30 +3350,24 @@ public static partial class AdvApi32
 	/// The SID_AND_ATTRIBUTES structure represents a security identifier (SID) and its attributes. SIDs are used to uniquely identify
 	/// users or groups.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="SID_AND_ATTRIBUTES"/> struct.</remarks>
+	/// <param name="sid">The SID.</param>
+	/// <param name="attributes">The attributes of the SID.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SID_AND_ATTRIBUTES
+	public struct SID_AND_ATTRIBUTES(PSID sid, uint attributes)
 	{
 		/// <summary>A pointer to a SID structure.</summary>
-		public PSID Sid;
+		public PSID Sid = sid;
 
 		/// <summary>
 		/// Specifies attributes of the SID. This value contains up to 32 one-bit flags. Its meaning depends on the definition and use of
 		/// the SID.
 		/// </summary>
-		public uint Attributes;
-
-		/// <summary>Initializes a new instance of the <see cref="SID_AND_ATTRIBUTES"/> struct.</summary>
-		/// <param name="sid">The SID.</param>
-		/// <param name="attributes">The attributes of the SID.</param>
-		public SID_AND_ATTRIBUTES(PSID sid, uint attributes)
-		{
-			Sid = sid;
-			Attributes = attributes;
-		}
+		public uint Attributes = attributes;
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => $"{(Sid.IsValidSid() ? Sid.ToString("N") : "")}:{Attributes}";
+		public override readonly string ToString() => $"{(Sid.IsValidSid() ? Sid.ToString("N") : "")}:{Attributes}";
 	}
 
 	/// <summary>The <b>SID_AND_ATTRIBUTES_HASH</b> structure specifies a hash values for the specified array of <c>security identifiers</c> (SIDs).</summary>
@@ -3446,24 +3419,24 @@ public static partial class AdvApi32
 		/// <returns>
 		/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
 		/// </returns>
-		public bool Equals(PSID_IDENTIFIER_AUTHORITY? other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other?.Value);
+		public readonly bool Equals(PSID_IDENTIFIER_AUTHORITY? other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other?.Value);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
 		/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
 		/// </returns>
-		public bool Equals(SID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
+		public readonly bool Equals(SID_IDENTIFIER_AUTHORITY other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other.Value);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
 		/// <see langword="true"/> if the current object is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.
 		/// </returns>
-		public bool Equals(byte[]? other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other);
+		public readonly bool Equals(byte[]? other) => PSID_IDENTIFIER_AUTHORITY.Equals6Bytes(Value, other);
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj switch
+		public override readonly bool Equals(object? obj) => obj switch
 		{
 			PSID_IDENTIFIER_AUTHORITY h => Equals(h),
 			SID_IDENTIFIER_AUTHORITY h => Equals(h),
@@ -3472,7 +3445,7 @@ public static partial class AdvApi32
 		};
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => Value.GetHashCode();
+		public override readonly int GetHashCode() => Value.GetHashCode();
 	}
 
 	/// <summary>
@@ -4519,7 +4492,7 @@ public static partial class AdvApi32
 		public TOKEN_PRIVILEGES(LUID luid, PrivilegeAttributes attribute)
 		{
 			PrivilegeCount = 1;
-			Privileges = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
+			Privileges = [new LUID_AND_ATTRIBUTES(luid, attribute)];
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_PRIVILEGES"/> structure from a list of privileges.</summary>
@@ -4527,7 +4500,7 @@ public static partial class AdvApi32
 		public TOKEN_PRIVILEGES(LUID_AND_ATTRIBUTES[] values)
 		{
 			PrivilegeCount = (uint)(values?.Length ?? 0);
-			Privileges = (LUID_AND_ATTRIBUTES[]?)values?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
+			Privileges = (LUID_AND_ATTRIBUTES[]?)values?.Clone() ?? [];
 		}
 	}
 
@@ -4736,51 +4709,36 @@ public static partial class AdvApi32
 	/// The PRIVILEGE_SET structure specifies a set of privileges. It is also used to indicate which, if any, privileges are held by a
 	/// user or group requesting access to an object.
 	/// </summary>
+	/// <param name="control">The control flag. See <see cref="Control"/>.</param>
+	/// <param name="privileges">A list of privileges to assign to the structure.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public class PRIVILEGE_SET
+	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<PRIVILEGE_SET>), nameof(PrivilegeCount))]
+	public struct PRIVILEGE_SET(PrivilegeSetControl control = PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, LUID_AND_ATTRIBUTES[]? privileges = null)
 	{
 		/// <summary>Specifies the number of privileges in the privilege set.</summary>
-		public uint PrivilegeCount;
+		public uint PrivilegeCount = (uint)(privileges?.Length ?? 0);
 
 		/// <summary>
 		/// Specifies a control flag related to the privileges. The PRIVILEGE_SET_ALL_NECESSARY control flag is currently defined. It
 		/// indicates that all of the specified privileges must be held by the process requesting access. If this flag is not set, the
 		/// presence of any privileges in the user's access token grants the access.
 		/// </summary>
-		public PrivilegeSetControl Control;
+		public PrivilegeSetControl Control = control;
 
 		/// <summary>Specifies an array of LUID_AND_ATTRIBUTES structures describing the set's privileges.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public LUID_AND_ATTRIBUTES[] Privilege;
+		public LUID_AND_ATTRIBUTES[] Privilege = (LUID_AND_ATTRIBUTES[]?)privileges?.Clone() ?? [];
 
 		/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
 		/// <param name="control">The control flag. See <see cref="Control"/>.</param>
 		/// <param name="luid">The LUID value.</param>
 		/// <param name="attribute">The attribute value.</param>
-		public PRIVILEGE_SET(PrivilegeSetControl control, LUID luid, PrivilegeAttributes attribute)
-		{
-			PrivilegeCount = 1;
-			Control = control;
-			Privilege = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class.</summary>
-		/// <param name="control">The control flag. See <see cref="Control"/>.</param>
-		/// <param name="privileges">A list of privileges to assign to the structure.</param>
-		public PRIVILEGE_SET(PrivilegeSetControl control, LUID_AND_ATTRIBUTES[]? privileges)
-		{
-			PrivilegeCount = (uint)(privileges?.Length ?? 0);
-			Control = control;
-			Privilege = (LUID_AND_ATTRIBUTES[]?)privileges?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class.</summary>
-		internal PRIVILEGE_SET() : this(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, null)
+		public PRIVILEGE_SET(PrivilegeSetControl control, LUID luid, PrivilegeAttributes attribute) : this(control, [new LUID_AND_ATTRIBUTES(luid, attribute)])
 		{
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class from a pointer to allocated memory.</summary>
-		internal PRIVILEGE_SET(IntPtr ptr)
+		internal PRIVILEGE_SET(IntPtr ptr) : this(0, null)
 		{
 			int sz = 0;
 			if (ptr != IntPtr.Zero)
@@ -4789,48 +4747,21 @@ public static partial class AdvApi32
 				PrivilegeCount = (uint)Marshal.ReadInt32(ptr);
 				Control = (PrivilegeSetControl)Marshal.ReadInt32(ptr, sz);
 			}
-			Privilege = PrivilegeCount > 0 ? ptr.ToArray<LUID_AND_ATTRIBUTES>((int)PrivilegeCount, sz * 2)! : new LUID_AND_ATTRIBUTES[0];
+			Privilege = PrivilegeCount > 0 ? ptr.ToArray<LUID_AND_ATTRIBUTES>((int)PrivilegeCount, sz * 2)! : [];
 		}
 
 		/// <summary>Gets the size in bytes of this instance.</summary>
 		/// <value>The size in bytes.</value>
-		public uint SizeInBytes => (uint)Marshal.SizeOf<uint>() * 2 + (uint)(Marshal.SizeOf<LUID_AND_ATTRIBUTES>() * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
+		public readonly uint SizeInBytes => (uint)Marshal.SizeOf<uint>() * 2 + (uint)(Marshal.SizeOf<LUID_AND_ATTRIBUTES>() * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => $"Count:{PrivilegeCount}";
+		public readonly override string ToString() => $"Count:{PrivilegeCount}";
 
 		/// <summary>Initializes a new <c>PRIVILEGE_SET</c> the with capacity to hold the specified number of privileges.</summary>
 		/// <param name="privilegeCount">The privilege count to allocate.</param>
 		/// <returns>A <c>PRIVILEGE_SET</c> instance with sufficient capacity for marshaling.</returns>
 		public static PRIVILEGE_SET InitializeWithCapacity(int privilegeCount = 1) => new() { PrivilegeCount = (uint)privilegeCount };
-
-		internal class Marshaler : ICustomMarshaler
-		{
-			public static ICustomMarshaler GetInstance(string _) => new Marshaler();
-
-			public void CleanUpManagedData(object ManagedObj)
-			{
-			}
-
-			public void CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
-
-			public int GetNativeDataSize() => -1;
-
-			public IntPtr MarshalManagedToNative(object ManagedObj)
-			{
-				if (ManagedObj is not PRIVILEGE_SET ps) return IntPtr.Zero;
-				var ptr = Marshal.AllocCoTaskMem((int)ps.SizeInBytes);
-				if (ps.Privilege.Length != ps.PrivilegeCount)
-					ptr.FillMemory(0, (int)ps.SizeInBytes);
-				Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
-				Marshal.WriteInt32(ptr, Marshal.SizeOf<int>(), (int)ps.Control);
-				ptr.Write(ps.Privilege, Marshal.SizeOf<int>() * 2);
-				return ptr;
-			}
-
-			public object MarshalNativeToManaged(IntPtr pNativeData) => new PRIVILEGE_SET(pNativeData);
-		}
 	}
 
 	/// <summary>
@@ -4878,7 +4809,8 @@ public static partial class AdvApi32
 	// _SID_IDENTIFIER_AUTHORITY { BYTE Value[6]; } SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY;
 	[PInvokeData("winnt.h", MSDNShortId = "450a6d2d-d2e4-4098-90af-a8024ddcfcb5")]
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public class PSID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
+	[/*AdjustAutoMethodNamePattern("", ""), */DeferAutoMethodFrom(typeof(SID_IDENTIFIER_AUTHORITY))]
+	public partial class PSID_IDENTIFIER_AUTHORITY : IEquatable<PSID_IDENTIFIER_AUTHORITY>, IEquatable<SID_IDENTIFIER_AUTHORITY>, IEquatable<byte[]>
 	{
 		/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
@@ -4995,7 +4927,8 @@ public static partial class AdvApi32
 
 	/// <summary>A SafeHandle for access control entries. If owned, will call LocalFree on the pointer when disposed.</summary>
 	[DebuggerDisplay("{DebugString}")]
-	public class SafePACE : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IComparable<SafePACE>, IComparable<PACE>, IEquatable<SafePACE>, IEquatable<PACE>
+	[AdjustAutoMethodNamePattern("Ace", ""), DeferAutoMethodFrom(typeof(PACE))]
+	public partial class SafePACE : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IComparable<SafePACE>, IComparable<PACE>, IEquatable<SafePACE>, IEquatable<PACE>
 	{
 		private static readonly int hdrSz = Marshal.SizeOf<ACE_HEADER>();
 		private static readonly int structSize = Marshal.SizeOf<ACCESS_ALLOWED_ACE>();
@@ -5140,7 +5073,7 @@ public static partial class AdvApi32
 
 		/// <summary>Determines if a ACE is inhertied.</summary>
 		/// <returns><see langword="true"/> if is this is inherited; otherwise, <see langword="false"/>.</returns>
-		public bool IsInherited => IsInvalid ? false : ((AceFlags)Marshal.ReadByte(handle, 1)).IsFlagSet(AceFlags.Inherited);
+		public bool IsInherited => !IsInvalid && ((AceFlags)Marshal.ReadByte(handle, 1)).IsFlagSet(AceFlags.Inherited);
 
 		/// <summary>Determines if a ACE is an object ACE.</summary>
 		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
@@ -5287,7 +5220,7 @@ public static partial class AdvApi32
 		public bool Equals(PACE other) => WinNTExtensions.Equals((PACE)this, other);
 
 		/// <inheritdoc/>
-		public bool Equals(SafePACE? other) => other is null ? false : Equals((PACE)other);
+		public bool Equals(SafePACE? other) => other is not null && Equals((PACE)other);
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj switch
@@ -5311,12 +5244,13 @@ public static partial class AdvApi32
 
 	/// <summary>A SafeHandle for access control lists. If owned, will call LocalFree on the pointer when disposed.</summary>
 	[DebuggerDisplay("{DebugString}")]
-	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IComparable<SafePACL>, IComparable<PACL>, IEquatable<SafePACL>, IEquatable<PACL>
+	[AdjustAutoMethodNamePattern("Acl", ""), DeferAutoMethodFrom(typeof(PACL))]
+	public partial class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IComparable<SafePACL>, IComparable<PACL>, IEquatable<SafePACL>, IEquatable<PACL>
 	{
 		private static readonly int AclStructSize = Marshal.SizeOf<ACL>();
 
 		/// <summary>The null value for a SafePACL.</summary>
-		public static readonly SafePACL Null = new();
+		public static readonly SafePACL Null = [];
 
 		/// <summary>Initializes a new instance of the <see cref="SafePACL"/> class.</summary>
 		public SafePACL() : base(IntPtr.Zero, 0, true) { }
@@ -5488,7 +5422,7 @@ public static partial class AdvApi32
 		{
 			// Copy over new information
 			uint acesLen = 0;
-			PACE[] aces = ((PACL)this).EnumerateAces().Select(a => { acesLen += a.Length(); return a; }).ToArray();
+			PACE[] aces = [.. ((PACL)this).EnumerateAces().Select(a => { acesLen += a.Length(); return a; })];
 			// Get bytes used and create new memory and initialize
 			var rev = Revision;
 			SafePACL pAcl = new(AclStructSize + (int)acesLen, Revision);
@@ -5528,7 +5462,7 @@ public static partial class AdvApi32
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(SafePACL? other) => other is null ? false : Equals((PACL)other);
+		public bool Equals(SafePACL? other) => other is not null && Equals((PACL)other);
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj switch
@@ -5626,7 +5560,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winnt.h", MSDNShortId = "669b182a-bc81-4386-9815-6ffa09e2e743")]
-	public class SafePEVENTLOGRECORD : SafeMemoryHandle<LocalMemoryMethods>
+	public partial class SafePEVENTLOGRECORD : SafeMemoryHandle<LocalMemoryMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafePEVENTLOGRECORD"/> class.</summary>
 		/// <param name="bytesToAllocate">The bytes to allocate.</param>
@@ -5716,7 +5650,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets the description strings within this event log record.</summary>
 		public string[] Strings =>
-			NumStrings == 0 ? new string[0] : handle.ToStringEnum(CharSet.Unicode, StringOffset, Size).ToArray();
+			NumStrings == 0 ? [] : [.. handle.ToStringEnum(CharSet.Unicode, StringOffset, Size)];
 
 		/// <summary>Gets the <see cref="DateTime"/> value at which this entry was submitted.</summary>
 		public DateTime TimeGenerated => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) + TimeSpan.FromSeconds(handle.ToStructure<int>(Size, 12));
@@ -5751,7 +5685,8 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
-	public class SafePSECURITY_DESCRIPTOR : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSECURITY_DESCRIPTOR>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
+	[AdjustAutoMethodNamePattern("SecurityDescriptor", ""), DeferAutoMethodFrom(typeof(PSECURITY_DESCRIPTOR))]
+	public partial class SafePSECURITY_DESCRIPTOR : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSECURITY_DESCRIPTOR>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
 	{
 		/// <summary>The null value for a SafeSecurityDescriptor.</summary>
 		public static readonly SafePSECURITY_DESCRIPTOR Null = new();
@@ -5774,11 +5709,11 @@ public static partial class AdvApi32
 			else if (own)
 			{
 				var newSz = 0U;
-				if (!MakeSelfRelativeSD(pSecurityDescriptor, Null, ref newSz) && newSz == 0)
+				if (!AdvApi32.MakeSelfRelativeSD(pSecurityDescriptor, Null, ref newSz) && newSz == 0)
 					Win32Error.ThrowLastError();
 				Size = newSz;
 				InitializeSecurityDescriptor(this, SECURITY_DESCRIPTOR_REVISION);
-				if (!MakeSelfRelativeSD(pSecurityDescriptor, this, ref newSz))
+				if (!AdvApi32.MakeSelfRelativeSD(pSecurityDescriptor, this, ref newSz))
 					Win32Error.ThrowLastError();
 			}
 			else
@@ -5807,8 +5742,16 @@ public static partial class AdvApi32
 			sz = (int)sdsz;
 		}
 
+		/// <summary>Determines whether the format of this security descriptor is self-relative.</summary>
+		public bool IsSelfRelative => ((PSECURITY_DESCRIPTOR)handle).IsSelfRelative();
+
 		/// <summary>Determines whether the components of this security descriptor are valid.</summary>
 		public bool IsValidSecurityDescriptor => IsValidSecurityDescriptor(handle);
+
+		/// <summary>
+		/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
+		/// </summary>
+		public uint Length => ((PSECURITY_DESCRIPTOR)handle).Length();
 
 		/// <summary>Gets or sets the size in bytes of the security descriptor.</summary>
 		/// <value>The size in bytes of the security descriptor.</value>
@@ -5822,14 +5765,6 @@ public static partial class AdvApi32
 			}
 			set => base.Size = value;
 		}
-
-		/// <summary>Determines whether the format of this security descriptor is self-relative.</summary>
-		public bool IsSelfRelative => ((PSECURITY_DESCRIPTOR)handle).IsSelfRelative();
-
-		/// <summary>
-		/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
-		/// </summary>
-		public uint Length => ((PSECURITY_DESCRIPTOR)handle).Length();
 
 		/// <summary>Performs an explicit conversion from <see cref="SafePSECURITY_DESCRIPTOR"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 		/// <param name="sd">The safe security descriptor.</param>
@@ -5856,7 +5791,7 @@ public static partial class AdvApi32
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(SafePSECURITY_DESCRIPTOR? other) => Equals(other?.DangerousGetHandle());
+		public bool Equals(SafePSECURITY_DESCRIPTOR? other) => Equals(other?.DangerousGetHandle() ?? IntPtr.Zero);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -5879,16 +5814,13 @@ public static partial class AdvApi32
 		/// <returns>
 		/// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
 		/// </returns>
-		public override bool Equals(object? obj)
+		public override bool Equals(object? obj) => obj switch
 		{
-			if (obj is SafePSECURITY_DESCRIPTOR psid2)
-				return Equals(psid2);
-			if (obj is PSECURITY_DESCRIPTOR psidh)
-				return Equals(psidh);
-			if (obj is IntPtr ptr)
-				return Equals(ptr);
-			return false;
-		}
+			SafePSECURITY_DESCRIPTOR psid2 => Equals(psid2),
+			PSECURITY_DESCRIPTOR psidh => Equals(psidh),
+			IntPtr ptr => Equals(ptr),
+			_ => false
+		};
 
 		/// <summary>Gets the binary form of this SafePSECURITY_DESCRIPTOR.</summary>
 		/// <returns>An array of bytes containing the entire security descriptor.</returns>

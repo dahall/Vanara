@@ -29,6 +29,32 @@ public static partial class AdvApi32
 		COMCLASS,
 	}
 
+	/// <summary>Indicates the state of the installed application.</summary>
+	[Flags]
+	public enum LOCALSTATE : uint
+	{
+		/// <summary>The application is installed in the assigned state.</summary>
+		LOCALSTATE_ASSIGNED = 0x1,
+
+		/// <summary>The application is installed in the published state.</summary>
+		LOCALSTATE_PUBLISHED = 0x2,
+
+		/// <summary>The installation of this application uninstalled an unmanaged application with a conflicting transform.</summary>
+		LOCALSTATE_UNINSTALL_UNMANAGED = 0x4,
+
+		/// <summary>If the policy from which this application originates is removed, the application is left on the computer.</summary>
+		LOCALSTATE_POLICYREMOVE_ORPHAN = 0x8,
+
+		/// <summary>If the policy from which this application originates is removed, the application is uninstalled from the computer.</summary>
+		LOCALSTATE_POLICYREMOVE_UNINSTALL = 0x10,
+
+		/// <summary>app is orphaned after being applied</summary>
+		LOCALSTATE_ORPHANED = 0x20,
+
+		/// <summary>app is uninstalled after being applied</summary>
+		LOCALSTATE_UNINSTALLED = 0x40,
+	}
+
 	/// <summary>Query type for <c>GetManagedApplications</c>.</summary>
 	[PInvokeData("appmgmt.h", MSDNShortId = "62e32f36-cbb2-4557-9773-8bd454870d55")]
 	public enum MANAGED_APPQUERY
@@ -94,7 +120,8 @@ public static partial class AdvApi32
 	public static IEnumerable<LOCALMANAGEDAPPLICATION> GetLocalManagedApplications(bool bUserApps)
 	{
 		GetLocalManagedApplications(bUserApps, out var c, out var p).ThrowIfFailed();
-		return p.ToArray<LOCALMANAGEDAPPLICATION>((int)c);
+		var ptr = p.ReleaseOwnership();
+		return new SafeNativeArrayBase<LOCALMANAGEDAPPLICATION, LocalMemoryMethods>(ptr, Kernel32.LocalSize(ptr), true, 0, (int)c, false);
 	}
 
 	/// <summary>
@@ -117,7 +144,7 @@ public static partial class AdvApi32
 	// GetManagedApplicationCategories( DWORD dwReserved, APPCATEGORYINFOLIST *pAppCategory );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmgmt.h", MSDNShortId = "10824852-7810-483a-91b3-2d9cc3d21934")]
-	public static extern Win32Error GetManagedApplicationCategories([Optional] uint dwReserved, IntPtr pAppCategory);
+	public static extern Win32Error GetManagedApplicationCategories([Optional] uint dwReserved, [In, Out] IntPtr pAppCategory);
 
 	/// <summary>
 	/// The <c>GetManagedApplicationCategories</c> function gets a list of application categories for a domain. The list is the same for
@@ -130,11 +157,11 @@ public static partial class AdvApi32
 	public static IEnumerable<APPCATEGORYINFO> GetManagedApplicationCategories()
 	{
 		var h = IntPtr.Zero;
+		GetManagedApplicationCategories(0, h).ThrowIfFailed();
 		try
 		{
-			GetManagedApplicationCategories(0, h).ThrowIfFailed();
-			var l = h.ToStructure<APPCATEGORYINFOLIST>();
-			return l.pCategoryInfo.ToArray<APPCATEGORYINFO>((int)l.cCategory) ?? new APPCATEGORYINFO[0];
+			ref var l = ref h.AsRef<APPCATEGORYINFOLIST>();
+			return l.pCategoryInfo.ToArray((int)l.cCategory);
 		}
 		finally
 		{
@@ -175,7 +202,8 @@ public static partial class AdvApi32
 	// *pCategory, DWORD dwQueryFlags, DWORD dwInfoLevel, LPDWORD pdwApps, PMANAGEDAPPLICATION *prgManagedApps );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmgmt.h", MSDNShortId = "62e32f36-cbb2-4557-9773-8bd454870d55")]
-	public static extern Win32Error GetManagedApplications(IntPtr pCategory, MANAGED_APPQUERY dwQueryFlags, uint dwInfoLevel, out uint pdwApps, out SafeLocalHandle prgManagedApps);
+	public static extern Win32Error GetManagedApplications([In, Optional] GuidPtr pCategory, MANAGED_APPQUERY dwQueryFlags, uint dwInfoLevel,
+		out uint pdwApps, out SafeLocalHandle prgManagedApps);
 
 	/// <summary>
 	/// The <c>GetManagedApplications</c> function gets a list of applications that are displayed in the <c>Add</c> pane of
@@ -195,11 +223,12 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmgmt/nf-appmgmt-getmanagedapplications DWORD GetManagedApplications( GUID
 	// *pCategory, DWORD dwQueryFlags, DWORD dwInfoLevel, LPDWORD pdwApps, PMANAGEDAPPLICATION *prgManagedApps );
 	[PInvokeData("appmgmt.h", MSDNShortId = "62e32f36-cbb2-4557-9773-8bd454870d55")]
-	public static IEnumerable<MANAGEDAPPLICATION> GetManagedApplications(Guid? pCategory)
+	public static IEnumerable<MANAGEDAPPLICATION> GetManagedApplications(Guid? pCategory = null)
 	{
 		using SafeCoTaskMemStruct<Guid> pGuid = pCategory;
 		GetManagedApplications(pGuid, pCategory.HasValue ? MANAGED_APPQUERY.MANAGED_APPS_FROMCATEGORY : MANAGED_APPQUERY.MANAGED_APPS_USERAPPLICATIONS, MANAGED_APPS_INFOLEVEL_DEFAULT, out var c, out var h).ThrowIfFailed();
-		return h.ToArray<MANAGEDAPPLICATION>((int)c);
+		var ptr = h.ReleaseOwnership();
+		return new SafeNativeArrayBase<MANAGEDAPPLICATION, LocalMemoryMethods>(ptr, Kernel32.LocalSize(ptr), true, 0, (int)c, false);
 	}
 
 	/// <summary>
@@ -346,7 +375,7 @@ public static partial class AdvApi32
 	// DWORD cCategory; APPCATEGORYINFO *pCategoryInfo; } APPCATEGORYINFOLIST;
 	[PInvokeData("appmgmt.h", MSDNShortId = "c590d9ab-ab41-4192-a6c2-c6c2c931e873")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct APPCATEGORYINFOLIST
+	public struct APPCATEGORYINFOLIST : IArrayStruct<APPCATEGORYINFO>
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -361,7 +390,7 @@ public static partial class AdvApi32
 		/// and must be allocated using CoTaskMemAlloc and freed using CoTaskMemFree.
 		/// </para>
 		/// </summary>
-		public IntPtr pCategoryInfo;
+		public ManagedArrayPointer<APPCATEGORYINFO> pCategoryInfo;
 	}
 
 	/// <summary>The <c>INSTALLDATA</c> structure specifies a group-policy application to be installed by InstallApplication.</summary>
@@ -482,7 +511,7 @@ public static partial class AdvApi32
 		/// <para>LOCAL_STATE_POLICYREMOVE_UNINSTALL</para>
 		/// <para>If the policy from which this application originates is removed, the application is uninstalled from the computer.</para>
 		/// </summary>
-		public uint dwState;
+		public LOCALSTATE dwState;
 	}
 
 	/// <summary>

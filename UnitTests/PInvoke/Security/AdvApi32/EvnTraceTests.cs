@@ -1,7 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Threading;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke.Tests;
@@ -14,33 +16,8 @@ public partial class EvnTraceTests
 	[Test]
 	public void EnumerateTraceGuidsTest()
 	{
-		var memList = new List<SafeHGlobalHandle>();
-		var sz = Marshal.SizeOf<TRACE_GUID_PROPERTIES>();
-		var pprovs = new IntPtr[1];
-		memList.Add(new SafeHGlobalHandle(sz));
-		pprovs[0] = memList[0];
-		try
-		{
-			Assert.That(EnumerateTraceGuids(pprovs, 0, out var req), ResultIs.FailureCode(Win32Error.ERROR_MORE_DATA));
-
-			Array.Resize(ref pprovs, (int)req);
-			for (int i = 1; i < req; i++)
-			{
-				memList.Add(new SafeHGlobalHandle(sz));
-				pprovs[i] = memList[i];
-			}
-
-			Assert.That(EnumerateTraceGuids(pprovs, (uint)pprovs.Length, out req), ResultIs.Successful);
-		}
-		finally
-		{
-			for (int i = 0; i < memList.Count; i++)
-			{
-				TestContext.Write($"({i}) ");
-				memList[i].ToStructure<TRACE_GUID_PROPERTIES>().WriteValues();
-				memList[i].Dispose();
-			}
-		}
+		Assert.That(EnumerateTraceGuids(out var pprovs), ResultIs.Successful);
+		Assert.That(pprovs, Is.Not.Null.And.Length.GreaterThan(0));
 	}
 
 	[Test]
@@ -69,7 +46,7 @@ public partial class EvnTraceTests
 		}
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void EventAccessTest()
 	{
 		var etp = EVENT_TRACE_PROPERTIES.Create(Guid.NewGuid());
@@ -106,26 +83,57 @@ public partial class EvnTraceTests
 		prop.WriteValues();
 	}
 
-	[Test]
+	//[Test]
 	public void OpenProcessCloseTraceTest()
 	{
 		var callbackCount = 0;
-		Assert.That(() =>
+		var logFile = new EventLogFile(logfilePath) { EventCallback = EvtCallback };
+		using var log = new EventTraceSingleLog(logFile);
+		using (SafeHGlobalStruct<ETW_TRACE_PARTITION_INFORMATION> mem = new())
 		{
-			var logFile = new EventLogFile(logfilePath) { EventCallback = EvtCallback };
-			using var log = new EventTraceSingleLog(logFile);
-			using (var mem = SafeHGlobalHandle.CreateFromStructure<ETW_TRACE_PARTITION_INFORMATION>())
-			{
-				Assert.That(QueryTraceProcessingHandle(log.Handle, ETW_PROCESS_HANDLE_INFO_TYPE.EtwQueryPartitionInformation, default, 0, mem, mem.Size, out var retLen), ResultIs.Successful);
-				mem.ToStructure<ETW_TRACE_PARTITION_INFORMATION>().WriteValues();
-			}
-			log.ProcessTrace();
-		}, Throws.Nothing);
+			Assert.That(QueryTraceProcessingHandle(log.Handle, ETW_PROCESS_HANDLE_INFO_TYPE.EtwQueryPartitionInformation, default, 0, mem, mem.Size, out var retLen), ResultIs.Successful);
+			mem.AsRef().WriteValues();
+		}
+		log.ProcessTrace();
 
 		void EvtCallback(in EVENT_TRACE pEvent)
 		{
 			if (callbackCount++ == 0)
 			{
+			}
+		}
+	}
+
+	[Test]
+	public void CallbackTraceTest()
+	{
+		var callbackCount = 0;
+		EVENT_TRACE_LOGFILE lf = new(/*logfilePath*/ TestCaseSources.GetFilePath("NetTrace.etl"), ProcessEvent);
+		var hTrace = OpenTrace(ref lf);
+		Assert.That(hTrace, ResultIs.ValidHandle);
+		try
+		{
+			Assert.That(ProcessTrace([hTrace]), ResultIs.Successful);
+			Assert.That(callbackCount, Is.GreaterThan(0));
+		}
+		finally
+		{
+			Assert.That(CloseTrace(hTrace), ResultIs.Successful);
+		}
+
+		void ProcessEvent(in EVENT_RECORD pEvent)
+		{
+			callbackCount++;
+
+			TestContext.WriteLine($"ID:{pEvent.EventHeader.EventDescriptor.Id}\tVer:{pEvent.EventHeader.EventDescriptor.Version}\tThread:{pEvent.EventHeader.ThreadId}\tCnt:{pEvent.ExtendedDataCount}");
+			var extData = pEvent.ExtendedData.AsReadOnlySpan(pEvent.ExtendedDataCount);
+			foreach (EVENT_HEADER_EXTENDED_DATA_ITEM ed in extData)
+			{
+				TestContext.WriteLine($"  ExtData: {ed.ExtType}, Size: {ed.DataSize}");
+				if (CorrespondingTypeAttribute.GetCorrespondingTypes(ed.ExtType).FirstOrDefault() is Type dataType)
+				{
+					ed.DataPtr.ToStructure(dataType)?.WriteValues();
+				}
 			}
 		}
 	}

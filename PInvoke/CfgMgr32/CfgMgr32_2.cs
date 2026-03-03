@@ -909,7 +909,8 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_Property_KeysW")]
 	public static extern CONFIGRET CM_Get_Device_Interface_Property_Keys([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, ref uint PropertyKeyCount, [Optional, Ignore] uint ulFlags);
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query)] DEVPROPKEY[]? PropertyKeyArray,
+		ref uint PropertyKeyCount, [Optional, Ignore] uint ulFlags);
 
 	/// <summary>
 	/// <para>
@@ -951,7 +952,7 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_Property_Keys_ExW")]
 	public static extern CONFIGRET CM_Get_Device_Interface_Property_Keys_Ex([MarshalAs(UnmanagedType.LPTStr)] string pszDeviceInterface,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray, ref uint PropertyKeyCount,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query)] DEVPROPKEY[]? PropertyKeyArray, ref uint PropertyKeyCount,
 		[In, Optional, Ignore] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Get_DevNode_Property</c> function retrieves a device instance property.</summary>
@@ -1053,7 +1054,8 @@ public static partial class CfgMgr32
 	// CM_Get_DevNode_Property_Keys( DEVINST dnDevInst, DEVPROPKEY *PropertyKeyArray, PULONG PropertyKeyCount, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Property_Keys")]
-	public static extern CONFIGRET CM_Get_DevNode_Property_Keys(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray,
+	public static extern CONFIGRET CM_Get_DevNode_Property_Keys(uint dnDevInst,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query)] DEVPROPKEY[]? PropertyKeyArray,
 		ref uint PropertyKeyCount, [Optional, Ignore] uint ulFlags);
 
 	/// <summary>
@@ -1092,7 +1094,8 @@ public static partial class CfgMgr32
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_DevNode_Property_Keys_Ex")]
-	public static extern CONFIGRET CM_Get_DevNode_Property_Keys_Ex(uint dnDevInst, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DEVPROPKEY[]? PropertyKeyArray,
+	public static extern CONFIGRET CM_Get_DevNode_Property_Keys_Ex(uint dnDevInst,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query)] DEVPROPKEY[]? PropertyKeyArray,
 		ref uint PropertyKeyCount, [In, Optional, Ignore] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>The <c>CM_Get_DevNode_Registry_Property</c> function retrieves a specified device property from the registry.</summary>

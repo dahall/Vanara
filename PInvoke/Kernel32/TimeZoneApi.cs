@@ -189,42 +189,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("timezoneapi.h", MSDNShortId = "5bd29a25-98f0-439e-be88-8011bbf98926")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTimeZoneInformationForYear(ushort wYear, in DYNAMIC_TIME_ZONE_INFORMATION pdtzi, out TIME_ZONE_INFORMATION ptzi);
-
-	/// <summary>
-	/// Retrieves the time zone settings for the specified year and time zone. These settings control the translations between
-	/// Coordinated Universal Time (UTC) and local time.
-	/// </summary>
-	/// <param name="wYear">
-	/// The year for which the time zone settings are to be retrieved. The wYear parameter must be a local time value.
-	/// </param>
-	/// <param name="pdtzi">
-	/// A pointer to a DYNAMIC_TIME_ZONE_INFORMATION structure that specifies the time zone. To populate this parameter, call
-	/// EnumDynamicTimeZoneInformation with the index of the time zone you want. If this parameter is <c>NULL</c>, the current time zone
-	/// is used.
-	/// </param>
-	/// <param name="ptzi">A pointer to a TIME_ZONE_INFORMATION structure that receives the time zone settings.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The wYear parameter is assumed to be a local time value. If the local time is close to the transition between the old year and
-	/// the new year (00:00:00 January 1), passing a UTC year to the <c>GetTimeZoneInformationForYear</c> function can cause the function
-	/// to return time zone settings for the wrong year.
-	/// </para>
-	/// <para>
-	/// The <c>StandardName</c> and <c>DaylightName</c> members of the resultant TIME_ZONE_INFORMATION structure are localized according
-	/// to the current user default UI language.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-gettimezoneinformationforyear BOOL
-	// GetTimeZoneInformationForYear( USHORT wYear, PDYNAMIC_TIME_ZONE_INFORMATION pdtzi, LPTIME_ZONE_INFORMATION ptzi );
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("timezoneapi.h", MSDNShortId = "5bd29a25-98f0-439e-be88-8011bbf98926")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTimeZoneInformationForYear(ushort wYear, [Optional] ManagedStructPointer<DYNAMIC_TIME_ZONE_INFORMATION> pdtzi, out TIME_ZONE_INFORMATION ptzi);
+	public static extern bool GetTimeZoneInformationForYear(ushort wYear, [Out, Optional, StructPointer(typeof(DYNAMIC_TIME_ZONE_INFORMATION))] IntPtr pdtzi, out TIME_ZONE_INFORMATION ptzi);
 
 	/// <summary>
 	/// Sets the current time zone and dynamic daylight saving time settings. These settings control translations from Coordinated
@@ -315,49 +280,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
-
-	/// <summary>Converts a time in Coordinated Universal Time (UTC) to a specified time zone's corresponding local time.</summary>
-	/// <param name="lpTimeZoneInformation">
-	/// <para>A pointer to a TIME_ZONE_INFORMATION structure that specifies the time zone of interest.</para>
-	/// <para>If lpTimeZone is <c>NULL</c>, the function uses the currently active time zone.</para>
-	/// </param>
-	/// <param name="lpUniversalTime">
-	/// A pointer to a SYSTEMTIME structure that specifies the UTC time to be converted. The function converts this universal time to the
-	/// specified time zone's corresponding local time.
-	/// </param>
-	/// <param name="lpLocalTime">A pointer to a SYSTEMTIME structure that receives the local time.</param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value is nonzero, and the function sets the members of the SYSTEMTIME structure pointed to
-	/// by lpLocalTime to the appropriate local time values.
-	/// </para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>SystemTimeToTzSpecificLocalTime</c> function takes into account whether daylight saving time (DST) is in effect for the
-	/// local time to which the system time is to be converted.
-	/// </para>
-	/// <para>The <c>SystemTimeToTzSpecificLocalTime</c> function may calculate the local time incorrectly under the following conditions:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>The time zone uses a different UTC offset for the old and new years.</term>
-	/// </item>
-	/// <item>
-	/// <term>The UTC time to be converted and the calculated local time are in different years.</term>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>For an example, see Retrieving the Last-Write Time.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetotzspecificlocaltime BOOL
-	// SystemTimeToTzSpecificLocalTime( const TIME_ZONE_INFORMATION *lpTimeZoneInformation, const SYSTEMTIME *lpUniversalTime,
-	// LPSYSTEMTIME lpLocalTime );
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("timezoneapi.h", MSDNShortId = "f3a87ec2-67a0-418f-af6e-6c0b5547cffb")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SystemTimeToTzSpecificLocalTime([Optional] ManagedStructPointer<TIME_ZONE_INFORMATION> lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
+	public static extern bool SystemTimeToTzSpecificLocalTime([In, Optional, StructPointer(typeof(TIME_ZONE_INFORMATION))] IntPtr lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
 
 	/// <summary>
 	/// Converts a time in Coordinated Universal Time (UTC) with dynamic daylight saving time settings to a specified time zone's
@@ -407,37 +330,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms725485")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TzSpecificLocalTimeToSystemTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
-
-	/// <summary>
-	/// <para>Converts a local time to a time in Coordinated Universal Time (UTC).</para>
-	/// </summary>
-	/// <param name="lpTimeZoneInformation">
-	/// <para>A pointer to a <c>TIME_ZONE_INFORMATION</c> structure that specifies the time zone for the time specified in lpLocalTime.</para>
-	/// <para>If lpTimeZoneInformation is <c>NULL</c>, the function uses the currently active time zone.</para>
-	/// </param>
-	/// <param name="lpLocalTime">
-	/// <para>
-	/// A pointer to a <c>SYSTEMTIME</c> structure that specifies the local time to be converted. The function converts this time to the
-	/// corresponding UTC time.
-	/// </para>
-	/// </param>
-	/// <param name="lpUniversalTime">
-	/// <para>A pointer to a <c>SYSTEMTIME</c> structure that receives the UTC time.</para>
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value is nonzero, and the function sets the members of the <c>SYSTEMTIME</c> structure
-	/// pointed to by lpUniversalTime to the appropriate values.
-	/// </para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI TzSpecificLocalTimeToSystemTime( _In_opt_ LPTIME_ZONE_INFORMATION lpTimeZoneInformation, _In_ LPSYSTEMTIME
-	// lpLocalTime, _Out_ LPSYSTEMTIME lpUniversalTime);
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("Winbase.h", MSDNShortId = "ms725485")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TzSpecificLocalTimeToSystemTime([Optional] ManagedStructPointer<DYNAMIC_TIME_ZONE_INFORMATION> lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
+	public static extern bool TzSpecificLocalTimeToSystemTime([In, Optional, StructPointer(typeof(DYNAMIC_TIME_ZONE_INFORMATION))] IntPtr lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
 
 	/// <summary>Converts a local time to a time with dynamic daylight saving time settings to Coordinated Universal Time (UTC).</summary>
 	/// <param name="lpTimeZoneInformation">

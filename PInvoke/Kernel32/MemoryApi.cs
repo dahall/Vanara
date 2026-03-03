@@ -537,7 +537,7 @@ public static partial class Kernel32
 		MemoryRegionInfo
 	}
 
-	/// <summary>Flags used in <see cref="GetWriteWatch"/>.</summary>
+	/// <summary>Flags used in <c>GetWriteWatch</c>.</summary>
 	public enum WRITE_WATCH
 	{
 		/// <summary>Do not reset the write-tracking state.</summary>
@@ -1508,7 +1508,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366573")]
 	public static extern uint GetWriteWatch(WRITE_WATCH dwFlags, [In] IntPtr lpBaseAddress, SizeT dwRegionSize,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] lpAddresses, ref SizeT lpdwCount, [Out] out uint lpdwGranularity);
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(lpdwCount), SizingMethod.Query)] IntPtr[] lpAddresses, ref SizeT lpdwCount, [Out] out uint lpdwGranularity);
 
 	/// <summary>
 	/// <para>Maps previously allocated physical memory pages at a specified address in an Address Windowing Extensions (AWE) region.</para>
@@ -4046,7 +4046,7 @@ public static partial class Kernel32
 		/// Flags describing the operation to be performed on the address. If <c>CFG_CALL_TARGET_VALID</c> is set, then the address will
 		/// be marked valid for CFG. Otherwise, it will be marked an invalid call target.
 		/// </summary>
-		public CFG_CALL_TARGET Flags { get => (CFG_CALL_TARGET)flags.ToInt32(); set => flags = (IntPtr)(int)value; }
+		public CFG_CALL_TARGET Flags { readonly get => (CFG_CALL_TARGET)flags.ToInt32(); set => flags = (IntPtr)(int)value; }
 	}
 
 	/// <summary>

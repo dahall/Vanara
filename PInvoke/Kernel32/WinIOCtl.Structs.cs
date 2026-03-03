@@ -781,12 +781,12 @@ public static partial class Kernel32
 		/// <summary>
 		/// A DRIVE_LAYOUT_INFORMATION_MBR structure containing information about the master boot record type partitioning on the drive.
 		/// </summary>
-		public DRIVE_LAYOUT_INFORMATION_MBR Mbr => union.Mbr;
+		public readonly DRIVE_LAYOUT_INFORMATION_MBR Mbr => union.Mbr;
 
 		/// <summary>
 		/// A DRIVE_LAYOUT_INFORMATION_GPT structure containing information about the GUID disk partition type partitioning on the drive.
 		/// </summary>
-		public DRIVE_LAYOUT_INFORMATION_GPT Gpt => union.Gpt;
+		public readonly DRIVE_LAYOUT_INFORMATION_GPT Gpt => union.Gpt;
 
 		[StructLayout(LayoutKind.Explicit, Size = 40)]
 		private struct DUMMYUNIONNAME
@@ -2057,7 +2057,7 @@ public static partial class Kernel32
 		private readonly ulong ul9;
 
 		/// <summary>A wide-character string that describes the partition.</summary>
-		public string? Name
+		public readonly string? Name
 		{
 			get
 			{

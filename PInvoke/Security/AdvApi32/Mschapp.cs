@@ -209,13 +209,13 @@ public static partial class AdvApi32
 	// data[CYPHER_BLOCK_LENGTH]; } CYPHER_BLOCK;
 	[PInvokeData("mschapp.h", MSDNShortId = "eb0e38ed-8d12-4df2-be58-7ac18447121f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct CYPHER_BLOCK
+	public struct CYPHER_BLOCK(byte[] data)
 	{
 		/// <summary>
 		/// An array of CHAR used to store the password hashes and cipher text passed by the MS-CHAP password management API.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-		public byte[] data;
+		public byte[] data = StructHelper.InitFixedArray(8, data);
 	}
 
 	/// <summary>
@@ -225,14 +225,14 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/mschapp/ns-mschapp-_encrypted_lm_owf_password typedef struct
 	// _ENCRYPTED_LM_OWF_PASSWORD { CYPHER_BLOCK data[2]; } ENCRYPTED_LM_OWF_PASSWORD, *PENCRYPTED_LM_OWF_PASSWORD;
 	[PInvokeData("mschapp.h", MSDNShortId = "83498d3f-0ac5-435c-804e-a4baa1ae855d")]
-	public struct ENCRYPTED_LM_OWF_PASSWORD
+	public struct ENCRYPTED_LM_OWF_PASSWORD(CYPHER_BLOCK[] data)
 	{
 		/// <summary>
 		/// An array of CYPHER_BLOCK structures that contain an encrypted LM OWF password hash. The contents of the array are calculated
 		/// using the <c>OldLmPasswordHashEncryptedWithNewNtPasswordHash()</c> function as defined in RFC 2433, section A.16.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public CYPHER_BLOCK[] data;
+		public CYPHER_BLOCK[] data = StructHelper.InitFixedArray(2, data);
 	}
 
 	/// <summary>The <c>LM_OWF_PASSWORD</c> stores the Lan Manage (LM) one-way function (OWF) of a user's password.</summary>
@@ -241,14 +241,14 @@ public static partial class AdvApi32
 	// CYPHER_BLOCK data[2]; } LM_OWF_PASSWORD;
 	[PInvokeData("mschapp.h", MSDNShortId = "db155f34-fa57-4449-9319-d46561fd18c0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct LM_OWF_PASSWORD
+	public struct LM_OWF_PASSWORD(CYPHER_BLOCK[] data)
 	{
 		/// <summary>
 		/// An array of CYPHER_BLOCK structures that contain a LM OWF password hash. The contents of the array are calculated using the
 		/// <c>LmEncryptedPasswordHash()</c> function as defined in RFC 2433, section A.8.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-		public CYPHER_BLOCK[] data;
+		public CYPHER_BLOCK[] data = StructHelper.InitFixedArray(2, data);
 	}
 
 	/// <summary>The <c>SAMPR_ENCRYPTED_USER_PASSWORD</c> stores a user's encrypted password.</summary>
@@ -256,7 +256,7 @@ public static partial class AdvApi32
 	// _SAMPR_ENCRYPTED_USER_PASSWORD { UCHAR *Buffer[(256 2)+ 4]; } SAMPR_ENCRYPTED_USER_PASSWORD, *PSAMPR_ENCRYPTED_USER_PASSWORD;
 	[PInvokeData("mschapp.h", MSDNShortId = "10137c59-db99-4d70-9716-6f05369084a0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct SAMPR_ENCRYPTED_USER_PASSWORD
+	public struct SAMPR_ENCRYPTED_USER_PASSWORD(byte[] data)
 	{
 		/// <summary>
 		/// An array contains an encrypted password. The contents of the array are calculated using either the
@@ -264,6 +264,6 @@ public static partial class AdvApi32
 		/// RFC 2433, sections A.11 and A.15 respectively.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = (256 * 2) + 4)]
-		public byte[] Buffer;
+		public byte[] Buffer = StructHelper.InitFixedArray((256 * 2) + 4, data);
 	}
 }

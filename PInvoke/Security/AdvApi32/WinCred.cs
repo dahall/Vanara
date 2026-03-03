@@ -1857,7 +1857,7 @@ public static partial class AdvApi32
 		public IntPtr CredTypes;
 
 		/// <summary>Extracts array of <see cref="CRED_TYPE"/> values from <see cref="CredTypes"/>.</summary>
-		public CRED_TYPE[] GetCredTypes() => CredTypes.ToArray<CRED_TYPE>((int)CredTypeCount) ?? new CRED_TYPE[0];
+		public readonly CRED_TYPE[] GetCredTypes() => CredTypes.ToArray<CRED_TYPE>((int)CredTypeCount) ?? [];
 	}
 
 	/// <summary>
@@ -1881,15 +1881,13 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Safe handle for WinCred functions.</summary>
-	public class SafeCredMemoryHandle : GenericSafeHandle
+	/// <remarks>Initializes a new instance of the <see cref="SafeCredMemoryHandle"/> class.</remarks>
+	/// <param name="ptr">The pointer to the memory allocated by an WinCred function.</param>
+	/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
+	public class SafeCredMemoryHandle(IntPtr ptr, bool own = true) : GenericSafeHandle(ptr, h => { CredFree(h); return true; }, own)
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeCredMemoryHandle"/> class.</summary>
 		public SafeCredMemoryHandle() : this(IntPtr.Zero) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeCredMemoryHandle"/> class.</summary>
-		/// <param name="ptr">The pointer to the memory allocated by an WinCred function.</param>
-		/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
-		public SafeCredMemoryHandle(IntPtr ptr, bool own = true) : base(ptr, h => { CredFree(h); return true; }, own) { }
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeCredMemoryHandle"/> to <see cref="CREDENTIAL"/>.</summary>
 		/// <param name="h">The handle.</param>
@@ -1917,6 +1915,6 @@ public static partial class AdvApi32
 		/// <exception cref="InsufficientMemoryException"></exception>
 		public T ToStructure<T>() where T : struct => handle.ToStructure<T>();
 
-		internal CREDENTIAL_MGD[] GetCredArray(int count) => this.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
+		internal CREDENTIAL_MGD[] GetCredArray(int count) => [.. this.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>()))];
 	}
 }

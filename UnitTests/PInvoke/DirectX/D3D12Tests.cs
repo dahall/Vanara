@@ -90,6 +90,95 @@ public class D3D12Tests
 		}
 	}
 
+	[Test]
+	public void MarshaledStructTest()
+	{
+		D3D12_INFO_QUEUE_FILTER f = new()
+		{
+			AllowList = new()
+			{
+				pCategoryList = [D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_EXECUTION],
+				pSeverityList = [D3D12_MESSAGE_SEVERITY.D3D12_MESSAGE_SEVERITY_WARNING],
+				pIDList = [D3D12_MESSAGE_ID.D3D12_MESSAGE_ID_COMMAND_LIST_CLOSED],
+			},
+			DenyList = new()
+			{
+				pCategoryList = [D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_STATE_CREATION],
+				pSeverityList = [D3D12_MESSAGE_SEVERITY.D3D12_MESSAGE_SEVERITY_ERROR],
+				pIDList = [D3D12_MESSAGE_ID.D3D12_MESSAGE_ID_COMMAND_LIST_DESCRIPTOR_TABLE_NOT_SET],
+			}
+		};
+		using var filter = SafeCoTaskMemHandle.CreateFromStructure(f);
+		var values = filter.AsSpan<uint>(filter.Size / 4);
+		TestContext.WriteLine(string.Join(", ", values.ToArray()));
+		Assert.That((int)filter.Size, Is.EqualTo(16 * 3 * 2));
+		Assert.That(values[0], Is.EqualTo(1)); // AllowList.pCategoryList count
+		Assert.That(values[4], Is.EqualTo(1)); // AllowList.pSeverityList count
+		Assert.That(values[8], Is.EqualTo(1)); // AllowList.pIDList count
+		Assert.That((D3D12_MESSAGE_CATEGORY)Marshal.ReadInt32(Marshal.ReadIntPtr(filter.DangerousGetHandle().Offset(8))), Is.EqualTo(D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_EXECUTION));
+		Assert.That((D3D12_MESSAGE_ID)Marshal.ReadInt32(Marshal.ReadIntPtr(filter.DangerousGetHandle().Offset(88))), Is.EqualTo(D3D12_MESSAGE_ID.D3D12_MESSAGE_ID_COMMAND_LIST_DESCRIPTOR_TABLE_NOT_SET));
+	}
+
+	[Test]
+	public void AddStorageFilterEntriesTest()
+	{
+		// Test to exercise ID3D12InfoQueue::AddStorageFilterEntries
+
+		// Create a D3D12 device with debug layer enabled
+		Assert.That(D3D12GetDebugInterface(out ID3D12Debug? debug), ResultIs.Successful);
+		debug?.EnableDebugLayer();
+
+		Assert.That(D3D12CreateDevice(D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_12_0, null, out ID3D12Device? device), ResultIs.Successful);
+
+		// Query for the InfoQueue interface
+		if (device is not ID3D12InfoQueue infoQueue)
+		{
+			Assert.Inconclusive("ID3D12InfoQueue interface not available. Debug layer may not be enabled.");
+			return;
+		}
+
+		try
+		{
+			// Create a filter to allow only specific message categories and severities
+			D3D12_INFO_QUEUE_FILTER filter = new()
+			{
+				AllowList = new()
+				{
+					pCategoryList = [D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_EXECUTION, D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_STATE_SETTING],
+					pSeverityList = [D3D12_MESSAGE_SEVERITY.D3D12_MESSAGE_SEVERITY_WARNING, D3D12_MESSAGE_SEVERITY.D3D12_MESSAGE_SEVERITY_ERROR],
+					pIDList = []
+				},
+				DenyList = new()
+				{
+					pCategoryList = [D3D12_MESSAGE_CATEGORY.D3D12_MESSAGE_CATEGORY_MISCELLANEOUS],
+					pSeverityList = [D3D12_MESSAGE_SEVERITY.D3D12_MESSAGE_SEVERITY_INFO],
+					pIDList = [D3D12_MESSAGE_ID.D3D12_MESSAGE_ID_COMMAND_LIST_DESCRIPTOR_TABLE_NOT_SET]
+				}
+			};
+
+			// Add the storage filter entries
+			Assert.That(infoQueue.AddStorageFilterEntries(filter), ResultIs.Successful);
+
+			// Retrieve the filter
+			Assert.That(infoQueue.GetStorageFilter(out var filter2), ResultIs.Successful);
+
+			Assert.That(filter.AllowList.pSeverityList, Is.EquivalentTo(filter2!.Value.AllowList.pSeverityList));
+			Assert.That(filter.DenyList.pIDList, Is.EquivalentTo(filter2!.Value.DenyList.pIDList));
+
+			// Clear the storage filter
+			infoQueue.ClearStorageFilter();
+
+			// Verify filter was cleared
+			SizeT clearedLength = 0;
+			Assert.That(infoQueue.GetStorageFilter(default, ref clearedLength), ResultIs.Successful);
+			Assert.That((int)clearedLength, Is.EqualTo(Marshaler.Marshaler.SizeOf<D3D12_INFO_QUEUE_FILTER>()));
+		}
+		finally
+		{
+			// Clean up
+			infoQueue?.ClearStorageFilter();
+		}
+	}
 	[StructLayout(LayoutKind.Sequential)]
 	private struct Vertex
 	{

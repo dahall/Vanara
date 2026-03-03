@@ -760,7 +760,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgidevice-createsurface HRESULT CreateSurface( const
 		// DXGI_SURFACE_DESC *pDesc, UINT NumSurfaces, DXGI_USAGE Usage, const DXGI_SHARED_RESOURCE *pSharedResource, IDXGISurface
 		// **ppSurface );
-		IDXGISurface CreateSurface(in DXGI_SURFACE_DESC pDesc, uint NumSurfaces, DXGI_USAGE Usage, [In, Optional] StructPointer<DXGI_SHARED_RESOURCE> pSharedResource);
+		IDXGISurface CreateSurface(in DXGI_SURFACE_DESC pDesc, uint NumSurfaces, DXGI_USAGE Usage, [In, Optional, StructPointer(typeof(DXGI_SHARED_RESOURCE))] IntPtr pSharedResource);
 
 		/// <summary>Gets the residency status of an array of resources.</summary>
 		/// <param name="ppResources">
@@ -1065,7 +1065,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgidevice-createsurface HRESULT CreateSurface( const
 		// DXGI_SURFACE_DESC *pDesc, UINT NumSurfaces, DXGI_USAGE Usage, const DXGI_SHARED_RESOURCE *pSharedResource, IDXGISurface
 		// **ppSurface );
-		new IDXGISurface CreateSurface(in DXGI_SURFACE_DESC pDesc, uint NumSurfaces, DXGI_USAGE Usage, [In, Optional] StructPointer<DXGI_SHARED_RESOURCE> pSharedResource);
+		new IDXGISurface CreateSurface(in DXGI_SURFACE_DESC pDesc, uint NumSurfaces, DXGI_USAGE Usage, [In, Optional, StructPointer(typeof(DXGI_SHARED_RESOURCE))] IntPtr pSharedResource);
 
 		/// <summary>Gets the residency status of an array of resources.</summary>
 		/// <param name="ppResources">

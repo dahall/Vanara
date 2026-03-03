@@ -2025,7 +2025,7 @@ public static partial class D3D12
 		// CreateConstantBufferView( [in, optional] const D3D12_CONSTANT_BUFFER_VIEW_DESC *pDesc, [in] D3D12_CPU_DESCRIPTOR_HANDLE
 		// DestDescriptor );
 		[PreserveSig]
-		void CreateConstantBufferView([In, Optional] StructPointer<D3D12_CONSTANT_BUFFER_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+		void CreateConstantBufferView([In, Optional, StructPointer(typeof(D3D12_CONSTANT_BUFFER_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a shader-resource view for accessing data in a resource.</summary>
 		/// <param name="pResource">
@@ -2084,7 +2084,7 @@ public static partial class D3D12
 		// CreateShaderResourceView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_SHADER_RESOURCE_VIEW_DESC *pDesc,
 		// [in] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		void CreateShaderResourceView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_SHADER_RESOURCE_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+		void CreateShaderResourceView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_SHADER_RESOURCE_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a view for unordered accessing.</summary>
 		/// <param name="pResource">
@@ -2154,7 +2154,7 @@ public static partial class D3D12
 		// *pDesc, [in] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
 		void CreateUnorderedAccessView([In, Optional] ID3D12Resource? pResource, [In, Optional] ID3D12Resource? pCounterResource,
-			[In, Optional] StructPointer<D3D12_UNORDERED_ACCESS_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+			[In, Optional, StructPointer(typeof(D3D12_UNORDERED_ACCESS_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a render-target view for accessing resource data.</summary>
 		/// <param name="pResource">
@@ -2184,7 +2184,7 @@ public static partial class D3D12
 		// CreateRenderTargetView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_RENDER_TARGET_VIEW_DESC *pDesc, [in]
 		// D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		void CreateRenderTargetView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_RENDER_TARGET_VIEW_DESC> pDesc,
+		void CreateRenderTargetView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_RENDER_TARGET_VIEW_DESC))] IntPtr pDesc,
 			[In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a depth-stencil view for accessing resource data.</summary>
@@ -2215,7 +2215,7 @@ public static partial class D3D12
 		// CreateDepthStencilView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_DEPTH_STENCIL_VIEW_DESC *pDesc, [in]
 		// D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		void CreateDepthStencilView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_DEPTH_STENCIL_VIEW_DESC> pDesc,
+		void CreateDepthStencilView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_DEPTH_STENCIL_VIEW_DESC))] IntPtr pDesc,
 			[In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Create a sampler object that encapsulates sampling information for a texture.</summary>
@@ -2571,7 +2571,7 @@ public static partial class D3D12
 		// *pOptimizedClearValue, [in] REFIID riidResource, [out, optional] void **ppvResource );
 		[PreserveSig, SuppressAutoGen]
 		HRESULT CreateCommittedResource(in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
-			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riidResource,
+			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue, in Guid riidResource,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
 
 		/// <summary>Creates a heap that can be used with placed resources and reserved resources.</summary>
@@ -2815,7 +2815,7 @@ public static partial class D3D12
 		// const D3D12_CLEAR_VALUE *pOptimizedClearValue, REFIID riid, void **ppvResource );
 		[PreserveSig]
 		HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
-			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
+			[In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
 
 		/// <summary>Creates a resource that is reserved, and not yet mapped to any pages in a heap.</summary>
 		/// <param name="pDesc">
@@ -2883,7 +2883,7 @@ public static partial class D3D12
 		// CreateReservedResource( [in] const D3D12_RESOURCE_DESC *pDesc, [in] D3D12_RESOURCE_STATES InitialState, [in, optional] const
 		// D3D12_CLEAR_VALUE *pOptimizedClearValue, [in] REFIID riid, [out, optional] void **ppvResource );
 		[PreserveSig]
-		HRESULT CreateReservedResource(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue,
+		HRESULT CreateReservedResource(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, [In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvResource);
 
 		/// <summary>Creates a shared handle to a heap, resource, or fence object.</summary>
@@ -3282,7 +3282,7 @@ public static partial class D3D12
 		// [in] const D3D12_RESOURCE_DESC *pResourceDesc, [in] UINT FirstSubresource, [in] UINT NumSubresources, UINT64 BaseOffset, [out,
 		// optional] D3D12_PLACED_SUBRESOURCE_FOOTPRINT *pLayouts, [out, optional] UINT *pNumRows, [out, optional] UINT64 *pRowSizeInBytes,
 		// [out, optional] UINT64 *pTotalBytes );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		void GetCopyableFootprints(in D3D12_RESOURCE_DESC pResourceDesc, uint FirstSubresource, int NumSubresources, ulong BaseOffset,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
@@ -3472,11 +3472,11 @@ public static partial class D3D12
 		// *pPackedMipDesc, [out, optional] D3D12_TILE_SHAPE *pStandardTileShapeForNonPackedMips, [in, out, optional] UINT
 		// *pNumSubresourceTilings, [in] UINT FirstSubresourceTilingToGet, [out] D3D12_SUBRESOURCE_TILING
 		// *pSubresourceTilingsForNonPackedMips );
-		[PreserveSig]
-		void GetResourceTiling([In] ID3D12Resource pTiledResource, [Out, Optional] StructPointer<uint> pNumTilesForEntireResource,
-			[Out, Optional] StructPointer<D3D12_PACKED_MIP_INFO> pPackedMipDesc, [Out, Optional] StructPointer<D3D12_TILE_SHAPE> pStandardTileShapeForNonPackedMips,
-			[In, Out, Optional] StructPointer<uint> pNumSubresourceTilings, uint FirstSubresourceTilingToGet,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_TILING[] pSubresourceTilingsForNonPackedMips);
+		[PreserveSig, SuppressAutoGen]
+		void GetResourceTiling([In] ID3D12Resource pTiledResource, [Out, Optional, StructPointer(typeof(uint))] IntPtr pNumTilesForEntireResource,
+			[Out, Optional, StructPointer(typeof(D3D12_PACKED_MIP_INFO))] IntPtr pPackedMipDesc, [Out, Optional, StructPointer(typeof(D3D12_TILE_SHAPE))] IntPtr pStandardTileShapeForNonPackedMips,
+			[In, Out, Optional, StructPointer(typeof(uint))] IntPtr pNumSubresourceTilings, [Optional] uint FirstSubresourceTilingToGet,
+			[Out, Optional, ArrayPointer(typeof(D3D12_SUBRESOURCE_TILING), nameof(pNumSubresourceTilings))] IntPtr pSubresourceTilingsForNonPackedMips);
 
 		/// <summary>Gets a locally unique identifier for the current device (adapter).</summary>
 		/// <returns>
@@ -4064,7 +4064,7 @@ public static partial class D3D12
 		// CreateConstantBufferView( [in, optional] const D3D12_CONSTANT_BUFFER_VIEW_DESC *pDesc, [in] D3D12_CPU_DESCRIPTOR_HANDLE
 		// DestDescriptor );
 		[PreserveSig]
-		new void CreateConstantBufferView([In, Optional] StructPointer<D3D12_CONSTANT_BUFFER_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+		new void CreateConstantBufferView([In, Optional, StructPointer(typeof(D3D12_CONSTANT_BUFFER_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a shader-resource view for accessing data in a resource.</summary>
 		/// <param name="pResource">
@@ -4123,7 +4123,7 @@ public static partial class D3D12
 		// CreateShaderResourceView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_SHADER_RESOURCE_VIEW_DESC *pDesc,
 		// [in] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		new void CreateShaderResourceView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_SHADER_RESOURCE_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+		new void CreateShaderResourceView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_SHADER_RESOURCE_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a view for unordered accessing.</summary>
 		/// <param name="pResource">
@@ -4193,7 +4193,7 @@ public static partial class D3D12
 		// *pDesc, [in] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
 		new void CreateUnorderedAccessView([In, Optional] ID3D12Resource? pResource, [In, Optional] ID3D12Resource? pCounterResource,
-			[In, Optional] StructPointer<D3D12_UNORDERED_ACCESS_VIEW_DESC> pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
+			[In, Optional, StructPointer(typeof(D3D12_UNORDERED_ACCESS_VIEW_DESC))] IntPtr pDesc, [In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a render-target view for accessing resource data.</summary>
 		/// <param name="pResource">
@@ -4223,7 +4223,7 @@ public static partial class D3D12
 		// CreateRenderTargetView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_RENDER_TARGET_VIEW_DESC *pDesc, [in]
 		// D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		new void CreateRenderTargetView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_RENDER_TARGET_VIEW_DESC> pDesc,
+		new void CreateRenderTargetView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_RENDER_TARGET_VIEW_DESC))] IntPtr pDesc,
 			[In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Creates a depth-stencil view for accessing resource data.</summary>
@@ -4254,7 +4254,7 @@ public static partial class D3D12
 		// CreateDepthStencilView( [in, optional] ID3D12Resource *pResource, [in, optional] const D3D12_DEPTH_STENCIL_VIEW_DESC *pDesc, [in]
 		// D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor );
 		[PreserveSig]
-		new void CreateDepthStencilView([In, Optional] ID3D12Resource? pResource, [In, Optional] StructPointer<D3D12_DEPTH_STENCIL_VIEW_DESC> pDesc,
+		new void CreateDepthStencilView([In, Optional] ID3D12Resource? pResource, [In, Optional, StructPointer(typeof(D3D12_DEPTH_STENCIL_VIEW_DESC))] IntPtr pDesc,
 			[In] D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor);
 
 		/// <summary>Create a sampler object that encapsulates sampling information for a texture.</summary>
@@ -4610,7 +4610,7 @@ public static partial class D3D12
 		// *pOptimizedClearValue, [in] REFIID riidResource, [out, optional] void **ppvResource );
 		[PreserveSig]
 		new HRESULT CreateCommittedResource(in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
-			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riidResource,
+			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue, in Guid riidResource,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
 
 		/// <summary>Creates a heap that can be used with placed resources and reserved resources.</summary>
@@ -4854,7 +4854,7 @@ public static partial class D3D12
 		// const D3D12_CLEAR_VALUE *pOptimizedClearValue, REFIID riid, void **ppvResource );
 		[PreserveSig]
 		new HRESULT CreatePlacedResource([In] ID3D12Heap pHeap, ulong HeapOffset, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
-			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
+			[In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
 
 		/// <summary>Creates a resource that is reserved, and not yet mapped to any pages in a heap.</summary>
 		/// <param name="pDesc">
@@ -4922,7 +4922,7 @@ public static partial class D3D12
 		// CreateReservedResource( [in] const D3D12_RESOURCE_DESC *pDesc, [in] D3D12_RESOURCE_STATES InitialState, [in, optional] const
 		// D3D12_CLEAR_VALUE *pOptimizedClearValue, [in] REFIID riid, [out, optional] void **ppvResource );
 		[PreserveSig]
-		new HRESULT CreateReservedResource(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue,
+		new HRESULT CreateReservedResource(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState, [In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvResource);
 
 		/// <summary>Creates a shared handle to a heap, resource, or fence object.</summary>
@@ -5512,10 +5512,10 @@ public static partial class D3D12
 		// *pNumSubresourceTilings, [in] UINT FirstSubresourceTilingToGet, [out] D3D12_SUBRESOURCE_TILING
 		// *pSubresourceTilingsForNonPackedMips );
 		[PreserveSig]
-		new void GetResourceTiling([In] ID3D12Resource pTiledResource, [Out, Optional] StructPointer<uint> pNumTilesForEntireResource,
-			[Out, Optional] StructPointer<D3D12_PACKED_MIP_INFO> pPackedMipDesc, [Out, Optional] StructPointer<D3D12_TILE_SHAPE> pStandardTileShapeForNonPackedMips,
-			[In, Out, Optional] StructPointer<uint> pNumSubresourceTilings, uint FirstSubresourceTilingToGet,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_TILING[] pSubresourceTilingsForNonPackedMips);
+		new void GetResourceTiling([In] ID3D12Resource pTiledResource, [Out, Optional, StructPointer(typeof(uint))] IntPtr pNumTilesForEntireResource,
+			[Out, Optional, StructPointer(typeof(D3D12_PACKED_MIP_INFO))] IntPtr pPackedMipDesc, [Out, Optional, StructPointer(typeof(D3D12_TILE_SHAPE))] IntPtr pStandardTileShapeForNonPackedMips,
+			[In, Out, Optional, StructPointer(typeof(uint))] IntPtr pNumSubresourceTilings, [Optional] uint FirstSubresourceTilingToGet,
+			[Out, Optional, ArrayPointer(typeof(D3D12_SUBRESOURCE_TILING), nameof(pNumSubresourceTilings))] IntPtr pSubresourceTilingsForNonPackedMips);
 
 		/// <summary>Gets a locally unique identifier for the current device (adapter).</summary>
 		/// <returns>
@@ -5944,7 +5944,7 @@ public static partial class D3D12
 	public static T CreateCommittedResource<T>(this ID3D12Device device, in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
 		D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
 	{
-		device.CreateCommittedResource(pHeapProperties, HeapFlags, pDesc, InitialResourceState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		device.CreateCommittedResource(pHeapProperties, HeapFlags, pDesc, InitialResourceState, SafeCoTaskMemHandle.CreateFromStructure(pOptimizedClearValue), typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
 	}
 
@@ -6344,7 +6344,7 @@ public static partial class D3D12
 	public static T CreatePlacedResource<T>(this ID3D12Device device, [In] ID3D12Heap pHeap, ulong HeapOffset, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
 	{
-		device.CreatePlacedResource(pHeap, HeapOffset, pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		device.CreatePlacedResource(pHeap, HeapOffset, pDesc, InitialState, SafeCoTaskMemHandle.CreateFromStructure(pOptimizedClearValue), typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
 	}
 
@@ -6422,7 +6422,7 @@ public static partial class D3D12
 	public static T CreateReservedResource<T>(this ID3D12Device device, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
 	{
-		device.CreateReservedResource(pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		device.CreateReservedResource(pDesc, InitialState, SafeCoTaskMemHandle.CreateFromStructure(pOptimizedClearValue), typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
 	}
 

@@ -15,15 +15,11 @@ public class SecurityBaseApiTests
 	{
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION);
 		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
-		var ps = PRIVILEGE_SET.InitializeWithCapacity(100);
-		var psSz = ps.SizeInBytes;
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
 		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
-		var access = new ACCESS_MASK[otl.Length];
-		var status = new uint[otl.Length];
-		Assert.That(AccessCheckByTypeResultList(pSD, default, hTok, accessMask, otl, (uint)otl.Length, gm, ps, ref psSz, access, status), ResultIs.Successful);
+		Assert.That(AccessCheckByTypeResultList(pSD, default, hTok, accessMask, otl, gm, out var ps, out var access, out var status), ResultIs.Successful);
 		Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
 		Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		Assert.That(status[0], Is.Zero);
@@ -34,13 +30,11 @@ public class SecurityBaseApiTests
 	{
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION);
 		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
-		var ps = PRIVILEGE_SET.InitializeWithCapacity(100);
-		var psSz = ps.SizeInBytes;
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
 		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
-		Assert.That(AccessCheckByType(pSD, default, hTok, accessMask, otl, (uint)otl.Length, gm, ps, ref psSz, out var access, out var status), ResultIs.Successful);
+		Assert.That(AccessCheckByType(pSD, default, hTok, accessMask, otl, gm, out var ps, out var access, out var status), ResultIs.Successful);
 		Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
 		Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		Assert.That(status, Is.True);
@@ -51,12 +45,10 @@ public class SecurityBaseApiTests
 	{
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION);
 		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
-		var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
-		var psSz = ps.SizeInBytes;
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
-		Assert.That(AccessCheck(pSD, hTok, accessMask, gm, ps, ref psSz, out var access, out var status), ResultIs.Successful);
+		Assert.That(AccessCheck(pSD, hTok, accessMask, gm, out var ps, out var access, out var status), ResultIs.Successful);
 		Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
 		Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		Assert.That(status, Is.True);
@@ -171,7 +163,7 @@ public class SecurityBaseApiTests
 			Assert.That(pACL.AceCount, Is.EqualTo(GetAceCount(acl)));
 		}
 
-		uint GetAceCount(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
+		static uint GetAceCount(PACL pACL) => IsValidAcl(pACL) && GetAclInformation(pACL, out ACL_SIZE_INFORMATION si) ? si.AceCount : 0;
 	}
 
 	[Test]
@@ -204,8 +196,7 @@ public class SecurityBaseApiTests
 		var csi = CLAIM_SECURITY_ATTRIBUTES_INFORMATION.Default;
 		csi.AttributeCount = (uint)attr.Length;
 		csi.Attribute.pAttributeV1 = pattr;
-		var len = 0U;
-		Assert.That(AddResourceAttributeAce(pNewSacl, ACL_REVISION, 0, 0, SafePSID.Everyone, csi, ref len), ResultIs.Successful);
+		Assert.That(AddResourceAttributeAce(pNewSacl, ACL_REVISION, 0, 0, SafePSID.Everyone, csi, out var len), ResultIs.Successful);
 	}
 
 	[Test]
@@ -243,13 +234,13 @@ public class SecurityBaseApiTests
 	}
 
 	[Test]
-	public void CheckTokenCapabilityTest() => Assert.That(CheckTokenCapability(HTOKEN.NULL, SafePSID.CreateCapability(KnownSIDCapability.SECURITY_CAPABILITY_DOCUMENTS_LIBRARY), out var has), ResultIs.Successful);
+	public void CheckTokenCapabilityTest() => Assert.That(CheckTokenCapability(HTOKEN.NULL, SafePSID.CreateCapability(KnownSIDCapability.SECURITY_CAPABILITY_DOCUMENTS_LIBRARY), out _), ResultIs.Successful);
 
 	[Test]
-	public void CheckTokenMembershipExTest() => Assert.That(CheckTokenMembershipEx(default, SafePSID.Current, CTMF.CTMF_INCLUDE_APPCONTAINER, out var mbr), ResultIs.Successful);
+	public void CheckTokenMembershipExTest() => Assert.That(CheckTokenMembershipEx(default, SafePSID.Current, CTMF.CTMF_INCLUDE_APPCONTAINER, out _), ResultIs.Successful);
 
 	[Test]
-	public void CheckTokenMembershipTest() => Assert.That(CheckTokenMembership(default, SafePSID.Current, out var mbr), ResultIs.Successful);
+	public void CheckTokenMembershipTest() => Assert.That(CheckTokenMembership(default, SafePSID.Current, out _), ResultIs.Successful);
 
 	[Test]
 	public void ConvertToAutoInheritPrivateObjectSecurityTest()
@@ -281,7 +272,7 @@ public class SecurityBaseApiTests
 				Assert.That(GetPrivateObjectSecurity(spod, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, pSD, pSD.Size, out _), ResultIs.Successful);
 				var hspod = (PSECURITY_DESCRIPTOR)spod;
 				Assert.That(SetPrivateObjectSecurity(SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, pSD, ref spod.DangerousGetRefHandle(), GENERIC_MAPPING.GenericFileMapping, hTok), ResultIs.Successful);
-				TestContext.WriteLine($"Before: {hspod.DangerousGetHandle().ToInt32().ToString("X")}, After: {spod.DangerousGetHandle().ToInt32().ToString("X")}");
+				TestContext.WriteLine($"Before: {hspod.DangerousGetHandle().ToInt32():X}, After: {spod.DangerousGetHandle().ToInt32():X}");
 			}
 		}
 	}
@@ -338,13 +329,7 @@ public class SecurityBaseApiTests
 	[Test]
 	public void DeriveCapabilitySidsFromNameTest()
 	{
-		Assert.That(DeriveCapabilitySidsFromName("internetClient", out var capGrpSids, out var nCapGrpSids, out var capSids, out var nCapSids), ResultIs.Successful);
-		Assert.That(() =>
-		{
-			capGrpSids.Count = nCapGrpSids;
-			capSids.Count = nCapSids;
-		}, Throws.Nothing);
-		Assert.That(capGrpSids.Count, Is.EqualTo(nCapGrpSids));
+		Assert.That(DeriveCapabilitySidsFromName("internetClient", out var capGrpSids, out var capSids), ResultIs.Successful);
 		Assert.That(capGrpSids, Is.Not.Empty);
 		Assert.That(capSids, Is.Not.Empty);
 		TestContext.WriteLine(string.Join("\n", capGrpSids.Select(s => s.ToString("P"))));
@@ -414,15 +399,14 @@ public class SecurityBaseApiTests
 		Assert.That(() => ifArray.Dispose(), Throws.Nothing);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void GetSetKernelObjectSecurityTest()
 	{
-		HANDLE hProc = (IntPtr)GetCurrentProcess();
+		var hProc = GetCurrentProcess();
 		using (new ElevPriv("SeSecurityPrivilege"))
-		using (var pSD = new SafePSECURITY_DESCRIPTOR(2048))
 		{
 			// Get self-relative SD with DACL
-			Assert.That(GetKernelObjectSecurity(hProc, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, pSD, pSD.Size, out var req), ResultIs.Successful);
+			Assert.That(GetKernelObjectSecurity(hProc, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var pSD), ResultIs.Successful);
 
 			// Get the DACL and insert a new ACE
 			Assert.That(GetSecurityDescriptorDacl(pSD, out var present, out var pDacl, out var def), ResultIs.Successful);
@@ -523,7 +507,7 @@ public class SecurityBaseApiTests
 			var getmi = typeof(AdvApi32).GetMethod("GetTokenInformation", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
 			Assert.That(getmi, Is.Not.Null);
 			var setmi = typeof(AdvApi32).GetMethod("SetTokenInformation", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public, null,
-				new[] { typeof(HTOKEN), typeof(TOKEN_INFORMATION_CLASS), typeof(IntPtr), typeof(uint) }, null);
+				[typeof(HTOKEN), typeof(TOKEN_INFORMATION_CLASS), typeof(IntPtr), typeof(uint)], null);
 			Assert.That(setmi, Is.Not.Null);
 			foreach (TOKEN_INFORMATION_CLASS cls in Enum.GetValues(typeof(TOKEN_INFORMATION_CLASS)))
 			{
@@ -534,7 +518,7 @@ public class SecurityBaseApiTests
 				if (gettype != null)
 				{
 					var insz = (int)mem.Size;
-					if (cls == TOKEN_INFORMATION_CLASS.TokenLinkedToken || cls == TOKEN_INFORMATION_CLASS.TokenElevation)
+					if (cls is TOKEN_INFORMATION_CLASS.TokenLinkedToken or TOKEN_INFORMATION_CLASS.TokenElevation)
 						insz = 4;
 					var param = new object?[] { (HTOKEN)t, cls, (IntPtr)mem, insz, null };
 					var res = getmi!.Invoke(null, param);
@@ -659,19 +643,19 @@ public class SecurityBaseApiTests
 		using var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY);
 		Assert.That(LookupPrivilegeValue(null, "SeDebugPrivilege", out var luid));
 		var ps = new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-		Assert.That(PrivilegeCheck(t, ps, out var res));
+		Assert.That(PrivilegeCheck(t, ref ps, out var res));
 		Assert.That((uint)ps.Privilege[0].Attributes, Is.Not.Zero);
 		TestContext.WriteLine($"Has {luid}={res}, {ps.Privilege[0].Attributes}");
 
 		Assert.That(LookupPrivilegeValue(null, "SeChangeNotifyPrivilege", out luid));
-		ps = new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, new[] { new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED_BY_DEFAULT), new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED) });
-		Assert.That(PrivilegeCheck(t, ps, out res));
+		ps = new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, [new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED_BY_DEFAULT), new LUID_AND_ATTRIBUTES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED)]);
+		Assert.That(PrivilegeCheck(t, ref ps, out res));
 		Assert.That((uint)ps.Privilege[0].Attributes, Is.Not.Zero);
 		TestContext.WriteLine($"Has {luid}={res}, {ps.Privilege[0].Attributes}/{ps.Privilege[1].Attributes}");
 
 		Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out luid));
 		ps = new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
-		Assert.That(PrivilegeCheck(t, ps, out res));
+		Assert.That(PrivilegeCheck(t, ref ps, out res));
 		Assert.That((uint)ps.Privilege[0].Attributes, Is.Not.Zero);
 		TestContext.WriteLine($"Has {luid}={res}, {ps.Privilege[0].Attributes}");
 	}
@@ -748,5 +732,5 @@ public class SecurityBaseApiTests
 		Assert.That(SetSecurityDescriptorRMControl(pSD, 0), ResultIs.Successful);
 	}
 
-	private SafePACL GetAcl() => new(256);
+	private static SafePACL GetAcl() => new(256);
 }

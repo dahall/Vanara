@@ -1245,8 +1245,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -1337,7 +1337,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -1395,7 +1395,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -2247,8 +2247,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -2339,7 +2339,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -2397,7 +2397,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -2636,8 +2636,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorLayers );
 		[PreserveSig]
 		HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, uint colorPaletteIndex,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, uint colorPaletteIndex,
 			out IDWriteColorGlyphRunEnumerator1 colorLayers);
 
 		/// <summary>Converts glyph run placements to glyph origins.</summary>
@@ -2685,7 +2685,7 @@ public static partial class Dwrite
 		// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
 		// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
 		void ComputeGlyphOrigins(in DWRITE_GLYPH_RUN glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D_POINT_2F baselineOrigin,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
 	}
 
 	/// <summary>The root factory interface for all DirectWrite objects.</summary>
@@ -3363,8 +3363,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -3455,7 +3455,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -3513,7 +3513,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -3752,8 +3752,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorLayers );
 		[PreserveSig]
 		new HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, uint colorPaletteIndex,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, uint colorPaletteIndex,
 			out IDWriteColorGlyphRunEnumerator1 colorLayers);
 
 		/// <summary>Converts glyph run placements to glyph origins.</summary>
@@ -3801,7 +3801,7 @@ public static partial class Dwrite
 		// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
 		// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
 		new void ComputeGlyphOrigins(in DWRITE_GLYPH_RUN glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D_POINT_2F baselineOrigin,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
 
 		/// <summary>Creates an empty font set builder to add font face references and create a custom font set.</summary>
 		/// <returns>
@@ -4578,8 +4578,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -4670,7 +4670,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -4728,7 +4728,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -4967,8 +4967,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorLayers );
 		[PreserveSig]
 		new HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, uint colorPaletteIndex,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, uint colorPaletteIndex,
 			out IDWriteColorGlyphRunEnumerator1 colorLayers);
 
 		/// <summary>Converts glyph run placements to glyph origins.</summary>
@@ -5016,7 +5016,7 @@ public static partial class Dwrite
 		// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
 		// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
 		new void ComputeGlyphOrigins(in DWRITE_GLYPH_RUN glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D_POINT_2F baselineOrigin,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
 
 		/// <summary>Creates an empty font set builder to add font face references and create a custom font set.</summary>
 		/// <returns>
@@ -5972,8 +5972,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -6064,7 +6064,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -6122,7 +6122,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -6361,8 +6361,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorLayers );
 		[PreserveSig]
 		new HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, uint colorPaletteIndex,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, uint colorPaletteIndex,
 			out IDWriteColorGlyphRunEnumerator1 colorLayers);
 
 		/// <summary>Converts glyph run placements to glyph origins.</summary>
@@ -6410,7 +6410,7 @@ public static partial class Dwrite
 		// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
 		// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
 		new void ComputeGlyphOrigins(in DWRITE_GLYPH_RUN glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D_POINT_2F baselineOrigin,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
 
 		/// <summary>Creates an empty font set builder to add font face references and create a custom font set.</summary>
 		/// <returns>
@@ -7403,8 +7403,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		new IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -7495,7 +7495,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 
@@ -7553,7 +7553,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE1 renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 			DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, float baselineOriginX, float baselineOriginY);
 
@@ -7792,8 +7792,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorLayers );
 		[PreserveSig]
 		new HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, uint colorPaletteIndex,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, uint colorPaletteIndex,
 			out IDWriteColorGlyphRunEnumerator1 colorLayers);
 
 		/// <summary>Converts glyph run placements to glyph origins.</summary>
@@ -7841,7 +7841,7 @@ public static partial class Dwrite
 		// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
 		// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
 		new void ComputeGlyphOrigins(in DWRITE_GLYPH_RUN glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D_POINT_2F baselineOrigin,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform, [Out, MarshalAs(UnmanagedType.LPArray)] D2D_POINT_2F[] glyphOrigins);
 
 		/// <summary>Creates an empty font set builder to add font face references and create a custom font set.</summary>
 		/// <returns>
@@ -8219,8 +8219,8 @@ public static partial class Dwrite
 		// IDWriteColorGlyphRunEnumerator1 **colorEnumerator );
 		[PreserveSig]
 		HRESULT TranslateColorGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
-			DWRITE_PAINT_FEATURE_LEVEL paintFeatureLevel, DWRITE_MEASURING_MODE measuringMode, [In, Optional] StructPointer<DWRITE_MATRIX> worldAndDpiTransform,
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_GLYPH_IMAGE_FORMATS desiredGlyphImageFormats,
+			DWRITE_PAINT_FEATURE_LEVEL paintFeatureLevel, DWRITE_MEASURING_MODE measuringMode, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldAndDpiTransform,
 			uint colorPaletteIndex, out IDWriteColorGlyphRunEnumerator1 colorEnumerator);
 	}
 
@@ -9544,16 +9544,18 @@ public static partial class Dwrite
 		/// font size and <i>pixelsPerDip</i>.
 		/// </para>
 		/// </param>
-		/// <returns>
+		/// <param name="fontMetrics">
 		/// <para>Type: <b><c>DWRITE_FONT_METRICS1</c>*</b></para>
 		/// <para>
 		/// A pointer to a <c>DWRITE_FONT_METRICS1</c> structure to fill in. The metrics returned by this function are in font design units.
 		/// </para>
-		/// </returns>
+		/// </param>
+		/// <returns>Standard HRESULT error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatiblemetrics HRESULT
 		// GetGdiCompatibleMetrics( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, [out]
 		// DWRITE_FONT_METRICS1 *fontMetrics );
-		new DWRITE_FONT_METRICS1 GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform);
+		[PreserveSig]
+		new HRESULT GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, out DWRITE_FONT_METRICS1 fontMetrics);
 
 		/// <summary>Gets caret metrics for the font in design units.</summary>
 		/// <param name="caretMetrics">
@@ -9683,7 +9685,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatibleglyphadvances HRESULT
 		// GetGdiCompatibleGlyphAdvances( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, bool
 		// useGdiNatural, bool isSideways, UINT32 glyphCount, [in] UINT16 const *glyphIndices, [out] INT32 *glyphAdvances );
-		new void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform, bool useGdiNatural,
+		new void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, bool useGdiNatural,
 			bool isSideways, int glyphCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ushort[] glyphIndices,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] int[] glyphAdvances);
 
@@ -9797,7 +9799,7 @@ public static partial class Dwrite
 		// GetRecommendedRenderingMode( FLOAT fontEmSize, FLOAT dpiX, FLOAT dpiY, [in, optional] DWRITE_MATRIX const *transform, bool
 		// isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode, [out] DWRITE_RENDERING_MODE
 		// *renderingMode );
-		new DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Retrieves the vertical forms of the nominal glyphs retrieved from GetGlyphIndices.</summary>
@@ -9955,7 +9957,7 @@ public static partial class Dwrite
 		// *transform, [in] bool isSideways, [in] DWRITE_OUTLINE_THRESHOLD outlineThreshold, [in] DWRITE_MEASURING_MODE measuringMode, [in,
 		// optional] IDWriteRenderingParams *renderingParams, [out] DWRITE_RENDERING_MODE *renderingMode, [out] DWRITE_GRID_FIT_MODE
 		// *gridFitMode );
-		new void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode, [In, Optional] IDWriteRenderingParams? renderingParams,
 			out DWRITE_RENDERING_MODE renderingMode, out DWRITE_GRID_FIT_MODE gridFitMode);
 
@@ -10156,7 +10158,7 @@ public static partial class Dwrite
 		// *transform, [in] BOOL isSideways, [in] DWRITE_OUTLINE_THRESHOLD outlineThreshold, [in] DWRITE_MEASURING_MODE measuringMode, [in,
 		// optional] IDWriteRenderingParams *renderingParams, [out] DWRITE_RENDERING_MODE1 *renderingMode, [out] DWRITE_GRID_FIT_MODE
 		// *gridFitMode );
-		void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode,
 			[In, Optional] IDWriteRenderingParams? renderingParams, out DWRITE_RENDERING_MODE1 renderingMode, out DWRITE_GRID_FIT_MODE gridFitMode);
 

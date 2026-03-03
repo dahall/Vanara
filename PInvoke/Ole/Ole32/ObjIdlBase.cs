@@ -990,7 +990,7 @@ public static partial class Ole32
 		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next HRESULT Next( ULONG celt,
 		// ContextProperty *pContextProperties, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ContextProperty[] pContextProperties,
 			 out uint pceltFetched);
 
@@ -1061,7 +1061,7 @@ public static partial class Ole32
 		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ienumstring-next HRESULT Next( ULONG celt, LPOLESTR
 		// *rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

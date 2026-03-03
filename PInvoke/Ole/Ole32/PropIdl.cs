@@ -141,7 +141,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-next HRESULT Next( ULONG celt,
 		// STATPROPSETSTG *rgelt, ULONG *pceltFetched );
 		[PInvokeData("propidl.h", MSDNShortId = "3af3c518-3db4-4436-b1c1-86587ce8fbf3")]
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSETSTG[] rgelt, out uint pceltFetched);
 
 		/// <summary>The <c>Skip</c> method skips a specified number of STATPROPSETSTG structures in the enumeration sequence.</summary>
@@ -227,7 +227,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-next HRESULT Next( ULONG celt,
 		// STATPROPSTG *rgelt, ULONG *pceltFetched );
 		[PInvokeData("propidl.h", MSDNShortId = "8e911da9-0056-4267-b9d0-c4ba929ddb94")]
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATPROPSTG[] rgelt, out uint pceltFetched);
 
 		/// <summary>The <c>Skip</c> method skips the specified number of STATPROPSTG structures in the enumeration sequence.</summary>

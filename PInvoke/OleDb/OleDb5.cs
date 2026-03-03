@@ -2650,7 +2650,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms717916(v=vs.85) HRESULT OpenRowset ( IUnknown *pUnkOuter,
 		// DBID *pTableID, DBID *pIndexID, REFIID riid, ULONG cPropertySets, DBPROPSET rgPropertySets[ ], IUnknown **ppRowset );
 		[PreserveSig]
-		HRESULT OpenRowset([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional] StructPointer<DBID> pTableID, [In, Optional] StructPointer<DBID> pIndexID,
+		HRESULT OpenRowset([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, [In, Optional, StructPointer(typeof(DBID))] IntPtr pTableID, [In, Optional, StructPointer(typeof(DBID))] IntPtr pIndexID,
 			in Guid riid, uint cPropertySets, [In, Out] SafeDBPROPSETListHandle rgPropertySets, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppRowset);
 	}
 

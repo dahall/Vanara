@@ -3523,8 +3523,8 @@ public static partial class Ws2_32
 	[SuppressAutoGen]
 	public static extern WSRESULT SetAddrInfoEx([MarshalAs(UnmanagedType.LPTStr)] string pName, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? pServiceName,
 		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] SOCKET_ADDRESS[]? pAddresses, [Optional] uint dwAddressCount,
-		[In, Optional] IntPtr lpBlob, [Optional] uint dwFlags, [Optional] NS dwNameSpace, [In, Optional] GuidPtr lpNspId, [In, Optional] StructPointer<TIMEVAL> timeout,
-		[In, Optional] StructPointer<NativeOverlapped> lpOverlapped, [In, Optional] LPLOOKUPSERVICE_COMPLETION_ROUTINE? lpCompletionRoutine, [Out, Optional] StructPointer<HANDLE> lpNameHandle);
+		[In, Optional] IntPtr lpBlob, [Optional] uint dwFlags, [Optional] NS dwNameSpace, [In, Optional] GuidPtr lpNspId, [In, Optional, StructPointer(typeof(TIMEVAL))] IntPtr timeout,
+		[In, Optional, StructPointer(typeof(NativeOverlapped))] IntPtr lpOverlapped, [In, Optional] LPLOOKUPSERVICE_COMPLETION_ROUTINE? lpCompletionRoutine, [Out, Optional, StructPointer(typeof(HANDLE))] IntPtr lpNameHandle);
 
 	/// <summary>The <c>setipv4sourcefilter</c> inline function sets the multicast filter state for an IPv4 socket.</summary>
 	/// <param name="Socket">A descriptor that identifies a multicast socket.</param>

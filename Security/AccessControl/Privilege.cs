@@ -213,7 +213,8 @@ public static class PrivilegeExtension
 	/// <returns><see langword="true"/> if the specified token has the supplied privileges; otherwise, <see langword="false"/>.</returns>
 	public static bool HasPrivileges(this SafeHTOKEN hObj, bool requireAll, params SystemPrivilege[] privs)
 	{
-		if (!PrivilegeCheck(hObj, new PRIVILEGE_SET((PrivilegeSetControl)(requireAll ? 1 : 0), privs.Select(p => new LUID_AND_ATTRIBUTES(p.GetLUID(), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)).ToArray()), out var ret))
+		var p = new PRIVILEGE_SET((PrivilegeSetControl)(requireAll ? 1 : 0), privs.Select(p => new LUID_AND_ATTRIBUTES(p.GetLUID(), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)).ToArray());
+		if (!PrivilegeCheck(hObj, ref p, out var ret))
 			Win32Error.ThrowLastError();
 		return ret;
 	}

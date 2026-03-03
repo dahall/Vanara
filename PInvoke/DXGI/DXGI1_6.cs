@@ -1192,7 +1192,7 @@ public static partial class DXGI
 		// DXGI_SWAP_CHAIN_FULLSCREEN_DESC *pFullscreenDesc, [in, optional] IDXGIOutput *pRestrictToOutput, [out] IDXGISwapChain1
 		// **ppSwapChain );
 		new IDXGISwapChain1 CreateSwapChainForHwnd([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, HWND hWnd, in DXGI_SWAP_CHAIN_DESC1 pDesc,
-			[In, Optional] StructPointer<DXGI_SWAP_CHAIN_FULLSCREEN_DESC> pFullscreenDesc, [In, Optional] IDXGIOutput? pRestrictToOutput);
+			[In, Optional, StructPointer(typeof(DXGI_SWAP_CHAIN_FULLSCREEN_DESC))] IntPtr pFullscreenDesc, [In, Optional] IDXGIOutput? pRestrictToOutput);
 
 		/// <summary>Creates a swap chain that is associated with the <c>CoreWindow</c> object for the output window for the swap chain.</summary>
 		/// <param name="pDevice">
@@ -2148,7 +2148,7 @@ public static partial class DXGI
 		// DXGI_SWAP_CHAIN_FULLSCREEN_DESC *pFullscreenDesc, [in, optional] IDXGIOutput *pRestrictToOutput, [out] IDXGISwapChain1
 		// **ppSwapChain );
 		new IDXGISwapChain1 CreateSwapChainForHwnd([In, MarshalAs(UnmanagedType.IUnknown)] object pDevice, HWND hWnd, in DXGI_SWAP_CHAIN_DESC1 pDesc,
-			[In, Optional] StructPointer<DXGI_SWAP_CHAIN_FULLSCREEN_DESC> pFullscreenDesc, [In, Optional] IDXGIOutput? pRestrictToOutput);
+			[In, Optional, StructPointer(typeof(DXGI_SWAP_CHAIN_FULLSCREEN_DESC))] IntPtr pFullscreenDesc, [In, Optional] IDXGIOutput? pRestrictToOutput);
 
 		/// <summary>Creates a swap chain that is associated with the <c>CoreWindow</c> object for the output window for the swap chain.</summary>
 		/// <param name="pDevice">
@@ -3035,7 +3035,7 @@ public static partial class DXGI
 		// GetDisplayModeList1( DXGI_FORMAT EnumFormat, UINT Flags, [in, out] UINT *pNumModes, [out, optional] DXGI_MODE_DESC1 *pDesc );
 		[PreserveSig]
 		new HRESULT GetDisplayModeList1(DXGI_FORMAT EnumFormat, DXGI_ENUM_MODES Flags, ref int pNumModes,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DXGI_MODE_DESC1[]? pDesc);
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pNumModes), SizingMethod.Query)] DXGI_MODE_DESC1[]? pDesc);
 
 		/// <summary>Finds the display mode that most closely matches the requested display mode.</summary>
 		/// <param name="pModeToMatch">

@@ -1586,10 +1586,10 @@ public static partial class Kernel32
 		public nuint Flags;
 
 		/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-		public bool Shared => GetBit((uint)Flags, 9);
+		public readonly bool Shared => GetBit((uint)Flags, 9);
 
 		/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
-		public uint ShareCount => GetBits((uint)Flags, 5, 3);
+		public readonly uint ShareCount => GetBits((uint)Flags, 5, 3);
 
 		/// <summary>
 		/// <para>The protection attributes of the page. This member can be one of the following values.</para>
@@ -1728,10 +1728,10 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Protection => GetBits((uint)Flags, 0, 5);
+		public readonly uint Protection => GetBits((uint)Flags, 0, 5);
 
 		/// <summary/>
-		public IntPtr VirtualPage => new((long)Flags & ~0xFFFL);
+		public readonly IntPtr VirtualPage => new((long)Flags & ~0xFFFL);
 	}
 
 	/// <summary>Contains extended working set information for a page.</summary>
@@ -1750,7 +1750,7 @@ public static partial class Kernel32
 		public nuint Flags;
 
 		/// <summary>If <see langword="true"/>, the page is valid; otherwise, the page is not valid.</summary>
-		public bool Valid => GetBit((uint)Flags, 0);
+		public readonly bool Valid => GetBit((uint)Flags, 0);
 
 		/// <summary>Gets a value indicating whether the virtual page is locked in physical memory.</summary>
 		public bool Locked => Valid && GetBit((uint)Flags, 22);
@@ -1759,10 +1759,10 @@ public static partial class Kernel32
 		public bool LargePage => Valid && GetBit((uint)Flags, 23);
 
 		/// <summary>Gets a value indicating whether the page is has been reported as bad.</summary>
-		public bool Bad => GetBit((uint)Flags, 31);
+		public readonly bool Bad => GetBit((uint)Flags, 31);
 
 		/// <summary>If <see langword="true"/>, the page is sharable; otherwise, the page is not sharable.</summary>
-		public bool Shared => GetBit((uint)Flags, 15);
+		public readonly bool Shared => GetBit((uint)Flags, 15);
 
 		/// <summary>The number of processes that share this page. The maximum value of this member is 7.</summary>
 		public uint ShareCount => Valid ? GetBits((uint)Flags, 1, 3) : 0U;

@@ -228,7 +228,8 @@ public class PerfLibTests
 			CounterSet = new(CounterSetGuid, ProviderGuid, 1),
 			Counter0 = new(1, (uint)System.Diagnostics.PerformanceData.CounterType.RawData32, sizeof(uint), 100)
 		};
-		Assert.That(PerfSetCounterSetInfo(hProvider, new(ref pInfo.CounterSet), (uint)Marshal.SizeOf(pInfo)), ResultIs.Successful);
+		using PinnedObject pCounterSet = new(pInfo);
+		Assert.That(PerfSetCounterSetInfo(hProvider, pCounterSet, (uint)Marshal.SizeOf(pInfo)), ResultIs.Successful);
 		//Assert.That(PerfQueryCounterSetRegistrationInfo(null, CounterSetGuid, PerfRegInfoType.PERF_REG_COUNTERSET_STRUCT, 0, out byte[] info), ResultIs.Successful);
 		//Assert.That(MemoryMarshal.Cast<byte, PERF_COUNTERSET_REG_INFO>(new Span<byte>(info))[0].NumCounters, Is.EqualTo(1));
 
@@ -249,9 +250,9 @@ public class PerfLibTests
 		//Assert.That(PerfEnumerateCounterSetInstances(null, CounterSetGuid, out var instances), ResultIs.Successful);
 		//Assert.That(instances.Any());
 
-		StructPointer<PERF_COUNTERSET_INSTANCE> pci;
+		PPERF_COUNTERSET_INSTANCE pci;
 		Assert.That((IntPtr)(pci = PerfQueryInstance(hProvider, CounterSetGuid, "Instance_1", 1)), ResultIs.ValidHandle);
-		ref var pciRef = ref pci.AsRef();
+		ref var pciRef = ref pci.Ref;
 		Assert.That(pciRef.CounterSetGuid, Is.EqualTo(CounterSetGuid));
 		TestContext.WriteLine($"Instance ID: {pciRef.InstanceId}, Inst Name: {Marshal.PtrToStringUni(((IntPtr)pci).Offset(pciRef.InstanceNameOffset))}");
 		//Assert.That(PerfQueryCounterSetRegistrationInfo(null, CounterSetGuid, PerfRegInfoType.PERF_REG_COUNTERSET_STRUCT,

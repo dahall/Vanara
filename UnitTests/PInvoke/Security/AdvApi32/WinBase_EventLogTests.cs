@@ -72,7 +72,7 @@ public class WinBase_EventLogTests
 			var t = new System.Threading.Thread(ThreadProc);
 			t.Start(((HEVENTLOG)hEL, hEvent));
 			System.Threading.Thread.Sleep(100);
-			Assert.That(ReportEvent(hEL, EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE, 5, 5, SafePSID.Current, 2, 0, new[] { "Testing", "1, 2, 3" }, default), ResultIs.Successful);
+			Assert.That(ReportEvent(hEL, EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE, 5, 5, SafePSID.Current, 2, 0, ["Testing", "1, 2, 3"], default), ResultIs.Successful);
 			while (t.IsAlive)
 			{
 				System.Threading.Thread.Sleep(100);
@@ -87,7 +87,7 @@ public class WinBase_EventLogTests
 			Assert.That(mem.Strings[0], Is.EqualTo("Testing"));
 		}
 
-		void ThreadProc(object? obj)
+		static void ThreadProc(object? obj)
 		{
 			var (hLog, hEvent) = ((HEVENTLOG hLog, SafeEventHandle hEvent))obj!;
 			Assert.That(NotifyChangeEventLog(hLog, hEvent), ResultIs.Successful);

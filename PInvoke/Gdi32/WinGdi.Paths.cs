@@ -287,8 +287,8 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getpath int GetPath( HDC hdc, LPPOINT apt, LPBYTE aj, int cpt );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2dc7736a-03fc-4623-a566-6c3e368da174")]
-	public static extern int GetPath([In, AddAsMember] HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
+	public static extern int GetPath([In, AddAsMember] HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
 
 	/// <summary>
 	/// The <c>PathToRegion</c> function creates a region from the path that is selected into the specified device context. The resulting

@@ -132,7 +132,11 @@ public class SystemSecurity : IDisposable
 	private SafeLSA_HANDLE Handle { get; }
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public void Dispose() => Handle?.Dispose();
+	public void Dispose()
+	{
+		Handle?.Dispose();
+		GC.SuppressFinalize(this);
+	}
 
 	/// <summary>
 	/// Enumerates the accounts with the specified privilege. Requires the <see cref="DesiredAccess.LookupNames"/> and
@@ -144,7 +148,7 @@ public class SystemSecurity : IDisposable
 	{
 		NTStatus ret = LsaEnumerateAccountsWithUserRight(Handle, privilege, out SafeLsaMemoryHandle buffer, out var count);
 		if (ret == NTStatus.STATUS_NO_MORE_ENTRIES)
-			return new SecurityIdentifier[0];
+			return [];
 		ThrowIfLsaError(ret);
 		return buffer.ToIEnum<LSA_ENUMERATION_INFORMATION>(count).Select(i => new SecurityIdentifier((IntPtr)i.Sid));
 	}
@@ -184,14 +188,11 @@ public class SystemSecurity : IDisposable
 		if (names == null || names.Length == 0)
 			throw new ArgumentException(@"At least one user name must be supplied.", nameof(names));
 		NTStatus ret = LsaLookupNames2(Handle, localOnly ? LsaLookupNamesFlags.LSA_LOOKUP_ISOLATED_AS_LOCAL : 0, (uint)names.Length, names, out SafeLsaMemoryHandle domains, out SafeLsaMemoryHandle sids);
-		if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
+		if ((int)ret is not NTStatus.STATUS_SUCCESS and not NTStatus.STATUS_SOME_NOT_MAPPED)
 			ThrowIfLsaError(ret);
-		LSA_TRUST_INFORMATION[] d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
-		LSA_TRANSLATED_SID2[] ts = sids.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_SID2>(names.Length).ToArray();
-		var retVal = new SystemAccountInfo[names.Length];
-		for (var i = 0; i < names.Length; i++)
-			retVal[i] = new SystemAccountInfo(names[i], ts[i].Use, IsValidSid(ts[i].Use) ? new SecurityIdentifier((IntPtr)ts[i].Sid) : null, ts[i].DomainIndex, d);
-		return retVal;
+		ref LSA_REFERENCED_DOMAIN_LIST domRef = ref domains.DangerousGetHandle().AsRef<LSA_REFERENCED_DOMAIN_LIST>();
+		LSA_TRUST_INFORMATION[] d = domRef.Domains.ToArray(domRef.Entries);
+		return [.. names.Zip(sids.ToIEnum<LSA_TRANSLATED_SID2>(names.Length), (n, s) => new SystemAccountInfo(n, s.Use, IsValidSid(s.Use) ? new SecurityIdentifier((IntPtr)s.Sid) : null, s.DomainIndex, d))];
 	}
 
 	/// <summary>
@@ -206,16 +207,12 @@ public class SystemSecurity : IDisposable
 			throw new ArgumentException(@"At least one SecurityIdentifier must be supplied.", nameof(sids));
 		LsaLookupSidsFlags opts = (preferInternetNames ? LsaLookupSidsFlags.LSA_LOOKUP_PREFER_INTERNET_NAMES : 0) |
 				   (disallowConnectedAccts ? LsaLookupSidsFlags.LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID : 0);
-		IEnumerable<PinnedSid> psids = sids.Select(s => new PinnedSid(s));
-		NTStatus ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, psids.Select(s => s.PSID).ToArray(), out SafeLsaMemoryHandle domains, out SafeLsaMemoryHandle names);
-		if (ret != NTStatus.STATUS_SUCCESS && ret != NTStatus.STATUS_SOME_NOT_MAPPED)
+		NTStatus ret = LsaLookupSids2(Handle, opts, (uint)sids.Length, Array.ConvertAll(sids, s => new PinnedSid(s).PSID), out SafeLsaMemoryHandle domains, out SafeLsaMemoryHandle names);
+		if ((int)ret is not NTStatus.STATUS_SUCCESS and not NTStatus.STATUS_SOME_NOT_MAPPED)
 			ThrowIfLsaError(ret);
-		LSA_TRUST_INFORMATION[] d = domains.DangerousGetHandle().ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.ToArray();
-		LSA_TRANSLATED_NAME[] tn = names.DangerousGetHandle().ToIEnum<LSA_TRANSLATED_NAME>(sids.Length).ToArray();
-		var retVal = new SystemAccountInfo[sids.Length];
-		for (var i = 0; i < sids.Length; i++)
-			retVal[i] = new SystemAccountInfo(tn[i].Name.ToString(), tn[i].Use, sids[i], tn[i].DomainIndex, d);
-		return retVal;
+		ref LSA_REFERENCED_DOMAIN_LIST domRef = ref domains.DangerousGetHandle().AsRef<LSA_REFERENCED_DOMAIN_LIST>();
+		LSA_TRUST_INFORMATION[] d = domRef.Domains.ToArray(domRef.Entries);
+		return [.. sids.Zip(names.ToIEnum<LSA_TRANSLATED_NAME>(sids.Length), (s, n) => new SystemAccountInfo(n.Name.ToString(), n.Use, s, n.DomainIndex, d))];
 	}
 
 	/// <summary>Gets an enumeration of central access policies (CAPs) identifiers (CAPIDs) of all the CAPs applied on this system.</summary>
@@ -223,7 +220,7 @@ public class SystemSecurity : IDisposable
 	public IEnumerable<SecurityIdentifier> GetAvailableCAPIDs()
 	{
 		ThrowIfLsaError(LsaGetAppliedCAPIDs(svr, out SafeLsaMemoryHandle capIdArray, out var capCount));
-		return capCount == 0 || capIdArray.IsInvalid ? new SecurityIdentifier[0] : capIdArray.ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
+		return capCount == 0 || capIdArray.IsInvalid ? [] : capIdArray.ToIEnum<IntPtr>((int)capCount).Select(p => new SecurityIdentifier(p));
 	}
 
 	/// <summary>Gets the system access for the specified user.</summary>
@@ -244,7 +241,7 @@ public class SystemSecurity : IDisposable
 		return (AccountLogonRights)rights;
 	}
 
-	private static bool IsValidSid(SID_NAME_USE use) => Array.IndexOf(new[] { 1, 2, 4, 5, 9 }, (int)use) != -1;
+	private static bool IsValidSid(SID_NAME_USE use) => Array.IndexOf([1, 2, 4, 5, 9], (int)use) != -1;
 
 	private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
 	{
@@ -348,7 +345,7 @@ public class SystemSecurity : IDisposable
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => $"{string.Join(",", ctrl.GetRights(user).ToArray())}";
+		public override string ToString() => $"{string.Join(",", [.. ctrl.GetRights(user)])}";
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
@@ -419,12 +416,12 @@ public class SystemSecurity : IDisposable
 	/// </summary>
 	public class SystemAccountInfo
 	{
-		internal SystemAccountInfo(string name, SID_NAME_USE use, SecurityIdentifier? sid, int domainIndex, IList<LSA_TRUST_INFORMATION> domains)
+		internal SystemAccountInfo(string name, SID_NAME_USE use, SecurityIdentifier? sid, int domainIndex, Span<LSA_TRUST_INFORMATION> domains)
 		{
 			Name = name;
 			SidType = use;
 			Sid = IsValidSid(use) ? sid : null;
-			Domain = domainIndex >= 0 && domainIndex < domains.Count ? domains[domainIndex].Name.ToString() : null;
+			Domain = domainIndex >= 0 && domainIndex < domains.Length ? domains[domainIndex].Name.ToString() : null;
 		}
 
 		/// <summary>Gets the domain associated with the supplied <see cref="Name"/>.</summary>

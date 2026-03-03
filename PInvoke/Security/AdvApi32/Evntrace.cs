@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
-using ArgIterator = System.IntPtr;
 
 namespace Vanara.PInvoke;
 
@@ -35,6 +39,10 @@ public static partial class AdvApi32
 
 	/// <summary>Used to specify event tracing for kernel</summary>
 	public static readonly Guid SystemTraceControlGuid = new(0x9e814aad, 0x3204, 0x11d2, 0x9a, 0x82, 0x00, 0x60, 0x08, 0xa8, 0x69, 0x39);
+
+	/// <summary>Platform-specific invalid process trace handle value.</summary>
+	public static ulong INVALID_PROCESSTRACE_HANDLE =>
+		Environment.OSVersion.Version.Major >= 6 && !Environment.Is64BitProcess ? 0x00000000FFFFFFFF : ulong.MaxValue;
 
 	/// <summary>
 	/// <para>
@@ -176,7 +184,7 @@ public static partial class AdvApi32
 	// RequestCode, _In_ PVOID Context, _In_ ULONG *Reserved, _In_ PVOID Buffer );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("evntrace.h", MSDNShortId = "e9f70ae6-906f-4e55-bca7-4355f1ca6091")]
-	public delegate Win32Error TraceControlCallback([In] WMIDPREQUESTCODE RequestCode, [In] ArgIterator Context, ref uint Reserved, [In] ArgIterator Buffer);
+	public delegate Win32Error TraceControlCallback([In] WMIDPREQUESTCODE RequestCode, [In] IntPtr Context, ref uint Reserved, [In] IntPtr Buffer);
 
 	/// <summary>
 	/// <para>
@@ -943,7 +951,7 @@ public static partial class AdvApi32
 		// PseudoStructure - struct TRACE_GROUP_INFO { ULONG TraceEnableInfoSize; TRACE_ENABLE_INFO
 		// TraceEnableInfos[TraceEnableInfoSize]; ULONG GuidArraySize; GUID UniqueProviders[GuidArraySize]; }
 		/// <summary/>
-		[CorrespondingType(typeof(ArgIterator), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 		TraceGroupQueryInfo,
 
 		// TraceDisallowListQuery:
@@ -1714,7 +1722,8 @@ public static partial class AdvApi32
 	// ULONGLONG MatchAllKeyword, _In_ ULONG EnableProperty, _In_opt_ PEVENT_FILTER_DESCRIPTOR EnableFilterDesc );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "1c675bf7-f292-49b1-8b60-720499a497fd")]
-	public static extern Win32Error EnableTraceEx(in Guid ProviderId, [Optional] ArgIterator SourceId, TRACEHANDLE TraceHandle, [MarshalAs(UnmanagedType.Bool)] bool IsEnabled, TRACE_LEVEL Level, [Optional] ulong MatchAnyKeyword, [Optional] ulong MatchAllKeyword, [Optional] uint EnableProperty, [Optional] ArgIterator EnableFilterDesc);
+	public static extern Win32Error EnableTraceEx(in Guid ProviderId, [Optional] IntPtr SourceId, TRACEHANDLE TraceHandle,
+		[MarshalAs(UnmanagedType.Bool)] bool IsEnabled, TRACE_LEVEL Level, [Optional] ulong MatchAnyKeyword, [Optional] ulong MatchAllKeyword, [Optional] uint EnableProperty, [Optional] IntPtr EnableFilterDesc);
 
 	/// <summary>
 	/// <para>Enables or disables the specified event trace provider.</para>
@@ -1891,7 +1900,8 @@ public static partial class AdvApi32
 	// ULONGLONG MatchAllKeyword, _In_ ULONG EnableProperty, _In_opt_ PEVENT_FILTER_DESCRIPTOR EnableFilterDesc );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "1c675bf7-f292-49b1-8b60-720499a497fd")]
-	public static extern Win32Error EnableTraceEx(in Guid ProviderId, in Guid SourceId, TRACEHANDLE TraceHandle, [MarshalAs(UnmanagedType.Bool)] bool IsEnabled, TRACE_LEVEL Level, ulong MatchAnyKeyword, ulong MatchAllKeyword, uint EnableProperty, in EVENT_FILTER_DESCRIPTOR EnableFilterDesc);
+	public static extern Win32Error EnableTraceEx(in Guid ProviderId, in Guid SourceId, TRACEHANDLE TraceHandle, [MarshalAs(UnmanagedType.Bool)] bool IsEnabled,
+		TRACE_LEVEL Level, ulong MatchAnyKeyword, ulong MatchAllKeyword, uint EnableProperty, in EVENT_FILTER_DESCRIPTOR EnableFilterDesc);
 
 	/// <summary>
 	/// <para>The <c>EnableTraceEx2</c> function enables or disables the specified event trace provider.</para>
@@ -2164,7 +2174,8 @@ public static partial class AdvApi32
 	// ULONG Timeout, _In_opt_ PENABLE_TRACE_PARAMETERS EnableParameters );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "3aceffb6-614f-4cad-bbec-f181f0cbdbff")]
-	public static extern Win32Error EnableTraceEx2(TRACEHANDLE TraceHandle, in Guid ProviderId, EVENT_CONTROL_CODE ControlCode, TRACE_LEVEL Level, ulong MatchAnyKeyword, ulong MatchAllKeyword, uint Timeout, in ENABLE_TRACE_PARAMETERS EnableParameters);
+	public static extern Win32Error EnableTraceEx2(TRACEHANDLE TraceHandle, in Guid ProviderId, EVENT_CONTROL_CODE ControlCode, TRACE_LEVEL Level, ulong MatchAnyKeyword,
+		ulong MatchAllKeyword, uint Timeout, in ENABLE_TRACE_PARAMETERS EnableParameters);
 
 	/// <summary>
 	/// <para>The <c>EnableTraceEx2</c> function enables or disables the specified event trace provider.</para>
@@ -2437,7 +2448,56 @@ public static partial class AdvApi32
 	// ULONG Timeout, _In_opt_ PENABLE_TRACE_PARAMETERS EnableParameters );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "3aceffb6-614f-4cad-bbec-f181f0cbdbff")]
-	public static extern Win32Error EnableTraceEx2(TRACEHANDLE TraceHandle, in Guid ProviderId, EVENT_CONTROL_CODE ControlCode, TRACE_LEVEL Level, [Optional] ulong MatchAnyKeyword, [Optional] ulong MatchAllKeyword, [Optional] uint Timeout, [Optional] ArgIterator EnableParameters);
+	public static extern Win32Error EnableTraceEx2(TRACEHANDLE TraceHandle, in Guid ProviderId, EVENT_CONTROL_CODE ControlCode, TRACE_LEVEL Level,
+		[Optional] ulong MatchAnyKeyword, [Optional] ulong MatchAllKeyword, [Optional] uint Timeout, [Optional] IntPtr EnableParameters);
+
+	/// <summary>
+	/// The <c>EnumerateTraceGuids</c> function retrieves information about registered event trace providers that are running on the computer.
+	/// </summary>
+	/// <param name="GuidPropertiesArray">An array of pointers to <c>TRACE_GUID_PROPERTIES</c> structures.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+	/// <para>
+	/// If the function fails, the return value is one of the system error codes. The following table includes some common errors and their causes.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>One of the following is true:</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>Event trace controllers call this function.</para>
+	/// <para>For information on registering event trace providers, see <c>RegisterTraceGuids</c>.</para>
+	/// <para>
+	/// You can use the <c>TRACE_GUID_PROPERTIES.LoggerId</c> member to determine which session enabled the provider if
+	/// <c>TRACE_GUID_PROPERTIES.IsEnable</c> is <c>TRUE</c>.
+	/// </para>
+	/// <para>The list will not include kernel providers.</para>
+	/// </remarks>
+	[PInvokeData("evntrace.h", MSDNShortId = "9a9e2f53-9916-4a9c-a08e-c8affd5fc4c9")]
+	public static Win32Error EnumerateTraceGuids(out TRACE_GUID_PROPERTIES[] GuidPropertiesArray)
+	{
+		Win32Error res = Win32Error.ERROR_MORE_DATA;
+		GuidPropertiesArray = [];
+		for (uint count = 1; res == Win32Error.ERROR_MORE_DATA;)
+		{
+			SafeNativeArray<TRACE_GUID_PROPERTIES> __GuidPropertiesArray = new((int)count);
+			var pGuidPropertiesArray = __GuidPropertiesArray.GetPointers();
+			res = EnumerateTraceGuids(Marshal.UnsafeAddrOfPinnedArrayElement(pGuidPropertiesArray, 0), count, out count);
+			if (res.Succeeded)
+			{
+				GuidPropertiesArray = __GuidPropertiesArray.AsSpan().ToArray();
+				break;
+			}
+		} 
+		return res;
+	}
 
 	/// <summary>
 	/// The <c>EnumerateTraceGuids</c> function retrieves information about registered event trace providers that are running on the computer.
@@ -2482,7 +2542,7 @@ public static partial class AdvApi32
 	// *GuidPropertiesArray, _In_ ULONG PropertyArrayCount, _Out_ PULONG GuidCount );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "9a9e2f53-9916-4a9c-a08e-c8affd5fc4c9")]
-	public static extern Win32Error EnumerateTraceGuids([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ArgIterator[] GuidPropertiesArray, uint PropertyArrayCount, out uint GuidCount);
+	public static extern Win32Error EnumerateTraceGuids(IntPtr GuidPropertiesArray, uint PropertyArrayCount, out uint GuidCount);
 
 	/// <summary>Use this function to retrieve information about trace providers that are registered on the computer.</summary>
 	/// <param name="TraceQueryInfoClass">
@@ -2543,7 +2603,7 @@ public static partial class AdvApi32
 	// OutBufferSize, _Out_ PULONG ReturnLength );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "9d70fe21-1750-4d60-a825-2004f7d666c7")]
-	public static extern Win32Error EnumerateTraceGuidsEx(TRACE_QUERY_INFO_CLASS TraceQueryInfoClass, ArgIterator InBuffer, uint InBufferSize, ArgIterator OutBuffer, uint OutBufferSize, out uint ReturnLength);
+	public static extern Win32Error EnumerateTraceGuidsEx(TRACE_QUERY_INFO_CLASS TraceQueryInfoClass, IntPtr InBuffer, uint InBufferSize, IntPtr OutBuffer, uint OutBufferSize, out uint ReturnLength);
 
 	/// <summary>Use this function to retrieve information about trace providers that are registered on the computer.</summary>
 	/// <typeparam name="TOut">The type of the expected enumeration value that is output.</typeparam>
@@ -2627,7 +2687,7 @@ public static partial class AdvApi32
 	public static SafeHGlobalHandle EnumerateTraceGuidsEx<TIn>(TRACE_QUERY_INFO_CLASS TraceQueryInfoClass, TIn? InBuffer = null) where TIn : struct
 	{
 		using var input = InBuffer.HasValue ? SafeHGlobalHandle.CreateFromStructure(InBuffer.Value) : SafeHGlobalHandle.Null;
-		var err = EnumerateTraceGuidsEx(TraceQueryInfoClass, input, input.Size, ArgIterator.Zero, 0, out var sz);
+		var err = EnumerateTraceGuidsEx(TraceQueryInfoClass, input, input.Size, IntPtr.Zero, 0, out var sz);
 		err.ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		var output = new SafeHGlobalHandle(sz);
 		while ((err = EnumerateTraceGuidsEx(TraceQueryInfoClass, input, input.Size, output, output.Size, out sz)) == Win32Error.ERROR_INSUFFICIENT_BUFFER)
@@ -2810,7 +2870,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/ETW/gettraceloggerhandle TRACEHANDLE GetTraceLoggerHandle( _In_ PVOID Buffer );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "050d3a01-0087-40f1-af35-b9ceeaf47813")]
-	public static extern TRACEHANDLE GetTraceLoggerHandle(ArgIterator Buffer);
+	public static extern TRACEHANDLE GetTraceLoggerHandle(IntPtr Buffer);
 
 	/// <summary>The <c>OpenTrace</c> function opens a real-time trace session or log file for consuming.</summary>
 	/// <param name="Logfile">
@@ -2965,100 +3025,8 @@ public static partial class AdvApi32
 	// HandleCount, _In_ LPFILETIME StartTime, _In_ LPFILETIME EndTime );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "aea25a95-f435-4068-9b15-7473f31ebf16")]
-	public static extern Win32Error ProcessTrace([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TRACEHANDLE[] HandleArray, uint HandleCount, in FILETIME StartTime, in FILETIME EndTime);
-
-	/// <summary>The <c>ProcessTrace</c> function delivers events from one or more event tracing sessions to the consumer.</summary>
-	/// <param name="HandleArray">
-	/// <para>
-	/// Pointer to an array of trace handles obtained from earlier calls to the <c>OpenTrace</c> function. The number of handles that you
-	/// can specify is limited to 64.
-	/// </para>
-	/// <para>The array can contain the handles to multiple log files, but only one real-time trace session.</para>
-	/// </param>
-	/// <param name="HandleCount">Number of elements in HandleArray.</param>
-	/// <param name="StartTime">
-	/// Pointer to an optional <c>FILETIME</c> structure that specifies the beginning time period for which you want to receive events.
-	/// The function does not deliver events recorded prior to StartTime.
-	/// </param>
-	/// <param name="EndTime">
-	/// <para>
-	/// Pointer to an optional <c>FILETIME</c> structure that specifies the ending time period for which you want to receive events. The
-	/// function does not deliver events recorded after EndTime.
-	/// </para>
-	/// <para><c>Windows Server 2003:</c> This value is ignored for real-time event delivery.</para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
-	/// <para>
-	/// If the function fails, the return value is one of the system error codes. The following table includes some common errors and
-	/// their causes.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_BAD_LENGTH</term>
-	/// <term>HandleCount is not valid or the number of handles is greater than 64.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_HANDLE</term>
-	/// <term>An element of HandleArray is not a valid event tracing session handle.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_TIME</term>
-	/// <term>EndTime is less than StartTime.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_PARAMETER</term>
-	/// <term>HandleArray is NULL.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_NOACCESS</term>
-	/// <term>An exception occurred in one of the callback functions that receives the events.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_CANCELLED</term>
-	/// <term>Indicates the consumer canceled processing by returning FALSE in their BufferCallback function.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_WMI_INSTANCE_NOT_FOUND</term>
-	/// <term>
-	/// The session from which you are trying to consume events in real time is not running or does not have the real-time trace mode enabled.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_WMI_ALREADY_ENABLED</term>
-	/// <term>The HandleArray parameter contains the handle to more than one real-time session.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>Consumers call this function.</para>
-	/// <para>You must call the <c>OpenTrace</c> function prior to calling <c>ProcessTrace</c>.</para>
-	/// <para>
-	/// The <c>ProcessTrace</c> function delivers the events to the consumer's <c>BufferCallback</c>, <c>EventCallback</c>, and
-	/// <c>EventClassCallback</c> callback functions.
-	/// </para>
-	/// <para>
-	/// The <c>ProcessTrace</c> function sorts the events chronologically and delivers all events generated between StartTime and
-	/// EndTime. Note that events can appear out of order if the session specifies system time as the clock (low resolution) and the
-	/// volume of events is high. In this case, it is possible for multiple events to contain the same time stamp. If multiple events
-	/// contain the same time stamp, ETW cannot guarantee the order of those events.
-	/// </para>
-	/// <para>
-	/// The <c>ProcessTrace</c> function blocks the thread until it delivers all events, the <c>BufferCallback</c> function returns
-	/// <c>FALSE</c>, or you call <c>CloseTrace</c>. If the consumer is consuming events in real time, the <c>ProcessTrace</c> function
-	/// returns after the controller stops the trace session. (Note that there may be a several-second delay before the function returns.)
-	/// </para>
-	/// <para><c>Windows Server 2003:</c> You can call <c>CloseTrace</c> only after <c>ProcessTrace</c> returns.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/ETW/processtrace ULONG ProcessTrace( _In_ PTRACEHANDLE HandleArray, _In_ ULONG
-	// HandleCount, _In_ LPFILETIME StartTime, _In_ LPFILETIME EndTime );
-	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("Evntrace.h", MSDNShortId = "aea25a95-f435-4068-9b15-7473f31ebf16")]
-	public static extern Win32Error ProcessTrace([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TRACEHANDLE[] HandleArray, uint HandleCount, ArgIterator StartTime = default, ArgIterator EndTime = default);
+	public static extern Win32Error ProcessTrace([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TRACEHANDLE[] HandleArray, uint HandleCount,
+		[In, Optional] PFILETIME? StartTime, [In, Optional] PFILETIME? EndTime);
 
 	/// <summary>
 	/// The <c>QueryAllTraces</c> function retrieves the properties and statistics for all event tracing sessions started on the computer
@@ -3118,7 +3086,67 @@ public static partial class AdvApi32
 	// PEVENT_TRACE_PROPERTIES *PropertyArray, ULONG PropertyArrayCount, PULONG LoggerCount );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("evntrace.h", MSDNShortId = "6b6144b0-9152-4b5e-863d-06e823fbe084")]
-	public static extern Win32Error QueryAllTraces([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ArgIterator[] PropertyArray, uint PropertyArrayCount, out uint LoggerCount);
+	public static extern Win32Error QueryAllTraces([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] PropertyArray, uint PropertyArrayCount, out uint LoggerCount);
+
+	/// <summary>
+	/// The <c>QueryAllTraces</c> function retrieves the properties and statistics for all event tracing sessions started on the computer for
+	/// which the caller has permissions to query.
+	/// </summary>
+	/// <param name="PropertyArray">
+	/// <para>An array of EVENT_TRACE_PROPERTIES structures with session properties and statistics for the event tracing sessions.</para>
+	/// <para>
+	/// You only need to set the <c>Wnode.BufferSize</c>, <c>LoggerNameOffset</c> , and <c>LogFileNameOffset</c> members of the
+	/// EVENT_TRACE_PROPERTIES structure. The other members should all be set to zero.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+	/// <para>
+	/// If the function fails, the return value is one of the system error codes. The following table includes some common errors and their causes.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>One of the following is true:</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_MORE_DATA</term>
+	/// <term>
+	/// The property array is too small to receive information for all sessions (SessionCount is greater than PropertyArrayCount). The
+	/// function fills the property array with the number of property structures specified in PropertyArrayCount.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>Event trace controllers call this function.</para>
+	/// <para>
+	/// This function retrieves the trace sessions that the caller has permissions to query. Users running with elevated administrative
+	/// privileges, users in the Performance Log Users group, and services running as LocalSystem, LocalService, NetworkService can view all
+	/// tracing sessions.
+	/// </para>
+	/// <para>This function does not return private logging sessions.</para>
+	/// <para>To retrieve information for a single session, use the ControlTrace function and set the ControlCode parameter to <c>EVENT_TRACE_CONTROL_QUERY</c>.</para>
+	/// </remarks>
+	[PInvokeData("evntrace.h", MSDNShortId = "6b6144b0-9152-4b5e-863d-06e823fbe084")]
+	public static Win32Error QueryAllTraces(out EVENT_TRACE_PROPERTIES[] PropertyArray)
+	{
+		var initVal = EVENT_TRACE_PROPERTIES.Create();
+		SafeNativeArray<EVENT_TRACE_PROPERTIES> props = new(initVal, 1);
+		PropertyArray = [];
+		uint count;
+		for (Win32Error ret; (ret = QueryAllTraces(props.GetPointers(), (uint)props.Count, out count)).Failed; props = new(initVal, (int)count))
+		{
+			if (ret != Win32Error.ERROR_MORE_DATA)
+				return ret;
+		}
+		PropertyArray = [.. props.Take((int)count)];
+		return Win32Error.ERROR_SUCCESS;
+	}
 
 	/// <summary>
 	/// <para>
@@ -3192,7 +3220,8 @@ public static partial class AdvApi32
 	// InBufferSize, _Out_opt_ PVOID OutBuffer, _In_ ULONG OutBufferSize, _Out_ PULONG ReturnLength );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntrace.h", MSDNShortId = "87666275-8752-4EC8-9C01-16D36AE4C5E8")]
-	public static extern Win32Error QueryTraceProcessingHandle(TRACEHANDLE ProcessingHandle, ETW_PROCESS_HANDLE_INFO_TYPE InformationClass, [In, Optional] ArgIterator InBuffer, uint InBufferSize, [Out, Optional] ArgIterator OutBuffer, uint OutBufferSize, out uint ReturnLength);
+	public static extern Win32Error QueryTraceProcessingHandle(TRACEHANDLE ProcessingHandle, ETW_PROCESS_HANDLE_INFO_TYPE InformationClass, [In, Optional] IntPtr InBuffer,
+		uint InBufferSize, [Out, Optional] IntPtr OutBuffer, uint OutBufferSize, out uint ReturnLength);
 
 	/// <summary>
 	/// The <c>RegisterTraceGuids</c> function registers an event trace provider and the event trace classes that it uses to generate
@@ -3287,8 +3316,9 @@ public static partial class AdvApi32
 	// TraceGuidReg, _In_ LPCTSTR MofImagePath, _In_ LPCTSTR MofResourceName, _Out_ PTRACEHANDLE RegistrationHandle );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("evntrace.h", MSDNShortId = "c9158292-281b-4a02-b280-956e340d225c")]
-	public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] TraceControlCallback RequestAddress, [In, Optional] ArgIterator RequestContext, in Guid ControlGuid, uint GuidCount,
-		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] TRACE_GUID_REGISTRATION[]? TraceGuidReg, [In, Optional] string? MofImagePath, [In, Optional] string? MofResourceName, out TRACEHANDLE RegistrationHandle);
+	public static extern Win32Error RegisterTraceGuids([MarshalAs(UnmanagedType.FunctionPtr)] TraceControlCallback RequestAddress, [In, Optional] IntPtr RequestContext,
+		in Guid ControlGuid, uint GuidCount, [In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] TRACE_GUID_REGISTRATION[]? TraceGuidReg,
+		[In, Optional] string? MofImagePath, [In, Optional] string? MofResourceName, out TRACEHANDLE RegistrationHandle);
 
 	//public unsafe delegate Win32Error UnsafeTraceControlCallback([In] WMIDPREQUESTCODE RequestCode, [In] void* Context, uint* Reserved, void* Buffer);
 	//[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Unicode, EntryPoint = "RegisterTraceGuidsW")]
@@ -3864,7 +3894,7 @@ public static partial class AdvApi32
 	// PEVENT_TRACE_HEADER EventTrace );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "9b21f6f0-dd9b-4f9c-a879-846901a3bab7")]
-	public static extern Win32Error TraceEvent(TRACEHANDLE SessionHandle, ArgIterator EventTrace);
+	public static extern Win32Error TraceEvent(TRACEHANDLE SessionHandle, IntPtr EventTrace);
 
 	/// <summary>
 	/// The <c>TraceEventInstance</c> function sends an event to an event tracing session. The event uses an instance identifier to
@@ -4122,7 +4152,7 @@ public static partial class AdvApi32
 	// _In_ PEVENT_INSTANCE_HEADER EventTrace, _In_ PEVENT_INSTANCE_INFO pInstInfo, _In_ PEVENT_INSTANCE_INFO pParentInstInfo );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "e8361bdc-21dd-47a0-bdbf-56f4d6195689")]
-	public static extern Win32Error TraceEventInstance(TRACEHANDLE SessionHandle, [In] PEVENT_INSTANCE_HEADER EventTrace, in EVENT_INSTANCE_INFO pInstInfo, [Optional] ArgIterator pParentInstInfo);
+	public static extern Win32Error TraceEventInstance(TRACEHANDLE SessionHandle, [In] PEVENT_INSTANCE_HEADER EventTrace, in EVENT_INSTANCE_INFO pInstInfo, [Optional] IntPtr pParentInstInfo);
 
 	/// <summary>The <c>TraceMessage</c> function sends an informational message to an event tracing session.</summary>
 	/// <param name="SessionHandle">
@@ -4619,7 +4649,7 @@ public static partial class AdvApi32
 	// ULONG MessageFlags, _In_ LPGUID MessageGuid, _In_ USHORT MessageNumber, _In_ va_list MessageArgList );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "2cfb7226-fd29-432e-abfd-bd10c6344a67")]
-	public static extern Win32Error TraceMessageVa(TRACEHANDLE SessionHandle, TRACE_MESSAGE MessageFlags, in Guid MessageGuid, ushort MessageNumber, ArgIterator MessageArgList);
+	public static extern Win32Error TraceMessageVa(TRACEHANDLE SessionHandle, TRACE_MESSAGE MessageFlags, in Guid MessageGuid, ushort MessageNumber, IntPtr MessageArgList);
 
 	/// <summary>The <c>TraceQueryInformation</c> function queries event tracing session settings for the specified information class.</summary>
 	/// <param name="SessionHandle">
@@ -4681,7 +4711,8 @@ public static partial class AdvApi32
 	// PULONG ReturnLength );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "3CC91F7C-7F82-4B3B-AA50-FE03CFEC0278")]
-	public static extern Win32Error TraceQueryInformation(TRACEHANDLE SessionHandle, TRACE_QUERY_INFO_CLASS InformationClass, ArgIterator TraceInformation, uint InformationLength, out uint ReturnLength);
+	public static extern Win32Error TraceQueryInformation(TRACEHANDLE SessionHandle, TRACE_QUERY_INFO_CLASS InformationClass,
+		[SizeDef(nameof(InformationLength), SizingMethod.Query, OutVarName = nameof(ReturnLength))] IntPtr TraceInformation, uint InformationLength, out uint ReturnLength);
 
 	/// <summary>
 	/// The <c>TraceSetInformation</c> function enables or disables event tracing session settings for the specified information class.
@@ -4753,7 +4784,7 @@ public static partial class AdvApi32
 	// SessionHandle, _In_ TRACE_INFO_CLASS InformationClass, _In_ PVOID TraceInformation, _In_ ULONG InformationLength );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Evntrace.h", MSDNShortId = "f4cdbe32-6885-4844-add5-560961c3dd1d")]
-	public static extern Win32Error TraceSetInformation(TRACEHANDLE SessionHandle, TRACE_QUERY_INFO_CLASS InformationClass, ArgIterator TraceInformation, uint InformationLength);
+	public static extern Win32Error TraceSetInformation(TRACEHANDLE SessionHandle, TRACE_QUERY_INFO_CLASS InformationClass, [In, SizeDef(nameof(InformationLength))] IntPtr TraceInformation, uint InformationLength);
 
 	/// <summary>The <c>UnregisterTraceGuids</c> function unregisters an event trace provider and its event trace classes.</summary>
 	/// <param name="RegistrationHandle">
@@ -4952,10 +4983,10 @@ public static partial class AdvApi32
 	// EnableFilterDesc; ULONG FilterDescCount; } ENABLE_TRACE_PARAMETERS, *PENABLE_TRACE_PARAMETERS;
 	[PInvokeData("evntrace.h", MSDNShortId = "NS:evntrace._ENABLE_TRACE_PARAMETERS")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENABLE_TRACE_PARAMETERS
+	public struct ENABLE_TRACE_PARAMETERS()
 	{
 		/// <summary>Set to <c>ENABLE_TRACE_PARAMETERS_VERSION_2</c> (2).</summary>
-		public uint Version;
+		public uint Version = 2 /*ENABLE_TRACE_PARAMETERS_VERSION_2*/;
 
 		/// <summary>
 		/// <para>
@@ -5055,7 +5086,8 @@ public static partial class AdvApi32
 		/// is specified in the <c>FilterDescCount</c> member. There can only be one descriptor for each filter type as specified by the
 		/// <c>Type</c> member of the <c>EVENT_FILTER_DESCRIPTOR</c> structure.
 		/// </summary>
-		public ArgIterator /*PEVENT_FILTER_DESCRIPTOR*/ EnableFilterDesc;
+		[SizeDef(nameof(FilterDescCount))]
+		public ManagedArrayPointer<EVENT_FILTER_DESCRIPTOR> EnableFilterDesc;
 
 		/// <summary>
 		/// <para>The number of elements (filters) in the EVENT_FILTER_DESCRIPTOR array pointed to by <c>EnableFilterDesc</c> member.</para>
@@ -5087,10 +5119,10 @@ public static partial class AdvApi32
 	// ENABLE_TRACE_PARAMETERS_V1, *PENABLE_TRACE_PARAMETERS_V1;
 	[PInvokeData("evntrace.h", MSDNShortId = "6FC5EF54-2D05-4246-A8E8-7FDA0ABA0D4B")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENABLE_TRACE_PARAMETERS_V1
+	public struct ENABLE_TRACE_PARAMETERS_V1()
 	{
 		/// <summary>Set to <c>ENABLE_TRACE_PARAMETERS_VERSION</c>.</summary>
-		public uint Version;
+		public uint Version = 1;
 
 		/// <summary>
 		/// <para>
@@ -5145,7 +5177,7 @@ public static partial class AdvApi32
 		/// the provider.
 		/// </para>
 		/// </summary>
-		public ArgIterator /*PEVENT_FILTER_DESCRIPTOR*/ EnableFilterDesc;
+		public StructPointer<EVENT_FILTER_DESCRIPTOR> EnableFilterDesc;
 	}
 
 	/// <summary>The <c>ETW_BUFFER_CONTEXT</c> structure provides context information about the event.</summary>
@@ -5548,7 +5580,7 @@ public static partial class AdvApi32
 		public Guid ParentGuid;
 
 		/// <summary>Pointer to the beginning of the event-specific data for this event.</summary>
-		public ArgIterator MofData;
+		public IntPtr MofData;
 
 		/// <summary>Number of bytes to which <c>MofData</c> points.</summary>
 		public uint MofLength;
@@ -6331,7 +6363,7 @@ public static partial class AdvApi32
 		/// This is only applicable to Private Loggers. The only time this should not be null is when it is used for system wide Private Loggers.
 		/// </para>
 		/// </summary>
-		public ArgIterator FilterDesc;
+		public IntPtr FilterDesc;
 
 		/// <summary>
 		/// The number of filters that the <c>FilterDesc</c> points to. The only time this should not be zero is for system wide Private Loggers.
@@ -6411,7 +6443,7 @@ public static partial class AdvApi32
 				{
 					fixed (void* desc = &_Description)
 					{
-						return Marshal.PtrToStringUni((ArgIterator)desc);
+						return Marshal.PtrToStringUni((IntPtr)desc);
 					}
 				}
 			}
@@ -6503,8 +6535,10 @@ public static partial class AdvApi32
 		/// <summary>Session handle that identifies the event tracing session.</summary>
 		public uint LoggerId;
 
+		private uint _EnableLevel;
+
 		/// <summary>Value passed as the EnableLevel parameter to the EnableTrace function.</summary>
-		public uint EnableLevel;
+		public TRACE_LEVEL EnableLevel { get => (TRACE_LEVEL)_EnableLevel; set => _EnableLevel = (uint)value; }
 
 		/// <summary>Value passed as the EnableFlag parameter to the EnableTrace function.</summary>
 		public uint EnableFlags;
@@ -6808,31 +6842,29 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a handle to an event trace.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="TRACEHANDLE"/> struct.</remarks>
+	/// <param name="preexistingHandle">An <see cref="ulong"/> value that represents the pre-existing handle to use.</param>
 	[PInvokeData("evntrace.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct TRACEHANDLE
+	public readonly struct TRACEHANDLE(ulong preexistingHandle) : IHandle
 	{
-		private readonly ulong handle;
+		private readonly ulong handle = preexistingHandle;
 
-		/// <summary>Initializes a new instance of the <see cref="TRACEHANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="ArgIterator"/> object that represents the pre-existing handle to use.</param>
-		public TRACEHANDLE(ulong preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="TRACEHANDLE"/> object with <see cref="ArgIterator.Zero"/>.</summary>
-		public static TRACEHANDLE NULL => new(0);
+		/// <summary>Returns an invalid handle by instantiating a <see cref="TRACEHANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static readonly TRACEHANDLE NULL = new();
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
-		public bool IsInvalid => handle is 0 or 0x00000000FFFFFFFF;
+		public bool IsInvalid => handle is 0 || handle == INVALID_PROCESSTRACE_HANDLE;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0;
 
-		/// <summary>Performs an explicit conversion from <see cref="TRACEHANDLE"/> to <see cref="ArgIterator"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="TRACEHANDLE"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator ulong(TRACEHANDLE h) => h.handle;
 
-		/// <summary>Performs an implicit conversion from <see cref="ArgIterator"/> to <see cref="TRACEHANDLE"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="TRACEHANDLE"/>.</summary>
 		/// <param name="h">The pointer to a handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator TRACEHANDLE(ulong h) => new(h);
@@ -6854,6 +6886,8 @@ public static partial class AdvApi32
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
+
+		IntPtr IHandle.DangerousGetHandle() => new(unchecked((long)handle));
 	}
 
 	/// <summary>The <c>WNODE_HEADER</c> structure is a member of the <c>EVENT_TRACE_PROPERTIES</c> structure.</summary>
@@ -7002,30 +7036,42 @@ public static partial class AdvApi32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="TRACEHANDLE"/> that is disposed using <see cref="CloseTrace"/>.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public class SafeTRACEHANDLE : IDisposable
+	public class SafeTRACEHANDLE : IDisposable, IHandle
 	{
 		private readonly ulong handle;
 
-		/// <summary>Initializes a new instance of the <see cref="SafeTRACEHANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="ArgIterator"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeTRACEHANDLE(ulong preexistingHandle, bool ownsHandle = true) { }
-
 		/// <summary>Initializes a new instance of the <see cref="SafeTRACEHANDLE"/> class.</summary>
-		private SafeTRACEHANDLE() : base() { }
+		public SafeTRACEHANDLE() { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeTRACEHANDLE"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public SafeTRACEHANDLE(TRACEHANDLE preexistingHandle) => handle = (ulong)preexistingHandle;
+
+		/// <summary>Finalizes an instance of the <see cref="SafeTRACEHANDLE"/> class.</summary>
+		~SafeTRACEHANDLE() => Dispose(false);
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid => handle is 0 or 0x00000000FFFFFFFF;
+		public bool IsInvalid => handle is 0 || handle == INVALID_PROCESSTRACE_HANDLE;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeTRACEHANDLE"/> to <see cref="TRACEHANDLE"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator TRACEHANDLE(SafeTRACEHANDLE h) => h.handle;
 
+		/// <summary>Releases the handle.</summary>
+		public void Close() => Dispose(true);
+
 		/// <inheritdoc/>
-		public void Dispose() => CloseTrace(handle);
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>Releases the handle.</summary>
+		protected virtual void Dispose(bool disposing) => CloseTrace(handle);
+
+		IntPtr IHandle.DangerousGetHandle() => new(unchecked((long)handle));
 	}
 }

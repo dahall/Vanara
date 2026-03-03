@@ -9,7 +9,7 @@ namespace Vanara.PInvoke;
 
 public static partial class AdvApi32
 {
-	private static readonly Dictionary<Type, int> StructSizes = new();
+	private static readonly Dictionary<Type, int> StructSizes = [];
 
 	/// <summary>Specifies the logon provider.</summary>
 	public enum LogonUserProvider
@@ -152,8 +152,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "d9fd2e44-5782-40c9-a1cf-1788ca7afc50")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AccessCheck(PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, in GENERIC_MAPPING GenericMapping,
-		[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet, ref uint PrivilegeSetLength,
+	public static extern bool AccessCheck([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess, in GENERIC_MAPPING GenericMapping,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet, ref uint PrivilegeSetLength,
 		out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
 	/// <summary>
@@ -259,9 +259,9 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "50acfc17-459d-464c-9927-88b32dd424c7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AccessCheckByType(PSECURITY_DESCRIPTOR pSecurityDescriptor, [Optional] PSID PrincipalSelfSid, HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
-		[In, Optional] OBJECT_TYPE_LIST[]? ObjectTypeList, [Optional] uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
-		[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
+	public static extern bool AccessCheckByType([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In, Optional] PSID PrincipalSelfSid, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] OBJECT_TYPE_LIST[]? ObjectTypeList, [Optional] uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
 		ref uint PrivilegeSetLength, out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
 	/// <summary>
@@ -367,11 +367,11 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ce713421-d4ff-48ed-b751-5e5c5397d820")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AccessCheckByTypeResultList(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
-		[In] OBJECT_TYPE_LIST[] ObjectTypeList, uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
-		[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
-		ref uint PrivilegeSetLength, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ACCESS_MASK[] GrantedAccessList,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] uint[] AccessStatusList);
+	public static extern bool AccessCheckByTypeResultList([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In, Optional] PSID PrincipalSelfSid, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] OBJECT_TYPE_LIST[]? ObjectTypeList, uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
+		ref uint PrivilegeSetLength, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ACCESS_MASK[] GrantedAccessList,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] uint[] AccessStatusList);
 
 	/// <summary>
 	/// <para>
@@ -442,7 +442,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "1004353a-f907-4452-9c0f-85eba0ece813")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessAllowedAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, PSID pSid);
+	public static extern bool AddAccessAllowedAce([In, Out] PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, [In] PSID pSid);
 
 	/// <summary>
 	/// The <c>AddAccessAllowedAceEx</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary access
@@ -543,7 +543,128 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "6ddec01f-237f-4b6a-8ea8-a126017b30c5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessAllowedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
+	public static extern bool AddAccessAllowedAceEx([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In] PSID pSid);
+
+	/// <summary>
+	/// The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary
+	/// access control list (DACL). The new ACE can grant access to an object, or to a property set or property on an object. You can
+	/// also use <c>AddAccessAllowedObjectAce</c> to add an ACE that only a specified type of child object can inherit.
+	/// </summary>
+	/// <param name="pAcl">
+	/// A pointer to a DACL. The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed ACE to the end of this DACL. The ACE is
+	/// in the form of an ACCESS_ALLOWED_OBJECT_ACE structure.
+	/// </param>
+	/// <param name="dwAceRevision">
+	/// Specifies the revision level of the DACL being modified. This value must be ACL_REVISION_DS. If the DACL's revision level is
+	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
+	/// </param>
+	/// <param name="AceFlags">
+	/// <para>
+	/// A set of bit flags that control ACE inheritance. The function sets these flags in the <c>AceFlags</c> member of the ACE_HEADER
+	/// structure of the new ACE. This parameter can be a combination of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CONTAINER_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by container objects.</term>
+	/// </item>
+	/// <item>
+	/// <term>INHERIT_ONLY_ACE</term>
+	/// <term>
+	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>INHERITED_ACE</term>
+	/// <term>
+	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
+	/// while not changing ACEs that were directly applied to the object.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
+	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
+	/// </item>
+	/// <item>
+	/// <term>OBJECT_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by non-container objects.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="AccessMask">
+	/// A set of bit flags that use the ACCESS_MASK format. These flags specify the access rights that the new ACE allows for the
+	/// specified security identifier (SID).
+	/// </param>
+	/// <param name="ObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
+	/// parameter is <c>NULL</c>, the new ACE protects the object to which the DACL is assigned.
+	/// </param>
+	/// <param name="InheritedObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
+	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
+	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
+	/// inheritance placed on the child objects.
+	/// </param>
+	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session to which the new ACE allows access.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+	/// error values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_ACL</term>
+	/// <term>The specified ACL is not properly formed.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_FLAGS</term>
+	/// <term>The AceFlags parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_SID</term>
+	/// <term>The specified SID is not structurally valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_REVISION_MISMATCH</term>
+	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The ACE was successfully added.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAccessAllowedAceEx function rather than
+	/// <c>AddAccessAllowedObjectAce</c>. This is suggested because an ACCESS_ALLOWED_ACE is smaller and more efficient than an ACCESS_ALLOWED_OBJECT_ACE.
+	/// </para>
+	/// <para>
+	/// The caller must ensure that ACEs are added to the DACL in the correct order. For more information, see Order of ACEs in a DACL.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessallowedobjectace BOOL
+	// AddAccessAllowedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
+	// *InheritedObjectTypeGuid, PSID pSid );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
+	public static bool AddAccessAllowedObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] Guid? ObjectTypeGuid, [In, Optional] Guid? InheritedObjectTypeGuid, [In] PSID pSid)
+	{
+		using SafeCoTaskMemStruct<Guid> o = ObjectTypeGuid, io = InheritedObjectTypeGuid;
+		return AddAccessAllowedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, o, io, pSid);
+	}
 
 	/// <summary>
 	/// The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary
@@ -662,126 +783,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
-
-	/// <summary>
-	/// The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed access control entry (ACE) to the end of a discretionary
-	/// access control list (DACL). The new ACE can grant access to an object, or to a property set or property on an object. You can
-	/// also use <c>AddAccessAllowedObjectAce</c> to add an ACE that only a specified type of child object can inherit.
-	/// </summary>
-	/// <param name="pAcl">
-	/// A pointer to a DACL. The <c>AddAccessAllowedObjectAce</c> function adds an access-allowed ACE to the end of this DACL. The ACE is
-	/// in the form of an ACCESS_ALLOWED_OBJECT_ACE structure.
-	/// </param>
-	/// <param name="dwAceRevision">
-	/// Specifies the revision level of the DACL being modified. This value must be ACL_REVISION_DS. If the DACL's revision level is
-	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
-	/// </param>
-	/// <param name="AceFlags">
-	/// <para>
-	/// A set of bit flags that control ACE inheritance. The function sets these flags in the <c>AceFlags</c> member of the ACE_HEADER
-	/// structure of the new ACE. This parameter can be a combination of the following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CONTAINER_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by container objects.</term>
-	/// </item>
-	/// <item>
-	/// <term>INHERIT_ONLY_ACE</term>
-	/// <term>
-	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>INHERITED_ACE</term>
-	/// <term>
-	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
-	/// while not changing ACEs that were directly applied to the object.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
-	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
-	/// </item>
-	/// <item>
-	/// <term>OBJECT_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by non-container objects.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="AccessMask">
-	/// A set of bit flags that use the ACCESS_MASK format. These flags specify the access rights that the new ACE allows for the
-	/// specified security identifier (SID).
-	/// </param>
-	/// <param name="ObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
-	/// parameter is <c>NULL</c>, the new ACE protects the object to which the DACL is assigned.
-	/// </param>
-	/// <param name="InheritedObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
-	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
-	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
-	/// inheritance placed on the child objects.
-	/// </param>
-	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session to which the new ACE allows access.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
-	/// error values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
-	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_ACL</term>
-	/// <term>The specified ACL is not properly formed.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_FLAGS</term>
-	/// <term>The AceFlags parameter is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_SID</term>
-	/// <term>The specified SID is not structurally valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_REVISION_MISMATCH</term>
-	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_SUCCESS</term>
-	/// <term>The ACE was successfully added.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAccessAllowedAceEx function rather than
-	/// <c>AddAccessAllowedObjectAce</c>. This is suggested because an ACCESS_ALLOWED_ACE is smaller and more efficient than an ACCESS_ALLOWED_OBJECT_ACE.
-	/// </para>
-	/// <para>
-	/// The caller must ensure that ACEs are added to the DACL in the correct order. For more information, see Order of ACEs in a DACL.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessallowedobjectace BOOL
-	// AddAccessAllowedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
-	// *InheritedObjectTypeGuid, PSID pSid );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
+	public static extern bool AddAccessAllowedObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] GuidPtr ObjectTypeGuid, [In, Optional] GuidPtr InheritedObjectTypeGuid, [In] PSID pSid);
 
 	/// <summary>
 	/// <para>
@@ -850,7 +852,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "5b4c4164-48f4-4cd5-b60e-554f2498d547")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessDeniedAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, PSID pSid);
+	public static extern bool AddAccessDeniedAce([In, Out] PACL pAcl, uint dwAceRevision, ACCESS_MASK AccessMask, [In] PSID pSid);
 
 	/// <summary>
 	/// The <c>AddAccessDeniedAceEx</c> function adds an access-denied access control entry (ACE) to the end of a discretionary access
@@ -953,7 +955,130 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "e353c88c-f82e-40c0-b676-38f0060acc81")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessDeniedAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
+	public static extern bool AddAccessDeniedAceEx([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In] PSID pSid);
+
+	/// <summary>
+	/// The <c>AddAccessDeniedObjectAce</c> function adds an access-denied access control entry (ACE) to the end of a discretionary
+	/// access control list (DACL). The new ACE can deny access to an object, or to a property set or property on an object. You can also
+	/// use <c>AddAccessDeniedObjectAce</c> to add an ACE that only a specified type of child object can inherit.
+	/// </summary>
+	/// <param name="pAcl">
+	/// A pointer to a DACL. The <c>AddAccessDeniedObjectAce</c> function adds an access-denied ACE to the end of this DACL. The ACE is
+	/// in the form of an ACCESS_DENIED_OBJECT_ACE structure.
+	/// </param>
+	/// <param name="dwAceRevision">
+	/// Specifies the revision level of the DACL being modified. This value must be ACL_REVISION_DS. If the DACL's revision level is
+	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
+	/// </param>
+	/// <param name="AceFlags">
+	/// <para>
+	/// A set of bit flags that control ACE inheritance. The function sets these flags in the <c>AceFlags</c> member of the ACE_HEADER
+	/// structure of the new ACE. This parameter can be a combination of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CONTAINER_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by container objects.</term>
+	/// </item>
+	/// <item>
+	/// <term>INHERIT_ONLY_ACE</term>
+	/// <term>
+	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>INHERITED_ACE</term>
+	/// <term>
+	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
+	/// while not changing ACEs that were directly applied to the object.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
+	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
+	/// </item>
+	/// <item>
+	/// <term>OBJECT_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by non-container objects.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="AccessMask">
+	/// A set of bit flags that use the ACCESS_MASK format to specify the access rights that the new ACE denies to the specified security
+	/// identifier (SID).
+	/// </param>
+	/// <param name="ObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
+	/// parameter is <c>NULL</c>, the new ACE protects the object to which the ACL is assigned.
+	/// </param>
+	/// <param name="InheritedObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
+	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
+	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
+	/// inheritance placed on the child objects.
+	/// </param>
+	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session to which the new ACE allows access.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+	/// error values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_ACL</term>
+	/// <term>The specified ACL is not properly formed.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_FLAGS</term>
+	/// <term>The AceFlags parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_SID</term>
+	/// <term>The specified SID is not structurally valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_REVISION_MISMATCH</term>
+	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The ACE was successfully added.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAccessDeniedAceEx function rather than
+	/// <c>AddAccessDeniedObjectAce</c>. This is suggested because an ACCESS_DENIED_ACE is smaller and more efficient than an ACCESS_DENIED_OBJECT_ACE.
+	/// </para>
+	/// <para>
+	/// Although the <c>AddAccessDeniedObjectAce</c> function adds the new ACE to the end of the ACL, access-denied ACEs should appear at
+	/// the beginning of an ACL. The caller must ensure that ACEs are added to the DACL in the correct order. For more information, see
+	/// Order of ACEs in a DACL.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessdeniedobjectace BOOL
+	// AddAccessDeniedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
+	// *InheritedObjectTypeGuid, PSID pSid );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
+	public static bool AddAccessDeniedObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] Guid? ObjectTypeGuid, [In, Optional] Guid? InheritedObjectTypeGuid, [In] PSID pSid)
+	{
+		using SafeCoTaskMemStruct<Guid> o = ObjectTypeGuid, io = InheritedObjectTypeGuid;
+		return AddAccessDeniedObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, o, io, pSid);
+	}
 
 	/// <summary>
 	/// The <c>AddAccessDeniedObjectAce</c> function adds an access-denied access control entry (ACE) to the end of a discretionary
@@ -1074,128 +1199,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid);
-
-	/// <summary>
-	/// The <c>AddAccessDeniedObjectAce</c> function adds an access-denied access control entry (ACE) to the end of a discretionary
-	/// access control list (DACL). The new ACE can deny access to an object, or to a property set or property on an object. You can also
-	/// use <c>AddAccessDeniedObjectAce</c> to add an ACE that only a specified type of child object can inherit.
-	/// </summary>
-	/// <param name="pAcl">
-	/// A pointer to a DACL. The <c>AddAccessDeniedObjectAce</c> function adds an access-denied ACE to the end of this DACL. The ACE is
-	/// in the form of an ACCESS_DENIED_OBJECT_ACE structure.
-	/// </param>
-	/// <param name="dwAceRevision">
-	/// Specifies the revision level of the DACL being modified. This value must be ACL_REVISION_DS. If the DACL's revision level is
-	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
-	/// </param>
-	/// <param name="AceFlags">
-	/// <para>
-	/// A set of bit flags that control ACE inheritance. The function sets these flags in the <c>AceFlags</c> member of the ACE_HEADER
-	/// structure of the new ACE. This parameter can be a combination of the following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CONTAINER_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by container objects.</term>
-	/// </item>
-	/// <item>
-	/// <term>INHERIT_ONLY_ACE</term>
-	/// <term>
-	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>INHERITED_ACE</term>
-	/// <term>
-	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
-	/// while not changing ACEs that were directly applied to the object.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
-	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
-	/// </item>
-	/// <item>
-	/// <term>OBJECT_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by non-container objects.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="AccessMask">
-	/// A set of bit flags that use the ACCESS_MASK format to specify the access rights that the new ACE denies to the specified security
-	/// identifier (SID).
-	/// </param>
-	/// <param name="ObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
-	/// parameter is <c>NULL</c>, the new ACE protects the object to which the ACL is assigned.
-	/// </param>
-	/// <param name="InheritedObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
-	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
-	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
-	/// inheritance placed on the child objects.
-	/// </param>
-	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session to which the new ACE allows access.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
-	/// error values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
-	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_ACL</term>
-	/// <term>The specified ACL is not properly formed.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_FLAGS</term>
-	/// <term>The AceFlags parameter is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_SID</term>
-	/// <term>The specified SID is not structurally valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_REVISION_MISMATCH</term>
-	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_SUCCESS</term>
-	/// <term>The ACE was successfully added.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAccessDeniedAceEx function rather than
-	/// <c>AddAccessDeniedObjectAce</c>. This is suggested because an ACCESS_DENIED_ACE is smaller and more efficient than an ACCESS_DENIED_OBJECT_ACE.
-	/// </para>
-	/// <para>
-	/// Although the <c>AddAccessDeniedObjectAce</c> function adds the new ACE to the end of the ACL, access-denied ACEs should appear at
-	/// the beginning of an ACL. The caller must ensure that ACEs are added to the DACL in the correct order. For more information, see
-	/// Order of ACEs in a DACL.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessdeniedobjectace BOOL
-	// AddAccessDeniedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
-	// *InheritedObjectTypeGuid, PSID pSid );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid);
+	public static extern bool AddAccessDeniedObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] GuidPtr ObjectTypeGuid, [In, Optional] GuidPtr InheritedObjectTypeGuid, [In] PSID pSid);
 
 	/// <summary>The <c>AddAce</c> function adds one or more access control entries (ACEs) to a specified access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL. This function adds an ACE to this ACL.</param>
@@ -1253,7 +1257,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "f472d864-a273-49b5-b5e2-98772989971e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, IntPtr pAceList, uint nAceListLength);
+	public static extern bool AddAce([In, Out] PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, [In] IntPtr pAceList, uint nAceListLength);
 
 	/// <summary>The <c>AddAce</c> function adds one or more access control entries (ACEs) to a specified access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL. This function adds an ACE to this ACL.</param>
@@ -1301,7 +1305,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addace BOOL AddAce( PACL pAcl, DWORD
 	// dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "f472d864-a273-49b5-b5e2-98772989971e")]
-	public static bool AddAce(PACL pAcl, PACE pAceList, uint dwStartingAceIndex = uint.MaxValue) =>
+	public static bool AddAce([In, Out] PACL pAcl, PACE pAceList, uint dwStartingAceIndex = uint.MaxValue) =>
 		AddAce(pAcl, pAcl.Revision(), dwStartingAceIndex, (IntPtr)pAceList, pAceList.Length());
 
 	/// <summary>
@@ -1370,7 +1374,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "34f22aea-9cde-411e-b2d5-bfcd3bfe325d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAuditAccessAce(PACL pAcl, uint dwAceRevision, ACCESS_MASK dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+	public static extern bool AddAuditAccessAce([In, Out] PACL pAcl, uint dwAceRevision, ACCESS_MASK dwAccessMask, [In] PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 	/// <summary>
 	/// The <c>AddAuditAccessAceEx</c> function adds a system-audit access control entry (ACE) to the end of a system access control list (SACL).
@@ -1492,7 +1496,145 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ddd1d815-c4ce-4572-982c-139e17cda192")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAuditAccessAceEx(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+	public static extern bool AddAuditAccessAceEx([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK dwAccessMask, [In] PSID pSid,
+		[MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+
+	/// <summary>
+	/// The <c>AddAuditAccessObjectAce</c> function adds a system-audit access control entry (ACE) to the end of a system access control
+	/// list (SACL). The new ACE can audit access to an object, or to a property set or property on an object. You can also use
+	/// <c>AddAuditAccessObjectAce</c> to add an ACE that only a specified type of child object can inherit.
+	/// </summary>
+	/// <param name="pAcl">
+	/// A pointer to a SACL. The <c>AddAuditAccessObjectAce</c> function adds a system-audit ACE to the end of this SACL. The ACE is in
+	/// the form of a SYSTEM_AUDIT_OBJECT_ACE structure.
+	/// </param>
+	/// <param name="dwAceRevision">
+	/// Specifies the revision level of the SACL being modified. This value must be ACL_REVISION_DS. If the SACL's revision level is
+	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
+	/// </param>
+	/// <param name="AceFlags">
+	/// <para>
+	/// A set of bit flags that control ACE inheritance and the type of access attempts to audit. The function sets these flags in the
+	/// <c>AceFlags</c> member of the ACE_HEADER structure of the new ACE. This parameter can be a combination of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CONTAINER_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by container objects.</term>
+	/// </item>
+	/// <item>
+	/// <term>FAILED_ACCESS_ACE_FLAG</term>
+	/// <term>
+	/// If you set this flag or specify TRUE for the bAuditFailure parameter, failed attempts to use the specified access rights cause
+	/// the system to generate an audit record in the security event log.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>INHERIT_ONLY_ACE</term>
+	/// <term>
+	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>INHERITED_ACE</term>
+	/// <term>
+	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
+	/// while not changing ACEs that were directly applied to the object.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
+	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
+	/// </item>
+	/// <item>
+	/// <term>OBJECT_INHERIT_ACE</term>
+	/// <term>The ACE is inherited by non-container objects.</term>
+	/// </item>
+	/// <item>
+	/// <term>SUCCESSFUL_ACCESS_ACE_FLAG</term>
+	/// <term>
+	/// If you set this flag or specify TRUE for the bAuditSuccess parameter, successful uses of the specified access rights cause the
+	/// system to generate an audit record in the security event log.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="AccessMask">
+	/// An ACCESS_MASK that specifies the access rights that the new ACE audits for the specified security identifier (SID).
+	/// </param>
+	/// <param name="ObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
+	/// parameter is <c>NULL</c>, the new ACE protects the object to which the ACL is assigned.
+	/// </param>
+	/// <param name="InheritedObjectTypeGuid">
+	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
+	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
+	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
+	/// inheritance placed on the child objects.
+	/// </param>
+	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session for which the new ACE audits access.</param>
+	/// <param name="bAuditSuccess">
+	/// Specifies whether successful uses of the specified access rights cause the system to generate an audit record in the security
+	/// event log. If this flag is <c>TRUE</c> or if the AceFlags parameter specifies the SUCCESSFUL_ACCESS_ACE_FLAG flag, the system
+	/// records successful access attempts; otherwise, it does not.
+	/// </param>
+	/// <param name="bAuditFailure">
+	/// Specifies whether failed attempts to use the specified access rights cause the system to generate an audit record in the security
+	/// event log. If this flag is <c>TRUE</c> or if the AceFlags parameter specifies the FAILED_ACCESS_ACE_FLAG flag, the system records
+	/// failed access attempts; otherwise, it does not.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+	/// error values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_ACL</term>
+	/// <term>The specified ACL is not properly formed.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_FLAGS</term>
+	/// <term>The AceFlags parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_SID</term>
+	/// <term>The specified SID is not structurally valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_REVISION_MISMATCH</term>
+	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The ACE was successfully added.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAuditAccessAceEx function rather than
+	/// <c>AddAuditAccessObjectAce</c>. This is suggested because a SYSTEM_AUDIT_ACE is smaller and more efficient than a SYSTEM_AUDIT_OBJECT_ACE.
+	/// </remarks>
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "be852a0c-9d96-4b29-b5f9-d9c41d838c12")]
+	public static bool AddAuditAccessObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] Guid? ObjectTypeGuid,
+		[In, Optional] Guid? InheritedObjectTypeGuid, [In] PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure)
+	{
+		using SafeCoTaskMemStruct<Guid> o = ObjectTypeGuid, io = InheritedObjectTypeGuid;
+		return AddAuditAccessObjectAce(pAcl, dwAceRevision, AceFlags, AccessMask, o, io, pSid, bAuditSuccess, bAuditFailure);
+	}
 
 	/// <summary>
 	/// The <c>AddAuditAccessObjectAce</c> function adds a system-audit access control entry (ACE) to the end of a system access control
@@ -1629,144 +1771,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "be852a0c-9d96-4b29-b5f9-d9c41d838c12")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, in Guid ObjectTypeGuid, in Guid InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
-
-	/// <summary>
-	/// The <c>AddAuditAccessObjectAce</c> function adds a system-audit access control entry (ACE) to the end of a system access control
-	/// list (SACL). The new ACE can audit access to an object, or to a property set or property on an object. You can also use
-	/// <c>AddAuditAccessObjectAce</c> to add an ACE that only a specified type of child object can inherit.
-	/// </summary>
-	/// <param name="pAcl">
-	/// A pointer to a SACL. The <c>AddAuditAccessObjectAce</c> function adds a system-audit ACE to the end of this SACL. The ACE is in
-	/// the form of a SYSTEM_AUDIT_OBJECT_ACE structure.
-	/// </param>
-	/// <param name="dwAceRevision">
-	/// Specifies the revision level of the SACL being modified. This value must be ACL_REVISION_DS. If the SACL's revision level is
-	/// lower than ACL_REVISION_DS, the function changes it to ACL_REVISION_DS.
-	/// </param>
-	/// <param name="AceFlags">
-	/// <para>
-	/// A set of bit flags that control ACE inheritance and the type of access attempts to audit. The function sets these flags in the
-	/// <c>AceFlags</c> member of the ACE_HEADER structure of the new ACE. This parameter can be a combination of the following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CONTAINER_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by container objects.</term>
-	/// </item>
-	/// <item>
-	/// <term>FAILED_ACCESS_ACE_FLAG</term>
-	/// <term>
-	/// If you set this flag or specify TRUE for the bAuditFailure parameter, failed attempts to use the specified access rights cause
-	/// the system to generate an audit record in the security event log.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>INHERIT_ONLY_ACE</term>
-	/// <term>
-	/// The ACE does not apply to the object to which the access control list (ACL) is assigned, but it can be inherited by child objects.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>INHERITED_ACE</term>
-	/// <term>
-	/// Indicates an inherited ACE. This flag allows operations that change the security on a tree of objects to modify inherited ACEs,
-	/// while not changing ACEs that were directly applied to the object.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>NO_PROPAGATE_INHERIT_ACE</term>
-	/// <term>The OBJECT_INHERIT_ACE and CONTAINER_INHERIT_ACE bits are not propagated to an inherited ACE.</term>
-	/// </item>
-	/// <item>
-	/// <term>OBJECT_INHERIT_ACE</term>
-	/// <term>The ACE is inherited by non-container objects.</term>
-	/// </item>
-	/// <item>
-	/// <term>SUCCESSFUL_ACCESS_ACE_FLAG</term>
-	/// <term>
-	/// If you set this flag or specify TRUE for the bAuditSuccess parameter, successful uses of the specified access rights cause the
-	/// system to generate an audit record in the security event log.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="AccessMask">
-	/// An ACCESS_MASK that specifies the access rights that the new ACE audits for the specified security identifier (SID).
-	/// </param>
-	/// <param name="ObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object, property set, or property protected by the new ACE. If this
-	/// parameter is <c>NULL</c>, the new ACE protects the object to which the ACL is assigned.
-	/// </param>
-	/// <param name="InheritedObjectTypeGuid">
-	/// A pointer to a GUID structure that identifies the type of object that can inherit the new ACE. If this parameter is non-
-	/// <c>NULL</c>, only the specified object type can inherit the ACE. If <c>NULL</c>, any type of child object can inherit the ACE. In
-	/// either case, inheritance is also controlled by the value of the AceFlags parameter, as well as by any protection against
-	/// inheritance placed on the child objects.
-	/// </param>
-	/// <param name="pSid">A pointer to a SID that identifies the user, group, or logon session for which the new ACE audits access.</param>
-	/// <param name="bAuditSuccess">
-	/// Specifies whether successful uses of the specified access rights cause the system to generate an audit record in the security
-	/// event log. If this flag is <c>TRUE</c> or if the AceFlags parameter specifies the SUCCESSFUL_ACCESS_ACE_FLAG flag, the system
-	/// records successful access attempts; otherwise, it does not.
-	/// </param>
-	/// <param name="bAuditFailure">
-	/// Specifies whether failed attempts to use the specified access rights cause the system to generate an audit record in the security
-	/// event log. If this flag is <c>TRUE</c> or if the AceFlags parameter specifies the FAILED_ACCESS_ACE_FLAG flag, the system records
-	/// failed access attempts; otherwise, it does not.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
-	/// error values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
-	/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_ACL</term>
-	/// <term>The specified ACL is not properly formed.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_FLAGS</term>
-	/// <term>The AceFlags parameter is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_SID</term>
-	/// <term>The specified SID is not structurally valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_REVISION_MISMATCH</term>
-	/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_SUCCESS</term>
-	/// <term>The ACE was successfully added.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// If both ObjectTypeGuid and InheritedObjectTypeGuid are <c>NULL</c>, use the AddAuditAccessAceEx function rather than
-	/// <c>AddAuditAccessObjectAce</c>. This is suggested because a SYSTEM_AUDIT_ACE is smaller and more efficient than a SYSTEM_AUDIT_OBJECT_ACE.
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addauditaccessobjectace BOOL
-	// AddAuditAccessObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
-	// *InheritedObjectTypeGuid, PSID pSid, BOOL bAuditSuccess, BOOL bAuditFailure );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "be852a0c-9d96-4b29-b5f9-d9c41d838c12")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddAuditAccessObjectAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [Optional] IntPtr ObjectTypeGuid, [Optional] IntPtr InheritedObjectTypeGuid, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+	public static extern bool AddAuditAccessObjectAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In, Optional] GuidPtr ObjectTypeGuid,
+		[In, Optional] GuidPtr InheritedObjectTypeGuid, [In] PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
 
 	/// <summary>
 	/// The <c>AddMandatoryAce</c> function adds a SYSTEM_MANDATORY_LABEL_ACE access control entry (ACE) to the specified system access
@@ -1882,7 +1888,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "22c8f384-fdb7-4d5a-8854-d9fd25cd351e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddMandatoryAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, SYSTEM_MANDATORY_LABEL MandatoryPolicy, PSID pLabelSid);
+	public static extern bool AddMandatoryAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, SYSTEM_MANDATORY_LABEL MandatoryPolicy, [In] PSID pLabelSid);
 
 	/// <summary>
 	/// The <c>AddResourceAttributeAce</c> function adds a SYSTEM_RESOURCE_ATTRIBUTE_ACE access control entry (ACE) to the end of a
@@ -1955,7 +1961,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "AA2064E4-6F76-4D7B-8540-D55A91168825")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddResourceAttributeAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid, in CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, ref uint pReturnLength);
+	public static extern bool AddResourceAttributeAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In] PSID pSid, in CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, out uint pReturnLength);
 
 	/// <summary>
 	/// The <c>AddScopedPolicyIDAce</c> function adds a SYSTEM_SCOPED_POLICY_ID_ACE access control entry (ACE) to the end of a system
@@ -2021,7 +2027,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "30AA5730-566C-4B02-A904-5A38237EE8E3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddScopedPolicyIDAce(PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid);
+	public static extern bool AddScopedPolicyIDAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, ACCESS_MASK AccessMask, [In] PSID pSid);
 
 	/// <summary>
 	/// The <c>AdjustTokenGroups</c> function enables or disables groups already present in the specified access token. Access to
@@ -2062,11 +2068,11 @@ public static partial class AdvApi32
 	// HANDLE TokenHandle, BOOL ResetToDefault, PTOKEN_GROUPS NewState, DWORD BufferLength, PTOKEN_GROUPS PreviousState, PDWORD
 	// ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
-	public static Win32Error AdjustTokenGroups(HTOKEN TokenHandle, in TOKEN_GROUPS NewState, out TOKEN_GROUPS PreviousState)
+	public static Win32Error AdjustTokenGroups([In, AddAsMember] HTOKEN TokenHandle, in TOKEN_GROUPS NewState, out TOKEN_GROUPS PreviousState)
 	{
-		using var ns = new SafeAnysizeStruct<TOKEN_GROUPS>(NewState);
-		using var dummy = new SafeHGlobalHandle(1);
-		return CallMethodWithTypedBuf((ref uint sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, false, ns, dummy.Size, dummy, out sz)); sz += 4; return err; },
+		using SafeAnysizeStruct<TOKEN_GROUPS> ns = NewState;
+		using SafeHGlobalHandle dummy = new(1);
+		return CallMethodWithTypedBuf((ref sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, false, ns, dummy.Size, dummy, out sz)); sz += 4; return err; },
 			(IntPtr ptr, ref uint sz) => BoolToLastErr(AdjustTokenGroups(TokenHandle, false, ns, sz, ptr, out _)), out PreviousState);
 	}
 
@@ -2135,7 +2141,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AdjustTokenGroups(HTOKEN TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool ResetToDefault, [In] IntPtr NewState, [In, Optional] uint BufferLength, [In, Out, Optional] IntPtr PreviousState, out uint ReturnLength);
+	public static extern bool AdjustTokenGroups([In] HTOKEN TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool ResetToDefault, [In] IntPtr NewState, [In, Optional] uint BufferLength, [In, Out, Optional] IntPtr PreviousState, out uint ReturnLength);
 
 	/// <summary>
 	/// The <c>AdjustTokenGroupsReset</c> function resets groups to their default states in the specified access token. Access to
@@ -2160,10 +2166,10 @@ public static partial class AdvApi32
 	// HANDLE TokenHandle, BOOL ResetToDefault, PTOKEN_GROUPS NewState, DWORD BufferLength, PTOKEN_GROUPS PreviousState, PDWORD
 	// ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
-	public static Win32Error AdjustTokenGroupsReset(HTOKEN TokenHandle, out TOKEN_GROUPS PreviousState)
+	public static Win32Error AdjustTokenGroupsReset([In, AddAsMember] HTOKEN TokenHandle, out TOKEN_GROUPS PreviousState)
 	{
 		using var dummy = new SafeHGlobalHandle(1);
-		return CallMethodWithTypedBuf((ref uint sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, true, default, dummy.Size, dummy, out sz)); sz += 4; return err; },
+		return CallMethodWithTypedBuf((ref sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, true, default, dummy.Size, dummy, out sz)); sz += 4; return err; },
 			(IntPtr ptr, ref uint sz) => BoolToLastErr(AdjustTokenGroups(TokenHandle, true, default, sz, ptr, out _)), out PreviousState);
 	}
 
@@ -2262,11 +2268,11 @@ public static partial class AdvApi32
 	// AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength,
 	// PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "8e3f70cd-814e-4aab-8f48-0ca482beef2e")]
-	public static Win32Error AdjustTokenPrivileges(HTOKEN TokenHandle, bool DisableAllPrivileges, in TOKEN_PRIVILEGES NewState, out TOKEN_PRIVILEGES PreviousState)
+	public static Win32Error AdjustTokenPrivileges([In, AddAsMember] HTOKEN TokenHandle, bool DisableAllPrivileges, in TOKEN_PRIVILEGES NewState, out TOKEN_PRIVILEGES PreviousState)
 	{
 		using var ns = new SafeAnysizeStruct<TOKEN_PRIVILEGES>(NewState);
 		using var dummy = new SafeHGlobalHandle(1);
-		return CallMethodWithTypedBuf((ref uint sz) => BoolToLastErr(AdjustTokenPrivileges(TokenHandle, DisableAllPrivileges, ns, dummy.Size, dummy, out sz)),
+		return CallMethodWithTypedBuf((ref sz) => BoolToLastErr(AdjustTokenPrivileges(TokenHandle, DisableAllPrivileges, ns, dummy.Size, dummy, out sz)),
 			(IntPtr ptr, ref uint sz) => BoolToLastErr(AdjustTokenPrivileges(TokenHandle, DisableAllPrivileges, ns, sz, ptr, out _)), out PreviousState);
 	}
 
@@ -2390,126 +2396,6 @@ public static partial class AdvApi32
 	public static extern bool AdjustTokenPrivileges([In] HTOKEN TokenHandle, [In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
 		[In] IntPtr NewState, [In, Optional] uint BufferLength, [In, Out, Optional] IntPtr PreviousState, out uint ReturnLength);
 
-	/// <summary>
-	/// The <c>AdjustTokenPrivileges</c> function enables or disables privileges in the specified access token. Enabling or disabling
-	/// privileges in an access token requires TOKEN_ADJUST_PRIVILEGES access.
-	/// </summary>
-	/// <param name="TokenHandle">
-	/// A handle to the access token that contains the privileges to be modified. The handle must have TOKEN_ADJUST_PRIVILEGES access to
-	/// the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
-	/// </param>
-	/// <param name="DisableAllPrivileges">
-	/// Specifies whether the function disables all of the token's privileges. If this value is <c>TRUE</c>, the function disables all
-	/// privileges and ignores the NewState parameter. If it is <c>FALSE</c>, the function modifies privileges based on the information
-	/// pointed to by the NewState parameter.
-	/// </param>
-	/// <param name="NewState">
-	/// <para>
-	/// A pointer to a TOKEN_PRIVILEGES structure that specifies an array of privileges and their attributes. If the DisableAllPrivileges
-	/// parameter is <c>FALSE</c>, the <c>AdjustTokenPrivileges</c> function enables, disables, or removes these privileges for the
-	/// token. The following table describes the action taken by the <c>AdjustTokenPrivileges</c> function, based on the privilege attribute.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>SE_PRIVILEGE_ENABLED</term>
-	/// <term>The function enables the privilege.</term>
-	/// </item>
-	/// <item>
-	/// <term>SE_PRIVILEGE_REMOVED</term>
-	/// <term>
-	/// The privilege is removed from the list of privileges in the token. The other privileges in the list are reordered to remain
-	/// contiguous. SE_PRIVILEGE_REMOVED supersedes SE_PRIVILEGE_ENABLED. Because the privilege has been removed from the token, attempts
-	/// to reenable the privilege result in the warning ERROR_NOT_ALL_ASSIGNED as if the privilege had never existed. Attempting to
-	/// remove a privilege that does not exist in the token results in ERROR_NOT_ALL_ASSIGNED being returned. Privilege checks for
-	/// removed privileges result in STATUS_PRIVILEGE_NOT_HELD. Failed privilege check auditing occurs as normal. The removal of the
-	/// privilege is irreversible, so the name of the removed privilege is not included in the PreviousState parameter after a call to
-	/// AdjustTokenPrivileges. Windows XP with SP1: The function cannot remove privileges. This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>None</term>
-	/// <term>The function disables the privilege.</term>
-	/// </item>
-	/// </list>
-	/// <para>If DisableAllPrivileges is <c>TRUE</c>, the function ignores this parameter.</para>
-	/// </param>
-	/// <param name="BufferLength">
-	/// Specifies the size, in bytes, of the buffer pointed to by the PreviousState parameter. This parameter can be zero if the
-	/// PreviousState parameter is <c>NULL</c>.
-	/// </param>
-	/// <param name="PreviousState">
-	/// <para>
-	/// A pointer to a buffer that the function fills with a TOKEN_PRIVILEGES structure that contains the previous state of any
-	/// privileges that the function modifies. That is, if a privilege has been modified by this function, the privilege and its previous
-	/// state are contained in the <c>TOKEN_PRIVILEGES</c> structure referenced by PreviousState. If the <c>PrivilegeCount</c> member of
-	/// <c>TOKEN_PRIVILEGES</c> is zero, then no privileges have been changed by this function. This parameter can be <c>NULL</c>.
-	/// </para>
-	/// <para>
-	/// If you specify a buffer that is too small to receive the complete list of modified privileges, the function fails and does not
-	/// adjust any privileges. In this case, the function sets the variable pointed to by the ReturnLength parameter to the number of
-	/// bytes required to hold the complete list of modified privileges.
-	/// </para>
-	/// </param>
-	/// <param name="ReturnLength">
-	/// A pointer to a variable that receives the required size, in bytes, of the buffer pointed to by the PreviousState parameter. This
-	/// parameter can be <c>NULL</c> if PreviousState is <c>NULL</c>.
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value is nonzero. To determine whether the function adjusted all of the specified
-	/// privileges, call GetLastError, which returns one of the following values when the function succeeds:
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_SUCCESS</term>
-	/// <term>The function adjusted all specified privileges.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_NOT_ALL_ASSIGNED</term>
-	/// <term>
-	/// The token does not have one or more of the privileges specified in the NewState parameter. The function may succeed with this
-	/// error value even if no privileges were adjusted. The PreviousState parameter indicates the privileges that were adjusted.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>AdjustTokenPrivileges</c> function cannot add new privileges to the access token. It can only enable or disable the
-	/// token's existing privileges. To determine the token's privileges, call the GetTokenInformation function.
-	/// </para>
-	/// <para>
-	/// The NewState parameter can specify privileges that the token does not have, without causing the function to fail. In this case,
-	/// the function adjusts the privileges that the token does have and ignores the other privileges so that the function succeeds. Call
-	/// the GetLastError function to determine whether the function adjusted all of the specified privileges. The PreviousState parameter
-	/// indicates the privileges that were adjusted.
-	/// </para>
-	/// <para>
-	/// The PreviousState parameter retrieves a TOKEN_PRIVILEGES structure that contains the original state of the adjusted privileges.
-	/// To restore the original state, pass the PreviousState pointer as the NewState parameter in a subsequent call to the
-	/// <c>AdjustTokenPrivileges</c> function.
-	/// </para>
-	/// <para>Examples</para>
-	/// <para>For an example that uses this function, see Enabling and Disabling Privileges.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-adjusttokenprivileges BOOL
-	// AdjustTokenPrivileges( HANDLE TokenHandle, BOOL DisableAllPrivileges, PTOKEN_PRIVILEGES NewState, DWORD BufferLength,
-	// PTOKEN_PRIVILEGES PreviousState, PDWORD ReturnLength );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "8e3f70cd-814e-4aab-8f48-0ca482beef2e")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AdjustTokenPrivileges([In] HTOKEN TokenHandle, [In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
-		[In] IntPtr NewState, [In] uint BufferLength = 0, IntPtr PreviousState = default, IntPtr ReturnLength = default);
-
 	/// <summary>The <c>AllocateLocallyUniqueId</c> function allocates a locally unique identifier (LUID).</summary>
 	/// <param name="Luid">A pointer to a <c>LUID</c> structure that receives the allocated LUID.</param>
 	/// <returns>
@@ -2597,7 +2483,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "436A5110-B79E-4E64-92E8-1C9E713D0948")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckTokenCapability(HTOKEN TokenHandle, PSID CapabilitySidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool HasCapability);
+	public static extern bool CheckTokenCapability([In, Optional, AddAsMember] HTOKEN TokenHandle, [In] PSID CapabilitySidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool HasCapability);
 
 	/// <summary>
 	/// The <c>CheckTokenMembership</c> function determines whether a specified security identifier (SID) is enabled in an access token.
@@ -2646,7 +2532,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "c254a167-c4e7-4b84-9be3-6862761309f8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckTokenMembership(HTOKEN TokenHandle, PSID SidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool IsMember);
+	public static extern bool CheckTokenMembership([In, Optional] HTOKEN TokenHandle, [In] PSID SidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool IsMember);
 
 	/// <summary>The <c>CheckTokenMembershipEx</c> function determines whether the specified SID is enabled in the specified token.</summary>
 	/// <param name="TokenHandle">
@@ -2670,7 +2556,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "0420FC77-8035-42A5-8907-83D0CE53FB64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckTokenMembershipEx(HTOKEN TokenHandle, PSID SidToCheck, CTMF Flags, [MarshalAs(UnmanagedType.Bool)] out bool IsMember);
+	public static extern bool CheckTokenMembershipEx([In, Optional, AddAsMember] HTOKEN TokenHandle, [In] PSID SidToCheck, CTMF Flags, [MarshalAs(UnmanagedType.Bool)] out bool IsMember);
 
 	/// <summary>
 	/// The <c>ConvertToAutoInheritPrivateObjectSecurity</c> function converts a security descriptor and its access control lists (ACLs)
@@ -2818,7 +2704,7 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "eaaa5509-eff5-461d-843b-7ebbbe0dd58f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ConvertToAutoInheritPrivateObjectSecurity([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In] PSECURITY_DESCRIPTOR CurrentSecurityDescriptor,
-		out SafePrivateObjectSecurity NewSecurityDescriptor, [In, Optional] IntPtr ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
+		out SafePrivateObjectSecurity NewSecurityDescriptor, [In, Optional] GuidPtr ObjectType, [MarshalAs(UnmanagedType.U1)] bool IsDirectoryObject, in GENERIC_MAPPING GenericMapping);
 
 	/// <summary>
 	/// <para>
@@ -3261,7 +3147,7 @@ public static partial class AdvApi32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa446581")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CreatePrivateObjectSecurityEx([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
-		[In, Optional] IntPtr ObjectType, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, SEF AutoInheritFlags, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
+		[In, Optional] GuidPtr ObjectType, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, SEF AutoInheritFlags, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 	/// <summary>
 	/// The <c>CreatePrivateObjectSecurityWithMultipleInheritance</c> function allocates and initializes a self-relative security
@@ -3534,7 +3420,7 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "8c5a2ac2-612c-4625-8c68-27d99d4ba9d5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CreatePrivateObjectSecurityWithMultipleInheritance([In, Optional] PSECURITY_DESCRIPTOR ParentDescriptor, [In, Optional] PSECURITY_DESCRIPTOR CreatorDescriptor, out SafePrivateObjectSecurity NewDescriptor,
-		[In, MarshalAs(UnmanagedType.LPArray), Optional] Guid[]? ObjectTypes, uint GuidCount, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, SEF AutoInheritFlags, HTOKEN Token, in GENERIC_MAPPING GenericMapping);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), Optional] Guid[]? ObjectTypes, uint GuidCount, [MarshalAs(UnmanagedType.Bool)] bool IsContainerObject, SEF AutoInheritFlags, [In, Optional] HTOKEN Token, in GENERIC_MAPPING GenericMapping);
 
 	/// <summary>
 	/// The <c>CreateRestrictedToken</c> function creates a new access token that is a restricted version of an existing access token.
@@ -3678,10 +3564,10 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "e087f360-5d1d-4846-b3d6-214a426e5222")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateRestrictedToken(HTOKEN ExistingTokenHandle, [Optional] RestrictedPrivilegeOptions Flags,
-		[Optional] uint DisableSidCount, [In, MarshalAs(UnmanagedType.LPArray), Optional] SID_AND_ATTRIBUTES[]? SidsToDisable,
-		[Optional] uint DeletePrivilegeCount, [In, MarshalAs(UnmanagedType.LPArray), Optional] LUID_AND_ATTRIBUTES[]? PrivilegesToDelete,
-		[Optional] uint RestrictedSidCount, [In, MarshalAs(UnmanagedType.LPArray), Optional] SID_AND_ATTRIBUTES[]? SidsToRestrict, out SafeHTOKEN NewTokenHandle);
+	public static extern bool CreateRestrictedToken([In, Optional] HTOKEN ExistingTokenHandle, [Optional] RestrictedPrivilegeOptions Flags,
+		uint DisableSidCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), Optional] SID_AND_ATTRIBUTES[]? SidsToDisable,
+		uint DeletePrivilegeCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), Optional] LUID_AND_ATTRIBUTES[]? PrivilegesToDelete,
+		uint RestrictedSidCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6), Optional] SID_AND_ATTRIBUTES[]? SidsToRestrict, [AddAsCtor] out SafeHTOKEN NewTokenHandle);
 
 	/// <summary>
 	/// A tracing function for publishing events when an attempted security vulnerability exploit is detected in your user-mode application.
@@ -3762,7 +3648,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "02ce45ad-3d51-4548-848e-a62bf4bf72a8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeleteAce(PACL pAcl, uint dwAceIndex);
+	public static extern bool DeleteAce([In, Out] PACL pAcl, uint dwAceIndex);
 
 	/// <summary>
 	/// This function constructs two arrays of SIDs out of a capability name. One is an array group SID with NT Authority, and the other
@@ -3787,7 +3673,36 @@ public static partial class AdvApi32
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "1A911FCC-6D11-4185-B532-20FE6C7C4B0B")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out SafePSIDArray CapabilityGroupSids, out int CapabilityGroupSidCount, out SafePSIDArray CapabilitySids, out int CapabilitySidCount);
+	public static extern bool DeriveCapabilitySidsFromName([MarshalAs(UnmanagedType.LPWStr)] string CapName, out IntPtr CapabilityGroupSids, out int CapabilityGroupSidCount, out IntPtr CapabilitySids, out int CapabilitySidCount);
+
+	/// <summary>
+	/// This function constructs two arrays of SIDs out of a capability name. One is an array group SID with NT Authority, and the other
+	/// is an array of capability SIDs with AppAuthority.
+	/// </summary>
+	/// <param name="CapName">Name of the capability in string form.</param>
+	/// <param name="CapabilityGroupSids">The GroupSids with NTAuthority.</param>
+	/// <param name="CapabilitySids">CapabilitySids with AppAuthority.</param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+	/// <para>If the function fails, it returns <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// The caller is expected to free the individual SIDs returned in each array by calling LocalFree. as well as memory allocated for
+	/// the array itself.
+	/// </remarks>
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "1A911FCC-6D11-4185-B532-20FE6C7C4B0B")]
+	public static Win32Error DeriveCapabilitySidsFromName(string CapName, out SafePSIDArray CapabilityGroupSids, out SafePSIDArray CapabilitySids)
+	{
+		if (!DeriveCapabilitySidsFromName(CapName, out var pCapabilityGroupSids, out var capabilityGroupSidCount, out var pCapabilitySids, out var capabilitySidCount))
+		{
+			CapabilityGroupSids = new(Array.Empty<PSID>());
+			CapabilitySids = new(Array.Empty<PSID>());
+			return Win32Error.GetLastError();
+		}
+		CapabilityGroupSids = new SafePSIDArray(pCapabilityGroupSids, capabilityGroupSidCount);
+		CapabilitySids = new SafePSIDArray(pCapabilitySids, capabilitySidCount);
+		return Win32Error.ERROR_SUCCESS;
+	}
 
 	/// <summary>
 	/// The <c>DestroyPrivateObjectSecurity</c> function deletes a private object's security descriptor. For background information, see
@@ -3806,7 +3721,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "4ef10852-8229-41de-a4d7-d2845e4c92ce")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DestroyPrivateObjectSecurity(in PSECURITY_DESCRIPTOR ObjectDescriptor);
+	public static extern bool DestroyPrivateObjectSecurity(ref IntPtr ObjectDescriptor);
 
 	/// <summary>The <c>DuplicateToken</c> function creates a new access token that duplicates one already in existence.</summary>
 	/// <param name="ExistingTokenHandle">A handle to an access token opened with TOKEN_DUPLICATE access.</param>
@@ -3829,8 +3744,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446616")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DuplicateToken(HTOKEN ExistingTokenHandle,
-		SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeHTOKEN DuplicateTokenHandle);
+	public static extern bool DuplicateToken([In] HTOKEN ExistingTokenHandle, SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeHTOKEN DuplicateTokenHandle);
 
 	/// <summary>
 	/// The <c>DuplicateTokenEx</c> function creates a new access token that duplicates an existing token. This function can create
@@ -3894,7 +3808,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446617")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DuplicateTokenEx(HTOKEN hExistingToken, TokenAccess dwDesiredAccess, [In, Optional] SECURITY_ATTRIBUTES? lpTokenAttributes,
+	public static extern bool DuplicateTokenEx([In] HTOKEN hExistingToken, TokenAccess dwDesiredAccess, [In, Optional] SECURITY_ATTRIBUTES? lpTokenAttributes,
 		SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, out SafeHTOKEN phNewToken);
 
 	/// <summary>The <c>FindFirstFreeAce</c> function retrieves a pointer to the first free byte in an access control list (ACL).</summary>
@@ -3912,7 +3826,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "bf770761-008a-4a35-b31f-b781d5a8622b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindFirstFreeAce(PACL pAcl, out PACE pAce);
+	public static extern bool FindFirstFreeAce([In, AddAsMember] PACL pAcl, out PACE pAce);
 
 	/// <summary>The <c>GetAce</c> function obtains a pointer to an access control entry (ACE) in an access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
@@ -3930,7 +3844,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "5b5d8751-20d7-40a2-bd70-cfbe956aaa03")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAce(PACL pAcl, uint dwAceIndex, out PACE pAce);
+	public static extern bool GetAce([In, AddAsMember] PACL pAcl, uint dwAceIndex, out PACE pAce);
 
 	/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 	/// <param name="pAcl">
@@ -3964,7 +3878,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
-	public static extern bool GetAclInformation(PACL pAcl, IntPtr pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
+	public static extern bool GetAclInformation([In] PACL pAcl, IntPtr pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
 
 	/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 	/// <param name="pAcl">
@@ -3998,7 +3912,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
-	public static extern bool GetAclInformation(PACL pAcl, out ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
+	public static extern bool GetAclInformation([In] PACL pAcl, out ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
 
 	/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 	/// <param name="pAcl">
@@ -4032,7 +3946,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
-	public static extern bool GetAclInformation(PACL pAcl, out ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength = 12, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclSizeInformation);
+	public static extern bool GetAclInformation([In] PACL pAcl, out ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength = 12, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclSizeInformation);
 
 	/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 	/// <param name="pAcl">
@@ -4041,7 +3955,7 @@ public static partial class AdvApi32
 	/// <returns>
 	/// The requested information. The structure that is returned depends on the information class requested in the dwAclInformationClass parameter.
 	/// </returns>
-	public static T GetAclInformation<T>(this PACL pAcl) where T : struct
+	public static T GetAclInformation<T>([In, AddAsMember] this PACL pAcl) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet<T, ACL_INFORMATION_CLASS>(out var c)) throw new ArgumentException("Cannot retrieve value of type T.");
 		using var mem = new SafeCoTaskMemHandle(12);
@@ -4084,7 +3998,46 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "276e9657-5729-48cb-9531-14bfd08b7868")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetKernelObjectSecurity(HANDLE Handle, SECURITY_INFORMATION RequestedInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded);
+	public static extern bool GetKernelObjectSecurity([In] HANDLE Handle, SECURITY_INFORMATION RequestedInformation, [Out, Optional] PSECURITY_DESCRIPTOR pSecurityDescriptor, uint nLength, out uint lpnLengthNeeded);
+
+	/// <summary>The <c>GetKernelObjectSecurity</c> function retrieves a copy of the security descriptor that protects a kernel object.</summary>
+	/// <param name="Handle">A handle to a kernel object.</param>
+	/// <param name="RequestedInformation">Specifies a SECURITY_INFORMATION value that identifies the security information being requested.</param>
+	/// <param name="pSecurityDescriptor">
+	/// A pointer to a buffer the function fills with a copy of the security descriptor of the specified object. The calling process must
+	/// have the right to view the specified aspects of the object's security status. The SECURITY_DESCRIPTOR structure is returned in
+	/// self-relative format.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To read the owner, group, or DACL from the kernel object's security descriptor, the calling process must have been granted
+	/// READ_CONTROL access when the handle was opened. To get READ_CONTROL access, the caller must be the owner of the object or the
+	/// object's DACL must grant the access.
+	/// </para>
+	/// <para>
+	/// To read the SACL from the security descriptor, the calling process must have been granted ACCESS_SYSTEM_SECURITY access when the
+	/// handle was opened. The proper way to get this access is to enable the SE_SECURITY_NAME privilege in the caller's current token,
+	/// open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getkernelobjectsecurity BOOL
+	// GetKernelObjectSecurity( HANDLE Handle, SECURITY_INFORMATION RequestedInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, DWORD
+	// nLength, LPDWORD lpnLengthNeeded );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "276e9657-5729-48cb-9531-14bfd08b7868")]
+	public static Win32Error GetKernelObjectSecurity([In] IKernelHandle Handle, SECURITY_INFORMATION RequestedInformation, out SafePSECURITY_DESCRIPTOR pSecurityDescriptor)
+	{
+		if (!GetKernelObjectSecurity(Handle.DangerousGetHandle(), RequestedInformation, default, 0, out var reqLen) && reqLen == 0)
+		{
+			pSecurityDescriptor = SafePSECURITY_DESCRIPTOR.Null;
+			return Win32Error.GetLastError();
+		}
+		pSecurityDescriptor = new SafePSECURITY_DESCRIPTOR((int)reqLen);
+		return BoolToLastErr(GetKernelObjectSecurity(Handle.DangerousGetHandle(), RequestedInformation, pSecurityDescriptor, reqLen, out _));
+	}
 
 	/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
 	/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
@@ -4110,7 +4063,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446646")]
-	public static extern bool GetPrivateObjectSecurity(PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
+	public static extern bool GetPrivateObjectSecurity([In] PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
 		SafePSECURITY_DESCRIPTOR ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
 
 	/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
@@ -4122,7 +4075,8 @@ public static partial class AdvApi32
 	/// <returns>
 	/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
 	/// </returns>
-	public static SafePSECURITY_DESCRIPTOR GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation)
+	[return: AddAsCtor]
+	public static SafePSECURITY_DESCRIPTOR GetPrivateObjectSecurity([In] PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation)
 	{
 		var pResSD = SafePSECURITY_DESCRIPTOR.Null;
 		if (!GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, pResSD, 0, out var ret) && ret == 0)
@@ -4133,18 +4087,6 @@ public static partial class AdvApi32
 		return pResSD;
 	}
 
-	/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
-	/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
-	/// <param name="SecurityInformation">
-	/// A set of bit flags that indicate the parts of the security descriptor to retrieve. This parameter can be a combination of the
-	/// SECURITY_INFORMATION bit flags.
-	/// </param>
-	/// <returns>
-	/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
-	/// </returns>
-	public static SafePSECURITY_DESCRIPTOR GetPrivateObjectSecurity(this SafePSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation) =>
-		GetPrivateObjectSecurity((PSECURITY_DESCRIPTOR)ObjectDescriptor, SecurityInformation);
-
 	/// <summary>
 	/// Gets the required size of an ACE of the type specified by <typeparamref name="TAceStruct"/> with the supplied security identifier (SID).
 	/// </summary>
@@ -4152,7 +4094,7 @@ public static partial class AdvApi32
 	/// <param name="pSid">The security identifier (SID) structure pointer.</param>
 	/// <param name="sidOffset">On return, the offset within the structure where the SID should be copied.</param>
 	/// <returns>The required size, in bytes, for this ACE.</returns>
-	public static int GetRequiredAceSize<TAceStruct>(PSID pSid, out int sidOffset) where TAceStruct : struct
+	public static int GetRequiredAceSize<TAceStruct>([In, AddAsMember] PSID pSid, out int sidOffset) where TAceStruct : struct
 	{
 		sidOffset = GetSize<TAceStruct>() - GetSize<uint>();
 		return sidOffset + pSid.Length();
@@ -4183,7 +4125,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "d66682f2-8017-4245-9d93-5f8332a5b483")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetSecurityDescriptorControl(PSECURITY_DESCRIPTOR pSecurityDescriptor, out SECURITY_DESCRIPTOR_CONTROL pControl, out SDDL_REVISION lpdwRevision);
+	public static extern bool GetSecurityDescriptorControl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, out SECURITY_DESCRIPTOR_CONTROL pControl, out SDDL_REVISION lpdwRevision);
 
 	/// <summary>
 	/// The GetSecurityDescriptorDacl function retrieves a pointer to the discretionary access control list (DACL) in a specified
@@ -4225,7 +4167,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446648")]
-	public static extern bool GetSecurityDescriptorDacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclPresent,
+	public static extern bool GetSecurityDescriptorDacl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclPresent,
 		out PACL pDacl, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclDefaulted);
 
 	/// <summary>
@@ -4258,7 +4200,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "a920b49e-a4c2-4e49-b529-88c12205d995")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetSecurityDescriptorGroup(PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pGroup, [MarshalAs(UnmanagedType.Bool)] out bool lpbGroupDefaulted);
+	public static extern bool GetSecurityDescriptorGroup([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pGroup, [MarshalAs(UnmanagedType.Bool)] out bool lpbGroupDefaulted);
 
 	/// <summary>
 	/// The <c>GetSecurityDescriptorLength</c> function returns the length, in bytes, of a structurally valid security descriptor. The
@@ -4281,7 +4223,7 @@ public static partial class AdvApi32
 	// GetSecurityDescriptorLength( PSECURITY_DESCRIPTOR pSecurityDescriptor );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "eb331839-ff3e-4f4b-b93b-18da2ea72697")]
-	public static extern uint GetSecurityDescriptorLength(PSECURITY_DESCRIPTOR pSecurityDescriptor);
+	public static extern uint GetSecurityDescriptorLength([In] PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 	/// <summary>The GetSecurityDescriptorOwner function retrieves the owner information from a security descriptor.</summary>
 	/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure whose owner information the function retrieves.</param>
@@ -4302,7 +4244,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446651")]
-	public static extern bool GetSecurityDescriptorOwner(PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pOwner, [MarshalAs(UnmanagedType.Bool)] out bool lpbOwnerDefaulted);
+	public static extern bool GetSecurityDescriptorOwner([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pOwner, [MarshalAs(UnmanagedType.Bool)] out bool lpbOwnerDefaulted);
 
 	/// <summary>The <c>GetSecurityDescriptorRMControl</c> function retrieves the resource manager control bits.</summary>
 	/// <param name="SecurityDescriptor">
@@ -4333,7 +4275,7 @@ public static partial class AdvApi32
 	// GetSecurityDescriptorRMControl( PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "a1e2ce12-586b-4011-a82d-e246d5544367")]
-	public static extern uint GetSecurityDescriptorRMControl(PSECURITY_DESCRIPTOR SecurityDescriptor, out byte RMControl);
+	public static extern uint GetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, out byte RMControl);
 
 	/// <summary>
 	/// <para>
@@ -4376,7 +4318,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "6bf59735-aaa3-4751-8c98-00cc197df4e5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetSecurityDescriptorSacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbSaclPresent, out PACL pSacl,
+	public static extern bool GetSecurityDescriptorSacl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbSaclPresent, out PACL pSacl,
 		[MarshalAs(UnmanagedType.Bool)] out bool lpbSaclDefaulted);
 
 	/// <summary>
@@ -4431,7 +4373,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
-	public static extern bool GetTokenInformation(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, IntPtr TokenInformation, int TokenInformationLength, out int ReturnLength);
+	public static extern bool GetTokenInformation([In] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, IntPtr TokenInformation, int TokenInformationLength, out int ReturnLength);
 
 	/// <summary>
 	/// <para>
@@ -4463,7 +4405,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-gettokeninformation
 	// BOOL GetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
-	public static T GetTokenInformation<T>(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS? TokenInformationClass = null) where T : struct
+	public static T GetTokenInformation<T>([In] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS? TokenInformationClass = null) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet<T, TOKEN_INFORMATION_CLASS>(TokenInformationClass, out var ti))
 			throw new InvalidCastException();
@@ -4472,7 +4414,7 @@ public static partial class AdvApi32
 		if (!GetTokenInformation(TokenHandle, ti, default, 0, out var cbSize))
 		{
 			var e = Win32Error.GetLastError();
-			if (e != Win32Error.ERROR_INSUFFICIENT_BUFFER && e != Win32Error.ERROR_BAD_LENGTH)
+			if ((uint)e is not Win32Error.ERROR_INSUFFICIENT_BUFFER and not Win32Error.ERROR_BAD_LENGTH)
 				e.ThrowIfFailed();
 		}
 
@@ -4508,7 +4450,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "98d1072e-f569-4c8c-9254-fa558054c7ec")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ImpersonateAnonymousToken(HTHREAD ThreadHandle);
+	public static extern bool ImpersonateAnonymousToken([In, AddAsMember] HTHREAD ThreadHandle);
 
 	/// <summary>
 	/// <para>
@@ -4568,7 +4510,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "cf5c31ae-6749-45c2-888f-697060cc8c75")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ImpersonateLoggedOnUser(HTOKEN hToken);
+	public static extern bool ImpersonateLoggedOnUser([In, AddAsMember] HTOKEN hToken);
 
 	/// <summary>
 	/// The <c>ImpersonateSelf</c> function obtains an access token that impersonates the security context of the calling process. The
@@ -4652,7 +4594,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "b990a7bd-7840-4c10-baf8-68b3862147f4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InitializeAcl(PACL pAcl, uint nAclLength, uint dwAclRevision);
+	public static extern bool InitializeAcl([Out, SizeDef(nameof(nAclLength))] PACL pAcl, uint nAclLength, uint dwAclRevision = ACL_REVISION_DS);
 
 	/// <summary>The <c>InitializeSecurityDescriptor</c> function initializes a new security descriptor.</summary>
 	/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure that the function initializes.</param>
@@ -4678,7 +4620,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "234fcda4-7d30-4c3f-a036-7ace58ca8a3c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InitializeSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor, uint dwRevision);
+	public static extern bool InitializeSecurityDescriptor([Out] PSECURITY_DESCRIPTOR pSecurityDescriptor, uint dwRevision = SECURITY_DESCRIPTOR_REVISION);
 
 	/// <summary>
 	/// The <c>InsertAccessAllowedAce</c> function inserts an access-allowed access control entry (ACE) into a discretionary access
@@ -4781,7 +4723,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessallowedaceex BOOL
 	// AddAccessAllowedAceEx( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "6ddec01f-237f-4b6a-8ea8-a126017b30c5")]
-	public static bool InsertAccessAllowedAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid)
+	public static bool InsertAccessAllowedAce([In, AddAsMember] PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, [In] PSID pSid)
 	{
 		using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_ACE>(pSid, out var offset));
 		// Build ACE
@@ -4916,7 +4858,7 @@ public static partial class AdvApi32
 	// AddAccessAllowedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
 	// *InheritedObjectTypeGuid, PSID pSid );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ccf83e95-ba6f-49f5-a312-52eac90f209a")]
-	public static bool InsertAccessAllowedObjectAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
+	public static bool InsertAccessAllowedObjectAce([In, AddAsMember] PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
 	{
 		using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_ALLOWED_OBJECT_ACE>(pSid, out var offset));
 		// Build ACE
@@ -5035,7 +4977,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessdeniedaceex BOOL
 	// AddAccessDeniedAceEx( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, PSID pSid );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "e353c88c-f82e-40c0-b676-38f0060acc81")]
-	public static bool InsertAccessDeniedAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid)
+	public static bool InsertAccessDeniedAce([In, AddAsMember] PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, PSID pSid)
 	{
 		using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_ACE>(pSid, out var offset));
 		// Build ACE
@@ -5172,7 +5114,7 @@ public static partial class AdvApi32
 	// AddAccessDeniedObjectAce( PACL pAcl, DWORD dwAceRevision, DWORD AceFlags, DWORD AccessMask, GUID *ObjectTypeGuid, GUID
 	// *InheritedObjectTypeGuid, PSID pSid );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "1427c908-92b6-46b2-9189-a2fd93c470b1")]
-	public static bool InsertAccessDeniedObjectAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
+	public static bool InsertAccessDeniedObjectAce([In, AddAsMember] PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, AceFlags AceFlags, ACCESS_MASK AccessMask, Guid? ObjectTypeGuid, Guid? InheritedObjectTypeGuid, PSID pSid)
 	{
 		using var aceMem = new SafeHeapBlock(GetRequiredAceSize<ACCESS_DENIED_OBJECT_ACE>(pSid, out var offset));
 		// Build ACE
@@ -5210,7 +5152,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "eaa63bb9-3084-4246-b2ab-f913bb7348fb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsTokenRestricted(HTOKEN TokenHandle);
+	public static extern bool IsTokenRestricted([In, AddAsMember] HTOKEN TokenHandle);
 
 	/// <summary>The <c>IsValidAcl</c> function validates an access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL structure validated by this function. This value must not be <c>NULL</c>.</param>
@@ -5231,7 +5173,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "3ae9f147-4e90-44df-a1af-cf6ebad92aea")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidAcl(PACL pAcl);
+	public static extern bool IsValidAcl([In, AddAsMember] PACL pAcl);
 
 	/// <summary>The <c>IsValidSecurityDescriptor</c> function determines whether the components of a security descriptor are valid.</summary>
 	/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure that the function validates.</param>
@@ -5251,7 +5193,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "24a98229-11e4-45ef-988b-c2cf831275e7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor);
+	public static extern bool IsValidSecurityDescriptor([In] PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 	/// <summary>
 	/// The <c>MakeAbsoluteSD</c> function creates a security descriptor in absolute format by using a security descriptor in self-relative
@@ -5489,7 +5431,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "497c7e2f-75b7-41b9-9693-37e041b7af58")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MakeSelfRelativeSD(PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, ref uint lpdwBufferLength);
+	public static extern bool MakeSelfRelativeSD([In] PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, ref uint lpdwBufferLength);
 
 	/// <summary>
 	/// The MapGenericMask function maps the generic access rights in an access mask to specific and standard access rights. The function
@@ -5534,9 +5476,8 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa379304")]
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PrivilegeCheck(HTOKEN ClientToken,
-		[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET RequiredPrivileges,
-		[MarshalAs(UnmanagedType.Bool)] out bool pfResult);
+	public static extern bool PrivilegeCheck([In, AddAsMember] HTOKEN ClientToken,
+		[In, Out, StructPointer(typeof(PRIVILEGE_SET))] IntPtr RequiredPrivileges, [MarshalAs(UnmanagedType.Bool)] out bool pfResult);
 
 	/// <summary>
 	/// The <c>QuerySecurityAccessMask</c> function creates an access mask that represents the access permissions necessary to query the
@@ -5582,7 +5523,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "bb4dd7f9-2f15-4a27-89c9-1675f4fb8d92")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetAclInformation(PACL pAcl, in ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
+	public static extern bool SetAclInformation([In, Out, AddAsMember] PACL pAcl, in ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
 
 	/// <summary>The <c>SetAclInformation</c> function sets information about an access control list (ACL).</summary>
 	/// <param name="pAcl">A pointer to an ACL. The function sets information in this ACL.</param>
@@ -5606,7 +5547,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "bb4dd7f9-2f15-4a27-89c9-1675f4fb8d92")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetAclInformation(PACL pAcl, IntPtr pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
+	public static extern bool SetAclInformation([In, Out] PACL pAcl, IntPtr pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
 
 	/// <summary>
 	/// The <c>SetKernelObjectSecurity</c> function sets the security of a kernel object. For example, this can be a process, thread, or event.
@@ -5629,78 +5570,23 @@ public static partial class AdvApi32
 	public static extern bool SetKernelObjectSecurity(HANDLE Handle, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR SecurityDescriptor);
 
 	/// <summary>
-	/// <para>The <c>SetPrivateObjectSecurity</c> function modifies a private object's security descriptor.</para>
-	/// <para>
-	/// To specify whether the protected server supports automatic inheritance of access control entries (ACEs), use the
-	/// SetPrivateObjectSecurityEx function.
-	/// </para>
+	/// The <c>SetKernelObjectSecurity</c> function sets the security of a kernel object. For example, this can be a process, thread, or event.
 	/// </summary>
+	/// <param name="Handle">A handle to a kernel object for which security information is set.</param>
 	/// <param name="SecurityInformation">
-	/// Indicates the parts of the security descriptor to set. This value can be a combination of the SECURITY_INFORMATION bit flags.
+	/// A set of bit flags that indicate the type of security information to set. This parameter can be a combination of the
+	/// SECURITY_INFORMATION bit flags.
 	/// </param>
-	/// <param name="ModificationDescriptor">
-	/// A pointer to a SECURITY_DESCRIPTOR structure. The parts of this security descriptor indicated by the SecurityInformation
-	/// parameter are applied to the ObjectsSecurityDescriptor security descriptor.
-	/// </param>
-	/// <param name="ObjectsSecurityDescriptor">
-	/// <para>
-	/// A pointer to a pointer to a SECURITY_DESCRIPTOR structure. This security descriptor must be in self-relative form. <c>The memory
-	/// for the security descriptor must be allocated from the process heap (GetProcessHeap) with the HeapAlloc function.</c>
-	/// </para>
-	/// <para>
-	/// On input, this is the current security descriptor of the private object. The function modifies it to produce the new security
-	/// descriptor. If necessary, the <c>SetPrivateObjectSecurity</c> function allocates additional memory to produce a larger security descriptor.
-	/// </para>
-	/// </param>
-	/// <param name="GenericMapping">
-	/// A pointer to a GENERIC_MAPPING structure that specifies the specific and standard access rights that correspond to each of the
-	/// generic access rights.
-	/// </param>
-	/// <param name="Token">
-	/// A handle to the access token for the client on whose behalf the private object's security is being modified. This parameter is
-	/// required to ensure that the client has provided a legitimate value for a new owner security identifier (SID). The token must be
-	/// open for TOKEN_QUERY access.
-	/// </param>
+	/// <param name="SecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure that contains the new security information.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the function returns nonzero.</para>
 	/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// This function is intended for use by resource managers only. To implement the standard access control semantics for updating
-	/// security descriptors, a resource manager should verify that the following conditions are met before calling <c>SetPrivateObjectSecurity</c>:
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>If the object's owner is being set, the calling process must have either WRITE_OWNER permission or be the object's owner.</term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the object's discretionary access control list (DACL) is being set, the calling process must have either WRITE_DAC permission
-	/// or be the object's owner.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the object's system access control list (SACL) is being set, the SE_SECURITY_NAME privilege must be enabled for the calling process.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// If the preceding conditions are not met, a call to this function does not fail; however, standard access policy is not enforced.
-	/// </para>
-	/// <para>
-	/// The process calling this function should not be impersonating a client because clients do not typically have appropriate
-	/// privileges required for underlying token operations.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-setprivateobjectsecurity BOOL
-	// SetPrivateObjectSecurity( SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor,
-	// PSECURITY_DESCRIPTOR *ObjectsSecurityDescriptor, PGENERIC_MAPPING GenericMapping, HANDLE Token );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "726994c8-7813-4f1a-b7d7-a25e79202c33")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPrivateObjectSecurity(SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor, ref PSECURITY_DESCRIPTOR ObjectsSecurityDescriptor, in GENERIC_MAPPING GenericMapping, HTOKEN Token);
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-setkernelobjectsecurity BOOL
+	// SetKernelObjectSecurity( HANDLE Handle, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR SecurityDescriptor );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "2a70483e-245d-4bc7-b90a-58d143364ce1")]
+	public static Win32Error SetKernelObjectSecurity(IKernelHandle Handle, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR SecurityDescriptor) =>
+		BoolToLastErr(SetKernelObjectSecurity(Handle.DangerousGetHandle(), SecurityInformation, SecurityDescriptor));
 
 	/// <summary>
 	/// <para>The <c>SetPrivateObjectSecurity</c> function modifies a private object's security descriptor.</para>
@@ -5774,7 +5660,83 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "726994c8-7813-4f1a-b7d7-a25e79202c33")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPrivateObjectSecurity(SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor, ref IntPtr ObjectsSecurityDescriptor, in GENERIC_MAPPING GenericMapping, HTOKEN Token);
+	public static extern bool SetPrivateObjectSecurity(SECURITY_INFORMATION SecurityInformation, [In] PSECURITY_DESCRIPTOR ModificationDescriptor,
+		ref PSECURITY_DESCRIPTOR ObjectsSecurityDescriptor, in GENERIC_MAPPING GenericMapping, [In, Optional] HTOKEN Token);
+
+	/// <summary>
+	/// <para>The <c>SetPrivateObjectSecurity</c> function modifies a private object's security descriptor.</para>
+	/// <para>
+	/// To specify whether the protected server supports automatic inheritance of access control entries (ACEs), use the
+	/// SetPrivateObjectSecurityEx function.
+	/// </para>
+	/// </summary>
+	/// <param name="SecurityInformation">
+	/// Indicates the parts of the security descriptor to set. This value can be a combination of the SECURITY_INFORMATION bit flags.
+	/// </param>
+	/// <param name="ModificationDescriptor">
+	/// A pointer to a SECURITY_DESCRIPTOR structure. The parts of this security descriptor indicated by the SecurityInformation
+	/// parameter are applied to the ObjectsSecurityDescriptor security descriptor.
+	/// </param>
+	/// <param name="ObjectsSecurityDescriptor">
+	/// <para>
+	/// A pointer to a pointer to a SECURITY_DESCRIPTOR structure. This security descriptor must be in self-relative form. <c>The memory
+	/// for the security descriptor must be allocated from the process heap (GetProcessHeap) with the HeapAlloc function.</c>
+	/// </para>
+	/// <para>
+	/// On input, this is the current security descriptor of the private object. The function modifies it to produce the new security
+	/// descriptor. If necessary, the <c>SetPrivateObjectSecurity</c> function allocates additional memory to produce a larger security descriptor.
+	/// </para>
+	/// </param>
+	/// <param name="GenericMapping">
+	/// A pointer to a GENERIC_MAPPING structure that specifies the specific and standard access rights that correspond to each of the
+	/// generic access rights.
+	/// </param>
+	/// <param name="Token">
+	/// A handle to the access token for the client on whose behalf the private object's security is being modified. This parameter is
+	/// required to ensure that the client has provided a legitimate value for a new owner security identifier (SID). The token must be
+	/// open for TOKEN_QUERY access.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns nonzero.</para>
+	/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function is intended for use by resource managers only. To implement the standard access control semantics for updating
+	/// security descriptors, a resource manager should verify that the following conditions are met before calling <c>SetPrivateObjectSecurity</c>:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>If the object's owner is being set, the calling process must have either WRITE_OWNER permission or be the object's owner.</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If the object's discretionary access control list (DACL) is being set, the calling process must have either WRITE_DAC permission
+	/// or be the object's owner.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If the object's system access control list (SACL) is being set, the SE_SECURITY_NAME privilege must be enabled for the calling process.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If the preceding conditions are not met, a call to this function does not fail; however, standard access policy is not enforced.
+	/// </para>
+	/// <para>
+	/// The process calling this function should not be impersonating a client because clients do not typically have appropriate
+	/// privileges required for underlying token operations.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-setprivateobjectsecurity BOOL
+	// SetPrivateObjectSecurity( SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor,
+	// PSECURITY_DESCRIPTOR *ObjectsSecurityDescriptor, PGENERIC_MAPPING GenericMapping, HANDLE Token );
+	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "726994c8-7813-4f1a-b7d7-a25e79202c33")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool SetPrivateObjectSecurity(SECURITY_INFORMATION SecurityInformation, [In] PSECURITY_DESCRIPTOR ModificationDescriptor,
+		ref IntPtr ObjectsSecurityDescriptor, in GENERIC_MAPPING GenericMapping, [In, Optional] HTOKEN Token);
 
 	/// <summary>
 	/// The <c>SetPrivateObjectSecurityEx</c> function modifies the security descriptor of a private object maintained by the resource
@@ -6001,7 +5963,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "eb3a751f-741e-448f-b812-5f16a4040b5e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPrivateObjectSecurityEx(SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR ModificationDescriptor, ref PSECURITY_DESCRIPTOR ObjectsSecurityDescriptor, SEF AutoInheritFlags, in GENERIC_MAPPING GenericMapping, HTOKEN Token);
+	public static extern bool SetPrivateObjectSecurityEx(SECURITY_INFORMATION SecurityInformation, [In] PSECURITY_DESCRIPTOR ModificationDescriptor,
+		ref PSECURITY_DESCRIPTOR ObjectsSecurityDescriptor, SEF AutoInheritFlags, in GENERIC_MAPPING GenericMapping, [In, Optional] HTOKEN Token);
 
 	/// <summary>
 	/// The <c>SetSecurityAccessMask</c> function creates an access mask that represents the access permissions necessary to set the
@@ -6043,7 +6006,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "672406af-ae04-4939-82a4-069a91e61b3f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSecurityDescriptorControl(PSECURITY_DESCRIPTOR pSecurityDescriptor, SECURITY_DESCRIPTOR_CONTROL ControlBitsOfInterest, SECURITY_DESCRIPTOR_CONTROL ControlBitsToSet);
+	public static extern bool SetSecurityDescriptorControl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, SECURITY_DESCRIPTOR_CONTROL ControlBitsOfInterest,
+		SECURITY_DESCRIPTOR_CONTROL ControlBitsToSet);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorDacl</c> function sets information in a discretionary access control list (DACL). If a DACL is
@@ -6111,7 +6075,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "a873b803-391e-47e1-af7e-6dad7195968c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSecurityDescriptorDacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] bool bDaclPresent, PACL pDacl, [MarshalAs(UnmanagedType.Bool)] bool bDaclDefaulted);
+	public static extern bool SetSecurityDescriptorDacl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] bool bDaclPresent,
+		[In, Optional] PACL pDacl, [MarshalAs(UnmanagedType.Bool)] bool bDaclDefaulted);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorGroup</c> function sets the primary group information of an absolute-format security descriptor,
@@ -6140,7 +6105,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "060c375c-a313-4fa2-8d85-cee9369c26a8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSecurityDescriptorGroup(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID pGroup, [MarshalAs(UnmanagedType.Bool)] bool bGroupDefaulted);
+	public static extern bool SetSecurityDescriptorGroup([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID pGroup, [MarshalAs(UnmanagedType.Bool)] bool bGroupDefaulted);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorOwner</c> function sets the owner information of an absolute-format security descriptor. It replaces
@@ -6169,7 +6134,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "cb3ba617-322a-4b8c-a9d5-32910315fb56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSecurityDescriptorOwner(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID pOwner, [MarshalAs(UnmanagedType.Bool)] bool bOwnerDefaulted);
+	public static extern bool SetSecurityDescriptorOwner([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In, Optional] PSID pOwner,
+		[MarshalAs(UnmanagedType.Bool)] bool bOwnerDefaulted);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorRMControl</c> function sets the resource manager control bits in the SECURITY_DESCRIPTOR structure.
@@ -6189,7 +6155,7 @@ public static partial class AdvApi32
 	// SetSecurityDescriptorRMControl( PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "fe9c736b-e047-4aa3-a3de-d5f2f2cdab4f")]
-	public static extern uint SetSecurityDescriptorRMControl(PSECURITY_DESCRIPTOR SecurityDescriptor, in byte RMControl);
+	public static extern uint SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, in byte RMControl);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorRMControl</c> function sets the resource manager control bits in the SECURITY_DESCRIPTOR structure.
@@ -6209,7 +6175,7 @@ public static partial class AdvApi32
 	// SetSecurityDescriptorRMControl( PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "fe9c736b-e047-4aa3-a3de-d5f2f2cdab4f")]
-	public static extern uint SetSecurityDescriptorRMControl(PSECURITY_DESCRIPTOR SecurityDescriptor, [In, Optional] IntPtr RMControl);
+	public static extern uint SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, [In, Optional] IntPtr RMControl);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorSacl</c> function sets information in a system access control list (SACL). If there is already a SACL
@@ -6242,7 +6208,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "21615b63-0619-4c0c-a1b8-88ed09a1235c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetSecurityDescriptorSacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] bool bSaclPresent, PACL pSacl, [MarshalAs(UnmanagedType.Bool)] bool bSaclDefaulted);
+	public static extern bool SetSecurityDescriptorSacl([In, AddAsMember] PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] bool bSaclPresent,
+		[In, Optional] PACL pSacl, [MarshalAs(UnmanagedType.Bool)] bool bSaclDefaulted);
 
 	/// <summary>
 	/// The <c>SetTokenInformation</c> function sets various types of information for a specified access token. The information that this
@@ -6275,7 +6242,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "cdb8af74-540d-4059-ac64-6243f6aabaa6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetTokenInformation(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, IntPtr TokenInformation, uint TokenInformationLength);
+	public static extern bool SetTokenInformation([In] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass,
+		IntPtr TokenInformation, uint TokenInformationLength);
 
 	/// <summary>
 	/// The <c>SetTokenInformation</c> function sets various types of information for a specified access token. The information that this
@@ -6305,7 +6273,7 @@ public static partial class AdvApi32
 	// SetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD
 	// TokenInformationLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "cdb8af74-540d-4059-ac64-6243f6aabaa6")]
-	public static bool SetTokenInformation<T>(HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, T TokenInformation)
+	public static bool SetTokenInformation<T>([In] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, T TokenInformation)
 	{
 		if (!CorrespondingTypeAttribute.CanSet(TokenInformationClass, typeof(T))) throw new InvalidCastException();
 		using var mem = SafeHGlobalHandle.CreateFromStructure(TokenInformation);
@@ -6324,6 +6292,7 @@ public static partial class AdvApi32
 	/// </summary>
 	/// <seealso cref="SafeKernelHandle" />
 	[AutoSafeHandle(null, typeof(HTOKEN), typeof(SafeKernelHandle))]
+	[AdjustAutoMethodNamePattern("Token|Ex", "")]
 	public partial class SafeHTOKEN
 	{
 		private const TokenAccess defDupAccess = TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_ASSIGN_PRIMARY | TokenAccess.TOKEN_ADJUST_DEFAULT | TokenAccess.TOKEN_ADJUST_SESSIONID | TokenAccess.TOKEN_IMPERSONATE;
@@ -6615,7 +6584,7 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SECURITY_DESCRIPTOR"/> that is disposed using <see cref="DestroyPrivateObjectSecurity"/>.</summary>
-	[AutoSafeHandle("DestroyPrivateObjectSecurity(this)", typeof(PSECURITY_DESCRIPTOR))]
+	[AutoSafeHandle("DestroyPrivateObjectSecurity(ref handle)", typeof(PSECURITY_DESCRIPTOR))]
 	public partial class SafePrivateObjectSecurity
 	{
 		/// <summary>Gets the raw handle instance for this SafeHandle. Be very careful!!. This should only be used with <see cref="SetPrivateObjectSecurity(SECURITY_INFORMATION, PSECURITY_DESCRIPTOR, ref IntPtr, in GENERIC_MAPPING, HTOKEN)"/>.</summary>

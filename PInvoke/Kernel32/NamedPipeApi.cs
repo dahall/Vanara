@@ -235,7 +235,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365146")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ConnectNamedPipe([In, AddAsMember] HPIPE hNamedPipe, [Optional] StructPointer<NativeOverlapped> lpOverlapped);
+	public static extern bool ConnectNamedPipe([In, AddAsMember] HPIPE hNamedPipe, [In, Out, Optional, StructPointer(typeof(NativeOverlapped))] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Enables a named pipe server process to wait for a client process to connect to an instance of a named pipe. A client process
@@ -766,81 +766,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional, Out] StructPointer<uint> lpMaxCollectionCount,
-		[Optional, Out] StructPointer<uint> lpCollectDataTimeout, [Optional] StringBuilder? lpUserName, [Optional] uint nMaxUserNameSize);
-
-	/// <summary>
-	/// Retrieves information about a specified named pipe. The information returned can vary during the lifetime of an instance of the
-	/// named pipe.
-	/// </summary>
-	/// <param name="hNamedPipe">
-	/// <para>
-	/// A handle to the named pipe for which information is wanted. The handle must have GENERIC_READ access for a read-only or
-	/// read/write pipe, or it must have GENERIC_WRITE and FILE_READ_ATTRIBUTES access for a write-only pipe.
-	/// </para>
-	/// <para>This parameter can also be a handle to an anonymous pipe, as returned by the <c>CreatePipe</c> function.</para>
-	/// </param>
-	/// <param name="lpState">
-	/// <para>
-	/// A pointer to a variable that indicates the current state of the handle. This parameter can be <c>NULL</c> if this information is
-	/// not needed. Either or both of the following values can be specified.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>PIPE_NOWAIT0x00000001</term>
-	/// <term>The pipe handle is in nonblocking mode. If this flag is not specified, the pipe handle is in blocking mode.</term>
-	/// </item>
-	/// <item>
-	/// <term>PIPE_READMODE_MESSAGE0x00000002</term>
-	/// <term>The pipe handle is in message-read mode. If this flag is not specified, the pipe handle is in byte-read mode.</term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <param name="lpCurInstances">
-	/// A pointer to a variable that receives the number of current pipe instances. This parameter can be <c>NULL</c> if this information
-	/// is not required.
-	/// </param>
-	/// <param name="lpMaxCollectionCount">
-	/// A pointer to a variable that receives the maximum number of bytes to be collected on the client's computer before transmission to
-	/// the server. This parameter must be <c>NULL</c> if the specified pipe handle is to the server end of a named pipe or if client and
-	/// server processes are on the same computer. This parameter can be <c>NULL</c> if this information is not required.
-	/// </param>
-	/// <param name="lpCollectDataTimeout">
-	/// A pointer to a variable that receives the maximum time, in milliseconds, that can pass before a remote named pipe transfers
-	/// information over the network. This parameter must be <c>NULL</c> if the specified pipe handle is to the server end of a named
-	/// pipe or if client and server processes are on the same computer. This parameter can be <c>NULL</c> if this information is not required.
-	/// </param>
-	/// <param name="lpUserName">
-	/// <para>
-	/// A pointer to a buffer that receives the user name string associated with the client application. The server can only retrieve
-	/// this information if the client opened the pipe with SECURITY_IMPERSONATION access.
-	/// </para>
-	/// <para>
-	/// This parameter must be <c>NULL</c> if the specified pipe handle is to the client end of a named pipe. This parameter can be
-	/// <c>NULL</c> if this information is not required.
-	/// </para>
-	/// </param>
-	/// <param name="nMaxUserNameSize">
-	/// The size of the buffer specified by the lpUserName parameter, in <c>TCHARs</c>. This parameter is ignored if lpUserName is <c>NULL</c>.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI GetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpState, _Out_opt_ LPDWORD lpCurInstances,
-	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ StrPtrAuto lpUserName, _In_ DWORD
-	// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365443")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, out uint lpMaxCollectionCount,
-		out uint lpCollectDataTimeout, [Optional] StringBuilder? lpUserName, [Optional] uint nMaxUserNameSize);
+	public static extern bool GetNamedPipeHandleState([In] HPIPE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, [Optional, Out, StructPointer(typeof(uint))] IntPtr lpMaxCollectionCount,
+		[Optional, Out, StructPointer(typeof(uint))] IntPtr lpCollectDataTimeout, [Out, Optional] StringBuilder? lpUserName, [Optional] uint nMaxUserNameSize);
 
 	/// <summary>Retrieves information about the specified named pipe.</summary>
 	/// <param name="hNamedPipe">

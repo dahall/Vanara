@@ -5013,7 +5013,7 @@ public static partial class AdvApi32
 		public string lpDisplayName;
 
 		/// <summary/>
-		public IEnumerable<string> Dependencies => lpDependencies.ToStringEnum();
+		public readonly IEnumerable<string> Dependencies => lpDependencies.ToStringEnum();
 	}
 
 	/// <summary>
@@ -5417,7 +5417,7 @@ public static partial class AdvApi32
 		public IntPtr lpsaActions;
 
 		/// <summary/>
-		public SC_ACTION[] Actions => lpsaActions.ToArray<SC_ACTION>((int)cActions) ?? new SC_ACTION[0];
+		public readonly SC_ACTION[] Actions => lpsaActions.ToArray<SC_ACTION>((int)cActions) ?? [];
 	}
 
 	/// <summary>
@@ -6253,11 +6253,14 @@ public static partial class AdvApi32
 	/// Specifies the ServiceMain function for a service that can run in the calling process. It is used by the
 	/// StartServiceCtrlDispatcher function.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="SERVICE_TABLE_ENTRY"/> struct.</remarks>
+	/// <param name="serviceName">Name of the service.</param>
+	/// <param name="serviceProc">The service proc.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/ns-winsvc-_service_table_entrya typedef struct _SERVICE_TABLE_ENTRYA {
 	// StrPtrAnsi lpServiceName; LPSERVICE_MAIN_FUNCTIONA lpServiceProc; } SERVICE_TABLE_ENTRYA, *LPSERVICE_TABLE_ENTRYA;
 	[PInvokeData("winsvc.h", MSDNShortId = "dd40c4f0-cbbe-429f-91c0-3ba141dab702")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct SERVICE_TABLE_ENTRY
+	public struct SERVICE_TABLE_ENTRY(string serviceName, AdvApi32.ServiceMain serviceProc)
 	{
 		/// <summary>
 		/// <para>The name of a service to be run in this service process.</para>
@@ -6271,20 +6274,11 @@ public static partial class AdvApi32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpServiceName;
+		public string lpServiceName = serviceName;
 
 		/// <summary>A pointer to a ServiceMain function.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public ServiceMain lpServiceProc;
-
-		/// <summary>Initializes a new instance of the <see cref="SERVICE_TABLE_ENTRY"/> struct.</summary>
-		/// <param name="serviceName">Name of the service.</param>
-		/// <param name="serviceProc">The service proc.</param>
-		public SERVICE_TABLE_ENTRY(string serviceName, ServiceMain serviceProc)
-		{
-			lpServiceName = serviceName;
-			lpServiceProc = serviceProc;
-		}
+		public ServiceMain lpServiceProc = serviceProc;
 	}
 
 	/// <summary>
@@ -6511,10 +6505,10 @@ public static partial class AdvApi32
 		public IntPtr pDataItems;
 
 		/// <summary/>
-		public Guid TriggerSubType => pTriggerSubtype.ToStructure<Guid>();
+		public readonly Guid TriggerSubType => pTriggerSubtype.ToStructure<Guid>();
 
 		/// <summary/>
-		public SERVICE_TRIGGER_SPECIFIC_DATA_ITEM[] DataItems => pDataItems.ToArray<SERVICE_TRIGGER_SPECIFIC_DATA_ITEM>((int)cDataItems) ?? new SERVICE_TRIGGER_SPECIFIC_DATA_ITEM[0];
+		public readonly SERVICE_TRIGGER_SPECIFIC_DATA_ITEM[] DataItems => pDataItems.ToArray<SERVICE_TRIGGER_SPECIFIC_DATA_ITEM>((int)cDataItems) ?? [];
 	}
 
 	/// <summary>
@@ -6551,7 +6545,7 @@ public static partial class AdvApi32
 		public IntPtr pReserved;
 
 		/// <summary/>
-		public SERVICE_TRIGGER[] Triggers => pTriggers.ToArray<SERVICE_TRIGGER>((int)cTriggers) ?? new SERVICE_TRIGGER[0];
+		public readonly SERVICE_TRIGGER[] Triggers => pTriggers.ToArray<SERVICE_TRIGGER>((int)cTriggers) ?? [];
 	}
 
 	/// <summary>

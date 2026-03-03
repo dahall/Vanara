@@ -48,9 +48,10 @@ public class Imm32Tests
 	[Test]
 	public void ImmGetConversionListTest()
 	{
-		var hIMC = ImmGetContext(GetDesktopWindow());
+		var hwnd = GetDesktopWindow();
+		using var hIMC = ImmGetContext(hwnd);
 		Assert.That(hIMC, ResultIs.ValidHandle);
-		var hKL = GetKeyboardLayout(0);
+		var hKL = GetKeyboardLayout();
 		Assert.That(hKL, ResultIs.ValidHandle);
 		var convList = ImmGetConversionList(hKL, hIMC, "", GCL.GCL_REVERSECONVERSION);
 	}

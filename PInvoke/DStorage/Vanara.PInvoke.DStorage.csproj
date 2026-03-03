@@ -24,15 +24,10 @@ IDStorageCompressionCodec IDStorageCustomDecompressionQueue IDStorageCustomDecom
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Direct3D12\Vanara.PInvoke.Direct3D12.csproj" />
-    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <PackageReference Include="Microsoft.Direct3D.DirectStorage" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="dstorage.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="dstoragecore.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Direct3D12\Vanara.PInvoke.Direct3D12.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

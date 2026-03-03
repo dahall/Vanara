@@ -1444,7 +1444,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetConsoleProcessList( _Out_ LPDWORD lpdwProcessList, _In_ DWORD dwProcessCount );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern uint GetConsoleProcessList([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] lpdwProcessList, uint dwProcessCount);
+	[SuppressAutoGen]
+	public static extern uint GetConsoleProcessList([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(dwProcessCount), SizingMethod.QueryResultInReturn)] uint[] lpdwProcessList, uint dwProcessCount);
 
 	/// <summary>Retrieves a list of the processes attached to the current console.</summary>
 	/// <returns>An array of process identifiers upon success.</returns>
@@ -1676,7 +1677,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "PeekConsoleInputW", CharSet = CharSet.Unicode)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PeekConsoleInput([In] HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+	public static extern bool PeekConsoleInput([In] HFILE hConsoleInput, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
 		uint nLength, out uint lpNumberOfEventsRead);
 
 	/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
@@ -1874,7 +1875,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleInput([In] HFILE hConsoleInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
+	public static extern bool ReadConsoleInput([In] HFILE hConsoleInput, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer,
 		uint nLength, out uint lpNumberOfEventsRead);
 
 	/// <summary>
@@ -1917,7 +1918,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutput([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray)] CHAR_INFO[] lpBuffer,
+	public static extern bool ReadConsoleOutput([In] HFILE hConsoleOutput, [In, Out, MarshalAs(UnmanagedType.LPArray)] CHAR_INFO[] lpBuffer,
 		COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpReadRegion);
 
 	/// <summary>
@@ -1953,7 +1954,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+	public static extern bool ReadConsoleOutputAttribute([In] HFILE hConsoleOutput, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
 		uint nLength, COORD dwReadCoord, out uint lpNumberOfAttrsRead);
 
 	/// <summary>Copies a number of characters from consecutive cells of a console screen buffer, beginning at a specified location.</summary>
@@ -2921,7 +2922,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+	public static extern bool WriteConsoleOutputAttribute([In] HFILE hConsoleOutput, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
 		uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 	/// <summary>Copies a number of characters to consecutive cells of a console screen buffer, beginning at a specified location.</summary>
@@ -3313,7 +3314,7 @@ public static partial class Kernel32
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => $"X={X},Y={Y}";
+		public override readonly string ToString() => $"X={X},Y={Y}";
 
 		/// <summary>Represents an empty instance of COORD with both X and Y values set to 0.</summary>
 		public static readonly COORD Empty = default;
@@ -3700,7 +3701,7 @@ public static partial class Kernel32
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => $"L={Left},R={Right},T={Top},B={Bottom}";
+		public override readonly string ToString() => $"L={Left},R={Right},T={Top},B={Bottom}";
 	}
 
 	/// <summary>Describes a change in the size of the console screen buffer.</summary>

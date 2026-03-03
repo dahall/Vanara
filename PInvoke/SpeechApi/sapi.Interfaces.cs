@@ -232,7 +232,7 @@ public static partial class SpeechApi
 		/// The REFGUID for the format to set. Typically this will be SPDFID_WaveFormatEx. This is required for the SAPI multimedia objects.
 		/// </param>
 		/// <param name="pWaveFormatEx">Address of the WAVEFORMATEX structure containing the wave file format information.</param>
-		void SetFormat(in Guid rguidFmtId, [In] StructPointer<WAVEFORMATEX> pWaveFormatEx);
+		void SetFormat(in Guid rguidFmtId, [In, StructPointer(typeof(WAVEFORMATEX))] IntPtr pWaveFormatEx);
 
 		/// <summary>Retrieves the current status of the audio device.</summary>
 		/// <returns>An SPAUDIOSTATUS filled with the status details.</returns>
@@ -3741,7 +3741,7 @@ public static partial class SpeechApi
 		/// The REFGUID for the format to set. Typically this will be SPDFID_WaveFormatEx. This is required for the SAPI multimedia objects.
 		/// </param>
 		/// <param name="pWaveFormatEx">Address of the WAVEFORMATEX structure containing the wave file format information.</param>
-		new void SetFormat(in Guid rguidFmtId, [In] StructPointer<WAVEFORMATEX> pWaveFormatEx);
+		new void SetFormat(in Guid rguidFmtId, [In, StructPointer(typeof(WAVEFORMATEX))] IntPtr pWaveFormatEx);
 
 		/// <summary>Retrieves the current status of the audio device.</summary>
 		/// <returns>An SPAUDIOSTATUS filled with the status details.</returns>
@@ -4036,7 +4036,7 @@ public static partial class SpeechApi
 		/// </param>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee450879(v=vs.85)
 		[PreserveSig]
-		HRESULT Remove([Optional] StructPointer<Guid> pclsidCaller);
+		HRESULT Remove([In, Optional, StructPointer(typeof(Guid))] IntPtr pclsidCaller);
 
 		[PreserveSig]
 		HRESULT IsUISupported([In, MarshalAs(UnmanagedType.LPWStr)] string pszTypeOfUI, [In] IntPtr pvExtraData, [In] uint cbExtraData,
@@ -4286,7 +4286,7 @@ public static partial class SpeechApi
 		/// </param>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee450879(v=vs.85)
 		[PreserveSig]
-		new HRESULT Remove([Optional] StructPointer<Guid> pclsidCaller);
+		new HRESULT Remove([Optional, StructPointer(typeof(Guid))] IntPtr pclsidCaller);
 
 		[PreserveSig]
 		new HRESULT IsUISupported([In, MarshalAs(UnmanagedType.LPWStr)] string pszTypeOfUI, [In] IntPtr pvExtraData, [In] uint cbExtraData,
@@ -4550,7 +4550,7 @@ public static partial class SpeechApi
 
 		void SetMaxAlternates([In] uint cAlternates);
 
-		void SetAudioOptions([In] SPAUDIOOPTIONS Options, [In, Optional] StructPointer<Guid> pAudioFormatId, [In, Optional] StructPointer<WAVEFORMATEX> pWaveFormatEx);
+		void SetAudioOptions([In] SPAUDIOOPTIONS Options, [In, Optional, StructPointer(typeof(Guid))] IntPtr pAudioFormatId, [In, Optional, StructPointer(typeof(WAVEFORMATEX))] IntPtr pWaveFormatEx);
 
 		void GetAudioOptions(in SPAUDIOOPTIONS pOptions, out Guid pAudioFormatId, out SafeCoTaskMemStruct<WAVEFORMATEX> ppCoMemWFEX);
 
@@ -4991,7 +4991,7 @@ public static partial class SpeechApi
 		/// in Object Tokens and Registry Settings for more information.
 		/// </para>
 		/// </remarks>
-		void SetWordSequenceData([In, MarshalAs(UnmanagedType.LPWStr)] string pText, [In] uint cchText, [In, Optional] StructPointer<SPTEXTSELECTIONINFO> pInfo);
+		void SetWordSequenceData([In, MarshalAs(UnmanagedType.LPWStr)] string pText, [In] uint cchText, [In, Optional, StructPointer(typeof(SPTEXTSELECTIONINFO))] IntPtr pInfo);
 
 		/// <summary>ISpRecoGrammar::SetTextSelection sets the current text selection and insertion point information.</summary>
 		/// <param name="pInfo">[in] Address of the SPTEXTSELECTIONINFO structure that contains the text selection and insertion point information.</param>
@@ -5437,8 +5437,8 @@ public static partial class SpeechApi
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms719484(v=vs.85)
-		void BindToFile([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [In] SPFILEMODE eMode, [In, Optional] StructPointer<Guid> pFormatId,
-			[In, Optional] StructPointer<WAVEFORMATEX> pWaveFormatEx, [In] SPEVENTENUM ullEventInterest);
+		void BindToFile([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [In] SPFILEMODE eMode, [In, Optional, StructPointer(typeof(Guid))] IntPtr pFormatId,
+			[In, Optional, StructPointer(typeof(WAVEFORMATEX))] IntPtr pWaveFormatEx, [In] SPEVENTENUM ullEventInterest);
 
 		void Close();
 	}
@@ -5530,7 +5530,7 @@ public static partial class SpeechApi
 		[return: MarshalAs(UnmanagedType.Interface)]
 		ISpStreamFormat? GetBaseStream();
 
-		void SetFormat(in Guid rguidFormatIdOfConvertedStream, [In] StructPointer<WAVEFORMATEX> pWaveFormatExOfConvertedStream);
+		void SetFormat(in Guid rguidFormatIdOfConvertedStream, [In, StructPointer(typeof(WAVEFORMATEX))] IntPtr pWaveFormatExOfConvertedStream);
 
 		void ResetSeekPosition();
 
@@ -5696,50 +5696,6 @@ public static partial class SpeechApi
 
 		void GetXMLErrorInfo(out SPSEMANTICERRORINFO pSemanticErrorInfo);
 	}
-
-	/// <summary><b>ISpStream::BindToFile</b> binds the input stream to the file that it identifies.</summary>
-	/// <param name="str">The <see cref="ISpStreamFormat"/> instance.</param>
-	/// <param name="pszFileName">Address of a null-terminated string containing the file name of the file to bind the stream to.</param>
-	/// <param name="eMode">
-	/// Flag of the type <c>SPFILEMODE</c> to define the file opening mode. When opening an audio wave file, eMode must be SPFM_OPEN_READONLY
-	/// or SPFM_CREATE_ALWAYS, otherwise the call will fail.
-	/// </param>
-	/// <param name="pFormatId">
-	/// The data format identifier associated with the stream. This can be NULL and the format will be determined from the supplied wave
-	/// file, if the file has the wav extension. If it does not, the file is assumed to be a text file.
-	/// </param>
-	/// <param name="pWaveFormatEx">
-	/// Address of the <c>WAVEFORMATEX</c> structure that contains the wave file format information. If guidFormatId is SPDFID_WaveFormatEx,
-	/// this must point to a valid <c>WAVEFORMATEX</c> structure. For other formats, it should be NULL.
-	/// </param>
-	/// <param name="ullEventInterest">
-	/// Flags of type <c>SPEVENTENUM</c> (that is, the possible events raised by SAPI) for the format converter to watch. Typical events are
-	/// those to be serialized into the audio stream (for audio output) or those to be deserialized out of the audio stream and fed to SAPI
-	/// (for audio input).
-	/// </param>
-	/// <remarks>
-	/// <para>
-	/// In speech recognition, ::BindToFile supports only wave audio files. It passes SAPI an audio file to pass to the engine. In
-	/// text-to-speech, ::BindToFile supports both audio and text files. See <c>ISpVoice::SpeakStream</c> for more information.
-	/// </para>
-	/// <para>
-	/// The helper class <c>CSpStreamFormat</c> and the <c>SPSTREAMFORMAT</c> enumeration can be used to avoid the possibility of typos or
-	/// mistakes when filling in the <c>WAVEFORMATEX</c> structure.
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms719484(v=vs.85)
-	public static void BindToFile(this ISpStream str, string pszFileName, SPFILEMODE eMode, [In, Optional] Guid? pFormatId, [In, Optional] WAVEFORMATEX? pWaveFormatEx, SPEVENTENUM ullEventInterest) =>
-		str.BindToFile(pszFileName, eMode, new(pFormatId, out _), new(pWaveFormatEx, out _), ullEventInterest);
-
-	/// <summary><b>ISpObjectToken::Remove</b> removes an object token.</summary>
-	/// <param name="token">The token instance.</param>
-	/// <param name="pclsidCaller">
-	/// [in] Address of the identifier associated with the object token to remove. If pclsidCaller is NULL, the entire token is removed;
-	/// otherwise, only the specified section is removed.
-	/// </param>
-	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee450879(v=vs.85)
-	public static void Remove(this ISpObjectToken token, in Guid pclsidCaller)
-	{ unsafe { fixed (Guid* p = &pclsidCaller) { token.Remove(p); } } }
 
 	[ComImport, Guid("9EF96870-E160-4792-820D-48CF0649E4EC"), ClassInterface(ClassInterfaceType.None)]
 	public class SpAudioFormat

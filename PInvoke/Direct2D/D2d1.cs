@@ -858,7 +858,8 @@ public static partial class D2d1
 	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
 	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
-	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional] StructPointer<D2D1_FACTORY_OPTIONS> pFactoryOptions, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppIFactory);
+	[SuppressAutoGen]
+	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional, StructPointer(typeof(D2D1_FACTORY_OPTIONS))] IntPtr pFactoryOptions, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppIFactory);
 
 	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
 	/// <typeparam name="T">The type of the factory interface to create.</typeparam>

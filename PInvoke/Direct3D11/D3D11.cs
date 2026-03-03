@@ -289,7 +289,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11authenticatedchannel-getcertificate HRESULT
 		// GetCertificate( [in] UINT CertificateSize, [out] BYTE *pCertificate );
 		[PreserveSig]
-		HRESULT GetCertificate(int CertificateSize, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[] pCertificate);
+		HRESULT GetCertificate(int CertificateSize, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[] pCertificate);
 
 		/// <summary>Gets a handle to the authenticated channel.</summary>
 		/// <param name="pChannelHandle">Receives a handle to the channel.</param>
@@ -1663,7 +1663,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11cryptosession-getcertificate HRESULT GetCertificate(
 		// [in] UINT CertificateSize, [out] BYTE *pCertificate );
 		[PreserveSig]
-		HRESULT GetCertificate(int CertificateSize, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[] pCertificate);
+		HRESULT GetCertificate(int CertificateSize, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] byte[] pCertificate);
 
 		/// <summary>Gets a handle to the cryptographic session.</summary>
 		/// <param name="pCryptoSessionHandle">Receives a handle to the session.</param>
@@ -2036,7 +2036,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createbuffer HRESULT CreateBuffer( [in] const
 		// D3D11_BUFFER_DESC *pDesc, [in, optional] const D3D11_SUBRESOURCE_DATA *pInitialData, [out, optional] ID3D11Buffer **ppBuffer );
 		[PreserveSig]
-		HRESULT CreateBuffer(in D3D11_BUFFER_DESC pDesc, [In, Optional] StructPointer<D3D11_SUBRESOURCE_DATA> pInitialData,
+		HRESULT CreateBuffer(in D3D11_BUFFER_DESC pDesc, [In, Optional, StructPointer(typeof(D3D11_SUBRESOURCE_DATA))] IntPtr pInitialData,
 			[MarshalAs(UnmanagedType.Interface)] out ID3D11Buffer? ppBuffer);
 
 		/// <summary>Creates an array of 1D textures.</summary>
@@ -2338,7 +2338,7 @@ public static partial class D3D11
 		// CreateShaderResourceView( [in] ID3D11Resource *pResource, [in, optional] const D3D11_SHADER_RESOURCE_VIEW_DESC *pDesc, [out,
 		// optional] ID3D11ShaderResourceView **ppSRView );
 		[PreserveSig]
-		HRESULT CreateShaderResourceView([In] ID3D11Resource pResource, [In, Optional] StructPointer<D3D11_SHADER_RESOURCE_VIEW_DESC> pDesc,
+		HRESULT CreateShaderResourceView([In] ID3D11Resource pResource, [In, Optional, StructPointer(typeof(D3D11_SHADER_RESOURCE_VIEW_DESC))] IntPtr pDesc,
 			[MarshalAs(UnmanagedType.Interface)] out ID3D11ShaderResourceView? ppSRView);
 
 		/// <summary>Creates a view for accessing an unordered access resource.</summary>
@@ -2388,7 +2388,7 @@ public static partial class D3D11
 		// CreateUnorderedAccessView( [in] ID3D11Resource *pResource, [in, optional] const D3D11_UNORDERED_ACCESS_VIEW_DESC *pDesc, [out,
 		// optional] ID3D11UnorderedAccessView **ppUAView );
 		[PreserveSig]
-		HRESULT CreateUnorderedAccessView([In] ID3D11Resource pResource, [In, Optional] StructPointer<D3D11_UNORDERED_ACCESS_VIEW_DESC> pDesc,
+		HRESULT CreateUnorderedAccessView([In] ID3D11Resource pResource, [In, Optional, StructPointer(typeof(D3D11_UNORDERED_ACCESS_VIEW_DESC))] IntPtr pDesc,
 			[MarshalAs(UnmanagedType.Interface)] out ID3D11UnorderedAccessView? ppUAView);
 
 		/// <summary>Creates a render-target view for accessing resource data.</summary>
@@ -2442,7 +2442,7 @@ public static partial class D3D11
 		// CreateRenderTargetView( [in] ID3D11Resource *pResource, [in, optional] const D3D11_RENDER_TARGET_VIEW_DESC *pDesc, [out,
 		// optional] ID3D11RenderTargetView **ppRTView );
 		[PreserveSig]
-		HRESULT CreateRenderTargetView([In] ID3D11Resource pResource, [In, Optional] StructPointer<D3D11_RENDER_TARGET_VIEW_DESC> pDesc,
+		HRESULT CreateRenderTargetView([In] ID3D11Resource pResource, [In, Optional, StructPointer(typeof(D3D11_RENDER_TARGET_VIEW_DESC))] IntPtr pDesc,
 			[MarshalAs(UnmanagedType.Interface)] out ID3D11RenderTargetView? ppRTView);
 
 		/// <summary>Create a depth-stencil view for accessing resource data.</summary>
@@ -2476,7 +2476,7 @@ public static partial class D3D11
 		// CreateDepthStencilView( [in] ID3D11Resource *pResource, [in, optional] const D3D11_DEPTH_STENCIL_VIEW_DESC *pDesc, [out,
 		// optional] ID3D11DepthStencilView **ppDepthStencilView );
 		[PreserveSig]
-		HRESULT CreateDepthStencilView([In] ID3D11Resource pResource, [In, Optional] StructPointer<D3D11_DEPTH_STENCIL_VIEW_DESC> pDesc,
+		HRESULT CreateDepthStencilView([In] ID3D11Resource pResource, [In, Optional, StructPointer(typeof(D3D11_DEPTH_STENCIL_VIEW_DESC))] IntPtr pDesc,
 			[MarshalAs(UnmanagedType.Interface)] out ID3D11DepthStencilView? ppDepthStencilView);
 
 		/// <summary>Create an input-layout object to describe the input-buffer data for the input-assembler stage.</summary>
@@ -5765,7 +5765,7 @@ public static partial class D3D11
 		// DstZ, [in] ID3D11Resource *pSrcResource, [in] uint SrcSubresource, [in, optional] const D3D11_BOX *pSrcBox );
 		[PreserveSig]
 		void CopySubresourceRegion([In] ID3D11Resource pDstResource, uint DstSubresource, uint DstX, uint DstY, uint DstZ,
-			[In] ID3D11Resource pSrcResource, uint SrcSubresource, [In, Optional] StructPointer<D3D11_BOX> pSrcBox);
+			[In] ID3D11Resource pSrcResource, uint SrcSubresource, [In, Optional, StructPointer(typeof(D3D11_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Copy the entire contents of the source resource to the destination resource using the GPU.</summary>
 		/// <param name="pDstResource">
@@ -5971,7 +5971,7 @@ public static partial class D3D11
 		// [in] ID3D11Resource *pDstResource, [in] uint DstSubresource, [in, optional] const D3D11_BOX *pDstBox, [in] const void *pSrcData,
 		// [in] uint SrcRowPitch, [in] uint SrcDepthPitch );
 		[PreserveSig]
-		void UpdateSubresource([In] ID3D11Resource pDstResource, uint DstSubresource, [In, Optional] StructPointer<D3D11_BOX> pDstBox,
+		void UpdateSubresource([In] ID3D11Resource pDstResource, uint DstSubresource, [In, Optional, StructPointer(typeof(D3D11_BOX))] IntPtr pDstBox,
 			[In] IntPtr pSrcData, uint SrcRowPitch, uint SrcDepthPitch);
 
 		/// <summary>Copies data from a buffer holding variable length data.</summary>
@@ -6946,7 +6946,7 @@ public static partial class D3D11
 		// uint *pStrides, [out, optional] uint *pOffsets );
 		[PreserveSig]
 		void IAGetVertexBuffers(uint StartSlot, int NumBuffers, [Out, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D11Buffer[]? ppVertexBuffers,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? pStrides, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? pOffsets);
+			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? pStrides, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? pOffsets);
 
 		/// <summary>Get a pointer to the index buffer that is bound to the input-assembler stage.</summary>
 		/// <param name="pIndexBuffer">
@@ -11634,7 +11634,7 @@ public static partial class D3D11
 		// *pEntries );
 		[PreserveSig]
 		void VideoProcessorGetStreamPalette([In] ID3D11VideoProcessor pVideoProcessor, uint StreamIndex, int Count,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pEntries);
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pEntries);
 
 		/// <summary>Gets the pixel aspect ratio for an input stream on the video processor.</summary>
 		/// <param name="pVideoProcessor">A pointer to the ID3D11VideoProcessor interface. To get this pointer, call ID3D11VideoDevice::CreateVideoProcessor.</param>

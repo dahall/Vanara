@@ -2912,7 +2912,7 @@ public static partial class Gdi32
 	// LPCSTR lpString, int nCount, int nMexExtent, LPGCP_RESULTSA lpResults, DWORD dwFlags );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "80d3f4b3-503b-4abb-826c-e5c09972ba2f")]
-	public static extern uint GetCharacterPlacement([In, AddAsMember] HDC hdc, string lpString, int nCount, int nMexExtent, [In, Out] StructPointer<GCP_RESULTS> lpResults, GCP dwFlags);
+	public static extern uint GetCharacterPlacement([In, AddAsMember] HDC hdc, string lpString, int nCount, int nMexExtent, ref GCP_RESULTS lpResults, GCP dwFlags);
 
 	/// <summary>
 	/// The <c>GetCharWidth32</c> function retrieves the widths, in logical coordinates, of consecutive characters in a specified range from
@@ -3127,9 +3127,23 @@ public static partial class Gdi32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getfontunicoderanges DWORD GetFontUnicodeRanges( HDC hdc,
 	// LPGLYPHSET lpgs );
-	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "51b0ab12-c467-4a89-8173-fdc513868aae")]
-	public static extern uint GetFontUnicodeRanges([In] HDC hdc, [Out] ManagedStructPointer<GLYPHSET> lpgs);
+	public static uint GetFontUnicodeRanges([In, AddAsMember] HDC hdc, out GLYPHSET lpgs)
+	{
+		lpgs = default;
+		uint l = GetFontUnicodeRanges(hdc, IntPtr.Zero);
+		if (l > 0)
+		{
+			using SafeAnysizeStruct<GLYPHSET> mem = new(l, nameof(GLYPHSET.cRanges));
+			_ = mem.DangerousGetHandle().Write(l); // Set cbThis
+			if ((l = GetFontUnicodeRanges(hdc, mem)) > 0)
+				lpgs = mem.Value;
+		}
+		return l;
+
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		static extern uint GetFontUnicodeRanges([In] HDC hdc, [Out, Optional] IntPtr lpgs);
+	}
 
 	/// <summary>
 	/// The <c>GetFontUnicodeRanges</c> function returns information about which Unicode characters are supported by a font. The information
@@ -3138,14 +3152,8 @@ public static partial class Gdi32
 	/// <param name="hdc">A handle to the device context.</param>
 	/// <returns>A <see cref="GLYPHSET"/> structure with the glyph set information.</returns>
 	/// <exception cref="Exception">An unspecified error has occurred.</exception>
-	public static GLYPHSET GetFontUnicodeRanges([In, AddAsMember] HDC hdc)
-	{
-		uint l = GetFontUnicodeRanges(hdc, IntPtr.Zero);
-		if (l == 0) throw new Exception();
-		using SafeAnysizeStruct<GLYPHSET> mem = new(l, nameof(GLYPHSET.cRanges));
-		_ = mem.DangerousGetHandle().Write(l); // Set cbThis
-		return 0 == GetFontUnicodeRanges(hdc, mem) ? throw new Exception() : mem.Value;
-	}
+	public static GLYPHSET GetFontUnicodeRanges([In, AddAsMember] HDC hdc) =>
+		GetFontUnicodeRanges(hdc, out var value) > 0 ? value : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>
 	/// The <c>GetGlyphIndices</c> function translates a string into an array of glyph indices. The function can be used to determine whether
@@ -3185,7 +3193,8 @@ public static partial class Gdi32
 	// int c, LPWORD pgi, DWORD fl );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7abfee7a-dd5d-4f33-96f1-b38364ba5afd")]
-	public static extern uint GetGlyphIndices([In, AddAsMember] HDC hdc, string lpstr, int c, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] pgi, GGI fl = GGI.GGI_MARK_NONEXISTING_GLYPHS);
+	public static extern uint GetGlyphIndices([In, AddAsMember] HDC hdc, [SizeDef(nameof(c))] string lpstr, int c,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] pgi, GGI fl = GGI.GGI_MARK_NONEXISTING_GLYPHS);
 
 	/// <summary>
 	/// The <c>GetGlyphOutline</c> function retrieves the outline or bitmap for a character in the TrueType font that is selected into the
@@ -3347,7 +3356,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getoutlinetextmetricsa UINT GetOutlineTextMetricsA( HDC hdc, UINT
 	// cjCopy, LPOUTLINETEXTMETRICA potm );
 	[PInvokeData("wingdi.h", MSDNShortId = "b8c7a557-ca35-41a4-9043-8496e5b01564")]
-	public static uint GetOutlineTextMetrics([In, AddAsMember] HDC hdc, out SafeCoTaskMemStruct<OUTLINETEXTMETRIC> potm)
+	public static uint GetOutlineTextMetrics([In, AddAsMember] HDC hdc, out SafeHGlobalStruct<OUTLINETEXTMETRIC> potm)
 	{
 		uint ret = GetOutlineTextMetrics(hdc);
 		potm = new(ret);
@@ -3660,7 +3669,7 @@ public static partial class Gdi32
 	[PInvokeData("wingdi.h", MSDNShortId = "d543ec43-f6f1-4463-b27d-a1abf1cf3961")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetTextExtentExPointI([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] lpwszString, int cwchString,
-		int nMaxExtent, out int lpnFit, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? lpnDx, out SIZE lpSize);
+		int nMaxExtent, out int lpnFit, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] lpnDx, out SIZE lpSize);
 
 	/// <summary>
 	/// <para>The <c>GetTextExtentPoint</c> function computes the width and height of the specified string of text.</para>

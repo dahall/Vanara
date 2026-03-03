@@ -14,6 +14,7 @@ public class AclApiTests
 	public static readonly string localAdmins = $"{Environment.MachineName}\\Administrators";
 	public SafePSECURITY_DESCRIPTOR pSd = SafePSECURITY_DESCRIPTOR.Null;
 	public static readonly string userName = $"{Environment.UserDomainName}\\{Environment.UserName}";
+	public static readonly Guid userObjectId = new("bf967aba-0de6-11d0-a285-00aa003049e2");
 
 	[OneTimeSetUp]
 	public void Setup()
@@ -42,29 +43,38 @@ public class AclApiTests
 			BuildTrusteeWithName(out var trustee, userName);
 			BuildTrusteeWithName(out var grpTrustee, localAdmins);
 			BuildExplicitAccessWithName(out var ea, userName, 0x10000000, ACCESS_MODE.SET_ACCESS, INHERIT_FLAGS.SUB_CONTAINERS_AND_OBJECTS_INHERIT);
-			BuildSecurityDescriptor(trustee, grpTrustee, 1, new[] { ea }, 0, null, PSECURITY_DESCRIPTOR.NULL, out var sz, out pSd);
+			BuildSecurityDescriptor(trustee, grpTrustee, 1, [ea], 0, null, PSECURITY_DESCRIPTOR.NULL, out var sz, out pSd).ThrowIfFailed();
 		}, Throws.Nothing);
-		Assert.That(pSd, Is.Not.Null);
-		Assert.That(pSd!.IsInvalid, Is.False);
-		pSd.Dispose();
+		using (pSd)
+			Assert.That(pSd, ResultIs.ValidHandle);
 	}
 
 	[Test]
 	public void BuildTrusteeWithObjectsAndNameTest()
 	{
-		Assert.That(() => BuildTrusteeWithObjectsAndName(out var t, default, SE_OBJECT_TYPE.SE_FILE_OBJECT, "", "", "Name"), Throws.Nothing);
+		TRUSTEE t = default;
+		SafeHGlobalStruct<OBJECTS_AND_NAME> on = new();
+		SafeLPTSTR name = new(userName), otname = new(TestCaseSources.WordDoc);
+		Assert.That(() => BuildTrusteeWithObjectsAndName(out t, on, SE_OBJECT_TYPE.SE_FILE_OBJECT, otname, default, name), Throws.Nothing);
+		Assert.That(t.ptstrName, Is.EqualTo(on.DangerousGetHandle()));
+		Assert.That(t.ObjectsAndName.ptstrName, Is.EqualTo(userName));
+		Assert.That(t.ObjectsAndName.ObjectType, Is.EqualTo(SE_OBJECT_TYPE.SE_FILE_OBJECT));
+		Assert.That(t.ObjectsAndName.ObjectTypeName, Is.EqualTo(TestCaseSources.WordDoc));
 	}
 
 	[Test]
 	public void BuildTrusteeWithObjectsAndSidTest()
 	{
-		Assert.That(() => BuildTrusteeWithObjectsAndSid(out var t, default, default, default, PSID.NULL), Throws.Nothing);
+		TRUSTEE t;
+		OBJECTS_AND_SID oas = default;
+		Assert.That(() => BuildTrusteeWithObjectsAndSid(out t, oas, userObjectId, default, SafePSID.Current), Throws.Nothing);
 	}
 
 	[Test]
 	public void BuildTrusteeWithSidTest()
 	{
-		Assert.That(() => BuildTrusteeWithSid(out var t, PSID.NULL), Throws.Nothing);
+		TRUSTEE t;
+		Assert.That(() => BuildTrusteeWithSid(out t, SafePSID.Current), Throws.Nothing);
 	}
 
 	[Test]
@@ -125,11 +135,11 @@ public class AclApiTests
 	[Test]
 	public void LookupSecurityDescriptorPartsTest()
 	{
-		Assert.That(LookupSecurityDescriptorParts(out var ptOwner, out var ptGrp, out var cnt, out var plEntries, out var acnt, out var plAEntries, pSd), ResultIs.Successful);
-		ptOwner.ToStructure<TRUSTEE>().WriteValues();
-		ptGrp.ToStructure<TRUSTEE>().WriteValues();
-		plEntries.ToArray<EXPLICIT_ACCESS>((int)cnt).WriteValues();
-		plAEntries.ToArray<EXPLICIT_ACCESS>((int)acnt).WriteValues();
+		Assert.That(LookupSecurityDescriptorParts(pSd, out var ptOwner, out var ptGrp, out var plEntries, out var plAEntries), ResultIs.Successful);
+		ptOwner.Value.WriteValues();
+		ptGrp.Value.WriteValues();
+		plEntries.AsSpan().WriteValues();
+		plAEntries.AsSpan().WriteValues();
 	}
 
 	[Test]
@@ -248,13 +258,14 @@ public class AclApiTests
 	public void TreeSetNamedSecurityInfoTest()
 	{
 		var counter = 0;
+		System.IO.Directory.CreateDirectory(TestCaseSources.TempChildDirWhack);
 		using (new ElevPriv("SeSecurityPrivilege"))
 		{
 			Assert.That(GetNamedSecurityInfo(AdvApi32Tests.fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, out var pOwnSid, out var pGrpSid, out var dacl, out var sacl, out var plsd), ResultIs.Successful);
-			Assert.That(TreeSetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SecInfoAll, pOwnSid, pGrpSid, dacl, sacl, TREE_SEC_INFO.TREE_SEC_INFO_SET, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
+			Assert.That(TreeSetNamedSecurityInfo(TestCaseSources.TempChildDirWhack, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, default, default, dacl, default, TREE_SEC_INFO.TREE_SEC_INFO_SET, OnProgress, PROG_INVOKE_SETTING.ProgressInvokeEveryObject), ResultIs.Successful);
 		}
 		Assert.That(counter, Is.GreaterThan(0));
 
-		void OnProgress(string pObjectName, uint Status, ref PROG_INVOKE_SETTING pInvokeSetting, IntPtr Args, bool SecuritySet) => counter++;
+		void OnProgress(string pObjectName, uint Status, ref PROG_INVOKE_SETTING pInvokeSetting, IntPtr Args, bool SecuritySet) => TestContext.WriteLine($"{++counter}. Processing {pObjectName} (Status: {Status})");
 	}
 }

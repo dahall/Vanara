@@ -117,7 +117,7 @@ public static partial class Rpc
 		public IntPtr Reserved;
 
 		/// <summary/>
-		public IntPtr[]? GetDispatchTable() => DispatchTable.ToArray<IntPtr>((int)DispatchTableCount);
+		public readonly IntPtr[]? GetDispatchTable() => DispatchTable.ToArray<IntPtr>((int)DispatchTableCount);
 	}
 
 	/// <summary>The <c>RPC_MESSAGE</c> structure contains information shared between NDR and the rest of the RPC or OLE runtime.</summary>

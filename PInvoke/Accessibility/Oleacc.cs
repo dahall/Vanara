@@ -353,7 +353,7 @@ public static partial class Oleacc
 	// *paccContainer, LONG iChildStart, LONG cChildren, VARIANT *rgvarChildren, LONG *pcObtained );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "dc9262d8-f57f-41f8-8945-d95f38d197e9")]
-	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
+	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
 
 	/// <summary>
 	/// Retrieves the address of the IAccessible interface for the object that generated the event that is currently being processed by the

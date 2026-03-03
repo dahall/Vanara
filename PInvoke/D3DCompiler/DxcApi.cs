@@ -922,7 +922,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobfromfile HRESULT CreateBlobFromFile(
 		// LPCWSTR pFileName, UINT32 *codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobFromFile([MarshalAs(UnmanagedType.LPWStr)] string pFileName, [Optional] StructPointer<DXC_CP> codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobFromFile([MarshalAs(UnmanagedType.LPWStr)] string pFileName, [Optional, StructPointer(typeof(DXC_CP))] IntPtr codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="pText"/>
@@ -1631,7 +1631,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-loadfile HRESULT LoadFile( LPCWSTR pFileName,
 		// UINT32 *pCodePage, IDxcBlobEncoding **ppBlobEncoding );
 		[PreserveSig]
-		HRESULT LoadFile([MarshalAs(UnmanagedType.LPWStr)] string pFileName, [In, Optional] StructPointer<DXC_CP> pCodePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT LoadFile([MarshalAs(UnmanagedType.LPWStr)] string pFileName, [In, Optional, StructPointer(typeof(DXC_CP))] IntPtr pCodePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>Create a stream that reads data from a blob.</summary>
 		/// <param name="pBlob">The blob to read from.</param>
@@ -1759,7 +1759,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcvalidator2-validatewithdebug HRESULT ValidateWithDebug(
 		// IDxcBlob *pShader, UINT32 Flags, DxcBuffer *pOptDebugBitcode, IDxcOperationResult **ppResult );
 		[PreserveSig]
-		HRESULT ValidateWithDebug([In] IDxcBlob pShader, DxcValidatorFlags Flags, [In, Optional] StructPointer<DxcBuffer> pOptDebugBitcode,
+		HRESULT ValidateWithDebug([In] IDxcBlob pShader, DxcValidatorFlags Flags, [In, Optional, StructPointer(typeof(DxcBuffer))] IntPtr pOptDebugBitcode,
 			out IDxcOperationResult ppResult);
 	}
 

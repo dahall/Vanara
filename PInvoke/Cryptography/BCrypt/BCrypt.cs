@@ -3172,166 +3172,6 @@ public static partial class BCrypt
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "69fe4530-4b7c-40db-a85c-f9dc458735e7")]
 	public static extern NTStatus BCryptEncrypt(BCRYPT_KEY_HANDLE hKey, byte[] pbInput, uint cbInput, [Optional] IntPtr pPaddingInfo,
-		SafeAllocatedMemoryHandle pbIV, uint cbIV, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
-
-	/// <summary>The <c>BCryptEncrypt</c> function encrypts a block of data.</summary>
-	/// <param name="hKey">
-	/// The handle of the key to use to encrypt the data. This handle is obtained from one of the key creation functions, such as
-	/// BCryptGenerateSymmetricKey, BCryptGenerateKeyPair, or BCryptImportKey.
-	/// </param>
-	/// <param name="pbInput">
-	/// The address of a buffer that contains the plaintext to be encrypted. The cbInput parameter contains the size of the plaintext to
-	/// encrypt. For more information, see Remarks.
-	/// </param>
-	/// <param name="cbInput">The number of bytes in the pbInput buffer to encrypt.</param>
-	/// <param name="pPaddingInfo">
-	/// A pointer to a structure that contains padding information. This parameter is only used with asymmetric keys and authenticated
-	/// encryption modes. If an authenticated encryption mode is used, this parameter must point to a
-	/// BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO structure. If asymmetric keys are used, the type of structure this parameter points to is
-	/// determined by the value of the dwFlags parameter. Otherwise, the parameter must be set to <c>NULL</c>.
-	/// </param>
-	/// <param name="pbIV">
-	/// <para>
-	/// The address of a buffer that contains the initialization vector (IV) to use during encryption. The cbIV parameter contains the
-	/// size of this buffer. This function will modify the contents of this buffer. If you need to reuse the IV later, make sure you make
-	/// a copy of this buffer before calling this function.
-	/// </para>
-	/// <para>This parameter is optional and can be <c>NULL</c> if no IV is used.</para>
-	/// <para>
-	/// The required size of the IV can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_BLOCK_LENGTH</c>
-	/// property. This will provide the size of a block for the algorithm, which is also the size of the IV.
-	/// </para>
-	/// </param>
-	/// <param name="cbIV">The size, in bytes, of the pbIV buffer.</param>
-	/// <param name="pbOutput">
-	/// <para>
-	/// The address of the buffer that receives the ciphertext produced by this function. The cbOutput parameter contains the size of
-	/// this buffer. For more information, see Remarks.
-	/// </para>
-	/// <para>
-	/// If this parameter is <c>NULL</c>, the <c>BCryptEncrypt</c> function calculates the size needed for the ciphertext of the data
-	/// passed in the pbInput parameter. In this case, the location pointed to by the pcbResult parameter contains this size, and the
-	/// function returns <c>STATUS_SUCCESS</c>. The pPaddingInfo parameter is not modified.
-	/// </para>
-	/// <para>
-	/// If the values of both the pbOutput and pbInput parameters are <c>NULL</c>, an error is returned unless an authenticated
-	/// encryption algorithm is in use. In the latter case, the call is treated as an authenticated encryption call with zero length
-	/// data, and the authentication tag is returned in the pPaddingInfo parameter.
-	/// </para>
-	/// </param>
-	/// <param name="cbOutput">The size, in bytes, of the pbOutput buffer. This parameter is ignored if the pbOutput parameter is <c>NULL</c>.</param>
-	/// <param name="pcbResult">
-	/// A pointer to a <c>ULONG</c> variable that receives the number of bytes copied to the pbOutput buffer. If pbOutput is <c>NULL</c>,
-	/// this receives the size, in bytes, required for the ciphertext.
-	/// </param>
-	/// <param name="dwFlags">
-	/// <para>
-	/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
-	/// hKey parameter.
-	/// </para>
-	/// <para>If the key is a symmetric key, this can be zero or the following value.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>BCRYPT_BLOCK_PADDING</term>
-	/// <term>
-	/// Allows the encryption algorithm to pad the data to the next block size. If this flag is not specified, the size of the plaintext
-	/// specified in the cbInput parameter must be a multiple of the algorithm's block size. The block size can be obtained by calling
-	/// the BCryptGetProperty function to get the BCRYPT_BLOCK_LENGTH property for the key. This will provide the size of a block for the
-	/// algorithm. This flag must not be used with the authenticated encryption modes (AES-CCM and AES-GCM).
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>If the key is an asymmetric key, this can be one of the following values.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>BCRYPT_PAD_NONE</term>
-	/// <term>
-	/// Do not use any padding. The pPaddingInfo parameter is not used. The size of the plaintext specified in the cbInput parameter must
-	/// be a multiple of the algorithm's block size.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>BCRYPT_PAD_OAEP</term>
-	/// <term>
-	/// Use the Optimal Asymmetric Encryption Padding (OAEP) scheme. The pPaddingInfo parameter is a pointer to a
-	/// BCRYPT_OAEP_PADDING_INFO structure.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>BCRYPT_PAD_PKCS1</term>
-	/// <term>The data will be padded with a random number to round out the block size. The pPaddingInfo parameter is not used.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <returns>
-	/// <para>Returns a status code that indicates the success or failure of the function.</para>
-	/// <para>Possible return codes include, but are not limited to, the following.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>STATUS_SUCCESS</term>
-	/// <term>The function was successful.</term>
-	/// </item>
-	/// <item>
-	/// <term>STATUS_BUFFER_TOO_SMALL</term>
-	/// <term>The size specified by the cbOutput parameter is not large enough to hold the ciphertext.</term>
-	/// </item>
-	/// <item>
-	/// <term>STATUS_INVALID_BUFFER_SIZE</term>
-	/// <term>
-	/// The cbInput parameter is not a multiple of the algorithm's block size and the BCRYPT_BLOCK_PADDING or the BCRYPT_PAD_NONE flag
-	/// was not specified in the dwFlags parameter.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>STATUS_INVALID_HANDLE</term>
-	/// <term>The key handle in the hKey parameter is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>STATUS_INVALID_PARAMETER</term>
-	/// <term>One or more parameters are not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>STATUS_NOT_SUPPORTED</term>
-	/// <term>The algorithm does not support encryption.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The pbInput and pbOutput parameters can point to the same buffer. In this case, this function will perform the encryption in
-	/// place. It is possible that the encrypted data size will be larger than the unencrypted data size, so the buffer must be large
-	/// enough to hold the encrypted data.
-	/// </para>
-	/// <para>
-	/// Depending on what processor modes a provider supports, <c>BCryptEncrypt</c> can be called either from user mode or kernel mode.
-	/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
-	/// <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a provider
-	/// that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptEncrypt</c> function must
-	/// refer to nonpaged (or locked) memory.
-	/// </para>
-	/// <para>
-	/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
-	/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptencrypt NTSTATUS BCryptEncrypt( BCRYPT_KEY_HANDLE
-	// hKey, PUCHAR pbInput, ULONG cbInput, VOID *pPaddingInfo, PUCHAR pbIV, ULONG cbIV, PUCHAR pbOutput, ULONG cbOutput, ULONG
-	// *pcbResult, ULONG dwFlags );
-	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("bcrypt.h", MSDNShortId = "69fe4530-4b7c-40db-a85c-f9dc458735e7")]
-	public static extern NTStatus BCryptEncrypt(BCRYPT_KEY_HANDLE hKey, byte[] pbInput, uint cbInput, [Optional] IntPtr pPaddingInfo,
 		SafeAllocatedMemoryHandle pbIV, uint cbIV, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
 
 	/// <summary>The <c>BCryptEncrypt</c> function encrypts a block of data.</summary>
@@ -3491,9 +3331,317 @@ public static partial class BCrypt
 	// *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "69fe4530-4b7c-40db-a85c-f9dc458735e7")]
-	public static extern NTStatus BCryptEncrypt([AddAsMember] BCRYPT_KEY_HANDLE hKey, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pbInput, uint cbInput, [In, Optional] IntPtr pPaddingInfo,
+	[SuppressAutoGen]
+	public static extern NTStatus BCryptEncrypt(BCRYPT_KEY_HANDLE hKey, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pbInput, uint cbInput, [In, Optional] IntPtr pPaddingInfo,
 		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] byte[]? pbIV, [Optional] uint cbIV,
 		[Out, Optional, SizeDef(nameof(cbOutput), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, [Optional] EncryptFlags dwFlags);
+
+	/// <summary>The <c>BCryptEncrypt</c> function encrypts a block of data.</summary>
+	/// <param name="hKey">
+	/// The handle of the key to use to encrypt the data. This handle is obtained from one of the key creation functions, such as
+	/// BCryptGenerateSymmetricKey, BCryptGenerateKeyPair, or BCryptImportKey.
+	/// </param>
+	/// <param name="pbInput">
+	/// The address of a buffer that contains the plaintext to be encrypted. The cbInput parameter contains the size of the plaintext to
+	/// encrypt. For more information, see Remarks.
+	/// </param>
+	/// <param name="pPaddingInfo">
+	/// A pointer to a structure that contains padding information. This parameter is only used with asymmetric keys and authenticated
+	/// encryption modes. If an authenticated encryption mode is used, this parameter must point to a
+	/// BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO structure. If asymmetric keys are used, the type of structure this parameter points to is
+	/// determined by the value of the dwFlags parameter. Otherwise, the parameter must be set to <c>NULL</c>.
+	/// </param>
+	/// <param name="pbIV">
+	/// <para>
+	/// The address of a buffer that contains the initialization vector (IV) to use during encryption. The cbIV parameter contains the
+	/// size of this buffer. This function will modify the contents of this buffer. If you need to reuse the IV later, make sure you make
+	/// a copy of this buffer before calling this function.
+	/// </para>
+	/// <para>This parameter is optional and can be <c>NULL</c> if no IV is used.</para>
+	/// <para>
+	/// The required size of the IV can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_BLOCK_LENGTH</c>
+	/// property. This will provide the size of a block for the algorithm, which is also the size of the IV.
+	/// </para>
+	/// </param>
+	/// <param name="pbOutput">
+	/// <para>
+	/// The address of the buffer that receives the ciphertext produced by this function. The cbOutput parameter contains the size of
+	/// this buffer. For more information, see Remarks.
+	/// </para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, the <c>BCryptEncrypt</c> function calculates the size needed for the ciphertext of the data
+	/// passed in the pbInput parameter. In this case, the location pointed to by the pcbResult parameter contains this size, and the
+	/// function returns <c>STATUS_SUCCESS</c>. The pPaddingInfo parameter is not modified.
+	/// </para>
+	/// <para>
+	/// If the values of both the pbOutput and pbInput parameters are <c>NULL</c>, an error is returned unless an authenticated
+	/// encryption algorithm is in use. In the latter case, the call is treated as an authenticated encryption call with zero length
+	/// data, and the authentication tag is returned in the pPaddingInfo parameter.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
+	/// hKey parameter.
+	/// </para>
+	/// <para>If the key is a symmetric key, this can be zero or the following value.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_BLOCK_PADDING</term>
+	/// <term>
+	/// Allows the encryption algorithm to pad the data to the next block size. If this flag is not specified, the size of the plaintext
+	/// specified in the cbInput parameter must be a multiple of the algorithm's block size. The block size can be obtained by calling
+	/// the BCryptGetProperty function to get the BCRYPT_BLOCK_LENGTH property for the key. This will provide the size of a block for the
+	/// algorithm. This flag must not be used with the authenticated encryption modes (AES-CCM and AES-GCM).
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>If the key is an asymmetric key, this can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_PAD_NONE</term>
+	/// <term>
+	/// Do not use any padding. The pPaddingInfo parameter is not used. The size of the plaintext specified in the cbInput parameter must
+	/// be a multiple of the algorithm's block size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_PAD_OAEP</term>
+	/// <term>
+	/// Use the Optimal Asymmetric Encryption Padding (OAEP) scheme. The pPaddingInfo parameter is a pointer to a
+	/// BCRYPT_OAEP_PADDING_INFO structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_PAD_PKCS1</term>
+	/// <term>The data will be padded with a random number to round out the block size. The pPaddingInfo parameter is not used.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>The size specified by the cbOutput parameter is not large enough to hold the ciphertext.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_BUFFER_SIZE</term>
+	/// <term>
+	/// The cbInput parameter is not a multiple of the algorithm's block size and the BCRYPT_BLOCK_PADDING or the BCRYPT_PAD_NONE flag
+	/// was not specified in the dwFlags parameter.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The key handle in the hKey parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_SUPPORTED</term>
+	/// <term>The algorithm does not support encryption.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The pbInput and pbOutput parameters can point to the same buffer. In this case, this function will perform the encryption in
+	/// place. It is possible that the encrypted data size will be larger than the unencrypted data size, so the buffer must be large
+	/// enough to hold the encrypted data.
+	/// </para>
+	/// <para>
+	/// Depending on what processor modes a provider supports, <c>BCryptEncrypt</c> can be called either from user mode or kernel mode.
+	/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+	/// <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a provider
+	/// that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptEncrypt</c> function must
+	/// refer to nonpaged (or locked) memory.
+	/// </para>
+	/// <para>
+	/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+	/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptencrypt NTSTATUS BCryptEncrypt( BCRYPT_KEY_HANDLE
+	// hKey, PUCHAR pbInput, ULONG cbInput, VOID *pPaddingInfo, PUCHAR pbIV, ULONG cbIV, PUCHAR pbOutput, ULONG cbOutput, ULONG
+	// *pcbResult, ULONG dwFlags );
+	[PInvokeData("bcrypt.h", MSDNShortId = "69fe4530-4b7c-40db-a85c-f9dc458735e7")]
+	public static NTStatus BCryptEncrypt<T>([AddAsMember] BCRYPT_KEY_HANDLE hKey, [In] byte[] pbInput, [Optional] T? pPaddingInfo, [In, Out] byte[] pbIV, out byte[] pbOutput, EncryptFlags dwFlags)
+	{
+		pbIV ??= [];
+		pbOutput = [];
+		using SafeHGlobalHandle paddingInfo = pPaddingInfo is null ? SafeHGlobalHandle.Null : SafeHGlobalHandle.CreateFromStructure(pPaddingInfo);
+		var status = BCryptEncrypt(hKey, pbInput, (uint)pbInput.Length, paddingInfo, pbIV, (uint)pbIV.Length, IntPtr.Zero, 0, out var cbOutput, dwFlags);
+		if (status.Failed && status != NTStatus.STATUS_BUFFER_TOO_SMALL)
+			return status;
+		pbOutput = new byte[cbOutput];
+		return BCryptEncrypt(hKey, pbInput, (uint)pbInput.Length, paddingInfo, pbIV, (uint)pbIV.Length, Marshal.UnsafeAddrOfPinnedArrayElement(pbOutput, 0), cbOutput, out _, dwFlags);
+	}
+
+	/// <summary>The <c>BCryptEncrypt</c> function encrypts a block of data.</summary>
+	/// <param name="hKey">
+	/// The handle of the key to use to encrypt the data. This handle is obtained from one of the key creation functions, such as
+	/// BCryptGenerateSymmetricKey, BCryptGenerateKeyPair, or BCryptImportKey.
+	/// </param>
+	/// <param name="pbInput">
+	/// The address of a buffer that contains the plaintext to be encrypted. The cbInput parameter contains the size of the plaintext to
+	/// encrypt. For more information, see Remarks.
+	/// </param>
+	/// <param name="pbIV">
+	/// <para>
+	/// The address of a buffer that contains the initialization vector (IV) to use during encryption. The cbIV parameter contains the
+	/// size of this buffer. This function will modify the contents of this buffer. If you need to reuse the IV later, make sure you make
+	/// a copy of this buffer before calling this function.
+	/// </para>
+	/// <para>This parameter is optional and can be <c>NULL</c> if no IV is used.</para>
+	/// <para>
+	/// The required size of the IV can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_BLOCK_LENGTH</c>
+	/// property. This will provide the size of a block for the algorithm, which is also the size of the IV.
+	/// </para>
+	/// </param>
+	/// <param name="pbOutput">
+	/// <para>
+	/// The address of the buffer that receives the ciphertext produced by this function. The cbOutput parameter contains the size of
+	/// this buffer. For more information, see Remarks.
+	/// </para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, the <c>BCryptEncrypt</c> function calculates the size needed for the ciphertext of the data
+	/// passed in the pbInput parameter. In this case, the location pointed to by the pcbResult parameter contains this size, and the
+	/// function returns <c>STATUS_SUCCESS</c>. The pPaddingInfo parameter is not modified.
+	/// </para>
+	/// <para>
+	/// If the values of both the pbOutput and pbInput parameters are <c>NULL</c>, an error is returned unless an authenticated
+	/// encryption algorithm is in use. In the latter case, the call is treated as an authenticated encryption call with zero length
+	/// data, and the authentication tag is returned in the pPaddingInfo parameter.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
+	/// hKey parameter.
+	/// </para>
+	/// <para>If the key is a symmetric key, this can be zero or the following value.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_BLOCK_PADDING</term>
+	/// <term>
+	/// Allows the encryption algorithm to pad the data to the next block size. If this flag is not specified, the size of the plaintext
+	/// specified in the cbInput parameter must be a multiple of the algorithm's block size. The block size can be obtained by calling
+	/// the BCryptGetProperty function to get the BCRYPT_BLOCK_LENGTH property for the key. This will provide the size of a block for the
+	/// algorithm. This flag must not be used with the authenticated encryption modes (AES-CCM and AES-GCM).
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>If the key is an asymmetric key, this can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_PAD_NONE</term>
+	/// <term>
+	/// Do not use any padding. The pPaddingInfo parameter is not used. The size of the plaintext specified in the cbInput parameter must
+	/// be a multiple of the algorithm's block size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_PAD_OAEP</term>
+	/// <term>
+	/// Use the Optimal Asymmetric Encryption Padding (OAEP) scheme. The pPaddingInfo parameter is a pointer to a
+	/// BCRYPT_OAEP_PADDING_INFO structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_PAD_PKCS1</term>
+	/// <term>The data will be padded with a random number to round out the block size. The pPaddingInfo parameter is not used.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>The size specified by the cbOutput parameter is not large enough to hold the ciphertext.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_BUFFER_SIZE</term>
+	/// <term>
+	/// The cbInput parameter is not a multiple of the algorithm's block size and the BCRYPT_BLOCK_PADDING or the BCRYPT_PAD_NONE flag
+	/// was not specified in the dwFlags parameter.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_HANDLE</term>
+	/// <term>The key handle in the hKey parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_SUPPORTED</term>
+	/// <term>The algorithm does not support encryption.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The pbInput and pbOutput parameters can point to the same buffer. In this case, this function will perform the encryption in
+	/// place. It is possible that the encrypted data size will be larger than the unencrypted data size, so the buffer must be large
+	/// enough to hold the encrypted data.
+	/// </para>
+	/// <para>
+	/// Depending on what processor modes a provider supports, <c>BCryptEncrypt</c> can be called either from user mode or kernel mode.
+	/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+	/// <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a provider
+	/// that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptEncrypt</c> function must
+	/// refer to nonpaged (or locked) memory.
+	/// </para>
+	/// <para>
+	/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+	/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptencrypt NTSTATUS BCryptEncrypt( BCRYPT_KEY_HANDLE
+	// hKey, PUCHAR pbInput, ULONG cbInput, VOID *pPaddingInfo, PUCHAR pbIV, ULONG cbIV, PUCHAR pbOutput, ULONG cbOutput, ULONG
+	// *pcbResult, ULONG dwFlags );
+	[PInvokeData("bcrypt.h", MSDNShortId = "69fe4530-4b7c-40db-a85c-f9dc458735e7")]
+	public static NTStatus BCryptEncrypt([AddAsMember] BCRYPT_KEY_HANDLE hKey, [In] byte[] pbInput, [In, Out] byte[] pbIV, out byte[] pbOutput, EncryptFlags dwFlags) =>
+		BCryptEncrypt<uint>(hKey, pbInput, default, pbIV, out pbOutput, dwFlags);
 
 	/// <summary>The <c>BCryptEnumAlgorithms</c> function gets a list of the registered algorithm identifiers.</summary>
 	/// <param name="dwAlgOperations">
@@ -5592,7 +5740,7 @@ public static partial class BCrypt
 	[PInvokeData("bcrypt.h", MSDNShortId = "F0FF9B6D-1345-480A-BE13-BE90547407BF")]
 	[SuppressAutoGen]
 	public static extern NTStatus BCryptHash([In] BCRYPT_ALG_HANDLE hAlgorithm, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[]? pbSecret,
-		uint cbSecret, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] pbInput, uint cbInput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] pbOutput, uint cbOutput);
+		uint cbSecret, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] byte[] pbInput, uint cbInput, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] byte[] pbOutput, uint cbOutput);
 
 	/// <summary>
 	/// <para>
@@ -7336,7 +7484,7 @@ public static partial class BCrypt
 	[PInvokeData("bcrypt.h", MSDNShortId = "3e2ae471-cad6-4bfe-9e30-7b2a7014bc08")]
 	public static NTStatus BCryptQueryContextConfiguration(ContextConfigTable dwTable, [MarshalAs(UnmanagedType.LPWStr)] string pszContext,
 		out CRYPT_CONTEXT_CONFIG? ppBuffer) =>
-		Query((ref uint sz, ref IntPtr p) => BCryptQueryContextConfiguration(dwTable, pszContext, ref sz, ref p), out ppBuffer);
+		Query((ref sz, ref p) => BCryptQueryContextConfiguration(dwTable, pszContext, ref sz, ref p), out ppBuffer);
 
 	private delegate NTStatus BCQueryFunc(ref uint sz, ref IntPtr ptr);
 
@@ -7632,7 +7780,7 @@ public static partial class BCrypt
 	[PInvokeData("bcrypt.h", MSDNShortId = "4eea9efe-bf45-4926-86fc-9b12b6d292cd")]
 	public static NTStatus BCryptQueryContextFunctionConfiguration(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface,
 		string pszFunction, out CRYPT_CONTEXT_FUNCTION_CONFIG? ppBuffer) =>
-		Query((ref uint sz, ref IntPtr p) => BCryptQueryContextFunctionConfiguration(dwTable, pszContext, dwInterface, pszFunction, ref sz, ref p), out ppBuffer);
+		Query((ref sz, ref p) => BCryptQueryContextFunctionConfiguration(dwTable, pszContext, dwInterface, pszFunction, ref sz, ref p), out ppBuffer);
 
 	/// <summary>
 	/// <para>

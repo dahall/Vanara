@@ -231,7 +231,7 @@ public static partial class Ole32
 		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nf-comcat-ienumcategoryinfo-next HRESULT Next( ULONG celt,
 		// CATEGORYINFO *rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] CATEGORYINFO[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
@@ -288,7 +288,7 @@ public static partial class Ole32
 		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nf-comcat-ienumguid-next HRESULT Next( ULONG celt, GUID *rgelt,
 		// ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

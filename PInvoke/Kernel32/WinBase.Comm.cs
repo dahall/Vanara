@@ -1290,92 +1290,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, [In, Optional] StructPointer<NativeOverlapped> lpOverlapped);
-
-	/// <summary>
-	/// Waits for an event to occur for a specified communications device. The set of events that are monitored by this function is
-	/// contained in the event mask associated with the device handle.
-	/// </summary>
-	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
-	/// <param name="lpEvtMask">
-	/// <para>
-	/// A pointer to a variable that receives a mask indicating the type of event that occurred. If an error occurs, the value is zero;
-	/// otherwise, it is one of the following values.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>EV_BREAK0x0040</term>
-	/// <term>A break was detected on input.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_CTS0x0008</term>
-	/// <term>The CTS (clear-to-send) signal changed state.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_DSR0x0010</term>
-	/// <term>The DSR (data-set-ready) signal changed state.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_ERR0x0080</term>
-	/// <term>A line-status error occurred. Line-status errors are CE_FRAME, CE_OVERRUN, and CE_RXPARITY.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_RING0x0100</term>
-	/// <term>A ring indicator was detected.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_RLSD0x0020</term>
-	/// <term>The RLSD (receive-line-signal-detect) signal changed state.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_RXCHAR0x0001</term>
-	/// <term>A character was received and placed in the input buffer.</term>
-	/// </item>
-	/// <item>
-	/// <term>EV_RXFLAG0x0002</term>
-	/// <term>
-	/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure,
-	/// which is applied to a serial port by using the SetCommState function.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>EV_TXEMPTY0x0004</term>
-	/// <term>The last character in the output buffer was sent.</term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <param name="lpOverlapped">
-	/// <para>A pointer to an <c>OVERLAPPED</c> structure. This structure is required if hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>.</para>
-	/// <para>
-	/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a
-	/// valid <c>OVERLAPPED</c> structure. If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is <c>NULL</c>, the
-	/// function can incorrectly report that the operation is complete.
-	/// </para>
-	/// <para>
-	/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is not <c>NULL</c>, <c>WaitCommEvent</c> is performed as an
-	/// overlapped operation. In this case, the <c>OVERLAPPED</c> structure must contain a handle to a manual-reset event object (created
-	/// by using the <c>CreateEvent</c> function).
-	/// </para>
-	/// <para>
-	/// If hFile was not opened with <c>FILE_FLAG_OVERLAPPED</c>, <c>WaitCommEvent</c> does not return until one of the specified events
-	/// or an error occurs.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI WaitCommEvent( _In_ HANDLE hFile, _Out_ LPDWORD lpEvtMask, _In_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363479(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, in NativeOverlapped lpOverlapped);
+	public static extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, [In, Optional, StructPointer(typeof(NativeOverlapped))] IntPtr lpOverlapped);
 
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1886,34 +1801,34 @@ public static partial class Kernel32
 		public uint cbOutQue;
 
 		/// <summary>If this member is <c>TRUE</c>, transmission is waiting for the CTS (clear-to-send) signal to be sent.</summary>
-		public bool fCtsHold { get => GetFlag(0x0001); set => SetFlag(0x0001, value); }
+		public bool fCtsHold { readonly get => GetFlag(0x0001); set => SetFlag(0x0001, value); }
 
 		/// <summary>If this member is <c>TRUE</c>, transmission is waiting for the DSR (data-set-ready) signal to be sent.</summary>
-		public bool fDsrHold { get => GetFlag(0x0002); set => SetFlag(0x0002, value); }
+		public bool fDsrHold { readonly get => GetFlag(0x0002); set => SetFlag(0x0002, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, transmission is waiting for the RLSD (receive-line-signal-detect) signal to be sent.
 		/// </summary>
-		public bool fRlsdHold { get => GetFlag(0x0004); set => SetFlag(0x0004, value); }
+		public bool fRlsdHold { readonly get => GetFlag(0x0004); set => SetFlag(0x0004, value); }
 
 		/// <summary>If this member is <c>TRUE</c>, transmission is waiting because the XOFF character was received.</summary>
-		public bool fXoffHold { get => GetFlag(0x0008); set => SetFlag(0x0008, value); }
+		public bool fXoffHold { readonly get => GetFlag(0x0008); set => SetFlag(0x0008, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, transmission is waiting because the XOFF character was transmitted. (Transmission halts when
 		/// the XOFF character is transmitted to a system that takes the next character as XON, regardless of the actual character.)
 		/// </summary>
-		public bool fXoffSent { get => GetFlag(0x0010); set => SetFlag(0x0010, value); }
+		public bool fXoffSent { readonly get => GetFlag(0x0010); set => SetFlag(0x0010, value); }
 
 		/// <summary>If this member is <c>TRUE</c>, the end-of-file (EOF) character has been received.</summary>
-		public bool fEof { get => GetFlag(0x0020); set => SetFlag(0x0020, value); }
+		public bool fEof { readonly get => GetFlag(0x0020); set => SetFlag(0x0020, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, there is a character queued for transmission that has come to the communications device by way
 		/// of the <c>TransmitCommChar</c> function. The communications device transmits such a character ahead of other characters in
 		/// the device's output buffer.
 		/// </summary>
-		public bool fTxim { get => GetFlag(0x0040); set => SetFlag(0x0040, value); }
+		public bool fTxim { readonly get => GetFlag(0x0040); set => SetFlag(0x0040, value); }
 
 		private readonly bool GetFlag(uint mask) => (bitvector1 & mask) != 0;
 
@@ -2112,22 +2027,22 @@ public static partial class Kernel32
 		/// If this member is <c>TRUE</c>, binary mode is enabled. Windows does not support nonbinary mode transfers, so this member must
 		/// be <c>TRUE</c>.
 		/// </summary>
-		public bool fBinary { get => GetFlag(0x01); set => SetFlag(0x01, value); }
+		public bool fBinary { readonly get => GetFlag(0x01); set => SetFlag(0x01, value); }
 
 		/// <summary>If this member is <c>TRUE</c>, parity checking is performed and errors are reported.</summary>
-		public bool fParity { get => GetFlag(0x02); set => SetFlag(0x02, value); }
+		public bool fParity { readonly get => GetFlag(0x02); set => SetFlag(0x02, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, the CTS (clear-to-send) signal is monitored for output flow control. If this member is
 		/// <c>TRUE</c> and CTS is turned off, output is suspended until CTS is sent again.
 		/// </summary>
-		public bool fOutxCtsFlow { get => GetFlag(0x04); set => SetFlag(0x04, value); }
+		public bool fOutxCtsFlow { readonly get => GetFlag(0x04); set => SetFlag(0x04, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, the DSR (data-set-ready) signal is monitored for output flow control. If this member is
 		/// <c>TRUE</c> and DSR is turned off, output is suspended until DSR is sent again.
 		/// </summary>
-		public bool fOutxDsrFlow { get => GetFlag(0x08); set => SetFlag(0x08, value); }
+		public bool fOutxDsrFlow { readonly get => GetFlag(0x08); set => SetFlag(0x08, value); }
 
 		/// <summary>
 		/// <para>The DTR (data-terminal-ready) flow control. This member can be one of the following values.</para>
@@ -2155,13 +2070,13 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public DTR_CONTROL fDtrControl { get => (DTR_CONTROL)((flags & 0x30) >> 4); set => flags = (flags & ~0x30U) | (((uint)value) << 4); }
+		public DTR_CONTROL fDtrControl { readonly get => (DTR_CONTROL)((flags & 0x30) >> 4); set => flags = (flags & ~0x30U) | (((uint)value) << 4); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, the communications driver is sensitive to the state of the DSR signal. The driver ignores any
 		/// bytes received, unless the DSR modem input line is high.
 		/// </summary>
-		public bool fDsrSensitivity { get => GetFlag(0x40); set => SetFlag(0x40, value); }
+		public bool fDsrSensitivity { readonly get => GetFlag(0x40); set => SetFlag(0x40, value); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, transmission continues after the input buffer has come within <c>XoffLim</c> bytes of being
@@ -2169,29 +2084,29 @@ public static partial class Kernel32
 		/// transmission does not continue until the input buffer is within <c>XonLim</c> bytes of being empty and the driver has
 		/// transmitted the <c>XonChar</c> character to resume reception.
 		/// </summary>
-		public bool fTXContinueOnXoff { get => GetFlag(0x80); set => SetFlag(0x80, value); }
+		public bool fTXContinueOnXoff { readonly get => GetFlag(0x80); set => SetFlag(0x80, value); }
 
 		/// <summary>
 		/// Indicates whether XON/XOFF flow control is used during transmission. If this member is <c>TRUE</c>, transmission stops when
 		/// the <c>XoffChar</c> character is received and starts again when the <c>XonChar</c> character is received.
 		/// </summary>
-		public bool fOutX { get => GetFlag(0x100); set => SetFlag(0x100, value); }
+		public bool fOutX { readonly get => GetFlag(0x100); set => SetFlag(0x100, value); }
 
 		/// <summary>
 		/// Indicates whether XON/XOFF flow control is used during reception. If this member is <c>TRUE</c>, the <c>XoffChar</c>
 		/// character is sent when the input buffer comes within <c>XoffLim</c> bytes of being full, and the <c>XonChar</c> character is
 		/// sent when the input buffer comes within <c>XonLim</c> bytes of being empty.
 		/// </summary>
-		public bool fInX { get => GetFlag(0x200); set => SetFlag(0x200, value); }
+		public bool fInX { readonly get => GetFlag(0x200); set => SetFlag(0x200, value); }
 
 		/// <summary>
 		/// Indicates whether bytes received with parity errors are replaced with the character specified by the <c>ErrorChar</c> member.
 		/// If this member is <c>TRUE</c> and the <c>fParity</c> member is <c>TRUE</c>, replacement occurs.
 		/// </summary>
-		public bool fErrorChar { get => GetFlag(0x400); set => SetFlag(0x400, value); }
+		public bool fErrorChar { readonly get => GetFlag(0x400); set => SetFlag(0x400, value); }
 
 		/// <summary>If this member is <c>TRUE</c>, null bytes are discarded when received.</summary>
-		public bool fNull { get => GetFlag(0x800); set => SetFlag(0x800, value); }
+		public bool fNull { readonly get => GetFlag(0x800); set => SetFlag(0x800, value); }
 
 		/// <summary>
 		/// <para>The RTS (request-to-send) flow control. This member can be one of the following values.</para>
@@ -2227,14 +2142,14 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public RTS_CONTROL fRtsControl { get => (RTS_CONTROL)((flags & 0x3000) >> 12); set => flags = (flags & ~0x3000U) | (((uint)value) << 12); }
+		public RTS_CONTROL fRtsControl { readonly get => (RTS_CONTROL)((flags & 0x3000) >> 12); set => flags = (flags & ~0x3000U) | (((uint)value) << 12); }
 
 		/// <summary>
 		/// If this member is <c>TRUE</c>, the driver terminates all read and write operations with an error status if an error occurs.
 		/// The driver will not accept any further communications operations until the application has acknowledged the error by calling
 		/// the <c>ClearCommError</c> function.
 		/// </summary>
-		public bool fAbortOnError { get => GetFlag(0x4000); set => SetFlag(0x4000, value); }
+		public bool fAbortOnError { readonly get => GetFlag(0x4000); set => SetFlag(0x4000, value); }
 
 		private readonly bool GetFlag(uint mask) => (flags & mask) != 0;
 

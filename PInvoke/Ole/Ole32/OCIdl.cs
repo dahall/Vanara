@@ -1036,7 +1036,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/ocidl/nf-ocidl-ienumoleundounits-next HRESULT Next( ULONG cElt,
 		// IOleUndoUnit **rgElt, ULONG *pcEltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint cElt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IOleUndoUnit[] rgElt, out uint pcEltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

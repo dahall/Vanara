@@ -2756,7 +2756,7 @@ public static partial class AdvApi32
 	/// <param name="peUse">A pointer to a variable that receives a SID_NAME_USE value that indicates the type of the account.</param>
 	/// <returns>
 	/// If the function succeeds, the function returns STATUS_SUCCESS or STATUS_SOME_NOT_MAPPED. If the function fails, it returns an
-	/// NTSTATUS error. For more information see <see cref="LsaLookupSids2"/>.
+	/// NTSTATUS error. For more information see <c>LsaLookupSids2</c>.
 	/// </returns>
 	[PInvokeData("winbase.h", MSDNShortId = "aa379166")]
 	public static NTStatus LookupAccountSid2([Optional] string? lpSystemName, PSID lpSid, out string lpName,
@@ -2765,13 +2765,14 @@ public static partial class AdvApi32
 		lpName = lpReferencedDomainName = string.Empty;
 		peUse = default;
 		using var pol = LsaOpenPolicy(LsaPolicyRights.POLICY_LOOKUP_NAMES, lpSystemName);
-		var ret = LsaLookupSids2(pol, LsaLookupSidsFlags.LSA_LOOKUP_RETURN_LOCAL_NAMES, 1, new[] { lpSid }, out var refDom, out var names);
+		var ret = LsaLookupSids2(pol, LsaLookupSidsFlags.LSA_LOOKUP_RETURN_LOCAL_NAMES, 1, [lpSid], out var refDom, out var names);
 		using (refDom)
 		using (names)
 		{
-			if (ret == NTStatus.STATUS_SUCCESS || ret == NTStatus.STATUS_SOME_NOT_MAPPED)
+			if ((int)ret is NTStatus.STATUS_SUCCESS or NTStatus.STATUS_SOME_NOT_MAPPED)
 			{
-				lpReferencedDomainName = refDom.ToStructure<LSA_REFERENCED_DOMAIN_LIST>().DomainList.FirstOrDefault().Name;
+				ref var dl = ref refDom.DangerousGetHandle().AsRef<LSA_REFERENCED_DOMAIN_LIST>();
+				lpReferencedDomainName = dl.DomainList.Length > 0 ? dl.DomainList[0].Name : "";
 				var name = names.ToArray<LSA_TRANSLATED_NAME>(1)[0];
 				lpName = name.Name;
 				peUse = name.Use;
@@ -3019,7 +3020,7 @@ public static partial class AdvApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ObjectOpenAuditAlarm(string SubsystemName, IntPtr HandleId, string ObjectTypeName, string? ObjectName,
 		PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, ACCESS_MASK DesiredAccess, ACCESS_MASK GrantedAccess,
-		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET? Privileges,
+		[In, Optional, StructPointer(typeof(PRIVILEGE_SET))] IntPtr Privileges,
 		[MarshalAs(UnmanagedType.Bool)] bool ObjectCreation, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted,
 		[MarshalAs(UnmanagedType.Bool)] out bool GenerateOnClose);
 
@@ -3073,8 +3074,7 @@ public static partial class AdvApi32
 	[PInvokeData("winbase.h", MSDNShortId = "76714ffe-be7c-4928-b7c9-e72441ada4c7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ObjectPrivilegeAuditAlarm(string SubsystemName, IntPtr HandleId, HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
-		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET Privileges,
-		[MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
+		[In, StructPointer(typeof(PRIVILEGE_SET))] IntPtr Privileges, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
 
 	/// <summary>
 	/// Opens an encrypted file in order to backup (export) or restore (import) the file. This is one of a group of Encrypted File System
@@ -3278,8 +3278,7 @@ public static partial class AdvApi32
 	[PInvokeData("winbase.h", MSDNShortId = "a424c583-bb71-4bda-a27f-2389b89104d8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrivilegedServiceAuditAlarm(string SubsystemName, string ServiceName, HTOKEN ClientToken,
-		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET Privileges,
-		[MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
+		[In, StructPointer(typeof(PRIVILEGE_SET))] IntPtr Privileges, [MarshalAs(UnmanagedType.Bool)] bool AccessGranted);
 
 	/// <summary>
 	/// Backs up (export) encrypted files. This is one of a group of Encrypted File System (EFS) functions that is intended to implement
@@ -4136,11 +4135,16 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>This structure is used by the OperationEnd function.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="OPERATION_END_PARAMETERS"/> struct.</remarks>
+	/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
+	/// <param name="singleThreadOnly">
+	/// if set to <c>true</c> specifies that the system should discard the information it has been tracking for this operation.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-operation_end_parameters typedef struct
 	// _OPERATION_END_PARAMETERS { ULONG Version; OPERATION_ID OperationId; ULONG Flags; } OPERATION_END_PARAMETERS, *POPERATION_END_PARAMETERS;
 	[PInvokeData("winbase.h", MSDNShortId = "45ABFE6A-7B70-418F-8C3C-6388079D1306")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct OPERATION_END_PARAMETERS
+	public struct OPERATION_END_PARAMETERS(uint opId, bool singleThreadOnly = false)
 	{
 		/// <summary>
 		/// <para>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> defined in the Windows SDK.</para>
@@ -4155,13 +4159,13 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Version;
+		public uint Version = OPERATION_API_VERSION;
 
 		/// <summary>
 		/// Each operation has an OPERATION_ID namespace that is unique for each process. If two applications both use the same
 		/// <c>OPERATION_ID</c> value to identify two operations, the system maintains separate contexts for each operation.
 		/// </summary>
-		public uint OperationId;
+		public uint OperationId = opId;
 
 		/// <summary>
 		/// <para>The value of this parameter can include any combination of the following values.</para>
@@ -4179,27 +4183,20 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="OPERATION_END_PARAMETERS"/> struct.</summary>
-		/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
-		/// <param name="singleThreadOnly">
-		/// if set to <c>true</c> specifies that the system should discard the information it has been tracking for this operation.
-		/// </param>
-		public OPERATION_END_PARAMETERS(uint opId, bool singleThreadOnly = false)
-		{
-			Version = OPERATION_API_VERSION;
-			OperationId = opId;
-			Flags = singleThreadOnly ? 1U : 0U;
-		}
+		public uint Flags = singleThreadOnly ? 1U : 0U;
 	}
 
 	/// <summary>This structure is used by the OperationStart function.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="OPERATION_START_PARAMETERS"/> struct.</remarks>
+	/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
+	/// <param name="singleThreadOnly">
+	/// if set to <c>true</c> specifies that the system should only track the activities of the calling thread in a multi-threaded application.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-operation_start_parameters typedef struct
 	// _OPERATION_START_PARAMETERS { ULONG Version; OPERATION_ID OperationId; ULONG Flags; } OPERATION_START_PARAMETERS, *POPERATION_START_PARAMETERS;
 	[PInvokeData("winbase.h", MSDNShortId = "51AE0017-2CDE-4BCD-AE03-B366343DE558")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct OPERATION_START_PARAMETERS
+	public struct OPERATION_START_PARAMETERS(uint opId, bool singleThreadOnly = false)
 	{
 		/// <summary>
 		/// <para>This parameter should be initialized to the <c>OPERATION_API_VERSION</c> value defined in the Windows SDK.</para>
@@ -4214,13 +4211,13 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Version;
+		public uint Version = OPERATION_API_VERSION;
 
 		/// <summary>
 		/// Each operation has an OPERATION_ID namespace that is unique for each process. If two applications both use the same
 		/// <c>OPERATION_ID</c> value to identify two operations, the system maintains separate contexts for each operation.
 		/// </summary>
-		public uint OperationId;
+		public uint OperationId = opId;
 
 		/// <summary>
 		/// <para>The value of this parameter can include any combination of the following values.</para>
@@ -4238,18 +4235,6 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="OPERATION_START_PARAMETERS"/> struct.</summary>
-		/// <param name="opId">An OPERATION_ID namespace that is unique for each process.</param>
-		/// <param name="singleThreadOnly">
-		/// if set to <c>true</c> specifies that the system should only track the activities of the calling thread in a multi-threaded application.
-		/// </param>
-		public OPERATION_START_PARAMETERS(uint opId, bool singleThreadOnly = false)
-		{
-			Version = OPERATION_API_VERSION;
-			OperationId = opId;
-			Flags = singleThreadOnly ? 1U : 0U;
-		}
+		public uint Flags = singleThreadOnly ? 1U : 0U;
 	}
 }

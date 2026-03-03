@@ -183,6 +183,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "cac928e5-8d8f-4b2f-9c1b-c00dc891e3d1")]
 	[return: MarshalAs(UnmanagedType.U1)]
+	[SuppressAutoGen]
 	public static extern bool AuditComputeEffectivePolicyBySid(PSID pSid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] pSubCategoryGuids, uint dwPolicyCount, out SafeAuditMemoryHandle ppAuditPolicy);
 
 	/// <summary>
@@ -202,7 +203,7 @@ public static partial class AdvApi32
 	/// pSubCategoryGuids array.
 	/// </returns>
 	[PInvokeData("ntsecapi.h", MSDNShortId = "cac928e5-8d8f-4b2f-9c1b-c00dc891e3d1")]
-	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditComputeEffectivePolicyBySid(PSID pSid, [In] Guid[] pSubCategoryGuids) =>
+	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditComputeEffectivePolicyBySid(PSID pSid, [In] params Guid[] pSubCategoryGuids) =>
 		AuditComputeEffectivePolicyBySid(pSid, pSubCategoryGuids, (uint)pSubCategoryGuids.Length, out var h) ? h.ToIEnum<AUDIT_POLICY_INFORMATION>(pSubCategoryGuids.Length) : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>
@@ -262,6 +263,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "e5fc9b8d-a61e-48c2-9093-f27167232cc8")]
 	[return: MarshalAs(UnmanagedType.U1)]
+	[SuppressAutoGen]
 	public static extern bool AuditComputeEffectivePolicyByToken(HTOKEN hTokenHandle, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] pSubCategoryGuids, uint dwPolicyCount, out SafeAuditMemoryHandle ppAuditPolicy);
 
 	/// <summary>
@@ -286,7 +288,7 @@ public static partial class AdvApi32
 	/// and <c>AUDIT_QUERY_USER_POLICY</c> access on the Audit security object.
 	/// </remarks>
 	[PInvokeData("ntsecapi.h", MSDNShortId = "e5fc9b8d-a61e-48c2-9093-f27167232cc8")]
-	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditComputeEffectivePolicyByToken(HTOKEN hTokenHandle, [In] Guid[] pSubCategoryGuids) =>
+	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditComputeEffectivePolicyByToken(HTOKEN hTokenHandle, [In] params Guid[] pSubCategoryGuids) =>
 		AuditComputeEffectivePolicyByToken(hTokenHandle, pSubCategoryGuids, (uint)pSubCategoryGuids.Length, out var h) ? h.ToIEnum<AUDIT_POLICY_INFORMATION>(pSubCategoryGuids.Length) : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>The <c>AuditEnumerateCategories</c> function enumerates the available audit-policy categories.</summary>
@@ -399,7 +401,7 @@ public static partial class AdvApi32
 	[PInvokeData("ntsecapi.h", MSDNShortId = "c5af83f4-9524-4a39-ad1d-39b21bb073bd")]
 	public static IEnumerable<Guid> AuditEnumerateSubCategories(Guid? pAuditCategoryGuid = null)
 	{
-		var guid = pAuditCategoryGuid.HasValue ? pAuditCategoryGuid.Value : Guid.Empty;
+		var guid = pAuditCategoryGuid ?? Guid.Empty;
 		return AuditEnumerateSubCategories(guid, !pAuditCategoryGuid.HasValue, out var h, out var c) ? h.ToIEnum<Guid>((int)c) : throw Win32Error.GetLastError().GetException()!;
 	}
 
@@ -586,6 +588,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "7d4790de-ebd6-4840-b532-7158b8d80db2")]
 	[return: MarshalAs(UnmanagedType.U1)]
+	[SuppressAutoGen]
 	public static extern bool AuditQueryPerUserPolicy(PSID pSid, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Guid[] pSubCategoryGuids, uint dwPolicyCount, out SafeAuditMemoryHandle ppAuditPolicy);
 
 	/// <summary>
@@ -615,7 +618,7 @@ public static partial class AdvApi32
 		if (b)
 			return h.ToIEnum<AUDIT_POLICY_INFORMATION>(pSubCategoryGuids?.Length ?? 0);
 		var err = Win32Error.GetLastError();
-		return err == Win32Error.ERROR_FILE_NOT_FOUND ? new AUDIT_POLICY_INFORMATION[0] : throw err.GetException()!;
+		return err == Win32Error.ERROR_FILE_NOT_FOUND ? [] : throw err.GetException()!;
 	}
 
 	/// <summary>The <c>AuditQuerySecurity</c> function retrieves security descriptor that delegates access to audit policy.</summary>
@@ -704,6 +707,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "5c268033-65fd-4a74-90a1-4b9e1e18daf1")]
 	[return: MarshalAs(UnmanagedType.U1)]
+	[SuppressAutoGen]
 	public static extern bool AuditQuerySystemPolicy([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] pSubCategoryGuids, uint dwPolicyCount, out SafeAuditMemoryHandle ppAuditPolicy);
 
 	/// <summary>The <c>AuditQuerySystemPolicy</c> function retrieves system audit policy for one or more audit-policy subcategories.</summary>
@@ -720,7 +724,7 @@ public static partial class AdvApi32
 	/// access on the audit security object.
 	/// </remarks>
 	[PInvokeData("ntsecapi.h", MSDNShortId = "5c268033-65fd-4a74-90a1-4b9e1e18daf1")]
-	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditQuerySystemPolicy([In] Guid[] pSubCategoryGuids) =>
+	public static IEnumerable<AUDIT_POLICY_INFORMATION> AuditQuerySystemPolicy([In] params Guid[] pSubCategoryGuids) =>
 		AuditQuerySystemPolicy(pSubCategoryGuids, (uint)(pSubCategoryGuids?.Length ?? 0), out var h) ? h.ToIEnum<AUDIT_POLICY_INFORMATION>(pSubCategoryGuids?.Length ?? 0) : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>
@@ -999,10 +1003,10 @@ public static partial class AdvApi32
 		public uint UsersCount;
 
 		/// <summary>An array of SID pointers.</summary>
-		private readonly IntPtr _UserSidArray;
+		private readonly ArrayPointer<PSID> _UserSidArray;
 
 		/// <summary>An array of SID pointers.</summary>
-		public PSID[] UserSidArray => _UserSidArray == IntPtr.Zero ? new PSID[0] : _UserSidArray.ToArray<PSID>((int)UsersCount)!;
+		public readonly PSID[] UserSidArray => _UserSidArray.IsNull ? [] : _UserSidArray.ToArray((int)UsersCount)!;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory allocated by audit functions that is disposed using <see cref="AuditFree"/>.</summary>
@@ -1019,9 +1023,9 @@ public static partial class AdvApi32
 		/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
 		public IEnumerable<T> ToIEnum<T>(int count, int prefixBytes = 0) where T : struct
 		{
-			if (IsInvalid) return Enumerable.Empty<T>();
+			if (IsInvalid) return [];
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-			return this.ToIEnum<T>(count, prefixBytes);
+			return handle.ToIEnum<T>(count, prefixBytes);
 		}
 
 		/// <summary>

@@ -27,7 +27,7 @@ public class FileApiTests
 		Assert.That(fi.Exists);
 		Assert.That(fi.Length, Is.EqualTo(sz));
 
-		CREATEFILE2_EXTENDED_PARAMETERS cfp2 = new() { dwFileFlags = FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED, dwSize = (uint)Marshal.SizeOf(typeof(CREATEFILE2_EXTENDED_PARAMETERS)) };
+		CREATEFILE2_EXTENDED_PARAMETERS cfp2 = new(FILE_ATTRIBUTE.FILE_ATTRIBUTE_NORMAL) { dwFileFlags = FILE_FLAG.FILE_FLAG_OVERLAPPED };
 		using (SafeHFILE hFile = CreateFile2(fn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, FileMode.Open, cfp2))
 		{
 			byte[] bytes = GetBigBytes(sz);

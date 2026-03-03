@@ -33,12 +33,12 @@ public static partial class Rpc
 	/// <summary>Converts a value to a four-byte array.</summary>
 	/// <param name="s">The value.</param>
 	/// <returns>The byte array.</returns>
-	public static byte[] NdrFcLong(int s) => new[] { (byte)(s & 0xff), (byte)((s & 0x0000ff00) >> 8), (byte)((s & 0x00ff0000) >> 16), (byte)(s >> 24) };
+	public static byte[] NdrFcLong(int s) => [(byte)(s & 0xff), (byte)((s & 0x0000ff00) >> 8), (byte)((s & 0x00ff0000) >> 16), (byte)(s >> 24)];
 
 	/// <summary>Converts a value to a two-byte array.</summary>
 	/// <param name="s">The value.</param>
 	/// <returns>The byte array.</returns>
-	public static byte[] NdrFcShort(int s) => new[] { (byte)(s & 0xff), (byte)(s >> 8) };
+	public static byte[] NdrFcShort(int s) => [(byte)(s & 0xff), (byte)(s >> 8)];
 
 	/// <summary/>
 	[PInvokeData("rpcndr.h")]

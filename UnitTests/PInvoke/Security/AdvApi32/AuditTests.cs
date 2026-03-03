@@ -50,7 +50,7 @@ public class AuditTests
 	[Test()]
 	public void AuditComputeEffectivePolicyBySidTest()
 	{
-		Assert.That(AuditComputeEffectivePolicyBySid(CurUserSid, new[] { regAudit }), Is.Not.Empty);
+		Assert.That(AuditComputeEffectivePolicyBySid(CurUserSid, [regAudit]), Is.Not.Empty);
 	}
 
 	[Test()]
@@ -60,7 +60,7 @@ public class AuditTests
 
 		using var hTok = new SafeHTOKEN(identity.Token);
 
-		Assert.That(AuditComputeEffectivePolicyByToken(hTok, new[] { regAudit }), Is.Not.Empty);
+		Assert.That(AuditComputeEffectivePolicyByToken(hTok, [regAudit]), Is.Not.Empty);
 	}
 
 	[Test]
@@ -114,7 +114,8 @@ public class AuditTests
 	[Test]
 	public void AuditQuerySetGlobalSaclTest()
 	{
-		Assert.That(AuditQueryGlobalSacl("Key", out var orig), ResultIs.Successful);
+		const string otName = "Key";
+		Assert.That(AuditQueryGlobalSacl(otName, out var orig), ResultIs.Successful);
 
 		var explAcc = new EXPLICIT_ACCESS
 		{
@@ -123,27 +124,27 @@ public class AuditTests
 			grfInheritance = INHERIT_FLAGS.NO_INHERITANCE,
 			Trustee = new TRUSTEE(SafePSID.Everyone, TRUSTEE_TYPE.TRUSTEE_IS_WELL_KNOWN_GROUP)
 		};
-		Assert.That(SetEntriesInAcl(1, new[] { explAcc }, PACL.NULL, out var newAcl), ResultIs.Successful);
+		Assert.That(SetEntriesInAcl(1, [explAcc], PACL.NULL, out var newAcl), ResultIs.Successful);
 
-		Assert.That(AuditSetGlobalSacl("Key", newAcl), ResultIs.Successful);
-		Assert.That(AuditSetGlobalSacl("Key", orig), ResultIs.Successful);
+		Assert.That(AuditSetGlobalSacl(otName, newAcl), ResultIs.Successful);
+		Assert.That(AuditSetGlobalSacl(otName, orig), ResultIs.Successful);
 	}
 
 	[Test]
 	public void AuditQuerySetPerUserPolicyTest()
 	{
-		AUDIT_POLICY_INFORMATION[] orig = new AUDIT_POLICY_INFORMATION[0];
-		Assert.That(() => orig = AuditQueryPerUserPolicy(CurUserSid, new[] { regAudit }).ToArray(), Throws.Nothing);
+		AUDIT_POLICY_INFORMATION[] orig = [];
+		Assert.That(() => orig = AuditQueryPerUserPolicy(CurUserSid, [regAudit]).ToArray(), Throws.Nothing);
 
 		var api = new AUDIT_POLICY_INFORMATION { AuditSubCategoryGuid = regAudit, AuditingInformation = AuditCondition.PER_USER_AUDIT_SUCCESS_INCLUDE };
-		Assert.That(AuditSetPerUserPolicy(CurUserSid, new[] { api }, 1), ResultIs.Successful);
-		Assert.That(AuditQueryPerUserPolicy(CurUserSid, new[] { regAudit }).ToArray(), Has.Length.EqualTo(1));
+		Assert.That(AuditSetPerUserPolicy(CurUserSid, [api], 1), ResultIs.Successful);
+		Assert.That(AuditQueryPerUserPolicy(CurUserSid, [regAudit]).ToArray(), Has.Length.EqualTo(1));
 
 		if (orig.Length == 0)
 			api.AuditingInformation = AuditCondition.PER_USER_AUDIT_NONE;
 		else
 			api = orig[0];
-		Assert.That(AuditSetPerUserPolicy(CurUserSid, new[] { api }, 1), ResultIs.Successful);
+		Assert.That(AuditSetPerUserPolicy(CurUserSid, [api], 1), ResultIs.Successful);
 	}
 
 	[Test]
