@@ -520,9 +520,9 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			tmpbuilder.parameters.Remove(attrInfo.CountParam);
 
 			// Setup variable(s) to convert the array to a native pointer
-			tmpbuilder.statements.setupVariables.Add(ParseStatement($"using global::Vanara.InteropServices.SafeNativeArray<{attrInfo.ElementType.Name}> __{id} = new({id} ?? []);"));
+			tmpbuilder.statements.setupVariables[$"__{id}"] = ParseStatement($"using global::Vanara.InteropServices.SafeNativeArray<{attrInfo.ElementType.Name}> __{id} = new({id} ?? []);");
 			if (attrInfo.ElementsAreByRef)
-				tmpbuilder.statements.setupVariables.Add(ParseStatement($"using global::Vanara.InteropServices.SafeNativeArray<IntPtr> __p_{id} = new(__{id}.GetPointers());"));
+				tmpbuilder.statements.setupVariables[$"__p_{id}"] = ParseStatement($"using global::Vanara.InteropServices.SafeNativeArray<IntPtr> __p_{id} = new(__{id}.GetPointers());");
 
 			// Call the invoke method with a reference to the first element of the array
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(ParseExpression(attrInfo.ElementsAreByRef ? $"__p_{id}" : $"__{id}")));
@@ -648,7 +648,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// If this an out parameter, there must be another parameter with the same SizeParamIndex value that is has an In attribute and the same SizeParamIndex and is integral, so look for that and if found, pass it along as well
 		if (attrInfo.ModType == ModType.Out && attrInfo.IidParameterIndex is null && (!tmpbuilder.paramReferences.Has(attrInfo!.RefParam!.Identifier.Text).Any(rd => rd.Item2.HasFlag(ModType.In))))
 		{
-			context.ReportError(decl, "VANGEN059", "An array with MarshalAs.LPArray and an Out attribute, must specify a SizeParamIndex value that is shared with another parameter marked with an In attribute.");
+			context.ReportStatus(decl, "VANGEN059", "An array with MarshalAs.LPArray and an Out attribute, can specify a SizeParamIndex value when shared with another parameter marked with an In attribute.");
 			return;
 		}
 
@@ -658,10 +658,12 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		bool paramTypeIsNullable = decl.Type is NullableTypeSyntax || decl.Type?.ToString().EndsWith("?") == true;
 		bool returnIsVoid = tmpbuilder.returnType.ToString() == "void";
 
-		const string genericTypeBase = "__TIUnk";
+		const string genericTypeBase = "TIUnk";
 		const string altArgBase = "__ppv";
 		string genericType = UniqueName(genericTypeBase);
 		string altArg = isOutParam ? UniqueName(altArgBase) : string.Empty;
+		var szVarType = attrInfo.RefParam?.Type;
+		string? szVarName = attrInfo.RefParam?.Identifier.Text;
 
 		// Create the extension method signature, removing this attribute
 		if (attrInfo.UnmanagedType == UnmanagedType.IUnknown)
@@ -683,11 +685,14 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 		// Initialize an 'int' length param from array length if array and in and not already declared
 		if (attrInfo.UnmanagedType == UnmanagedType.LPArray && attrInfo.ModType.HasFlag(ModType.In)
-			&& !tmpbuilder.statements.setupVariables.OfType<LocalDeclarationStatementSyntax>().Any(lds => lds.Declaration.Variables.First().Identifier.Text.Equals(attrInfo.RefParam!.Identifier.Text)))
+			&& !tmpbuilder.statements.setupVariables.OfType<LocalDeclarationStatementSyntax>().Any(lds => lds.Declaration.Variables.First().Identifier.Text.Equals(szVarName)))
 		{
-			tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(PredefinedType(Token(SyntaxKind.IntKeyword)))
+			var getLenExpr = paramTypeIsNullable ? $"{decl.Identifier.Text}?.Length ?? 0" : $"{decl.Identifier.Text}.Length";
+			if (attrInfo.RefParam!.Type!.ToString() != "int")
+				getLenExpr = $"({szVarType})Convert.ChangeType({getLenExpr}, typeof({szVarType}))";
+			tmpbuilder.statements.setupVariables[szVarName!] = LocalDeclarationStatement(VariableDeclaration(szVarType!)
 				.WithVariables(SingletonSeparatedList(VariableDeclarator(attrInfo.RefParam!.Identifier)
-				.WithInitializer(EqualsValueClause(ParseExpression(paramTypeIsNullable ? $"{decl.Identifier.Text}?.Length ?? 0" : $"{decl.Identifier.Text}.Length")))))));
+					.WithInitializer(EqualsValueClause(ParseExpression(getLenExpr))))));
 		}
 
 		// Initialize out param
@@ -696,7 +701,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			if (attrInfo.UnmanagedType == UnmanagedType.LPArray)
 			{
 				// Declare out array param to new array of the correct type and length equal to the RefParam value
-				tmpbuilder.statements.initOutParams.Add(ParseStatement($"{decl.Identifier.Text} = new {((ArrayTypeSyntax?)decl.Type)?.ElementType.ToString()}[{attrInfo.RefParam!.Identifier.Text}];"));
+				var elementType = decl.Type is NullableTypeSyntax nt ? ((ArrayTypeSyntax)nt.ElementType).ElementType : ((ArrayTypeSyntax?)decl.Type)?.ElementType;
+				tmpbuilder.statements.initOutParams.Add(ParseStatement($"{decl.Identifier.Text} = new {elementType?.ToString()}[{(szVarType!.ToString() == "int" ? szVarName! : $"Convert.ToInt32({szVarName})")}];"));
 			}
 			else
 			{
@@ -710,12 +716,11 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// Create the invocation expression capturing the return value if the return type is not `void`
 		ArgumentSyntax ModArgs(ArgumentSyntax a) => a switch
 		{
-			var a1 when a1.NameEquals(attrInfo.RefParam!.Identifier.Text) => attrInfo.UnmanagedType switch
+			var a1 when a1.NameEquals(szVarName!) => attrInfo.UnmanagedType switch
 			{
 				UnmanagedType.IUnknown => Argument(ParseExpression($"typeof({genericType}).GUID")),
 				UnmanagedType.Interface => Argument(ParseExpression($"typeof({decl.Type!.ToString().TrimEnd('?')}).GUID")),
-				UnmanagedType.LPArray when attrInfo.ModType.HasFlag(ModType.In) && methodDecl.ParameterList.Parameters.FirstOrDefault(p => p.Identifier.Text == attrInfo.RefParam!.Identifier.Text) is ParameterSyntax refParam =>
-					Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({attrInfo.RefParam!.Identifier.Text}, typeof({refParam.Type}))")),
+				UnmanagedType.LPArray when attrInfo.ModType.HasFlag(ModType.In) && methodDecl.ParameterList.Parameters.FirstOrDefault(p => p.Identifier.Text == szVarName) is ParameterSyntax refParam => Argument(ParseExpression(szVarName!)),
 				_ => a1,
 			},
 			var a1 when a1.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == decl.Identifier.Text => isOutParam
@@ -747,7 +752,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (tmpbuilder.docs is not null)
 		{
 			// Get the xml node for the ref parameter docs
-			XmlNode? refNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{attrInfo.RefParam!.Identifier.Text}']");
+			XmlNode? refNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{szVarName}']");
 			if (refNode is not null)
 			{
 				// Add the ref parameter docs to the method docs as the value of the typeParam tag
@@ -759,8 +764,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 				// Remove the "<paramref name="refParamName"/>" tags from the entire document
 				XmlElement replElem = tmpbuilder.docs.CreateElement("c");
-				replElem.InnerText = attrInfo.RefParam!.Identifier.Text;
-				foreach (var n in tmpbuilder.docs.SelectNodes($"//paramref[@name='{attrInfo.RefParam!.Identifier.Text}']").Cast<XmlElement>().Where(n => n.ParentNode is not null))
+				replElem.InnerText = szVarName;
+				foreach (var n in tmpbuilder.docs.SelectNodes($"//paramref[@name='{szVarName}']").Cast<XmlElement>().Where(n => n.ParentNode is not null))
 					n.ParentNode?.ReplaceChild(replElem, n);
 			}
 		}
@@ -845,6 +850,30 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (attrInfo.ByteSzParam is not null) tmpbuilder.parameters.Remove(attrInfo.ByteSzParam);
 
 		// **********************************
+		// Declare default argument values
+		// **********************************
+		// 1. Create statement that creates a variable for the size of the type of attrInfo.SzParam and assigns it the value of default (query) or sz
+		var szVarName = attrInfo.SzParam is null ? UniqueName("__sz") : attrInfo.SzParam.Identifier.Text;
+		TypeSyntax szVarTypeDecl = attrInfo.SzParam is null ? PredefinedType(Token(SyntaxKind.IntKeyword)) : attrInfo.SzParam.Type!;
+		// Get size based on count
+		if (isInParam)
+			attrInfo.SzValueExpr = szVarTypeDecl.ToString() == "int" ? string.Format(getLenExpr, decl.Identifier.Text) : $"({szVarTypeDecl})Convert.ChangeType({string.Format(getLenExpr, decl.Identifier.Text)}, typeof({szVarTypeDecl}))";
+		// Initialize size variable
+		tmpbuilder.statements.setupVariables[szVarName] = LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
+			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(szVarName))
+				.WithInitializer(EqualsValueClause(attrInfo.SizingMethod.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(attrInfo.SzValueExpr ?? "0"))))));
+		// If attrInfo.OutSzParam is specified, create statement that assigns attrInfo.OutSzParam to default value
+		if (attrInfo.OutSzParam is not null)
+			tmpbuilder.statements.setupVariables[attrInfo.OutSzParam.Identifier.Text] = LocalDeclarationStatement(VariableDeclaration(attrInfo.OutSzParam.Type!)
+			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.OutSzParam.Identifier.Text))
+				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr)))));
+		// If attrInfo.ByteSzParam is specified, create statement that assigns attrInfo.ByteSzParam to default value
+		if (attrInfo.ByteSzParam is not null)
+			tmpbuilder.statements.setupVariables[attrInfo.ByteSzParam.Identifier.Text] = LocalDeclarationStatement(VariableDeclaration(attrInfo.ByteSzParam.Type!)
+			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.ByteSzParam.Identifier.Text))
+				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr)))));
+
+		// **********************************
 		// Initialize out parameter values
 		// **********************************
 		(ExpressionSyntax? outNullVal, ExpressionSyntax? outDefVal) = (szType & ~SizeParamType.Nullable) switch
@@ -865,30 +894,10 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				isNullable || useStructHandle ? outNullVal : outDefVal)));
 
 		// **********************************
-		// Declare default argument values
+		// Setup argument values
 		// **********************************
-		// 1. Create statement that creates a variable for the size of the type of attrInfo.SzParam and assigns it the value of default (query) or sz
-		var szVarName = attrInfo.SzParam is null ? UniqueName("__sz") : attrInfo.SzParam.Identifier.Text;
-		TypeSyntax szVarTypeDecl = attrInfo.SzParam is null ? PredefinedType(Token(SyntaxKind.IntKeyword)) : attrInfo.SzParam.Type!;
-		// Get size based on count
-		if (isInParam)
-			attrInfo.SzValueExpr = szVarTypeDecl.ToString() == "int" ? string.Format(getLenExpr, decl.Identifier.Text) : $"({szVarTypeDecl})Convert.ChangeType({string.Format(getLenExpr, decl.Identifier.Text)}, typeof({szVarTypeDecl}))";
-		// Initialize size variable
-		tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
-			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(szVarName))
-				.WithInitializer(EqualsValueClause(attrInfo.SizingMethod.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(attrInfo.SzValueExpr ?? "0")))))));
-		// If attrInfo.OutSzParam is specified, create statement that assigns attrInfo.OutSzParam to default value
-		if (attrInfo.OutSzParam is not null)
-			tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.OutSzParam.Type!)
-			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.OutSzParam.Identifier.Text))
-				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr))))));
-		// If attrInfo.ByteSzParam is specified, create statement that assigns attrInfo.ByteSzParam to default value
-		if (attrInfo.ByteSzParam is not null)
-			tmpbuilder.statements.setupVariables.Add(LocalDeclarationStatement(VariableDeclaration(attrInfo.ByteSzParam.Type!)
-			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(attrInfo.ByteSzParam.Identifier.Text))
-				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr))))));
 		// If isInParam is true, create an assignment statement that assigns decl parameter to the appropriate value 
-		string? inArgName = isInParam ? UniqueName($"__{decl.Identifier.Text}") : null;
+		string? inArgName = isInParam ? $"__{decl.Identifier.Text}" : null;
 		if (isInParam)
 		{
 			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(decl.Type!)
@@ -977,7 +986,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			tmpbuilder.statements.assignAfterQuery.Insert(0,
 				ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(szVarName), IdentifierName(attrInfo.OutSzParam.Identifier.Text))));
 		// 2. Create a statement that creates a variable for the output of syntaxNode and initializes it to the value of 'sz'
-		var cElemName = UniqueName("__cElem");
+		var cElemName = UniqueName($"__i{szVarName}");
 		if (!isInParam)
 		{
 			// 3. Create a variable that holds the number of elements initialized to the value of szVarName
@@ -1008,7 +1017,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			tmpbuilder.statements.assignAfterQuery.Add(expr);
 		}
 		// 6. If the outType is string, initialize to new StringBuilder(sz)
-		var outVarName = UniqueName($"__{decl.Identifier.Text}");
+		var outVarName = $"__{decl.Identifier.Text}";
 		if (!isInParam)
 		{
 			var outVarDecl = VariableDeclaration(decl.Type!);

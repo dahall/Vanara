@@ -368,6 +368,8 @@ public partial class CodeGenTests
 					[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] rgcbToBeHashed);
 				public static extern bool AccessCheckByTypeResultList([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OBJECT_TYPE_LIST[]? ObjectTypeList, uint ObjectTypeListLength,
 					[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ACCESS_MASK[] GrantedAccessList, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] AccessStatusList);
+				public static extern bool GetResourceAllocationInfo1([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RECT[]? ObjectTypeList, int ObjectTypeListLength,
+					[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? GrantedAccessList, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] AccessStatusList);
 				public static extern bool Method([SizeDef(nameof(cbLen))] string psz, uint cbLen, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] outList);
 			}
 		}
@@ -736,13 +738,14 @@ public partial class CodeGenTests
 			/// <summary>A 64-bit test dll</summary>
 			public static partial class Test64
 			{
-				//public static extern NTStatus TwoDiffSizeDefParams([In, AddAsMember] HTEST hAlgorithm, out SafeHTEST phHash, [Out, Optional, SizeDef(nameof(cbHashObject), SizingMethod.Bytes)] IntPtr pbHashObject,
-				//	[Optional] uint cbHashObject, [In, Optional, SizeDef(nameof(cbSecret), SizingMethod.Bytes)] IntPtr pbSecret, [Optional] uint cbSecret, uint dwFlags = 0);
+				public static extern NTStatus TwoDiffSizeDefParams([In, AddAsMember] HTEST hAlgorithm, out SafeHTEST phHash, [Out, Optional, SizeDef(nameof(cbHashObject), SizingMethod.Bytes)] IntPtr pbHashObject,
+					[Optional] uint cbHashObject, [In, Optional, SizeDef(nameof(cbSecret), SizingMethod.Bytes)] IntPtr pbSecret, [Optional] uint cbSecret, uint dwFlags = 0);
 
 				public static extern uint TwoSizeDefParamsWithSameSizer(string szFileName, int nIconIndex, int cxIcon, int cyIcon,
 					[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] SafeHICON[]? phicon,
 					[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] uint[]? piconid,
 					[Optional] uint nIcons, [Optional] LoadImageOptions flags);
+
 			}
 		}
 		""";

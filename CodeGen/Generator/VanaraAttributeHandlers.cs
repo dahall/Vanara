@@ -168,7 +168,7 @@ internal class MethodBodyBuilder
 			string errHandler = isCtor
 				? $"global::Vanara.PInvoke.FailedHelper.THROW_IF_FAILED({retVarName}, false);"
 				: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
-			ret = ret.WithBody(Block(statements.setupVariables
+			ret = ret.WithBody(Block(statements.setupVariables.Values
 				.Concat(statements.initOutParams)
 				.Concat(statements.setupArgs.DistinctBy(StmtToKey))
 				.Concat([queryStmt]).WhereNotNull()
@@ -218,7 +218,7 @@ internal class MethodBodyBuilder
 		}
 
 		// Get param types and attribute values for parameter and return values
-		public List<StatementSyntax> setupVariables = [];
+		public Dictionary<string, StatementSyntax> setupVariables = [];
 
 		// Initialize out params
 		public List<StatementSyntax> initOutParams = [];
