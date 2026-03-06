@@ -374,9 +374,10 @@ public static partial class User32
 	// dwReserved, DWORD dwFlags, PUINT pcIDs, PGESTURECONFIG pGestureConfig, UINT cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "8b7a594c-e9e4-4215-8946-da170c957a2b")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetGestureConfig([In, AddAsMember] HWND hwnd, [Optional, Ignore] uint dwReserved, GCF dwFlags, ref uint pcIDs,
-		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pcIDs), SizingMethod.Query)] GESTURECONFIG[]? pGestureConfig, [In] uint cbSize);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GESTURECONFIG[]? pGestureConfig, [In] uint cbSize);
 
 	/// <summary>Retrieves additional information about a gesture from its GESTUREINFO handle.</summary>
 	/// <param name="hGestureInfo">The handle to the gesture information that is passed in the lParam of a WM_GESTURE message.</param>
@@ -1145,26 +1146,27 @@ public static partial class User32
 	/// </list>
 	/// <para>Examples</para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="GESTURECONFIG"/> struct.</remarks>
+	/// <param name="id">The identifier for the type of configuration that will have messages enabled or disabled.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-taggestureconfig typedef struct tagGESTURECONFIG { DWORD
 	// dwID; DWORD dwWant; DWORD dwBlock; } GESTURECONFIG, *PGESTURECONFIG;
 	[PInvokeData("winuser.h", MSDNShortId = "4ec5050e-7fef-4f52-89af-5237e8cdbdb8")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct GESTURECONFIG
+	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	public struct GESTURECONFIG(User32.GID id)
 	{
+		/// <summary>Gets the size of the <see cref="GESTURECONFIG"/> struct.</summary>
+		public static readonly uint Size = (uint)Marshal.SizeOf(typeof(GESTURECONFIG));
+
 		/// <summary>
 		/// The identifier for the type of configuration that will have messages enabled or disabled. For more information, see Remarks.
 		/// </summary>
-		public GID dwID;
+		public GID dwID = id;
 
 		/// <summary>The messages to enable.</summary>
 		public Gesture dwWant;
 
 		/// <summary>The messages to disable.</summary>
 		public Gesture dwBlock;
-
-		/// <summary>Initializes a new instance of the <see cref="GESTURECONFIG"/> struct.</summary>
-		/// <param name="id">The identifier for the type of configuration that will have messages enabled or disabled.</param>
-		public GESTURECONFIG(GID id) : this() => dwID = id;
 	}
 
 	/// <summary>Stores information about a gesture.</summary>

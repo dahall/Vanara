@@ -346,7 +346,7 @@ public static partial class D2d1
 		// *resourceId, [in, optional] const D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES *customVertexBufferProperties, [out] ID2D1VertexBuffer
 		// **buffer );
 		new ID2D1VertexBuffer CreateVertexBuffer(in D2D1_VERTEX_BUFFER_PROPERTIES vertexBufferProperties, [In, Optional] GuidPtr resourceId,
-			[In, Optional] StructPointer<D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES> customVertexBufferProperties);
+			[In, Optional, StructPointer(typeof(D2D1_CUSTOM_VERTEX_BUFFER_PROPERTIES))] IntPtr customVertexBufferProperties);
 
 		/// <summary>
 		/// This finds the given vertex buffer if it has already been created with <c>ID2D1EffectContext::CreateVertexBuffer</c> with the

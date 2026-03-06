@@ -3259,7 +3259,7 @@ public static partial class AdvApi32
 	/// <returns>A dictionary of provider type names and types.</returns>
 	public static IReadOnlyDictionary<uint, string> CryptEnumProviderDictionary()
 	{
-		Dictionary<uint, string> d = new();
+		Dictionary<uint, string> d = [];
 		foreach ((uint provType, string typeName) in CryptEnumProviderTypes())
 			d.Add(provType, typeName);
 		return d;

@@ -60,7 +60,7 @@ public class InterlockedApiTests
 		IntPtr[] items = new IntPtr[max];
 		for (uint Count = 0U; Count < max; Count += 1)
 		{
-			items[Count] = new PROGRAM_ITEM { ItemEntry = new SLIST_ENTRY { Next = Count == 0 ? IntPtr.Zero : items[Count - 1] }, Signature = Count + 1 }.MarshalToPtr(Marshal.AllocHGlobal, out _);
+			items[Count] = new PROGRAM_ITEM { ItemEntry = new SLIST_ENTRY { Next = Count == 0 ? null : (SLIST_ENTRY*)items[Count - 1] }, Signature = Count + 1 }.MarshalToPtr(Marshal.AllocHGlobal, out _);
 		}
 
 		// Add list and check

@@ -263,8 +263,9 @@ public static partial class ActiveDS
 	// *pEnumVariant, [in] ULONG cElements, [out] VARIANT *pvar, [out] ULONG *pcElementsFetched );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEnumerateNext")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern HRESULT ADsEnumerateNext([In] IEnumVARIANT pEnumVariant, uint cElements,
-		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] object?[] pvar, out uint pcElementsFetched);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 3)] object?[] pvar, out uint pcElementsFetched);
 
 	/// <summary>The <c>ADsFreeEnumerator</c> function frees an enumerator object created with the ADsBuildEnumerator function.</summary>
 	/// <param name="pEnumVariant">

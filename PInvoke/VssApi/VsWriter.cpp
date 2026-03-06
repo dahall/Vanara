@@ -47,7 +47,7 @@ VssDifferencedFile CVssComponent::GetDifferencedFilesItem(int i)
 IAppendOnlyList<VssDifferencedFile>^ CVssComponent::DifferencedFiles::get()
 {
     return gcnew AppendOnlyList<Vanara::PInvoke::VssApi::VssDifferencedFile>(
-        gcnew GetCount(this, &CVssComponent::GetDifferencedFilesCount),
+        CVssComponent::GetDifferencedFilesCount(),
         gcnew GetValue<VssDifferencedFile>(this, &CVssComponent::GetDifferencedFilesItem),
         gcnew AddValue<VssDifferencedFile>(this, &CVssComponent::AddDifferencedFile));
 }
@@ -70,7 +70,7 @@ void CVssComponent::AddDirectedTarget(VssDirectedTarget v)
 IAppendOnlyList<VssDirectedTarget>^ CVssComponent::DirectedTargets::get()
 {
     return gcnew AppendOnlyList<Vanara::PInvoke::VssApi::VssDirectedTarget>(
-        gcnew GetCount(this, &CVssComponent::GetDirectedTargetCount),
+        CVssComponent::GetDirectedTargetCount(),
         gcnew GetValue<VssDirectedTarget>(this, &CVssComponent::GetDirectedTargetItem),
         gcnew AddValue<VssDirectedTarget>(this, &CVssComponent::AddDirectedTarget));
 }
@@ -92,7 +92,7 @@ void CVssComponent::AddPartialFile(VssPartialFile v)
 IAppendOnlyList<VssPartialFile>^ CVssComponent::PartialFiles::get()
 {
     return gcnew AppendOnlyList<Vanara::PInvoke::VssApi::VssPartialFile>(
-        gcnew GetCount(this, &CVssComponent::GetPartialFileCount),
+        CVssComponent::GetPartialFileCount(),
         gcnew GetValue<VssPartialFile>(this, &CVssComponent::GetPartialFileItem),
         gcnew AddValue<VssPartialFile>(this, &CVssComponent::AddPartialFile));
 }
@@ -109,7 +109,7 @@ VssRestoreSubcomponent CVssComponent::GetRestoreSubcomponentsItem(int i)
 IReadOnlyList<VssRestoreSubcomponent>^ CVssComponent::RestoreSubcomponents::get()
 {
     return gcnew ListImplBase<Vanara::PInvoke::VssApi::VssRestoreSubcomponent>(
-        gcnew GetCount(this, &CVssComponent::GetRestoreSubcomponentsCount),
+        CVssComponent::GetRestoreSubcomponentsCount(),
         gcnew GetValue<VssRestoreSubcomponent>(this, &CVssComponent::GetRestoreSubcomponentsItem));
 }
 

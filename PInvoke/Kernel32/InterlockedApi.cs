@@ -187,10 +187,10 @@ public static partial class Kernel32
 	public struct SLIST_ENTRY
 	{
 		/// <summary>Pointer to the next entry in the list, or <c>NULL</c> if there is no next entry in the list.</summary>
-		public unsafe StructPointer<SLIST_ENTRY> Next;
+		public unsafe SLIST_ENTRY* Next;
 
 		/// <summary>The next entry in the list, or <see langword="null"/> if there is no next entry in the list.</summary>
-		public ref SLIST_ENTRY NextEntry { get { unsafe { return ref ((IntPtr)Next).AsRef<SLIST_ENTRY>(); } } }
+		public readonly ref SLIST_ENTRY NextEntry { get { unsafe { return ref ((IntPtr)Next).AsRef<SLIST_ENTRY>(); } } }
 	}
 
 	/// <summary>

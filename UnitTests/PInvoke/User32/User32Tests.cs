@@ -134,27 +134,21 @@ public partial class User32Tests
 	[Test]
 	public void GetGestureConfigTest()
 	{
-		var array = new GESTURECONFIG[] { new(GID.GID_ZOOM), new(GID.GID_ROTATE), new(GID.GID_PAN) };
-		var aLen = (uint)array.Length;
-		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf<GESTURECONFIG>());
-		if (!b) Win32Error.ThrowLastError();
-		Assert.That(b, Is.True);
-		Assert.That(aLen, Is.GreaterThan(0));
-		for (var i = 0; i < aLen; i++)
+		GESTURECONFIG[] array = [new(GID.GID_ROTATE), new(GID.GID_PAN), new(GID.GID_ZOOM)];
+		uint sz = (uint)array.Length;
+		Assert.That(GetGestureConfig(FindWindow(), 0, 0, ref sz, array, GESTURECONFIG.Size), ResultIs.Successful);
+		Assert.That(array!.Length, Is.GreaterThan(0));
+		for (var i = 0; i < array.Length; i++)
 			TestContext.WriteLine($"{array[i].dwID} = {array[i].dwWant} / {array[i].dwBlock}");
 	}
 
 	[Test]
 	public void GetRawInputDeviceInfoTest()
 	{
-		uint nDev = 0;
-		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
-		Assert.That(nDev, Is.GreaterThan(0));
-		RAWINPUTDEVICELIST[] devs = new RAWINPUTDEVICELIST[(int)nDev];
-		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
-		Assert.That(nDev, Is.GreaterThan(0));
+		Assert.That(GetRawInputDeviceList(out var devs, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(devs!.Length, Is.GreaterThan(0));
 
-		for (int i = 0; i < nDev; i++)
+		for (int i = 0; i < devs!.Length; i++)
 		{
 			uint sz = 0;
 			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, default, ref sz), ResultIs.Value(0));

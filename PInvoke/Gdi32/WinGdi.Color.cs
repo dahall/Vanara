@@ -482,7 +482,7 @@ public static partial class Gdi32
 
 		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool GetDeviceGammaRamp([In, AddAsMember] HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 256 * 3)] ushort[] lpRamp);
+		static extern bool GetDeviceGammaRamp([In] HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 256 * 3)] ushort[] lpRamp);
 	}
 
 	/// <summary>
@@ -628,7 +628,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5e72e881-32e1-458e-a09e-91fa13abe178")]
 	public static extern uint GetPaletteEntries([In, Optional] HPALETTE hpal, [Optional] uint iStart, [Optional] uint cEntries,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteEntries</c> function retrieves a range of palette entries from the system palette that is associated with
@@ -655,7 +655,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "67bb0adf-ae7f-48d5-bc62-82ece45aeee6")]
 	public static extern uint GetSystemPaletteEntries([In, AddAsMember] HDC hdc, [Optional] uint iStart, [Optional] uint cEntries,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
+		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteUse</c> function retrieves the current state of the system (physical) palette for the specified device

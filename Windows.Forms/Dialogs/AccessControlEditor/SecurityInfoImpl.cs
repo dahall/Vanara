@@ -84,7 +84,7 @@ internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, s
 		ppSecurityDescriptor = default;
 		if (prov is null) return HRESULT.E_NOINTERFACE;
 		PSECURITY_DESCRIPTOR sd = fDefault ? prov.GetDefaultSecurity() : SecurityDescriptor;
-		SafePSECURITY_DESCRIPTOR ret = sd.GetPrivateObjectSecurity(requestInformation);
+		SafePSECURITY_DESCRIPTOR ret = GetPrivateObjectSecurity(sd, requestInformation);
 		//System.Diagnostics.Debug.WriteLine($"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
 		ppSecurityDescriptor = ret.TakeOwnership();
 		return HRESULT.S_OK;

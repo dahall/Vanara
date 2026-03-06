@@ -3695,7 +3695,7 @@ public static partial class OleAut32
 	/// Instead, use the GetDispID of the IDispatchEx interface. For more information, see the IDispatchEx interface.
 	/// </para>
 	/// </remarks>
-	public static int GetID(this IDispatch source, string name) => GetIDsOfNames(source, new[] { name })[0];
+	public static int GetID(this IDispatch source, string name) => GetIDsOfNames(source, [name])[0];
 
 	/// <summary>
 	/// Provides access to properties and methods exposed by an object. The dispatch function DispInvoke provides a standard implementation
@@ -3770,7 +3770,7 @@ public static partial class OleAut32
 	{
 		if (source is null)
 			throw new ArgumentNullException(nameof(source));
-		args ??= new object[0];
+		args ??= [];
 
 		DISPPARAMS dp = default;
 		if (invokeFlags == INVOKEKIND.INVOKE_PROPERTYPUT)
@@ -4009,7 +4009,7 @@ public static partial class OleAut32
 		// HRESULT retVal = object.Read(cProperties, pPropBag, pErrLog, pvarValue, phrError);
 		void Read(uint cProperties, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPBAG2[] pPropBag, [Optional] IErrorLog? pErrLog,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Struct)] object[] pvarValue,
-			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HRESULT[] phrError);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HRESULT[] phrError);
 
 		/// <summary>Causes one or more properties to be saved into the property bag.</summary>
 		/// <param name="cProperties">
@@ -4077,7 +4077,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa768191(v=vs.85)
 		// HRESULT retVal = object.GetPropertyInfo(iProperty, cProperties, pPropBag, pcProperties);
-		void GetPropertyInfo(uint iProperty, uint cProperties, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPBAG2[] pPropBag, out uint pcProperties);
+		void GetPropertyInfo(uint iProperty, uint cProperties, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPBAG2[] pPropBag, out uint pcProperties);
 
 		/// <summary>
 		/// Causes the property bag to instruct a property object that was previously created and initialized to read its persistent properties.

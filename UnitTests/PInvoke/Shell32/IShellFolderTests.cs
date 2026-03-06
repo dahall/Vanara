@@ -65,4 +65,17 @@ public class IShellFolderTests
 		Assert.That(() => propertyStoreFactoryForChild!.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_DEFAULT, null, typeof(IPropertyStore).GUID, out propertyStoreForChild), Throws.Nothing);
 		Assert.That(propertyStoreForChild, Is.Not.Null);
 	}
+
+	[Test]
+	public void Issue581Test()
+	{
+		Assert.That(SHCreateItemFromParsingName(TestCaseSources.TempDir, null, out IShellItem? pItem), ResultIs.Successful);
+		Assert.That(pItem, Is.Not.Null);
+		IShellFolder pFolder;
+		Assert.That(pFolder = pItem!.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject), Is.Not.Null);
+
+		SFGAO? attr = SFGAO.SFGAO_FILESYSTEM;
+		Assert.That(pFolder!.ParseDisplayName(default, default, System.IO.Path.GetFileName(TestCaseSources.WordDoc), out _, out var ppidl, ref attr), ResultIs.Successful);
+		Assert.That(ppidl, ResultIs.ValidHandle);
+	}
 }

@@ -289,7 +289,7 @@ public static partial class DXGI
 		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SizeT
 		// *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, SizeDef(nameof(pMessageByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(DXGI_INFO_QUEUE_MESSAGE))] IntPtr pMessage, ref SizeT pMessageByteLength);
 
 		/// <summary>Gets the number of messages that can pass through a retrieval filter.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that gets the number.</param>
@@ -397,7 +397,7 @@ public static partial class DXGI
 		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, SizeDef(nameof(pFilterByteLength), SizingMethod.Query), StructPointer(typeof(DXGI_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Removes a storage filter from the top of the storage-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>
@@ -517,7 +517,7 @@ public static partial class DXGI
 		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, SizeDef(nameof(pFilterByteLength), SizingMethod.Query), StructPointer(typeof(DXGI_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Removes a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>

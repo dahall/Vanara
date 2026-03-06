@@ -333,27 +333,12 @@ public class EventTraceSession
 
 		public int Count => Items.Count();
 
-		private IEnumerable<EventTraceSession> Items => QueryAllTraces().Select(prop => new EventTraceSession(prop));
+		private static IEnumerable<EventTraceSession> Items => QueryAllTraces().Select(prop => new EventTraceSession(prop));
 
-		public static IEnumerable<EVENT_TRACE_PROPERTIES> QueryAllTraces()
+		public static EVENT_TRACE_PROPERTIES[] QueryAllTraces()
 		{
-			const int len = 64;
-			var props = new List<SafeHGlobalHandle>(len);
-			var loadProp = EVENT_TRACE_PROPERTIES.Create();
-			for (var i = 0; i < len; i++)
-				props.Add(SafeHGlobalHandle.CreateFromStructure(loadProp));
-			try
-			{
-				var pprops = props.Select(p => (IntPtr)p).ToArray();
-				AdvApi32.QueryAllTraces(pprops, len, out var count).ThrowIfFailed();
-				for (var i = 0; i < count; i++)
-					yield return props[i].ToStructure<EVENT_TRACE_PROPERTIES>();
-			}
-			finally
-			{
-				for (var i = 0; i < props.Count; i++)
-					props[i].Dispose();
-			}
+			AdvApi32.QueryAllTraces(out var props).ThrowIfFailed();
+			return props;
 		}
 
 		public IEnumerator<EventTraceSession> GetEnumerator() => Items.GetEnumerator();

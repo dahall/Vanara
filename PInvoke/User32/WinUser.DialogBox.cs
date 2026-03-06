@@ -353,7 +353,12 @@ public static partial class User32
 	// lpTemplate, hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogindirect")]
 	[return: AddAsCtor]
-	public static SafeHWND CreateDialogIndirect([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static SafeHWND CreateDialogIndirect([In, Optional] HINSTANCE hInstance, [Optional] DLGTEMPLATE? lpTemplate, HWND hWndParent, DialogProc lpDialogFunc)
+	{
+		var t = lpTemplate.GetValueOrDefault();
+		using var pt = new PinnedObject(t);
+		return CreateDialogIndirectParam(hInstance, lpTemplate.HasValue ? pt : IntPtr.Zero, hWndParent, lpDialogFunc);
+	}
 
 	/// <summary>
 	/// <para>
@@ -428,7 +433,7 @@ public static partial class User32
 	// HINSTANCE hInstance, LPCDLGTEMPLATEA lpTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogindirectparam")]
-	public static extern SafeHWND CreateDialogIndirectParam([Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern SafeHWND CreateDialogIndirectParam([In, Optional] HINSTANCE hInstance, [In, Optional] IntPtr lpTemplate, [In] HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -484,7 +489,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogparam")]
-	public static extern SafeHWND CreateDialogParam([Optional] HINSTANCE hInstance, SafeResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern SafeHWND CreateDialogParam([In, Optional] HINSTANCE hInstance, SafeResourceId lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -655,8 +660,12 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 	// lpTemplate, hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
-	public static IntPtr DialogBoxIndirect([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) =>
-		DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBoxIndirect([In, Optional] HINSTANCE hInstance, [Optional] DLGTEMPLATE? lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc)
+	{
+		var t = lpTemplate.GetValueOrDefault();
+		using var pt = new PinnedObject(t);
+		return DialogBoxIndirectParam(hInstance, lpTemplate.HasValue ? pt : IntPtr.Zero, hWndParent, lpDialogFunc);
+	}
 
 	/// <summary>
 	/// <para>
@@ -738,7 +747,7 @@ public static partial class User32
 	// HINSTANCE hInstance, LPCDLGTEMPLATEA hDialogTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirectparam")]
-	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> hDialogTemplate, [In, Optional] HWND hWndParent,
+	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance, [In, Optional] IntPtr hDialogTemplate, [In, Optional] HWND hWndParent,
 		[In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
 
 	/// <summary>

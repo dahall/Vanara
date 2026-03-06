@@ -219,7 +219,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "b332b6d4-6921-40bd-bebc-6646b5b9bcde")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool EventEnabled(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor);
+	public static extern bool EventEnabled([In, AddAsMember] REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor);
 
 	/// <summary>Determines if the event is enabled for any session.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -251,7 +251,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "84c035b1-cdc7-47b7-b887-e5b508f17266")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool EventProviderEnabled(REGHANDLE RegHandle, byte Level, ulong Keyword);
+	public static extern bool EventProviderEnabled([In, AddAsMember] REGHANDLE RegHandle, byte Level, ulong Keyword);
 
 	/// <summary>Registers the provider.</summary>
 	/// <param name="ProviderId">GUID that uniquely identifies the provider.</param>
@@ -278,7 +278,7 @@ public static partial class AdvApi32
 	// ProviderId, PENABLECALLBACK EnableCallback, PVOID CallbackContext, PREGHANDLE RegHandle );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "6025c3a6-7d88-49dc-bbc3-655c172dde3c")]
-	public static extern Win32Error EventRegister(in Guid ProviderId, [Optional] EnableCallback EnableCallback, [Optional] IntPtr CallbackContext, out SafeREGHANDLE RegHandle);
+	public static extern Win32Error EventRegister(in Guid ProviderId, [Optional] EnableCallback? EnableCallback, [Optional] IntPtr CallbackContext, [AddAsCtor] out SafeREGHANDLE RegHandle);
 
 	/// <summary>Performs operations on a registration object.</summary>
 	/// <param name="RegHandle">
@@ -324,7 +324,8 @@ public static partial class AdvApi32
 	// REGHANDLE RegHandle, EVENT_INFO_CLASS InformationClass, PVOID EventInformation, ULONG InformationLength );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "e8b408ba-4bb5-4166-bf43-d18e4fe8de32")]
-	public static extern Win32Error EventSetInformation(REGHANDLE RegHandle, EVENT_INFO_CLASS InformationClass, IntPtr EventInformation, uint InformationLength);
+	public static extern Win32Error EventSetInformation([In, AddAsMember] REGHANDLE RegHandle, EVENT_INFO_CLASS InformationClass,
+		[In, SizeDef(nameof(InformationLength))] IntPtr EventInformation, uint InformationLength);
 
 	/// <summary>Removes the provider's registration. You must call this function before your process exits.</summary>
 	/// <param name="RegHandle">Registration handle returned by EventRegister.</param>
@@ -362,7 +363,8 @@ public static partial class AdvApi32
 	// RegHandle, PCEVENT_DESCRIPTOR EventDescriptor, ULONG UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "93070eb7-c167-4419-abff-e861877dad07")]
-	public static extern Win32Error EventWrite(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EVENT_DATA_DESCRIPTOR[]? UserData);
+	public static extern Win32Error EventWrite([In, AddAsMember] REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint UserDataCount,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>Use this function to write an event.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -437,7 +439,8 @@ public static partial class AdvApi32
 	// UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "00b907cb-45cd-48c7-bea4-4d8a39b4fa24")]
-	public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[] UserData);
+	public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags,
+		in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 	/// <summary>Use this function to write an event.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -512,8 +515,8 @@ public static partial class AdvApi32
 	// UserDataCount, PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "00b907cb-45cd-48c7-bea4-4d8a39b4fa24")]
-	public static extern Win32Error EventWriteEx(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional] uint Flags, [Optional] IntPtr ActivityId,
-		[Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[]? UserData);
+	public static extern Win32Error EventWriteEx([In, AddAsMember] REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, uint Filter, [Optional, Ignore] uint Flags, [In, Optional] GuidPtr ActivityId,
+		[In, Optional] GuidPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>Writes an event that contains a string as its data.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -542,7 +545,7 @@ public static partial class AdvApi32
 	// REGHANDLE RegHandle, UCHAR Level, ULONGLONG Keyword, PCWSTR String );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "ecdb0e92-fcc1-4b4f-99ea-6812b6b49381")]
-	public static extern Win32Error EventWriteString(REGHANDLE RegHandle, byte Level, ulong Keyword, [MarshalAs(UnmanagedType.LPWStr)] string String);
+	public static extern Win32Error EventWriteString([In, AddAsMember] REGHANDLE RegHandle, byte Level, ulong Keyword, [MarshalAs(UnmanagedType.LPWStr)] string String);
 
 	/// <summary>Links events together when tracing events in an end-to-end scenario.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -601,7 +604,8 @@ public static partial class AdvApi32
 	// PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "798cf3ba-e1cc-4eaf-a1d2-2313a64aab1a")]
-	public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, in Guid ActivityId, in Guid RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[] UserData);
+	public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, in Guid ActivityId, in Guid RelatedActivityId,
+		uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[] UserData);
 
 	/// <summary>Links events together when tracing events in an end-to-end scenario.</summary>
 	/// <param name="RegHandle">Registration handle of the provider. The handle comes from EventRegister.</param>
@@ -660,8 +664,8 @@ public static partial class AdvApi32
 	// PEVENT_DATA_DESCRIPTOR UserData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntprov.h", MSDNShortId = "798cf3ba-e1cc-4eaf-a1d2-2313a64aab1a")]
-	public static extern Win32Error EventWriteTransfer(REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [Optional] IntPtr ActivityId,
-		[Optional] IntPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[]? UserData);
+	public static extern Win32Error EventWriteTransfer([In, AddAsMember] REGHANDLE RegHandle, in EVENT_DESCRIPTOR EventDescriptor, [In, Optional] GuidPtr ActivityId,
+		[In, Optional] GuidPtr RelatedActivityId, uint UserDataCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EVENT_DATA_DESCRIPTOR[]? UserData);
 
 	/// <summary>
 	/// The EVENT_DATA_DESCRIPTOR structure is used with the user mode EventWrite and the kernel mode EtwWrite functions to send events.
@@ -789,80 +793,69 @@ public static partial class AdvApi32
 	/// </item>
 	/// </list>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="EVENT_DESCRIPTOR"/> struct.</remarks>
+	/// <param name="Id">Event identifier. The value is used to set the <c>Id</c> member of EVENT_DESCRIPTOR.</param>
+	/// <param name="Version">Version of the event. The value is used to set the <c>Version</c> member of EVENT_DESCRIPTOR.</param>
+	/// <param name="Channel">
+	/// The category of events to which this event belongs. The value is used to set the <c>Channel</c> member of EVENT_DESCRIPTOR.
+	/// </param>
+	/// <param name="Level">Specifies the severity of the event. The value is used to set the <c>Level</c> member of EVENT_DESCRIPTOR.</param>
+	/// <param name="Task">
+	/// Identifies a logical component of the application whose events you want to enable. The value is used to set the <c>Task</c>
+	/// member of EVENT_DESCRIPTOR.
+	/// </param>
+	/// <param name="Opcode">
+	/// Operation being performed at the time the event was written. The value is used to set the <c>Opcode</c> member of EVENT_DESCRIPTOR.
+	/// </param>
+	/// <param name="Keyword">
+	/// Bitmask that further defines the category of events to which the event belongs. The value is used to set the <c>Keyword</c>
+	/// member of EVENT_DESCRIPTOR.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/evntprov/ns-evntprov-_event_descriptor typedef struct _EVENT_DESCRIPTOR {
 	// USHORT Id; UCHAR Version; UCHAR Channel; UCHAR Level; UCHAR Opcode; USHORT Task; ULONGLONG Keyword; } EVENT_DESCRIPTOR, *PEVENT_DESCRIPTOR;
 	[PInvokeData("evntprov.h", MSDNShortId = "cfe84b3d-fed2-4624-9899-8451e5b39de0")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct EVENT_DESCRIPTOR
+	public struct EVENT_DESCRIPTOR(ushort Id, byte Version, byte Channel, byte Level, ushort Task, byte Opcode, ulong Keyword)
 	{
 		/// <summary>The event identifier. Each event is associated with a 16-bit numeric value.</summary>
-		public ushort Id;
+		public ushort Id = Id;
 
 		/// <summary>
 		/// A numeric value that represents a version of the event. Component updates can change this value for a specific event.
 		/// </summary>
-		public byte Version;
+		public byte Version = Version;
 
 		/// <summary>
 		/// The channel that the event is intended for. Note that the channel name is not stored here. The value of the channel is
 		/// assigned by the message compiler.
 		/// </summary>
-		public byte Channel;
+		public byte Channel = Channel;
 
 		/// <summary>
 		/// The level of the event. The level indicates the severity or verbosity of the event. The level is used with earlier versions
 		/// of the ETW and WPP event fields. The levels have names with values, such as Error, Warning, Information, and so on.
 		/// </summary>
-		public byte Level;
+		public byte Level = Level;
 
 		/// <summary>
 		/// The activity that the driver was performing at the time of the event. The <c>Opcode</c> member is defined by the provider or
 		/// is one of the system-defined values defined in the Winmeta.xml file that is provided with the Windows Driver Kit (WDK) in the
 		/// %Winddk%&lt;i&gt;version\inc\api directory.
 		/// </summary>
-		public byte Opcode;
+		public byte Opcode = Opcode;
 
 		/// <summary>
 		/// The <c>Task</c> corresponds to the logical activity that the driver was performing when it raised the event. The
 		/// <c>Opcode</c> member refers to a specific action within that logical activity.
 		/// </summary>
-		public ushort Task;
+		public ushort Task = Task;
 
 		/// <summary>
 		/// The categories or tags assigned to the event. Each keyword categorizes the event in some way. For example, a category could
 		/// be <c>Network</c>, <c>Storage</c>, or <c>Not Found</c>. An event can belong to more then one category, in which case multiple
 		/// keywords are specified for the event. The keyword values are bitmasks and can be combined.
 		/// </summary>
-		public ulong Keyword;
-
-		/// <summary>Initializes a new instance of the <see cref="EVENT_DESCRIPTOR"/> struct.</summary>
-		/// <param name="Id">Event identifier. The value is used to set the <c>Id</c> member of EVENT_DESCRIPTOR.</param>
-		/// <param name="Version">Version of the event. The value is used to set the <c>Version</c> member of EVENT_DESCRIPTOR.</param>
-		/// <param name="Channel">
-		/// The category of events to which this event belongs. The value is used to set the <c>Channel</c> member of EVENT_DESCRIPTOR.
-		/// </param>
-		/// <param name="Level">Specifies the severity of the event. The value is used to set the <c>Level</c> member of EVENT_DESCRIPTOR.</param>
-		/// <param name="Task">
-		/// Identifies a logical component of the application whose events you want to enable. The value is used to set the <c>Task</c>
-		/// member of EVENT_DESCRIPTOR.
-		/// </param>
-		/// <param name="Opcode">
-		/// Operation being performed at the time the event was written. The value is used to set the <c>Opcode</c> member of EVENT_DESCRIPTOR.
-		/// </param>
-		/// <param name="Keyword">
-		/// Bitmask that further defines the category of events to which the event belongs. The value is used to set the <c>Keyword</c>
-		/// member of EVENT_DESCRIPTOR.
-		/// </param>
-		public EVENT_DESCRIPTOR(ushort Id, byte Version, byte Channel, byte Level, ushort Task, byte Opcode, ulong Keyword)
-		{
-			this.Channel = Channel;
-			this.Id = Id;
-			this.Keyword = Keyword;
-			this.Level = Level;
-			this.Opcode = Opcode;
-			this.Task = Task;
-			this.Version = Version;
-		}
+		public ulong Keyword = Keyword;
 	}
 
 	/// <summary>

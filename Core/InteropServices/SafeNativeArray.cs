@@ -20,6 +20,12 @@ public class SafeNativeArray<TElem> : SafeNativeArrayBase<TElem, HGlobalMemoryMe
 	/// <param name="headerSize">The number of bytes to allocate in front of the array allocation.</param>
 	public SafeNativeArray(TElem[] array, uint headerSize = 0) : base(array, headerSize) { }
 
+	/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class initialized with a common value.</summary>
+	/// <param name="elem">The value to assign to each element of the array.</param>
+	/// <param name="elementCount">The element count. This value can be 0.</param>
+	/// <param name="headerSize">The number of bytes to allocate in front of the array allocation.</param>
+	public SafeNativeArray(in TElem elem, int elementCount, uint headerSize = 0) : this(elementCount, headerSize) => Fill(elem);
+
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 	/// <param name="elementCount">The element count. This value can be 0.</param>
 	/// <param name="headerSize">The number of bytes to allocate in front of the array allocation.</param>
@@ -217,6 +223,20 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 		DangerousOverrideSize(GetRequiredSize(count, HeaderSize));
 		OnCountChanged();
 		OnUpdateHeader();
+	}
+
+	/// <summary>Replaces all elements in the array with the specified value.</summary>
+	/// <remarks>
+	/// This method sets every element in the array to the provided value. If the array is marked as read-only, the operation is not
+	/// permitted and an exception is thrown.
+	/// </remarks>
+	/// <param name="elem">The value to assign to each element of the array.</param>
+	/// <exception cref="InvalidOperationException">Thrown if the array is read-only.</exception>
+	public virtual void Fill(in TElem elem)
+	{
+		if (IsReadOnly) throw new InvalidOperationException("Array is read-only.");
+		for (var i = 0; i < Count; i++)
+			this[i] = elem;
 	}
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>

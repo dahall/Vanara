@@ -158,5 +158,5 @@ public class EventTraceSingleLog : IDisposable
 
 	public TRACEHANDLE Handle => m_hTraceLog;
 
-	public virtual void ProcessTrace() => AdvApi32.ProcessTrace(new[] { m_hTraceLog }, 1).ThrowIfFailed();
+	public virtual void ProcessTrace() => AdvApi32.ProcessTrace([m_hTraceLog], 1).ThrowIfFailed();
 }

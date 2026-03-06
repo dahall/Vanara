@@ -1805,7 +1805,7 @@ public static partial class OleAut32
 		public IntPtr rgsabound;
 
 		/// <summary>Gets the bounds pointed to by <see cref="rgsabound"/>.</summary>
-		public readonly SAFEARRAYBOUND[] Bounds => rgsabound.ToArray<SAFEARRAYBOUND>(cDims) ?? new SAFEARRAYBOUND[0];
+		public readonly SAFEARRAYBOUND[] Bounds => rgsabound.ToArray<SAFEARRAYBOUND>(cDims) ?? [];
 	}
 
 	/// <summary>Represents the bounds of one dimension of the array.</summary>

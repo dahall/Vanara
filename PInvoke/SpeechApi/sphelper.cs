@@ -973,7 +973,8 @@ public static partial class SpeechApi
 		try
 		{
 			ppStream = new();
-			ppStream.BindToFile(pFileName, eMode, new(pFormatId, out _), pWaveFormatEx, ullEventInterest);
+			using SafeHGlobalStruct<Guid> pGuid = pFormatId;
+			ppStream.BindToFile(pFileName, eMode, pGuid, (IntPtr)pWaveFormatEx, ullEventInterest);
 			return HRESULT.S_OK;
 		}
 		catch (Exception ex)

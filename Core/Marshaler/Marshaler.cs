@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Vanara.Marshaler;
 
 /// <summary>Base exception for marshaling errors.</summary>
-/// <seealso cref="System.Exception"/>
+/// <seealso cref="Exception"/>
 public class MarshalException(string message) : Exception(message)
 {
 }

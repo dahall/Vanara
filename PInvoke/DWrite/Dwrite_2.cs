@@ -738,8 +738,8 @@ public static partial class Dwrite
 		// DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, DWRITE_MEASURING_MODE measuringMode, [in, optional] DWRITE_MATRIX const
 		// *worldToDeviceTransform, UINT32 colorPaletteIndex, [out] IDWriteColorGlyphRunEnumerator **colorLayers );
 		IDWriteColorGlyphRunEnumerator TranslateColorGlyphRun(float baselineOriginX, float baselineOriginY, in DWRITE_GLYPH_RUN glyphRun,
-			[In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
-			[In, Optional] StructPointer<DWRITE_MATRIX> worldToDeviceTransform, uint colorPaletteIndex);
+			[In, Optional, StructPointer(typeof(DWRITE_GLYPH_RUN_DESCRIPTION))] IntPtr glyphRunDescription, DWRITE_MEASURING_MODE measuringMode,
+			[In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr worldToDeviceTransform, uint colorPaletteIndex);
 
 		/// <summary>Creates a rendering parameters object with the specified properties.</summary>
 		/// <param name="gamma">
@@ -830,7 +830,7 @@ public static partial class Dwrite
 		// DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode,
 		// DWRITE_TEXT_ANTIALIAS_MODE antialiasMode, FLOAT baselineOriginX, FLOAT baselineOriginY, [out] IDWriteGlyphRunAnalysis
 		// **glyphRunAnalysis );
-		IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		IDWriteGlyphRunAnalysis CreateGlyphRunAnalysis(in DWRITE_GLYPH_RUN glyphRun, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			DWRITE_RENDERING_MODE renderingMode, DWRITE_MEASURING_MODE measuringMode, DWRITE_GRID_FIT_MODE gridFitMode, DWRITE_TEXT_ANTIALIAS_MODE antialiasMode,
 			float baselineOriginX, float baselineOriginY);
 	}
@@ -1523,16 +1523,18 @@ public static partial class Dwrite
 		/// font size and <i>pixelsPerDip</i>.
 		/// </para>
 		/// </param>
-		/// <returns>
+		/// <param name="fontMetrics">
 		/// <para>Type: <b><c>DWRITE_FONT_METRICS1</c>*</b></para>
 		/// <para>
 		/// A pointer to a <c>DWRITE_FONT_METRICS1</c> structure to fill in. The metrics returned by this function are in font design units.
 		/// </para>
-		/// </returns>
+		/// </param>
+		/// <returns>Standard HRESULT error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatiblemetrics HRESULT
 		// GetGdiCompatibleMetrics( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, [out]
 		// DWRITE_FONT_METRICS1 *fontMetrics );
-		new DWRITE_FONT_METRICS1 GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform);
+		[PreserveSig]
+		new HRESULT GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, out DWRITE_FONT_METRICS1 fontMetrics);
 
 		/// <summary>Gets caret metrics for the font in design units.</summary>
 		/// <param name="caretMetrics">
@@ -1662,7 +1664,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatibleglyphadvances HRESULT
 		// GetGdiCompatibleGlyphAdvances( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, bool
 		// useGdiNatural, bool isSideways, UINT32 glyphCount, [in] UINT16 const *glyphIndices, [out] INT32 *glyphAdvances );
-		new void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform, bool useGdiNatural,
+		new void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, bool useGdiNatural,
 			bool isSideways, int glyphCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ushort[] glyphIndices,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] int[] glyphAdvances);
 
@@ -1776,7 +1778,7 @@ public static partial class Dwrite
 		// GetRecommendedRenderingMode( FLOAT fontEmSize, FLOAT dpiX, FLOAT dpiY, [in, optional] DWRITE_MATRIX const *transform, bool
 		// isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode, [out] DWRITE_RENDERING_MODE
 		// *renderingMode );
-		new DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		new DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Retrieves the vertical forms of the nominal glyphs retrieved from GetGlyphIndices.</summary>
@@ -1934,7 +1936,7 @@ public static partial class Dwrite
 		// *transform, [in] bool isSideways, [in] DWRITE_OUTLINE_THRESHOLD outlineThreshold, [in] DWRITE_MEASURING_MODE measuringMode, [in,
 		// optional] IDWriteRenderingParams *renderingParams, [out] DWRITE_RENDERING_MODE *renderingMode, [out] DWRITE_GRID_FIT_MODE
 		// *gridFitMode );
-		void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		void GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode, [In, Optional] IDWriteRenderingParams? renderingParams,
 			out DWRITE_RENDERING_MODE renderingMode, out DWRITE_GRID_FIT_MODE gridFitMode);
 	}
@@ -2973,17 +2975,20 @@ public static partial class Dwrite
 		// DWRITE_SHAPING_GLYPH_PROPERTIES const *glyphProperties, [out] UINT32 *actualGlyphCount, [out, optional] UINT16
 		// *modifiedClusterMap, [out] UINT16 *modifiedGlyphIndices, [out] FLOAT *modifiedGlyphAdvances, [out] DWRITE_GLYPH_OFFSET
 		// *modifiedGlyphOffsets );
-		new void GetJustifiedGlyphs([In, Optional] IDWriteFontFace? fontFace, float fontEmSize, DWRITE_SCRIPT_ANALYSIS scriptAnalysis, int textLength,
-			int glyphCount, int maxGlyphCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? clusterMap,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ushort[] glyphIndices, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] glyphAdvances,
+		[PreserveSig]
+		new HRESULT GetJustifiedGlyphs([In, Optional] IDWriteFontFace? fontFace, float fontEmSize, DWRITE_SCRIPT_ANALYSIS scriptAnalysis, int textLength,
+			int glyphCount, int maxGlyphCount,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? clusterMap,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ushort[] glyphIndices,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] glyphAdvances,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] justifiedGlyphAdvances,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DWRITE_GLYPH_OFFSET[] justifiedGlyphOffsets,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProperties,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] actualGlyphCount,
+			out int actualGlyphCount,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? modifiedClusterMap,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ushort[] modifiedGlyphIndices,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] float[] modifiedGlyphAdvances,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DWRITE_GLYPH_OFFSET[] modifiedGlyphOffsets);
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] ushort[] modifiedGlyphIndices,
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] float[] modifiedGlyphAdvances,
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] DWRITE_GLYPH_OFFSET[] modifiedGlyphOffsets);
 
 		/// <summary>
 		/// <para>Returns 2x3 transform matrix for the respective angle to draw the glyph run.</para>
@@ -4583,7 +4588,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritetextlayout1-getpairkerning HRESULT
 		// GetPairKerning( UINT32 currentPosition, [out] BOOL *isPairKerningEnabled, [out, optional] DWRITE_TEXT_RANGE *textRange );
-		new void GetPairKerning(uint currentPosition, out bool isPairKerningEnabled, [Out, Optional] StructPointer<DWRITE_TEXT_RANGE> textRange);
+		new void GetPairKerning(uint currentPosition, out bool isPairKerningEnabled, [Out, Optional, StructPointer(typeof(DWRITE_TEXT_RANGE))] IntPtr textRange);
 
 		/// <summary>Sets the spacing between characters.</summary>
 		/// <param name="leadingSpacing">
@@ -4635,7 +4640,7 @@ public static partial class Dwrite
 		// GetCharacterSpacing( UINT32 currentPosition, [out] FLOAT *leadingSpacing, [out] FLOAT *trailingSpacing, [out] FLOAT
 		// *minimumAdvanceWidth, [out, optional] DWRITE_TEXT_RANGE *textRange );
 		new void GetCharacterSpacing(uint currentPosition, out float leadingSpacing, out float trailingSpacing, out float minimumAdvanceWidth,
-			[Out, Optional] StructPointer<DWRITE_TEXT_RANGE> textRange);
+			[Out, Optional, StructPointer(typeof(DWRITE_TEXT_RANGE))] IntPtr textRange);
 
 		/// <summary><c>textMetrics</c></summary>
 		/// <param name="textMetrics"/>

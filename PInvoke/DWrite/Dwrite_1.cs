@@ -3838,16 +3838,18 @@ public static partial class Dwrite
 		/// font size and <i>pixelsPerDip</i>.
 		/// </para>
 		/// </param>
-		/// <returns>
+		/// <param name="fontMetrics">
 		/// <para>Type: <b><c>DWRITE_FONT_METRICS1</c>*</b></para>
 		/// <para>
 		/// A pointer to a <c>DWRITE_FONT_METRICS1</c> structure to fill in. The metrics returned by this function are in font design units.
 		/// </para>
-		/// </returns>
+		/// </param>
+		/// <returns>Standard HRESULT error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatiblemetrics HRESULT
 		// GetGdiCompatibleMetrics( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, [out]
 		// DWRITE_FONT_METRICS1 *fontMetrics );
-		DWRITE_FONT_METRICS1 GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform);
+		[PreserveSig]
+		HRESULT GetGdiCompatibleMetrics(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, out DWRITE_FONT_METRICS1 fontMetrics);
 
 		/// <summary>Gets caret metrics for the font in design units.</summary>
 		/// <param name="caretMetrics">
@@ -3977,7 +3979,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritefontface1-getgdicompatibleglyphadvances HRESULT
 		// GetGdiCompatibleGlyphAdvances( FLOAT emSize, FLOAT pixelsPerDip, [in, optional] DWRITE_MATRIX const *transform, BOOL
 		// useGdiNatural, BOOL isSideways, UINT32 glyphCount, [in] UINT16 const *glyphIndices, [out] INT32 *glyphAdvances );
-		void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional] StructPointer<DWRITE_MATRIX> transform, bool useGdiNatural,
+		void GetGdiCompatibleGlyphAdvances(float emSize, float pixelsPerDip, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform, bool useGdiNatural,
 			bool isSideways, int glyphCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ushort[] glyphIndices,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] int[] glyphAdvances);
 
@@ -4091,7 +4093,7 @@ public static partial class Dwrite
 		// GetRecommendedRenderingMode( FLOAT fontEmSize, FLOAT dpiX, FLOAT dpiY, [in, optional] DWRITE_MATRIX const *transform, BOOL
 		// isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode, [out] DWRITE_RENDERING_MODE
 		// *renderingMode );
-		DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional] StructPointer<DWRITE_MATRIX> transform,
+		DWRITE_RENDERING_MODE GetRecommendedRenderingMode(float fontEmSize, float dpiX, float dpiY, [In, Optional, StructPointer(typeof(DWRITE_MATRIX))] IntPtr transform,
 			bool isSideways, DWRITE_OUTLINE_THRESHOLD outlineThreshold, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Retrieves the vertical forms of the nominal glyphs retrieved from GetGlyphIndices.</summary>
@@ -5322,6 +5324,7 @@ public static partial class Dwrite
 		/// <para>Type: <b><c>DWRITE_GLYPH_OFFSET</c>*</b></para>
 		/// <para>Updated glyph offsets.</para>
 		/// </param>
+		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		/// <remarks>
 		/// <para>You call <b>GetJustifiedGlyphs</b> after the line has been justified, and it is per-run.</para>
 		/// <para>
@@ -5341,17 +5344,117 @@ public static partial class Dwrite
 		// DWRITE_SHAPING_GLYPH_PROPERTIES const *glyphProperties, [out] UINT32 *actualGlyphCount, [out, optional] UINT16
 		// *modifiedClusterMap, [out] UINT16 *modifiedGlyphIndices, [out] FLOAT *modifiedGlyphAdvances, [out] DWRITE_GLYPH_OFFSET
 		// *modifiedGlyphOffsets );
-		void GetJustifiedGlyphs([In, Optional] IDWriteFontFace? fontFace, float fontEmSize, DWRITE_SCRIPT_ANALYSIS scriptAnalysis, int textLength,
-			int glyphCount, int maxGlyphCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? clusterMap,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ushort[] glyphIndices, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] glyphAdvances,
+		[SuppressAutoGen]
+		[PreserveSig]
+		HRESULT GetJustifiedGlyphs([In, Optional] IDWriteFontFace? fontFace, float fontEmSize, DWRITE_SCRIPT_ANALYSIS scriptAnalysis, int textLength,
+			int glyphCount, int maxGlyphCount,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? clusterMap,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] ushort[] glyphIndices,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] glyphAdvances,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] float[] justifiedGlyphAdvances,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DWRITE_GLYPH_OFFSET[] justifiedGlyphOffsets,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProperties,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] actualGlyphCount,
+			out int actualGlyphCount,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] ushort[]? modifiedClusterMap,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ushort[] modifiedGlyphIndices,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] float[] modifiedGlyphAdvances,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DWRITE_GLYPH_OFFSET[] modifiedGlyphOffsets);
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] ushort[] modifiedGlyphIndices,
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] float[] modifiedGlyphAdvances,
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxGlyphCount), SizingMethod.Query, OutVarName = nameof(actualGlyphCount))] DWRITE_GLYPH_OFFSET[] modifiedGlyphOffsets);
+	}
+
+	/// <summary> Fills in new glyphs for complex scripts where justification increased the advances of glyphs, such as Arabic with kashida.
+	/// </summary>
+	/// <param name = "__baseInterface">The <see cref = "IDWriteTextAnalyzer1"/> interface instance value used for the extension method.</param>
+	/// <param name = "fontFace">
+	/// <para>Type: <b><c>IDWriteFontFace</c>*</b></para>
+	/// <para>Font face used for shaping.</para>
+	/// <para>May be NULL.</para>
+	/// </param>
+	/// <param name = "fontEmSize">
+	/// <para>Type: <b>FLOAT</b></para>
+	/// <para>Font em size used for the glyph run.</para>
+	/// </param>
+	/// <param name = "scriptAnalysis">
+	/// <para>Type: <b><c>DWRITE_SCRIPT_ANALYSIS</c></b></para>
+	/// <para>Script of the text from the itemizer.</para>
+	/// </param>
+	/// <param name = "clusterMap">
+	/// <para>Type: <b>const UINT16*</b></para>
+	/// <para>Clustermap produced from shaping.</para>
+	/// </param>
+	/// <param name = "glyphIndices">
+	/// <para>Type: <b>const UINT16*</b></para>
+	/// <para>Original glyphs produced from shaping.</para>
+	/// </param>
+	/// <param name = "glyphAdvances">
+	/// <para>Type: <b>const FLOAT*</b></para>
+	/// <para>Original glyph advances produced from shaping.</para>
+	/// </param>
+	/// <param name = "justifiedGlyphAdvances">
+	/// <para>Type: <b>const FLOAT*</b></para>
+	/// <para>Justified glyph advances from <c>IDWriteTextAnalyzer1::JustifyGlyphAdvances</c>.</para>
+	/// </param>
+	/// <param name = "justifiedGlyphOffsets">
+	/// <para>Type: <b>const <c>DWRITE_GLYPH_OFFSET</c>*</b></para>
+	/// <para>Justified glyph offsets from <c>IDWriteTextAnalyzer1::JustifyGlyphAdvances</c>.</para>
+	/// </param>
+	/// <param name = "glyphProperties">
+	/// <para>Type: <b>const <c>DWRITE_SHAPING_GLYPH_PROPERTIES</c>*</b></para>
+	/// <para>Properties of each glyph, from <c>IDWriteTextAnalyzer::GetGlyphs</c>.</para>
+	/// </param>
+	/// <param name = "modifiedClusterMap">
+	/// <para>Type: <b>UINT16*</b></para>
+	/// <para>Updated clustermap.</para>
+	/// </param>
+	/// <param name = "modifiedGlyphIndices">
+	/// <para>Type: <b>UINT16*</b></para>
+	/// <para>Updated glyphs with new glyphs inserted where needed.</para>
+	/// </param>
+	/// <param name = "modifiedGlyphAdvances">
+	/// <para>Type: <b>FLOAT*</b></para>
+	/// <para>Updated glyph advances.</para>
+	/// </param>
+	/// <param name = "modifiedGlyphOffsets">
+	/// <para>Type: <b><c>DWRITE_GLYPH_OFFSET</c>*</b></para>
+	/// <para>Updated glyph offsets.</para>
+	/// </param>
+	/// <remarks>
+	/// <para>You call <b>GetJustifiedGlyphs</b> after the line has been justified, and it is per-run.</para>
+	/// <para> You should call <b>GetJustifiedGlyphs</b> if <c>IDWriteTextAnalyzer1::GetScriptProperties</c> returns a non-null
+	/// <c>DWRITE_SCRIPT_PROPERTIES.justificationCharacter</c> for that script.
+	/// </para>
+	/// <para> Use <b>GetJustifiedGlyphs</b> mainly for cursive scripts like Arabic. If <i>maxGlyphCount</i> is not large enough,
+	/// <b>GetJustifiedGlyphs</b> returns the error E_NOT_SUFFICIENT_BUFFER and fills the variable to which <i>actualGlyphCount</i> points with the needed glyph count.
+	/// </para>
+	/// </remarks>
+	public static void GetJustifiedGlyphs(this IDWriteTextAnalyzer1 __baseInterface, [In, Optional] IDWriteFontFace? fontFace, float fontEmSize,
+		DWRITE_SCRIPT_ANALYSIS scriptAnalysis, [In, Optional] ushort[]? clusterMap, [In] ushort[] glyphIndices,
+		[In] float[] glyphAdvances, [In] float[] justifiedGlyphAdvances, [In] DWRITE_GLYPH_OFFSET[] justifiedGlyphOffsets,
+		[In] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProperties, out ushort[]? modifiedClusterMap,
+		out ushort[] modifiedGlyphIndices, out float[] modifiedGlyphAdvances, out DWRITE_GLYPH_OFFSET[] modifiedGlyphOffsets)
+	{
+		int textLength = clusterMap?.Length ?? 0;
+		int glyphCount = glyphProperties.Length;
+		modifiedClusterMap = clusterMap is null ? null : new ushort[clusterMap.Length];
+		HRESULT hr;
+		int actualGlyphCount = glyphCount * 2; // Arbitrary, just needs to be large enough to handle the justified glyphs, which are usually not more than double the original glyphs.
+		do
+		{
+			int maxGlyphCount = actualGlyphCount;
+			modifiedGlyphIndices = new ushort[maxGlyphCount];
+			modifiedGlyphAdvances = new float[maxGlyphCount];
+			modifiedGlyphOffsets = new DWRITE_GLYPH_OFFSET[maxGlyphCount];
+			hr = __baseInterface.GetJustifiedGlyphs(fontFace, fontEmSize, scriptAnalysis, textLength, glyphCount, maxGlyphCount, clusterMap, glyphIndices, glyphAdvances,
+				justifiedGlyphAdvances, justifiedGlyphOffsets, glyphProperties, out actualGlyphCount, modifiedClusterMap, modifiedGlyphIndices, modifiedGlyphAdvances, modifiedGlyphOffsets);
+			if (hr.Failed && hr != HRESULT.E_INSUFFICIENT_BUFFER)
+				throw hr.GetException()!;
+			// If actualGlyphCount is smaller than maxGlyphCount, shorten all the arrays to the actualGlyphCount
+			if (actualGlyphCount < maxGlyphCount)
+			{
+				Array.Resize(ref modifiedGlyphIndices, actualGlyphCount);
+				Array.Resize(ref modifiedGlyphAdvances, actualGlyphCount);
+				Array.Resize(ref modifiedGlyphOffsets, actualGlyphCount);
+			}
+		} while (hr.Failed);
 	}
 
 	/// <summary>Represents a block of text after it has been fully analyzed and formatted.</summary>
@@ -6479,7 +6582,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_1/nf-dwrite_1-idwritetextlayout1-getpairkerning HRESULT
 		// GetPairKerning( UINT32 currentPosition, [out] BOOL *isPairKerningEnabled, [out, optional] DWRITE_TEXT_RANGE *textRange );
-		void GetPairKerning(uint currentPosition, out bool isPairKerningEnabled, [Out, Optional] StructPointer<DWRITE_TEXT_RANGE> textRange);
+		void GetPairKerning(uint currentPosition, out bool isPairKerningEnabled, [Out, Optional, StructPointer(typeof(DWRITE_TEXT_RANGE))] IntPtr textRange);
 
 		/// <summary>Sets the spacing between characters.</summary>
 		/// <param name="leadingSpacing">
@@ -6531,7 +6634,7 @@ public static partial class Dwrite
 		// GetCharacterSpacing( UINT32 currentPosition, [out] FLOAT *leadingSpacing, [out] FLOAT *trailingSpacing, [out] FLOAT
 		// *minimumAdvanceWidth, [out, optional] DWRITE_TEXT_RANGE *textRange );
 		void GetCharacterSpacing(uint currentPosition, out float leadingSpacing, out float trailingSpacing, out float minimumAdvanceWidth,
-			[Out, Optional] StructPointer<DWRITE_TEXT_RANGE> textRange);
+			[Out, Optional, StructPointer(typeof(DWRITE_TEXT_RANGE))] IntPtr textRange);
 	}
 
 	/// <summary>The <b>DWRITE_CARET_METRICS</b> structure specifies the metrics for caret placement in a font.</summary>

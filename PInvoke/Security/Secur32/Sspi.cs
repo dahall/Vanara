@@ -6012,8 +6012,8 @@ public static partial class Secur32
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("sspi.h", MSDNShortId = "4db92042-38f2-42c2-9c94-b24e0eaafdf9")]
 	public static extern Win32Error SspiPrepareForCredWrite(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity, string pszTargetName, out CRED_TYPE pCredmanCredentialType,
-		out string ppszCredmanTargetName, out string ppszCredmanUserName,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] out byte[] ppCredentialBlob, out uint pCredentialBlobSize);
+		out SafeLocalString ppszCredmanTargetName, out SafeLocalString ppszCredmanUserName,
+		[Out, ArrayPointer(typeof(byte), nameof(pCredentialBlobSize))] out SafeLocalHandle ppCredentialBlob, out uint pCredentialBlobSize);
 
 	/// <summary>
 	/// The <c>SspiSetChannelBindingFlags</c> function is exposed in both kernel and user mode drivers of SspiCli. This helps the server side
@@ -6157,26 +6157,30 @@ public static partial class Secur32
 	/// <para>When this structure is used with RPC, the structure must remain valid for the lifetime of the binding handle.</para>
 	/// <para>The strings may be ANSI or Unicode, depending on the value you assign to the <c>Flags</c> member.</para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="SEC_WINNT_AUTH_IDENTITY"/> struct.</remarks>
+	/// <param name="user">The user name.</param>
+	/// <param name="domain">The domain name or the workgroup name.</param>
+	/// <param name="password">The password of the user in the domain or workgroup.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/ns-sspi-_sec_winnt_auth_identity_a typedef struct
 	// _SEC_WINNT_AUTH_IDENTITY_A { unsigned char *User; unsigned long UserLength; unsigned char *Domain; unsigned long DomainLength;
 	// unsigned char *Password; unsigned long PasswordLength; unsigned long Flags; } SEC_WINNT_AUTH_IDENTITY_A, *PSEC_WINNT_AUTH_IDENTITY_A;
 	[PInvokeData("sspi.h", MSDNShortId = "a9c9471b-2134-4173-af86-18b277627d2a")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct SEC_WINNT_AUTH_IDENTITY
+	public struct SEC_WINNT_AUTH_IDENTITY(string user, string domain, string password)
 	{
 		/// <summary>A string that contains the user name.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string User;
+		public string User = user;
 
 		/// <summary>The length, in characters, of the user string, not including the terminating null character.</summary>
-		public int UserLength;
+		public int UserLength = user?.Length ?? 0;
 
 		/// <summary>A string that contains the domain name or the workgroup name.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Domain;
+		public string Domain = domain;
 
 		/// <summary>The length, in characters, of the domain string, not including the terminating null character.</summary>
-		public int DomainLength;
+		public int DomainLength = domain?.Length ?? 0;
 
 		/// <summary>
 		/// A string that contains the password of the user in the domain or workgroup. When you have finished using the password, remove
@@ -6184,10 +6188,10 @@ public static partial class Secur32
 		/// Handling Passwords.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string Password;
+		public string Password = password;
 
 		/// <summary>The length, in characters, of the password string, not including the terminating null character.</summary>
-		public int PasswordLength;
+		public int PasswordLength = password?.Length ?? 0;
 
 		/// <summary>
 		/// <para>This member can be one of the following values.</para>
@@ -6206,22 +6210,7 @@ public static partial class Secur32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public int Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="SEC_WINNT_AUTH_IDENTITY"/> struct.</summary>
-		/// <param name="user">The user name.</param>
-		/// <param name="domain">The domain name or the workgroup name.</param>
-		/// <param name="password">The password of the user in the domain or workgroup.</param>
-		public SEC_WINNT_AUTH_IDENTITY(string user, string domain, string password)
-		{
-			User = user;
-			UserLength = user?.Length ?? 0;
-			Domain = domain;
-			DomainLength = domain?.Length ?? 0;
-			Password = password;
-			PasswordLength = password?.Length ?? 0;
-			Flags = StringHelper.GetCharSize();
-		}
+		public int Flags = StringHelper.GetCharSize();
 	}
 
 	/// <summary>
@@ -6480,28 +6469,21 @@ public static partial class Secur32
 	}
 
 	/// <summary>The SecBuffer structure describes a buffer allocated by a transport application to pass to a security package.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="SecBuffer"/> struct.</remarks>
+	/// <param name="type">The type of buffer.</param>
+	/// <param name="buffer">A pointer to an allocated buffer.</param>
+	/// <param name="bufferSize">Size of the allocated buffer.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SecBuffer
+	public struct SecBuffer(Secur32.SecBufferType type, IntPtr buffer = default, int bufferSize = 0)
 	{
 		/// <summary>Specifies the size, in bytes, of the buffer pointed to by the pvBuffer member.</summary>
-		public int cbBuffer;
+		public int cbBuffer = bufferSize;
 
 		/// <summary>Bit flags that indicate the type of buffer. Must be one of the values of the SecBufferType enumeration.</summary>
-		public SecBufferType BufferType;
+		public SecBufferType BufferType = type;
 
 		/// <summary>A pointer to a buffer.</summary>
-		public IntPtr pvBuffer;
-
-		/// <summary>Initializes a new instance of the <see cref="SecBuffer"/> struct.</summary>
-		/// <param name="type">The type of buffer.</param>
-		/// <param name="buffer">A pointer to an allocated buffer.</param>
-		/// <param name="bufferSize">Size of the allocated buffer.</param>
-		public SecBuffer(SecBufferType type, IntPtr buffer = default, int bufferSize = 0)
-		{
-			cbBuffer = bufferSize;
-			BufferType = type;
-			pvBuffer = buffer;
-		}
+		public IntPtr pvBuffer = buffer;
 	}
 
 	/// <summary>
@@ -6556,11 +6538,11 @@ public static partial class Secur32
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid => dwLower == MaxValue || dwUpper == MaxValue;
+		public readonly bool IsInvalid => dwLower == MaxValue || dwUpper == MaxValue;
 
 		/// <summary>Gets a value indicating whether this instance is NULL.</summary>
 		/// <value><c>true</c> if this instance is NULL; otherwise, <c>false</c>.</value>
-		public bool IsNull => dwLower == UIntPtr.Zero && dwUpper == UIntPtr.Zero;
+		public readonly bool IsNull => dwLower == UIntPtr.Zero && dwUpper == UIntPtr.Zero;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="value1">The left value.</param>
@@ -6577,16 +6559,16 @@ public static partial class Secur32
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(CredHandle other) => other.dwUpper == dwUpper && other.dwLower == dwLower;
+		public readonly bool Equals(CredHandle other) => other.dwUpper == dwUpper && other.dwLower == dwLower;
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object? obj) => obj is CredHandle h ? Equals(h) : base.Equals(obj);
+		public override readonly bool Equals(object? obj) => obj is CredHandle h ? Equals(h) : base.Equals(obj);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => base.GetHashCode();
+		public override readonly int GetHashCode() => base.GetHashCode();
 
 		/// <summary>Invalidates this instance.</summary>
 		public void Invalidate() { dwLower = UIntPtr.Zero; dwUpper = MaxValue; }
@@ -6613,11 +6595,11 @@ public static partial class Secur32
 
 		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid => dwLower == MaxValue || dwUpper == MaxValue;
+		public readonly bool IsInvalid => dwLower == MaxValue || dwUpper == MaxValue;
 
 		/// <summary>Gets a value indicating whether this instance is NULL.</summary>
 		/// <value><c>true</c> if this instance is NULL; otherwise, <c>false</c>.</value>
-		public bool IsNull => dwLower == UIntPtr.Zero && dwUpper == UIntPtr.Zero;
+		public readonly bool IsNull => dwLower == UIntPtr.Zero && dwUpper == UIntPtr.Zero;
 
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="value1">The left value.</param>
@@ -6634,16 +6616,16 @@ public static partial class Secur32
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(CtxtHandle other) => other.dwUpper == dwUpper && other.dwLower == dwLower;
+		public readonly bool Equals(CtxtHandle other) => other.dwUpper == dwUpper && other.dwLower == dwLower;
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object? obj) => obj is CtxtHandle h ? Equals(h) : base.Equals(obj);
+		public override readonly bool Equals(object? obj) => obj is CtxtHandle h ? Equals(h) : base.Equals(obj);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => base.GetHashCode();
+		public override readonly int GetHashCode() => base.GetHashCode();
 
 		/// <summary>Invalidates this instance.</summary>
 		public void Invalidate() { dwLower = UIntPtr.Zero; dwUpper = MaxValue; }
@@ -7788,14 +7770,14 @@ public static partial class Secur32
 	{
 		private static readonly uint HdrSize = (uint)Marshal.SizeOf<SecBufferDesc>();
 
-		private readonly List<SafeAllocatedMemoryHandle> items = new();
+		private readonly List<SafeAllocatedMemoryHandle> items = [];
 		private SecBufferDesc desc = SecBufferDesc.Default;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSecBufferDesc"/> class.</summary>
-		public SafeSecBufferDesc() : base(new SecBuffer[0], HdrSize) { }
+		public SafeSecBufferDesc() : base([], HdrSize) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSecBufferDesc"/> class.</summary>
-		public SafeSecBufferDesc(SecBufferType type) : base(new[] { new SecBuffer(type) }, HdrSize) { }
+		public SafeSecBufferDesc(SecBufferType type) : base([new SecBuffer(type)], HdrSize) { }
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeSecBufferDesc"/> to <see cref="SecBufferDesc"/>.</summary>
 		/// <param name="sbd">The <see cref="SafeSecBufferDesc"/> instance.</param>
@@ -7890,7 +7872,7 @@ public static partial class Secur32
 		/// <summary>Gets the bytes associated with this memory.</summary>
 		/// <param name="count">The count of bytes to get.</param>
 		/// <returns>A byte array.</returns>
-		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count) ?? new byte[0];
+		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count) ?? [];
 	}
 
 	internal class SspiStringMarshaler : ICustomMarshaler

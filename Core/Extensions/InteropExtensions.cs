@@ -891,7 +891,7 @@ public static partial class InteropExtensions
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr" />.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	/// <exception cref="System.InsufficientMemoryException"></exception>
+	/// <exception cref="InsufficientMemoryException"></exception>
 	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
 	{
 		SizeT c, bytesread = prefixBytes;
@@ -1395,6 +1395,31 @@ public static partial class InteropExtensions
 		finally
 		{
 			memUnlock?.Invoke(alloc);
+		}
+		return alloc;
+	}
+
+	private static IntPtr AllocWrite(SizeT cnt, Action<IntPtr, int>? writer, IMemoryMethods memMethods)
+	{
+		IntPtr alloc = memMethods.AllocMem(cnt);
+		IntPtr lck = memMethods.Lockable ? memMethods.LockMem(alloc) : alloc;
+		bool succeeded = false;
+		try
+		{
+			if (!memMethods.AllocZeroes)
+				FillMemory(lck, 0, cnt);
+			writer?.Invoke(lck, cnt);
+			succeeded = true;
+		}
+		finally
+		{
+			if (memMethods.Lockable)
+				memMethods.UnlockMem(lck);
+			if (!succeeded)
+			{
+				memMethods.FreeMem(alloc);
+				alloc = IntPtr.Zero;
+			}
 		}
 		return alloc;
 	}

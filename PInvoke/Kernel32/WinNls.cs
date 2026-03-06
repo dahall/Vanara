@@ -4213,7 +4213,8 @@ public static partial class Kernel32
 	// LPCWSTR lpStringValue, _In_ int cchValue, _Out_opt_ LPINT pcchFound); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318056(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318056")]
-	public static extern int FindNLSString(LCID Locale, COMPARE_STRING dwFindNLSStringFlags, string lpStringSource, int cchSource, string lpStringValue, int cchValue, out int pcchFound);
+	public static extern int FindNLSString(LCID Locale, COMPARE_STRING dwFindNLSStringFlags, [SizeDef(nameof(cchSource))] string lpStringSource,
+		int cchSource, [SizeDef(nameof(cchValue))] string lpStringValue, int cchValue, out int pcchFound);
 
 	/// <summary>
 	/// Locates a Unicode string (wide characters) or its equivalent in another Unicode string for a locale specified by name.
@@ -4341,8 +4342,10 @@ public static partial class Kernel32
 	// lpVersionInformation, _In_opt_ LPVOID lpReserved, _In_opt_ LPARAM sortHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318059(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318059")]
-	public static extern int FindNLSStringEx(string? lpLocaleName, COMPARE_STRING dwFindNLSStringFlags, string lpStringSource, int cchSource, string lpStringValue,
-		int cchValue, out int pcchFound, [Optional] StructPointer<NLSVERSIONINFO> lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
+	public static extern int FindNLSStringEx(string? lpLocaleName, COMPARE_STRING dwFindNLSStringFlags,
+		[SizeDef(nameof(cchSource))] string lpStringSource, int cchSource, [SizeDef(nameof(cchValue))] string lpStringValue,
+		int cchValue, out int pcchFound, [In, Optional, StructPointer(typeof(NLSVERSIONINFO))] IntPtr lpVersionInformation,
+		[Optional, Ignore] IntPtr lpReserved, [Optional, Ignore] IntPtr sortHandle);
 
 	/// <summary>Retrieves the current Windows ANSI code page identifier for the operating system.</summary>
 	/// <returns>

@@ -1234,7 +1234,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_dev_caps-next HRESULT Next( ULONG celt,
 		// WIA_DEV_CAP *rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] WIA_DEV_CAP[] rgelt, out uint pceltFetched);
 
 		/// <summary>
@@ -1309,7 +1309,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_dev_info-next HRESULT Next( ULONG celt,
 		// IWiaPropertyStorage **rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWiaPropertyStorage[] rgelt, out uint pceltFetched);
 
 		/// <summary>
@@ -1377,7 +1377,7 @@ public static partial class OleAut32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwia_format_info-next HRESULT Next( ULONG celt,
 		// WIA_FORMAT_INFO *rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] WIA_FORMAT_INFO[] rgelt, out uint pceltFetched);
 
 		/// <summary>The <c>IEnumWIA_FORMAT_INFO::Skip</c> method skips the specified number of structures in the enumeration.</summary>
@@ -1468,7 +1468,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-ienumwiaitem-next HRESULT Next( ULONG celt, IWiaItem
 		// **ppIWiaItem, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IWiaItem[] rgelt, out uint pceltFetched);
 
 		/// <summary>
@@ -3887,7 +3887,8 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiapropertystorage-getpropertyattributes HRESULT
 		// GetPropertyAttributes( ULONG cpspec, PROPSPEC [] rgpspec, ULONG [] rgflags, PROPVARIANT [] rgpropvar );
-		HRESULT GetPropertyAttributes(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray)] uint[] rgflags, [Out, MarshalAs(UnmanagedType.LPArray)] PROPVARIANT[] rgpropvar);
+		HRESULT GetPropertyAttributes(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgflags, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar);
 
 		/// <summary>The <c>IWiaPropertyStorage::GetCount</c> method returns the number of properties stored in the property storage.</summary>
 		/// <returns>

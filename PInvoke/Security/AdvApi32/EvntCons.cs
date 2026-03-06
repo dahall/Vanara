@@ -151,16 +151,19 @@ public static partial class AdvApi32
 		[CorrespondingType(typeof(EVENT_EXTENDED_ITEM_STACK_TRACE64))]
 		EVENT_HEADER_EXT_TYPE_STACK_TRACE64 = 0x0006,
 
-		/// <summary>
-		/// </summary>
+		/// <summary/>
+		[CorrespondingType(typeof(EVENT_EXTENDED_ITEM_PEBS_INDEX))]
 		EVENT_HEADER_EXT_TYPE_PEBS_INDEX = 0x0007,
 
 		/// <summary>
+		/// The DataPtr member points to an EVENT_EXTENDED_ITEM_PMC_COUNTERS structure that contains the current PMC Counter values. To
+		/// enable this feature, the valid PMC counters for the CPU must be set via TraceSetInformation, with valid Source values found by
+		/// calling TraceQueryInformation with TraceProfileSourceListInfo.
 		/// </summary>
+		[CorrespondingType(typeof(EVENT_EXTENDED_ITEM_PMC_COUNTERS))]
 		EVENT_HEADER_EXT_TYPE_PMC_COUNTERS = 0x0008,
 
-		/// <summary>
-		/// </summary>
+		/// <summary/>
 		EVENT_HEADER_EXT_TYPE_PSM_KEY = 0x0009,
 
 		/// <summary>
@@ -203,10 +206,12 @@ public static partial class AdvApi32
 
 		/// <summary>
 		/// </summary>
+		[CorrespondingType(typeof(EVENT_EXTENDED_ITEM_STACK_KEY32))]
 		EVENT_HEADER_EXT_TYPE_STACK_KEY32 = 0x0011,
 
 		/// <summary>
 		/// </summary>
+		[CorrespondingType(typeof(EVENT_EXTENDED_ITEM_STACK_KEY64))]
 		EVENT_HEADER_EXT_TYPE_STACK_KEY64 = 0x0012,
 	}
 
@@ -394,7 +399,7 @@ public static partial class AdvApi32
 	// https://learn.microsoft.com/en-us/windows/win32/api/evntcons/nf-evntcons-etwgettraitfromprovidertraits
 	// EVNTCONS_INLINE VOID EtwGetTraitFromProviderTraits( [in] PVOID ProviderTraits, [in] UCHAR TraitType, [out] PVOID *Trait, [out] PUSHORT Size );
 	[PInvokeData("evntcons.h", MSDNShortId = "NF:evntcons.EtwGetTraitFromProviderTraits")]
-	public static void EtwGetTraitFromProviderTraits([In] IntPtr ProviderTraits, byte TraitType, out IntPtr Trait, out ushort Size)
+	public static void EtwGetTraitFromProviderTraits([In] IntPtr ProviderTraits, ETW_PROVIDER_TRAIT_TYPE TraitType, out IntPtr Trait, out ushort Size)
 	{
 		unsafe
 		{
@@ -426,7 +431,7 @@ public static partial class AdvApi32
 				if (TraitByteCount < 3)
 					return;
 
-				if ((Ptr[2] == TraitType) && (Ptr + TraitByteCount <= PtrEnd))
+				if ((Ptr[2] == (byte)TraitType) && (Ptr + TraitByteCount <= PtrEnd))
 				{
 					Trait = (IntPtr)(Ptr + 3);
 					Size = (ushort)(TraitByteCount - 3);
@@ -521,7 +526,44 @@ public static partial class AdvApi32
 	// Guid, PSECURITY_DESCRIPTOR Buffer, PULONG BufferSize );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("evntcons.h", MSDNShortId = "21c87137-0e8f-43d1-9dad-9f2b4fc591a3")]
-	public static extern Win32Error EventAccessQuery(in Guid Guid, SafePSECURITY_DESCRIPTOR Buffer, ref uint BufferSize);
+	public static extern Win32Error EventAccessQuery(in Guid Guid, [Out, SizeDef(nameof(BufferSize), SizingMethod.CheckLastError)] IntPtr Buffer, ref uint BufferSize);
+
+	/// <summary>Retrieves the permissions for the specified controller or provider.</summary>
+	/// <param name="Guid">GUID that uniquely identifies the provider or session.</param>
+	/// <param name="Buffer">Application-allocated buffer that will contain the security descriptor of the controller or provider.</param>
+	/// <returns>
+	/// <para>Returns ERROR_SUCCESS if successful.</para>
+	/// <para>The function returns the following return code if an error occurs:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_MORE_DATA</term>
+	/// <term>The buffer is too small to receive the security descriptor. Reallocate the buffer using the size returned in BufferSize.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the GUID does not exist in the registry, ETW returns the default permissions for a provider or controller. For details on
+	/// specifying the GUID in the registry, see EventAccessControl.
+	/// </para>
+	/// <para>
+	/// For information on accessing the components of the security descriptor, see Getting Information from an ACL, the
+	/// GetSecurityDescriptorDacl, GetSecurityDescriptorSacl, and GetAce functions, and the ACE structure.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/evntcons/nf-evntcons-eventaccessquery ULONG EVNTAPI EventAccessQuery( LPGUID
+	// Guid, PSECURITY_DESCRIPTOR Buffer, PULONG BufferSize );
+	[PInvokeData("evntcons.h", MSDNShortId = "21c87137-0e8f-43d1-9dad-9f2b4fc591a3")]
+	public static Win32Error EventAccessQuery(in Guid Guid, out SafePSECURITY_DESCRIPTOR Buffer)
+	{
+		var err = EventAccessQuery(Guid, out byte[] buffer);
+		Buffer = err.Succeeded ? new(buffer) : SafePSECURITY_DESCRIPTOR.Null;
+		return err;
+	}
 
 	/// <summary>Removes the permissions defined in the registry for the specified provider or session.</summary>
 	/// <param name="Guid">GUID that uniquely identifies the provider or session whose permissions you want to remove from the registry.</param>
@@ -596,8 +638,7 @@ public static partial class AdvApi32
 	public struct EVENT_EXTENDED_ITEM_PMC_COUNTERS
 	{
 		/// <summary>The counter.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public ulong[] Counter;
+		public AnySizeStructFieldArray<ulong> Counter;
 	}
 
 	/// <summary>Defines a trace flag to get a process start key of a process logging the event.</summary>
@@ -1002,10 +1043,12 @@ public static partial class AdvApi32
 		/// <summary>Size, in bytes, of the extended data that <c>DataPtr</c> points to.</summary>
 		public ushort DataSize;
 
+		private ulong _DataPtr;
+
 		/// <summary>
 		/// Pointer to the extended data. The <c>ExtType</c> member determines the type of extended data to which this member points.
 		/// </summary>
-		public ulong DataPtr;
+		public IntPtr DataPtr { readonly get => (IntPtr)_DataPtr; set => _DataPtr = (ulong)value.ToInt64(); }
 	}
 
 	/// <summary>The <c>EVENT_RECORD</c> structure defines the layout of an event that ETW delivers.</summary>
@@ -1036,16 +1079,18 @@ public static partial class AdvApi32
 		/// for trace logging, regardless whether the controller sets the EnableProperty parameter passed to <c>EnableTraceEx</c> or
 		/// <c>EnableTraceEx2</c>. For details, see the EVENT_HEADER_EXTENDED_DATA_ITEM structure .
 		/// </summary>
-		public IntPtr /*PEVENT_HEADER_EXTENDED_DATA_ITEM*/ ExtendedData;
+		[SizeDef(nameof(ExtendedDataCount))]
+		public ArrayPointer<EVENT_HEADER_EXTENDED_DATA_ITEM> ExtendedData;
 
 		/// <summary>
 		/// Event specific data. To parse this data, see Retrieving Event Data Using TDH. If the <c>Flags</c> member of EVENT_HEADER contains
 		/// <c>EVENT_HEADER_FLAG_STRING_ONLY</c>, the data is a null-terminated Unicode string that you do not need TDH to parse.
 		/// </summary>
+		[SizeDef(nameof(UserDataLength))]
 		public IntPtr UserData;
 
 		/// <summary>
-		/// Th context specified in the <c>Context</c> member of the EVENT_TRACE_LOGFILE structure that is passed to the OpenTrace function.
+		/// The context specified in the <c>Context</c> member of the EVENT_TRACE_LOGFILE structure that is passed to the OpenTrace function.
 		/// </summary>
 		public IntPtr UserContext;
 	}
@@ -1162,7 +1207,7 @@ public static partial class AdvApi32
 		/// callback after it delivers all the events in the buffer. This callback is optional.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public BufferCallback BufferCallback;
+		public BufferCallback? BufferCallback;
 
 		/// <summary>On output, contains the size of each buffer, in bytes.</summary>
 		public uint BufferSize;
@@ -1216,6 +1261,44 @@ public static partial class AdvApi32
 			[FieldOffset(0)]
 			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public EventRecordCallback? EventRecordCallback;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the EVENT_TRACE_LOGFILE structure for real-time event tracing using the specified logger and event
+		/// record callback.
+		/// </summary>
+		/// <remarks>
+		/// This constructor configures the trace to operate in real-time mode and to use event record callbacks. Ensure that the provided
+		/// callback remains valid for the duration of the trace session.
+		/// </remarks>
+		/// <param name="eventRecordCallback">A delegate that is invoked for each event record received during tracing. Cannot be null.</param>
+		/// <param name="loggerName">The name of the event trace logger to connect to. Cannot be null.</param>
+		/// <param name="context">Optional context data passed to <c>EVENT_RECORD</c>.</param>
+		public EVENT_TRACE_LOGFILE(EventRecordCallback eventRecordCallback, string loggerName, IntPtr context = default) : this()
+		{
+			LoggerName = loggerName;
+			Callback.EventRecordCallback = eventRecordCallback;
+			ProcessTraceMode = PROCESS_TRACE_MODE.PROCESS_TRACE_MODE_REAL_TIME | PROCESS_TRACE_MODE.PROCESS_TRACE_MODE_EVENT_RECORD;
+			Context = context;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the EVENT_TRACE_LOGFILE structure for real-time event tracing using the specified logger and event
+		/// record callback.
+		/// </summary>
+		/// <remarks>
+		/// This constructor configures the trace to operate in real-time mode and to use event record callbacks. Ensure that the provided
+		/// callback remains valid for the duration of the trace session.
+		/// </remarks>
+		/// <param name="logFileName">Name of the log file used by the event tracing session. Cannot be null.</param>
+		/// <param name="eventRecordCallback">A delegate that is invoked for each event record received during tracing. Cannot be null.</param>
+		/// <param name="context">Optional context data passed to <c>EVENT_RECORD</c>.</param>
+		public EVENT_TRACE_LOGFILE(string logFileName, EventRecordCallback eventRecordCallback, IntPtr context = default) : this()
+		{
+			LogFileName = logFileName;
+			Callback.EventRecordCallback = eventRecordCallback;
+			ProcessTraceMode = PROCESS_TRACE_MODE.PROCESS_TRACE_MODE_EVENT_RECORD;
+			Context = context;
 		}
 	}
 }

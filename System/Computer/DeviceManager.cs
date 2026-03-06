@@ -707,13 +707,13 @@ public class DeviceClass : IDisposable
 public class DeviceClassCollection : IReadOnlyCollection<DeviceClass>, IDisposable
 {
 	/// <summary>
-	/// Initializes a new instance of the <see cref="DeviceClassCollection"/> class with the flags and machine name to be used by <see
-	/// cref="SetupDiBuildClassInfoListEx"/> to retrieve the classes.
+	/// Initializes a new instance of the <see cref="DeviceClassCollection"/> class with the flags and machine name to be used by
+	/// <c>SetupDiBuildClassInfoListEx</c> to retrieve the classes.
 	/// </summary>
 	/// <param name="flags">
 	/// <para>
-	/// Flags used to control exclusion of classes from the list. If no flags are specified, all setup classes are included in the list.
-	/// Can be a combination of the following values:
+	/// Flags used to control exclusion of classes from the list. If no flags are specified, all setup classes are included in the list. Can
+	/// be a combination of the following values:
 	/// </para>
 	/// <para>DIBCI_NOINSTALLCLASS</para>
 	/// <para>Exclude a class if it has the <c>NoInstallClass</c> value entry in its registry key.</para>
@@ -721,9 +721,8 @@ public class DeviceClassCollection : IReadOnlyCollection<DeviceClass>, IDisposab
 	/// <para>Exclude a class if it has the <c>NoDisplayClass</c> value entry in its registry key.</para>
 	/// </param>
 	/// <param name="machineName">
-	/// A string that contains the name of a remote computer from which to retrieve installed setup classes. This parameter is optional
-	/// and can be <see langword="null"/>. If MachineName is <see langword="null"/>, this class provides a list of classes installed on
-	/// the local computer.
+	/// A string that contains the name of a remote computer from which to retrieve installed setup classes. This parameter is optional and
+	/// can be <see langword="null"/>. If MachineName is <see langword="null"/>, this class provides a list of classes installed on the local computer.
 	/// </param>
 	public DeviceClassCollection(DIBCI flags = 0, string? machineName = null)
 	{

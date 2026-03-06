@@ -66,7 +66,7 @@ public class AuthzTests
 		SID_AND_ATTRIBUTES restrictedSids = new() { Sid = localSid, Attributes = (uint)GroupAttributes.SE_GROUP_ENABLED };
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);
-		Assert.That(AuthzAddSidsToContext(hCtx, new[] { sids }, 1, new[] { restrictedSids }, 1, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hNewCtx), ResultIs.Successful);
+		Assert.That(AuthzAddSidsToContext(hCtx, [sids], 1, [restrictedSids], 1, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hNewCtx), ResultIs.Successful);
 	}
 
 	[Test]
@@ -200,8 +200,8 @@ public class AuthzTests
 	{
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);
-		AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrs = new(new[] { new AUTHZ_SECURITY_ATTRIBUTE_V1("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", Environment.UserName) });
-		Assert.That(AuthzModifyClaims(hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoUserClaims, new[] { AUTHZ_SECURITY_ATTRIBUTE_OPERATION.AUTHZ_SECURITY_ATTRIBUTE_OPERATION_ADD }, attrs), ResultIs.Successful);
+		AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrs = new([new AUTHZ_SECURITY_ATTRIBUTE_V1("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", Environment.UserName)]);
+		Assert.That(AuthzModifyClaims(hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoUserClaims, [AUTHZ_SECURITY_ATTRIBUTE_OPERATION.AUTHZ_SECURITY_ATTRIBUTE_OPERATION_ADD], attrs), ResultIs.Successful);
 	}
 
 	[Test]
@@ -209,8 +209,8 @@ public class AuthzTests
 	{
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);
-		AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrs = new(new[] { new AUTHZ_SECURITY_ATTRIBUTE_V1("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", Environment.UserName) });
-		Assert.That(AuthzModifySecurityAttributes(hCtx, new[] { AUTHZ_SECURITY_ATTRIBUTE_OPERATION.AUTHZ_SECURITY_ATTRIBUTE_OPERATION_ADD }, attrs), ResultIs.Successful);
+		AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrs = new([new AUTHZ_SECURITY_ATTRIBUTE_V1("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", Environment.UserName)]);
+		Assert.That(AuthzModifySecurityAttributes(hCtx, [AUTHZ_SECURITY_ATTRIBUTE_OPERATION.AUTHZ_SECURITY_ATTRIBUTE_OPERATION_ADD], attrs), ResultIs.Successful);
 	}
 
 	[Test]
@@ -221,7 +221,7 @@ public class AuthzTests
 		TOKEN_GROUPS tg = new(1);
 		SafePSID psid = new("S-1-5-32-551");
 		tg.Groups[0] = new SID_AND_ATTRIBUTES { Attributes = (uint)GroupAttributes.SE_GROUP_ENABLED, Sid = (IntPtr)psid };
-		Assert.That(AuthzModifySids(hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, new[] { AUTHZ_SID_OPERATION.AUTHZ_SID_OPERATION_ADD }, in tg), ResultIs.Successful);
+		Assert.That(AuthzModifySids(hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, [AUTHZ_SID_OPERATION.AUTHZ_SID_OPERATION_ADD], in tg), ResultIs.Successful);
 	}
 
 	[Test]
@@ -285,7 +285,7 @@ public class AuthzTests
 	public void AuthzReportSecurityEventFromParamsTest()
 	{
 		const int eventId = 4624;
-		const string eventFile = "Some random string";
+		const string eventFile = "C:\\Windows\\System32\\authz.dll";
 		const string eventSource = "TestAddEventSource";
 
 		using (new ElevPriv(["SeAuditPrivilege", "SeSecurityPrivilege"]))
@@ -336,7 +336,7 @@ public class AuthzTests
 
 	// TODO: Figure out how AuthzSetAppContainerInformation works
 	// [Test]
-		public void AuthzSetAppContainerInformationTest()
+		public static void AuthzSetAppContainerInformationTest()
 	{
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);

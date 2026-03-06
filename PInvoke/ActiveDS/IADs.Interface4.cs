@@ -2469,7 +2469,7 @@ public static partial class ActiveDS
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-setsearchpreference HRESULT SetSearchPreference(
 		// [in] PADS_SEARCHPREF_INFO pSearchPrefs, [in] DWORD dwNumPrefs );
 		[PreserveSig]
-		HRESULT SetSearchPreference([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ADS_SEARCHPREF_INFO[] pSearchPrefs, [In] int dwNumPrefs);
+		HRESULT SetSearchPreference([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ADS_SEARCHPREF_INFO[] pSearchPrefs, [In] int dwNumPrefs);
 
 		/// <summary>
 		/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as

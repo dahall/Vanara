@@ -9189,11 +9189,18 @@ public static partial class User32
 	/// Contains information that an application can use while processing the <c>WM_NCCALCSIZE</c> message to calculate the size, position,
 	/// and valid contents of the client area of a window.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="NCCALCSIZE_PARAMS"/> struct.</remarks>
+	/// <param name="rgrc">An array of rectangles.</param>
+	/// <param name="lppos">
+	/// A pointer to a <c>WINDOWPOS</c> structure that contains the size and position values specified in the operation that moved or
+	/// resized the window.
+	/// </param>
+	/// <exception cref="System.ArgumentException">rgrc must be an array of 3 RECT structures.</exception>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-nccalcsize_params typedef struct tagNCCALCSIZE_PARAMS { RECT
 	// rgrc[3]; PWINDOWPOS lppos; } NCCALCSIZE_PARAMS, *LPNCCALCSIZE_PARAMS;
 	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagNCCALCSIZE_PARAMS")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct NCCALCSIZE_PARAMS
+	public struct NCCALCSIZE_PARAMS(RECT[] rgrc, StructPointer<User32.WINDOWPOS> lppos)
 	{
 		/// <summary>
 		/// <para>Type: <b><c>RECT</c>[3]</b></para>
@@ -9215,7 +9222,7 @@ public static partial class User32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public RECT[] rgrc;
+		public RECT[] rgrc = rgrc is not null && rgrc.Length == 3 ? rgrc : throw new ArgumentException("rgrc must be an array of 3 RECT structures.");
 
 		/// <summary>
 		/// <para>Type: <b>PWINDOWPOS</b></para>
@@ -9224,22 +9231,7 @@ public static partial class User32
 		/// resized the window.
 		/// </para>
 		/// </summary>
-		public StructPointer<WINDOWPOS> lppos;
-
-		/// <summary>Initializes a new instance of the <see cref="NCCALCSIZE_PARAMS"/> struct.</summary>
-		/// <param name="rgrc">An array of rectangles.</param>
-		/// <param name="lppos">
-		/// A pointer to a <c>WINDOWPOS</c> structure that contains the size and position values specified in the operation that moved or
-		/// resized the window.
-		/// </param>
-		/// <exception cref="System.ArgumentException">rgrc must be an array of 3 RECT structures.</exception>
-		public NCCALCSIZE_PARAMS(RECT[] rgrc, StructPointer<WINDOWPOS> lppos)
-		{
-			if (rgrc is null || rgrc.Length != 3)
-				throw new ArgumentException("rgrc must be an array of 3 RECT structures.");
-			this.rgrc = rgrc;
-			this.lppos = lppos;
-		}
+		public StructPointer<WINDOWPOS> lppos = lppos;
 	}
 
 	/// <summary>

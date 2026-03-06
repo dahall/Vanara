@@ -1994,16 +1994,16 @@ public static partial class Kernel32
 		/// no object identifier at that time. After copy operations, move operations, or other file operations, this may not be the
 		/// same as the object identifier of the volume on which the object presently resides.
 		/// </summary>
-		public byte[] BirthVolumeId { get => [.. ExtendedInfo.Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 0, 16); }
+		public readonly byte[] BirthVolumeId { get => [.. ExtendedInfo.Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 0, 16); }
 
 		/// <summary>
 		/// The object identifier of the object at the time it was created. After copy operations, move operations, or other file
 		/// operations, this may not be the same as the <c>ObjectId</c> member at present.
 		/// </summary>
-		public byte[] BirthObjectId { get => [.. ExtendedInfo.Skip(16).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 16, 16); }
+		public readonly byte[] BirthObjectId { get => [.. ExtendedInfo.Skip(16).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 16, 16); }
 
 		/// <summary>Reserved; must be zero.</summary>
-		public byte[] DomainId { get => [.. ExtendedInfo.Skip(32).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 32, 16); }
+		public readonly byte[] DomainId { get => [.. ExtendedInfo.Skip(32).Take(16)]; set => Buffer.BlockCopy(value, 0, ExtendedInfo, 32, 16); }
 	}
 
 	/// <summary>Receives the volume information from a call to FSCTL_QUERY_ON_DISK_VOLUME_INFO.</summary>
@@ -2256,7 +2256,7 @@ public static partial class Kernel32
 		/// <summary>A SID structure that specifies the desired creator owner.</summary>
 		public byte[] Sid
 		{
-			get
+			readonly get
 			{
 				var value = new byte[8 + SubAuthorityCount * 4];
 				value[0] = Revision;
@@ -3436,7 +3436,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public USN_SOURCE UsnSourceInfo { get => (USN_SOURCE)CopyNumber; set => CopyNumber = (uint)value; }
+		public USN_SOURCE UsnSourceInfo { readonly get => (USN_SOURCE)CopyNumber; set => CopyNumber = (uint)value; }
 
 
 		/// <summary/>
@@ -6863,7 +6863,7 @@ public static partial class Kernel32
 		public byte[] Buffer;
 
 		/// <summary>If the buffer is not large enough, this member receives the required buffer size.</summary>
-		public uint BufferLength => Buffer?.Length >= 4 ? BitConverter.ToUInt32(Buffer, 0) : 0;
+		public readonly uint BufferLength => Buffer?.Length >= 4 ? BitConverter.ToUInt32(Buffer, 0) : 0;
 	}
 
 	/// <summary>

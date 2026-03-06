@@ -1139,8 +1139,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
+	//[SuppressAutoGen]
 	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StructPointer<CRL_INFO>[] rgpCrlInfo);
+		[In, ArrayPointer(typeof(CRL_INFO), nameof(cCrlInfo), ElementsAreByRef = true)] IntPtr rgpCrlInfo);
 
 	/// <summary>
 	/// The <c>CertVerifyCRLRevocation</c> function check a certificate revocation list (CRL) to determine whether a subject's
@@ -5999,7 +6000,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyCertificateSignatureEx([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType,
 		CryptVerifyCertSignSubject dwSubjectType, [In] IntPtr pvSubject, CryptVerifyCertSignIssuer dwIssuerType,
-		[In, Optional] IntPtr pvIssuer, CryptVerifyCertSignFlags dwFlags, [In, Out, Optional] StructPointer<CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO> pvExtra);
+		[In, Optional] IntPtr pvIssuer, CryptVerifyCertSignFlags dwFlags, [In, Out, Optional] IntPtr pvExtra);
 
 	/// <summary>
 	/// The <c>CERT_NAME_INFO</c> structure contains subject or issuer names. The information is represented as an array of CERT_RDN structures.

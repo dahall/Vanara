@@ -1743,7 +1743,7 @@ public static partial class D3D12
 		// D3D12_TEXTURE_COPY_LOCATION *pSrc, [in, optional] const D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		void CopyTextureRegion(in D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, in D3D12_TEXTURE_COPY_LOCATION pSrc,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Copies the entire contents of the source resource to the destination resource.</summary>
 		/// <param name="pDstResource">
@@ -2709,7 +2709,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
 		// IASetIndexBuffer( [in, optional] const D3D12_INDEX_BUFFER_VIEW *pView );
 		[PreserveSig]
-		void IASetIndexBuffer([In, Optional] StructPointer<D3D12_INDEX_BUFFER_VIEW> pView);
+		void IASetIndexBuffer([In, Optional, StructPointer(typeof(D3D12_INDEX_BUFFER_VIEW))] IntPtr pView);
 
 		/// <summary>Sets a CPU descriptor handle for the vertex buffers.</summary>
 		/// <param name="StartSlot">
@@ -2793,10 +2793,10 @@ public static partial class D3D12
 		// OMSetRenderTargets( [in] UINT NumRenderTargetDescriptors, [in, optional] const D3D12_CPU_DESCRIPTOR_HANDLE
 		// *pRenderTargetDescriptors, [in] BOOL RTsSingleHandleToDescriptorRange, [in, optional] const D3D12_CPU_DESCRIPTOR_HANDLE
 		// *pDepthStencilDescriptor );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		void OMSetRenderTargets(uint NumRenderTargetDescriptors,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
-			bool RTsSingleHandleToDescriptorRange, [In, Optional] StructPointer<D3D12_CPU_DESCRIPTOR_HANDLE> pDepthStencilDescriptor);
+			bool RTsSingleHandleToDescriptorRange, [In, Optional, StructPointer(typeof(D3D12_CPU_DESCRIPTOR_HANDLE))] IntPtr pDepthStencilDescriptor);
 
 		/// <summary>Clears the depth-stencil resource.</summary>
 		/// <param name="DepthStencilView">
@@ -3136,7 +3136,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">
@@ -3663,46 +3663,6 @@ public static partial class D3D12
 			ulong ArgumentBufferOffset, [In, Optional] ID3D12Resource? pCountBuffer, ulong CountBufferOffset);
 	}
 
-	/// <summary>Sets the view for the index buffer.</summary>
-	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
-	/// <param name="pView">
-	/// <para>
-	/// The view specifies the index buffer's address, size, and <c>DXGI_FORMAT</c>, as a pointer to a <c>D3D12_INDEX_BUFFER_VIEW</c> structure.
-	/// </para>
-	/// </param>
-	/// <returns>None</returns>
-	/// <remarks>
-	/// <para>
-	/// Only one index buffer can be bound to the graphics pipeline at any one time. Examples The <c>D3D12Bundles</c> sample uses
-	/// <b>ID3D12GraphicsCommandList::IASetIndexBuffer</b> as follows:
-	/// </para>
-	/// <para>
-	/// <c>void FrameResource::PopulateCommandList(ID3D12GraphicsCommandList* pCommandList, ID3D12PipelineState* pPso1, ID3D12PipelineState*
-	/// pPso2, UINT frameResourceIndex, UINT numIndices, D3D12_INDEX_BUFFER_VIEW* pIndexBufferViewDesc, D3D12_VERTEX_BUFFER_VIEW*
-	/// pVertexBufferViewDesc, ID3D12DescriptorHeap* pCbvSrvDescriptorHeap, UINT cbvSrvDescriptorSize, ID3D12DescriptorHeap*
-	/// pSamplerDescriptorHeap, ID3D12RootSignature* pRootSignature) { // If the root signature matches the root signature of the caller,
-	/// then // bindings are inherited, otherwise the bind space is reset. pCommandList-&gt;SetGraphicsRootSignature(pRootSignature);
-	/// ID3D12DescriptorHeap* ppHeaps[] = { pCbvSrvDescriptorHeap, pSamplerDescriptorHeap };
-	/// pCommandList-&gt;SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	/// pCommandList-&gt;IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	/// pCommandList-&gt;IASetIndexBuffer(pIndexBufferViewDesc); pCommandList-&gt;IASetVertexBuffers(0, 1, pVertexBufferViewDesc);
-	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(0, pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart());
-	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(1, pSamplerDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart()); // Calculate
-	/// the descriptor offset due to multiple frame resources. // 1 SRV + how many CBVs we have currently. UINT
-	/// frameResourceDescriptorOffset = 1 + (frameResourceIndex * m_cityRowCount * m_cityColumnCount); CD3DX12_GPU_DESCRIPTOR_HANDLE
-	/// cbvSrvHandle(pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart(), frameResourceDescriptorOffset, cbvSrvDescriptorSize);
-	/// BOOL usePso1 = TRUE; for (UINT i = 0; i &lt; m_cityRowCount; i++) { for (UINT j = 0; j &lt; m_cityColumnCount; j++) { // Alternate
-	/// which PSO to use; the pixel shader is different on // each just as a PSO setting demonstration.
-	/// pCommandList-&gt;SetPipelineState(usePso1 ? pPso1 : pPso2); usePso1 = !usePso1; // Set this city's CBV table and move to the next
-	/// descriptor. pCommandList-&gt;SetGraphicsRootDescriptorTable(2, cbvSrvHandle); cbvSrvHandle.Offset(cbvSrvDescriptorSize);
-	/// pCommandList-&gt;DrawIndexedInstanced(numIndices, 1, 0, 0, 0); } } }</c>
-	/// </para>
-	/// <para>See <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
-	public static void IASetIndexBuffer(this ID3D12GraphicsCommandList cmdl, D3D12_INDEX_BUFFER_VIEW? pView = null) =>
-		cmdl.IASetIndexBuffer(new(pView, out var _));
-
 	/// <summary>Sets CPU descriptor handles for the render targets and depth stencil.</summary>
 	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
 	/// <param name="pRenderTargetDescriptors">
@@ -3732,7 +3692,7 @@ public static partial class D3D12
 	public static void OMSetRenderTargets(this ID3D12GraphicsCommandList cmdl, D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
 		bool RTsSingleHandleToDescriptorRange, D3D12_CPU_DESCRIPTOR_HANDLE? pDepthStencilDescriptor = null) =>
 		cmdl.OMSetRenderTargets((uint?)pRenderTargetDescriptors?.Length ?? 0U, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange,
-			new(pDepthStencilDescriptor, out var _));
+			SafeCoTaskMemHandle.CreateFromStructure(pDepthStencilDescriptor));
 
 	/// <summary>
 	/// <para>
@@ -4500,7 +4460,7 @@ public static partial class D3D12
 		// D3D12_TEXTURE_COPY_LOCATION *pSrc, [in, optional] const D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		new void CopyTextureRegion(in D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, in D3D12_TEXTURE_COPY_LOCATION pSrc,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Copies the entire contents of the source resource to the destination resource.</summary>
 		/// <param name="pDstResource">
@@ -5466,7 +5426,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
 		// IASetIndexBuffer( [in, optional] const D3D12_INDEX_BUFFER_VIEW *pView );
 		[PreserveSig]
-		new void IASetIndexBuffer([In, Optional] StructPointer<D3D12_INDEX_BUFFER_VIEW> pView);
+		new void IASetIndexBuffer([In, Optional, StructPointer(typeof(D3D12_INDEX_BUFFER_VIEW))] IntPtr pView);
 
 		/// <summary>Sets a CPU descriptor handle for the vertex buffers.</summary>
 		/// <param name="StartSlot">
@@ -5553,7 +5513,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new void OMSetRenderTargets(uint NumRenderTargetDescriptors,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
-			bool RTsSingleHandleToDescriptorRange, [In, Optional] StructPointer<D3D12_CPU_DESCRIPTOR_HANDLE> pDepthStencilDescriptor);
+			bool RTsSingleHandleToDescriptorRange, [In, Optional, StructPointer(typeof(D3D12_CPU_DESCRIPTOR_HANDLE))] IntPtr pDepthStencilDescriptor);
 
 		/// <summary>Clears the depth-stencil resource.</summary>
 		/// <param name="DepthStencilView">
@@ -5893,7 +5853,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">
@@ -7647,7 +7607,7 @@ public static partial class D3D12
 		// D3D12_TEXTURE_COPY_LOCATION *pSrc, [in, optional] const D3D12_BOX *pSrcBox );
 		[PreserveSig]
 		new void CopyTextureRegion(in D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, in D3D12_TEXTURE_COPY_LOCATION pSrc,
-			[In, Optional] StructPointer<D3D12_BOX> pSrcBox);
+			[In, Optional, StructPointer(typeof(D3D12_BOX))] IntPtr pSrcBox);
 
 		/// <summary>Copies the entire contents of the source resource to the destination resource.</summary>
 		/// <param name="pDstResource">
@@ -8613,7 +8573,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
 		// IASetIndexBuffer( [in, optional] const D3D12_INDEX_BUFFER_VIEW *pView );
 		[PreserveSig]
-		new void IASetIndexBuffer([In, Optional] StructPointer<D3D12_INDEX_BUFFER_VIEW> pView);
+		new void IASetIndexBuffer([In, Optional, StructPointer(typeof(D3D12_INDEX_BUFFER_VIEW))] IntPtr pView);
 
 		/// <summary>Sets a CPU descriptor handle for the vertex buffers.</summary>
 		/// <param name="StartSlot">
@@ -8700,7 +8660,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new void OMSetRenderTargets(uint NumRenderTargetDescriptors,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
-			bool RTsSingleHandleToDescriptorRange, [In, Optional] StructPointer<D3D12_CPU_DESCRIPTOR_HANDLE> pDepthStencilDescriptor);
+			bool RTsSingleHandleToDescriptorRange, [In, Optional, StructPointer(typeof(D3D12_CPU_DESCRIPTOR_HANDLE))] IntPtr pDepthStencilDescriptor);
 
 		/// <summary>Clears the depth-stencil resource.</summary>
 		/// <param name="DepthStencilView">
@@ -9040,7 +9000,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">

@@ -10,8 +10,8 @@ public static partial class D3D12
 	{
 		[PreserveSig]
 		HRESULT CreateSharedResource(in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags,
-			in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue,
-			[In, Optional] StructPointer<D3D11_RESOURCE_FLAGS> pFlags11, D3D12_COMPATIBILITY_SHARED_FLAGS CompatibilityFlags,
+			in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialResourceState, [In, Optional, StructPointer(typeof(D3D12_CLEAR_VALUE))] IntPtr pOptimizedClearValue,
+			[In, Optional, StructPointer(typeof(D3D11_RESOURCE_FLAGS))] IntPtr pFlags11, D3D12_COMPATIBILITY_SHARED_FLAGS CompatibilityFlags,
 			[In, Optional] ID3D12LifetimeTracker? pLifetimeTracker, [In, Optional] ID3D12SwapChainAssistant? pOwningSwapchain, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 9)] out object? ppResource);
 

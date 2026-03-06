@@ -21,6 +21,14 @@ public enum StringListPackMethod
 	Packed
 }
 
+/// <summary>Defines a method that returns the size of a memory block represented by a handle.</summary>
+public interface IGetMemorySize
+{
+	/// <summary>Gets the size of the allocated memory block.</summary>
+	/// <value>The size of the allocated memory block.</value>
+	SizeT GetSize(IntPtr hMem);
+}
+
 /// <summary>Interface to capture unmanaged memory methods.</summary>
 public interface IMemoryMethods : ISimpleMemoryMethods
 {
@@ -59,13 +67,21 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 	IntPtr ReAllocMem(IntPtr hMem, int size);
 }
 
+/// <summary>Interface for a memory handle that supports getting and setting the size of the allocated memory block.</summary>
+public interface IMemoryHandle : IDisposable, IHandle
+{
+	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
+	/// <value>The size in bytes of the allocated memory block.</value>
+	SizeT Size { get; set; }
+}
+
 /// <summary>Defines the base functionality for a safe memory handle, providing methods and properties for managing allocated memory.</summary>
 /// <remarks>
 /// This interface represents a safe memory handle that supports operations such as copying memory, retrieving bytes, locking, and unlocking.
 /// It is designed to abstract memory management in scenarios where direct memory manipulation is required. Implementations of this interface
 /// may provide additional functionality, such as span-based access or event handling.
 /// </remarks>
-public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[]>, IComparable<IReadOnlyList<byte>>
+public interface ISafeMemoryHandleBase : IMemoryHandle, IComparable<byte[]>, IComparable<IReadOnlyList<byte>>
 {
 #if DEBUG
 	/// <summary>Dumps memory to byte string.</summary>
@@ -76,10 +92,6 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
 	bool Lockable { get; }
-
-	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
-	/// <value>The size in bytes of the allocated memory block.</value>
-	SizeT Size { get; set; }
 
 	/// <summary>Occurs when the handle has changed.</summary>
 	event EventHandler<IntPtr>? HandleChanged;
@@ -111,8 +123,8 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 
 	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
 	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
+	/// <exception cref="ArgumentNullException">dest</exception>
+	/// <exception cref="ArgumentOutOfRangeException">destOffset</exception>
 	void CopyTo(ISafeMemoryHandleBase dest);
 
 	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
@@ -120,8 +132,8 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 	/// <param name="length">The number of bytes to copy.</param>
 	/// <param name="dest">A safe handle to allocated memory.</param>
 	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
+	/// <exception cref="ArgumentNullException">dest</exception>
+	/// <exception cref="ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
 	void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default);
 
 	/// <summary>
@@ -370,9 +382,9 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="System.IComparable{T}" />
-/// <seealso cref="System.IComparable{T}" />
-/// <seealso cref="System.IEquatable{T}" />
+/// <seealso cref="IComparable{T}" />
+/// <seealso cref="IComparable{T}" />
+/// <seealso cref="IEquatable{T}" />
 /// <seealso cref="SafeHANDLE" />
 /// <remarks>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</remarks>
 /// <param name="handle">The handle.</param>
@@ -836,7 +848,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	}
 
 	/// <summary>
-	/// Performs an implicit conversion from <see cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/> to <see cref="Span{T}"/> of bytes.
+	/// Performs an implicit conversion from <see cref="SafeMemoryHandle{TMem}"/> to <see cref="Span{T}"/> of bytes.
 	/// </summary>
 	/// <param name="h">The safe memory handle.</param>
 	/// <returns>The result of the conversion.</returns>

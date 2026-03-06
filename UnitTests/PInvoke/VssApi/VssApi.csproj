@@ -6,6 +6,7 @@
 	<NoWarn>$(NoWarn);MSB3277;</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj" />
   </ItemGroup>
 </Project>

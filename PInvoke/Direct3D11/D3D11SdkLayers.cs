@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using Vanara.Marshaler;
+
+namespace Vanara.PInvoke;
 
 public static partial class D3D11
 {
@@ -5409,7 +5411,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D11_MESSAGE *pMessage, [in, out] SizeT *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] StructPointer<D3D11_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(ulong MessageIndex, [Out, Optional, SizeDef(nameof(pMessageByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D11_MESSAGE))] IntPtr pMessage, ref SizeT pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5487,7 +5489,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-addstoragefilterentries
 		// HRESULT AddStorageFilterEntries( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddStorageFilterEntries(in D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT AddStorageFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Get the storage filter at the top of the storage-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5507,7 +5509,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter([Out, Optional, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5548,7 +5550,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushStorageFilter(in D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushStorageFilter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5579,7 +5581,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddRetrievalFilterEntries(in D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT AddRetrievalFilterEntries([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5599,7 +5601,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter([Out, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5640,7 +5642,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushRetrievalFilter(in D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushRetrievalFilter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5962,7 +5964,7 @@ public static partial class D3D11
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/ns-d3d11sdklayers-d3d11_info_queue_filter typedef struct
 	// D3D11_INFO_QUEUE_FILTER { D3D11_INFO_QUEUE_FILTER_DESC AllowList; D3D11_INFO_QUEUE_FILTER_DESC DenyList; } D3D11_INFO_QUEUE_FILTER;
 	[PInvokeData("d3d11sdklayers.h", MSDNShortId = "NS:d3d11sdklayers.D3D11_INFO_QUEUE_FILTER")]
-	[StructLayout(LayoutKind.Sequential)]
+	[Marshaled]
 	public struct D3D11_INFO_QUEUE_FILTER
 	{
 		/// <summary>
@@ -5983,44 +5985,47 @@ public static partial class D3D11
 	// D3D11_INFO_QUEUE_FILTER_DESC { UINT NumCategories; D3D11_MESSAGE_CATEGORY *pCategoryList; UINT NumSeverities; D3D11_MESSAGE_SEVERITY
 	// *pSeverityList; UINT NumIDs; D3D11_MESSAGE_ID *pIDList; } D3D11_INFO_QUEUE_FILTER_DESC;
 	[PInvokeData("d3d11sdklayers.h", MSDNShortId = "NS:d3d11sdklayers.D3D11_INFO_QUEUE_FILTER_DESC")]
-	[StructLayout(LayoutKind.Sequential)]
+	[Marshaled]
 	public struct D3D11_INFO_QUEUE_FILTER_DESC
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>Number of message categories to allow or deny.</para>
 		/// </summary>
-		public uint NumCategories;
+		private uint NumCategories;
 
 		/// <summary>
 		/// <para>Type: <c>D3D11_MESSAGE_CATEGORY*</c></para>
 		/// <para>Array of message categories to allow or deny. Array must have at least NumCategories members (see D3D11_MESSAGE_CATEGORY).</para>
 		/// </summary>
-		public ArrayPointer<D3D11_MESSAGE_CATEGORY> pCategoryList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumCategories))]
+		public D3D11_MESSAGE_CATEGORY[] pCategoryList;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>Number of message severity levels to allow or deny.</para>
 		/// </summary>
-		public uint NumSeverities;
+		private uint NumSeverities;
 
 		/// <summary>
 		/// <para>Type: <c>D3D11_MESSAGE_SEVERITY*</c></para>
 		/// <para>Array of message severity levels to allow or deny. Array must have at least NumSeverities members (see D3D11_MESSAGE_SEVERITY).</para>
 		/// </summary>
-		public ArrayPointer<D3D11_MESSAGE_SEVERITY> pSeverityList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumSeverities))]
+		public D3D11_MESSAGE_SEVERITY[] pSeverityList;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>Number of message IDs to allow or deny.</para>
 		/// </summary>
-		public uint NumIDs;
+		private uint NumIDs;
 
 		/// <summary>
 		/// <para>Type: <c>D3D11_MESSAGE_ID*</c></para>
 		/// <para>Array of message IDs to allow or deny. Array must have at least NumIDs members (see D3D11_MESSAGE_ID).</para>
 		/// </summary>
-		public ArrayPointer<D3D11_MESSAGE_ID> pIDList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumIDs))]
+		public D3D11_MESSAGE_ID[] pIDList;
 	}
 
 	/// <summary>A debug message in the Information Queue.</summary>
@@ -6056,7 +6061,8 @@ public static partial class D3D11
 		/// <para>Type: <c>const char*</c></para>
 		/// <para>The message string.</para>
 		/// </summary>
-		public StrPtrAnsi pDescription;
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string? pDescription;
 
 		/// <summary>
 		/// <para>Type: <c>SizeT</c></para>

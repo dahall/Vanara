@@ -466,7 +466,7 @@ public static class SizeFieldNameAttributeExt
 	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, FieldInfo fi) where T : struct
 	{
 		var attr = fi.GetCustomAttribute<SizeDefAttribute>();
-		if (attr is null)
+		if (attr is null || attr.RefVarName is null)
 			return null;
 		var fld = fi.DeclaringType!.GetField(attr.RefVarName);
 		var fval = fld?.GetValue(structInstance);

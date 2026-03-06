@@ -2883,7 +2883,7 @@ public static partial class Kernel32
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "NF:processthreadsapi.GetProcessDefaultCpuSetMasks")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetProcessDefaultCpuSetMasks([In, AddAsMember] HPROCESS Process,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2),
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray),
 		SizeDef(nameof(CpuSetMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? CpuSetMasks,
 		ushort CpuSetMaskCount, out ushort RequiredMaskCount);
 
@@ -6241,12 +6241,12 @@ public static partial class Kernel32
 		/// <summary>Determines equality.</summary>
 		/// <param name="attr">The attribute to compare.</param>
 		/// <returns><see langword="true"/> if the value is equal to this instance.</returns>
-		public bool Equals(PROC_THREAD_ATTRIBUTE attr) => value.Equals(attr.value);
+		public readonly bool Equals(PROC_THREAD_ATTRIBUTE attr) => value.Equals(attr.value);
 
 		/// <summary>Determines equality.</summary>
 		/// <param name="puint">The <see cref="UIntPtr"/> value.</param>
 		/// <returns><see langword="true"/> if the value is equal to this instance.</returns>
-		public bool Equals(UIntPtr puint) => value.Equals(puint);
+		public readonly bool Equals(UIntPtr puint) => value.Equals(puint);
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -6261,7 +6261,7 @@ public static partial class Kernel32
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => unchecked((int)value.ToUInt32());
+		public override readonly int GetHashCode() => unchecked((int)value.ToUInt32());
 
 		/// <summary>Performs an implicit conversion from <see cref="PROC_THREAD_ATTRIBUTE"/> to <see cref="uint"/>.</summary>
 		/// <param name="pta">The PROC_THREAD_ATTRIBUTE.</param>
@@ -6395,7 +6395,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Gets the type associated with this attribute.</summary>
-		public Type? ValidType => LookupType(this);
+		public readonly Type? ValidType => LookupType(this);
 
 		/// <summary>Performs an implicit conversion from <see cref="PROC_THREAD_ATTRIBUTE"/> to <see cref="UIntPtr"/>.</summary>
 		/// <param name="attr">The attribute.</param>
@@ -6543,7 +6543,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public DYNAMIC_EH_CONTINUATION_TARGET Flags { get => (DYNAMIC_EH_CONTINUATION_TARGET)_Flags.ToInt32(); set => _Flags = new IntPtr((int)value); }
+		public DYNAMIC_EH_CONTINUATION_TARGET Flags { readonly get => (DYNAMIC_EH_CONTINUATION_TARGET)_Flags.ToInt32(); set => _Flags = new IntPtr((int)value); }
 	}
 
 	/// <summary>
@@ -7303,7 +7303,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para><c>FOREGROUND_RED | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE</c></para>
 		/// </summary>
-		public CHARACTER_ATTRIBUTE FillAttribute { get => (CHARACTER_ATTRIBUTE)dwFillAttribute; set { dwFillAttribute = (uint)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEFILLATTRIBUTE, value != 0); } }
+		public CHARACTER_ATTRIBUTE FillAttribute { readonly get => (CHARACTER_ATTRIBUTE)dwFillAttribute; set { dwFillAttribute = (uint)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEFILLATTRIBUTE, value != 0); } }
 
 		/// <summary>
 		/// <para>
@@ -7316,7 +7316,7 @@ public static partial class Kernel32
 		/// <c>ShowWindow</c> is set to SW_SHOWDEFAULT.
 		/// </para>
 		/// </summary>
-		public ShowWindowCommand ShowWindowCommand { get => (ShowWindowCommand)wShowWindow; set { wShowWindow = (ushort)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESHOWWINDOW, value != 0); } }
+		public ShowWindowCommand ShowWindowCommand { readonly get => (ShowWindowCommand)wShowWindow; set { wShowWindow = (ushort)value; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESHOWWINDOW, value != 0); } }
 
 		/// <summary>
 		/// <para>The x and y offset of the upper left corner of a window if a new window is created, in pixels.</para>
@@ -7325,7 +7325,7 @@ public static partial class Kernel32
 		/// process calls <c>CreateWindow</c> to create an overlapped window if the x or y parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 		/// </para>
 		/// </summary>
-		public POINT WindowPosition { get => new((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != POINT.Empty); } }
+		public POINT WindowPosition { readonly get => new((int)dwX, (int)dwY); set { dwX = (uint)value.X; dwY = (uint)value.Y; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USEPOSITION, value != POINT.Empty); } }
 
 		/// <summary>
 		/// <para>The height of the window if a new window is created, in pixels.</para>
@@ -7334,7 +7334,7 @@ public static partial class Kernel32
 		/// the nHeight or nWidth parameter of <c>CreateWindow</c> is CW_USEDEFAULT.
 		/// </para>
 		/// </summary>
-		public SIZE WindowSize { get => new((int)dwXSize, (int)dwYSize); set { dwXSize = (uint)value.cx; dwYSize = (uint)value.cy; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESIZE, value != SIZE.Empty); } }
+		public SIZE WindowSize { readonly get => new((int)dwXSize, (int)dwYSize); set { dwXSize = (uint)value.cx; dwYSize = (uint)value.cy; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESIZE, value != SIZE.Empty); } }
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
 		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf<STARTUPINFO>() };

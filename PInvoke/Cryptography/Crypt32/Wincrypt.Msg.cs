@@ -2948,7 +2948,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3df6312-c866-4faa-8b89-bda67c697631")]
 	public static extern SafeHCRYPTMSG CryptMsgOpenToDecode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
-		HCRYPTPROV hCryptProv = default, IntPtr pRecipientInfo = default, ManagedStructPointer<CMSG_STREAM_INFO> pStreamInfo = default);
+		[Optional, Ignore] HCRYPTPROV hCryptProv, [Optional, Ignore] IntPtr pRecipientInfo, [In, Optional, StructPointer(typeof(CMSG_STREAM_INFO))] IntPtr pStreamInfo);
 
 	/// <summary>
 	/// The <c>CryptMsgOpenToEncode</c> function opens a cryptographic message for encoding and returns a handle of the opened message.
@@ -5200,6 +5200,7 @@ public static partial class Crypt32
 		/// <para>The address of a callback function used to read from and write data to a disk when processing large messages.</para>
 		/// <para>The callback function must have the following signature and parameters:</para>
 		/// </summary>
+		[MarshalAs(UnmanagedType.FunctionPtr)]
 		public PFN_CMSG_STREAM_OUTPUT pfnStreamOutput;
 
 		/// <summary>

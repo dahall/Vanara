@@ -38,7 +38,7 @@ public class Gdi32Tests
 		Array.Fill(lp.palPalEntry, new PALETTEENTRY() { peFlags = PC.PC_NOCOLLAPSE });
 		SafeHPALETTE hp = CreatePalette(lp);
 		Assert.That(hp, ResultIs.ValidHandle);
-		Assert.That(GetPaletteEntries(hp), Is.EqualTo(32));
+		Assert.That(GetPaletteEntries(hp, 0, null), Is.EqualTo(32));
 		var pes = new PALETTEENTRY[32];
 		Assert.That(GetPaletteEntries(hp, 0, 32, pes), Is.EqualTo(32));
 		Assert.That(pes.All(pe => pe.peFlags == PC.PC_NOCOLLAPSE), Is.True);
@@ -60,7 +60,7 @@ public class Gdi32Tests
 	public void EnumEnhMetaFileTest()
 	{
 		var count = 0;
-		using var hEmf = GetEnhMetaFile(@"C:\Temp\test.emf");
+		using var hEmf = GetEnhMetaFile(System.IO.Path.Combine(TestCaseSources.TempDir, "test.emf"));
 		Assert.That(hEmf, ResultIs.ValidHandle);
 
 		var hdr = GetEnhMetaFileHeader(hEmf);
@@ -68,8 +68,9 @@ public class Gdi32Tests
 		Assert.That(EnumEnhMetaFile(HDC.NULL, hEmf, Proc, default, default), ResultIs.Successful);
 		Assert.That(count, Is.EqualTo(hdr.nRecords));
 
-		int Proc(HDC hdc, HGDIOBJ[] lpht, ENHMETARECORD lpmr, int nHandles, IntPtr data)
+		int Proc(HDC hdc, HGDIOBJ[] lpht, IntPtr _lpmr, int nHandles, IntPtr data)
 		{
+			ENHMETARECORD lpmr = new(_lpmr);
 			TestContext.WriteLine($"{++count}) {lpmr.iType} {string.Join(",", lpmr.dParm.Select(v => v.ToString()))}");
 			return 1;
 		}
@@ -129,7 +130,7 @@ public class Gdi32Tests
 		using (var hfont = CreateFont(13, pszFaceName: "Arial"))
 		using (hdc.SelectObject(hfont))
 		{
-			Assert.That(GetOutlineTextMetrics(hdc, out SafeCoTaskMemStruct<OUTLINETEXTMETRIC> otm), Is.GreaterThan(0));
+			Assert.That(GetOutlineTextMetrics(hdc, out var otm), Is.GreaterThan(0));
 			ref var otmRef = ref otm.AsRef();
 			otmRef.WriteValues();
 			TestContext.WriteLine(otm.GetStringAtOffset(otmRef.otmpFaceName, CharSet.Auto));

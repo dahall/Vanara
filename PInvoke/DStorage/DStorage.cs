@@ -420,6 +420,7 @@ public static partial class DStorage
 	public interface IDStorageCustomDecompressionQueue
 	{
 		/// <summary>Obtains an event to wait on. This event is set when there are pending decompression requests.</summary>
+		/// <returns>The HANDLE of an event to wait on.</returns>
 		[PreserveSig]
 		HEVENT GetEvent();
 
@@ -427,8 +428,11 @@ public static partial class DStorage
 		/// Populates the given array of request structs with new pending requests. Your application must arrange to fulfill all these
 		/// requests, and then call SetRequestResults to indicate completion.
 		/// </summary>
+		/// <param name="maxRequests">The maximum number of requests to return.</param>
+		/// <param name="requests">An array of requests; its size is specified by <paramref name="numRequests"/>.</param>
+		/// <param name="numRequests">The number of requests in <paramref name="requests"/>.</param>
 		void GetRequests(uint maxRequests,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST[] requests,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST[] requests,
 			out uint numRequests);
 
 		/// <summary>Your application calls this to indicate that requests have been completed.</summary>
@@ -444,13 +448,48 @@ public static partial class DStorage
 	[ComImport, Guid("0D47C6C9-E61A-4706-93B4-68BFE3F4AA4A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDStorageCustomDecompressionQueue1 : IDStorageCustomDecompressionQueue
 	{
+		/// <summary>Obtains an event to wait on. This event is set when there are pending decompression requests.</summary>
+		/// <returns>The HANDLE of an event to wait on.</returns>
+		[PreserveSig]
+		new HEVENT GetEvent();
+
+		/// <summary>
+		/// Populates the given array of request structs with new pending requests. Your application must arrange to fulfill all these
+		/// requests, and then call SetRequestResults to indicate completion.
+		/// </summary>
+		/// <param name="maxRequests">The maximum number of requests to return.</param>
+		/// <param name="requests">An array of requests; its size is specified by <paramref name="numRequests"/>.</param>
+		/// <param name="numRequests">The number of requests in <paramref name="requests"/>.</param>
+		new void GetRequests(uint maxRequests,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST[] requests,
+			out uint numRequests);
+
+		/// <summary>Your application calls this to indicate that requests have been completed.</summary>
+		/// <param name="numResults">The number of results in `results`.</param>
+		/// <param name="results">An array of results, the size is specified by `numResults.`</param>
+		new void SetRequestResults(uint numResults, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_RESULT[] results);
+
 		/// <summary>
 		/// Populates the given array of request structs with new pending requests based on the specified custom decompression request type.
-		/// The application must arrange to fulfill all these requests, and then call SetRequestResults to indicate completion.
+		/// Your application must arrange to fulfill all these requests, and then call
+		/// <c><b>IDStorageCustomDecompressionQueue::SetRequestResults</b></c> to indicate completion.
 		/// </summary>
+		/// <param name="flags">
+		/// <para>Type: <b><c>DSTORAGE_GET_REQUEST_FLAGS</c></b></para>
+		/// <para>The type of custom decompression request.</para>
+		/// </param>
+		/// <param name="maxRequests">The maximum number of requests to return.</param>
+		/// <param name="requests">
+		/// <para>Type: <b><c>DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST</c>*</b></para>
+		/// <para>An array of requests; its size is specified by numRequests.</para>
+		/// </param>
+		/// <param name="numRequests">The number of requests in requests.</param>
+		/// <returns>Standard HRESULT error code.</returns>
+		// https://learn.microsoft.com/en-us/windows/win32/dstorage/dstorage/nf-dstorage-idstoragecustomdecompressionqueue1-getrequests1
+		// HRESULT GetRequests1( DSTORAGE_GET_REQUEST_FLAGS flags, UINT32 maxRequests, DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST *requests, UINT32 *numRequests );
 		[PreserveSig]
 		HRESULT GetRequests1([In] DSTORAGE_GET_REQUEST_FLAGS flags, uint maxRequests,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST[] requests, out uint numRequests);
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST[] requests, out uint numRequests);
 	}
 
 	/// <summary>

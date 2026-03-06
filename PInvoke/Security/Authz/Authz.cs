@@ -918,7 +918,7 @@ public static partial class Authz
 			Win32Error.ThrowLastError();
 		using var mem = new SafeHGlobalHandle((int)len);
 		Win32Error.ThrowLastErrorIfFalse(AuthzEnumerateSecurityEventSources(0, mem, out var cnt, ref len));
-		return mem.ToEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION>((int)cnt).ToArray();
+		return [.. mem.ToEnumerable<AUTHZ_SOURCE_SCHEMA_REGISTRATION>((int)cnt)];
 	}
 
 	/// <summary>
@@ -2091,7 +2091,7 @@ public static partial class Authz
 
 		/// <summary>Gets or sets the object types.</summary>
 		/// <value>The object types.</value>
-		public OBJECT_TYPE_LIST[] ObjectTypes => ObjectTypeList.ToIEnum<IntPtr>((int)ObjectTypeListLength).Select(p => p.ToStructure<OBJECT_TYPE_LIST>()).ToArray();
+		public readonly OBJECT_TYPE_LIST[] ObjectTypes => [.. ObjectTypeList.ToIEnum<IntPtr>((int)ObjectTypeListLength).Select(p => p.ToStructure<OBJECT_TYPE_LIST>())];
 	}
 
 	/// <summary>The <c>AUTHZ_INIT_INFO</c> structure defines the initialization information for the resource manager.</summary>
@@ -2489,7 +2489,7 @@ public static partial class Authz
 		/// <value>The granted access mask values.</value>
 		public uint[] GrantedAccessMaskValues
 		{
-			get => GrantedAccessMask != IntPtr.Zero && ResultListLength > 0 ? GrantedAccessMask.ToArray<uint>(ResultListLength)! : new uint[0];
+			get => GrantedAccessMask != IntPtr.Zero && ResultListLength > 0 ? GrantedAccessMask.ToArray<uint>(ResultListLength)! : [];
 			set
 			{
 				if (value.Length != ResultListLength)
@@ -2513,7 +2513,7 @@ public static partial class Authz
 		{
 			get => SaclEvaluationResults != IntPtr.Zero && ResultListLength > 0
 					? SaclEvaluationResults.ToArray<uint>(ResultListLength)!
-					: new uint[0];
+					: [];
 			set
 			{
 				if (value.Length != ResultListLength)
@@ -2530,7 +2530,7 @@ public static partial class Authz
 		/// <value>The results values.</value>
 		public uint[] ErrorValues
 		{
-			get => Error != IntPtr.Zero && ResultListLength > 0 ? Error.ToArray<uint>(ResultListLength)! : new uint[0];
+			get => Error != IntPtr.Zero && ResultListLength > 0 ? Error.ToArray<uint>(ResultListLength)! : [];
 			set
 			{
 				if (value.Length != ResultListLength)
@@ -2703,23 +2703,23 @@ public static partial class Authz
 				{
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64:
-						v1.Values.pInt64 = input.Values.ToArray<long>((int)v1.ValueCount) ?? new long[0];
+						v1.Values.pInt64 = input.Values.ToArray<long>((int)v1.ValueCount) ?? [];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64:
-						v1.Values.pUInt64 = input.Values.ToArray<ulong>((int)v1.ValueCount) ?? new ulong[0];
+						v1.Values.pUInt64 = input.Values.ToArray<ulong>((int)v1.ValueCount) ?? [];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING:
-						v1.Values.ppString = input.Values.ToStringEnum((int)v1.ValueCount, CharSet.Unicode).Select(s => s ?? "").ToArray();
+						v1.Values.ppString = [.. input.Values.ToStringEnum((int)v1.ValueCount, CharSet.Unicode).Select(s => s ?? "")];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN:
-						v1.Values.pFqbn = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE>((int)v1.ValueCount) ?? new AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[0];
+						v1.Values.pFqbn = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE>((int)v1.ValueCount) ?? [];
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING:
-						v1.Values.pOctetString = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>((int)v1.ValueCount) ?? new AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[0];
+						v1.Values.pOctetString = input.Values.ToArray<AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>((int)v1.ValueCount) ?? [];
 						break;
 
 					default:

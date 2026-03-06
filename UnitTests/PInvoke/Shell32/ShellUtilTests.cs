@@ -186,4 +186,17 @@ public class ShellUtilTests
 		Assert.That(sz, Is.EqualTo(32));
 		hIcon.Dispose();
 	}
+
+	[Test]
+	public void PhotoThumbnailProviderTest()
+	{
+		IShellItem? shi = null;
+		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.ImageFile), Throws.Nothing);
+		var istr = shi!.BindToHandler<System.Runtime.InteropServices.ComTypes.IStream>(null, BHID.BHID_Stream);
+
+		IThumbnailProvider tp = (IThumbnailProvider)new PhotoThumbnailProvider();
+		Assert.That((tp as IInitializeWithStream)?.Initialize(istr, STGM.STGM_READ) ?? (HRESULT)HRESULT.E_INVALIDARG, ResultIs.Successful);
+		Assert.That(tp.GetThumbnail(256, out var hBmp, out _), ResultIs.Successful);
+		Assert.That(!hBmp.IsInvalid);
+	}
 }
