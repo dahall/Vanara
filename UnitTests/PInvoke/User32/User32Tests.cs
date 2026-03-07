@@ -150,8 +150,11 @@ public partial class User32Tests
 
 		for (int i = 0; i < devs!.Length; i++)
 		{
-			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, out string name), Is.GreaterThan(0));
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out string? name), ResultIs.Successful);
 			TestContext.WriteLine($"{name}");
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out RID_DEVICE_INFO info), ResultIs.Successful);
+			info.WriteValues();
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out byte[]? _), ResultIs.Successful);
 		}
 	}
 
