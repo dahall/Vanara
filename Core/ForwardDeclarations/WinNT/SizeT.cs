@@ -920,16 +920,16 @@ public struct SizeT : IEquatable<SizeT>, IEquatable<nuint>, IComparable<SizeT>, 
 	}
 
 	/// <inheritdoc/>
-	int IBinaryInteger<SizeT>.GetByteCount() => ((IBinaryInteger<nuint>)val).GetByteCount();
+	readonly int IBinaryInteger<SizeT>.GetByteCount() => ((IBinaryInteger<nuint>)val).GetByteCount();
 
 	/// <inheritdoc/>
-	int IBinaryInteger<SizeT>.GetShortestBitLength() => ((IBinaryInteger<nuint>)val).GetShortestBitLength();
+	readonly int IBinaryInteger<SizeT>.GetShortestBitLength() => ((IBinaryInteger<nuint>)val).GetShortestBitLength();
 
 	/// <inheritdoc/>
-	bool IBinaryInteger<SizeT>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteBigEndian(destination, out bytesWritten);
+	readonly bool IBinaryInteger<SizeT>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteBigEndian(destination, out bytesWritten);
 
 	/// <inheritdoc/>
-	bool IBinaryInteger<SizeT>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteLittleEndian(destination, out bytesWritten);
+	readonly bool IBinaryInteger<SizeT>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteLittleEndian(destination, out bytesWritten);
 #endif
 
 	/// <inheritdoc/>

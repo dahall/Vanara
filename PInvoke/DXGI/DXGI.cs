@@ -958,10 +958,10 @@ public static partial class DXGI
 		/// <summary>Equalses the specified other.</summary>
 		/// <param name="other">The other.</param>
 		/// <returns></returns>
-		public bool Equals(D3DCOLORVALUE other) => r == other.r && g == other.g && b == other.b && a == other.a;
+		public readonly bool Equals(D3DCOLORVALUE other) => r == other.r && g == other.g && b == other.b && a == other.a;
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
+		public override readonly int GetHashCode()
 		{
 			int hashCode = -490236692;
 			hashCode = hashCode * -1521134295 + r.GetHashCode();
@@ -972,7 +972,7 @@ public static partial class DXGI
 		}
 
 		/// <inheritdoc/>
-		public override string ToString() => $"r:{r}, g:{g}, b:{b}, a:{a}";
+		public override readonly string ToString() => $"r:{r}, g:{g}, b:{b}, a:{a}";
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>

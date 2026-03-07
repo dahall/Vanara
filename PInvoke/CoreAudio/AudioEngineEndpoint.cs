@@ -390,7 +390,7 @@ public static partial class CoreAudio
 		/// <param name="pf32Volumes">A pointer to the volume levels for the various audio channels in the offloaded stream.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioengineendpoint/nf-audioengineendpoint-iaudioendpointoffloadstreamvolume-getchannelvolumes
 		// HRESULT GetChannelVolumes( UINT32 u32ChannelCount, FLOAT32 *pf32Volumes );
-		void GetChannelVolumes(uint u32ChannelCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pf32Volumes);
+		void GetChannelVolumes(uint u32ChannelCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] pf32Volumes);
 	}
 
 	/// <summary>

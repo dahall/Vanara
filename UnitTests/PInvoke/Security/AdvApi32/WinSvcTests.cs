@@ -244,7 +244,7 @@ public class WinSvcTests
 	}
 
 	// [Test] These functions can only be called from within a service executable
-	public void RegisterQueryBitsServiceCtrlHandlerTest()
+	public static void RegisterQueryBitsServiceCtrlHandlerTest()
 	{
 		SERVICE_STATUS_HANDLE hSt;
 		Assert.That(hSt = RegisterServiceCtrlHandler(svcName, HandlerProc), ResultIs.ValidHandle);
@@ -259,7 +259,7 @@ public class WinSvcTests
 	}
 
 	// [Test] These functions can only be called from within a service executable
-	public void RegisterServiceCtrlHandlerExTest()
+	public static void RegisterServiceCtrlHandlerExTest()
 	{
 		SERVICE_STATUS_HANDLE hSt;
 		Assert.That(hSt = RegisterServiceCtrlHandlerEx(svcName, HandlerProc, default), ResultIs.ValidHandle);
@@ -277,7 +277,7 @@ public class WinSvcTests
 	}
 
 	// [Test] These functions can only be called from within a service executable
-	public void StartServiceCtrlDispatcherTest()
+	public static void StartServiceCtrlDispatcherTest()
 	{
 		var dispatchTable = new[]
 		{

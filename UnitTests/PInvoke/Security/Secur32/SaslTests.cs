@@ -15,7 +15,7 @@ public class SaslTests
 	}
 
 	// [Test] Not on system
-	public void SaslGetProfilePackageTest()
+	public static void SaslGetProfilePackageTest()
 	{
 		Assert.That(SaslGetProfilePackage("GSSAPI", out var pPkgInfo), Is.Zero);
 		var pi = pPkgInfo.ToStructure<SecPkgInfo>();

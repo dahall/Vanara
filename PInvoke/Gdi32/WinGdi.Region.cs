@@ -372,7 +372,7 @@ public static partial class Gdi32
 	// DWORD nCount, const RGNDATA *lpData );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "4dcff824-eb1d-425c-b246-db4ace2c6518")]
-	public static extern SafeHRGN ExtCreateRegion([In] StructPointer<XFORM> lpx, uint nCount, [In] IntPtr lpData);
+	public static extern SafeHRGN ExtCreateRegion([In] IntPtr lpx, uint nCount, [In] IntPtr lpData);
 
 	/// <summary>The <c>ExtCreateRegion</c> function creates a region from the specified region and transformation data.</summary>
 	/// <param name="lpx">

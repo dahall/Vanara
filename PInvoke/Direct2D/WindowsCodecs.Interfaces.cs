@@ -2336,7 +2336,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframedecode-getcolorcontexts HRESULT
 		// GetColorContexts( UINT cCount, IWICColorContext **ppIColorContexts, UINT *pcActualCount );
-		void GetColorContexts(uint cCount, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContexts, out uint pcActualCount);
+		void GetColorContexts(uint cCount, [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContexts, out uint pcActualCount);
 
 		/// <summary>Retrieves a small preview of the frame, if supported by the codec.</summary>
 		/// <returns>
@@ -4679,7 +4679,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapframedecode-getcolorcontexts HRESULT
 		// GetColorContexts( UINT cCount, IWICColorContext **ppIColorContexts, UINT *pcActualCount );
-		new void GetColorContexts(uint cCount, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContexts, out uint pcActualCount);
+		new void GetColorContexts(uint cCount, [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IWICColorContext[] ppIColorContexts, out uint pcActualCount);
 
 		/// <summary>Retrieves a small preview of the frame, if supported by the codec.</summary>
 		/// <returns>
@@ -4982,7 +4982,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicdevelopraw-settonecurve
 		// HRESULT SetToneCurve( UINT cbToneCurveSize, const WICRawToneCurve *pToneCurve );
-		void SetToneCurve(uint cbToneCurveSize, [In] ManagedStructPointer<WICRawToneCurve> pToneCurve);
+		void SetToneCurve(uint cbToneCurveSize, [In, SizeDef(nameof(cbToneCurveSize), SizingMethod.Bytes), StructPointer(typeof(WICRawToneCurve))] IntPtr pToneCurve);
 
 		/// <summary>Gets the tone curve of the raw image.</summary>
 		/// <param name="cbToneCurveBufferSize">
@@ -4999,7 +4999,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicdevelopraw-gettonecurve
 		// HRESULT GetToneCurve( UINT cbToneCurveBufferSize, WICRawToneCurve *pToneCurve, UINT *pcbActualToneCurveBufferSize );
-		void GetToneCurve(uint cbToneCurveBufferSize, [Out] ManagedStructPointer<WICRawToneCurve> pToneCurve, out uint pcbActualToneCurveBufferSize);
+		void GetToneCurve(uint cbToneCurveBufferSize, [Out, SizeDef(nameof(cbToneCurveBufferSize), SizingMethod.Query | SizingMethod.Bytes, OutVarName = nameof(pcbActualToneCurveBufferSize)), StructPointer(typeof(WICRawToneCurve))] IntPtr pToneCurve, out uint pcbActualToneCurveBufferSize);
 
 		/// <summary>Sets the desired rotation angle.</summary>
 		/// <param name="Rotation">

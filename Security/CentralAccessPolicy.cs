@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Vanara.PInvoke;
@@ -16,7 +17,7 @@ public static partial class AccountUtils
 			Id = new SecurityIdentifier(cap.CAPID.DangerousGetHandle());
 			Name = cap.Name;
 			ChangeId = cap.ChangeId;
-			Entries = cap.CAPECount == 0 || cap.CAPEs == IntPtr.Zero ? new CentralAccessPolicyEntry[0] : Array.ConvertAll(cap.CAPEs.ToArray<CENTRAL_ACCESS_POLICY_ENTRY>((int)cap.CAPECount)!, e => new CentralAccessPolicyEntry(e));
+			Entries = [.. cap.CAPEs.Select(e => new CentralAccessPolicyEntry(e))];
 		}
 
 		/// <summary>An identifier that can be used to version the central access policy.</summary>
@@ -83,9 +84,9 @@ public static partial class AccountUtils
 			Name = cape.Name;
 			Description = cape.Description;
 			ChangeId = cape.ChangeId;
-			AppliesTo = cape.AppliesTo.ToByteArray((int)cape.LengthAppliesTo) ?? new byte[0];
-			SecurityDescriptor = cape.SD.ToManaged();
-			StagedSecurityDescriptor = cape.StagedSD.ToManaged();
+			AppliesTo = (byte[])cape.AppliesTo.Clone();
+			SecurityDescriptor = ((PSECURITY_DESCRIPTOR)cape.SD).ToManaged();
+			StagedSecurityDescriptor = ((PSECURITY_DESCRIPTOR)cape.StagedSD).ToManaged();
 		}
 
 		/// <summary>A resource condition in binary form.</summary>

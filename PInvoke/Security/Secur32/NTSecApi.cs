@@ -1768,7 +1768,7 @@ public static partial class Secur32
 
 		/// <summary>Extracts the names from <see cref="Names"/>.</summary>
 		/// <returns>A sequence of names.</returns>
-		public IEnumerable<string> GetNames()
+		public readonly IEnumerable<string> GetNames()
 		{
 			if (NameCount == 0)
 				yield break;

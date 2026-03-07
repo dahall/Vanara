@@ -21,14 +21,14 @@ public class ComDlg32Tests
 	[Test]
 	public void ChooseColorTest()
 	{
-		var cc = new CHOOSECOLOR
+		CHOOSECOLOR cc = new()
 		{
 			lStructSize = (uint)Marshal.SizeOf<CHOOSECOLOR>(),
 			rgbResult = System.Drawing.Color.Red,
 			Flags = CC.CC_RGBINIT,
 			hwndOwner = GetDesktopWindow()
 		};
-		Assert.That(ChooseColor(ref cc), Is.True);
+		Assert.That(ChooseColor(ref cc), ResultIs.Successful);
 	}
 
 	[Test]
@@ -60,7 +60,7 @@ public class ComDlg32Tests
 			lpstrFindWhat = (IntPtr)fw,
 			wFindWhatLen = (ushort)fw.Length,
 		};
-		Assert.That(wnd.hdlg = FindText(ref fr), Is.True);
+		Assert.That(wnd.hdlg == FindText(ref fr), Is.True);
 	}
 
 	class DlgWin : SystemEventHandler

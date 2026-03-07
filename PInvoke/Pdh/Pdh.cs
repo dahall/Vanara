@@ -590,26 +590,6 @@ public static partial class Pdh
 		PDH_FLAGS_FILE_BROWSER_ONLY
 	}
 
-	/// <summary>
-	/// Default detail level to show in the Detail level list if bHideDetailBox is FALSE. If bHideDetailBox is TRUE, the dialog uses this
-	/// value to filter the displayed performance counters and objects.
-	/// </summary>
-	[PInvokeData("winperf.h")]
-	public enum PERF_DETAIL
-	{
-		/// <summary>A novice user can understand the counter data.</summary>
-		PERF_DETAIL_NOVICE = 100,
-
-		/// <summary>The counter data is provided for advanced users.</summary>
-		PERF_DETAIL_ADVANCED = 200,
-
-		/// <summary>The counter data is provided for expert users.</summary>
-		PERF_DETAIL_EXPERT = 300,
-
-		/// <summary>The counter data is provided for system designers.</summary>
-		PERF_DETAIL_WIZARD = 400
-	}
-
 	/// <summary>Adds the specified counter to the query.</summary>
 	/// <param name="hQuery">
 	/// Handle to the query to which you want to add the counter. This handle is returned by the PdhOpenQuery function.

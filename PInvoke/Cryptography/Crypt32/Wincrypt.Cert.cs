@@ -1187,10 +1187,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "89028c4e-f896-4c50-9fa2-bcb4e1784244")]
 	[return: AddAsCtor]
-	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob,
-		CertCreateSelfSignFlags dwFlags, [In, Optional] ManagedStructPointer<CRYPT_KEY_PROV_INFO> pKeyProvInfo,
-		[In, Optional] StructPointer<CRYPT_ALGORITHM_IDENTIFIER> pSignatureAlgorithm, [In, Optional] PSYSTEMTIME? pStartTime,
-		[In, Optional] PSYSTEMTIME? pEndTime, [In, Optional] StructPointer<CERT_EXTENSIONS> pExtensions);
+	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob, CertCreateSelfSignFlags dwFlags,
+		[In, Optional] IntPtr pKeyProvInfo, [In, Optional] IntPtr pSignatureAlgorithm, [In, Optional] PSYSTEMTIME? pStartTime,
+		[In, Optional] PSYSTEMTIME? pEndTime, [In, Optional] IntPtr pExtensions);
 
 	/// <summary>
 	/// The <c>CertCreateSelfSignCertificate</c> function builds a self-signed certificate and returns a pointer to a CERT_CONTEXT
@@ -1278,7 +1277,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "89028c4e-f896-4c50-9fa2-bcb4e1784244")]
 	public static extern SafePCCERT_CONTEXT CertCreateSelfSignCertificate(IntPtr hCryptProvOrNCryptKey, in CRYPTOAPI_BLOB pSubjectIssuerBlob,
 		CertCreateSelfSignFlags dwFlags, in CRYPT_KEY_PROV_INFO pKeyProvInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional] PSYSTEMTIME? pStartTime, [In, Optional] PSYSTEMTIME? pEndTime, IntPtr pExtensions);
+		[In, Optional] PSYSTEMTIME? pStartTime, [In, Optional] PSYSTEMTIME? pEndTime, [In, Optional] IntPtr pExtensions);
 
 	/// <summary>
 	/// The <c>CertCreateSelfSignCertificate</c> function builds a self-signed certificate and returns a pointer to a CERT_CONTEXT
@@ -2850,9 +2849,9 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "b740772b-d25b-4b3d-9acb-03f7018750d6")]
 	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSelectCertificateChains([In, Optional] GuidPtr pSelectionContext, CertSelection dwFlags, [In, Optional] StructPointer<CERT_SELECT_CHAIN_PARA> pChainParameters,
+	public static extern bool CertSelectCertificateChains([In, Optional] GuidPtr pSelectionContext, CertSelection dwFlags, [In, Optional] IntPtr pChainParameters,
 		uint cCriteria, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection,
-		out ArrayPointer<StructPointer<CERT_CHAIN_CONTEXT>> pprgpSelection);
+		out IntPtr pprgpSelection);
 
 	/// <summary>The <c>CertSelectCertificateChains</c> function retrieves certificate chains based on specified selection criteria.</summary>
 	/// <param name="pSelectionContext">A pointer to the GUID of the certificate selection scenario to use for this call.</param>

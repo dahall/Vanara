@@ -3398,7 +3398,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -3821,7 +3821,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -4288,7 +4288,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -4816,7 +4816,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -5534,7 +5534,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencoderheap-getresolutionlist HRESULT
 		// GetResolutionList( const UINT ResolutionsListCount, D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC *pResolutionList );
 		[PreserveSig]
-		HRESULT GetResolutionList(int ResolutionsListCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC[] pResolutionList);
+		HRESULT GetResolutionList(int ResolutionsListCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_ENCODER_PICTURE_RESOLUTION_DESC[] pResolutionList);
 	}
 
 	/// <summary>Represents a video extension command.</summary>
@@ -6377,7 +6377,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -6782,7 +6782,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -7207,7 +7207,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -7693,7 +7693,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist-discardresource void
 		// DiscardResource( ID3D12Resource *pResource, const D3D12_DISCARD_REGION *pRegion );
 		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional] StructPointer<D3D12_DISCARD_REGION> pRegion);
+		new void DiscardResource([In] ID3D12Resource pResource, [In, Optional, StructPointer(typeof(D3D12_DISCARD_REGION))] IntPtr pRegion);
 
 		/// <summary>Starts a query running.</summary>
 		/// <param name="pQueryHeap">A pointer to an <c>ID3D12QueryHeap</c> specifying the storage for this query.</param>
@@ -8108,7 +8108,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocessor-getinputstreamdescs HRESULT
 		// GetInputStreamDescs( UINT NumInputStreamDescs, D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC *pInputStreamDescs );
 		[PreserveSig]
-		HRESULT GetInputStreamDescs(int NumInputStreamDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs);
+		HRESULT GetInputStreamDescs(int NumInputStreamDescs, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs);
 
 		/// <summary>Gets the output stream description provided when the video processor was created with a call to <c>ID3D12VideoDevice::CreateVideoProcessor</c>.</summary>
 		/// <returns>This method returns <c>D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC</c>.</returns>
@@ -8311,7 +8311,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocessor-getinputstreamdescs HRESULT
 		// GetInputStreamDescs( UINT NumInputStreamDescs, D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC *pInputStreamDescs );
 		[PreserveSig]
-		new HRESULT GetInputStreamDescs(int NumInputStreamDescs, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs);
+		new HRESULT GetInputStreamDescs(int NumInputStreamDescs, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs);
 
 		/// <summary>Gets the output stream description provided when the video processor was created with a call to <c>ID3D12VideoDevice::CreateVideoProcessor</c>.</summary>
 		/// <returns>This method returns <c>D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC</c>.</returns>

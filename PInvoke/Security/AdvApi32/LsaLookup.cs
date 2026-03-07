@@ -95,11 +95,11 @@ public static partial class AdvApi32
 		}
 
 		/// <summary>Gets the number of characters in the string.</summary>
-		public int Length => length;
+		public readonly int Length => length;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => Buffer?.Substring(0, Length) ?? string.Empty;
+		public override readonly string ToString() => Buffer?.Substring(0, Length) ?? string.Empty;
 
 		/// <summary>Performs an implicit conversion from <see cref="LSA_STRING"/> to <see cref="string"/>.</summary>
 		/// <param name="value">The value.</param>

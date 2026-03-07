@@ -31,9 +31,9 @@ public static partial class AdvApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa375213")]
 	public static extern bool AllocateAndInitializeSid([In] PSID_IDENTIFIER_AUTHORITY sia,
-		byte subAuthorityCount, int dwSubAuthority0, int dwSubAuthority1,
-		int dwSubAuthority2, int dwSubAuthority3, int dwSubAuthority4,
-		int dwSubAuthority5, int dwSubAuthority6, int dwSubAuthority7, out SafeAllocatedSID pSid);
+		byte subAuthorityCount, uint dwSubAuthority0, uint dwSubAuthority1,
+		uint dwSubAuthority2, uint dwSubAuthority3, uint dwSubAuthority4,
+		uint dwSubAuthority5, uint dwSubAuthority6, uint dwSubAuthority7, out SafeAllocatedSID pSid);
 
 	/// <summary>The CopySid function copies a security identifier (SID) to a buffer.</summary>
 	/// <param name="cbDestSid">Specifies the length, in bytes, of the buffer receiving the copy of the SID.</param>
@@ -48,7 +48,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa376404")]
-	public static extern bool CopySid(int cbDestSid, IntPtr destSid, PSID sourceSid);
+	public static extern bool CopySid(int cbDestSid, [Out] IntPtr destSid, [In] PSID sourceSid);
 
 	/// <summary>The <c>CreateWellKnownSid</c> function creates a SID for predefined aliases.</summary>
 	/// <param name="WellKnownSidType">Member of the WELL_KNOWN_SID_TYPE enumeration that specifies what the SID will identify.</param>
@@ -69,7 +69,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "00e75bae-fbce-41a3-a0bc-c345c36f2c84")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateWellKnownSid(WELL_KNOWN_SID_TYPE WellKnownSidType, PSID DomainSid, SafePSID pSid, ref uint cbSid);
+	public static extern bool CreateWellKnownSid(WELL_KNOWN_SID_TYPE WellKnownSidType, [In, Optional] PSID DomainSid, [Out] SafePSID pSid, ref uint cbSid);
 
 	/// <summary>The <c>EqualDomainSid</c> function determines whether two SIDs are from the same domain.</summary>
 	/// <param name="pSid1">
@@ -98,7 +98,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "a7eea3bd-33e0-427c-b023-07851c192eb2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EqualDomainSid(PSID pSid1, PSID pSid2, [MarshalAs(UnmanagedType.Bool)] out bool pfEqual);
+	public static extern bool EqualDomainSid([In, AddAsMember] PSID pSid1, [In] PSID pSid2, [MarshalAs(UnmanagedType.Bool)] out bool pfEqual);
 
 	/// <summary>
 	/// The <c>EqualPrefixSid</c> function tests two security-identifier (SID) prefix values for equality. A SID prefix is the entire SID
@@ -135,7 +135,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ef41de63-4ab5-40c6-8b16-b960e1308b5b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EqualPrefixSid(PSID pSid1, PSID pSid2);
+	public static extern bool EqualPrefixSid([In, AddAsMember] PSID pSid1, [In] PSID pSid2);
 
 	/// <summary>
 	/// The EqualSid function tests two security identifier (SID) values for equality. Two SIDs must match exactly to be considered equal.
@@ -150,7 +150,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446622")]
-	public static extern bool EqualSid(PSID sid1, PSID sid2);
+	public static extern bool EqualSid([In] PSID sid1, [In] PSID sid2);
 
 	/// <summary>
 	/// The FreeSid function frees a security identifier (SID) previously allocated by using the AllocateAndInitializeSid function.
@@ -162,7 +162,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446631")]
-	public static extern PSID FreeSid(PSID pSid);
+	public static extern PSID FreeSid([In] PSID pSid);
 
 	/// <summary>The GetLengthSid function returns the length, in bytes, of a valid security identifier (SID).</summary>
 	/// <param name="pSid">A pointer to the SID structure whose length is returned. The structure is assumed to be valid.</param>
@@ -175,40 +175,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446642")]
-	public static extern int GetLengthSid(PSID pSid);
-
-	/// <summary>
-	/// <para>
-	/// The <c>GetSidIdentifierAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified security
-	/// identifier (SID).
-	/// </para>
-	/// </summary>
-	/// <param name="pSid">
-	/// <para>A pointer to the SID structure for which a pointer to the SID_IDENTIFIER_AUTHORITY structure is returned.</para>
-	/// <para>
-	/// This function does not handle SID structures that are not valid. Call the IsValidSid function to verify that the <c>SID</c>
-	/// structure is valid before you call this function.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value is a pointer to the SID_IDENTIFIER_AUTHORITY structure for the specified SID structure.
-	/// </para>
-	/// <para>
-	/// If the function fails, the return value is undefined. The function fails if the SID structure pointed to by the pSid parameter is
-	/// not valid. To get extended error information, call GetLastError.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// This function uses a 32-bit RID value. For applications that require a larger RID value, use CreateWellKnownSid and related functions.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsididentifierauthority
-	// PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority( PSID pSid );
-	[DllImport(Lib.AdvApi32, SetLastError = true, EntryPoint = "GetSidIdentifierAuthority")]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "67a06e7b-775f-424c-ab36-0fc9b93b801a")]
-	internal static extern IntPtr InternalGetSidIdentifierAuthority(PSID pSid);
+	public static extern int GetLengthSid([In] PSID pSid);
 
 	/// <summary>
 	/// The <c>GetSidIdentifierAuthority</c> function returns a pointer to the SID_IDENTIFIER_AUTHORITY structure in a specified
@@ -236,7 +203,13 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsididentifierauthority
 	// PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority( PSID pSid );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "67a06e7b-775f-424c-ab36-0fc9b93b801a")]
-	public static PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority(PSID pSid) => new(InternalGetSidIdentifierAuthority(pSid));
+	public static PSID_IDENTIFIER_AUTHORITY GetSidIdentifierAuthority([In] PSID pSid)
+	{
+		return new(GetSidIdentifierAuthority(pSid));
+
+		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		static extern IntPtr GetSidIdentifierAuthority(PSID pSid);
+	}
 
 	/// <summary>
 	/// <para>
@@ -273,28 +246,6 @@ public static partial class AdvApi32
 	/// acceptable values.
 	/// </param>
 	/// <returns>
-	/// If the function succeeds, the return value is a pointer to the specified SID subauthority. To get extended error information,
-	/// call GetLastError.
-	/// <para>
-	/// If the function fails, the return value is undefined. The function fails if the specified SID structure is not valid or if the
-	/// index value specified by the nSubAuthority parameter is out of bounds.
-	/// </para>
-	/// </returns>
-	[DllImport(Lib.AdvApi32, EntryPoint = "GetSidSubAuthority", SetLastError = true)]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446657")]
-	internal static extern IntPtr InternalGetSidSubAuthority(PSID pSid, uint nSubAuthority);
-
-	/// <summary>
-	/// The GetSidSubAuthority function returns a pointer to a specified subauthority in a security identifier (SID). The subauthority
-	/// value is a relative identifier (RID).
-	/// </summary>
-	/// <param name="pSid">A pointer to the SID structure from which a pointer to a subauthority is to be returned.</param>
-	/// <param name="nSubAuthority">
-	/// Specifies an index value identifying the subauthority array element whose address the function will return. The function performs
-	/// no validation tests on this value. An application can call the GetSidSubAuthorityCount function to discover the range of
-	/// acceptable values.
-	/// </param>
-	/// <returns>
 	/// On success, the return value is the specified SID subauthority.
 	/// <para>
 	/// If the function fails, an exception is thrown. The function fails if the specified SID structure is not valid or if the index
@@ -302,40 +253,15 @@ public static partial class AdvApi32
 	/// </para>
 	/// </returns>
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446657")]
-	public static uint GetSidSubAuthority(PSID pSid, uint nSubAuthority)
+	public static uint GetSidSubAuthority([In, AddAsMember] PSID pSid, uint nSubAuthority)
 	{
-		var ptr = InternalGetSidSubAuthority(pSid, nSubAuthority);
+		IntPtr ptr = GetSidSubAuthority(pSid, nSubAuthority);
 		Win32Error.GetLastError().ThrowIfFailed();
 		return unchecked((uint)Marshal.ReadInt32(ptr));
-	}
 
-	/// <summary>
-	/// The <c>GetSidSubAuthorityCount</c> function returns a pointer to the member in a security identifier (SID) structure that
-	/// contains the subauthority count.
-	/// </summary>
-	/// <param name="pSid">
-	/// <para>A pointer to the SID structure from which a pointer to the subauthority count is returned.</para>
-	/// <para>
-	/// This function does not handle SID structures that are not valid. Call the IsValidSid function to verify that the <c>SID</c>
-	/// structure is valid before you call this function.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is a pointer to the subauthority count for the specified SID structure.</para>
-	/// <para>
-	/// If the function fails, the return value is undefined. The function fails if the specified SID structure is not valid. To get
-	/// extended error information, call GetLastError.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// The SID structure specified in pSid uses a 32-bit value. For applications that require longer RID values, use CreateWellKnownSid
-	/// and related functions.
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsidsubauthoritycount PUCHAR
-	// GetSidSubAuthorityCount( PSID pSid );
-	[DllImport(Lib.AdvApi32, SetLastError = true, EntryPoint = "GetSidSubAuthorityCount")]
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "ca81fb91-f5a1-4dc6-83ec-eadb62a37805")]
-	internal static extern IntPtr InternalGetSidSubAuthorityCount(PSID pSid);
+		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		static extern IntPtr GetSidSubAuthority(PSID pSid, uint nSubAuthority);
+	}
 
 	/// <summary>
 	/// The <c>GetSidSubAuthorityCount</c> function returns a pointer to the member in a security identifier (SID) structure that
@@ -364,9 +290,12 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ca81fb91-f5a1-4dc6-83ec-eadb62a37805")]
 	public static byte GetSidSubAuthorityCount(PSID pSid)
 	{
-		var ptr = InternalGetSidSubAuthorityCount(pSid);
+		var ptr = GetSidSubAuthorityCount(pSid);
 		Win32Error.GetLastError().ThrowIfFailed();
 		return Marshal.ReadByte(ptr);
+
+		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		static extern IntPtr GetSidSubAuthorityCount(PSID pSid);
 	}
 
 	/// <summary>
@@ -400,7 +329,7 @@ public static partial class AdvApi32
 	/// <para>Otherwise, returns <see langword="false"/>. For extended error information, call GetLastError.</para>
 	/// </returns>
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "ee2ba1b4-1bef-4d79-bb18-512705e2c378")]
-	public static bool GetWindowsAccountDomainSid(PSID pSid, out SafePSID pDomainSid)
+	public static bool GetWindowsAccountDomainSid([In] PSID pSid, out SafePSID pDomainSid)
 	{
 		uint sz = 0;
 		if (!GetWindowsAccountDomainSid(pSid, SafePSID.Null, ref sz) && sz == 0)
@@ -436,7 +365,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "b2d803a5-faaf-4066-ba2c-0442c71bb150")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InitializeSid(PSID Sid, PSID_IDENTIFIER_AUTHORITY pIdentifierAuthority, byte nSubAuthorityCount);
+	public static extern bool InitializeSid([Out] PSID Sid, PSID_IDENTIFIER_AUTHORITY pIdentifierAuthority, byte nSubAuthorityCount);
 
 	/// <summary>
 	/// The IsValidSid function validates a security identifier (SID) by verifying that the revision number is within a known range, and
@@ -450,7 +379,7 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "aa379151")]
 	[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidSid(PSID pSid);
+	public static extern bool IsValidSid([In] PSID pSid);
 
 	/// <summary>The <c>IsWellKnownSid</c> function compares a SID to a well-known SID and returns <c>TRUE</c> if they match.</summary>
 	/// <param name="pSid">A pointer to the SID to test.</param>
@@ -464,10 +393,10 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "1a08c70c-00fa-4c62-883d-4f17f9d7c04b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWellKnownSid(PSID pSid, WELL_KNOWN_SID_TYPE WellKnownSidType);
+	public static extern bool IsWellKnownSid([In] PSID pSid, WELL_KNOWN_SID_TYPE WellKnownSidType);
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an allocated SID that is released at disposal using FreeSid.</summary>
-	public class SafeAllocatedSID : SafeHANDLE, ISecurityObject
+	public partial class SafeAllocatedSID : SafeHANDLE, ISecurityObject
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeAllocatedSID"/> class.</summary>
 		private SafeAllocatedSID() : base() { }
@@ -478,6 +407,6 @@ public static partial class AdvApi32
 		public static implicit operator PSID(SafeAllocatedSID h) => h.handle;
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FreeSid(this).IsNull;
+		protected override bool InternalReleaseHandle() => FreeSid(handle).IsNull;
 	}
 }

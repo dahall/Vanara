@@ -1723,7 +1723,7 @@ public static partial class Ole32
 		/// specified in the celt parameter. S_FALSE = The number of STATSTG structures returned is less than the number specified in
 		/// the celt parameter.
 		/// </returns>
-		[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), SuppressAutoGen]
 		HRESULT Next([In] uint celt,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] STATSTG[] rgelt,
 			out uint pceltFetched);
@@ -1776,7 +1776,7 @@ public static partial class Ole32
 		/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-next HRESULT Next( ULONG celt, IUnknown
 		// **rgelt, ULONG *pceltFetched );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

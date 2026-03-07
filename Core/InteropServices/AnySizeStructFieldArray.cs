@@ -17,7 +17,7 @@ public struct AnySizeStructUnmanagedFieldArray<T> where T : unmanaged
 	/// <value>A reference to the element at <paramref name="index"/>.</value>
 	/// <param name="index">The index.</param>
 	/// <returns>A reference to the element at <paramref name="index"/>.</returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">index</exception>
+	/// <exception cref="ArgumentOutOfRangeException">index</exception>
 	public ref T this[int index]
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -53,7 +53,7 @@ public struct AnySizeStructFieldArray<T> where T : struct
 	/// <value>A copy of the element at <paramref name="index"/>.</value>
 	/// <param name="index">The index.</param>
 	/// <returns>A copy of the element at <paramref name="index"/>.</returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">index</exception>
+	/// <exception cref="ArgumentOutOfRangeException">index</exception>
 	public T this[int index]
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

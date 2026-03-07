@@ -1326,7 +1326,7 @@ public static partial class Kernel32
 
 	/// <summary>Unmanaged memory methods for a heap.</summary>
 	/// <seealso cref="IMemoryMethods"/>
-	public sealed class HeapMemoryMethods : MemoryMethodsBase
+	public sealed class HeapMemoryMethods : MemoryMethodsBase, IGetMemorySize
 	{
 		/// <summary>Gets a static instance of this class.</summary>
 		/// <value>The instance.</value>
@@ -1337,22 +1337,17 @@ public static partial class Kernel32
 		/// <inheritdoc/>
 		public override bool AllocZeroes => true;
 
-		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
-		/// <param name="size">The size, in bytes, of memory to allocate.</param>
-		/// <returns>A memory handle.</returns>
+		/// <inheritdoc/>
 		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY, size));
 
-		/// <summary>Frees the memory associated with a handle.</summary>
-		/// <param name="hMem">A memory handle.</param>
+		/// <inheritdoc/>
 		public override void FreeMem(IntPtr hMem) => HeapFree(HeapHandle, 0, hMem);
 
-		/// <summary>Gets the reallocation method.</summary>
-		/// <param name="hMem">A memory handle.</param>
-		/// <param name="size">The size, in bytes, of memory to allocate.</param>
-		/// <returns>A memory handle.</returns>
+		/// <inheritdoc/>
 		public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)HeapReAllocInternal(HeapHandle, HeapFlags.HEAP_ZERO_MEMORY, hMem, size));
 
-		private int GetSize(IntPtr ptr) => (int)HeapSize(HeapHandle, 0, ptr).Value;
+		/// <inheritdoc/>
+		public SizeT GetSize(IntPtr hMem) => (int)HeapSize(HeapHandle, 0, hMem).Value;
 	}
 
 	/// <summary>Safe handle for memory heaps.</summary>

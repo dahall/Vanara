@@ -53,7 +53,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getbounds(constd2d1_matrix_3x2_f_d2d1_rect_f)
 		// HRESULT GetBounds( const D2D1_MATRIX_3X2_F *worldTransform, D2D1_RECT_F *bounds );
-		D2D_RECT_F GetBounds([In, Optional] StructPointer<D2D_MATRIX_3X2_F> worldTransform);
+		D2D_RECT_F GetBounds([In, Optional, StructPointer(typeof(D2D_MATRIX_3X2_F))] IntPtr worldTransform);
 
 		/// <summary>
 		/// Gets the bounds of the geometry after it has been widened by the specified stroke width and style and transformed by the
@@ -88,7 +88,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -127,7 +127,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -158,7 +158,7 @@ public static partial class D2d1
 		// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
 		// *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		bool FillContainsPoint(D2D_POINT_2F point, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Describes the intersection between this geometry and the specified geometry. The comparison is performed by using the
@@ -198,7 +198,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-comparewithgeometry%28id2d1geometry_constd2d1_matrix_3x2_f_float_d2d1_geometry_relation%29
 		// HRESULT CompareWithGeometry( ID2D1Geometry *inputGeometry, const D2D1_MATRIX_3X2_F *inputGeometryTransform, FLOAT
 		// flatteningTolerance, D2D1_GEOMETRY_RELATION *relation );
-		D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Creates a simplified version of the geometry that contains only lines and (optionally) cubic Bezier curves and writes the
@@ -231,7 +231,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-simplify%28d2d1_geometry_simplification_option_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Simplify( D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix
@@ -256,7 +256,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-tessellate%28constd2d1_matrix_3x2_f_float_id2d1tessellationsink%29
 		// HRESULT Tessellate( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1TessellationSink
 		// *tessellationSink );
-		void Tessellate([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null);
+		void Tessellate([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null);
 
 		/// <summary>Combines this geometry with the specified geometry and stores the result in an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="inputGeometry">
@@ -286,7 +286,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-combinewithgeometry(id2d1geometry_d2d1_combine_mode_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT CombineWithGeometry( ID2D1Geometry *inputGeometry, D2D1_COMBINE_MODE combineMode, const D2D1_MATRIX_3X2_F &amp;
 		// inputGeometryTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Computes the outline of the geometry and writes the result to an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="worldTransform">
@@ -332,7 +332,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-outline%28constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Outline( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink
 		// *geometrySink );
-		void Outline([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		void Outline([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Computes the area of the geometry after it has been transformed by the specified matrix and flattened using the specified tolerance.
@@ -358,7 +358,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computearea(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeArea( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *area );
-		float ComputeArea([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		float ComputeArea([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>Calculates the length of the geometry as though each segment were unrolled into a line.</summary>
 		/// <param name="worldTransform">
@@ -382,7 +382,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computelength(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeLength( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *length );
-		float ComputeLength([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		float ComputeLength([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
@@ -424,7 +424,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computepointatlength(float_constd2d1_matrix_3x2_f__float_d2d1_point_2f_d2d1_point_2f)
 		// HRESULT ComputePointAtLength( FLOAT length, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance,
 		// D2D1_POINT_2F *point, D2D1_POINT_2F *unitTangentVector );
-		void ComputePointAtLength(float length, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
+		void ComputePointAtLength(float length, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
 
 		/// <summary>
 		/// Widens the geometry by the specified stroke and writes the result to an ID2D1SimplifiedGeometrySink after it has been
@@ -457,7 +457,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 	}
 
 	/// <summary>Represents a composite geometry, composed of other ID2D1Geometry objects.</summary>
@@ -510,7 +510,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getbounds(constd2d1_matrix_3x2_f_d2d1_rect_f)
 		// HRESULT GetBounds( const D2D1_MATRIX_3X2_F *worldTransform, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetBounds([In, Optional] StructPointer<D2D_MATRIX_3X2_F> worldTransform);
+		new D2D_RECT_F GetBounds([In, Optional, StructPointer(typeof(D2D_MATRIX_3X2_F))] IntPtr worldTransform);
 
 		/// <summary>
 		/// Gets the bounds of the geometry after it has been widened by the specified stroke width and style and transformed by the
@@ -545,7 +545,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -584,7 +584,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -615,7 +615,7 @@ public static partial class D2d1
 		// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
 		// *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Describes the intersection between this geometry and the specified geometry. The comparison is performed by using the
@@ -655,7 +655,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-comparewithgeometry%28id2d1geometry_constd2d1_matrix_3x2_f_float_d2d1_geometry_relation%29
 		// HRESULT CompareWithGeometry( ID2D1Geometry *inputGeometry, const D2D1_MATRIX_3X2_F *inputGeometryTransform, FLOAT
 		// flatteningTolerance, D2D1_GEOMETRY_RELATION *relation );
-		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Creates a simplified version of the geometry that contains only lines and (optionally) cubic Bezier curves and writes the
@@ -688,7 +688,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-simplify%28d2d1_geometry_simplification_option_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Simplify( D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix
@@ -713,7 +713,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-tessellate%28constd2d1_matrix_3x2_f_float_id2d1tessellationsink%29
 		// HRESULT Tessellate( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1TessellationSink
 		// *tessellationSink );
-		new void Tessellate([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null);
+		new void Tessellate([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null);
 
 		/// <summary>Combines this geometry with the specified geometry and stores the result in an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="inputGeometry">
@@ -743,7 +743,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-combinewithgeometry(id2d1geometry_d2d1_combine_mode_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT CombineWithGeometry( ID2D1Geometry *inputGeometry, D2D1_COMBINE_MODE combineMode, const D2D1_MATRIX_3X2_F &amp;
 		// inputGeometryTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr inputGeometryTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Computes the outline of the geometry and writes the result to an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="worldTransform">
@@ -789,7 +789,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-outline%28constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Outline( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink
 		// *geometrySink );
-		new void Outline([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		new void Outline([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>
 		/// Computes the area of the geometry after it has been transformed by the specified matrix and flattened using the specified tolerance.
@@ -815,7 +815,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computearea(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeArea( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *area );
-		new float ComputeArea([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new float ComputeArea([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>Calculates the length of the geometry as though each segment were unrolled into a line.</summary>
 		/// <param name="worldTransform">
@@ -839,7 +839,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computelength(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeLength( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *length );
-		new float ComputeLength([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
+		new float ComputeLength([In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE);
 
 		/// <summary>
 		/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
@@ -881,7 +881,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computepointatlength(float_constd2d1_matrix_3x2_f__float_d2d1_point_2f_d2d1_point_2f)
 		// HRESULT ComputePointAtLength( FLOAT length, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance,
 		// D2D1_POINT_2F *point, D2D1_POINT_2F *unitTangentVector );
-		new void ComputePointAtLength(float length, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
+		new void ComputePointAtLength(float length, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
 
 		/// <summary>
 		/// Widens the geometry by the specified stroke and writes the result to an ID2D1SimplifiedGeometrySink after it has been
@@ -914,7 +914,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
+		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional, StructPointer(typeof(D2D1_MATRIX_3X2_F))] IntPtr worldTransform, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Indicates how the intersecting areas of the geometries contained in this geometry group are combined.</summary>
 		/// <returns>
@@ -957,7 +957,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometrygroup-getsourcegeometries void
 		// GetSourceGeometries( ID2D1Geometry **geometries, UINT32 geometriesCount );
 		[PreserveSig]
-		void GetSourceGeometries([Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] ID2D1Geometry[] geometries, uint geometriesCount);
+		void GetSourceGeometries([In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] ID2D1Geometry[] geometries, uint geometriesCount);
 	}
 
 	/// <summary>Describes a geometric path that can contain lines, arcs, cubic Bezier curves, and quadratic Bezier curves.</summary>
@@ -1228,7 +1228,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1gradientstopcollection-getgradientstops void
 		// GetGradientStops( D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount );
 		[PreserveSig]
-		void GetGradientStops([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount);
+		void GetGradientStops([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount);
 
 		/// <summary>Indicates the gamma space in which the gradient stops are interpolated.</summary>
 		/// <returns>
@@ -1367,7 +1367,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapfromwicbitmap(iwicbitmapsource_constd2d1_bitmap_properties_id2d1bitmap)
 		// HRESULT CreateBitmapFromWicBitmap( IWICBitmapSource *wicBitmapSource, const D2D1_BITMAP_PROPERTIES *bitmapProperties,
 		// ID2D1Bitmap **bitmap );
-		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
+		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional, StructPointer(typeof(D2D1_BITMAP_PROPERTIES))] IntPtr bitmapProperties);
 
 		/// <summary>Creates an ID2D1Bitmap whose data is shared with another resource.</summary>
 		/// <param name="riid">
@@ -1440,7 +1440,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsharedbitmap HRESULT
 		// CreateSharedBitmap( REFIID riid, void *data, const D2D1_BITMAP_PROPERTIES *bitmapProperties, ID2D1Bitmap **bitmap );
-		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object data, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
+		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object data, [In, Optional, StructPointer(typeof(D2D1_BITMAP_PROPERTIES))] IntPtr bitmapProperties);
 
 		/// <summary>Creates an ID2D1BitmapBrush from the specified bitmap.</summary>
 		/// <param name="bitmap">
@@ -1471,7 +1471,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapbrush(id2d1bitmap_constd2d1_bitmap_brush_properties_constd2d1_brush_properties_id2d1bitmapbrush)
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush **bitmapBrush );
-		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] StructPointer<D2D1_BITMAP_BRUSH_PROPERTIES> bitmapBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
+		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional, StructPointer(typeof(D2D1_BITMAP_BRUSH_PROPERTIES))] IntPtr bitmapBrushProperties, [In, Optional, StructPointer(typeof(D2D1_BRUSH_PROPERTIES))] IntPtr brushProperties);
 
 		/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
 		/// <param name="color">
@@ -1489,7 +1489,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsolidcolorbrush(constd2d1_color_f__constd2d1_brush_properties__id2d1solidcolorbrush)
 		// HRESULT CreateSolidColorBrush( const D2D1_COLOR_F &amp; color, const D2D1_BRUSH_PROPERTIES &amp; brushProperties,
 		// ID2D1SolidColorBrush **solidColorBrush );
-		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
+		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional, StructPointer(typeof(D2D1_BRUSH_PROPERTIES))] IntPtr brushProperties);
 
 		/// <summary>Creates an ID2D1GradientStopCollection from the specified array of D2D1_GRADIENT_STOP structures.</summary>
 		/// <param name="gradientStops">
@@ -1541,7 +1541,7 @@ public static partial class D2d1
 		// HRESULT CreateLinearGradientBrush( const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES *linearGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1LinearGradientBrush
 		// **linearGradientBrush );
-		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection? gradientStopCollection);
+		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional, StructPointer(typeof(D2D1_BRUSH_PROPERTIES))] IntPtr brushProperties, [In] ID2D1GradientStopCollection? gradientStopCollection);
 
 		/// <summary>Creates an ID2D1RadialGradientBrush object that can be used to paint areas with a radial gradient.</summary>
 		/// <param name="radialGradientBrushProperties">
@@ -1566,7 +1566,7 @@ public static partial class D2d1
 		// HRESULT CreateRadialGradientBrush( const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES *radialGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1RadialGradientBrush
 		// **radialGradientBrush );
-		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection? gradientStopCollection);
+		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional, StructPointer(typeof(D2D1_BRUSH_PROPERTIES))] IntPtr brushProperties, [In] ID2D1GradientStopCollection? gradientStopCollection);
 
 		/// <summary>
 		/// Creates a bitmap render target for use during intermediate offscreen drawing that is compatible with the current render target.
@@ -1638,7 +1638,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createcompatiblerendertarget(constd2d1_size_f_constd2d1_size_u_constd2d1_pixel_format_d2d1_compatible_render_target_options_id2d1bitmaprendertarget)
 		// HRESULT CreateCompatibleRenderTarget( const D2D1_SIZE_F *desiredSize, const D2D1_SIZE_U *desiredPixelSize, const
 		// D2D1_PIXEL_FORMAT *desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options, ID2D1BitmapRenderTarget **bitmapRenderTarget );
-		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional] StructPointer<D2D_SIZE_F> desiredSize, [In, Optional] StructPointer<D2D_SIZE_U> desiredPixelSize, [In, Optional] StructPointer<D2D1_PIXEL_FORMAT> desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
+		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional, StructPointer(typeof(D2D_SIZE_F))] IntPtr desiredSize, [In, Optional, StructPointer(typeof(D2D_SIZE_U))] IntPtr desiredPixelSize, [In, Optional, StructPointer(typeof(D2D1_PIXEL_FORMAT))] IntPtr desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
 
 		/// <summary>Creates a layer resource that can be used with this render target and its compatible render targets.</summary>
 		/// <param name="size">
@@ -1655,7 +1655,7 @@ public static partial class D2d1
 		/// <remarks>The layer automatically resizes itself, as needed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createlayer(constd2d1_size_f_id2d1layer)
 		// HRESULT CreateLayer( const D2D1_SIZE_F *size, ID2D1Layer **layer );
-		new ID2D1Layer CreateLayer([In, Optional] StructPointer<D2D_SIZE_F> size);
+		new ID2D1Layer CreateLayer([In, Optional, StructPointer(typeof(D2D_SIZE_F))] IntPtr size);
 
 		/// <summary>Create a mesh that uses triangles to describe a shape.</summary>
 		/// <returns>
@@ -2530,7 +2530,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-clear(constd2d1_color_f_) void Clear( const
 		// D2D1_COLOR_F &amp; clearColor );
 		[PreserveSig]
-		new void Clear([In, Optional] StructPointer<D2D1_COLOR_F> clearColor);
+		new void Clear([In, Optional, StructPointer(typeof(D2D1_COLOR_F))] IntPtr clearColor);
 
 		/// <summary>Initiates drawing on this render target.</summary>
 		/// <returns>None</returns>
@@ -3043,492 +3043,6 @@ public static partial class D2d1
 		// GetGradientStopCollection( ID2D1GradientStopCollection **gradientStopCollection );
 		[PreserveSig]
 		void GetGradientStopCollection(out ID2D1GradientStopCollection gradientStopCollection);
-	}
-
-	/// <summary>Retrieves the bounds of the geometry.</summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="worldTransform">
-	/// <para>Type: <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to this geometry before calculating its bounds, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <clearColor>D2D1_RECT_F*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains the bounds of this geometry. If the bounds are empty, this parameter will be a rect where
-	/// bounds.left &gt; bounds.right. You must allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getbounds(constd2d1_matrix_3x2_f_d2d1_rect_f)
-	// HRESULT GetBounds( const D2D1_MATRIX_3X2_F *worldTransform, D2D1_RECT_F *bounds );
-	public static D2D_RECT_F GetBounds(this ID2D1Geometry geom, in D2D_MATRIX_3X2_F? worldTransform = null) =>
-		geom.GetBounds(new(worldTransform, out _));
-
-	/// <summary>
-	/// Gets the bounds of the geometry after it has been widened by the specified stroke width and style and transformed by the
-	/// specified matrix.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="strokeWidth">
-	/// <para>Type: <clearColor>FLOAT</clearColor></para>
-	/// <para>The amount by which to widen the geometry by stroking its outline.</para>
-	/// </param>
-	/// <param name="strokeStyle">
-	/// <para>Type: <clearColor>ID2D1StrokeStyle*</clearColor></para>
-	/// <para>The style of the stroke that widens the geometry.</para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>
-	/// A transform to apply to the geometry after the geometry is transformed and after the geometry has been stroked, or <clearColor>NULL</clearColor>.
-	/// </para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <clearColor>D2D1_RECT_F*</clearColor></para>
-	/// <para>When this method returns, contains the bounds of the widened geometry. You must allocate storage for this parameter.</para>
-	/// </returns>
-	public static D2D_RECT_F GetWidenedBounds(this ID2D1Geometry geom, float strokeWidth, [In] ID2D1StrokeStyle? strokeStyle = null,
-		in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		return geom.GetWidenedBounds(strokeWidth, strokeStyle, p, flatteningTolerance);
-	}
-
-	/// <summary>
-	/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="point">
-	/// <para>Type: [in] <clearColor>D2D1_POINT_2F</clearColor></para>
-	/// <para>The point to test for containment.</para>
-	/// </param>
-	/// <param name="strokeWidth">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>The thickness of the stroke to apply.</para>
-	/// </param>
-	/// <param name="strokeStyle">
-	/// <para>Type: [in, optional] <clearColor>ID2D1StrokeStyle*</clearColor></para>
-	/// <para>The style of stroke to apply.</para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in, optional] <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to the stroked geometry.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The numeric accuracy with which the precise geometric path and path intersection is calculated. Points missing the stroke by
-	/// less than the tolerance are still considered inside. Smaller values produce more accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: [out] <clearColor>BOOL*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a boolean value set to true if the geometry's stroke contains the specified point;
-	/// otherwise, false. You must allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-strokecontainspoint%28d2d1_point_2f_float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_bool%29
-	// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
-	// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
-	public static bool StrokeContainsPoint(this ID2D1Geometry geom, D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		return geom.StrokeContainsPoint(point, strokeWidth, strokeStyle, p, flatteningTolerance);
-	}
-
-	/// <summary>
-	/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="point">
-	/// <para>Type: <clearColor>D2D1_POINT_2F</clearColor></para>
-	/// <para>The point to test.</para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: <clearColor>const D2D1_MATRIX_3X2_F</clearColor></para>
-	/// <para>The transform to apply to the geometry prior to testing for containment.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The numeric accuracy with which the precise geometric path and path intersection is calculated. Points missing the fill by
-	/// less than the tolerance are still considered inside. Smaller values produce more accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <clearColor>BOOL*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a bool value that is true if the area filled by the geometry contains point; otherwise,
-	/// false. You must allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-fillcontainspoint(d2d1_point_2f_constd2d1_matrix_3x2_f__float_bool)
-	// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
-	// *contains );
-	public static bool FillContainsPoint(this ID2D1Geometry geom, D2D_POINT_2F point, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		return geom.FillContainsPoint(point, p, flatteningTolerance);
-	}
-
-	/// <summary>
-	/// Describes the intersection between this geometry and the specified geometry. The comparison is performed by using the
-	/// specified flattening tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="inputGeometry">
-	/// <para>Type: [in] <clearColor>ID2D1Geometry*</clearColor></para>
-	/// <para>The geometry to test.</para>
-	/// </param>
-	/// <param name="inputGeometryTransform">
-	/// <para>Type: [in, optional] <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to inputGeometry, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: [out] <clearColor>D2D1_GEOMETRY_RELATION*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a pointer to a value that describes how this geometry is related to inputGeometry. You
-	/// must allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// When interpreting the returned relation value, it is important to remember that the member
-	/// D2D1_GEOMETRY_RELATION_IS_CONTAINED of the <clearColor>D2D1_GEOMETRY_RELATION</clearColor> enumeration type means that this geometry is
-	/// contained inside inputGeometry, not that this geometry contains inputGeometry.
-	/// </para>
-	/// <para>For more information about how to interpret other possible return values, see D2D1_GEOMETRY_RELATION.</para>
-	/// </remarks>
-	public static D2D1_GEOMETRY_RELATION CompareWithGeometry(this ID2D1Geometry geom, [In] ID2D1Geometry inputGeometry, in D2D1_MATRIX_3X2_F? inputGeometryTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = inputGeometryTransform;
-		return geom.CompareWithGeometry(inputGeometry, p, flatteningTolerance);
-	}
-
-	/// <summary>
-	/// Creates a simplified version of the geometry that contains only lines and (optionally) cubic Bezier curves and writes the
-	/// result to an ID2D1SimplifiedGeometrySink.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="simplificationOption">
-	/// <para>Type: [in] <clearColor>D2D1_GEOMETRY_SIMPLIFICATION_OPTION</clearColor></para>
-	/// <para>A value that specifies whether the simplified geometry should contain curves.</para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in, optional] <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to the simplified geometry, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="geometrySink">
-	/// <para>Type: [in] <clearColor>ID2D1SimplifiedGeometrySink*</clearColor></para>
-	/// <para>The ID2D1SimplifiedGeometrySink to which the simplified geometry is appended.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <clearColor>HRESULT</clearColor></para>
-	/// <para>If this method succeeds, it returns <clearColor>S_OK</clearColor>. Otherwise, it returns an <clearColor>HRESULT</clearColor> error code.</para>
-	/// </returns>
-	public static void Simplify(this ID2D1Geometry geom, D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		geom.Simplify(simplificationOption, p, flatteningTolerance, geometrySink);
-	}
-
-	/// <summary>
-	/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix
-	/// and flattened using the specified tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in, optional] <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to this geometry, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="tessellationSink">
-	/// <para>Type: [in] <clearColor>ID2D1TessellationSink*</clearColor></para>
-	/// <para>The ID2D1TessellationSink to which the tessellated is appended.</para>
-	/// </param>
-	public static void Tessellate(this ID2D1Geometry geom, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1TessellationSink? tessellationSink = null)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		geom.Tessellate(p, flatteningTolerance, tessellationSink);
-	}
-
-	/// <summary>Combines this geometry with the specified geometry and stores the result in an ID2D1SimplifiedGeometrySink.</summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="inputGeometry">
-	/// <para>Type: [in] <clearColor>ID2D1Geometry*</clearColor></para>
-	/// <para>The geometry to combine with this instance.</para>
-	/// </param>
-	/// <param name="combineMode">
-	/// <para>Type: [in] <clearColor>D2D1_COMBINE_MODE</clearColor></para>
-	/// <para>The type of combine operation to perform.</para>
-	/// </param>
-	/// <param name="inputGeometryTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to inputGeometry before combining.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="geometrySink">
-	/// <para>Type: [in] <clearColor>ID2D1SimplifiedGeometrySink*</clearColor></para>
-	/// <para>The result of the combine operation.</para>
-	/// </param>
-	public static void CombineWithGeometry(this ID2D1Geometry geom, [In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, in D2D1_MATRIX_3X2_F? inputGeometryTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = inputGeometryTransform;
-		geom.CombineWithGeometry(inputGeometry, combineMode, p, flatteningTolerance, geometrySink);
-	}
-
-	/// <summary>Computes the outline of the geometry and writes the result to an ID2D1SimplifiedGeometrySink.</summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="worldTransform">
-	/// <para>Type: <clearColor>const D2D1_MATRIX_3X2_F*</clearColor></para>
-	/// <para>The transform to apply to the geometry outline, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="geometrySink">
-	/// <para>Type: <clearColor>ID2D1SimplifiedGeometrySink*</clearColor></para>
-	/// <para>The ID2D1SimplifiedGeometrySink to which the geometry's transformed outline is appended.</para>
-	/// </param>
-	/// <remarks>
-	/// <para>
-	/// The Outline method allows the caller to produce a geometry with an equivalent fill to the input geometry, with the following
-	/// additional properties:
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>The output geometry contains no transverse intersections; that is, segments may touch, but they never cross.</term>
-	/// </item>
-	/// <item>
-	/// <term>The outermost figures in the output geometry are all oriented counterclockwise.</term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// The output geometry is fill-mode invariant; that is, the fill of the geometry does not depend on the choice of the fill
-	/// mode. For more information about the fill mode, see D2D1_FILL_MODE.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// Additionally, the Outline method can be useful in removing redundant portions of said geometries to simplify complex
-	/// geometries. It can also be useful in combination with ID2D1GeometryGroup to create unions among several geometries simultaneously.
-	/// </para>
-	/// </remarks>
-	public static void Outline(this ID2D1Geometry geom, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		geom.Outline(p, flatteningTolerance, geometrySink);
-	}
-
-	/// <summary>
-	/// Computes the area of the geometry after it has been transformed by the specified matrix and flattened using the specified tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to this geometry before computing its area.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: [out] <clearColor>FLOAT*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a pointer to the area of the transformed, flattened version of this geometry. You must
-	/// allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	public static float ComputeArea(this ID2D1Geometry geom, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		return geom.ComputeArea(p, flatteningTolerance);
-	}
-
-	/// <summary>Calculates the length of the geometry as though each segment were unrolled into a line.</summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to the geometry before calculating its length.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: [out] <clearColor>FLOAT*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a pointer to the length of the geometry. For closed geometries, the length includes an
-	/// implicit closing segment. You must allocate storage for this parameter.
-	/// </para>
-	/// </returns>
-	public static float ComputeLength(this ID2D1Geometry geom, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		return geom.ComputeLength(p, flatteningTolerance);
-	}
-
-	/// <summary>
-	/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
-	/// specified matrix and flattened using the specified tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="length">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The distance along the geometry of the point and tangent to find. If this distance is less than 0, this method calculates
-	/// the first point in the geometry. If this distance is greater than the length of the geometry, this method calculates the
-	/// last point in the geometry.
-	/// </para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to the geometry before calculating the specified point and tangent.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="point">
-	/// <para>Type: [out, optional] <clearColor>D2D1_POINT_2F*</clearColor></para>
-	/// <para>
-	/// The location at the specified distance along the geometry. If the geometry is empty, this point contains NaN as its x and y values.
-	/// </para>
-	/// </param>
-	/// <param name="unitTangentVector">
-	/// <para>Type: [out, optional] <clearColor>D2D1_POINT_2F*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a pointer to the tangent vector at the specified distance along the geometry. If the
-	/// geometry is empty, this vector contains NaN as its x and y values. You must allocate storage for this parameter.
-	/// </para>
-	/// </param>
-	public static void ComputePointAtLength(this ID2D1Geometry geom, float length, [Optional] in D2D1_MATRIX_3X2_F? worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		geom.ComputePointAtLength(length, p, flatteningTolerance, out point, out unitTangentVector);
-	}
-
-	/// <summary>
-	/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
-	/// specified matrix and flattened using the specified tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="length">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The distance along the geometry of the point and tangent to find. If this distance is less than 0, this method calculates
-	/// the first point in the geometry. If this distance is greater than the length of the geometry, this method calculates the
-	/// last point in the geometry.
-	/// </para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to the geometry before calculating the specified point and tangent.</para>
-	/// </param>
-	/// <param name="point">
-	/// <para>Type: [out, optional] <clearColor>D2D1_POINT_2F*</clearColor></para>
-	/// <para>
-	/// The location at the specified distance along the geometry. If the geometry is empty, this point contains NaN as its x and y values.
-	/// </para>
-	/// </param>
-	/// <param name="unitTangentVector">
-	/// <para>Type: [out, optional] <clearColor>D2D1_POINT_2F*</clearColor></para>
-	/// <para>
-	/// When this method returns, contains a pointer to the tangent vector at the specified distance along the geometry. If the
-	/// geometry is empty, this vector contains NaN as its x and y values. You must allocate storage for this parameter.
-	/// </para>
-	/// </param>
-	public static void ComputePointAtLength(this ID2D1Geometry geom, float length, [Optional] in D2D1_MATRIX_3X2_F? worldTransform, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector) =>
-		geom.ComputePointAtLength(length, worldTransform, D2D1_DEFAULT_FLATTENING_TOLERANCE, out point, out unitTangentVector);
-
-	/// <summary>
-	/// Widens the geometry by the specified stroke and writes the result to an ID2D1SimplifiedGeometrySink after it has been
-	/// transformed by the specified matrix and flattened using the specified tolerance.
-	/// </summary>
-	/// <param name="geom">The <see cref="ID2D1Geometry"/> instance.</param>
-	/// <param name="strokeWidth">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>The amount by which to widen the geometry.</para>
-	/// </param>
-	/// <param name="strokeStyle">
-	/// <para>Type: [in, optional] <clearColor>ID2D1StrokeStyle*</clearColor></para>
-	/// <para>The style of stroke to apply to the geometry, or <clearColor>NULL</clearColor>.</para>
-	/// </param>
-	/// <param name="worldTransform">
-	/// <para>Type: [in] <clearColor>const D2D1_MATRIX_3X2_F &amp;</clearColor></para>
-	/// <para>The transform to apply to the geometry after widening it.</para>
-	/// </param>
-	/// <param name="flatteningTolerance">
-	/// <para>Type: [in] <clearColor>FLOAT</clearColor></para>
-	/// <para>
-	/// The maximum error allowed when constructing a polygonal approximation of the geometry. No point in the polygonal
-	/// representation will diverge from the original geometry by more than the flattening tolerance. Smaller values produce more
-	/// accurate results but cause slower execution.
-	/// </para>
-	/// </param>
-	/// <param name="geometrySink">
-	/// <para>Type: [in] <clearColor>ID2D1SimplifiedGeometrySink*</clearColor></para>
-	/// <para>The ID2D1SimplifiedGeometrySink to which the widened geometry is appended.</para>
-	/// </param>
-	public static void Widen(this ID2D1Geometry geom, float strokeWidth, [In] ID2D1StrokeStyle? strokeStyle, in D2D1_MATRIX_3X2_F? worldTransform = null, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null)
-	{
-		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
-		geom.Widen(strokeWidth, strokeStyle, p, flatteningTolerance, geometrySink);
 	}
 
 	/// <summary>Gets the size of the layer in device-independent pixels.</summary>

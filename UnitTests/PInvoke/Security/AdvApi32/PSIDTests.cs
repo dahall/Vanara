@@ -9,7 +9,7 @@ public static class UtilExt
 {
 	public static byte[] GetBytes(this SecurityIdentifier si)
 	{
-		if (si == null) return new byte[0];
+		if (si == null) return [];
 		var sidLen = si.BinaryLength;
 		var bytes = new byte[sidLen];
 		si.GetBinaryForm(bytes, 0);
@@ -148,9 +148,9 @@ public class PSIDTests
 		using var sid = SafePSID.Current;
 		var sidStr = sid.ToString();
 		Assert.That(sidStr, Does.StartWith("S-1-5-"));
-		var ssid = sid.ToString().Substring(6).Split('-').Select(int.Parse).ToArray();
+		var ssid = sid.ToString().Substring(6).Split('-').Select(uint.Parse).ToArray();
 		var i = ssid[0];
-		var dest = new int[ssid.Length - 1];
+		var dest = new uint[ssid.Length - 1];
 		Array.Copy(ssid, 1, dest, 0, ssid.Length - 1);
 		using var sid2 = SafePSID.Init(KnownSIDAuthority.SECURITY_NT_AUTHORITY, i, dest);
 		Assert.That(sid2.IsValidSid);
@@ -200,7 +200,7 @@ public class PSIDTests
 
 		Assert.That(SafePSID.Null.ToString(), Is.EqualTo("0"));
 
-		Assert.That(new SafePSID(new byte[] { 12, 255 }).ToString(), Is.EqualTo("Invalid"));
+		Assert.That(new SafePSID([12, 255]).ToString(), Is.EqualTo("Invalid"));
 	}
 
 	[Test]

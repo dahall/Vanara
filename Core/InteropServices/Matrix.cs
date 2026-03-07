@@ -26,7 +26,7 @@ public class Matrix :
 	/// <param name="values">The values.</param>
 	/// <param name="rows">The rows.</param>
 	/// <param name="columns">The columns.</param>
-	/// <exception cref="System.ArgumentException">The number of elements in the memory must be equal to rows * columns.</exception>
+	/// <exception cref="ArgumentException">The number of elements in the memory must be equal to rows * columns.</exception>
 	public Matrix(Memory<float> values, int rows, int columns)
 	{
 		if (rows < 1)
@@ -65,7 +65,7 @@ public class Matrix :
 
 	/// <summary>Gets the determinant.</summary>
 	/// <value>The determinant.</value>
-	/// <exception cref="System.InvalidOperationException">The matrix must be square.</exception>
+	/// <exception cref="InvalidOperationException">The matrix must be square.</exception>
 	public float Determinant
 	{
 		get
@@ -279,14 +279,14 @@ public class Matrix :
 	/// <summary>Gets an identity matrix of the specified balanced size.</summary>
 	/// <param name="dimensions">The rows and columns in the matrix.</param>
 	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
-	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
+	/// <exception cref="ArgumentException">The number of rows must be equal to the number of columns.</exception>
 	public static Matrix CreateIdentity(int dimensions) => CreateIdentity(dimensions, dimensions);
 
 	/// <summary>Gets an identity matrix of the specified size.</summary>
 	/// <param name="rows">The number of rows.</param>
 	/// <param name="columns">The number of columns.</param>
 	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
-	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
+	/// <exception cref="ArgumentException">The number of rows must be equal to the number of columns.</exception>
 	public static Matrix CreateIdentity(int rows, int columns) =>
 		Build(rows, columns, sp =>
 		{
@@ -353,8 +353,8 @@ public class Matrix :
 	/// A matrix one dimension larger than the number of scalars in <paramref name="scalars"/> whose diagnoal entries are set to each
 	/// subsequent value of <paramref name="scalars"/> and whose final diagonal entry will be set to <c>1.0f</c>.
 	/// </returns>
-	/// <exception cref="System.ArgumentNullException">scalars</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">scalars - At least one scaling value must be provided.</exception>
+	/// <exception cref="ArgumentNullException">scalars</exception>
+	/// <exception cref="ArgumentOutOfRangeException">scalars - At least one scaling value must be provided.</exception>
 	public static Matrix CreateScale(float[] scalars)
 	{
 		if (scalars is null) throw new ArgumentNullException(nameof(scalars));
@@ -480,7 +480,7 @@ public class Matrix :
 
 	/// <summary>Adjugates this instance.</summary>
 	/// <returns></returns>
-	/// <exception cref="System.InvalidOperationException">The matrix must be square.</exception>
+	/// <exception cref="InvalidOperationException">The matrix must be square.</exception>
 	public Matrix Adjugate()
 	{
 		CheckSquare();
@@ -506,7 +506,7 @@ public class Matrix :
 
 	/// <summary>Cofactors this instance.</summary>
 	/// <returns></returns>
-	/// <exception cref="System.InvalidOperationException">The matrix must be square.</exception>
+	/// <exception cref="InvalidOperationException">The matrix must be square.</exception>
 	public Matrix Cofactor()
 	{
 		Matrix r = MatrixOfMinors();
@@ -519,7 +519,7 @@ public class Matrix :
 	/// <summary>Columns the vector.</summary>
 	/// <param name="column">The column.</param>
 	/// <returns></returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">column</exception>
+	/// <exception cref="ArgumentOutOfRangeException">column</exception>
 	public Matrix ColumnVector(int column)
 	{
 		CheckValidColumn(column);
@@ -653,7 +653,7 @@ public class Matrix :
 
 	/// <summary>Inverts this instance.</summary>
 	/// <returns></returns>
-	/// <exception cref="System.InvalidOperationException">The matrix must be square. or The matrix is singular.</exception>
+	/// <exception cref="InvalidOperationException">The matrix must be square. or The matrix is singular.</exception>
 	public Matrix Invert()
 	{
 		CheckSquare();
@@ -775,7 +775,7 @@ public class Matrix :
 	/// <summary>Rows the vector.</summary>
 	/// <param name="row">The row.</param>
 	/// <returns></returns>
-	/// <exception cref="System.ArgumentOutOfRangeException">row</exception>
+	/// <exception cref="ArgumentOutOfRangeException">row</exception>
 	public Matrix RowVector(int row)
 	{
 		CheckValidRow(row);
@@ -821,7 +821,7 @@ public class Matrix :
 	/// <remarks>
 	/// This method returns a string in which each element of the vector is formatted using <paramref name="format"/> and the current
 	/// culture's formatting conventions. The "&lt;" and "&gt;" characters are used to begin and end the string, and the current culture's
-	/// <see cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
+	/// <see cref="NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
 	/// </remarks>
 	/// <related type="Article" href="/dotnet/standard/base-types/standard-numeric-format-strings">Standard Numeric Format Strings</related>
 	/// <related type="Article" href="/dotnet/standard/base-types/custom-numeric-format-strings">Custom Numeric Format Strings</related>
@@ -838,7 +838,7 @@ public class Matrix :
 	/// <remarks>
 	/// This method returns a string in which each element of the vector is formatted using <paramref name="format"/> and <paramref
 	/// name="formatProvider"/>. The "&lt;" and "&gt;" characters are used to begin and end the string, and the format provider's <see
-	/// cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
+	/// cref="NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
 	/// </remarks>
 	/// <related type="Article" href="/dotnet/standard/base-types/custom-numeric-format-strings">Custom Numeric Format Strings</related>
 	/// <related type="Article" href="/dotnet/standard/base-types/standard-numeric-format-strings">Standard Numeric Format Strings</related>
@@ -872,7 +872,7 @@ public class Matrix :
 	/// <param name="b">The second matrix.</param>
 	/// <param name="action">The action to perform on the paired elements from <paramref name="a"/> and <paramref name="b"/>.</param>
 	/// <returns>The resulting matrix.</returns>
-	/// <exception cref="System.ArgumentException">The number of rows and columns must be equal.</exception>
+	/// <exception cref="ArgumentException">The number of rows and columns must be equal.</exception>
 	protected static Matrix BinaryAction(Matrix a, Matrix b, Func<float, float, float> action)
 	{
 		if (a is null) throw new ArgumentNullException(nameof(a));

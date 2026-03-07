@@ -184,7 +184,7 @@ public class GenericProvider : IAccessControlEditorDialogProvider
 	public virtual INHERITED_FROM[] GetInheritSource(string objName, string? serverName, bool isContainer, uint si, PACL pAcl)
 	{
 		var gMap = GetGenericMapping(0);
-		return GetInheritanceSource(objName, ResourceType, (SECURITY_INFORMATION)si, isContainer, pAcl, ref gMap).ToArray();
+		return GetInheritanceSource(objName, ResourceType, (SECURITY_INFORMATION)si, isContainer, pAcl, gMap).ToArray();
 	}
 
 	/// <summary>Gets inheritance information for supported object type.</summary>

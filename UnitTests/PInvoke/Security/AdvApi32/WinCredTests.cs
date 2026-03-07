@@ -66,7 +66,7 @@ public class WinCredTests
         [Test]
         public void CredReadNegativeTest()
         {
-            Assert.That(CredRead(Guid.NewGuid().ToString(), CRED_TYPE.CRED_TYPE_GENERIC, out var cred), ResultIs.Failure);
+		Assert.That(CredRead(Guid.NewGuid().ToString(), CRED_TYPE.CRED_TYPE_GENERIC, out _), ResultIs.Failure);
         }
 
         [Test]

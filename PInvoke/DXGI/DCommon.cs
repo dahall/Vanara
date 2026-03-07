@@ -3956,22 +3956,22 @@ public static partial class DXGI
 		public float _32 = m32;
 
 		/// <summary>Horizontal scaling / cosine of rotation</summary>
-		public float m11 { get => _11; set => _11 = value; }
+		public float m11 { readonly get => _11; set => _11 = value; }
 
 		/// <summary>Vertical shear / sine of rotation</summary>
-		public float m12 { get => _12; set => _12 = value; }
+		public float m12 { readonly get => _12; set => _12 = value; }
 
 		/// <summary>Horizontal shear / negative sine of rotation</summary>
-		public float m21 { get => _21; set => _21 = value; }
+		public float m21 { readonly get => _21; set => _21 = value; }
 
 		/// <summary>Vertical scaling / cosine of rotation</summary>
-		public float m22 { get => _22; set => _22 = value; }
+		public float m22 { readonly get => _22; set => _22 = value; }
 
 		/// <summary>Horizontal shift (always orthogonal regardless of rotation)</summary>
-		public float dx { get => _31; set => _31 = value; }
+		public float dx { readonly get => _31; set => _31 = value; }
 
 		/// <summary>Vertical shift (always orthogonal regardless of rotation)</summary>
-		public float dy { get => _32; set => _32 = value; }
+		public float dy { readonly get => _32; set => _32 = value; }
 
 		/// <summary>Gets or sets the values as a multidimensional (3x2) array.</summary>
 		/// <value>The array value.</value>
@@ -3994,7 +3994,7 @@ public static partial class DXGI
 
 		/// <summary>Calculates the determinant of the matrix.</summary>
 		/// <value>The determinant of this matrix.</value>
-		public float Determinant => _11 * _22 - _12 * _21;
+		public readonly float Determinant => _11 * _22 - _12 * _21;
 
 		/// <summary>Indicates whether this matrix is the identity matrix.</summary>
 		/// <returns>
@@ -4140,7 +4140,7 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is DXGI_MATRIX_3X2_F f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(DXGI_MATRIX_3X2_F other) => _11 == other._11 && _12 == other._12 && _21 == other._21 && _22 == other._22 && _31 == other._31 && _32 == other._32;
+		public readonly bool Equals(DXGI_MATRIX_3X2_F other) => _11 == other._11 && _12 == other._12 && _21 == other._21 && _22 == other._22 && _31 == other._31 && _32 == other._32;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => m.GetHashCode();
@@ -4222,7 +4222,7 @@ public static partial class DXGI
 		/// <summary/>
 		public float[,] m
 		{
-			get => new[,] { { _11, _12, _13 }, { _21, _22, _23 }, { _31, _32, _33 }, { _41, _42, _43 } };
+			readonly get => new[,] { { _11, _12, _13 }, { _21, _22, _23 }, { _31, _32, _33 }, { _41, _42, _43 } };
 			set
 			{
 				unsafe
@@ -4344,7 +4344,7 @@ public static partial class DXGI
 		/// <summary/>
 		public float[,] m
 		{
-			get => new[,] { { _11, _12, _13, _14 }, { _21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 } };
+			readonly get => new[,] { { _11, _12, _13, _14 }, { _21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 } };
 			set
 			{
 				if (value.GetLength(0) != 4 || value.GetLength(1) != 4)
@@ -4372,10 +4372,10 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is D2D_MATRIX_4X4_F f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_MATRIX_4X4_F other) => _11 == other._11 && _12 == other._12 && _13 == other._13 && _14 == other._14 && _21 == other._21 && _22 == other._22 && _23 == other._23 && _24 == other._24 && _31 == other._31 && _32 == other._32 && _33 == other._33 && _34 == other._34 && _41 == other._41 && _42 == other._42 && _43 == other._43 && _44 == other._44;
+		public readonly bool Equals(D2D_MATRIX_4X4_F other) => _11 == other._11 && _12 == other._12 && _13 == other._13 && _14 == other._14 && _21 == other._21 && _22 == other._22 && _23 == other._23 && _24 == other._24 && _31 == other._31 && _32 == other._32 && _33 == other._33 && _34 == other._34 && _41 == other._41 && _42 == other._42 && _43 == other._43 && _44 == other._44;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => ((float[,])this).GetHashCode();
+		public override readonly int GetHashCode() => ((float[,])this).GetHashCode();
 
 		/// <summary>Multiplies two matrices together to compute the product.</summary>
 		/// <param name="left">The first matrix.</param>
@@ -4652,7 +4652,7 @@ public static partial class DXGI
 		/// <summary/>
 		public float[,] m
 		{
-			get => new[,] { { _11, _12, _13, _14 }, { _21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 }, { _51, _52, _53, _54 } };
+			readonly get => new[,] { { _11, _12, _13, _14 }, { _21, _22, _23, _24 }, { _31, _32, _33, _34 }, { _41, _42, _43, _44 }, { _51, _52, _53, _54 } };
 			set
 			{
 				if (value.GetLength(0) != 5 || value.GetLength(1) != 4)
@@ -4723,10 +4723,10 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is D2D_POINT_2F f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_POINT_2F other) => x == other.x && y == other.y;
+		public readonly bool Equals(D2D_POINT_2F other) => x == other.x && y == other.y;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (x, y).GetHashCode();
+		public override readonly int GetHashCode() => (x, y).GetHashCode();
 
 		/// <summary>Implements the operator *.</summary>
 		/// <param name="left">The left point.</param>
@@ -4853,16 +4853,16 @@ public static partial class DXGI
 
 		/// <summary>Gets a value indicating whether this instance is empty.</summary>
 		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-		public bool IsEmpty => left == 0f && top == 0f && right == 0f && bottom == 0f;
+		public readonly bool IsEmpty => left == 0f && top == 0f && right == 0f && bottom == 0f;
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D2D_RECT_F f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_RECT_F other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+		public readonly bool Equals(D2D_RECT_F other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+		public override readonly int GetHashCode() => (left, top, right, bottom).GetHashCode();
 
 		/// <summary>Tests whether two <see cref="D2D_RECT_F"/> structures have equal location and size.</summary>
 		/// <param name="left">The <see cref="D2D_RECT_F"/> structure that is to the left of the equality operator.</param>
@@ -4942,11 +4942,11 @@ public static partial class DXGI
 
 		/// <summary>Gets a value indicating whether this instance is empty.</summary>
 		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-		public bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
+		public readonly bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
 
 		/// <summary>Gets a value indicating whether this instance is infinite.</summary>
 		/// <value><c>true</c> if this instance is infinite; otherwise, <c>false</c>.</value>
-		public bool IsInfinite => left == 0 && top == 0 && right == uint.MaxValue && bottom == uint.MaxValue;
+		public readonly bool IsInfinite => left == 0 && top == 0 && right == uint.MaxValue && bottom == uint.MaxValue;
 
 		/// <summary>
 		/// Gets a value representing an infinite rectange that has its upper-left corner set to (0u, 0u) and its lower-right corner set to
@@ -4958,10 +4958,10 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is D2D_RECT_U f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_RECT_U other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+		public readonly bool Equals(D2D_RECT_U other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+		public override readonly int GetHashCode() => (left, top, right, bottom).GetHashCode();
 
 		/// <summary>Tests whether two <see cref="D2D_RECT_U"/> structures have equal location and size.</summary>
 		/// <param name="left">The <see cref="D2D_RECT_U"/> structure that is to the left of the equality operator.</param>
@@ -5065,10 +5065,10 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is D2D_SIZE_F f && Equals(f);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_SIZE_F other) => width == other.width && height == other.height;
+		public readonly bool Equals(D2D_SIZE_F other) => width == other.width && height == other.height;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (width, height).GetHashCode();
+		public override readonly int GetHashCode() => (width, height).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -5115,10 +5115,10 @@ public static partial class DXGI
 		public override bool Equals(object? obj) => obj is D2D_SIZE_U u && Equals(u);
 
 		/// <inheritdoc/>
-		public bool Equals(D2D_SIZE_U other) => width == other.width && height == other.height;
+		public readonly bool Equals(D2D_SIZE_U other) => width == other.width && height == other.height;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (width, height).GetHashCode();
+		public override readonly int GetHashCode() => (width, height).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -5323,10 +5323,10 @@ public static partial class DXGI
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D10_BOX other) => left == other.left && top == other.top && front == other.front && right == other.right && bottom == other.bottom && back == other.back;
+		public readonly bool Equals(D3D10_BOX other) => left == other.left && top == other.top && front == other.front && right == other.right && bottom == other.bottom && back == other.back;
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
+		public override readonly int GetHashCode()
 		{
 			int hashCode = 1435850453;
 			hashCode = hashCode * -1521134295 + left.GetHashCode();

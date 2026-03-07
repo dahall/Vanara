@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 using System.Xml;
+using System.Xml.Schema;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Vanara.Generators.TypeDeclarationSyntaxExtensions;
 
 namespace Vanara.Generators;
 
@@ -9,14 +11,15 @@ internal delegate void BuildMethodFunc(SourceProductionContext context, Compilat
 
 internal delegate TypeDeclarationSyntax GetContainerTypeFunc(SourceProductionContext context, SyntaxNode decl, Compilation compilation);
 
-internal abstract class AttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator)
+internal abstract class AttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator, int order = 0)
 {
 	public string AttrName => attr;
+	public int Order => order;
 	public Func<SyntaxNode, CancellationToken, bool> Validator => validator;
 }
 
-internal class MethAttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator, GetContainerTypeFunc container, Func<SyntaxNode, MethodDeclarationSyntax?> getmeth, BuildMethodFunc builder) :
-	AttrHandler(attr, validator)
+internal class MethAttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator, GetContainerTypeFunc container, Func<SyntaxNode, MethodDeclarationSyntax?> getmeth, BuildMethodFunc builder, int order) :
+	AttrHandler(attr, validator, order)
 {
 	public BuildMethodFunc bodyBuilder => builder;
 	public GetContainerTypeFunc parent => container;
@@ -30,7 +33,12 @@ internal class TypeAttrHandler(string attr, Func<SyntaxNode, CancellationToken, 
 	public Func<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas), INamedTypeSymbol?> reftype => getRefType;
 }
 
-internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
+internal static class MBBExt
+{
+	public static List<(string, ModType)> Has(this Dictionary<string, List<(string, ModType)>> d, string key) => d.TryGetValue(key, out var v) ? v : [];
+}
+
+internal class MethodBodyBuilder
 {
 	public const string retVarName = "__ret";
 	public const string qretVarName = "__qret";
@@ -40,23 +48,79 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 	public static readonly SyntaxToken refToken = Token(SyntaxKind.RefKeyword);
 	public static readonly SyntaxToken staticToken = Token(SyntaxKind.StaticKeyword);
 	public static readonly ExpressionSyntax defaultExpr = ParseExpression("default");
-
-	public string? asMemberOf = methodDecl.Parent is InterfaceDeclarationSyntax ? thisParamName : null;
-	public TypeDeclarationSyntax? parentClass = methodDecl.Parent is InterfaceDeclarationSyntax ids ? ids.Parent as ClassDeclarationSyntax : methodDecl.Parent as ClassDeclarationSyntax;
-	public XmlDocument? docs = methodDecl.GetDocs();
-	public string? interfaceName = (methodDecl.Parent as InterfaceDeclarationSyntax)?.Identifier.Text;
-	public string methodName = methodDecl.Identifier.Text;
-	public string topMethodName = methodDecl.Identifier.Text;
+	private readonly MethodDeclarationSyntax methodDecl;
+	public string? asMemberOf;
+	public TypeDeclarationSyntax? parentClass;
+	public XmlDocument? docs;
+	public string? interfaceName;
+	public string methodName;
+	public string topMethodName;
 	public HashSet<SyntaxToken> modifiers = [publicToken, staticToken];
-	public List<ParameterSyntax> parameters = [.. methodDecl.ParameterList.Parameters];
-	public TypeSyntax returnType = ParseTypeName(methodDecl.ReturnType.ToString());
-	public StatementBuilder statements = new(methodDecl);
-	public List<TypeParameterConstraintClauseSyntax> typeConstraints = [.. methodDecl.ConstraintClauses];
-	public List<TypeParameterSyntax> typeParameters = [.. methodDecl.TypeParameterList?.Parameters ?? []];
+	public List<ParameterSyntax> parameters;
+	public TypeSyntax returnType;
+	public StatementBuilder statements;
+	public List<TypeParameterConstraintClauseSyntax> typeConstraints;
+	public List<TypeParameterSyntax> typeParameters;
 	public bool ignoreErrHandler = false;
 	public bool isCtor = false;
 	public string? ctorResultParamName = null;
 	public List<AttributeListSyntax> attributes = [];
+	public Dictionary<string, List<(string, ModType)>> paramReferences = [];
+#pragma warning disable CS0414 // Field is assigned but its value is never used
+	private bool xmlInserted = false;
+#pragma warning restore CS0414
+
+	public MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
+	{
+		this.methodDecl = methodDecl;
+		asMemberOf = methodDecl.Parent is InterfaceDeclarationSyntax ? thisParamName : null;
+		parentClass = methodDecl.Parent is InterfaceDeclarationSyntax ids ? ids.Parent as ClassDeclarationSyntax : methodDecl.Parent as ClassDeclarationSyntax;
+		docs = methodDecl.GetDocs((s,e) => xmlInserted = true);
+		interfaceName = (methodDecl.Parent as InterfaceDeclarationSyntax)?.Identifier.Text;
+		methodName = methodDecl.Identifier.Text;
+		topMethodName = methodDecl.Identifier.Text;
+		parameters = [.. methodDecl.ParameterList.Parameters];
+		returnType = ParseTypeName(methodDecl.ReturnType.ToString());
+		statements = new(methodDecl);
+		typeConstraints = [.. methodDecl.ConstraintClauses];
+		typeParameters = [.. methodDecl.TypeParameterList?.Parameters ?? []];
+
+		// For each parameter, get any references to it from other parameter attributes (SizeDef, ArrayPointer, and MarshalAs) and store them for reference in paramReferences
+		foreach (var param in parameters)
+		{
+			foreach (var attr in param.AttributeLists.SelectMany(al => al.Attributes))
+			{
+				switch (attr.Name.ToString())
+				{
+					case "SizeDef":
+						if (attr.ArgumentList?.Arguments.FirstOrDefault()?.Expression is InvocationExpressionSyntax le && le.ArgumentList.Arguments.FirstOrDefault()?.Expression is IdentifierNameSyntax n)
+							AddAttrRef(n.Identifier.Text, param);
+						break;
+					case "ArrayPointer":
+						if (attr.ArgumentList?.Arguments.ElementAtOrDefault(1)?.Expression is LiteralExpressionSyntax aple)
+							AddAttrRef(aple.Token.ValueText, param);
+						break;
+					case "MarshalAs":
+						if (attr.ArgumentList?.Arguments.FirstOrDefault()?.Expression is MemberAccessExpressionSyntax ma &&
+							ma.Name.Identifier.Text is "LPArray" or "Interface" or "IUnknown" &&
+							attr.ArgumentList.Arguments.Skip(1).FirstOrDefault(a => a.NameEquals?.Name.Identifier.Text is "SizeParamIndex" or "IidParameterIndex")?.Expression is LiteralExpressionSyntax male)
+							AddAttrRef(parameters[Convert.ToInt32(male.Token.Value)].Identifier.Text, param);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		void AddAttrRef(string refParamName, ParameterSyntax ps)
+		{
+			var input = (ps.Identifier.Text, GetModType(ps));
+			if (paramReferences.TryGetValue(refParamName, out var refs))
+				refs.Add(input);
+			else
+				paramReferences[refParamName] = [input];
+		}
+	}
 
 	public MemberDeclarationSyntax ToMethod()
 	{
@@ -104,14 +168,14 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 			string errHandler = isCtor
 				? $"global::Vanara.PInvoke.FailedHelper.THROW_IF_FAILED({retVarName}, false);"
 				: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
-			ret = ret.WithBody(Block(statements.setupVariables
+			ret = ret.WithBody(Block(statements.setupVariables.Values
 				.Concat(statements.initOutParams)
 				.Concat(statements.setupArgs.DistinctBy(StmtToKey))
 				.Concat([queryStmt]).WhereNotNull()
 				.Concat(statements.queryFailureHandler.DistinctBy(StmtToKey))
 				.Concat(statements.assignAfterQuery.DistinctBy(StmtToKey))
 				.Concat([invokeStmt])
-				.Concat(returnIsVoid || ignoreErrHandler ? [] : [ParseStatement(errHandler)])
+				.Concat(returnIsVoid || ignoreErrHandler || statements.assignOutParams.Count == 0 ? [] : [ParseStatement(errHandler)])
 				.Concat(statements.assignOutParams)
 				.Concat([statements.ret]).WhereNotNull()
 				.ToArray()));
@@ -123,7 +187,8 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 			tmpDocs = docs?.Clone() as XmlDocument;
 			tmpDocs?.InsertParamDocAfter(thisParamName, $"The <see cref=\"{interfaceName}\"/> interface instance value used for the extension method.");
 		}
-		return tmpDocs is not null ? ret.WithDocs(tmpDocs) : ret;
+		//return tmpDocs is null ? ret : (xmlInserted ? ret.WithDocs(tmpDocs) : ret.WithInheritDocs(methodDecl));
+		return tmpDocs is null ? ret : ret.WithDocs(tmpDocs);
 
 		static string StmtToKey(StatementSyntax s) => s.ToString();
 	}
@@ -153,7 +218,7 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 		}
 
 		// Get param types and attribute values for parameter and return values
-		public List<StatementSyntax> setupVariables = [];
+		public Dictionary<string, StatementSyntax> setupVariables = [];
 
 		// Initialize out params
 		public List<StatementSyntax> initOutParams = [];

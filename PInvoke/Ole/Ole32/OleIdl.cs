@@ -1057,7 +1057,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/oleidl/nf-oleidl-ienumoleverb-next HRESULT Next( ULONG celt, LPOLEVERB
 		// rgelt, ULONG *pceltFetched );
 		[PInvokeData("oleidl.h", MSDNShortId = "bb934017-9054-42b5-89d4-a24f12829503")]
-		[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[PreserveSig, MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), SuppressAutoGen]
 		HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] OLEVERB[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>

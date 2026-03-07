@@ -942,7 +942,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "c05a99e6-da38-431e-8d02-04056047a211")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertFindCertificateInCRL([In] PCCERT_CONTEXT pCert, [In, AddAsMember] PCCRL_CONTEXT pCrlContext, [Optional, Ignore] uint dwFlags,
-		[Optional, Ignore] IntPtr pvReserved, out StructPointer<CRL_ENTRY> ppCrlEntry);
+		[Optional, Ignore] IntPtr pvReserved, out IntPtr ppCrlEntry);
 
 	/// <summary>
 	/// The <c>CertFindCRLInStore</c> function finds the first or next certificate revocation list (CRL) context in a certificate store

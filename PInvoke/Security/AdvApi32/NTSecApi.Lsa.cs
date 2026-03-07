@@ -315,7 +315,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-lsaaddaccountrights NTSTATUS LsaAddAccountRights(
 	// LSA_HANDLE PolicyHandle, PSID AccountSid, PLSA_UNICODE_STRING UserRights, ULONG CountOfRights );
 	[PInvokeData("ntsecapi.h", MSDNShortId = "66b78404-02c2-48e9-92c3-d27b68f77c23")]
-	public static NTStatus LsaAddAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid, params string[] UserRights) =>
+	public static NTStatus LsaAddAccountRights([In, AddAsMember] LSA_HANDLE PolicyHandle, PSID AccountSid, params string[] UserRights) =>
 		LsaAddAccountRights(PolicyHandle, AccountSid, UserRights, (uint)UserRights.Length);
 
 	/// <summary>Undocumented function for creating an account.</summary>
@@ -330,7 +330,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[PInvokeData("ntlsa.h")]
 	[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-	public static extern NTStatus LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
+	public static extern NTStatus LsaCreateAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, [AddAsCtor] out SafeLSA_HANDLE AccountHandle);
 
 	/// <summary>The <c>LsaCreateTrustedDomainEx</c> function establishes a new trusted domain by creating a new TrustedDomain object.</summary>
 	/// <param name="PolicyHandle">
@@ -387,7 +387,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "2f458098-9498-4f08-bd13-ac572678d734")]
 	public static extern NTStatus LsaCreateTrustedDomainEx(LSA_HANDLE PolicyHandle, in TRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation,
-		in TRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
+		in TRUSTED_DOMAIN_AUTH_INFORMATION AuthenticationInformation, ACCESS_MASK DesiredAccess, [AddAsCtor] out SafeLSA_HANDLE TrustedDomainHandle);
 
 	/// <summary>
 	/// The <c>LsaDeleteTrustedDomain</c> function removes a trusted domain from the list of trusted domains for a system and deletes the
@@ -455,13 +455,13 @@ public static partial class AdvApi32
 	/// <returns>
 	/// An enumeration of strings containing the names of privileges held by the account. For a list of privilege names, see Privilege Constants.
 	/// </returns>
-	public static IEnumerable<string> LsaEnumerateAccountRights(LSA_HANDLE PolicyHandle, PSID AccountSid)
+	public static IEnumerable<string> LsaEnumerateAccountRights([In, AddAsMember] LSA_HANDLE PolicyHandle, PSID AccountSid)
 	{
 		var ret = LsaEnumerateAccountRights(PolicyHandle, AccountSid, out var mem, out var cnt);
 		var winErr = LsaNtStatusToWinError(ret);
-		if (winErr == Win32Error.ERROR_FILE_NOT_FOUND) return new string[0];
+		if (winErr == Win32Error.ERROR_FILE_NOT_FOUND) return [];
 		winErr.ThrowIfFailed();
-		return mem.ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone()).ToArray();
+		return [.. mem.ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone())];
 	}
 
 	/// <summary>
@@ -547,12 +547,12 @@ public static partial class AdvApi32
 	/// </para>
 	/// </param>
 	/// <returns>An enumeration of security identifiers (SID) of accounts that holds the specified privilege.</returns>
-	public static IEnumerable<PSID> LsaEnumerateAccountsWithUserRight(LSA_HANDLE PolicyHandle, [Optional] string? UserRights)
+	public static IEnumerable<PSID> LsaEnumerateAccountsWithUserRight([In, AddAsMember] LSA_HANDLE PolicyHandle, [Optional] string? UserRights)
 	{
 		var ret = LsaEnumerateAccountsWithUserRight(PolicyHandle, UserRights, out var mem, out var cnt);
-		if (ret == NTStatus.STATUS_NO_MORE_ENTRIES) return new PSID[0];
+		if (ret == NTStatus.STATUS_NO_MORE_ENTRIES) return [];
 		LsaNtStatusToWinError(ret).ThrowIfFailed();
-		return mem.ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid).ToArray();
+		return [.. mem.ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid)];
 	}
 
 	/// <summary>
@@ -690,7 +690,7 @@ public static partial class AdvApi32
 	/// </param>
 	/// <returns>An enumeration of LSA_TRUST_INFORMATION structures that contain the names and SIDs of one or more trusted domains.</returns>
 	[PInvokeData("ntsecapi.h", MSDNShortId = "5c371d5a-26cf-4a99-a8e1-006b6b3cc91f")]
-	public static IEnumerable<LSA_TRUST_INFORMATION> LsaEnumerateTrustedDomains(LSA_HANDLE PolicyHandle)
+	public static IEnumerable<LSA_TRUST_INFORMATION> LsaEnumerateTrustedDomains([In, AddAsMember] LSA_HANDLE PolicyHandle)
 	{
 		const uint maxBuf = 4096;
 		var hEnum = LSA_ENUMERATION_HANDLE.NULL;
@@ -792,7 +792,7 @@ public static partial class AdvApi32
 	// LsaEnumerateTrustedDomainsEx( [in] LSA_HANDLE PolicyHandle, [in] PLSA_ENUMERATION_HANDLE EnumerationContext, [out] PVOID *Buffer, [in]
 	// ULONG PreferedMaximumLength, [out] PULONG CountReturned );
 	[PInvokeData("ntsecapi.h", MSDNShortId = "NF:ntsecapi.LsaEnumerateTrustedDomainsEx")]
-	public static IEnumerable<TRUSTED_DOMAIN_INFORMATION_EX> LsaEnumerateTrustedDomainsEx(LSA_HANDLE PolicyHandle)
+	public static IEnumerable<TRUSTED_DOMAIN_INFORMATION_EX> LsaEnumerateTrustedDomainsEx([In, AddAsMember] LSA_HANDLE PolicyHandle)
 	{
 		const uint maxBuf = 4096;
 		var hEnum = LSA_ENUMERATION_HANDLE.NULL;
@@ -811,7 +811,7 @@ public static partial class AdvApi32
 	/// <returns>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</returns>
 	[PInvokeData("ntlsa.h")]
 	[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-	public static extern NTStatus LsaGetSystemAccessAccount(LSA_HANDLE AccountHandle, out int SystemAccess);
+	public static extern NTStatus LsaGetSystemAccessAccount([In, AddAsMember] LSA_HANDLE AccountHandle, out int SystemAccess);
 
 	/// <summary>
 	/// <para>
@@ -1107,16 +1107,177 @@ public static partial class AdvApi32
 	// PLSA_TRANSLATED_SID2 *Sids );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "fe219070-6a00-4b8c-b2e4-2ad290a1cb9c")]
-	// public static extern NTSTATUS LsaLookupNames2(LSA_HANDLE PolicyHandle, uint Flags, uint Count, PLSA_UNICODE_STRING Names, ref
-	// PLSA_REFERENCED_DOMAIN_LIST ReferencedDomains, ref PLSA_TRANSLATED_SID2 Sids);
-	public static extern NTStatus LsaLookupNames2(
-		LSA_HANDLE PolicyHandle,
-		LsaLookupNamesFlags Flags,
-		uint Count,
-		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))]
-		string[] Names,
-		out SafeLsaMemoryHandle ReferencedDomains,
-		out SafeLsaMemoryHandle Sids);
+	public static extern NTStatus LsaLookupNames2(LSA_HANDLE PolicyHandle, LsaLookupNamesFlags Flags, uint Count,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringArrayMarshaler))] string[] Names,
+		out SafeLsaMemoryHandle ReferencedDomains, out SafeLsaMemoryHandle Sids);
+
+	/// <summary>
+	/// <para>
+	/// The <c>LsaLookupNames2</c> function retrieves the security identifiers (SIDs) for specified account names. <c>LsaLookupNames2</c>
+	/// can look up the SID for any account in any domain in a Windows forest.
+	/// </para>
+	/// <para>
+	/// The LsaLookupNames function is superseded by the <c>LsaLookupNames2</c> function. Applications should use the
+	/// <c>LsaLookupNames2</c> function to ensure future compatibility.
+	/// </para>
+	/// <para>
+	/// This function differs from the LsaLookupNames function in that <c>LsaLookupNames2</c> returns each SID as a single element, while
+	/// <c>LsaLookupNames</c> divides each SID into an RID/domain pair.
+	/// </para>
+	/// </summary>
+	/// <param name="PolicyHandle">
+	/// <para>
+	/// A handle to a Policy object. The handle must have the POLICY_LOOKUP_NAMES access right. For more information, see Opening a
+	/// Policy Object Handle.
+	/// </para>
+	/// </param>
+	/// <param name="Flags">
+	/// <para>Values that control the behavior of this function. The following value is currently defined.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>LSA_LOOKUP_ISOLATED_AS_LOCAL 0x80000000</term>
+	/// <term>
+	/// The function searches only on the local systems for names that do not specify a domain. The function does search on remote
+	/// systems for names that do specify a domain.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Names">
+	/// <para>
+	/// Pointer to an array of LSA_UNICODE_STRING structures that contain the names to look up. These strings can be the names of user,
+	/// group, or local group accounts, or the names of domains. Domain names can be DNS domain names or NetBIOS domain names.
+	/// </para>
+	/// <para>For more information about the format of the name strings, see Remarks.</para>
+	/// </param>
+	/// <param name="ReferencedDomains">
+	/// <para>
+	/// Receives a pointer to an LSA_REFERENCED_DOMAIN_LIST structure. The <c>Domains</c> member of this structure is an array that
+	/// contains an entry for each domain in which a name was found. The <c>DomainIndex</c> member of each entry in the Sids array is the
+	/// index of the <c>Domains</c> array entry for the domain in which the name was found.
+	/// </para>
+	/// <para>
+	/// When you have finished using the returned pointer, free it by calling the LsaFreeMemory function. This memory must be freed even
+	/// when the function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+	/// </para>
+	/// </param>
+	/// <param name="Sids">
+	/// <para>
+	/// Receives a pointer to an array of LSA_TRANSLATED_SID2 structures. Each entry in the Sids array contains the SID information for
+	/// the corresponding entry in the Names array.
+	/// </para>
+	/// <para>
+	/// When you have finished using the returned pointer, free it by calling the LsaFreeMemory function. This memory must be freed even
+	/// when the function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SOME_NOT_MAPPED</term>
+	/// <term>Some of the names could not be translated. This is an informational-level return value.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>All of the names were found and successfully translated.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If the function fails, the return value is the following <c>NTSTATUS</c> value or one of the LSA Policy Function Return Values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_NONE_MAPPED</term>
+	/// <term>None of the names were translated.</term>
+	/// </item>
+	/// </list>
+	/// <para>Use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Use fully qualified account names (for example, DomainName&lt;i&gt;UserName) instead of isolated names (for example, UserName).
+	/// Fully qualified names are unambiguous and provide better performance when the lookup is performed. This function also supports
+	/// fully qualified DNS names (for example, Example.Example.com&lt;i&gt;UserName) and user principal names (UPN) (for example, Someone@Example.com).
+	/// </para>
+	/// <para>
+	/// Translation of isolated names introduces the possibility of name collisions because the same name may be used in multiple
+	/// domains. The <c>LsaLookupNames2</c> function uses the following algorithm to translate isolated names.
+	/// </para>
+	/// <para><c>To translate isolated names</c></para>
+	/// <list type="number">
+	/// <item>
+	/// <term>
+	/// If the name is a well-known name, such as Local or Interactive, the function returns the corresponding well-known security
+	/// identifier (SID).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is the name of the built-in domain, the function returns the SID of that domain.</term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is the name of the account domain, the function returns the SID of that domain.</term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is the name of the primary domain, the function returns the SID of that domain.</term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is one of the names of the trusted domain, the function returns the SID of that domain.</term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is a user, group, or local group account in the built-in domain, the function returns the SID of that account.</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If the name is a user, group, or local group account in the account domain on the local system, the function returns the SID of
+	/// that account.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>If the name is a user, group, or a local group in the primary domain, the function returns the SID of that account.</term>
+	/// </item>
+	/// <item>
+	/// <term>After looking in the primary domain, the function looks in each of the primary domain's trusted domains.</term>
+	/// </item>
+	/// <item>
+	/// <term>Otherwise, the name is not translated.</term>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsalookupnames2 NTSTATUS LsaLookupNames2( LSA_HANDLE
+	// PolicyHandle, ULONG Flags, ULONG Count, PLSA_UNICODE_STRING Names, PLSA_REFERENCED_DOMAIN_LIST *ReferencedDomains,
+	// PLSA_TRANSLATED_SID2 *Sids );
+	[PInvokeData("ntsecapi.h", MSDNShortId = "fe219070-6a00-4b8c-b2e4-2ad290a1cb9c")]
+	public static NTStatus LsaLookupNames2(LSA_HANDLE PolicyHandle, LsaLookupNamesFlags Flags, string[] Names,
+		out SafeMemStruct<LSA_REFERENCED_DOMAIN_LIST, LocalMemoryMethods> ReferencedDomains, out SafeNativeArrayBase<LSA_TRANSLATED_SID, LocalMemoryMethods> Sids)
+	{
+		var ret = LsaLookupNames2(PolicyHandle, Flags, (uint)Names.Length, Names, out var hRefDom, out var hSids);
+		if (ret.Succeeded)
+		{
+			var phRefDom = hRefDom.ReleaseOwnership();
+			ReferencedDomains = new(phRefDom, true, Kernel32.LocalSize(phRefDom));
+			var phSids = hSids.ReleaseOwnership();
+			Sids = new(phSids, Kernel32.LocalSize(phSids), true, 0, Names.Length, false);
+		}
+		else
+		{
+			ReferencedDomains = new();
+			Sids = new();
+		}
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -1384,13 +1545,175 @@ public static partial class AdvApi32
 	// PLSA_REFERENCED_DOMAIN_LIST ReferencedDomains, ref PLSA_TRANSLATED_NAME Names);
 	[PInvokeData("ntsecapi.h", MSDNShortId = "6B30D1FF-35DC-44E8-A765-36A5761EC0CE")]
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
-	public static extern NTStatus LsaLookupSids2(
-		LSA_HANDLE PolicyHandle,
-		LsaLookupSidsFlags LookupOptions,
-		uint Count,
-		[In, MarshalAs(UnmanagedType.LPArray)] PSID[] Sids,
-		out SafeLsaMemoryHandle ReferencedDomains,
-		out SafeLsaMemoryHandle Names);
+	public static extern NTStatus LsaLookupSids2(LSA_HANDLE PolicyHandle, LsaLookupSidsFlags LookupOptions, uint Count,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PSID[] Sids, out SafeLsaMemoryHandle ReferencedDomains, out SafeLsaMemoryHandle Names);
+
+	/// <summary>
+	/// <para>
+	/// The <c>LsaLookupSids2</c> function looks up the names that correspond to an array of security identifiers (SIDs) and supports
+	/// Internet provider identities. If <c>LsaLookupSids2</c> cannot find a name that corresponds to a SID, the function returns the SID
+	/// in character form. You should use this function instead of the LsaLookupSids function.
+	/// </para>
+	/// </summary>
+	/// <param name="PolicyHandle">
+	/// <para>
+	/// A handle to a Policy object. This handle must have the POLICY_LOOKUP_NAMES access right. For more information, see Opening a
+	/// Policy Object Handle.
+	/// </para>
+	/// </param>
+	/// <param name="LookupOptions">
+	/// <para>Flags that modify the lookup behavior.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID</term>
+	/// <term>
+	/// Internet SIDs from identity providers for connected accounts are disallowed. Connected accounts are those accounts which have a
+	/// corresponding shadow account in the local SAM database connected to an online identity provider. For example, MicrosoftAccount is
+	/// a connected account.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>LSA_LOOKUP_PREFER_INTERNET_NAMES</term>
+	/// <term>
+	/// Returns the internet names. Otherwise the NT4 style name (domain\username) is returned. The exception is if the Microsoft Account
+	/// internet SID is specified, in which case the internet name is returned unless LSA_LOOKUP_DISALLOW_NON_WINDOWS_INTERNET_SID is specified.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>LSA_LOOKUP_RETURN_LOCAL_NAMES</term>
+	/// <term>Always returns local SAM account names even for Internet provider identities.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="Sids">
+	/// <para>
+	/// Pointer to an array of SID pointers to look up. The SIDs can be well-known SIDs, user, group, or local group account SIDs, or
+	/// domain SIDs.
+	/// </para>
+	/// </param>
+	/// <param name="ReferencedDomains">
+	/// <para>
+	/// Receives a pointer to a pointer to a LSA_REFERENCED_DOMAIN_LIST structure. The <c>Domains</c> member of this structure is an
+	/// array that contains an entry for each domain in which a SID was found. The entry for each domain contains the SID and flat name
+	/// of the domain. For Windows domains, the flat name is the NetBIOS name. For links with non–Windows domains, the flat name is the
+	/// identifying name of that domain, or it is <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// When you no longer need the information, pass the returned pointer to LsaFreeMemory. This memory must be freed even when the
+	/// function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+	/// </para>
+	/// </param>
+	/// <param name="Names">
+	/// <para>
+	/// Receives a pointer to an array of LSA_TRANSLATED_NAME structures. Each entry in the Names array contains the name information for
+	/// the corresponding entry in the Sids array. For account SIDs, the <c>Name</c> member of each structure contains the isolated name
+	/// of the account. For domain SIDs, the <c>Name</c> member is not valid.
+	/// </para>
+	/// <para>
+	/// The <c>DomainIndex</c> member of each entry in the Names array is the index of an entry in the <c>Domains</c> array returned in
+	/// the ReferencedDomains parameter. The index identifies the <c>Domains</c> array for the domain in which the SID was found.
+	/// </para>
+	/// <para>
+	/// When you no longer need the information, pass the returned pointer to LsaFreeMemory. This memory must be freed even when the
+	/// function fails with the either of the error codes <c>STATUS_NONE_MAPPED</c> or <c>STATUS_SOME_NOT_MAPPED</c>
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is one of the following <c>NTSTATUS</c> values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SOME_NOT_MAPPED</term>
+	/// <term>Some of the SIDs could not be translated. This is an informational-level return value.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>All of the SIDs were found and successfully translated.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If the function fails, the return value is an <c>NTSTATUS</c> code, which can be one of the following values or one of the LSA
+	/// Policy Function Return Values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_NONE_MAPPED</term>
+	/// <term>None of the SIDs were translated. This is an error-level return value.</term>
+	/// </item>
+	/// </list>
+	/// <para>You can use the LsaNtStatusToWinError function to convert the <c>NTSTATUS</c> code to a Windows error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The flag LSA_LOOKUP_PREFER_INTERNET_NAMES should be used for internet accounts such as MicrosoftAccount and Azure Active
+	/// Directory accounts. When this flag is specified then SID-Name lookup returns the UPN of the account in the form
+	/// MicrosoftAccount\foo@outlook.com or AzureAD\foo@contoso.com. For Microsoft Accounts both the local SAM SID and the internet SID
+	/// result in the UPN being returned if this flag is specified. If LSA_LOOKUP_PREFER_INTERNET_NAMES is not specified then for AAD
+	/// accounts the NT4 style name of the form AzureAD\foo is returned. The NT4 style name is machine specific and its usage should be
+	/// carefully evaluated and if possible should be avoided. For MicrosoftAccounts if LSA_LOOKUP_PREFER_INTERNET_NAMES is not specified
+	/// then the local SID of the account translates to the local SAM name, and the internet SID translates to the UPN name.
+	/// </para>
+	/// <para>
+	/// For account SIDs, the string returned in the <c>Name</c> member is the isolated name of the account (for example, user_name). If
+	/// you need the composite name of the account (for example, Acctg\user_name), get the domain name from the ReferencedDomains buffer
+	/// and append a backslash and the isolated name.
+	/// </para>
+	/// <para>If the <c>LsaLookupSids2</c> function cannot translate a SID, the function uses the following algorithm:</para>
+	/// <list type="number">
+	/// <item>
+	/// <term>
+	/// If the SID's domain is known, the ReferencedDomains buffer contains an entry for the domain, and the string returned in the Names
+	/// parameter is a Unicode representation of the account's relative identifier (RID) from the SID.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If the SID's domain is not known, the string returned in the Names parameter is a Unicode representation of the entire SID, and
+	/// there is no domain record for this SID in the ReferencedDomains buffer.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// In addition to looking up SIDs for local accounts, local domain accounts, and explicitly trusted domain accounts,
+	/// <c>LsaLookupSids2</c> can look up SIDs for any account in any domain in the Windows forest, including SIDs that appear only in
+	/// the <c>SIDhistory</c> field of an account in the forest. The <c>SIDhistory</c> field stores the former SIDs of an account that
+	/// has been moved from another domain. To perform these searches, the function queries the global catalog of the forest.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsalookupsids2 NTSTATUS LsaLookupSids2( LSA_HANDLE
+	// PolicyHandle, ULONG LookupOptions, ULONG Count, PSID *Sids, PLSA_REFERENCED_DOMAIN_LIST *ReferencedDomains, PLSA_TRANSLATED_NAME
+	// *Names ); public static extern NTSTATUS LsaLookupSids2(LSA_HANDLE PolicyHandle, uint LookupOptions, uint Count, ref PSID Sids, ref
+	// PLSA_REFERENCED_DOMAIN_LIST ReferencedDomains, ref PLSA_TRANSLATED_NAME Names);
+	[PInvokeData("ntsecapi.h", MSDNShortId = "6B30D1FF-35DC-44E8-A765-36A5761EC0CE")]
+	public static NTStatus LsaLookupSids2(LSA_HANDLE PolicyHandle, LsaLookupSidsFlags LookupOptions, [In] PSID[] Sids,
+		out SafeMemStruct<LSA_REFERENCED_DOMAIN_LIST, LocalMemoryMethods> ReferencedDomains, out SafeNativeArrayBase<LSA_TRANSLATED_NAME, LocalMemoryMethods> Names)
+	{
+		var ret = LsaLookupSids2(PolicyHandle, LookupOptions, (uint)Sids.Length, Sids, out var hRefDom, out var hNames);
+		if (ret.Succeeded)
+		{
+			var phRefDom = hRefDom.ReleaseOwnership();
+			ReferencedDomains = new(phRefDom, true, Kernel32.LocalSize(phRefDom));
+			var phNames = hNames.ReleaseOwnership();
+			Names = new(phNames, Kernel32.LocalSize(phNames), true, 0, Sids.Length, false);
+		}
+		else
+		{
+			ReferencedDomains = new();
+			Names = new();
+		}
+		return ret;
+	}
 
 	/// <summary>
 	/// The <c>LsaNtStatusToWinError</c> function converts an NTSTATUS code returned by an LSA function to a Windows error code.
@@ -1414,7 +1737,7 @@ public static partial class AdvApi32
 	/// <returns>NTSTATUS</returns>
 	[PInvokeData("ntlsa.h")]
 	[DllImport(Lib.AdvApi32, ExactSpelling = true)]
-	public static extern NTStatus LsaOpenAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLSA_HANDLE AccountHandle);
+	public static extern NTStatus LsaOpenAccount(LSA_HANDLE PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, [AddAsCtor] out SafeLSA_HANDLE AccountHandle);
 
 	/// <summary>
 	/// <para>The <c>LsaOpenPolicy</c> function opens a handle to the Policy object on a local or remote system.</para>
@@ -1467,7 +1790,7 @@ public static partial class AdvApi32
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string? SystemName,
 		in LSA_OBJECT_ATTRIBUTES ObjectAttributes,
 		LsaPolicyRights DesiredAccess,
-		out SafeLSA_HANDLE PolicyHandle);
+		[AddAsCtor] out SafeLSA_HANDLE PolicyHandle);
 
 	/// <summary>
 	/// The LsaOpenPolicy function opens a handle to the Policy object on a local or remote system. You must run the process "As
@@ -1484,6 +1807,7 @@ public static partial class AdvApi32
 	/// </param>
 	/// <returns>A pointer to an LSA_HANDLE variable that receives a handle to the Policy object.</returns>
 	[PInvokeData("ntsecapi.h", MSDNShortId = "361bc962-1e97-4606-a835-cbce37692c55")]
+	[return: AddAsCtor]
 	public static SafeLSA_HANDLE LsaOpenPolicy(LsaPolicyRights DesiredAccess, string? SystemName = null)
 	{
 		LsaNtStatusToWinError(LsaOpenPolicy(SystemName, LSA_OBJECT_ATTRIBUTES.Empty, DesiredAccess, out var handle)).ThrowIfFailed();
@@ -1537,7 +1861,8 @@ public static partial class AdvApi32
 	// TrustedDomainHandle );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "6c55f8b4-d8a2-48e3-8074-b3ca22ce487a")]
-	public static extern NTStatus LsaOpenTrustedDomainByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName, ACCESS_MASK DesiredAccess, out SafeLSA_HANDLE TrustedDomainHandle);
+	public static extern NTStatus LsaOpenTrustedDomainByName(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string TrustedDomainName,
+		ACCESS_MASK DesiredAccess, [AddAsCtor] out SafeLSA_HANDLE TrustedDomainHandle);
 
 	/// <summary>The <c>LsaQueryDomainInformationPolicy</c> function retrieves domain information from the Policyobject.</summary>
 	/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
@@ -2566,13 +2891,13 @@ public static partial class AdvApi32
 	// #endif } LSA_FOREST_TRUST_BINARY_DATA, *PLSA_FOREST_TRUST_BINARY_DATA;
 	[PInvokeData("ntsecapi.h", MSDNShortId = "2ddcf54e-c30f-4146-8cb6-71fcdd42ae68")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct LSA_FOREST_TRUST_BINARY_DATA
+	public struct LSA_FOREST_TRUST_BINARY_DATA : IArrayStruct<byte>
 	{
 		/// <summary>The count of bytes in Buffer.</summary>
 		public uint Length;
 
 		/// <summary>The trust record. If the Length field has a value other than 0, this field MUST NOT be NULL.</summary>
-		public IntPtr Buffer;
+		public ArrayPointer<byte> Buffer;
 	}
 
 	/// <summary>
@@ -2583,7 +2908,7 @@ public static partial class AdvApi32
 	// LSA_FOREST_TRUST_COLLISION_INFORMATION, *PLSA_FOREST_TRUST_COLLISION_INFORMATION;
 	[PInvokeData("ntsecapi.h", MSDNShortId = "a4a3b040-c074-4756-a30f-408d8bca87ba")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct LSA_FOREST_TRUST_COLLISION_INFORMATION
+	public struct LSA_FOREST_TRUST_COLLISION_INFORMATION : IArrayStruct<LSA_FOREST_TRUST_COLLISION_RECORD>
 	{
 		/// <summary>Number of LSA_FOREST_TRUST_COLLISION_RECORD structures in the array pointed to by the <c>Entries</c> member.</summary>
 		public uint RecordCount;
@@ -2592,7 +2917,7 @@ public static partial class AdvApi32
 		/// Pointer to a pointer to an array of LSA_FOREST_TRUST_COLLISION_RECORD structures, each of which contains information about a
 		/// single collision.
 		/// </summary>
-		public IntPtr Entries;
+		public ArrayPointer<LSA_FOREST_TRUST_COLLISION_RECORD> Entries;
 	}
 
 	/// <summary>
@@ -2678,7 +3003,7 @@ public static partial class AdvApi32
 	// #endif #else PLSA_FOREST_TRUST_RECORD *Entries; #endif } LSA_FOREST_TRUST_INFORMATION, *PLSA_FOREST_TRUST_INFORMATION;
 	[PInvokeData("ntsecapi.h", MSDNShortId = "9e456462-59a9-4f18-ba47-92fc2350889b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct LSA_FOREST_TRUST_INFORMATION
+	public struct LSA_FOREST_TRUST_INFORMATION : IArrayStruct<LSA_FOREST_TRUST_RECORD>
 	{
 		/// <summary>A count of elements in the Entries array.</summary>
 		public uint RecordCount;
@@ -2686,7 +3011,7 @@ public static partial class AdvApi32
 		/// <summary>
 		/// An array of LSA_FOREST_TRUST_RECORD structures. If the RecordCount field has a value other than 0, this field MUST NOT be NULL.
 		/// </summary>
-		public IntPtr Entries;
+		public ArrayPointer<LSA_FOREST_TRUST_RECORD> Entries;
 	}
 
 	/// <summary>
@@ -2768,16 +3093,16 @@ public static partial class AdvApi32
 	// *PLSA_REFERENCED_DOMAIN_LIST; https://msdn.microsoft.com/en-us/library/windows/desktop/ms721834(v=vs.85).aspx
 	[PInvokeData("Ntsecapi.h", MSDNShortId = "ms721834")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct LSA_REFERENCED_DOMAIN_LIST
+	public struct LSA_REFERENCED_DOMAIN_LIST : IArrayStruct<LSA_TRUST_INFORMATION>
 	{
 		/// <summary>Specifies the number of entries in the Domains array.</summary>
 		public uint Entries;
 
 		/// <summary>Pointer to an array of LSA_TRUST_INFORMATION structures that identify the referenced domains.</summary>
-		public IntPtr Domains;
+		public ArrayPointer<LSA_TRUST_INFORMATION> Domains;
 
 		/// <summary>Gets the list of <see cref="LSA_TRUST_INFORMATION"/> structures from the <see cref="Domains"/> field.</summary>
-		public IEnumerable<LSA_TRUST_INFORMATION> DomainList => Domains.ToIEnum<LSA_TRUST_INFORMATION>((int)Entries);
+		public readonly ReadOnlySpan<LSA_TRUST_INFORMATION> DomainList => Domains.AsReadOnlySpan((int)Entries);
 	}
 
 	/// <summary>
@@ -2907,11 +3232,11 @@ public static partial class AdvApi32
 		*/
 
 		/// <summary>Gets the number of characters in the string.</summary>
-		public int Length => length / UnicodeEncoding.CharSize;
+		public readonly int Length => length / UnicodeEncoding.CharSize;
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => StringHelper.GetString((IntPtr)Buffer, CharSet.Unicode, length) ?? string.Empty;
+		public override readonly string ToString() => StringHelper.GetString((IntPtr)Buffer, CharSet.Unicode, length) ?? string.Empty;
 
 		/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -2926,7 +3251,7 @@ public static partial class AdvApi32
 
 		/// <summary>A list of LsaForestTrustRecord entries that wrap LSA_FOREST_TRUST_RECORD.</summary>
 		/// <value>Returns a <see cref="List{LsaForestTrustRecord}"/> value.</value>
-		public List<LsaForestTrustRecord> Entries { get; } = new List<LsaForestTrustRecord>();
+		public List<LsaForestTrustRecord> Entries { get; } = [];
 
 		/// <summary>Creates a new instance from a memory pointer. This can fail if the memory is not allocated properly.</summary>
 		/// <param name="ptr">The memory pointer.</param>
@@ -2935,7 +3260,7 @@ public static partial class AdvApi32
 		{
 			var ret = new LsaForestTrustInformation();
 			var info = ptr.ToStructure<LSA_FOREST_TRUST_INFORMATION>();
-			foreach (var e in info.Entries.ToIEnum<LSA_FOREST_TRUST_RECORD>((int)info.RecordCount))
+			foreach (var e in info.Entries.ToArray((int)info.RecordCount))
 			{
 				if (e.ForestTrustType == LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast) break;
 				LsaForestTrustRecord rec = e.ForestTrustType switch
@@ -2969,7 +3294,11 @@ public static partial class AdvApi32
 		}
 
 		/// <summary>Releases the unmanaged resources used by this object, and optionally releases the managed resources.</summary>
-		void IDisposable.Dispose() => allocatedMemory?.Dispose();
+		void IDisposable.Dispose()
+		{
+			allocatedMemory?.Dispose();
+			GC.SuppressFinalize(this);
+		}
 
 		/// <summary>Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustDomainInfo.</summary>
 		[DebuggerDisplay("DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}")]
@@ -3166,7 +3495,7 @@ public static partial class AdvApi32
 		/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 		/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
 		public T[] ToArray<T>(int count, int prefixBytes = 0) =>
-			(IsInvalid ? null : handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)int.MaxValue : Size)) ?? new T[0];
+			(IsInvalid ? null : handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)int.MaxValue : Size)) ?? [];
 
 		/// <summary>
 		/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -3238,52 +3567,59 @@ public static partial class AdvApi32
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			if (pNativeData == IntPtr.Zero) return new string[0];
+			if (pNativeData == IntPtr.Zero) return Array.Empty<string>();
 			throw new InvalidOperationException(@"Unable to marshal LSA_UNICODE_STRING arrays from unmanaged to managed code.");
 		}
 	}
 
 	/// <summary>A custom marshaler for functions using LSA_UNICODE_STRING so that managed strings can be used.</summary>
 	/// <seealso cref="ICustomMarshaler"/>
+#if NET7_0_OR_GREATER
+	[System.Runtime.InteropServices.Marshalling.CustomMarshaller(typeof(string), System.Runtime.InteropServices.Marshalling.MarshalMode.Default, typeof(LsaUnicodeStringMarshaler.CustomMarshaller))]
+#endif
 	internal class LsaUnicodeStringMarshaler : ICustomMarshaler
 	{
 		internal static readonly int ssz = Marshal.SizeOf<LSA_UNICODE_STRING>();
 
 		public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringMarshaler();
 
-		public void CleanUpManagedData(object ManagedObj)
+		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
+
+		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) { unsafe { CustomMarshaller.Free((LSA_UNICODE_STRING*)pNativeData); } }
+
+		int ICustomMarshaler.GetNativeDataSize() => ssz;
+
+		IntPtr ICustomMarshaler.MarshalManagedToNative(object? ManagedObj) => MarshalValue(ManagedObj as string);
+
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => MarshalPtr(pNativeData)!;
+
+		internal static string? MarshalPtr(IntPtr ptr) { unsafe { return CustomMarshaller.ConvertToManaged((LSA_UNICODE_STRING*)ptr); } }
+
+		internal static IntPtr MarshalValue(string? value) { unsafe { return (IntPtr)CustomMarshaller.ConvertToUnmanaged(value); } }
+
+		internal static unsafe class CustomMarshaller
 		{
-		}
+			public static LSA_UNICODE_STRING* ConvertToUnmanaged(string? value)
+			{
+				if (value is null) return null;
+				var maxLen = (ushort)StringHelper.GetByteCount(value, true, CharSet.Unicode);
+				var lus = (LSA_UNICODE_STRING*)Marshal.AllocCoTaskMem(ssz + maxLen);
+				lus->length = (ushort)(maxLen - UnicodeEncoding.CharSize);
+				lus->MaximumLength = maxLen;
+				lus->Buffer = (char*)(lus + 1);
+				fixed (char* p = value)
+					Encoding.Unicode.GetBytes(p, maxLen / 2, (byte*)lus->Buffer, maxLen);
+				return lus;
+			}
 
-		public void CleanUpNativeData(IntPtr pNativeData)
-		{
-			if (pNativeData == IntPtr.Zero) return;
-			Marshal.FreeCoTaskMem(pNativeData);
-		}
+			public static string? ConvertToManaged(LSA_UNICODE_STRING* unmanaged)
+				=> unmanaged->Buffer == null ? null : new((char*)unmanaged->Buffer, 0, unmanaged->length);
 
-		public int GetNativeDataSize() => Marshal.SizeOf<LSA_UNICODE_STRING>();
-
-		public IntPtr MarshalManagedToNative(object? ManagedObj) => ManagedObj is string s ? MarshalValue(s) : IntPtr.Zero;
-
-		public object MarshalNativeToManaged(IntPtr pNativeData)
-		{
-			var s = MarshalPtr(pNativeData);
-			LsaFreeMemory(pNativeData);
-			return s ?? string.Empty;
-		}
-
-		internal static string? MarshalPtr(IntPtr ptr) => ptr == IntPtr.Zero ? null : StringHelper.GetString(ptr.Offset(4), CharSet.Unicode, Marshal.ReadInt16(ptr));
-
-		internal static IntPtr MarshalValue(string? value)
-		{
-			if (value is null) return IntPtr.Zero;
-			var lus = new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(value, false, CharSet.Unicode) };
-			lus.MaximumLength = (ushort)(lus.length + UnicodeEncoding.CharSize);
-			var mem = Marshal.AllocCoTaskMem(ssz + lus.MaximumLength);
-			lus.Buffer = mem.Offset(ssz);
-			mem.Write(lus);
-			StringHelper.Write(value, mem.Offset(ssz), out _, true, CharSet.Unicode, lus.MaximumLength);
-			return mem;
+			public static void Free(LSA_UNICODE_STRING* unmanaged)
+			{
+				if (unmanaged != null)
+					Marshal.FreeCoTaskMem((IntPtr)unmanaged);
+			}
 		}
 	}
 }

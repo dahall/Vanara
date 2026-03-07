@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -186,7 +188,7 @@ public static partial class AdvApi32
 	// CAPIDCount, PCENTRAL_ACCESS_POLICY *CAPs, PULONG CAPCount );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntlsa.h", MSDNShortId = "55D6FD6F-0FD5-41F6-967B-F5600E19C3EF")]
-	public static extern NTStatus LsaQueryCAPs([In] PSID[] CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
+	public static extern NTStatus LsaQueryCAPs([In, MarshalAs(UnmanagedType.LPArray)] PSID[] CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
 
 	/// <summary>
 	/// <para>Returns the Central Access Policies (CAPs) for the specified IDs.</para>
@@ -214,49 +216,96 @@ public static partial class AdvApi32
 	public static extern NTStatus LsaQueryCAPs([In] IntPtr CAPIDs, uint CAPIDCount, out SafeLsaMemoryHandle CAPs, out uint CAPCount);
 
 	/// <summary>
+	/// <para>Returns the Central Access Policies (CAPs) for the specified IDs.</para>
+	/// </summary>
+	/// <param name="CAPIDs">
+	/// <para>A pointer to a variable that contains an array of pointers to CAPIDs that identify the CAPs being queried.</para>
+	/// </param>
+	/// <param name="CAPs">
+	/// <para>Receives a pointer to an array of pointers to CENTRAL_ACCESS_POLICY structures representing the queried CAPs.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is STATUS_SUCCESS.</para>
+	/// <para>If the function fails, the return value is an NTSTATUS code, which can be one of the LSA Policy Function Return Values.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ntlsa/nf-ntlsa-lsaquerycaps NTSTATUS LsaQueryCAPs( PSID *CAPIDs, ULONG
+	// CAPIDCount, PCENTRAL_ACCESS_POLICY *CAPs, PULONG CAPCount );
+	[PInvokeData("ntlsa.h", MSDNShortId = "55D6FD6F-0FD5-41F6-967B-F5600E19C3EF")]
+	public static NTStatus LsaQueryCAPs([In] PSID[] CAPIDs, out CENTRAL_ACCESS_POLICY[] CAPs)
+	{
+		NTStatus status = LsaQueryCAPs(CAPIDs, (uint)CAPIDs.Length, out var pCaps, out var capCount);
+		CAPs = status.Succeeded && capCount > 0 ? pCaps.ToArray<CENTRAL_ACCESS_POLICY>((int)capCount) : [];
+		return status;
+	}
+
+	/// <summary>
 	/// <para>Represents a central access policy that contains a set of central access policy entries.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntlsa/ns-ntlsa-_central_access_policy typedef struct _CENTRAL_ACCESS_POLICY {
 	// PSID CAPID; LSA_UNICODE_STRING Name; LSA_UNICODE_STRING Description; LSA_UNICODE_STRING ChangeId; ULONG Flags; ULONG CAPECount;
 	// PCENTRAL_ACCESS_POLICY_ENTRY *CAPEs; } CENTRAL_ACCESS_POLICY, *PCENTRAL_ACCESS_POLICY;
 	[PInvokeData("ntlsa.h", MSDNShortId = "C1C2E8AE-0B7F-4620-9C27-31DAF683E342")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CENTRAL_ACCESS_POLICY
+	public class CENTRAL_ACCESS_POLICY : IVanaraMarshaler, IEnumerable<CENTRAL_ACCESS_POLICY_ENTRY>
 	{
 		/// <summary>
 		/// <para>The identifier of the central access policy.</para>
 		/// </summary>
-		public PSID CAPID;
+		public SafePSID CAPID { get; private set; }
 
 		/// <summary>
 		/// <para>The name of the central access policy.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING Name;
+		public string Name { get; private set; }
 
 		/// <summary>
 		/// <para>The description of the central access policy.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING Description;
+		public string Description { get; private set; }
 
 		/// <summary>
 		/// <para>An identifier that can be used to version the central access policy.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING ChangeId;
+		public string ChangeId { get; private set; }
 
-		/// <summary>
-		/// <para>Reserved.</para>
-		/// </summary>
-		public uint Flags;
-
-		/// <summary>
-		/// <para>The length of the buffer pointed to by the CAPEs field.</para>
-		/// </summary>
-		public uint CAPECount;
+		/// <summary>This field is reserved.</summary>
+		public uint Flags { get; private set; }
 
 		/// <summary>
 		/// <para>Pointer to a buffer of CENTRAL_ACCESS_POLICY_ENTRY pointers.</para>
 		/// </summary>
-		public IntPtr CAPEs;
+		public IReadOnlyList<CENTRAL_ACCESS_POLICY_ENTRY> CAPEs { get; private set; } = [];
+
+		private CENTRAL_ACCESS_POLICY(IntPtr pNativeData)
+		{
+			ref var v = ref pNativeData.AsRef<CENTRAL_ACCESS_POLICY_INT>();
+			CAPID = v.CAPID;
+			Name = v.Name;
+			Description = v.Description;
+			ChangeId = v.ChangeId;
+			Flags = v.Flags;
+			CAPEs = v.CAPECount == 0 ? [] : [.. v.CAPEs.ToArray((int)v.CAPECount)!.Select(c => new CENTRAL_ACCESS_POLICY_ENTRY(c))];
+		}
+
+		/// <inheritdoc/>
+		public IEnumerator<CENTRAL_ACCESS_POLICY_ENTRY> GetEnumerator() => CAPEs.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CENTRAL_ACCESS_POLICY_INT>();
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => new CENTRAL_ACCESS_POLICY(pNativeData);
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		struct CENTRAL_ACCESS_POLICY_INT
+		{
+			public PSID CAPID;
+			public LSA_UNICODE_STRING Name;
+			public LSA_UNICODE_STRING Description;
+			public LSA_UNICODE_STRING ChangeId;
+			public uint Flags;
+			public uint CAPECount;
+			public ArrayPointer<StructPointer<CENTRAL_ACCESS_POLICY_ENTRY.CENTRAL_ACCESS_POLICY_ENTRY_INT>> CAPEs;
+		}
+
 	}
 
 	/// <summary>
@@ -267,57 +316,66 @@ public static partial class AdvApi32
 	// LengthAppliesTo; PUCHAR AppliesTo; ULONG LengthSD; PSECURITY_DESCRIPTOR SD; ULONG LengthStagedSD; PSECURITY_DESCRIPTOR StagedSD;
 	// ULONG Flags; } CENTRAL_ACCESS_POLICY_ENTRY, *PCENTRAL_ACCESS_POLICY_ENTRY;
 	[PInvokeData("ntlsa.h", MSDNShortId = "8667848D-096C-422E-B4A6-38CC406F0F4A")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CENTRAL_ACCESS_POLICY_ENTRY
+	public class CENTRAL_ACCESS_POLICY_ENTRY
 	{
 		/// <summary>
 		/// <para>The name of the central access policy entry.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING Name;
+		public string Name { get; private set; }
 
 		/// <summary>
 		/// <para>The description of the central access policy entry.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING Description;
+		public string Description { get; private set; }
 
 		/// <summary>
 		/// <para>An identifier that can be used to version the central access policy entry.</para>
 		/// </summary>
-		public LSA_UNICODE_STRING ChangeId;
-
-		/// <summary>
-		/// <para>The length of the buffer pointed to by the AppliesTo field.</para>
-		/// </summary>
-		public uint LengthAppliesTo;
+		public string ChangeId { get; private set; }
 
 		/// <summary>
 		/// <para>A resource condition in binary form.</para>
 		/// </summary>
-		public IntPtr AppliesTo;
-
-		/// <summary>
-		/// <para>The length of the buffer pointed to by the SD field.</para>
-		/// </summary>
-		public uint LengthSD;
+		public byte[] AppliesTo { get; private set; }
 
 		/// <summary>
 		/// <para>A buffer of security descriptors associated with the entry.</para>
 		/// </summary>
-		public PSECURITY_DESCRIPTOR SD;
-
-		/// <summary>
-		/// <para>The length of the buffer pointed to by the StagedSD field.</para>
-		/// </summary>
-		public uint LengthStagedSD;
+		public SafePSECURITY_DESCRIPTOR SD { get; private set; }
 
 		/// <summary>
 		/// <para>A buffer of staged security descriptors associated with the entry.</para>
 		/// </summary>
-		public PSECURITY_DESCRIPTOR StagedSD;
+		public SafePSECURITY_DESCRIPTOR StagedSD { get; private set; }
 
-		/// <summary>
-		/// <para>This field is reserved.</para>
-		/// </summary>
-		public uint Flags;
+		/// <summary>This field is reserved.</summary>
+		public uint Flags { get; private set; }
+
+		internal CENTRAL_ACCESS_POLICY_ENTRY(StructPointer<CENTRAL_ACCESS_POLICY_ENTRY_INT> p)
+		{
+			ref var v = ref p.AsRef();
+			Name = v.Name;
+			Description = v.Description;
+			ChangeId = v.ChangeId;
+			AppliesTo = v.AppliesTo.ToByteArray(v.LengthAppliesTo) ?? [];
+			SD = new SafePSECURITY_DESCRIPTOR(v.SD.ToByteArray(v.LengthSD) ?? []);
+			StagedSD = new SafePSECURITY_DESCRIPTOR(v.StagedSD.ToByteArray(v.LengthStagedSD) ?? []);
+			Flags = v.Flags;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		internal struct CENTRAL_ACCESS_POLICY_ENTRY_INT
+		{
+			public LSA_UNICODE_STRING Name;
+			public LSA_UNICODE_STRING Description;
+			public LSA_UNICODE_STRING ChangeId;
+			public int LengthAppliesTo;
+			public IntPtr AppliesTo;
+			public int LengthSD;
+			public IntPtr SD;
+			public int LengthStagedSD;
+			public IntPtr StagedSD;
+			public uint Flags;
+		}
 	}
 }

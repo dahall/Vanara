@@ -1179,52 +1179,7 @@ public static partial class Kernel32
 	// dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd941688(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd941688")]
-	public static extern void RaiseFailFastException(ref EXCEPTION_RECORD pExceptionRecord, in CONTEXT pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
-
-	/// <summary>
-	/// Raises an exception that bypasses all exception handlers (frame or vector based). Raising this exception terminates the
-	/// application and invokes Windows Error Reporting, if Windows Error Reporting is enabled.
-	/// </summary>
-	/// <param name="pExceptionRecord">
-	/// <para>
-	/// A pointer to an <c>EXCEPTION_RECORD</c> structure that contains the exception information. You must specify the
-	/// <c>ExceptionAddress</c> and <c>ExceptionCode</c> members.
-	/// </para>
-	/// <para>
-	/// If this parameter is <c>NULL</c>, the function creates an exception record and sets the <c>ExceptionCode</c> member to
-	/// STATUS_FAIL_FAST_EXCEPTION. The function will also set the <c>ExceptionAddress</c> member if the dwFlags parameter contains the
-	/// FAIL_FAST_GENERATE_EXCEPTION_ADDRESS flag.
-	/// </para>
-	/// </param>
-	/// <param name="pContextRecord">
-	/// A pointer to a <c>CONTEXT</c> structure that contains the context information. If <c>NULL</c>, this function generates the
-	/// context (however, the context will not exactly match the context of the caller).
-	/// </param>
-	/// <param name="dwFlags">
-	/// <para>You can specify zero or the following flag that control this function's behavior:</para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>FAIL_FAST_GENERATE_EXCEPTION_ADDRESS0x1</term>
-	/// <term>
-	/// Causes RaiseFailFastException to set the ExceptionAddress of EXCEPTION_RECORD to the return address of this function (the next
-	/// instruction in the caller after the call to RaiseFailFastException). This function will set the exception address only if
-	/// ExceptionAddress is not NULL.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <returns>This function does not return a value.</returns>
-	// VOID WINAPI RaiseFailFastException( _In_opt_ PEXCEPTION_RECORD pExceptionRecord, _In_opt_ PCONTEXT pContextRecord, _In_ DWORD
-	// dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd941688(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("WinBase.h", MSDNShortId = "dd941688")]
-	public static extern void RaiseFailFastException([In, Optional] StructPointer<EXCEPTION_RECORD> pExceptionRecord, [In, Optional] ManagedStructPointer<CONTEXT> pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
+	public static extern void RaiseFailFastException([In, Optional, StructPointer(typeof(EXCEPTION_RECORD))] IntPtr pExceptionRecord, [In, Optional, StructPointer(typeof(CONTEXT))] IntPtr pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
 
 	/// <summary>Unregisters a vectored continue handler.</summary>
 	/// <param name="Handler">
@@ -1570,7 +1525,7 @@ public static partial class Kernel32
 		/// An associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional information
 		/// when nested exceptions occur.
 		/// </summary>
-		public EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.Value;
+		public readonly EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.Value;
 
 		/// <summary>
 		/// <para>

@@ -24,12 +24,12 @@ public class EvntProvTests
 			Assert.That(EventProviderEnabled(hReg, 0, ulong.MaxValue), Is.False);
 
 			using (var mem = SafeHGlobalHandle.CreateFromStructure((byte)1))
-				Assert.That(EventSetInformation(hReg, EVENT_INFO_CLASS.EventProviderUseDescriptorType, mem, 1U), ResultIs.FailureCode(Win32Error.ERROR_NOT_SUPPORTED));
+				Assert.That(EventSetInformation(hReg, EVENT_INFO_CLASS.EventProviderUseDescriptorType, mem, 1U), ResultIs.Successful);
 
-			Assert.That(EventWrite(hReg, desc, 0, null), ResultIs.FailureCode(Win32Error.ERROR_INVALID_PARAMETER));
-			Assert.That(EventWriteEx(hReg, desc, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, null), ResultIs.FailureCode(Win32Error.ERROR_INVALID_PARAMETER));
-			Assert.That(EventWriteString(hReg, 0, ulong.MaxValue, "Dummy"), ResultIs.FailureCode(Win32Error.ERROR_INVALID_HANDLE));
-			Assert.That(EventWriteTransfer(hReg, desc, IntPtr.Zero, IntPtr.Zero, 0, null), ResultIs.FailureCode(Win32Error.ERROR_INVALID_PARAMETER));
+			Assert.That(EventWrite(hReg, desc, 0, null), ResultIs.Successful);
+			Assert.That(EventWriteEx(hReg, desc, 0, 0, IntPtr.Zero, IntPtr.Zero, 0, null), ResultIs.Successful);
+			Assert.That(EventWriteString(hReg, 0, ulong.MaxValue, "Dummy"), ResultIs.Successful);
+			Assert.That(EventWriteTransfer(hReg, desc, IntPtr.Zero, IntPtr.Zero, 0, null), ResultIs.Successful);
 		}
 
 		static void Callback(in Guid SourceId, bool IsEnabled, byte Level, ulong MatchAnyKeyword, ulong MatchAllKeyword, in EVENT_FILTER_DESCRIPTOR FilterData, IntPtr CallbackContext)

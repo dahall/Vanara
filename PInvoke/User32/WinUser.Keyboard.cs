@@ -1165,7 +1165,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeyboardlayout HKL GetKeyboardLayout( DWORD idThread );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HKL GetKeyboardLayout(uint idThread);
+	public static extern HKL GetKeyboardLayout(uint idThread = 0);
 
 	/// <summary>
 	/// Retrieves the input locale identifiers (formerly called keyboard layout handles) corresponding to the current set of input

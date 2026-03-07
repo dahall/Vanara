@@ -516,7 +516,8 @@ public static partial class AdvApi32
 		/// <summary>
 		/// Pointer to an array of bytes that contains the type of authentication information indicated by the <c>AuthType</c> member.
 		/// </summary>
-		public IntPtr AuthInfo;
+		[SizeDef(nameof(AuthInfoLength))]
+		public ArrayPointer<byte> AuthInfo;
 	}
 
 	/// <summary>
@@ -612,11 +613,11 @@ public static partial class AdvApi32
 		/// number of audit event types supported by the system, the system does not change the auditing options for event types with
 		/// indexes equal to or higher than the value specified in <c>MaximumAuditEventCount</c>.
 		/// </summary>
-		public int MaximumAuditEventCount => EventAuditingOptions?.Length ?? 0;
+		public readonly int MaximumAuditEventCount => EventAuditingOptions?.Length ?? 0;
 
-		SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size * 3 + 36;
+		readonly SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size * 3 + 36;
 
-		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? obj)
+		readonly SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? obj)
 		{
 			if (obj is not POLICY_AUDIT_EVENTS_INFO i) throw new InvalidCastException();
 			var mem = new SafeHGlobalHandle(IntPtr.Size * 3 + 36);
@@ -693,7 +694,7 @@ public static partial class AdvApi32
 	/// <summary>[Undocumented] Used by <see cref="POLICY_DOMAIN_INFORMATION_CLASS.PolicyDomainEfsInformation"/>.</summary>
 	[PInvokeData("ntsecapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct POLICY_DOMAIN_EFS_INFO
+	public struct POLICY_DOMAIN_EFS_INFO : IArrayStruct<byte>
 	{
 		/// <summary>Length of the EFS Information blob</summary>
 		public uint InfoLength;
@@ -799,14 +800,14 @@ public static partial class AdvApi32
 		/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the authentication information for the incoming side of a
 		/// trust relationship.
 		/// </summary>
-		public IntPtr IncomingAuthenticationInformation;
+		public ArrayPointer<LSA_AUTH_INFORMATION> IncomingAuthenticationInformation;
 
 		/// <summary>
 		/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the previous authentication information (or old password)
 		/// for the incoming side of a trust relationship. There must be one of these for every entry in the
 		/// <c>IncomingAuthenticationInformation</c> array.
 		/// </summary>
-		public IntPtr IncomingPreviousAuthenticationInformation;
+		public ArrayPointer<LSA_AUTH_INFORMATION> IncomingPreviousAuthenticationInformation;
 
 		/// <summary>
 		/// Specifies the number of entries in the <c>OutgoingAuthenticationInformation</c> and
@@ -818,14 +819,14 @@ public static partial class AdvApi32
 		/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the authentication information for the outgoing side of a
 		/// trust relationship.
 		/// </summary>
-		public IntPtr OutgoingAuthenticationInformation;
+		public ArrayPointer<LSA_AUTH_INFORMATION> OutgoingAuthenticationInformation;
 
 		/// <summary>
 		/// Pointer to an array of LSA_AUTH_INFORMATION structures containing the previous authentication information (or old password)
 		/// for the outgoing side of a trust relationship. There must be one of these for every entry in the
 		/// <c>OutgoingAuthenticationInformation</c> array.
 		/// </summary>
-		public IntPtr OutgoingPreviousAuthenticationInformation;
+		public ArrayPointer<LSA_AUTH_INFORMATION> OutgoingPreviousAuthenticationInformation;
 	}
 
 	/// <summary>

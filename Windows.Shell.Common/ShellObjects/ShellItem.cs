@@ -478,7 +478,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	public IDataObject DataObject => GetHandler<IDataObject>(BHID.BHID_SFUIObject);
 
 	/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
-	public ShellFileInfo? FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : null;
+	public ShellFileInfo? FileInfo => IsFileSystem ? new ShellFileInfo(FileSystemPath!) : null;
 
 	/// <summary>Gets the file system path if this item is part of the file system.</summary>
 	/// <value>The file system path.</value>

@@ -664,7 +664,7 @@ public static partial class D3D12
 		/// <b>D3D12_ELEMENTS_LAYOUT_ARRAY</b>, this parameter is unused.
 		/// </para>
 		/// </summary>
-		public Span<D3D12_RAYTRACING_GEOMETRY_DESC> pGeometryDescs => Type == D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE.D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL &&
+		public readonly Span<D3D12_RAYTRACING_GEOMETRY_DESC> pGeometryDescs => Type == D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE.D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL &&
 			DescsLayout == D3D12_ELEMENTS_LAYOUT.D3D12_ELEMENTS_LAYOUT_ARRAY && NumDescs > 0 ? union.AsSpan<D3D12_RAYTRACING_GEOMETRY_DESC>(NumDescs) : [];
 
 		/// <summary>
@@ -672,7 +672,7 @@ public static partial class D3D12
 		/// <b>D3D12_ELEMENTS_LAYOUT_ARRAY_OF_POINTERS</b>, this field is used and points to an array of <i>NumDescs</i> pointers to
 		/// <c>D3D12_RAYTRACING_GEOMETRY_DESC</c> structures on the CPU, describing individual geometries.
 		/// </summary>
-		public unsafe D3D12_RAYTRACING_GEOMETRY_DESC*[] ppGeometryDescs
+		public readonly unsafe D3D12_RAYTRACING_GEOMETRY_DESC*[] ppGeometryDescs
 		{
 			get
 			{
@@ -819,13 +819,13 @@ public static partial class D3D12
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_CLEAR_VALUE other) => Format == other.Format &&
+		public readonly bool Equals(D3D12_CLEAR_VALUE other) => Format == other.Format &&
 			Format is DXGI_FORMAT.DXGI_FORMAT_D24_UNORM_S8_UINT or DXGI_FORMAT.DXGI_FORMAT_D16_UNORM or DXGI_FORMAT.DXGI_FORMAT_D32_FLOAT or
 			DXGI_FORMAT.DXGI_FORMAT_D32_FLOAT_S8X24_UINT ? u.DepthStencil.Depth == other.u.DepthStencil.Depth && u.DepthStencil.Stencil == other.u.DepthStencil.Stencil :
 			u.Color.Equals(other.u.Color);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (Format, u.Color).GetHashCode();
+		public override readonly int GetHashCode() => (Format, u.Color).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -1015,10 +1015,10 @@ public static partial class D3D12
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_CPU_DESCRIPTOR_HANDLE other) => ptr.Equals(other.ptr);
+		public readonly bool Equals(D3D12_CPU_DESCRIPTOR_HANDLE other) => ptr.Equals(other.ptr);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => 53357169 + ptr.GetHashCode();
+		public override readonly int GetHashCode() => 53357169 + ptr.GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -3654,10 +3654,10 @@ public static partial class D3D12
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_GPU_DESCRIPTOR_HANDLE other) => ptr.Equals(other.ptr);
+		public readonly bool Equals(D3D12_GPU_DESCRIPTOR_HANDLE other) => ptr.Equals(other.ptr);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => 53357169 + ptr.GetHashCode();
+		public override readonly int GetHashCode() => 53357169 + ptr.GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -4045,7 +4045,7 @@ public static partial class D3D12
 		public bool Equals(D3D12_HEAP_DESC other) => SizeInBytes == other.SizeInBytes && Properties.Equals(other.Properties) && Alignment == other.Alignment && Flags == other.Flags;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (SizeInBytes, Properties, Alignment, Flags).GetHashCode();
+		public override readonly int GetHashCode() => (SizeInBytes, Properties, Alignment, Flags).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -4194,10 +4194,10 @@ public static partial class D3D12
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_HEAP_PROPERTIES other) => Type == other.Type && CPUPageProperty == other.CPUPageProperty && MemoryPoolPreference == other.MemoryPoolPreference && CreationNodeMask == other.CreationNodeMask && VisibleNodeMask == other.VisibleNodeMask;
+		public readonly bool Equals(D3D12_HEAP_PROPERTIES other) => Type == other.Type && CPUPageProperty == other.CPUPageProperty && MemoryPoolPreference == other.MemoryPoolPreference && CreationNodeMask == other.CreationNodeMask && VisibleNodeMask == other.VisibleNodeMask;
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (Type, CPUPageProperty, MemoryPoolPreference, CreationNodeMask, VisibleNodeMask).GetHashCode();
+		public override readonly int GetHashCode() => (Type, CPUPageProperty, MemoryPoolPreference, CreationNodeMask, VisibleNodeMask).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -6553,7 +6553,7 @@ public static partial class D3D12
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_RESOURCE_DESC other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width &&
+		public readonly bool Equals(D3D12_RESOURCE_DESC other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width &&
 			Height == other.Height && DepthOrArraySize == other.DepthOrArraySize && MipLevels == other.MipLevels && Format == other.Format &&
 			EqualityComparer<DXGI_SAMPLE_DESC>.Default.Equals(SampleDesc, other.SampleDesc) && Layout == other.Layout && Flags == other.Flags;
 
@@ -6636,13 +6636,13 @@ public static partial class D3D12
 			mipLevels, format, 1, 0, layout, flags);
 
 		/// <summary>Gets the depth.</summary>
-		public ushort Depth => (ushort)(Dimension == D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
+		public readonly ushort Depth => (ushort)(Dimension == D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
 
 		/// <summary>Gets the size of the array.</summary>
-		public ushort ArraySize => (ushort)(Dimension != D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
+		public readonly ushort ArraySize => (ushort)(Dimension != D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
 
 		/// <summary>Gets the number of planes.</summary>
-		public byte PlaneCount([In] ID3D12Device pDevice) => D3D12GetFormatPlaneCount(pDevice, Format);
+		public readonly byte PlaneCount([In] ID3D12Device pDevice) => D3D12GetFormatPlaneCount(pDevice, Format);
 
 		/// <summary>Get the number of subresourceses.</summary>
 		public uint Subresources([In] ID3D12Device pDevice) => (uint)MipLevels * ArraySize * PlaneCount(pDevice);
@@ -6651,7 +6651,7 @@ public static partial class D3D12
 		public uint CalcSubresource(uint MipSlice, uint ArraySlice, uint PlaneSlice) => D3D12CalcSubresource(MipSlice, ArraySlice, PlaneSlice, MipLevels, ArraySize);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags).GetHashCode();
+		public override readonly int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags).GetHashCode();
 	}
 
 	/// <summary>Describes a resource, such as a texture, including a mip region. This structure is used in several methods.</summary>
@@ -6714,7 +6714,7 @@ public static partial class D3D12
 		/// <summary>Determines whether the specified object is equal to the current object.</summary>
 		/// <param name="other">The object to compare with the current object.</param>
 		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-		public bool Equals(D3D12_RESOURCE_DESC1 other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width &&
+		public readonly bool Equals(D3D12_RESOURCE_DESC1 other) => Dimension == other.Dimension && Alignment == other.Alignment && Width == other.Width &&
 			Height == other.Height && DepthOrArraySize == other.DepthOrArraySize && MipLevels == other.MipLevels && Format == other.Format &&
 			EqualityComparer<DXGI_SAMPLE_DESC>.Default.Equals(SampleDesc, other.SampleDesc) && Layout == other.Layout && Flags == other.Flags &&
 			EqualityComparer<D3D12_MIP_REGION>.Default.Equals(SamplerFeedbackMipRegion, other.SamplerFeedbackMipRegion);
@@ -6759,13 +6759,13 @@ public static partial class D3D12
 			mipLevels, format, 1, 0, layout, flags);
 
 		/// <summary>Gets the depth.</summary>
-		public ushort Depth => (ushort)(Dimension == D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
+		public readonly ushort Depth => (ushort)(Dimension == D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
 
 		/// <summary>Gets the size of the array.</summary>
-		public ushort ArraySize => (ushort)(Dimension != D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
+		public readonly ushort ArraySize => (ushort)(Dimension != D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D ? DepthOrArraySize : 1u);
 
 		/// <summary>Gets the number of planes.</summary>
-		public byte PlaneCount([In] ID3D12Device pDevice) => D3D12_RESOURCE_DESC.D3D12GetFormatPlaneCount(pDevice, Format);
+		public readonly byte PlaneCount([In] ID3D12Device pDevice) => D3D12_RESOURCE_DESC.D3D12GetFormatPlaneCount(pDevice, Format);
 
 		/// <summary>Get the number of subresourceses.</summary>
 		public uint Subresources([In] ID3D12Device pDevice) => (uint)MipLevels * ArraySize * PlaneCount(pDevice);
@@ -6774,7 +6774,7 @@ public static partial class D3D12
 		public uint CalcSubresource(uint MipSlice, uint ArraySlice, uint PlaneSlice) => D3D12_RESOURCE_DESC.D3D12CalcSubresource(MipSlice, ArraySlice, PlaneSlice, MipLevels, ArraySize);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags, SamplerFeedbackMipRegion).GetHashCode();
+		public override readonly int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags, SamplerFeedbackMipRegion).GetHashCode();
 
 		/// <summary>
 		/// Fills in the mipmap and alignment values of pDesc when either members are zero. Used to replace an implicit field to an explicit
@@ -6929,31 +6929,26 @@ public static partial class D3D12
 	/// <b>D3D12_ROOT_DESCRIPTOR_TABLE</b> when you set <b>D3D12_ROOT_PARAMETER</b>'s <b>ParameterType</b> member to <c>D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE</c>.
 	/// </para>
 	/// </remarks>
+	/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+	/// <param name="ranges">The descriptor ranges.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_descriptor_table typedef struct
 	// D3D12_ROOT_DESCRIPTOR_TABLE { UINT NumDescriptorRanges; const D3D12_DESCRIPTOR_RANGE *pDescriptorRanges; } D3D12_ROOT_DESCRIPTOR_TABLE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_DESCRIPTOR_TABLE")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_DESCRIPTOR_TABLE
+	public struct D3D12_ROOT_DESCRIPTOR_TABLE(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE> ranges)
 	{
 		/// <summary>The number of descriptor ranges in the table layout.</summary>
-		public uint NumDescriptorRanges;
+		public uint NumDescriptorRanges = numRanges;
 
 		/// <summary>An array of <c>D3D12_DESCRIPTOR_RANGE</c> structures that describe the descriptor ranges.</summary>
-		public ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges;
+		public ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges = ranges;
 
 		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE.</summary>
 		/// <param name="ranges">The descriptor ranges.</param>
 		/// <param name="h">The allocated memory holding the data in <paramref name="ranges"/>.</param>
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
 		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(D3D12_DESCRIPTOR_RANGE[] ranges, out SafeAllocatedMemoryHandle h) =>
-			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
-
-		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE.</summary>
-		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
-		/// <param name="ranges">The descriptor ranges.</param>
-		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
-		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE> ranges) =>
-			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
+			new(ranges.Length, h = SafeCoTaskMemHandle.CreateFromList(ranges));
 	}
 
 	/// <summary>
@@ -6971,31 +6966,26 @@ public static partial class D3D12
 	/// </para>
 	/// <para>Refer to the helper structure <c>CD3DX12_ROOT_DESCRIPTOR_TABLE1</c>.</para>
 	/// </remarks>
+	/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+	/// <param name="ranges">The descriptor ranges.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_descriptor_table1 typedef struct
 	// D3D12_ROOT_DESCRIPTOR_TABLE1 { UINT NumDescriptorRanges; const D3D12_DESCRIPTOR_RANGE1 *pDescriptorRanges; } D3D12_ROOT_DESCRIPTOR_TABLE1;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_DESCRIPTOR_TABLE1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_DESCRIPTOR_TABLE1
+	public struct D3D12_ROOT_DESCRIPTOR_TABLE1(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE1> ranges)
 	{
 		/// <summary>The number of descriptor ranges in the table layout.</summary>
-		public uint NumDescriptorRanges;
+		public uint NumDescriptorRanges = numRanges;
 
 		/// <summary>An array of <c>D3D12_DESCRIPTOR_RANGE1</c> structures that describe the descriptor ranges.</summary>
-		public ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges;
+		public ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges = ranges;
 
 		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE1.</summary>
 		/// <param name="ranges">The descriptor ranges.</param>
 		/// <param name="h">The allocated memory holding the data in <paramref name="ranges"/>.</param>
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
 		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(D3D12_DESCRIPTOR_RANGE1[] ranges, out SafeAllocatedMemoryHandle h) =>
-			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
-
-		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE1.</summary>
-		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
-		/// <param name="ranges">The descriptor ranges.</param>
-		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
-		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE1> ranges) =>
-			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
+			new((uint)ranges.Length, h = SafeCoTaskMemHandle.CreateFromList(ranges));
 	}
 
 	/// <summary>Describes descriptors inline in the root signature version 1.1 that appear in shaders.</summary>
@@ -7109,7 +7099,7 @@ public static partial class D3D12
 			{
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
 				ShaderVisibility = visibility,
-				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE.Init(numRanges, pDescriptorRanges) }
+				u = new() { DescriptorTable = new(numRanges, pDescriptorRanges) }
 			};
 
 		/// <summary>Initializes with constants.</summary>
@@ -7247,7 +7237,7 @@ public static partial class D3D12
 			{
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
 				ShaderVisibility = visibility,
-				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE1.Init(numRanges, pDescriptorRanges) }
+				u = new() { DescriptorTable = new(numRanges, pDescriptorRanges) }
 			};
 
 		/// <summary>Initializes with constants.</summary>
@@ -7327,49 +7317,39 @@ public static partial class D3D12
 	/// </para>
 	/// <para>There is one graphics root signature, and one compute root signature.</para>
 	/// </remarks>
+	/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+	/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
+	/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+	/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
+	/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_signature_desc typedef struct D3D12_ROOT_SIGNATURE_DESC
 	// { UINT NumParameters; const D3D12_ROOT_PARAMETER *pParameters; UINT NumStaticSamplers; const D3D12_STATIC_SAMPLER_DESC
 	// *pStaticSamplers; D3D12_ROOT_SIGNATURE_FLAGS Flags; } D3D12_ROOT_SIGNATURE_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_SIGNATURE_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_SIGNATURE_DESC
+	public struct D3D12_ROOT_SIGNATURE_DESC(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 	{
 		/// <summary>
 		/// The number of slots in the root signature. This number is also the number of elements in the <i>pParameters</i> array.
 		/// </summary>
-		public uint NumParameters;
+		public uint NumParameters = cParameters;
 
 		/// <summary>An array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</summary>
-		public ArrayPointer<D3D12_ROOT_PARAMETER> pParameters;
+		public ArrayPointer<D3D12_ROOT_PARAMETER> pParameters = pParameters;
 
 		/// <summary>Specifies the number of static samplers.</summary>
-		public uint NumStaticSamplers;
+		public uint NumStaticSamplers = cStaticSamplers;
 
 		/// <summary>Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</summary>
-		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers;
+		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = pStaticSamplers;
 
 		/// <summary>
 		/// A combination of <c>D3D12_ROOT_SIGNATURE_FLAGS</c>-typed values that are combined by using a bitwise OR operation. The resulting
 		/// value specifies options for the root signature layout.
 		/// </summary>
-		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC"/> struct.</summary>
-		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
-		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
-		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
-		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
-		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER> pParameters, SizeT cStaticSamplers = default,
-			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
-			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
-		{
-			NumParameters = cParameters;
-			this.pParameters = pParameters;
-			NumStaticSamplers = cStaticSamplers;
-			this.pStaticSamplers = pStaticSamplers;
-			Flags = flags;
-		}
+		public D3D12_ROOT_SIGNATURE_FLAGS Flags = flags;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
@@ -7377,10 +7357,8 @@ public static partial class D3D12
 		/// <param name="flags">Specifies options for the root signature layout.</param>
 		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
 		public D3D12_ROOT_SIGNATURE_DESC([Optional] D3D12_ROOT_PARAMETER[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
+			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle) : this((uint?)pParameters?.Length ?? 0, default, (uint?)pStaticSamplers?.Length ?? 0, default, flags)
 		{
-			NumParameters = (uint?)pParameters?.Length ?? 0;
-			NumStaticSamplers = (uint?)pStaticSamplers?.Length ?? 0; ;
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
@@ -7404,52 +7382,41 @@ public static partial class D3D12
 					this.pStaticSamplers = memoryHandle.DangerousGetHandle().Offset(sz);
 				}
 			}
-			Flags = flags;
 		}
 	}
 
 	/// <summary>Describes the layout of a root signature version 1.1.</summary>
 	/// <remarks>Use this structure with the <c>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</c> structure.</remarks>
+	/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+	/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
+	/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+	/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
+	/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_signature_desc1 typedef struct
 	// D3D12_ROOT_SIGNATURE_DESC1 { UINT NumParameters; const D3D12_ROOT_PARAMETER1 *pParameters; UINT NumStaticSamplers; const
 	// D3D12_STATIC_SAMPLER_DESC *pStaticSamplers; D3D12_ROOT_SIGNATURE_FLAGS Flags; } D3D12_ROOT_SIGNATURE_DESC1;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_SIGNATURE_DESC1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_SIGNATURE_DESC1
+	public struct D3D12_ROOT_SIGNATURE_DESC1(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 	{
 		/// <summary>
 		/// The number of slots in the root signature. This number is also the number of elements in the <i>pParameters</i> array.
 		/// </summary>
-		public uint NumParameters;
+		public uint NumParameters = cParameters;
 
 		/// <summary>An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</summary>
-		public ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters;
+		public ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters = pParameters;
 
 		/// <summary>Specifies the number of static samplers.</summary>
-		public uint NumStaticSamplers;
+		public uint NumStaticSamplers = cStaticSamplers;
 
 		/// <summary>Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</summary>
-		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers;
+		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = pStaticSamplers;
 
 		/// <summary>Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</summary>
-		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC1"/> struct.</summary>
-		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
-		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
-		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
-		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
-		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC1(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
-			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
-			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
-		{
-			NumParameters = cParameters;
-			this.pParameters = pParameters;
-			NumStaticSamplers = cStaticSamplers;
-			this.pStaticSamplers = pStaticSamplers;
-			Flags = flags;
-		}
+		public D3D12_ROOT_SIGNATURE_FLAGS Flags = flags;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC1"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
@@ -7457,10 +7424,8 @@ public static partial class D3D12
 		/// <param name="flags">Specifies options for the root signature layout.</param>
 		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
 		public D3D12_ROOT_SIGNATURE_DESC1([Optional] D3D12_ROOT_PARAMETER1[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
+			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle) : this((uint?)pParameters?.Length ?? 0, default, (uint?)pStaticSamplers?.Length ?? 0, default, flags)
 		{
-			NumParameters = (uint?)pParameters?.Length ?? 0;
-			NumStaticSamplers = (uint?)pStaticSamplers?.Length ?? 0; ;
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
@@ -7484,49 +7449,37 @@ public static partial class D3D12
 					this.pStaticSamplers = memoryHandle.DangerousGetHandle().Offset(sz);
 				}
 			}
-			Flags = flags;
 		}
-
 	}
 
 	/// <summary>Undocumented</summary>
+	/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+	/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
+	/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+	/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC1</c> structures.</param>
+	/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_VERSIONED_ROOT_SIGNATURE_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_SIGNATURE_DESC2
+	public struct D3D12_ROOT_SIGNATURE_DESC2(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 	{
 		/// <summary>
 		/// The number of slots in the root signature. This number is also the number of elements in the <i>pParameters</i> array.
 		/// </summary>
-		public uint NumParameters;
+		public uint NumParameters = cParameters;
 
 		/// <summary>An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</summary>
-		public ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters;
+		public ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters = pParameters;
 
 		/// <summary>Specifies the number of static samplers.</summary>
-		public uint NumStaticSamplers;
+		public uint NumStaticSamplers = cStaticSamplers;
 
 		/// <summary>Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC1</c> structures.</summary>
-		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers;
+		public ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers = pStaticSamplers;
 
 		/// <summary>Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</summary>
-		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC2"/> struct.</summary>
-		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
-		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
-		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
-		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC1</c> structures.</param>
-		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC2(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
-			ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers = default,
-			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
-		{
-			NumParameters = cParameters;
-			this.pParameters = pParameters;
-			NumStaticSamplers = cStaticSamplers;
-			this.pStaticSamplers = pStaticSamplers;
-			Flags = flags;
-		}
+		public D3D12_ROOT_SIGNATURE_FLAGS Flags = flags;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC2"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
@@ -7534,10 +7487,8 @@ public static partial class D3D12
 		/// <param name="flags">Specifies options for the root signature layout.</param>
 		/// <param name="memoryHandle">The memory allocated for the arrays.</param>
 		public D3D12_ROOT_SIGNATURE_DESC2([Optional] D3D12_ROOT_PARAMETER1[]? pParameters, [Optional] D3D12_STATIC_SAMPLER_DESC1[]? pStaticSamplers,
-			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
+			[Optional] D3D12_ROOT_SIGNATURE_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle) : this((uint?)pParameters?.Length ?? 0, default, (uint?)pStaticSamplers?.Length ?? 0, default, flags)
 		{
-			NumParameters = (uint?)pParameters?.Length ?? 0;
-			NumStaticSamplers = (uint?)pStaticSamplers?.Length ?? 0; ;
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
@@ -7561,7 +7512,6 @@ public static partial class D3D12
 					this.pStaticSamplers = memoryHandle.DangerousGetHandle().Offset(sz);
 				}
 			}
-			Flags = flags;
 		}
 	}
 
@@ -9602,47 +9552,35 @@ public static partial class D3D12
 	/// SV_RenderTargetArrayIndex and SV_ViewportArrayIndex values are added.
 	/// </para>
 	/// </remarks>
+	/// <param name="cViewInstance">The number of views to be used, up to D3D12_MAX_VIEW_INSTANCE_COUNT.</param>
+	/// <param name="pViewInstanceLocations">The view instance locations.</param>
+	/// <param name="flags">Configures view instancing with additional options.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_view_instancing_desc typedef struct
 	// D3D12_VIEW_INSTANCING_DESC { UINT ViewInstanceCount; const D3D12_VIEW_INSTANCE_LOCATION *pViewInstanceLocations;
 	// D3D12_VIEW_INSTANCING_FLAGS Flags; } D3D12_VIEW_INSTANCING_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_VIEW_INSTANCING_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_VIEW_INSTANCING_DESC
+	public struct D3D12_VIEW_INSTANCING_DESC([Optional] SizeT cViewInstance, [In, Optional] ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations,
+			[Optional] D3D12_VIEW_INSTANCING_FLAGS flags)
 	{
 		/// <summary>Specifies the number of views to be used, up to D3D12_MAX_VIEW_INSTANCE_COUNT.</summary>
-		public uint ViewInstanceCount;
+		public uint ViewInstanceCount = cViewInstance;
 
 		/// <summary>
 		/// The address of a memory location that contains <b>ViewInstanceCount</b> view instance location structures that specify the
 		/// location of viewport/scissor and render target details of each view instance.
 		/// </summary>
-		public ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations;
+		public ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations = pViewInstanceLocations;
 
 		/// <summary>Configures view instancing with additional options.</summary>
-		public D3D12_VIEW_INSTANCING_FLAGS Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEW_INSTANCING_DESC"/> struct.</summary>
-		/// <param name="cViewInstance">The number of views to be used, up to D3D12_MAX_VIEW_INSTANCE_COUNT.</param>
-		/// <param name="pViewInstanceLocations">The view instance locations.</param>
-		/// <param name="flags">Configures view instancing with additional options.</param>
-		public D3D12_VIEW_INSTANCING_DESC([Optional] SizeT cViewInstance, [In, Optional] ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations,
-			[Optional] D3D12_VIEW_INSTANCING_FLAGS flags)
-		{
-			ViewInstanceCount = cViewInstance;
-			this.pViewInstanceLocations = pViewInstanceLocations;
-			Flags = flags;
-		}
+		public D3D12_VIEW_INSTANCING_FLAGS Flags = flags;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEW_INSTANCING_DESC"/> struct.</summary>
 		/// <param name="pViewInstanceLocations">The view instance locations.</param>
 		/// <param name="flags">Configures view instancing with additional options.</param>
 		/// <param name="memoryHandle">A memory handle to allocated memory for <paramref name="pViewInstanceLocations"/>.</param>
-		public D3D12_VIEW_INSTANCING_DESC([In] D3D12_VIEW_INSTANCE_LOCATION[]? pViewInstanceLocations, D3D12_VIEW_INSTANCING_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle)
-		{
-			ViewInstanceCount = (uint?)pViewInstanceLocations?.Length ?? 0;
-			this.pViewInstanceLocations = memoryHandle = SafeCoTaskMemHandle.CreateFromList(pViewInstanceLocations ?? []);
-			Flags = flags;
-		}
+		public D3D12_VIEW_INSTANCING_DESC([In] D3D12_VIEW_INSTANCE_LOCATION[]? pViewInstanceLocations, D3D12_VIEW_INSTANCING_FLAGS flags, out SafeAllocatedMemoryHandle memoryHandle) :
+			this((uint?)pViewInstanceLocations?.Length ?? 0, memoryHandle = SafeCoTaskMemHandle.CreateFromList(pViewInstanceLocations ?? []), flags) { }
 	}
 
 	/// <summary>Describes the dimensions of a viewport.</summary>
@@ -9650,46 +9588,36 @@ public static partial class D3D12
 	/// Pass an array of these structures to the <i>pViewports</i> parameter in a call to <c>ID3D12GraphicsCommandList::RSSetViewports</c>
 	/// to set viewports for the display.
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="D3D12_VIEWPORT"/> struct.</remarks>
+	/// <param name="topLeftX">X position of the left hand side of the viewport.</param>
+	/// <param name="topLeftY">Y position of the top of the viewport.</param>
+	/// <param name="width">Width of the viewport.</param>
+	/// <param name="height">Height of the viewport.</param>
+	/// <param name="minDepth">Minimum depth of the viewport. Ranges between 0 and 1.</param>
+	/// <param name="maxDepth">Maximum depth of the viewport. Ranges between 0 and 1.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_viewport typedef struct D3D12_VIEWPORT { FLOAT TopLeftX;
 	// FLOAT TopLeftY; FLOAT Width; FLOAT Height; FLOAT MinDepth; FLOAT MaxDepth; } D3D12_VIEWPORT;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_VIEWPORT")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_VIEWPORT
+	public struct D3D12_VIEWPORT(float topLeftX, float topLeftY, float width, float height, float minDepth = D3D12_MIN_DEPTH, float maxDepth = D3D12_MAX_DEPTH)
 	{
 		/// <summary>X position of the left hand side of the viewport.</summary>
-		public float TopLeftX;
+		public float TopLeftX = topLeftX;
 
 		/// <summary>Y position of the top of the viewport.</summary>
-		public float TopLeftY;
+		public float TopLeftY = topLeftY;
 
 		/// <summary>Width of the viewport.</summary>
-		public float Width;
+		public float Width = width;
 
 		/// <summary>Height of the viewport.</summary>
-		public float Height;
+		public float Height = height;
 
 		/// <summary>Minimum depth of the viewport. Ranges between 0 and 1.</summary>
-		public float MinDepth;
+		public float MinDepth = minDepth;
 
 		/// <summary>Maximum depth of the viewport. Ranges between 0 and 1.</summary>
-		public float MaxDepth;
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEWPORT"/> struct.</summary>
-		/// <param name="topLeftX">X position of the left hand side of the viewport.</param>
-		/// <param name="topLeftY">Y position of the top of the viewport.</param>
-		/// <param name="width">Width of the viewport.</param>
-		/// <param name="height">Height of the viewport.</param>
-		/// <param name="minDepth">Minimum depth of the viewport. Ranges between 0 and 1.</param>
-		/// <param name="maxDepth">Maximum depth of the viewport. Ranges between 0 and 1.</param>
-		public D3D12_VIEWPORT(float topLeftX, float topLeftY, float width, float height, float minDepth = D3D12_MIN_DEPTH, float maxDepth = D3D12_MAX_DEPTH)
-		{
-			TopLeftX = topLeftX;
-			TopLeftY = topLeftY;
-			Width = width;
-			Height = height;
-			MinDepth = minDepth;
-			MaxDepth = maxDepth;
-		}
+		public float MaxDepth = maxDepth;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEWPORT"/> struct.</summary>
 		/// <param name="pResource">The resource.</param>
@@ -9698,7 +9626,8 @@ public static partial class D3D12
 		/// <param name="topLeftY">Y position of the top of the viewport.</param>
 		/// <param name="minDepth">Minimum depth of the viewport. Ranges between 0 and 1.</param>
 		/// <param name="maxDepth">Maximum depth of the viewport. Ranges between 0 and 1.</param>
-		public D3D12_VIEWPORT(ID3D12Resource pResource, int mipSlice = 0, float topLeftX = 0.0f, float topLeftY = 0.0f, float minDepth = D3D12_MIN_DEPTH, float maxDepth = D3D12_MAX_DEPTH)
+		public D3D12_VIEWPORT(ID3D12Resource pResource, int mipSlice = 0, float topLeftX = 0.0f, float topLeftY = 0.0f, float minDepth = D3D12_MIN_DEPTH, float maxDepth = D3D12_MAX_DEPTH) :
+			this(topLeftX, 0f, 0f, 0f, minDepth, maxDepth)
 		{
 			pResource.GetDesc(out var Desc);
 			ulong SubresourceWidth = Desc.Width >> mipSlice;
@@ -9706,22 +9635,17 @@ public static partial class D3D12
 			switch (Desc.Dimension)
 			{
 				case D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER:
-					TopLeftX = topLeftX;
-					TopLeftY = 0.0f;
 					Width = Desc.Width - topLeftX;
 					Height = 1.0f;
 					break;
 
 				case D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE1D:
-					TopLeftX = topLeftX;
-					TopLeftY = 0.0f;
 					Width = (SubresourceWidth != 0 ? SubresourceWidth : 1.0f) - topLeftX;
 					Height = 1.0f;
 					break;
 
 				case D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE2D:
 				case D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D:
-					TopLeftX = topLeftX;
 					TopLeftY = topLeftY;
 					Width = (SubresourceWidth != 0 ? SubresourceWidth : 1.0f) - topLeftX;
 					Height = (SubresourceHeight != 0 ? SubresourceHeight : 1.0f) - topLeftY;
@@ -9729,8 +9653,6 @@ public static partial class D3D12
 
 				default: break;
 			}
-			MinDepth = minDepth;
-			MaxDepth = maxDepth;
 		}
 	}
 

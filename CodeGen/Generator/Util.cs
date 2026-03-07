@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Xml;
@@ -55,7 +56,7 @@ internal static class Util
 		return (Convert.ToInt64(flags) & flagValue) == flagValue;
 	}
 
-	public static XmlDocument? GetDocs(this SyntaxNode node)
+	public static XmlDocument? GetDocs(this SyntaxNode node, XmlNodeChangedEventHandler? onInserted)
 	{
 		string docComment = node.GetLeadingTrivia().Where(t => t.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)).FirstOrDefault().ToString();
 		if (string.IsNullOrEmpty(docComment))
@@ -70,6 +71,8 @@ internal static class Util
 		// Load the xml docs into an XmlDocument
 		XmlDocument xmlDoc = new() { PreserveWhitespace = true };
 		xmlDoc.LoadXml(docComment);
+		if (onInserted is not null)
+			xmlDoc.NodeInserted += onInserted;
 
 		return xmlDoc;
 	}
@@ -89,6 +92,18 @@ internal static class Util
 				"LPStr" => CharSet.Ansi,
 				"LPWStr" => CharSet.Unicode,
 				"LPTStr" => CharSet.Auto,
+				_ => charSet
+			};
+		}
+		// Second, check the parameter's StructPointer or ArrayPointer attribute for a CharSet named argument
+		else if (decl.AttributeLists.SelectMany(al => al.Attributes).FirstOrDefault(a => a.Name.ToString() is "StructPointer" or "ArrayPointer")?.ArgumentList?.Arguments
+			.FirstOrDefault()?.Expression is MemberAccessExpressionSyntax maes2 && maes2.Expression.ToString() == "CharSet")
+		{
+			charSet = maes2.Name.ToString() switch
+			{
+				"Ansi" => CharSet.Ansi,
+				"Unicode" => CharSet.Unicode,
+				"Auto" => CharSet.Auto,
 				_ => charSet
 			};
 		}
@@ -220,6 +235,12 @@ internal static class Util
 		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : []);
 	}
 
+	public static ParameterSyntax WithoutAttributes(this ParameterSyntax p, params string[] attrNames)
+	{
+		var al = p.AttributeLists.SelectMany(al => al.Attributes).Where(a => !attrNames.Contains((a.Name as IdentifierNameSyntax)?.Identifier.Text ?? "")).ToList();
+		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : []);
+	}
+
 	public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer = null)
 	{
 		if (source is null) throw new ArgumentException("Source cannot be null", nameof(source));
@@ -296,6 +317,26 @@ internal static class Util
 		return node.WithLeadingTrivia(ParseLeadingTrivia(outXml.ToString()));
 	}
 
+	public static T WithInheritDocs<T>(this T node, MethodDeclarationSyntax meth) where T : SyntaxNode
+	{
+		if (meth is null) return node;
+
+		CrefParameterSyntax[] methParams = [.. meth.ParameterList.Parameters.Select(p => p.Modifiers.Any() ? CrefParameter(GetModifer(p.Modifiers), Clean(p.Type!)) : CrefParameter(Clean(p.Type!)))];
+		var trivia = Trivia(DocumentationCommentTrivia(SyntaxKind.SingleLineDocumentationCommentTrivia, [
+			XmlText($"/// "),
+			XmlEmptyElement(XmlName("inheritdoc"), [XmlCrefAttribute(NameMemberCref(IdentifierName(meth.Identifier), CrefParameterList(SeparatedList(methParams))))]),
+			XmlText(XmlTextNewLine("\r\n", false))
+		]));
+		return node.WithLeadingTrivia(trivia);
+		//return node.WithLeadingTrivia(Parse($"/// <inheritdoc cref=\"{methDecl}\" />\n"));
+		static SyntaxToken GetModifer(SyntaxTokenList mods) => mods.Any(SyntaxKind.InKeyword) ? TokenWithSpace(SyntaxKind.InKeyword) :
+			mods.Any(SyntaxKind.RefKeyword) ? TokenWithSpace(SyntaxKind.RefKeyword) :
+			mods.Any(SyntaxKind.OutKeyword) ? TokenWithSpace(SyntaxKind.OutKeyword) :
+			default;
+		static SyntaxToken TokenWithSpace(SyntaxKind kind) => Token(kind).WithTrailingTrivia(Space);
+		static TypeSyntax Clean(TypeSyntax ts) => ts.WithoutNullable().WithoutTrailingTrivia();
+	}
+
 	public static void AddDistinctBy<TSource, TKey>(this ICollection<TSource> source, IEnumerable<TSource> items, Func<TSource, TKey> keySelector)
 	{
 		foreach (var item in items)
@@ -354,4 +395,7 @@ internal static class Util
 		}
 		return summaryNode;
 	}
+
+	static uint uid = 0;
+	public static string UniqueName(string n) { if (uid == uint.MaxValue) uid = 0; else uid++; return $"{n}{uid}"; }
 }

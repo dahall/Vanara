@@ -975,18 +975,31 @@ public static partial class ComDlg32
 	/// Contains information the ChooseColor function uses to initialize the <c>Color</c> dialog box. After the user closes the dialog
 	/// box, the system returns information about the user's selection in this structure.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the CHOOSECOLOR structure for use with the Windows color selection dialog box.</remarks>
+	/// <remarks>
+	/// The lStructSize field is automatically set to the size of the CHOOSECOLOR structure. Use this constructor to configure the
+	/// structure before calling the ChooseColor function.
+	/// </remarks>
+	/// <param name="hwndOwner">
+	/// A handle to the window that owns the color dialog. Specify <see langword="null"/> if there is no owner window.
+	/// </param>
+	/// <param name="rgbResult">The initial color to display in the dialog, represented as a COLORREF value.</param>
+	/// <param name="flags">
+	/// A combination of CC flags that control the dialog's behavior. The default is CC.CC_RGBINIT, which initializes the dialog with the
+	/// specified color.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/ns-commdlg-choosecolora-r1 typedef struct tagCHOOSECOLORA { DWORD
 	// lStructSize; HWND hwndOwner; HWND hInstance; COLORREF rgbResult; COLORREF *lpCustColors; DWORD Flags; LPARAM lCustData;
 	// LPCCHOOKPROC lpfnHook; LPCSTR lpTemplateName; LPEDITMENU lpEditInfo; } CHOOSECOLORA, *LPCHOOSECOLORA;
 	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg.tagCHOOSECOLORA~r1")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct CHOOSECOLOR
+	public struct CHOOSECOLOR([Optional] HWND hwndOwner, COLORREF rgbResult, ComDlg32.CC flags = ComDlg32.CC.CC_RGBINIT)
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The length, in bytes, of the structure.</para>
 		/// </summary>
-		public uint lStructSize;
+		public uint lStructSize = (uint)Marshal.SizeOf<CHOOSECOLOR>();
 
 		/// <summary>
 		/// <para>Type: <c>HWND</c></para>
@@ -995,7 +1008,7 @@ public static partial class ComDlg32
 		/// dialog box has no owner.
 		/// </para>
 		/// </summary>
-		public HWND hwndOwner;
+		public HWND hwndOwner = hwndOwner;
 
 		/// <summary>
 		/// <para>Type: <c>HWND</c></para>
@@ -1018,7 +1031,7 @@ public static partial class ComDlg32
 		/// the RGB macro.
 		/// </para>
 		/// </summary>
-		public COLORREF rgbResult;
+		public COLORREF rgbResult = rgbResult;
 
 		/// <summary>
 		/// <para>Type: <c>COLORREF*</c></para>
@@ -1029,7 +1042,7 @@ public static partial class ComDlg32
 		/// value, use the RGB macro.
 		/// </para>
 		/// </summary>
-		public IntPtr lpCustColors;
+		public ArrayPointer<COLORREF> lpCustColors;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -1095,7 +1108,7 @@ public static partial class ComDlg32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public CC Flags;
+		public CC Flags = flags;
 
 		/// <summary>
 		/// <para>Type: <c>LPARAM</c></para>
@@ -1115,7 +1128,8 @@ public static partial class ComDlg32
 		/// unless the <c>CC_ENABLEHOOK</c> flag is set in the <c>Flags</c> member.
 		/// </para>
 		/// </summary>
-		public LPCCHOOKPROC lpfnHook;
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public LPCCHOOKPROC? lpfnHook;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
@@ -1127,7 +1141,10 @@ public static partial class ComDlg32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpTemplateName;
+		public string? lpTemplateName;
+
+		/// <summary>Undocumented</summary>
+		public IntPtr lpEditInfo;
 	}
 
 	/// <summary>

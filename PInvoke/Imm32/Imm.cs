@@ -1363,9 +1363,15 @@ public static partial class Imm32
 	/// <para>The application must call ImmReleaseContext when it is finished with the input context.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetcontext HIMC ImmGetContext( HWND hWnd );
-	[DllImport(Lib_Imm32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetContext")]
-	public static extern HIMC ImmGetContext(HWND hWnd);
+	public static SafeHIMC ImmGetContext(HWND hWnd)
+	{
+		IntPtr hIMC = ImmGetContext(hWnd);
+		return hIMC == IntPtr.Zero ? SafeHIMC.Null : new SafeHIMC(hIMC, hWnd, true);
+
+		[DllImport(Lib_Imm32, SetLastError = false, ExactSpelling = true)]
+		static extern IntPtr ImmGetContext(HWND hWnd);
+	}
 
 	/// <summary>Retrieves the conversion result list of characters or words without generating any IME-related messages.</summary>
 	/// <param name="hKL">Handle to the keyboard layout.</param>
@@ -2647,6 +2653,29 @@ public static partial class Imm32
 		/// <summary><c>szDescription</c> Array of characters that contains the description of the style.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = STYLE_DESCRIPTION_SIZE)]
 		public string szDescription;
+	}
+
+	/// <summary>Represents a safe handle for the input method context (HIMC) associated with a specific window.</summary>
+	/// <remarks>
+	/// This class ensures that the input method context is released properly when the handle is no longer needed. It is important to use
+	/// this class to manage the lifetime of HIMC handles to prevent resource leaks.
+	/// </remarks>
+	[AutoSafeHandle("ImmReleaseContext(hWnd, handle)", typeof(HIMC))]
+	public partial class SafeHIMC
+	{
+		private readonly HWND hWnd;
+
+		/// <summary>
+		/// Initializes a new instance of the SafeHIMC class using the specified input method context handle, associated window, and
+		/// ownership flag.
+		/// </summary>
+		/// <param name="handle">The handle to the input method context. This value must be valid and is used to manage input method operations.</param>
+		/// <param name="wnd">The handle to the window associated with the input method context. This window receives input method notifications.</param>
+		/// <param name="ownsHandle">
+		/// A value indicating whether the SafeHIMC instance owns the handle. If <see langword="true"/>, the handle will be released when the
+		/// instance is disposed.
+		/// </param>
+		public SafeHIMC(IntPtr handle, HWND wnd, bool ownsHandle) : this(handle, ownsHandle) => hWnd = wnd;
 	}
 
 	private class CANDIDATELISTMarshaler : IVanaraMarshaler

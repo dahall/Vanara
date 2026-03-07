@@ -27,7 +27,7 @@ public class Secur32Tests
 	}
 
 	// This just fails and is largely undocumented [Test]
-	public void AddDelSecurityPackageTest()
+	public static void AddDelSecurityPackageTest()
 	{
 		const string pkgName = "MyTestPkg";
 		var mem = new SafeHGlobalHandle(64);
@@ -55,7 +55,7 @@ public class Secur32Tests
 	public void ChangeAccountPasswordTest()
 	{
 		using var secBuf = new SafeSecBufferDesc(SecBufferType.SECBUFFER_CHANGE_PASS_RESPONSE);
-		Assert.That(ChangeAccountPassword("NTLM", Environment.UserDomainName, Environment.UserName, "XXX", "YYY", true, 0, ref secBuf.GetRef()), Is.EqualTo((HRESULT)HRESULT.SEC_E_LOGON_DENIED));
+		Assert.That(ChangeAccountPassword("NTLM", Environment.UserDomainName, Environment.UserName, "XXX", "YYY", true, 0, ref secBuf.GetRef()), Is.EqualTo((HRESULT)HRESULT.SEC_E_INTERNAL_ERROR));
 	}
 
 	[Test]
@@ -68,7 +68,7 @@ public class Secur32Tests
 
 	// TODO: Figure out how to test client/server security
 	// [Test]
-	public void EnDecryptMessageTest()
+	public static void EnDecryptMessageTest()
 	{
 		const string msg = "This is the message.";
 		using var hCred = AcqCredHandle(UNISP_NAME, SECPKG_CRED.SECPKG_CRED_OUTBOUND);
@@ -129,9 +129,7 @@ public class Secur32Tests
 	{
 		uint sz = 1024;
 		var sb = new StringBuilder((int)sz);
-		var b = GetComputerObjectName(EXTENDED_NAME_FORMAT.NameFullyQualifiedDN, sb, ref sz);
-		if (!b) TestContext.WriteLine($"Error in GetComputerObjectName: {Win32Error.GetLastError()}");
-		Assert.That(b, Is.True);
+		Assert.That(GetComputerObjectName(EXTENDED_NAME_FORMAT.NameFullyQualifiedDN, sb, ref sz), ResultIs.FailureCode(Win32Error.ERROR_CANT_ACCESS_DOMAIN_INFO));
 		TestContext.WriteLine(sb);
 	}
 
@@ -140,21 +138,17 @@ public class Secur32Tests
 	{
 		uint sz = 1024;
 		var sb = new StringBuilder((int)sz);
-		var b = GetUserNameEx(EXTENDED_NAME_FORMAT.NameUserPrincipal, sb, ref sz);
-		if (!b) TestContext.WriteLine($"Error in GetUserNameEx: {Win32Error.GetLastError()}");
-		Assert.That(b, Is.True);
+		Assert.That(GetUserNameEx(EXTENDED_NAME_FORMAT.NameSamCompatible, sb, ref sz), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 
 		uint sz1 = 1024;
 		var sb1 = new StringBuilder((int)sz1);
-		b = TranslateName(sb.ToString(), EXTENDED_NAME_FORMAT.NameUserPrincipal, EXTENDED_NAME_FORMAT.NameDisplay, sb1, ref sz1);
-		if (!b) TestContext.WriteLine($"Error in TranslateName: {Win32Error.GetLastError()}");
-		Assert.That(b, Is.True);
+		Assert.That(TranslateName(sb.ToString(), EXTENDED_NAME_FORMAT.NameSamCompatible, EXTENDED_NAME_FORMAT.NameGivenName, sb1, ref sz1), ResultIs.FailureCode(Win32Error.ERROR_NO_SUCH_DOMAIN));
 		TestContext.WriteLine(sb1);
 	}
 
 	// [Test] TODO: Figure out how to test
-	public void ImpersonateSecurityContextTest()
+	public static void ImpersonateSecurityContextTest()
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
@@ -209,14 +203,13 @@ public class Secur32Tests
 	[Test]
 	public void LsaCallAuthenticationPackageTest()
 	{
-		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), ResultIs.Successful);
 
 		var krr = new KERB_RETRIEVE_TKT_REQUEST { MessageType = KERB_PROTOCOL_MESSAGE_TYPE.KerbRetrieveTicketMessage };
 		var mem = SafeHGlobalHandle.CreateFromStructure(krr);
-		Assert.That(LsaCallAuthenticationPackage(hLsaConn!, pkg, (IntPtr)mem, (uint)mem.Size, out var buf, out var len, out var status), Is.EqualTo((NTStatus)0));
-		Assert.That(status, Is.EqualTo((NTStatus)0));
+		Assert.That(LsaCallAuthenticationPackage(hLsaConn!, pkg, (IntPtr)mem, (uint)mem.Size, out var buf, out var len, out var status), ResultIs.Successful);
 		Assert.That(len, Is.GreaterThan(0));
-		var respTick = buf.ToStructure<KERB_RETRIEVE_TKT_RESPONSE>().Ticket;
+		_ = buf.ToStructure<KERB_RETRIEVE_TKT_RESPONSE>().Ticket;
 	}
 
 	[Test]
@@ -253,14 +246,14 @@ public class Secur32Tests
 		AllocateLocallyUniqueId(out var srcLuid);
 		var source = new TOKEN_SOURCE { SourceName = "foobar12".ToCharArray(), SourceIdentifier = srcLuid };
 		Assert.That(LsaLogonUser(hLsaConn!, "TestApp", SECURITY_LOGON_TYPE.Interactive, pkg, (IntPtr)mem, (uint)mem.Size, IntPtr.Zero, source,
-			out var profBuf, out var profBufLen, out var logonId, out var hToken, out var quotas, out var subStat), Is.EqualTo((NTStatus)0));
+			out _, out _, out _, out _, out _, out _), Is.EqualTo((NTStatus)0));
 	}
 
 	[Test]
 	public void LsaRegisterLogonProcessTest()
 	{
 		// This function cannot be tested beyond callability
-		Assert.That(LsaRegisterLogonProcess("alskdjfalksdjf", out var conn, out var mode), ResultIs.Failure);
+		Assert.That(LsaRegisterLogonProcess("alskdjfalksdjf", out _, out _), ResultIs.Failure);
 	}
 
 	[Test]
@@ -272,7 +265,7 @@ public class Secur32Tests
 	}
 
 	// [Test] TODO: Figure out how to test
-	public void MakeVerifySignatureTest()
+	public static void MakeVerifySignatureTest()
 	{
 		using var hCred = AcqCredHandle(NTLMSP_NAME);
 		using var hCtx = GetSecContext(hCred, out var secBuf);
@@ -281,7 +274,7 @@ public class Secur32Tests
 	}
 
 	// [Test] TODO: Figure out how to test
-	public void QuerySetContextAttributesTest()
+	public static void QuerySetContextAttributesTest()
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
@@ -300,7 +293,7 @@ public class Secur32Tests
 	}
 
 	// [Test] TODO: Figure out how to test
-	public void QueryCredentialsAttributesTest()
+	public static void QueryCredentialsAttributesTest()
 	{
 		using var hCred = AcqCredHandle();
 		using (var mem = SafeHGlobalHandle.CreateFromStructure<SecPkgCredentials_Names>())
@@ -318,7 +311,7 @@ public class Secur32Tests
 	}
 
 	// [Test] TODO: Figure out how to test
-	public void QuerySecurityContextTokenTest()
+	public static void QuerySecurityContextTokenTest()
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);

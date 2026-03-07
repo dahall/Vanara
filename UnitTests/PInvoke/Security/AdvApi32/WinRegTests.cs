@@ -117,7 +117,7 @@ public class WinRegTests
 					Assert.That(mem.ToString(-1, CharSet.Auto), Is.EqualTo(strVal));
 
 					memSz = mem.Size;
-					Assert.That(RegQueryMultipleValues(hKey, new[] { new VALENT("V1"), new VALENT("V2"), new VALENT("V3") }, 3, mem, ref memSz), ResultIs.Successful);
+					Assert.That(RegQueryMultipleValues(hKey, [new VALENT("V1"), new VALENT("V2"), new VALENT("V3")], 3, mem, ref memSz), ResultIs.Successful);
 
 					Assert.That(RegDeleteKeyValue(hPKey, tmpRegKey, "V1"), ResultIs.Successful);
 					Assert.That(RegDeleteKeyValue(hPKey, tmpRegKey, "V2"), ResultIs.Successful);
@@ -276,7 +276,7 @@ public class WinRegTests
 	[Test]
 	public void RegLoadUnloadKeyTest()
 	{
-		using (new ElevPriv(new[] { "SeBackupPrivilege", "SeRestorePrivilege" }))
+		using (new ElevPriv(["SeBackupPrivilege", "SeRestorePrivilege"]))
 		using (var tmp = new TempFile(null))
 		{
 			Assert.That(RegLoadKey(HKEY.HKEY_USERS, tmpRegKey, tmp.FullName), ResultIs.Successful);
@@ -380,7 +380,7 @@ public class WinRegTests
 	public void RegReplaceKeyTest()
 	{
 		var path = $"{regKey}\\{tmpRegKey}";
-		using (new ElevPriv(new[] { "SeBackupPrivilege", "SeRestorePrivilege" }))
+		using (new ElevPriv(["SeBackupPrivilege", "SeRestorePrivilege"]))
 		{
 			Assert.That(CreateTree(path, out var hKey), ResultIs.Successful);
 			try
@@ -408,7 +408,7 @@ public class WinRegTests
 	public void RegSaveRestoreKeyTest()
 	{
 		var path = $"{regKey}\\{tmpRegKey}";
-		using (new ElevPriv(new[] { "SeBackupPrivilege", "SeRestorePrivilege" }))
+		using (new ElevPriv(["SeBackupPrivilege", "SeRestorePrivilege"]))
 		{
 			Assert.That(CreateTree(path, out var hKey), ResultIs.Successful);
 			try

@@ -12,7 +12,7 @@ public static partial class AdvApi32
 	/// <param name="SecuritySet">Whether security was set.</param>
 	[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-	public delegate void FN_PROGRESS(string pObjectName, uint Status, ref PROG_INVOKE_SETTING pInvokeSetting, IntPtr Args, [MarshalAs(UnmanagedType.Bool)] bool SecuritySet);
+	public delegate void FN_PROGRESS([MarshalAs(UnmanagedType.LPWStr)] string pObjectName, uint Status, ref PROG_INVOKE_SETTING pInvokeSetting, [In] IntPtr Args, [MarshalAs(UnmanagedType.Bool)] bool SecuritySet);
 
 	/// <summary>Flags to control the behavior of <see cref="TreeSetNamedSecurityInfo"/>.</summary>
 	[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]
@@ -264,10 +264,10 @@ public static partial class AdvApi32
 	// *pNewSD );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "becc1218-5bc3-4ab2-86f8-3ebd10e16966")]
-	public static extern uint BuildSecurityDescriptor(in TRUSTEE pOwner, in TRUSTEE pGroup, [In, Optional] uint cCountOfAccessEntries,
+	public static extern Win32Error BuildSecurityDescriptor(in TRUSTEE pOwner, in TRUSTEE pGroup, [In, Optional] uint cCountOfAccessEntries,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[]? pListOfAccessEntries, [In, Optional] uint cCountOfAuditEntries,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[]? pListOfAuditEntries, [In, Optional] PSECURITY_DESCRIPTOR pOldSD,
-		out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
+		out uint pSizeNewSD, [SizeDef(nameof(pSizeNewSD))] out SafePSECURITY_DESCRIPTOR pNewSD);
 
 	/// <summary>
 	/// <para>
@@ -364,10 +364,10 @@ public static partial class AdvApi32
 	// *pNewSD );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "becc1218-5bc3-4ab2-86f8-3ebd10e16966")]
-	public static extern uint BuildSecurityDescriptor([In, Optional] IntPtr pOwner, [In, Optional] IntPtr pGroup, [In, Optional] uint cCountOfAccessEntries,
+	public static extern Win32Error BuildSecurityDescriptor([In, Optional] IntPtr pOwner, [In, Optional] IntPtr pGroup, [In, Optional] uint cCountOfAccessEntries,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] EXPLICIT_ACCESS[]? pListOfAccessEntries, [In, Optional] uint cCountOfAuditEntries,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EXPLICIT_ACCESS[]? pListOfAuditEntries, [In, Optional] PSECURITY_DESCRIPTOR pOldSD,
-		out uint pSizeNewSD, out SafePSECURITY_DESCRIPTOR pNewSD);
+		out uint pSizeNewSD, [SizeDef(nameof(pSizeNewSD))] out SafePSECURITY_DESCRIPTOR pNewSD);
 
 	/// <summary>
 	/// <para>
@@ -464,7 +464,8 @@ public static partial class AdvApi32
 	// ObjectTypeName, StrPtrAnsi InheritedObjectTypeName, StrPtrAnsi Name );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "62edadfe-0a7b-43ec-bd02-a63f928c7618")]
-	public static extern void BuildTrusteeWithObjectsAndName(out TRUSTEE pTrustee, in OBJECTS_AND_NAME pObjName, SE_OBJECT_TYPE ObjectType, string ObjectTypeName, string InheritedObjectTypeName, string Name);
+	public static extern void BuildTrusteeWithObjectsAndName(out TRUSTEE pTrustee, [In] IntPtr pObjName, [Optional] SE_OBJECT_TYPE ObjectType,
+		[In, Optional] StrPtrAuto ObjectTypeName, [In, Optional] StrPtrAuto InheritedObjectTypeName, [In, Optional] StrPtrAuto Name);
 
 	/// <summary>
 	/// <para>
@@ -503,7 +504,8 @@ public static partial class AdvApi32
 	// pSid );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "e940a87f-013e-458c-bdc1-9e81c7d905e0")]
-	public static extern void BuildTrusteeWithObjectsAndSid(out TRUSTEE pTrustee, in OBJECTS_AND_SID pObjSid, in Guid pObjectGuid, in Guid pInheritedObjectGuid, PSID pSid);
+	public static extern void BuildTrusteeWithObjectsAndSid(out TRUSTEE pTrustee, in OBJECTS_AND_SID pObjSid, [Optional] in Guid pObjectGuid,
+		[Optional] in Guid pInheritedObjectGuid, [In, Optional] PSID pSid);
 
 	/// <summary>
 	/// <para>
@@ -561,7 +563,7 @@ public static partial class AdvApi32
 	/// <returns>If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, it returns a nonzero error code.</returns>
 	[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 	[PInvokeData("Aclapi.h", MSDNShortId = "aa446630")]
-	public static extern Win32Error FreeInheritedFromArray(IntPtr pInheritArray, ushort AceCnt, IntPtr pfnArray);
+	public static extern Win32Error FreeInheritedFromArray(IntPtr pInheritArray, ushort AceCnt, [Optional] IntPtr pfnArray);
 
 	/// <summary>
 	/// <para>
@@ -609,7 +611,7 @@ public static partial class AdvApi32
 	// pFailedAuditRights );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "4381fe12-5fb3-4f9c-8daa-261cb1a466ec")]
-	public static extern Win32Error GetAuditedPermissionsFromAcl(PACL pacl, in TRUSTEE pTrustee, out ACCESS_MASK pSuccessfulAuditedRights, out ACCESS_MASK pFailedAuditRights);
+	public static extern Win32Error GetAuditedPermissionsFromAcl([In, AddAsMember] PACL pacl, in TRUSTEE pTrustee, out ACCESS_MASK pSuccessfulAuditedRights, out ACCESS_MASK pFailedAuditRights);
 
 	/// <summary>
 	/// The GetEffectiveRightsFromAcl function retrieves the effective access rights that an ACL structure grants to a specified trustee.
@@ -624,7 +626,7 @@ public static partial class AdvApi32
 	/// <param name="pAccessRights">A pointer to an ACCESS_MASK variable that receives the effective access rights of the trustee.</param>
 	[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto)]
 	[PInvokeData("Aclapi.h", MSDNShortId = "aa446637")]
-	public static extern Win32Error GetEffectiveRightsFromAcl(PACL pacl, in TRUSTEE pTrustee, out ACCESS_MASK pAccessRights);
+	public static extern Win32Error GetEffectiveRightsFromAcl([In, AddAsMember] PACL pacl, in TRUSTEE pTrustee, out ACCESS_MASK pAccessRights);
 
 	/// <summary>
 	/// <para>
@@ -708,11 +710,16 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-getexplicitentriesfromacla DWORD GetExplicitEntriesFromAclA(
 	// PACL pacl, PULONG pcCountOfExplicitEntries, PEXPLICIT_ACCESS_A *pListOfExplicitEntries );
 	[PInvokeData("aclapi.h", MSDNShortId = "186aa6aa-efc3-4f8a-acad-e257da3dac0b")]
-	public static Win32Error GetExplicitEntriesFromAcl(PACL pacl, out EXPLICIT_ACCESS[]? pListOfExplicitEntries)
+	public static Win32Error GetExplicitEntriesFromAcl([In, AddAsMember] PACL pacl, out SafeNativeArrayBase<EXPLICIT_ACCESS, LocalMemoryMethods> pListOfExplicitEntries)
 	{
 		var err = GetExplicitEntriesFromAcl(pacl, out var c, out var m);
-		pListOfExplicitEntries = err.Succeeded ? m.ToArray<EXPLICIT_ACCESS>((int)c) : null;
-		m.Dispose();
+		if (!err.Succeeded)
+			pListOfExplicitEntries = [];
+		else
+		{
+			var p = m.ReleaseOwnership();
+			pListOfExplicitEntries = new(p, Kernel32.LocalSize(p), true, 0, (int)c, false);
+		}
 		return err;
 	}
 
@@ -745,6 +752,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto)]
 	[PInvokeData("Aclapi.h", MSDNShortId = "aa446640")]
+	[SuppressAutoGen]
 	public static extern Win32Error GetInheritanceSource([MarshalAs(UnmanagedType.LPTStr)] string pObjectName, SE_OBJECT_TYPE ObjectType,
 		SECURITY_INFORMATION SecurityInfo, [MarshalAs(UnmanagedType.Bool)] bool Container,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5, ArraySubType = UnmanagedType.LPStruct), Optional] Guid[]? pObjectClassGuids,
@@ -764,12 +772,16 @@ public static partial class AdvApi32
 	/// </param>
 	/// <param name="pAcl">The ACL for the object.</param>
 	/// <param name="pGenericMapping">The mapping of generic rights to specific rights for the object.</param>
+	/// <param name="pObjectClassGuids">
+	/// Optional list of GUIDs that identify the object types or names associated with pObjectName. This may be NULL if the object
+	/// manager only supports one object class or has no GUID associated with the object class.
+	/// </param>
 	/// <returns>An enumeration of INHERITED_FROM structures with the inheritance information.</returns>
 	public static IEnumerable<INHERITED_FROM> GetInheritanceSource(string objectName, System.Security.AccessControl.ResourceType objectType,
-		SECURITY_INFORMATION securityInfo, bool container, PACL pAcl, ref GENERIC_MAPPING pGenericMapping)
+		SECURITY_INFORMATION securityInfo, bool container, PACL pAcl, in GENERIC_MAPPING pGenericMapping, [In] Guid[]? pObjectClassGuids = null)
 	{
 		using SafeInheritedFromArray pInherit = new((ushort)pAcl.AceCount());
-		GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, null, 0, pAcl, default, pGenericMapping, pInherit).ThrowIfFailed();
+		GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, pObjectClassGuids, (uint)(pObjectClassGuids?.Length ?? 0), pAcl, default, pGenericMapping, pInherit).ThrowIfFailed();
 		return pInherit.Results;
 	}
 
@@ -1076,8 +1088,186 @@ public static partial class AdvApi32
 	// *ppListOfAccessEntries, PULONG pcCountOfAuditEntries, PEXPLICIT_ACCESS_A *ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "68c3f56b-6c48-4f4b-bd38-9f4e346c663b")]
-	public static extern Win32Error LookupSecurityDescriptorParts(out SafeLocalHandle ppOwner, out SafeLocalHandle ppGroup, out uint pcCountOfAccessEntries, out SafeLocalHandle ppListOfAccessEntries,
-		out uint pcCountOfAuditEntries, out SafeLocalHandle ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD);
+	public static extern Win32Error LookupSecurityDescriptorParts([Out, Optional] IntPtr ppOwner, [Out, Optional] IntPtr ppGroup,
+		[Out, Optional] IntPtr pcCountOfAccessEntries, [Out, Optional] IntPtr ppListOfAccessEntries,
+		[Out, Optional] IntPtr pcCountOfAuditEntries, [Out, Optional] IntPtr ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD);
+
+	/// <summary>
+	/// <para>The <c>LookupSecurityDescriptorParts</c> function retrieves security information from a self-relative security descriptor.</para>
+	/// </summary>
+	/// <param name="ppOwner">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to a TRUSTEE structure. The function looks up the name associated with the owner
+	/// security identifier (SID) in the pSD security descriptor, and returns a pointer to the name in the <c>ptstrName</c> member of the
+	/// <c>TRUSTEE</c> structure. The function sets the <c>TrusteeForm</c> member to TRUSTEE_IS_NAME.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> if you are not interested in the name of the owner.</para>
+	/// </param>
+	/// <param name="ppGroup">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to a TRUSTEE structure. The function looks up the name associated with the
+	/// primary group SID of the security descriptor, and returns a pointer to the name in the <c>ptstrName</c> member of the
+	/// <c>TRUSTEE</c> structure. The function sets the <c>TrusteeForm</c> member to TRUSTEE_IS_NAME.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> if you are not interested in the name of the group.</para>
+	/// </param>
+	/// <param name="pcCountOfAccessEntries">
+	/// <para>
+	/// A pointer to a <c>ULONG</c> that receives the number of EXPLICIT_ACCESS structures returned in the pListOfAccessEntries array.
+	/// This parameter can be <c>NULL</c> only if the pListOfAccessEntries parameter is also <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="ppListOfAccessEntries">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to an array of EXPLICIT_ACCESS structures that describe the access control
+	/// entries (ACEs) in the discretionary access control list (DACL) of the security descriptor. The TRUSTEE structure in these
+	/// <c>EXPLICIT_ACCESS</c> structures use the TRUSTEE_IS_NAME form. For a description of how an array of <c>EXPLICIT_ACCESS</c>
+	/// structures describes the ACEs in an access control list (ACL), see the GetExplicitEntriesFromAcl function. If this parameter is
+	/// <c>NULL</c>, the cCountOfAccessEntries parameter must also be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pcCountOfAuditEntries">
+	/// <para>
+	/// A pointer to a <c>ULONG</c> that receives the number of EXPLICIT_ACCESS structures returned in the pListOfAuditEntries array.
+	/// This parameter can be <c>NULL</c> only if the pListOfAuditEntries parameter is also <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="ppListOfAuditEntries">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to an array of EXPLICIT_ACCESS structures that describe the ACEs in the system
+	/// access control list (SACL) of the security descriptor. The TRUSTEE structure in these <c>EXPLICIT_ACCESS</c> structures uses the
+	/// TRUSTEE_IS_NAME form. If this parameter is <c>NULL</c>, the cCountOfAuditEntries parameter must also be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pSD">
+	/// <para>A pointer to an existing self-relative security descriptor from which the function retrieves security information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, it returns a nonzero error code defined in WinError.h.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>LookupSecurityDescriptorParts</c> function retrieves the names of the owner and primary group of the security descriptor.
+	/// This function also returns descriptions of the ACEs in the DACL and audit-control entries in the SACL of the security descriptor.
+	/// </para>
+	/// <para>
+	/// The parameters other than pSD can be <c>NULL</c> if you are not interested in the information. If you do not want information
+	/// about the DACL, both pListOfAccessEntries and cCountOfAuditEntries must be <c>NULL</c>. If you do not want information about the
+	/// SACL, both pListOfAuditEntries and cCountOfAuditEntries must be <c>NULL</c>. Similarly, if you do want DACL or SACL information,
+	/// both of the corresponding parameters must not be <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// When you have finished using any of the buffers returned by the pOwner, pGroup, pListOfAccessEntries, or pListOfAuditEntries
+	/// parameters, free them by calling the LocalFree function.
+	/// </para>
+	/// <para>
+	/// The <c>LookupSecurityDescriptorParts</c> function is intended for trusted servers that implement or expose security on their own
+	/// objects. The function works with a self-relative security descriptor suitable for serializing into a stream and storing to disk,
+	/// as a trusted server might require.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-lookupsecuritydescriptorpartsa DWORD
+	// LookupSecurityDescriptorPartsA( PTRUSTEE_A *ppOwner, PTRUSTEE_A *ppGroup, PULONG pcCountOfAccessEntries, PEXPLICIT_ACCESS_A
+	// *ppListOfAccessEntries, PULONG pcCountOfAuditEntries, PEXPLICIT_ACCESS_A *ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD );
+	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("aclapi.h", MSDNShortId = "68c3f56b-6c48-4f4b-bd38-9f4e346c663b")]
+	public static extern Win32Error LookupSecurityDescriptorParts(out SafeLocalHandle ppOwner, out SafeLocalHandle ppGroup,
+		out uint pcCountOfAccessEntries, out SafeLocalHandle ppListOfAccessEntries, out uint pcCountOfAuditEntries,
+		out SafeLocalHandle ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD);
+
+	/// <summary>
+	/// <para>The <c>LookupSecurityDescriptorParts</c> function retrieves security information from a self-relative security descriptor.</para>
+	/// </summary>
+	/// <param name="ppOwner">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to a TRUSTEE structure. The function looks up the name associated with the owner
+	/// security identifier (SID) in the pSD security descriptor, and returns a pointer to the name in the <c>ptstrName</c> member of the
+	/// <c>TRUSTEE</c> structure. The function sets the <c>TrusteeForm</c> member to TRUSTEE_IS_NAME.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> if you are not interested in the name of the owner.</para>
+	/// </param>
+	/// <param name="ppGroup">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to a TRUSTEE structure. The function looks up the name associated with the
+	/// primary group SID of the security descriptor, and returns a pointer to the name in the <c>ptstrName</c> member of the
+	/// <c>TRUSTEE</c> structure. The function sets the <c>TrusteeForm</c> member to TRUSTEE_IS_NAME.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> if you are not interested in the name of the group.</para>
+	/// </param>
+	/// <param name="ppListOfAccessEntries">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to an array of EXPLICIT_ACCESS structures that describe the access control
+	/// entries (ACEs) in the discretionary access control list (DACL) of the security descriptor. The TRUSTEE structure in these
+	/// <c>EXPLICIT_ACCESS</c> structures use the TRUSTEE_IS_NAME form. For a description of how an array of <c>EXPLICIT_ACCESS</c>
+	/// structures describes the ACEs in an access control list (ACL), see the GetExplicitEntriesFromAcl function. If this parameter is
+	/// <c>NULL</c>, the cCountOfAccessEntries parameter must also be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="ppListOfAuditEntries">
+	/// <para>
+	/// A pointer to a variable that receives a pointer to an array of EXPLICIT_ACCESS structures that describe the ACEs in the system
+	/// access control list (SACL) of the security descriptor. The TRUSTEE structure in these <c>EXPLICIT_ACCESS</c> structures uses the
+	/// TRUSTEE_IS_NAME form. If this parameter is <c>NULL</c>, the cCountOfAuditEntries parameter must also be <c>NULL</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pSD">
+	/// <para>A pointer to an existing self-relative security descriptor from which the function retrieves security information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, it returns a nonzero error code defined in WinError.h.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <c>LookupSecurityDescriptorParts</c> function retrieves the names of the owner and primary group of the security descriptor.
+	/// This function also returns descriptions of the ACEs in the DACL and audit-control entries in the SACL of the security descriptor.
+	/// </para>
+	/// <para>
+	/// The parameters other than pSD can be <c>NULL</c> if you are not interested in the information. If you do not want information
+	/// about the DACL, both pListOfAccessEntries and cCountOfAuditEntries must be <c>NULL</c>. If you do not want information about the
+	/// SACL, both pListOfAuditEntries and cCountOfAuditEntries must be <c>NULL</c>. Similarly, if you do want DACL or SACL information,
+	/// both of the corresponding parameters must not be <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// When you have finished using any of the buffers returned by the pOwner, pGroup, pListOfAccessEntries, or pListOfAuditEntries
+	/// parameters, free them by calling the LocalFree function.
+	/// </para>
+	/// <para>
+	/// The <c>LookupSecurityDescriptorParts</c> function is intended for trusted servers that implement or expose security on their own
+	/// objects. The function works with a self-relative security descriptor suitable for serializing into a stream and storing to disk,
+	/// as a trusted server might require.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-lookupsecuritydescriptorpartsa DWORD
+	// LookupSecurityDescriptorPartsA( PTRUSTEE_A *ppOwner, PTRUSTEE_A *ppGroup, PULONG pcCountOfAccessEntries, PEXPLICIT_ACCESS_A
+	// *ppListOfAccessEntries, PULONG pcCountOfAuditEntries, PEXPLICIT_ACCESS_A *ppListOfAuditEntries, PSECURITY_DESCRIPTOR pSD );
+	[PInvokeData("aclapi.h", MSDNShortId = "68c3f56b-6c48-4f4b-bd38-9f4e346c663b")]
+	public static Win32Error LookupSecurityDescriptorParts([In, AddAsMember] PSECURITY_DESCRIPTOR pSD, out SafeMemStruct<TRUSTEE, LocalMemoryMethods> ppOwner,
+		out SafeMemStruct<TRUSTEE, LocalMemoryMethods> ppGroup, out SafeNativeArrayBase<EXPLICIT_ACCESS, LocalMemoryMethods> ppListOfAccessEntries,
+		out SafeNativeArrayBase<EXPLICIT_ACCESS, LocalMemoryMethods> ppListOfAuditEntries)
+	{
+		var ret = LookupSecurityDescriptorParts(out var _ppOwner, out var _ppGroup, out uint accessCount, out var _ppListOfAccessEntries, out uint auditCount, out var _ppListOfAuditEntries, pSD);
+		if (ret.Succeeded)
+		{
+			IntPtr p = _ppOwner.ReleaseOwnership();
+			ppOwner = new(p, true, Kernel32.LocalSize(p));
+			p = _ppGroup.ReleaseOwnership();
+			ppGroup = new(p, true, Kernel32.LocalSize(p));
+			p = _ppListOfAccessEntries.ReleaseOwnership();
+			ppListOfAccessEntries = new(p, Kernel32.LocalSize(p), true, 0, (int)accessCount, false);
+			p = _ppListOfAuditEntries.ReleaseOwnership();
+			ppListOfAuditEntries = new(p, Kernel32.LocalSize(p), true, 0, (int)auditCount, false);
+		}
+		else
+		{
+			ppOwner = new();
+			ppGroup = new();
+			ppListOfAccessEntries = [];
+			ppListOfAuditEntries = [];
+		}
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -1169,7 +1359,8 @@ public static partial class AdvApi32
 	// cCountOfExplicitEntries, PEXPLICIT_ACCESS_A pListOfExplicitEntries, PACL OldAcl, PACL *NewAcl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "05960fc1-1ad2-4c19-a65c-62259af5e18c")]
-	public static extern Win32Error SetEntriesInAcl(uint cCountOfExplicitEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] EXPLICIT_ACCESS[] pListOfExplicitEntries, PACL OldAcl, out SafePACL NewAcl);
+	public static extern Win32Error SetEntriesInAcl(uint cCountOfExplicitEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] EXPLICIT_ACCESS[] pListOfExplicitEntries,
+		[Optional] PACL OldAcl, out SafePACL NewAcl);
 
 	/// <summary>
 	/// The SetNamedSecurityInfo function sets specified security information in the security descriptor of a specified object. The
@@ -1445,8 +1636,8 @@ public static partial class AdvApi32
 	// pGroup, PACL pDacl, PACL pSacl, BOOL KeepExplicit, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "adae7d07-a452-409e-b1a1-e9f86f873e39")]
-	public static extern Win32Error TreeResetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [Optional] PSID pOwner, [Optional] PSID pGroup, [Optional] PACL pDacl, [Optional] PACL pSacl,
-		[MarshalAs(UnmanagedType.Bool)] bool KeepExplicit, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
+	public static extern Win32Error TreeResetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [Optional] PSID pOwner, [Optional] PSID pGroup,
+		[Optional] PACL pDacl, [Optional] PACL pSacl, [MarshalAs(UnmanagedType.Bool)] bool KeepExplicit, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
 
 	/// <summary>
 	/// <para>
@@ -1598,26 +1789,24 @@ public static partial class AdvApi32
 	// pSacl, DWORD dwAction, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]
-	public static extern Win32Error TreeSetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [Optional] PSID pOwner, [Optional] PSID pGroup,
-		[Optional] PACL pDacl, [Optional] PACL pSacl, TREE_SEC_INFO dwAction, [Optional] FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, [Optional] IntPtr Args);
+	public static extern Win32Error TreeSetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, [In, Optional] PSID pOwner, [In, Optional] PSID pGroup,
+		[In, Optional] PACL pDacl, [In, Optional] PACL pSacl, TREE_SEC_INFO dwAction, [Optional] FN_PROGRESS? fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting = PROG_INVOKE_SETTING.ProgressInvokeNever, [In] IntPtr Args = default);
 
 	/// <summary>
 	/// A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see
 	/// cref="GetInheritanceSource(string, SE_OBJECT_TYPE, SECURITY_INFORMATION, bool, Guid[], uint, PACL, IntPtr, in GENERIC_MAPPING, SafeInheritedFromArray)"/>.
 	/// </summary>
-	public class SafeInheritedFromArray : SafeHGlobalHandle
+	/// <remarks>Initializes a new instance of the <see cref="SafeInheritedFromArray"/> class.</remarks>
+	/// <param name="aceCount">The count of ACEs that are contained in the ACL.</param>
+	public class SafeInheritedFromArray(ushort aceCount) : SafeHGlobalHandle(aceCount * Marshal.SizeOf<INHERITED_FROM>())
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeInheritedFromArray"/> class.</summary>
-		/// <param name="aceCount">The count of ACEs that are contained in the ACL.</param>
-		public SafeInheritedFromArray(ushort aceCount) : base(aceCount * Marshal.SizeOf<INHERITED_FROM>()) => AceCount = aceCount;
-
 		/// <summary>Gets the count of ACEs that are contained in the ACL.</summary>
 		/// <value>The ACE count.</value>
-		public ushort AceCount { get; }
+		public ushort AceCount { get; } = aceCount;
 
 		/// <summary>Gets the array of inheritance objects.</summary>
 		/// <value>The array of inheritance objects.</value>
-		public INHERITED_FROM[] Results => IsInvalid ? new INHERITED_FROM[0] : handle.ToArray<INHERITED_FROM>(AceCount)!;
+		public INHERITED_FROM[] Results => IsInvalid ? [] : handle.ToArray<INHERITED_FROM>(AceCount)!;
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>

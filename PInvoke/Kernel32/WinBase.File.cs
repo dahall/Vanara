@@ -1144,7 +1144,7 @@ public static partial class Kernel32
 	// PCWSTR pwszNewFileName, COPYFILE2_EXTENDED_PARAMETERS *pExtendedParameters );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "aa2df686-4b61-4d90-ba0b-c78c5a0d2d59")]
-	public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, [In, Optional] ManagedStructPointer<COPYFILE2_EXTENDED_PARAMETERS> pExtendedParameters);
+	public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, [In, Optional] IntPtr pExtendedParameters);
 
 	/// <summary>
 	/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
@@ -1491,13 +1491,13 @@ public static partial class Kernel32
 	/// <param name="fileName">The name of the file.</param>
 	/// <returns>An enumeration of all the hard links to the specified file.</returns>
 	public static IEnumerable<string> EnumHardLinks(string fileName) =>
-		EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstFileName(fileName, 0, ref sz, sb), (SafeSearchHandle h, StringBuilder sb, ref uint sz) => FindNextFileName(h, ref sz, sb));
+		EnumFindMethods((sb, ref sz) => FindFirstFileName(fileName, 0, ref sz, sb), (h, sb, ref sz) => FindNextFileName(h, ref sz, sb));
 
 	/// <summary>Retrieves the names of all mounted folders on the specified volume.</summary>
 	/// <param name="volumeGuidPath">A volume GUID path for the volume to scan for mounted folders. A trailing backslash is required.</param>
 	/// <returns>The names of the mounted folders that are found.</returns>
 	public static IEnumerable<string> EnumVolumeMountPoints(string volumeGuidPath) =>
-		EnumFindMethods((StringBuilder sb, ref uint sz) => FindFirstVolumeMountPoint(volumeGuidPath, sb, sz), (SafeVolumeMountPointHandle h, StringBuilder sb, ref uint sz) => FindNextVolumeMountPoint(h, sb, sz), done: Win32Error.ERROR_NO_MORE_FILES);
+		EnumFindMethods((sb, ref sz) => FindFirstVolumeMountPoint(volumeGuidPath, sb, sz), (h, sb, ref sz) => FindNextVolumeMountPoint(h, sb, sz), done: Win32Error.ERROR_NO_MORE_FILES);
 
 	/// <summary>
 	/// <para>
@@ -2847,122 +2847,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
-		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, in NativeOverlapped lpOverlapped,
-		[Optional] FileIOCompletionRoutine? lpCompletionRoutine);
-
-	/// <summary>
-	/// <para>
-	/// Retrieves information that describes the changes within the specified directory. The function does not report changes to the
-	/// specified directory itself.
-	/// </para>
-	/// <para>To track changes on a volume, see change journals.</para>
-	/// </summary>
-	/// <param name="hDirectory">
-	/// A handle to the directory to be monitored. This directory must be opened with the <c>FILE_LIST_DIRECTORY</c> access right, or an
-	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
-	/// </param>
-	/// <param name="lpBuffer">
-	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer is
-	/// defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously, depending on
-	/// how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the Remarks section.
-	/// </param>
-	/// <param name="nBufferLength">The size of the buffer that is pointed to by the lpBuffer parameter, in bytes.</param>
-	/// <param name="bWatchSubtree">
-	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
-	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
-	/// </param>
-	/// <param name="dwNotifyFilter">
-	/// <para>
-	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
-	/// the following values.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_FILE_NAME0x00000001</term>
-	/// <term>
-	/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
-	/// renaming, creating, or deleting a file.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME0x00000002</term>
-	/// <term>
-	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
-	/// creating or deleting a directory.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES0x00000004</term>
-	/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_SIZE0x00000008</term>
-	/// <term>
-	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
-	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
-	/// occurs only when the cache is sufficiently flushed.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE0x00000010</term>
-	/// <term>
-	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
-	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
-	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS0x00000020</term>
-	/// <term>
-	/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait operation to return.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_CREATION0x00000040</term>
-	/// <term>
-	/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation to return.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NOTIFY_CHANGE_SECURITY0x00000100</term>
-	/// <term>Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.</term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <param name="lpBytesReturned">
-	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
-	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
-	/// </param>
-	/// <param name="lpOverlapped">
-	/// A pointer to an <c>OVERLAPPED</c> structure that supplies data to be used during asynchronous operation. Otherwise, this value is
-	/// <c>NULL</c>. The <c>Offset</c> and <c>OffsetHigh</c> members of this structure are not used.
-	/// </param>
-	/// <param name="lpCompletionRoutine">
-	/// A pointer to a completion routine to be called when the operation has been completed or canceled and the calling thread is in an
-	/// alertable wait state. For more information about this completion routine, see <c>FileIOCompletionRoutine</c>.
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value is nonzero. For synchronous calls, this means that the operation succeeded. For
-	/// asynchronous calls, this indicates that the operation was successfully queued.
-	/// </para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
-	/// </returns>
-	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL bWatchSubtree,
-	// _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
-	// LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
-	[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
-		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, [In, Optional] StructPointer<NativeOverlapped> lpOverlapped,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, [In, Optional, StructPointer(typeof(NativeOverlapped))] IntPtr lpOverlapped,
 		[Optional] FileIOCompletionRoutine? lpCompletionRoutine);
 
 	/// <summary>
@@ -3554,7 +3439,7 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReadDirectoryChangesExW([In, AddAsMember] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
 		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
-		[In, Optional] StructPointer<NativeOverlapped> lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine,
+		[In, Optional, Ignore] IntPtr lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine,
 		READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
 
 	/// <summary>
@@ -4913,7 +4798,7 @@ public static partial class Kernel32
 		/// <exception cref="ArgumentOutOfRangeException">Array must be 16 bytes long., nameof(value)</exception>
 		public byte[] Identifier
 		{
-			get
+			readonly get
 			{
 				var ret = new byte[16];
 				BitConverter.GetBytes(id0).CopyTo(ret, 0);

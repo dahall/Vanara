@@ -38,12 +38,12 @@ public class SspiTests
 	public void SspiPrepareForCredWriteTest()
 	{
 		Assert.That(SspiEncodeStringsAsAuthIdentity(Environment.UserName, Environment.UserDomainName, pwd, out var pEncAuthId), Is.EqualTo((HRESULT)0));
-		Assert.That(SspiPrepareForCredWrite(pEncAuthId, target, out var cType, out var targName, out var userName, out var blob, out var blobSize), Is.EqualTo((HRESULT)0));
+		Assert.That(SspiPrepareForCredWrite(pEncAuthId, target, out var cType, out var targName, out var userName, out var blob), Is.EqualTo((HRESULT)0));
 		TestContext.WriteLine($"{cType}:{targName}:{userName}");
-		Assert.That(blob.Length, Is.EqualTo(blobSize));
+		Assert.That(blob.Length, Is.GreaterThan(0));
 	}
 
-	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), new object[] { true, true })]
+	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), [true, true])]
 	public void SspiTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
 	{
 		var save = false;
@@ -72,6 +72,6 @@ public class SspiTests
 	[Test]
 	public void SspiValidateAuthIdentityTest()
 	{
-		Assert.That(SspiEncodeStringsAsAuthIdentity(Environment.UserName, Environment.UserDomainName, pwd, out var pEncAuthId), Is.EqualTo((HRESULT)0));
+		Assert.That(SspiEncodeStringsAsAuthIdentity(Environment.UserName, Environment.UserDomainName, pwd, out _), Is.EqualTo((HRESULT)0));
 	}
 }

@@ -108,7 +108,7 @@ public class BCryptTests
 		byte[] rgbIV = GetRandomBytes(hAES.GetProperty<int>(BCrypt.PropertyName.BCRYPT_BLOCK_LENGTH));
 
 		// Encrypt the plaintext with the derived key and a cloned IV
-		hKey.Encrypt(rgbPlaintext, default, (byte[])rgbIV.Clone(), out var pbCipherText, EncryptFlags.BCRYPT_BLOCK_PADDING).ThrowIfFailed();
+		hKey.Encrypt(rgbPlaintext, (byte[])rgbIV.Clone(), out var pbCipherText, EncryptFlags.BCRYPT_BLOCK_PADDING).ThrowIfFailed();
 
 		hAES.ImportKey(default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, out var hKey2, out var pbKeyObject, pbBlob!).ThrowIfFailed();
 		hKey2.Decrypt(pbCipherText!, default, rgbIV, out var pbPlainText, EncryptFlags.BCRYPT_BLOCK_PADDING).ThrowIfFailed();

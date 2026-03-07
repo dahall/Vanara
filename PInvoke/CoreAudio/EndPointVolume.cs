@@ -1317,7 +1317,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/endpointvolume/nf-endpointvolume-iaudiometerinformation-getchannelspeakvalues
 		// HRESULT GetChannelsPeakValues( UINT32 u32ChannelCount, float *afPeakValues );
-		void GetChannelsPeakValues(uint u32ChannelCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] afPeakValues);
+		void GetChannelsPeakValues(uint u32ChannelCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] float[] afPeakValues);
 
 		/// <summary>The <c>QueryHardwareSupport</c> method queries the audio endpoint device for its hardware-supported functions.</summary>
 		/// <returns>

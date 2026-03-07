@@ -1,3 +1,6 @@
+using Vanara.Marshaler;
+using static Vanara.PInvoke.D3D11;
+
 namespace Vanara.PInvoke;
 
 public static partial class D3D12
@@ -4936,7 +4939,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D12_MESSAGE *pMessage, [in, out] SizeT *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(ulong MessageIndex, [Out, SizeDef(nameof(pMessageByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_MESSAGE))] IntPtr pMessage, ref SizeT pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5012,7 +5015,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addstoragefilterentries
 		// HRESULT AddStorageFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddStorageFilterEntries([In, MarshalAs(UnmanagedType.LPArray)] D3D12_INFO_QUEUE_FILTER[] pFilter);
+		HRESULT AddStorageFilterEntries([In, Optional, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the storage filter at the top of the storage-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5032,7 +5035,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter([Out, Optional, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5073,7 +5076,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushStorageFilter(in D3D12_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushStorageFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5115,7 +5118,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.LPArray)] D3D12_INFO_QUEUE_FILTER[] pFilter);
+		HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5135,7 +5138,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter([Out, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5176,7 +5179,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushRetrievalFilter(in D3D12_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushRetrievalFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5365,55 +5368,6 @@ public static partial class D3D12
 		bool GetMuteDebugOutput();
 	}
 
-	/// <summary>Get a message from the message queue.</summary>
-	/// <param name="queue">The <see cref="ID3D12InfoQueue" />.</param>
-	/// <param name="MessageIndex">Index into message queue after an optional retrieval filter has been applied. This can be between 0 and the number of messages
-	/// in the message queue that pass through the retrieval filter (which can be obtained with
-	/// <c>GetNumStoredMessagesAllowedByRetrievalFilter</c>). 0 is the message at the front of the message queue.</param>
-	/// <param name="pMessage">Returned message.</param>
-	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
-	/// <remarks>
-	/// <para>This method does not remove any messages from the message queue.</para>
-	/// <para>This method gets messages from the message queue after an optional retrieval filter has been applied.</para>
-	/// </remarks>
-	public static HRESULT GetMessage(this ID3D12InfoQueue queue, ulong MessageIndex, out D3D12_MESSAGE pMessage)
-	{
-		SizeT sz = 0;
-		var hr = queue.GetMessage(MessageIndex, default, ref sz);
-		using SafeCoTaskMemStruct<D3D12_MESSAGE> mem = new(sz);
-		hr = queue.GetMessage(MessageIndex, mem, ref sz);
-		pMessage = hr.Succeeded ? mem.Value : default;
-		return hr;
-	}
-
-	/// <summary>Get the storage filter at the top of the storage-filter stack.</summary>
-	/// <param name="queue">The <see cref="ID3D12InfoQueue" />.</param>
-	/// <param name="pFilter">Storage filter at the top of the storage-filter stack.</param>
-	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
-	public static HRESULT GetStorageFilter(this ID3D12InfoQueue queue, out D3D12_INFO_QUEUE_FILTER pFilter)
-	{
-		SizeT sz = 0;
-		var hr = queue.GetStorageFilter(default, ref sz);
-		using SafeCoTaskMemStruct<D3D12_INFO_QUEUE_FILTER> mem = new(sz);
-		hr = queue.GetStorageFilter(mem, ref sz);
-		pFilter = hr.Succeeded ? mem.Value : default;
-		return hr;
-	}
-
-	/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
-	/// <param name="queue">The <see cref="ID3D12InfoQueue" />.</param>
-	/// <param name="pFilter">Retrieval filter at the top of the retrieval-filter stack.</param>
-	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
-	public static HRESULT GetRetrievalFilter(this ID3D12InfoQueue queue, out D3D12_INFO_QUEUE_FILTER pFilter)
-	{
-		SizeT sz = 0;
-		var hr = queue.GetRetrievalFilter(default, ref sz);
-		using SafeCoTaskMemStruct<D3D12_INFO_QUEUE_FILTER> mem = new(sz);
-		hr = queue.GetRetrievalFilter(mem, ref sz);
-		pFilter = hr.Succeeded ? mem.Value : default;
-		return hr;
-	}
-
 	/// <summary>Undocumented</summary>
 	/// <seealso cref="Vanara.PInvoke.D3D12.ID3D12InfoQueue"/>
 	[ComImport, Guid("2852dd88-b484-4c0c-b6b1-67168500e600"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -5479,7 +5433,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D12_MESSAGE *pMessage, [in, out] SizeT *pMessageByteLength );
 		[PreserveSig]
-		new HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		new HRESULT GetMessage(ulong MessageIndex, [Out, SizeDef(nameof(pMessageByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_MESSAGE))] IntPtr pMessage, ref SizeT pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5555,7 +5509,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addstoragefilterentries
 		// HRESULT AddStorageFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT AddStorageFilterEntries([In, MarshalAs(UnmanagedType.LPArray)] D3D12_INFO_QUEUE_FILTER[] pFilter);
+		new HRESULT AddStorageFilterEntries([In, Optional, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the storage filter at the top of the storage-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5575,7 +5529,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		new HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		new HRESULT GetStorageFilter([Out, Optional, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5616,7 +5570,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT PushStorageFilter(in D3D12_INFO_QUEUE_FILTER pFilter);
+		new HRESULT PushStorageFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5658,7 +5612,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.LPArray)] D3D12_INFO_QUEUE_FILTER[] pFilter);
+		new HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5678,7 +5632,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT *pFilterByteLength );
 		[PreserveSig]
-		new HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		new HRESULT GetRetrievalFilter([Out, SizeDef(nameof(pFilterByteLength), SizingMethod.Query | SizingMethod.Bytes), StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5719,7 +5673,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT PushRetrievalFilter(in D3D12_INFO_QUEUE_FILTER pFilter);
+		new HRESULT PushRetrievalFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -6057,7 +6011,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/ns-d3d12sdklayers-d3d12_info_queue_filter typedef struct
 	// D3D12_INFO_QUEUE_FILTER { D3D12_INFO_QUEUE_FILTER_DESC AllowList; D3D12_INFO_QUEUE_FILTER_DESC DenyList; } D3D12_INFO_QUEUE_FILTER;
 	[PInvokeData("d3d12sdklayers.h", MSDNShortId = "NS:d3d12sdklayers.D3D12_INFO_QUEUE_FILTER")]
-	[StructLayout(LayoutKind.Sequential)]
+	[Marshaled]
 	public struct D3D12_INFO_QUEUE_FILTER
 	{
 		/// <summary>Specifies types of messages that you want to allow. See <c>D3D12_INFO_QUEUE_FILTER_DESC</c>.</summary>
@@ -6073,26 +6027,29 @@ public static partial class D3D12
 	// D3D12_INFO_QUEUE_FILTER_DESC { UINT NumCategories; D3D12_MESSAGE_CATEGORY *pCategoryList; UINT NumSeverities; D3D12_MESSAGE_SEVERITY
 	// *pSeverityList; UINT NumIDs; D3D12_MESSAGE_ID *pIDList; } D3D12_INFO_QUEUE_FILTER_DESC;
 	[PInvokeData("d3d12sdklayers.h", MSDNShortId = "NS:d3d12sdklayers.D3D12_INFO_QUEUE_FILTER_DESC")]
-	[StructLayout(LayoutKind.Sequential)]
+	[Marshaled]
 	public struct D3D12_INFO_QUEUE_FILTER_DESC
 	{
 		/// <summary>Number of message categories to allow or deny.</summary>
-		public uint NumCategories;
+		private uint NumCategories;
 
 		/// <summary>Array of message categories to allow or deny. Array must have at least <i>NumCategories</i> members (see <c>D3D12_MESSAGE_CATEGORY</c>).</summary>
-		public ArrayPointer<D3D12_MESSAGE_CATEGORY> pCategoryList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumCategories))]
+		public D3D12_MESSAGE_CATEGORY[] pCategoryList;
 
 		/// <summary>Number of message severity levels to allow or deny.</summary>
-		public uint NumSeverities;
+		private uint NumSeverities;
 
 		/// <summary>Array of message severity levels to allow or deny. Array must have at least <i>NumSeverities</i> members (see <c>D3D12_MESSAGE_SEVERITY</c>).</summary>
-		public ArrayPointer<D3D12_MESSAGE_SEVERITY> pSeverityList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumSeverities))]
+		public D3D12_MESSAGE_SEVERITY[] pSeverityList;
 
 		/// <summary>Number of message IDs to allow or deny.</summary>
-		public uint NumIDs;
+		private uint NumIDs;
 
 		/// <summary>Array of message IDs to allow or deny. Array must have at least <i>NumIDs</i> members (see <c>D3D12_MESSAGE_ID</c>).</summary>
-		public ArrayPointer<D3D12_MESSAGE_ID> pIDList;
+		[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(NumIDs))]
+		public D3D12_MESSAGE_ID[] pIDList;
 	}
 
 	/// <summary>A debug message in the Information Queue.</summary>
