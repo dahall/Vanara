@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -25,13 +26,15 @@ public class ContextMenuTests
 			(TestCaseSources.TempDir, [TestCaseSources.TempDir]), // Folder
 			(TestCaseSources.TempDir, [shi]), // Single file
 			(TestCaseSources.TempDir, [shi, TestCaseSources.Image2File]), // Multiple files, same parent
+			(TestCaseSources.TempDir, [TestCaseSources.TempDirWhack + "Fonts"]), // SubFolder
 			(@"C:\", [shi, System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "notepad.exe")]), // Multiple files, different parents
 		];
 		foreach ((string? f, string[] i) s in items)
 		{
 			foreach (var e in Enum.GetValues<CMF>())
+			//var e = CMF.CMF_NORMAL;
 			{
-				yield return new TestCaseData(e, s.f is null ? null : MakeFolder(s.f!), Array.ConvertAll(s.i, i => SHCreateItemFromParsingName<IShellItem>(i)))
+				yield return new TestCaseData(e, s.f is null ? null : MakeFolder(s.f!), Array.ConvertAll(s.i, i => SHParseDisplayName(i, null, out var pidl).Succeeded ? pidl : PIDL.Null))
 					.SetArgDisplayNames(e.ToString(), s.f is null ? "null" : System.IO.Path.GetFileName(s.f), $"[{string.Join(",", s.i.Select(i => System.IO.Path.GetFileName(i)))}]");
 			}
 		}
@@ -43,16 +46,21 @@ public class ContextMenuTests
 		}
 	}
 
-	[Test]
-	public void SHCreateDefaultContextMenuTest([Values] CMF cmf)
+	[TestCaseSource(nameof(CreateSources))]
+	public void SHCreateDefaultContextMenuTest(CMF cmf, IShellFolder? folder, PIDL[] items)
 	{
-		Assert.That(SHParseDisplayName(TestCaseSources.ImageFile, default, out var pidlChild, 0, out _), ResultIs.Successful);
-		Assert.That(SHParseDisplayName(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "notepad.exe"), default, out var pidlChild2, 0, out _), ResultIs.Successful);
-		Assert.That(SHParseDisplayName(System.IO.Path.GetPathRoot(TestCaseSources.TempDir)!, default, out var pidlFolder, 0, out _), ResultIs.Successful);
-		Assert.That(SHBindToObject(null, pidlFolder, null, out IShellFolder? pshf), ResultIs.Successful);
-		//Assert.That(SHGetDesktopFolder(out IShellFolder? pContainingFolder), ResultIs.Successful);
-
-		Assert.That(SHCreateDefaultContextMenu(new DEFCONTEXTMENU(pshf!, [pidlChild, pidlChild2], null, out _), out IContextMenu3? pcm), ResultIs.Successful);
+		IContextMenu? pcm;
+		// Handle unique case of desktop with no items as it doesn't work with SHCreateDefaultContextMenu for some reason
+		if (items is null || items?.Length == 0 && folder is null)
+		{
+			Assert.That(SHGetDesktopFolder(out folder), ResultIs.Successful);
+			Assert.That(folder.CreateViewObject(GetDesktopWindow(), out pcm), ResultIs.Successful);
+		}
+		else
+		{
+			DEFCONTEXTMENU dcm = new(GetDesktopWindow(), folder, items, null, out _);
+			Assert.That(SHCreateDefaultContextMenu(dcm, out pcm), ResultIs.Successful);
+		}
 		Assert.That(pcm, Is.Not.Null);
 
 		using var hmenu = CreatePopupMenu();
@@ -66,9 +74,9 @@ public class ContextMenuTests
 	}
 
 	[TestCaseSource(nameof(CreateSources))]
-	public void SHCreateDefaultContextMenuTest2(CMF cmf, IShellFolder? folder, IShellItem[] items)
+	public void SHCreateDefaultContextMenuTest2(CMF cmf, IShellFolder? folder, PIDL[] items)
 	{
-		var pcm = SHCreateDefaultContextMenuEx(folder, out _, items);
+		var pcm = SHCreateDefaultContextMenuEx(GetDesktopWindow(), folder, out var toDispose, items);
 		Assert.That(pcm, Is.Not.Null);
 
 		using var hmenu = CreatePopupMenu();
@@ -196,6 +204,7 @@ public class ContextMenuTests
 			ShowMII(mii.SubMenus[j], j, indent + 1);
 	}
 
+	[DebuggerDisplay("{Text} (#{Id}) - Type={Type}; State={State}")]
 	public class MenuItemInfo
 	{
 		internal MenuItemInfo(HMENU hMenu, int idx, IContextMenu? cm)
@@ -217,7 +226,7 @@ public class ContextMenuTests
 			Type = mii.fType;
 			State = mii.fState;
 			BitmapHandle = mii.hbmpItem;
-			if (cm is not null && !mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR))
+			if (cm is not null && !mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) && !Text.StartsWith("Sync or Backup")) // Exclude Google Drive as it can't handle GetCommandString for some reason
 			{
 				uint id = mii.wID - m_CmdFirst;
 				Verb = cm.GetCommandString(id, GCS.GCS_VERBW, out var mStr).Succeeded ? mStr : null;

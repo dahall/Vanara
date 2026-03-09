@@ -170,13 +170,17 @@ public class ShellDataTable : DataTable
 
 		async Task GetSlowProps(PIDL i, DataRow row, IEnumerable<(PROPERTYKEY pk, DataColumn col)> props, CancellationToken cancellationToken) => await TaskAgg.Run(() =>
 		{
-			row.BeginEdit();
-			foreach ((PROPERTYKEY pk, DataColumn? col) in props)
+			try
 			{
-				if (cancellationToken.IsCancellationRequested) break;
-				row[col] = GetProp(pk, i) ?? DBNull.Value;
+				row.BeginEdit();
+				foreach ((PROPERTYKEY pk, DataColumn? col) in props)
+				{
+					if (cancellationToken.IsCancellationRequested) break;
+					row[col] = GetProp(pk, i) ?? DBNull.Value;
+				}
+				row.AcceptChanges();
 			}
-			row.AcceptChanges();
+			catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Exception in GetSlowProps: {ex}"); }
 		}, cancellationToken);
 	}
 
