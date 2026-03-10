@@ -153,7 +153,7 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "d9fd2e44-5782-40c9-a1cf-1788ca7afc50")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AccessCheck([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess, in GENERIC_MAPPING GenericMapping,
-		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet, ref uint PrivilegeSetLength,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query | SizingMethod.CheckLastError), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet, ref uint PrivilegeSetLength,
 		out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
 	/// <summary>
@@ -261,7 +261,7 @@ public static partial class AdvApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AccessCheckByType([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In, Optional] PSID PrincipalSelfSid, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
 		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] OBJECT_TYPE_LIST[]? ObjectTypeList, [Optional] uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
-		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query | SizingMethod.CheckLastError), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
 		ref uint PrivilegeSetLength, out ACCESS_MASK GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
 
 	/// <summary>
@@ -369,7 +369,7 @@ public static partial class AdvApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AccessCheckByTypeResultList([In] PSECURITY_DESCRIPTOR pSecurityDescriptor, [In, Optional] PSID PrincipalSelfSid, [In] HTOKEN ClientToken, ACCESS_MASK DesiredAccess,
 		[In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] OBJECT_TYPE_LIST[]? ObjectTypeList, uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping,
-		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
+		[Out, SizeDef(nameof(PrivilegeSetLength), SizingMethod.Query | SizingMethod.CheckLastError), StructPointer(typeof(PRIVILEGE_SET))] IntPtr PrivilegeSet,
 		ref uint PrivilegeSetLength, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] ACCESS_MASK[] GrantedAccessList,
 		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] uint[] AccessStatusList);
 
@@ -2037,53 +2037,6 @@ public static partial class AdvApi32
 	/// A handle to the access token that contains the groups to be enabled or disabled. The handle must have TOKEN_ADJUST_GROUPS access
 	/// to the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
 	/// </param>
-	/// <param name="NewState">
-	/// A pointer to a TOKEN_GROUPS structure that contains the groups to be enabled or disabled. If the ResetToDefault parameter is
-	/// <c>FALSE</c>, the function sets each of the groups to the value of that group's SE_GROUP_ENABLED attribute in the
-	/// <c>TOKEN_GROUPS</c> structure. If ResetToDefault is <c>TRUE</c>, this parameter is ignored.
-	/// </param>
-	/// <param name="PreviousState">
-	/// On return, a TOKEN_GROUPS structure containing the previous state of any groups the function modifies. That is, if a group has
-	/// been modified by this function, the group and its previous state are contained in the <c>TOKEN_GROUPS</c> structure referenced by
-	/// PreviousState. If the <c>GroupCount</c> member of <c>TOKEN_GROUPS</c> is zero, then no groups have been changed by this function.
-	/// </param>
-	/// <returns>If the function succeeds, the return value is ERROR_SUCCESS; other it is extended error information.</returns>
-	/// <remarks>
-	/// <para>
-	/// The information retrieved in the PreviousState parameter is formatted as a TOKEN_GROUPS structure. This means a pointer to the
-	/// buffer can be passed as the NewState parameter in a subsequent call to the <c>AdjustTokenGroups</c> function, restoring the
-	/// original state of the groups.
-	/// </para>
-	/// <para>
-	/// The NewState parameter can list groups to be changed that are not present in the access token. This does not affect the
-	/// successful modification of the groups in the token.
-	/// </para>
-	/// <para>
-	/// The <c>AdjustTokenGroups</c> function cannot disable groups with the SE_GROUP_MANDATORY attribute in the TOKEN_GROUPS structure.
-	/// Use CreateRestrictedToken instead.
-	/// </para>
-	/// <para>You cannot enable a group that has the SE_GROUP_USE_FOR_DENY_ONLY attribute.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-adjusttokengroups BOOL AdjustTokenGroups(
-	// HANDLE TokenHandle, BOOL ResetToDefault, PTOKEN_GROUPS NewState, DWORD BufferLength, PTOKEN_GROUPS PreviousState, PDWORD
-	// ReturnLength );
-	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
-	public static Win32Error AdjustTokenGroups([In, AddAsMember] HTOKEN TokenHandle, in TOKEN_GROUPS NewState, out TOKEN_GROUPS PreviousState)
-	{
-		using SafeAnysizeStruct<TOKEN_GROUPS> ns = NewState;
-		using SafeHGlobalHandle dummy = new(1);
-		return CallMethodWithTypedBuf((ref sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, false, ns, dummy.Size, dummy, out sz)); sz += 4; return err; },
-			(IntPtr ptr, ref uint sz) => BoolToLastErr(AdjustTokenGroups(TokenHandle, false, ns, sz, ptr, out _)), out PreviousState);
-	}
-
-	/// <summary>
-	/// The <c>AdjustTokenGroups</c> function enables or disables groups already present in the specified access token. Access to
-	/// TOKEN_ADJUST_GROUPS is required to enable or disable groups in an access token.
-	/// </summary>
-	/// <param name="TokenHandle">
-	/// A handle to the access token that contains the groups to be enabled or disabled. The handle must have TOKEN_ADJUST_GROUPS access
-	/// to the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
-	/// </param>
 	/// <param name="ResetToDefault">
 	/// Boolean value that indicates whether the groups are to be set to their default enabled and disabled states. If this value is
 	/// <c>TRUE</c>, the groups are set to their default states and the NewState parameter is ignored. If this value is <c>FALSE</c>, the
@@ -2140,8 +2093,75 @@ public static partial class AdvApi32
 	// ReturnLength );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AdjustTokenGroups([In] HTOKEN TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool ResetToDefault, [In] IntPtr NewState, [In, Optional] uint BufferLength, [In, Out, Optional] IntPtr PreviousState, out uint ReturnLength);
+	public static extern bool AdjustTokenGroups([In] HTOKEN TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool ResetToDefault,
+		[In, Optional, StructPointer(typeof(TOKEN_GROUPS))] IntPtr NewState, [In, Optional] uint BufferLength,
+		[Out, Optional, StructPointer(typeof(TOKEN_GROUPS)), SizeDef(nameof(BufferLength), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(ReturnLength))] IntPtr PreviousState,
+		out uint ReturnLength);
+
+	/// <summary>
+	/// The <c>AdjustTokenGroups</c> function enables or disables groups already present in the specified access token. Access to
+	/// TOKEN_ADJUST_GROUPS is required to enable or disable groups in an access token.
+	/// </summary>
+	/// <param name="TokenHandle">
+	/// A handle to the access token that contains the groups to be enabled or disabled. The handle must have TOKEN_ADJUST_GROUPS access
+	/// to the token. If the PreviousState parameter is not <c>NULL</c>, the handle must also have TOKEN_QUERY access.
+	/// </param>
+	/// <param name="NewState">
+	/// A pointer to a TOKEN_GROUPS structure that contains the groups to be enabled or disabled. If the ResetToDefault parameter is
+	/// <c>FALSE</c>, the function sets each of the groups to the value of that group's SE_GROUP_ENABLED attribute in the
+	/// <c>TOKEN_GROUPS</c> structure. If ResetToDefault is <c>TRUE</c>, this parameter is ignored.
+	/// </param>
+	/// <param name="PreviousState">
+	/// <para>
+	/// A pointer to a buffer that receives a TOKEN_GROUPS structure containing the previous state of any groups the function modifies.
+	/// That is, if a group has been modified by this function, the group and its previous state are contained in the <c>TOKEN_GROUPS</c>
+	/// structure referenced by PreviousState. If the <c>GroupCount</c> member of <c>TOKEN_GROUPS</c> is zero, then no groups have been
+	/// changed by this function. This parameter can be <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// If a buffer is specified but it does not contain enough space to receive the complete list of modified groups, no group states
+	/// are changed and the function fails. In this case, the function sets the variable pointed to by the ReturnLength parameter to the
+	/// number of bytes required to hold the complete list of modified groups.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The information retrieved in the PreviousState parameter is formatted as a TOKEN_GROUPS structure. This means a pointer to the
+	/// buffer can be passed as the NewState parameter in a subsequent call to the <c>AdjustTokenGroups</c> function, restoring the
+	/// original state of the groups.
+	/// </para>
+	/// <para>
+	/// The NewState parameter can list groups to be changed that are not present in the access token. This does not affect the
+	/// successful modification of the groups in the token.
+	/// </para>
+	/// <para>
+	/// The <c>AdjustTokenGroups</c> function cannot disable groups with the SE_GROUP_MANDATORY attribute in the TOKEN_GROUPS structure.
+	/// Use CreateRestrictedToken instead.
+	/// </para>
+	/// <para>You cannot enable a group that has the SE_GROUP_USE_FOR_DENY_ONLY attribute.</para>
+	/// </remarks>
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
+	public static Win32Error AdjustTokenGroups([In, AddAsMember] HTOKEN TokenHandle, in TOKEN_GROUPS NewState, out TOKEN_GROUPS PreviousState)
+	{
+		PreviousState = default;
+		using SafeHGlobalStruct<TOKEN_GROUPS> __NewState = NewState;
+		using SafeHGlobalStruct<TOKEN_GROUPS> __PreviousState = new();
+		bool __qret = AdjustTokenGroups(TokenHandle, false, __NewState, __PreviousState.Size, __PreviousState, out uint ReturnLength);
+		if (FailedHelper.FAILED(__qret, true))
+			return GetLastError();
+		__PreviousState.Size = Math.Max(ReturnLength, InteropExtensions.SizeOf<TOKEN_GROUPS>());
+		bool __ret = AdjustTokenGroups(TokenHandle, false, __NewState, __PreviousState.Size, __PreviousState, out ReturnLength);
+		if (FailedHelper.FAILED(__ret, false))
+			return GetLastError();
+		PreviousState = __PreviousState.Value;
+		return 0;
+	}
 
 	/// <summary>
 	/// The <c>AdjustTokenGroupsReset</c> function resets groups to their default states in the specified access token. Access to
@@ -2150,11 +2170,6 @@ public static partial class AdvApi32
 	/// <param name="TokenHandle">
 	/// A handle to the access token that contains the groups to be enabled or disabled. The handle must have TOKEN_ADJUST_GROUPS and
 	/// TOKEN_QUERY access to the token.
-	/// </param>
-	/// <param name="PreviousState">
-	/// On return, a TOKEN_GROUPS structure containing the previous state of any groups the function modifies. That is, if a group has been
-	/// modified by this function, the group and its previous state are contained in the <c>TOKEN_GROUPS</c> structure referenced by
-	/// PreviousState. If the <c>GroupCount</c> member of <c>TOKEN_GROUPS</c> is zero, then no groups have been changed by this function.
 	/// </param>
 	/// <returns>If the function succeeds, the return value is ERROR_SUCCESS; other it is extended error information.</returns>
 	/// <remarks>
@@ -2166,12 +2181,8 @@ public static partial class AdvApi32
 	// HANDLE TokenHandle, BOOL ResetToDefault, PTOKEN_GROUPS NewState, DWORD BufferLength, PTOKEN_GROUPS PreviousState, PDWORD
 	// ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "839c4b58-4c61-4f72-8337-1e3dfa267ee5")]
-	public static Win32Error AdjustTokenGroupsReset([In, AddAsMember] HTOKEN TokenHandle, out TOKEN_GROUPS PreviousState)
-	{
-		using var dummy = new SafeHGlobalHandle(1);
-		return CallMethodWithTypedBuf((ref sz) => { var err = BoolToLastErr(AdjustTokenGroups(TokenHandle, true, default, dummy.Size, dummy, out sz)); sz += 4; return err; },
-			(IntPtr ptr, ref uint sz) => BoolToLastErr(AdjustTokenGroups(TokenHandle, true, default, sz, ptr, out _)), out PreviousState);
-	}
+	public static Win32Error AdjustTokenGroupsReset([In, AddAsMember] HTOKEN TokenHandle) =>
+		AdjustTokenGroups(TokenHandle, true, default, 0, default, out _) ? 0 : GetLastError();
 
 	/// <summary>
 	/// The <c>AdjustTokenPrivileges</c> function enables or disables privileges in the specified access token. Enabling or disabling
@@ -4405,7 +4416,7 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-gettokeninformation
 	// BOOL GetTokenInformation( HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength );
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "NF:securitybaseapi.GetTokenInformation")]
-	public static T GetTokenInformation<T>([In] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS? TokenInformationClass = null) where T : struct
+	public static T GetTokenInformation<T>([In, AddAsMember] HTOKEN TokenHandle, TOKEN_INFORMATION_CLASS? TokenInformationClass = null) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet<T, TOKEN_INFORMATION_CLASS>(TokenInformationClass, out var ti))
 			throw new InvalidCastException();
@@ -6155,7 +6166,7 @@ public static partial class AdvApi32
 	// SetSecurityDescriptorRMControl( PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "fe9c736b-e047-4aa3-a3de-d5f2f2cdab4f")]
-	public static extern uint SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, in byte RMControl);
+	public static extern Win32Error SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, in byte RMControl);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorRMControl</c> function sets the resource manager control bits in the SECURITY_DESCRIPTOR structure.
@@ -6175,7 +6186,7 @@ public static partial class AdvApi32
 	// SetSecurityDescriptorRMControl( PSECURITY_DESCRIPTOR SecurityDescriptor, PUCHAR RMControl );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "fe9c736b-e047-4aa3-a3de-d5f2f2cdab4f")]
-	public static extern uint SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, [In, Optional] IntPtr RMControl);
+	public static extern Win32Error SetSecurityDescriptorRMControl([In, AddAsMember] PSECURITY_DESCRIPTOR SecurityDescriptor, [In, Optional] IntPtr RMControl);
 
 	/// <summary>
 	/// The <c>SetSecurityDescriptorSacl</c> function sets information in a system access control list (SACL). If there is already a SACL

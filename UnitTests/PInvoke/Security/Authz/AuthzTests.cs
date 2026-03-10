@@ -262,22 +262,31 @@ public class AuthzTests
 				szEventMessageFile = eventFile,
 				szEventAccessStringsFile = eventFile,
 			};
-			if (!AuthzInstallSecurityEventSource(0, srcReg))
-				Assert.That(Win32Error.GetLastError(), Is.EqualTo((Win32Error)Win32Error.ERROR_OBJECT_ALREADY_EXISTS));
-
-			Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
+			AuthzUninstallSecurityEventSource(0, eventSource); // clear first just in case
+			Assert.That(AuthzInstallSecurityEventSource(0, srcReg), ResultIs.Successful);
 			try
 			{
-				Assert.That(AuthzReportSecurityEvent(APF.APF_AuditSuccess, hEvtProv, eventId, PSID.NULL, 6, __arglist(
-					AUDIT_PARAM_TYPE.APT_String, "Testing",
-					AUDIT_PARAM_TYPE.APT_Ulong, 123,
-					AUDIT_PARAM_TYPE.APT_Guid, (IntPtr)new SafeCoTaskMemStruct<Guid>(Guid.NewGuid()),
-					AUDIT_PARAM_TYPE.APT_Sid, (IntPtr)SafePSID.Current,
-					AUDIT_PARAM_TYPE.APT_Int64, long.MaxValue - 1,
-					AUDIT_PARAM_TYPE.APT_Time, DateTime.Now.ToFileTime()
-					)), ResultIs.Successful);
+				Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
+				try
+				{
+					Assert.That(AuthzReportSecurityEvent(APF.APF_AuditSuccess, hEvtProv, eventId, PSID.NULL, 6, __arglist(
+						AUDIT_PARAM_TYPE.APT_String, "Testing",
+						AUDIT_PARAM_TYPE.APT_Ulong, 123,
+						AUDIT_PARAM_TYPE.APT_Guid, (IntPtr)new SafeCoTaskMemStruct<Guid>(Guid.NewGuid()),
+						AUDIT_PARAM_TYPE.APT_Sid, (IntPtr)SafePSID.Current,
+						AUDIT_PARAM_TYPE.APT_Int64, long.MaxValue - 1,
+						AUDIT_PARAM_TYPE.APT_Time, DateTime.Now.ToFileTime()
+						)), ResultIs.Successful);
+				}
+				finally
+				{
+					Assert.That(hEvtProv.Dispose, Throws.Nothing);
+				}
 			}
-			finally { Assert.That(() => hEvtProv.Dispose(), Throws.Nothing); }
+			finally
+			{
+				Assert.That(AuthzUninstallSecurityEventSource(0, eventSource), ResultIs.Successful);
+			}
 		}
 	}
 
@@ -285,7 +294,7 @@ public class AuthzTests
 	public void AuthzReportSecurityEventFromParamsTest()
 	{
 		const int eventId = 4624;
-		const string eventFile = "C:\\Windows\\System32\\authz.dll";
+		const string eventFile = "Some random string";
 		const string eventSource = "TestAddEventSource";
 
 		using (new ElevPriv(["SeAuditPrivilege", "SeSecurityPrivilege"]))
@@ -297,20 +306,30 @@ public class AuthzTests
 				szEventMessageFile = eventFile,
 				szEventAccessStringsFile = eventFile,
 			};
-			Assert.That(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
-
-			Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
+			AuthzUninstallSecurityEventSource(0, eventSource); // clear first just in case
+			Assert.That(AuthzInstallSecurityEventSource(0, srcReg), ResultIs.Successful);
 			try
 			{
-				using SafeCoTaskMemString data = new("Testing");
-				using SafeNativeArray<AUDIT_PARAM> mem = new([
-					new(AUDIT_PARAM_TYPE.APT_String, data),
-					new(AUDIT_PARAM_TYPE.APT_Ulong, new IntPtr(123)),
-				]);
-				AUDIT_PARAMS ap = new() { Count = (ushort)mem.Count, Parameters = mem };
-				Assert.That(AuthzReportSecurityEventFromParams(0, hEvtProv, eventId, PSID.NULL, ap), ResultIs.Successful);
+				Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
+				try
+				{
+					using SafeCoTaskMemString data = new("Testing");
+					using SafeNativeArray<AUDIT_PARAM> mem = new([
+						new(AUDIT_PARAM_TYPE.APT_String, data),
+						new(AUDIT_PARAM_TYPE.APT_Ulong, new IntPtr(123)),
+					]);
+					AUDIT_PARAMS ap = new() { Count = (ushort)mem.Count, Parameters = mem };
+					Assert.That(AuthzReportSecurityEventFromParams(0, hEvtProv, eventId, PSID.NULL, ap), ResultIs.Successful);
+				}
+				finally
+				{
+					Assert.That(hEvtProv.Dispose, Throws.Nothing);
+				}
 			}
-			finally { Assert.That(() => hEvtProv.Dispose(), Throws.Nothing); }
+			finally
+			{
+				Assert.That(AuthzUninstallSecurityEventSource(0, eventSource), ResultIs.Successful);
+			}
 		}
 	}
 
@@ -336,7 +355,7 @@ public class AuthzTests
 
 	// TODO: Figure out how AuthzSetAppContainerInformation works
 	// [Test]
-		public static void AuthzSetAppContainerInformationTest()
+	public static void AuthzSetAppContainerInformationTest()
 	{
 		using SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM = GetAuthzInitializeResourceManager();
 		using SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx = GetCurrentUserAuthContext(hRM);

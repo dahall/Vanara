@@ -775,8 +775,115 @@ public static partial class Secur32
 	// PVOID *ProtocolReturnBuffer, PULONG ReturnBufferLength, PNTSTATUS ProtocolStatus );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "b891fa60-28b3-4819-9a92-e4524677fa4f")]
-	public static extern NTStatus LsaCallAuthenticationPackage(LsaConnectionHandle LsaHandle, uint AuthenticationPackage, [In] IntPtr ProtocolSubmitBuffer, uint SubmitBufferLength, out SafeLsaReturnBufferHandle ProtocolReturnBuffer,
+	public static extern NTStatus LsaCallAuthenticationPackage(LsaConnectionHandle LsaHandle, uint AuthenticationPackage,
+		[In, SizeDef(nameof(SubmitBufferLength), SizingMethod.Bytes)] IntPtr ProtocolSubmitBuffer, uint SubmitBufferLength,
+		[ArrayPointer(typeof(byte), nameof(ReturnBufferLength))] out SafeLsaReturnBufferHandle ProtocolReturnBuffer,
 		out uint ReturnBufferLength, out NTStatus ProtocolStatus);
+
+	/// <summary>
+	/// <para>
+	/// The <c>LsaCallAuthenticationPackage</c> function is used by a logon application to communicate with an authentication package.
+	/// </para>
+	/// <para>This function is typically used to access services provided by the authentication package.</para>
+	/// </summary>
+	/// <param name="LsaHandle">A handle obtained from a previous call to LsaRegisterLogonProcess or LsaConnectUntrusted.</param>
+	/// <param name="AuthenticationPackage">
+	/// Supplies the identifier of the authentication package. This value is obtained by calling LsaLookupAuthenticationPackage.
+	/// </param>
+	/// <param name="ProtocolSubmitBuffer">
+	/// <para>An authentication package–specific message buffer passed to the authentication package.</para>
+	/// <para>For information about the format and content of this buffer, see the documentation for the individual authentication package.</para>
+	/// </param>
+	/// <param name="ProtocolReturnBuffer">
+	/// <para>A pointer that receives the address of the buffer returned by the authentication package.</para>
+	/// <para>For information about the format and content of this buffer, see the documentation for the individual authentication package.</para>
+	/// <para>
+	/// This buffer is allocated by this function. When you have finished using this buffer, free the memory by calling the
+	/// LsaFreeReturnBuffer function.
+	/// </para>
+	/// </param>
+	/// <param name="ProtocolStatus">
+	/// If the function succeeds, this parameter receives a pointer to an <c>NTSTATUS</c> code that indicates the completion status of
+	/// the authentication package.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is STATUS_SUCCESS. Check the ProtocolStatus parameter to obtain the status returned by
+	/// the authentication package.
+	/// </para>
+	/// <para>If the function fails, the return value is an <c>NTSTATUS</c> code. The following are possible error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_QUOTA_EXCEEDED</term>
+	/// <term>The call could not be completed because the client's memory quota is not sufficient to allocate the return buffer.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NO_SUCH_PACKAGE</term>
+	/// <term>The specified authentication package is not recognized by the LSA.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_PKINIT_FAILURE</term>
+	/// <term>
+	/// The Kerberos client received a KDC certificate that is not valid. For device logon, strict KDC validation is required, so the KDC
+	/// must have certificates that use the "Kerberos Authentication" template or equivalent. Also the KDC certificate could be expired,
+	/// revoked, or the client is under active attack of sending requests to the wrong server.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_PKINIT_CLIENT_FAILURE</term>
+	/// <term>
+	/// The Kerberos client is using a system certificate that is not valid. For device logon, there must be a DNS name. Also, the system
+	/// certificate could be expired or the wrong one could be selected.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see LSA Policy Function Return Values.</para>
+	/// <para>The LsaNtStatusToWinError function converts an <c>NTSTATUS</c> code to a Windows error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Logon applications can call <c>LsaCallAuthenticationPackage</c> to communicate with an authentication package. There are several
+	/// reasons why an application may do this:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>To implement multiple-message authentication protocols, such as the NTLM Challenge-Response protocol.</term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// To pass state change information to the authentication package. For example, the NTLM might notify the MSV1_0 package that a
+	/// previously unreachable domain controller is now reachable. The authentication package would then re-logon any users logged on to
+	/// that domain controller.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Typically, this function is used to exchange information with a custom authentication package. This function is not needed by an
+	/// application that is using one of the authentication packages supplied with Windows, such as MSV1_0 or Kerberos.
+	/// </para>
+	/// <para>
+	/// You must call <c>LsaCallAuthenticationPackage</c> to clean up PKINIT device credentials for LOCAL_SYSTEM and NETWORK_SERVICE.
+	/// When there is no PKINIT device credential, a successful call does no operation. When there is a PKINIT device credential, a
+	/// successful call cleans up the PKINIT device credential so that only the password credential remains.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("ntsecapi.h", MSDNShortId = "b891fa60-28b3-4819-9a92-e4524677fa4f")]
+	public static NTStatus LsaCallAuthenticationPackage<TIn, TOut>(LsaConnectionHandle LsaHandle, uint AuthenticationPackage,
+		in TIn? ProtocolSubmitBuffer, out TOut? ProtocolReturnBuffer, out NTStatus ProtocolStatus) where TIn : struct where TOut : struct
+	{
+		using SafeHGlobalStruct<TIn> __ProtocolSubmitBuffer = ProtocolSubmitBuffer;
+		ProtocolReturnBuffer = default;
+		NTStatus __ret = LsaCallAuthenticationPackage(LsaHandle, AuthenticationPackage, __ProtocolSubmitBuffer, __ProtocolSubmitBuffer.Size, out var __ProtocolReturnBuffer, out var ReturnBufferLength, out ProtocolStatus);
+		if (__ret.Failed)
+			return __ret;
+		using (__ProtocolReturnBuffer)
+			ProtocolReturnBuffer = __ProtocolReturnBuffer.IsNull ? null : __ProtocolSubmitBuffer.DangerousGetHandle().ToStructure<TOut>(ReturnBufferLength);
+		return __ret;
+	}
 
 	/// <summary>
 	/// <para>The <c>LsaConnectUntrusted</c> function establishes an untrusted connection to the LSA server.</para>
@@ -1693,7 +1800,8 @@ public static partial class Secur32
 		public uint Length;
 
 		/// <summary>Contains the cryptographic session key.</summary>
-		public IntPtr Value;
+		[SizeDef(nameof(Length))]
+		public ArrayPointer<byte> Value;
 	}
 
 	/// <summary>
@@ -1703,8 +1811,7 @@ public static partial class Secur32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_kerb_external_name typedef struct _KERB_EXTERNAL_NAME {
 	// SHORT NameType; USHORT NameCount; UNICODE_STRING Names[ANYSIZE_ARRAY]; } KERB_EXTERNAL_NAME, *PKERB_EXTERNAL_NAME;
 	[PInvokeData("ntsecapi.h", MSDNShortId = "8ed37546-6443-4010-a078-4359dd1c2861")]
-	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	public struct KERB_EXTERNAL_NAME
+	public struct KERB_EXTERNAL_NAME : IVanaraMarshaler
 	{
 		/// <summary>
 		/// <para>Indicates the type of the names stored in this structure.</para>
@@ -1755,26 +1862,45 @@ public static partial class Secur32
 		/// </item>
 		/// </list>
 		/// </summary>
-		[FieldOffset(0)]
 		public KRB_NT NameType;
 
-		/// <summary>Indicates the number of names stored in <c>Names</c>.</summary>
-		[FieldOffset(2)]
-		public ushort NameCount;
-
 		/// <summary>Array of UNICODE_STRINGS containing the names.</summary>
-		[FieldOffset(8)]
-		public IntPtr Names;
+		public string[] Names;
 
-		/// <summary>Extracts the names from <see cref="Names"/>.</summary>
-		/// <returns>A sequence of names.</returns>
-		public readonly IEnumerable<string> GetNames()
+		readonly SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<KERB_EXTERNAL_NAME_INT>();
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
-			if (NameCount == 0)
-				yield break;
-			using var pin = new PinnedObject(this);
-			foreach (var us in ((IntPtr)pin).ToIEnum<LSA_UNICODE_STRING>(NameCount, 8))
-				yield return us.ToString();
+			if (managedObject is not KERB_EXTERNAL_NAME ken)
+				throw new ArgumentException("Managed object must be of type KERB_EXTERNAL_NAME", nameof(managedObject));
+			var names = ken.Names is null || ken.Names.Length == 0 ? [""] : ken.Names;
+			var native = new KERB_EXTERNAL_NAME_INT
+			{
+				NameType = ken.NameType,
+				NameCount = (ushort)names.Length,
+			};
+			var sz = Marshal.SizeOf<KERB_EXTERNAL_NAME_INT>() + LsaUnicodeStringArrayMarshaler.GetByteCount(names) - Marshal.SizeOf<LSA_UNICODE_STRING>();
+			SafeHGlobalStruct<KERB_EXTERNAL_NAME_INT> mem = new(native, sz);
+			LsaUnicodeStringArrayMarshaler.Write(names, mem.DangerousGetHandle().Offset(Marshal.OffsetOf<KERB_EXTERNAL_NAME_INT>(nameof(Names)).ToInt64()));
+			return mem;
+		}
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (allocatedBytes < Marshal.SizeOf<KERB_EXTERNAL_NAME_INT>())
+				throw new ArgumentException("Allocated bytes is less than the size of the native structure.", nameof(allocatedBytes));
+			var native = Marshal.PtrToStructure<KERB_EXTERNAL_NAME_INT>(pNativeData);
+			return new KERB_EXTERNAL_NAME
+			{
+				NameType = native.NameType,
+				Names = LsaUnicodeStringArrayMarshaler.DangerousRead(pNativeData.Offset(Marshal.OffsetOf<KERB_EXTERNAL_NAME_INT>(nameof(Names)).ToInt64()), native.NameCount),
+			};
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		struct KERB_EXTERNAL_NAME_INT
+		{
+			public KRB_NT NameType;
+			public ushort NameCount;
+			public LSA_UNICODE_STRING Names;
 		}
 	}
 
@@ -1795,15 +1921,15 @@ public static partial class Secur32
 	public struct KERB_EXTERNAL_TICKET
 	{
 		/// <summary>A KERB_EXTERNAL_NAME structure that contains a multiple part, canonical, returned service name.</summary>
-		public IntPtr ServiceName;
+		public ManagedStructPointer<KERB_EXTERNAL_NAME> ServiceName;
 
 		/// <summary>A KERB_EXTERNAL_NAME structure that contains the multiple part service principal name (SPN).</summary>
-		public IntPtr TargetName;
+		public ManagedStructPointer<KERB_EXTERNAL_NAME> TargetName;
 
 		/// <summary>
 		/// A KERB_EXTERNAL_NAME structure that contains the client name in the ticket. This name is relative to the current domain.
 		/// </summary>
-		public IntPtr ClientName;
+		public ManagedStructPointer<KERB_EXTERNAL_NAME> ClientName;
 
 		/// <summary>
 		/// A UNICODE_STRING that contains the name of the domain that corresponds to the <c>ServiceName</c> member. This is the domain
@@ -1942,7 +2068,8 @@ public static partial class Secur32
 		public uint EncodedTicketSize;
 
 		/// <summary>A buffer that contains the Abstract Syntax Notation One (ASN.1)-encoded ticket.</summary>
-		public IntPtr EncodedTicket;
+		[SizeDef(nameof(EncodedTicketSize))]
+		public ArrayPointer<byte> EncodedTicket;
 
 		// /// <summary>ServiceName value.</summary> public string ServiceNameValue => ServiceName == default ? null :
 		// ServiceName.ToStructure<KERB_EXTERNAL_NAME>().ToString(); /// <summary>TargetName value.</summary> public string

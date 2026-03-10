@@ -2284,7 +2284,9 @@ public static partial class AdvApi32
 	// LPCSTR pszValue, StrPtrAnsi pszOutBuf, DWORD cbOutBuf, LPDWORD pcbData, DWORD Flags, LPCSTR pszDirectory );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("winreg.h", MSDNShortId = "76ffc77f-a1bc-4e01-858f-4a76563a2bbc")]
-	public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, out uint pcbData, [Optional] REG_MUI_STRING Flags, [Optional] string? pszDirectory);
+	public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue,
+		[Out, SizeDef(nameof(cbOutBuf), SizingMethod.CheckLastError, OutVarName = nameof(pcbData))] StringBuilder pszOutBuf,
+		uint cbOutBuf, out uint pcbData, [Optional] REG_MUI_STRING Flags, [Optional] string? pszDirectory);
 
 	/// <summary>Notifies the caller about changes to the attributes or contents of a specified registry key.</summary>
 	/// <param name="hKey">A handle to an open registry key. This handle is returned by the RegCreateKeyEx or RegOpenKeyEx function.</param>

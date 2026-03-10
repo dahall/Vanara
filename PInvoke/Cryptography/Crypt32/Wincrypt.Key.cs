@@ -563,8 +563,8 @@ public static partial class Crypt32
 	public static IEnumerable<(byte[]? keyId, (uint propId, byte[] data)[] props)> CryptEnumKeyIdentifierProperties(CRYPTOAPI_BLOB? pKeyIdentifier = null,
 		uint dwPropId = 0, CryptKeyIdFlags dwFlags = CryptKeyIdFlags.CRYPT_KEYID_MACHINE_FLAG, string? pwszComputerName = null)
 	{
-		List<(byte[]? keyId, (uint propId, byte[] data)[] props)> output = new();
-		using SafeCoTaskMemStruct<CRYPTOAPI_BLOB> pKeyId = pKeyIdentifier.HasValue ? new(pKeyIdentifier.Value) : SafeCoTaskMemStruct<CRYPTOAPI_BLOB>.Null;
+		List<(byte[]? keyId, (uint propId, byte[] data)[] props)> output = [];
+		using SafeCoTaskMemStruct<CRYPTOAPI_BLOB> pKeyId = pKeyIdentifier;
 		Win32Error.ThrowLastErrorIfFalse(CryptEnumKeyIdentifierProperties(pKeyId, dwPropId, dwFlags, pwszComputerName, default, default, fn));
 		return output;
 

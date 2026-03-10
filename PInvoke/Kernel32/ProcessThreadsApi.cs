@@ -7037,10 +7037,10 @@ public static partial class Kernel32
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct STARTUPINFO
+	public struct STARTUPINFO(ShowWindowCommand cmd)
 	{
 		/// <summary>The size of the structure, in bytes.</summary>
-		public uint cb;
+		public uint cb = (uint)Marshal.SizeOf<STARTUPINFO>();
 
 		/// <summary>Reserved; must be NULL.</summary>
 		public IntPtr lpReserved;
@@ -7235,7 +7235,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public STARTF dwFlags;
+		public STARTF dwFlags = cmd == 0 ? 0 : STARTF.STARTF_USESHOWWINDOW;
 
 		/// <summary>
 		/// <para>
@@ -7248,7 +7248,7 @@ public static partial class Kernel32
 		/// <c>ShowWindow</c> is set to SW_SHOWDEFAULT.
 		/// </para>
 		/// </summary>
-		public ushort wShowWindow;
+		public ushort wShowWindow = (ushort)cmd;
 
 		/// <summary>Reserved for use by the C Run-time; must be zero.</summary>
 		public ushort cbReserved2;
@@ -7337,7 +7337,7 @@ public static partial class Kernel32
 		public SIZE WindowSize { readonly get => new((int)dwXSize, (int)dwYSize); set { dwXSize = (uint)value.cx; dwYSize = (uint)value.cy; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESIZE, value != SIZE.Empty); } }
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
-		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf<STARTUPINFO>() };
+		public static STARTUPINFO Default => new(0);
 	}
 
 	/// <summary>

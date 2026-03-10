@@ -3468,7 +3468,7 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Base class for other LSA memory handles.</summary>
-	public abstract class SafeLsaMemoryHandleBase : SafeHANDLE
+	public abstract class SafeLsaMemoryHandleBase : SafeHANDLE, IMemoryHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandleBase"/> class.</summary>
 		protected SafeLsaMemoryHandleBase() : base()
@@ -3548,27 +3548,34 @@ public static partial class AdvApi32
 		{
 			if (ManagedObj is string[] a)
 			{
-				var uma = Array.ConvertAll(a, p => new LSA_UNICODE_STRING { length = (ushort)StringHelper.GetByteCount(p, false, CharSet.Unicode) });
-				var strSz = uma.Sum(s => s.length + UnicodeEncoding.CharSize);
-				var result = Marshal.AllocCoTaskMem(LsaUnicodeStringMarshaler.ssz * a.Length + strSz);
-				var strPtr = result.Offset(LsaUnicodeStringMarshaler.ssz * a.Length);
-				for (var i = 0; i < uma.Length; i++)
-				{
-					uma[i].Buffer = strPtr;
-					StringHelper.Write(a[i], (IntPtr)uma[i].Buffer, out var byteCnt, true, CharSet.Unicode);
-					uma[i].MaximumLength = (ushort)byteCnt;
-					strPtr = strPtr.Offset(byteCnt);
-					Marshal.StructureToPtr(uma[i], result.Offset(i * LsaUnicodeStringMarshaler.ssz), false);
-				}
+				var result = Marshal.AllocCoTaskMem(GetByteCount(a));
+				Write(a, result);
 				return result;
 			}
 			return IntPtr.Zero;
 		}
-
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
 			if (pNativeData == IntPtr.Zero) return Array.Empty<string>();
 			throw new InvalidOperationException(@"Unable to marshal LSA_UNICODE_STRING arrays from unmanaged to managed code.");
+		}
+
+		internal static SizeT GetByteCount(string[] values) => LsaUnicodeStringMarshaler.ssz * values.Length + values.Sum(s => StringHelper.GetByteCount(s, true, CharSet.Unicode));
+		internal static void Write(string[] values, IntPtr ptr)
+		{
+			var strPtr = ptr.Offset(LsaUnicodeStringMarshaler.ssz * values.Length);
+			for (var i = 0; i < values.Length; i++)
+			{
+				StringHelper.Write(values[i] ?? "", strPtr, out var byteCnt, true, CharSet.Unicode);
+				LSA_UNICODE_STRING str = new() { length = (ushort)(byteCnt - 2), Buffer = strPtr, MaximumLength = (ushort)byteCnt };
+				Marshal.StructureToPtr(str, ptr.Offset(i * LsaUnicodeStringMarshaler.ssz), false);
+				strPtr = strPtr.Offset(byteCnt);
+			}
+		}
+		internal static string[] DangerousRead(IntPtr ptr, int count)
+		{
+			LSA_UNICODE_STRING[] strs = ptr.ToArray<LSA_UNICODE_STRING>(count) ?? [];
+			return Array.ConvertAll(strs, str => ((string?)str.Buffer) ?? "");
 		}
 	}
 
