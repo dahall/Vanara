@@ -1251,7 +1251,7 @@ public static partial class Imm32
 		// DWORD dwRequest, [in] DWORD dwCMode, [in] INT cwchInput, [in] const WCHAR *pwchInput, [in] DWORD *pfCInfo, [out] MORRSLT
 		// **ppResult );
 		[PreserveSig]
-		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cwchInput))] string? pwchInput,
+		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cwchInput))] string pwchInput,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FELANG_CLMN[]? pfCInfo, [Out, StructPointer(typeof(MORRSLT))] out SafeCoTaskMemHandle ppResult);
 
 		/// <summary>Gets the conversion mode capability of the IFELanguage object.</summary>

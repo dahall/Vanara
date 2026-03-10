@@ -909,7 +909,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 					{
 						SizeParamType.Ptr when isNullable => ParseExpression($"{decl.Identifier.Text} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
 						SizeParamType.Ptr => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
-						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString() ?? string.Empty"),
+						SizeParamType.String when isNullable => IdentifierName($"{decl.Identifier.Text}?.ToString()"),
+						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString()"),
 						SizeParamType.StructPtr when !useStructHandle => ParseExpression($"new global::Vanara.InteropServices.PinnedObject({decl.Identifier.Text})"),
 						SizeParamType.StructPtr => ParseExpression($"global::Vanara.InteropServices.SafeHGlobalHandle.CreateFromStructure({decl.Identifier.Text})"),
 						SizeParamType.ArrayPtr when attrInfo.ArrayPtr!.ElementType.IsUnmanagedType => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
