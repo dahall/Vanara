@@ -42,7 +42,7 @@ public class WinCryptTests
 	[Test]
 	public void CryptEnumKeyIdentifierPropertiesTest()
 	{
-		var output = CryptEnumKeyIdentifierProperties().ToArray();
+		var output = CryptEnumKeyIdentifierProperties(dwFlags: 0).ToArray();
 		Assert.That(output, Is.Not.Empty);
 		output.WriteValues();
 	}

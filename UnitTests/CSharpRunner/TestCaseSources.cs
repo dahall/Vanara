@@ -46,19 +46,21 @@ public static class TestCaseSources
 	{
 		get
 		{
-			var lines = File.ReadAllLines(authfn).Skip(1).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-			var ret = new object[lines.Length];
-			for (var i = 0; i < lines.Length; i++)
+			var lines = File.ReadAllLines(authfn).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+			var cols = lines[0].Count('\t') + 1;
+			List<object> ret = [];
+			foreach (var line in lines.Skip(1))
 			{
-				var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
-				if (items.Length < 9) continue;
-				bool.TryParse(items[0].ToString(), out var validUser);
+				object?[] items = Array.ConvertAll(line.Split('\t'), s => s == string.Empty ? null : (object?)s);
+				Array.Resize(ref items, cols);
+				if (items.Length < 9) continue; // Must have upto pwd (col 9)
+				bool.TryParse(items[0]?.ToString(), out var validUser);
 				items[0] = validUser;
-				bool.TryParse(items[1].ToString(), out var validCred);
+				bool.TryParse(items[1]?.ToString(), out var validCred);
 				items[1] = validCred;
-				ret[i] = items;
+				ret.Add(items);
 			}
-			return ret;
+			return ret.ToArray();
 		}
 	}
 

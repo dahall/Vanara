@@ -31,8 +31,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <param name="pbc">An optional IBindCtx object, which provides access to a bind context.</param>
 	public PropertyStore(string path, GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT, System.Runtime.InteropServices.ComTypes.IBindCtx? pbc = null)
 	{
-		IntPtr bc = pbc != null ? Marshal.GetIUnknownForObject(pbc!) : default;
-		SHParseDisplayName(Path.GetFullPath(Environment.ExpandEnvironmentVariables(path)), bc, out item, 0, out _).ThrowIfFailed();
+		SHParseDisplayName(Path.GetFullPath(Environment.ExpandEnvironmentVariables(path)), pbc, out item, 0, out _).ThrowIfFailed();
 		this.flags = flags;
 	}
 

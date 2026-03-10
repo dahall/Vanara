@@ -1217,9 +1217,9 @@ public static partial class Imm32
 	// DWORD deIndex, [out, optional] LPCANDIDATELIST lpCandList, [in] DWORD dwBufLen );
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetCandidateListA")]
-	public static extern uint ImmGetCandidateList([In] HIMC hIMC, uint deIndex, [Out, Optional] IntPtr lpCandList, uint dwBufLen);
+	public static extern uint ImmGetCandidateList([In] HIMC hIMC, uint deIndex, [Out, StructPointer(typeof(CANDIDATELIST_MGD)), SizeDef(nameof(dwBufLen), SizingMethod.QueryResultInReturn)] IntPtr lpCandList, uint dwBufLen);
 
-	/// <summary>Retrieves a candidate list.</summary>
+	/*/// <summary>Retrieves a candidate list.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>
 	/// <param name="deIndex">Zero-based index of the candidate list.</param>
 	/// <returns>The resulting <see cref="CANDIDATELIST_MGD"/> and the list of extracted candidate names.</returns>
@@ -1228,7 +1228,7 @@ public static partial class Imm32
 		using SafeCoTaskMemHandle mem = new(Win32Error.ThrowLastErrorIf(ImmGetCandidateList(hIMC, deIndex, default, 0), i => i == 0));
 		Win32Error.ThrowLastErrorIf(ImmGetCandidateList(hIMC, deIndex, mem, mem.Size), i => i == 0);
 		return mem.ToStructure<CANDIDATELIST_MGD>();
-	}
+	}*/
 
 	/// <summary>Retrieves the size of the candidate lists.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>

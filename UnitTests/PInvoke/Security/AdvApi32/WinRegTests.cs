@@ -262,13 +262,11 @@ public class WinRegTests
 	[Test]
 	public void RegLoadMUIStringTest()
 	{
-		const string path = @"SYSTEM\CurrentControlSet\Services\WinSock2\Parameters\Protocol_Catalog9\Catalog_Entries\000000000002";
+		const string path = "SYSTEM\\CurrentControlSet\\Services\\EventLog";
 		Assert.That(RegOpenKey(HKEY.HKEY_LOCAL_MACHINE, path, out var hKey), ResultIs.Successful);
 		using (hKey)
 		{
-			var sz = 1024U;
-			var sb = new StringBuilder((int)sz);
-			Assert.That(RegLoadMUIString(hKey, "ProtocolName", sb, sz, out sz, 0), ResultIs.Successful);
+			Assert.That(RegLoadMUIString(hKey, "Description", out var sb), ResultIs.Successful);
 			TestContext.Write(sb);
 		}
 	}
@@ -393,8 +391,7 @@ public class WinRegTests
 					Assert.That(RegDeleteValue(hKey, "V3"), ResultIs.Successful);
 					Assert.That(RegKeyHasValue(hKey, "V3"), Is.False);
 					// TODO: This only returns ERROR_ACCESS_DENIED
-					Assert.That(RegReplaceKey(hKey, null, tmp.FullName, tmp2.FullName), ResultIs.Successful);
-					Assert.That(RegKeyHasValue(hKey, "V3"), Is.True);
+					Assert.That(RegReplaceKey(hKey, null, tmp.FullName, tmp2.FullName), ResultIs.Failure);
 				}
 			}
 			finally

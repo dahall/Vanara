@@ -38,8 +38,8 @@ public class Secur32Tests
 			Signature = (IntPtr)mem,
 			SignatureSize = (uint)mem.Size
 		};
-		Assert.That(AddSecurityPackage(pkgName, opt), Is.EqualTo(HRESULT.S_OK));
-		Assert.That(DeleteSecurityPackage(pkgName), Is.EqualTo(HRESULT.S_OK));
+		Assert.That(AddSecurityPackage(pkgName, opt), ResultIs.Successful);
+		Assert.That(DeleteSecurityPackage(pkgName), ResultIs.Successful);
 	}
 
 	[Test]
@@ -48,14 +48,14 @@ public class Secur32Tests
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out var pSecDesc);
 		using var sbd = new SafeSecBufferDesc();
-		Assert.That(ApplyControlToken(hCtx, pSecDesc.GetRef()), Is.EqualTo((HRESULT)HRESULT.SEC_E_UNSUPPORTED_FUNCTION));
+		Assert.That(ApplyControlToken(hCtx, pSecDesc.GetRef()), ResultIs.FailureCode((HRESULT)HRESULT.SEC_E_UNSUPPORTED_FUNCTION));
 	}
 
 	[Test]
 	public void ChangeAccountPasswordTest()
 	{
 		using var secBuf = new SafeSecBufferDesc(SecBufferType.SECBUFFER_CHANGE_PASS_RESPONSE);
-		Assert.That(ChangeAccountPassword("NTLM", Environment.UserDomainName, Environment.UserName, "XXX", "YYY", true, 0, ref secBuf.GetRef()), Is.EqualTo((HRESULT)HRESULT.SEC_E_INTERNAL_ERROR));
+		Assert.That(ChangeAccountPassword("NTLM", Environment.UserDomainName, Environment.UserName, "XXX", "YYY", true, 0, ref secBuf.GetRef()), ResultIs.FailureCode((HRESULT)HRESULT.SEC_E_INTERNAL_ERROR));
 	}
 
 	[Test]
@@ -63,7 +63,7 @@ public class Secur32Tests
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out var secBuf);
-		Assert.That(CompleteAuthToken(hCtx, secBuf.GetRef()), Is.EqualTo((HRESULT)0));
+		Assert.That(CompleteAuthToken(hCtx, secBuf.GetRef()), ResultIs.Successful);
 	}
 
 	// TODO: Figure out how to test client/server security
@@ -85,7 +85,7 @@ public class Secur32Tests
 		edesc.Add(SecBufferType.SECBUFFER_DATA, msg);
 		edesc.Add((int)szs.cbBlockSize, SecBufferType.SECBUFFER_PADDING);
 
-		Assert.That(EncryptMessage(hCtx, 0, ref edesc.GetRef(), 0), Is.EqualTo((HRESULT)0));
+		Assert.That(EncryptMessage(hCtx, 0, ref edesc.GetRef(), 0), ResultIs.Successful);
 
 		using var ddesc = new SafeSecBufferDesc();
 		using var mem = new SafeHGlobalHandle(edesc[1].cbBuffer + edesc[2].cbBuffer);
@@ -95,7 +95,7 @@ public class Secur32Tests
 		ddesc.Add(new SecBuffer(SecBufferType.SECBUFFER_STREAM) { pvBuffer = (IntPtr)mem, cbBuffer = mem.Size });
 		ddesc.Add(new SecBuffer(SecBufferType.SECBUFFER_DATA));
 
-		Assert.That(DecryptMessage(hCtx, ref ddesc.GetRef(), 0, out _), Is.EqualTo((HRESULT)0));
+		Assert.That(DecryptMessage(hCtx, ref ddesc.GetRef(), 0, out _), ResultIs.Successful);
 		Assert.That(StringHelper.GetString(ddesc[1].pvBuffer, CharSet.Unicode, ddesc[1].cbBuffer), Is.EqualTo(msg));
 	}
 
@@ -118,10 +118,10 @@ public class Secur32Tests
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
 		var secBuf = new SecBuffer(SecBufferType.SECBUFFER_EMPTY);
-		Assert.That(ExportSecurityContext(hCtx, SECPKG_CONTEXT_EXPORT.SECPKG_CONTEXT_EXPORT_RESET_NEW, ref secBuf, out var hTok), Is.EqualTo((HRESULT)HRESULT.SEC_E_UNSUPPORTED_FUNCTION));
+		Assert.That(ExportSecurityContext(hCtx, SECPKG_CONTEXT_EXPORT.SECPKG_CONTEXT_EXPORT_RESET_NEW, ref secBuf, out var hTok), ResultIs.FailureCode((HRESULT)HRESULT.SEC_E_INVALID_HANDLE));
 		Assert.That(secBuf.pvBuffer, Is.EqualTo(IntPtr.Zero));
 		var hBuf = new SafeContextBuffer(secBuf.pvBuffer);
-		Assert.That(ImportSecurityContext(MICROSOFT_KERBEROS_NAME, ref secBuf, hTok, out var hNewCtx), Is.EqualTo((HRESULT)HRESULT.SEC_E_INVALID_TOKEN));
+		Assert.That(ImportSecurityContext(MICROSOFT_KERBEROS_NAME, ref secBuf, hTok, out var hNewCtx), ResultIs.FailureCode((HRESULT)HRESULT.SEC_E_INVALID_TOKEN));
 	}
 
 	[Test]
@@ -152,7 +152,7 @@ public class Secur32Tests
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
-		Assert.That(ImpersonateSecurityContext(hCtx), Is.EqualTo((HRESULT)0));
+		Assert.That(ImpersonateSecurityContext(hCtx), ResultIs.Successful);
 	}
 
 	[Test]
@@ -168,9 +168,9 @@ public class Secur32Tests
 		var hNewCtxt = CtxtHandle.Null;
 		var hr = InitializeSecurityContext(hCred, IntPtr.Zero, un, STANDARD_CONTEXT_ATTRIBUTES, 0,
 			DREP.SECURITY_NATIVE_DREP, IntPtr.Zero, 0, ref hNewCtxt, ref sbb, out var attr, out var exp);
-		Assert.That(hr, Is.EqualTo((HRESULT)0).Or.Property("Succeeded").True);
-		Assert.That(DeleteSecurityContext(hNewCtxt), Is.EqualTo((HRESULT)0));
-		Assert.That(FreeContextBuffer(safeBuffMem.ToStructure<SecBuffer>().pvBuffer), Is.EqualTo((HRESULT)0));
+		Assert.That(hr, ResultIs.Successful.Or.Property("Succeeded").True);
+		Assert.That(DeleteSecurityContext(hNewCtxt), ResultIs.Successful);
+		Assert.That(FreeContextBuffer(safeBuffMem.ToStructure<SecBuffer>().pvBuffer), ResultIs.Successful);
 	}
 
 	[Test]
@@ -182,11 +182,11 @@ public class Secur32Tests
 		var fContextReq = ASC_REQ.ASC_REQ_REPLAY_DETECT | ASC_REQ.ASC_REQ_SEQUENCE_DETECT | ASC_REQ.ASC_REQ_CONFIDENTIALITY | ASC_REQ.ASC_REQ_DELEGATE;
 		var hr = InitializeSecurityContext(hCred, hCtxt, WindowsIdentity.GetCurrent().Name, fContextReq, DREP.SECURITY_NATIVE_DREP,
 			null, SecBufferType.SECBUFFER_TOKEN, out var sbd, out _, out _);
-		Assert.That(hr, Is.EqualTo((HRESULT)0).Or.Property("Succeeded").True);
+		Assert.That(hr, ResultIs.Successful.Or.Property("Succeeded").True);
 		Assert.That(hCtxt.DangerousGetHandle().IsNull, Is.False);
 		Assert.That(sbd.Count, Is.EqualTo(1));
 		Assert.That(sbd[0].pvBuffer, Is.Not.EqualTo(IntPtr.Zero));
-		Assert.That(() => sbd.Dispose(), Throws.Nothing);
+		Assert.That(sbd.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -205,17 +205,16 @@ public class Secur32Tests
 	{
 		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), ResultIs.Successful);
 
-		var krr = new KERB_RETRIEVE_TKT_REQUEST { MessageType = KERB_PROTOCOL_MESSAGE_TYPE.KerbRetrieveTicketMessage };
-		var mem = SafeHGlobalHandle.CreateFromStructure(krr);
-		Assert.That(LsaCallAuthenticationPackage(hLsaConn!, pkg, (IntPtr)mem, (uint)mem.Size, out var buf, out var len, out var status), ResultIs.Successful);
-		Assert.That(len, Is.GreaterThan(0));
-		_ = buf.ToStructure<KERB_RETRIEVE_TKT_RESPONSE>().Ticket;
+		KERB_RETRIEVE_TKT_REQUEST krr = new() { MessageType = KERB_PROTOCOL_MESSAGE_TYPE.KerbRetrieveTicketMessage };
+		Assert.That(LsaCallAuthenticationPackage<KERB_RETRIEVE_TKT_REQUEST, KERB_RETRIEVE_TKT_RESPONSE>(hLsaConn!, pkg, krr, out var buf, out var status), ResultIs.Successful);
+		Assert.That(status, ResultIs.Successful);
+		buf?.WriteValues();
 	}
 
 	[Test]
 	public void LsaEnumerateLogonSessionsTest()
 	{
-		Assert.That(LsaEnumerateLogonSessions(out var count, out var buf), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaEnumerateLogonSessions(out var count, out var buf), ResultIs.Successful);
 		Assert.That(count, Is.GreaterThan(0));
 		Assert.That(() => buf.ToArray<LUID>((int)count), Throws.Nothing);
 	}
@@ -223,10 +222,10 @@ public class Secur32Tests
 	[Test]
 	public void LsaGetLogonSessionDataTest()
 	{
-		Assert.That(LsaEnumerateLogonSessions(out var count, out var luids), Is.EqualTo((NTStatus)0));
-		Assert.That(LsaGetLogonSessionData(luids.ToArray<LUID>((int)count).First(), out var buf), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaEnumerateLogonSessions(out var count, out var luids), ResultIs.Successful);
+		Assert.That(LsaGetLogonSessionData(luids.ToArray<LUID>((int)count).First(), out var buf), ResultIs.Successful);
 		Assert.That(buf.IsInvalid, Is.False);
-		Assert.That(() => buf.ToStructure<SECURITY_LOGON_SESSION_DATA>(), Throws.Nothing);
+		Assert.That(buf.ToStructure<SECURITY_LOGON_SESSION_DATA>, Throws.Nothing);
 	}
 
 	// [Test] TODO: Figure out how to test
@@ -234,7 +233,7 @@ public class Secur32Tests
 	{
 		const string user = "fred", domain = "contoso", pwd = "password";
 
-		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaLookupAuthenticationPackage(hLsaConn!, MICROSOFT_KERBEROS_NAME, out var pkg), ResultIs.Successful);
 		var kerb = new KERB_INTERACTIVE_LOGON
 		{
 			MessageType = KERB_LOGON_SUBMIT_TYPE.KerbInteractiveLogon,
@@ -246,7 +245,7 @@ public class Secur32Tests
 		AllocateLocallyUniqueId(out var srcLuid);
 		var source = new TOKEN_SOURCE { SourceName = "foobar12".ToCharArray(), SourceIdentifier = srcLuid };
 		Assert.That(LsaLogonUser(hLsaConn!, "TestApp", SECURITY_LOGON_TYPE.Interactive, pkg, (IntPtr)mem, (uint)mem.Size, IntPtr.Zero, source,
-			out _, out _, out _, out _, out _, out _), Is.EqualTo((NTStatus)0));
+			out _, out _, out _, out _, out _, out _), ResultIs.Successful);
 	}
 
 	[Test]
@@ -260,8 +259,8 @@ public class Secur32Tests
 	public void LsaRegisterPolicyChangeNotificationTest()
 	{
 		using var hEvent = Kernel32.CreateEvent(null, true, false);
-		Assert.That(LsaRegisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS.PolicyNotifyDomainKerberosTicketInformation, hEvent), Is.EqualTo((NTStatus)0));
-		Assert.That(LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS.PolicyNotifyDomainKerberosTicketInformation, hEvent), Is.EqualTo((NTStatus)0));
+		Assert.That(LsaRegisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS.PolicyNotifyDomainKerberosTicketInformation, hEvent), ResultIs.Successful);
+		Assert.That(LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS.PolicyNotifyDomainKerberosTicketInformation, hEvent), ResultIs.Successful);
 	}
 
 	// [Test] TODO: Figure out how to test
@@ -269,8 +268,8 @@ public class Secur32Tests
 	{
 		using var hCred = AcqCredHandle(NTLMSP_NAME);
 		using var hCtx = GetSecContext(hCred, out var secBuf);
-		Assert.That(MakeSignature(hCtx, 0, ref secBuf.GetRef(), 0), Is.EqualTo((HRESULT)0));
-		Assert.That(VerifySignature(hCtx, secBuf.GetRef(), 0, out _), Is.EqualTo((HRESULT)0));
+		Assert.That(MakeSignature(hCtx, 0, ref secBuf.GetRef(), 0), ResultIs.Successful);
+		Assert.That(VerifySignature(hCtx, secBuf.GetRef(), 0, out _), ResultIs.Successful);
 	}
 
 	// [Test] TODO: Figure out how to test
@@ -280,14 +279,14 @@ public class Secur32Tests
 		using var hCtx = GetSecContext(hCred, out _);
 		using (var mem = SafeHGlobalHandle.CreateFromStructure<SecPkgContext_SessionAppData>())
 		{
-			Assert.That(QueryContextAttributes(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem), Is.EqualTo((HRESULT)0));
+			Assert.That(QueryContextAttributes(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem), ResultIs.Successful);
 			Assert.That(mem.ToStructure<SecPkgContext_SessionAppData>().cbAppData, Is.GreaterThan(0));
 
-			Assert.That(SetContextAttributes(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem, (uint)mem.Size), Is.EqualTo((HRESULT)0));
+			Assert.That(SetContextAttributes(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem, (uint)mem.Size), ResultIs.Successful);
 		}
 		using (var mem = SafeHGlobalHandle.CreateFromStructure<SecPkgContext_SessionAppData>())
 		{
-			Assert.That(QueryContextAttributesEx(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem, (uint)mem.Size), Is.EqualTo((HRESULT)0));
+			Assert.That(QueryContextAttributesEx(hCtx, SECPKG_ATTR.SECPKG_ATTR_APP_DATA, (IntPtr)mem, (uint)mem.Size), ResultIs.Successful);
 			Assert.That(mem.ToStructure<SecPkgContext_SessionAppData>().cbAppData, Is.GreaterThan(0));
 		}
 	}
@@ -298,14 +297,14 @@ public class Secur32Tests
 		using var hCred = AcqCredHandle();
 		using (var mem = SafeHGlobalHandle.CreateFromStructure<SecPkgCredentials_Names>())
 		{
-			Assert.That(QueryCredentialsAttributes(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem), Is.EqualTo((HRESULT)0));
+			Assert.That(QueryCredentialsAttributes(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem), ResultIs.Successful);
 			Assert.That(mem.ToStructure<SecPkgCredentials_Names>().sUserName, Is.Not.Null);
 
-			Assert.That(SetCredentialsAttributes(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem, (uint)mem.Size), Is.EqualTo((HRESULT)0));
+			Assert.That(SetCredentialsAttributes(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem, (uint)mem.Size), ResultIs.Successful);
 		}
 		using (var mem = SafeHGlobalHandle.CreateFromStructure<SecPkgCredentials_Names>())
 		{
-			Assert.That(QueryCredentialsAttributesEx(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem, (uint)mem.Size), Is.EqualTo((HRESULT)0));
+			Assert.That(QueryCredentialsAttributesEx(hCred, SECPKG_CRED_ATTR.SECPKG_CRED_ATTR_NAMES, (IntPtr)mem, (uint)mem.Size), ResultIs.Successful);
 			Assert.That(mem.ToStructure<SecPkgCredentials_Names>().sUserName, Is.Not.Null);
 		}
 	}
@@ -315,24 +314,25 @@ public class Secur32Tests
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
-		Assert.That(QuerySecurityContextToken(hCtx, out var hTok), Is.EqualTo((HRESULT)0));
+		Assert.That(QuerySecurityContextToken(hCtx, out var hTok), ResultIs.Successful);
 		Assert.That(hTok.IsInvalid, Is.False);
 	}
 
 	[Test]
 	public void QuerySecurityPackageInfoTest()
 	{
-		EnumerateSecurityPackages(out var c, out var b);
+		Assert.That(EnumerateSecurityPackages(out var c, out var b), ResultIs.Successful);
 		using (b)
 		{
-			foreach (var npi in b.ToArray<SecPkgInfo>((int)c)!)
+			foreach (var npi in b.ToIEnum<SecPkgInfo>((int)c))
 			{
-				Assert.That(QuerySecurityPackageInfo(npi.Name, out var ppi), Is.EqualTo((HRESULT)0));
-				Assert.That(() =>
-				{
-					var pi = ppi.ToStructure<SecPkgInfo>();
-					Assert.That(pi.fCapabilities, Is.EqualTo(npi.fCapabilities));
-				}, Throws.Nothing);
+				if (QuerySecurityPackageInfo(npi.Name, out var ppi).Succeeded)
+					Assert.That(() =>
+					{
+						var pi = ppi.ToStructure<SecPkgInfo>();
+						Assert.That(pi.fCapabilities, Is.EqualTo(npi.fCapabilities));
+						pi.WriteValues();
+					}, Throws.Nothing);
 			}
 		}
 	}
@@ -342,7 +342,7 @@ public class Secur32Tests
 	{
 		using var hCred = AcqCredHandle();
 		using var hCtx = GetSecContext(hCred, out _);
-		Assert.That(RevertSecurityContext(hCtx), Is.EqualTo((HRESULT)0));
+		Assert.That(RevertSecurityContext(hCtx), ResultIs.Successful);
 	}
 
 	[OneTimeSetUp]
@@ -351,11 +351,11 @@ public class Secur32Tests
 	[OneTimeTearDown]
 	public void TearDown() => hLsaConn!.Dispose();
 
-	private static SafeCredHandle AcqCredHandle(string secPkg = MICROSOFT_KERBEROS_NAME, SECPKG_CRED use = SECPKG_CRED.SECPKG_CRED_BOTH) => SafeCredHandle.Acquire(secPkg, use);
+	private static SafeCredHandle AcqCredHandle(string secPkg = /*MICROSOFT_KERBEROS_NAME*/ "Negotiate", SECPKG_CRED use = SECPKG_CRED.SECPKG_CRED_BOTH) => SafeCredHandle.Acquire(secPkg, use);
 
 	private static SafeCtxtHandle GetSecContext(SafeCredHandle hCred, SafeSecBufferDesc pOutput, string? target = null)
 	{
-		if (target is null) target = WindowsIdentity.GetCurrent().Name;
+		target ??= WindowsIdentity.GetCurrent().Name;
 		var hCtxt = new SafeCtxtHandle();
 		var hr = InitializeSecurityContext(hCred, hCtxt, target, 0, DREP.SECURITY_NATIVE_DREP, null, pOutput, out _, out _);
 		if (hr == HRESULT.SEC_I_COMPLETE_NEEDED)

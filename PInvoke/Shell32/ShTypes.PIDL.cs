@@ -187,15 +187,10 @@ public static partial class Shell32
 		/// <exception cref="ArgumentException">Thrown if the specified parent PIDL is not a parent of this PIDL.</exception>
 		public PIDL GetRelativeTo(PIDL parent)
 		{
-			if (!parent.IsParentOf(this, false))
+			var rel = ILFindChild(parent, this);
+			if (rel.IsNull)
 				throw new ArgumentException("The specified parent PIDL is not a parent of this PIDL.", nameof(parent));
-
-			List<IEnumerator<PIDL>> lp = [parent.GetEnumerator(), GetEnumerator()];
-			while (lp[1].MoveNext() && lp[0].MoveNext() && lp[0].Current.Equals(lp[1].Current)) ;
-			var relPidl = new PIDL(lp[1].Current);
-			while (lp[1].MoveNext())
-				relPidl.Append(lp[1].Current);
-			return relPidl;
+			return new PIDL(rel);
 		}
 
 		/// <summary>Removes the last identifier from the list.</summary>
@@ -241,7 +236,7 @@ public static partial class Shell32
 			if (pidls is null || !pidls.Any())
 				return Null;
 			if (pidls.Count() == 1)
-				return new PIDL(pidls.First());
+				return new PIDL(pidls.First().Parent);
 
 			// Get iterators for each PIDL
 			var enums = pidls.Select(p => p.GetEnumerator()).ToList();

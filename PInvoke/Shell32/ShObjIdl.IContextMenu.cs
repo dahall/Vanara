@@ -474,11 +474,19 @@ public static partial class Shell32
 	public static HRESULT GetCommandString(this IContextMenu menu, uint idCmd, GCS uType, out string? pszName)
 	{
 		if (menu is null) throw new ArgumentNullException(nameof(menu));
-		bool isUnicode = (uType & GCS.GCS_UNICODE) != 0;
-		using SafeCoTaskMemString mem = new(512, isUnicode ? CharSet.Unicode : CharSet.Ansi);
-		var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, (uint)mem.Capacity);
-		pszName = ret.Succeeded ? mem.ToString() : null;
-		return ret;
+		try
+		{
+			bool isUnicode = (uType & GCS.GCS_UNICODE) != 0;
+			using SafeCoTaskMemString mem = new(2048, isUnicode ? CharSet.Unicode : CharSet.Ansi);
+			var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, (uint)mem.Capacity);
+			pszName = ret.Succeeded ? mem.ToString() : null;
+			return ret;
+		}
+		catch (Exception ex)
+		{
+			pszName = null;
+			return ex.HResult;
+		}
 	}
 
 	/// <summary>Carries out the command associated with a shortcut menu item.</summary>
