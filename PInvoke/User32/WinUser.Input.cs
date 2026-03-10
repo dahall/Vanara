@@ -263,6 +263,7 @@ public static partial class User32
 	public enum RIDI
 	{
 		/// <summary>pData is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.</summary>
+		[CorrespondingType(typeof(byte[]), CorrespondingAction.Get)]
 		RIDI_PREPARSEDDATA = 0x20000005,
 
 		/// <summary>
@@ -274,9 +275,11 @@ public static partial class User32
 		/// <para>For more information, see Opening HID Collections and Handling HID Reports.</para>
 		/// <para>For this uiCommand only, the value in pcbSize is the character count (not the byte count).</para>
 		/// </summary>
+		[CorrespondingType(typeof(string), CorrespondingAction.Get)]
 		RIDI_DEVICENAME = 0x20000007,
 
 		/// <summary>pData points to an <see cref="RID_DEVICE_INFO"/> structure.</summary>
+		[CorrespondingType(typeof(RID_DEVICE_INFO), CorrespondingAction.Get)]
 		RIDI_DEVICEINFO = 0x2000000b,
 	}
 
@@ -530,7 +533,7 @@ public static partial class User32
 	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, [Out, SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] IntPtr pData, ref uint pcbSize);
+	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, RIDI uiCommand, [Out] IntPtr pData, ref uint pcbSize);
 
 	/// <summary>Retrieves information about the raw input device.</summary>
 	/// <param name="hDevice">
@@ -569,10 +572,6 @@ public static partial class User32
 	/// <para>A pointer to a buffer that contains the information specified by <c>uiCommand</c>.</para>
 	/// <para>If <c>uiCommand</c> is <c>RIDI_DEVICEINFO</c>, set the <c>cbSize</c> member of RID_DEVICE_INFO to before calling <c>GetRawInputDeviceInfo</c>.</para>
 	/// </param>
-	/// <param name="pcbSize">
-	/// <para>Type: <c>PUINT</c></para>
-	/// <para>The size, in bytes, of the data in <c>pData</c>.</para>
-	/// </param>
 	/// <returns>
 	/// <para>Type: <c>UINT</c></para>
 	/// <para>If successful, this function returns a non-negative number indicating the number of bytes copied to <c>pData</c>.</para>
@@ -591,11 +590,23 @@ public static partial class User32
 	/// Function Prototypes.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
-	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
-	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, RIDI uiCommand, [Out, SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] IntPtr pData, ref uint pcbSize);
+	public static Win32Error GetRawInputDeviceInfo<T>(HANDLE hDevice, out T? pData, RIDI? uiCommand = null)
+	{
+		pData = default;
+		if (!CorrespondingTypeAttribute.CanGet<T, RIDI>(uiCommand, out var cmd))
+			return Win32Error.ERROR_INVALID_PARAMETER;
+		uint pcbSize = default;
+		uint __qret = GetRawInputDeviceInfo(hDevice, cmd, IntPtr.Zero, ref pcbSize);
+		if (__qret != 0)
+			return Win32Error.GetLastError();
+		SafeAllocatedMemoryHandle __pData = typeof(T) == typeof(string) ? new SafeCoTaskMemString((int)pcbSize) : new SafeCoTaskMemHandle(pcbSize);
+		uint __ret = GetRawInputDeviceInfo(hDevice, cmd, __pData, ref pcbSize);
+		if (__ret <= 0)
+			return Win32Error.GetLastError();
+		pData = __pData.ToType<T>();
+		return 0;
+	}
 
 	/// <summary>Enumerates the raw input devices attached to the system.</summary>
 	/// <param name="pRawInputDeviceList">

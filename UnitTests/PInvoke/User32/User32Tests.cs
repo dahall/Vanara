@@ -150,11 +150,11 @@ public partial class User32Tests
 
 		for (int i = 0; i < devs!.Length; i++)
 		{
-			uint sz = 0;
-			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, default, ref sz), ResultIs.Value(0));
-			SafeLPTSTR data = new((int)sz + 1);
-			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, data, ref sz), Is.GreaterThan(0));
-			TestContext.WriteLine($"{data}");
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out string? name), ResultIs.Successful);
+			TestContext.WriteLine($"{name}");
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out RID_DEVICE_INFO info), ResultIs.Successful);
+			info.WriteValues();
+			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, out byte[]? _), ResultIs.Successful);
 		}
 	}
 
