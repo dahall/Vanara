@@ -8,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class WinBaseTests
 {
 	private const string objType = "TestObj";
-	private const string subSys = "UnitTest";
+	private const string subSys = "Files";
 	private const SECURITY_INFORMATION siNoSacl = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
 	private SafePSID? pCurSid;
 	private ElevPriv? secPriv;
@@ -30,26 +30,48 @@ public class WinBaseTests
 	[Test]
 	public void AccessCheckAndAuditAlarmTest()
 	{
-		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, AdvApi32Tests.AllSI);
+		using ElevPriv priv = new("SeAuditPrivilege", GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_ADJUST_PRIVILEGES);
+		using ImpersonationContext ic = new(priv.hTok);
+		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, siNoSacl);
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
-		Assert.That(AccessCheckAndAuditAlarm(subSys, IntPtr.Zero, objType, null, pSD, accessMask, gm, false, out var access, out var status, out var gen), ResultIs.FailureCode(Win32Error.ERROR_NO_IMPERSONATION_TOKEN));
-		//Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
-		//Assert.That(status, Is.True);
+		Assert.That(AccessCheckAndAuditAlarm(subSys, 1, objType, null, pSD, accessMask, gm, true, out var access, out var status, out var gen), ResultIs.Successful);
+		Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
+		Assert.That(status, Is.True);
+	}
+
+	internal class ImpersonationContext : IDisposable
+	{
+		public readonly SafeHTOKEN hTok;
+		public ImpersonationContext(SafeHTOKEN hTok, SECURITY_IMPERSONATION_LEVEL impLevel = SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation)
+		{
+			this.hTok = hTok.Duplicate(impLevel);
+			Assert.That(ImpersonateLoggedOnUser(hTok), ResultIs.Successful);
+		}
+		public ImpersonationContext(HPROCESS proc = default, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_ADJUST_PRIVILEGES)
+			: this(SafeHTOKEN.FromProcess(proc.IsNull ? GetCurrentProcess() : proc, desiredAccess))
+		{
+		}
+		public void Dispose()
+		{
+			Assert.That(RevertToSelf(), ResultIs.Successful);
+			GC.SuppressFinalize(this);
+		}
 	}
 
 	[Test]
 	public void AccessCheckByTypeAndAuditAlarmTest()
 	{
+		using ElevPriv priv = new("SeAuditPrivilege", GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_ADJUST_PRIVILEGES);
+		using ImpersonationContext ic = new(priv.hTok);
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, siNoSacl);
-		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
-		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
+		OBJECT_TYPE_LIST[] otl = [OBJECT_TYPE_LIST.Self, new(ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID)];
 		Assert.That(AccessCheckByTypeAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
-			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, out var access, out var status, out var gen), ResultIs.FailureCode(Win32Error.ERROR_NO_IMPERSONATION_TOKEN));
+			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, out var access, out var status, out var gen), ResultIs.Successful);
 		//Assert.That(access, Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		//Assert.That(status, Is.True);
 	}
@@ -57,39 +79,31 @@ public class WinBaseTests
 	[Test]
 	public void AccessCheckByTypeResultListAndAuditAlarmTest()
 	{
+		using ElevPriv priv = new("SeAuditPrivilege", GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_ADJUST_PRIVILEGES);
+		using ImpersonationContext ic = new(priv.hTok);
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, siNoSacl);
-		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
-		var ps = PRIVILEGE_SET.InitializeWithCapacity(100);
-		var psSz = ps.SizeInBytes;
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
-		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
-		var access = new uint[otl.Length];
-		var status = new uint[otl.Length];
+		OBJECT_TYPE_LIST[] otl = [OBJECT_TYPE_LIST.Self, new(ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID)];
 		Assert.That(AccessCheckByTypeResultListAndAuditAlarm(subSys, default, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
-			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, access, status, out var gen), ResultIs.FailureCode(Win32Error.ERROR_NO_IMPERSONATION_TOKEN));
-		//Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
-		//Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
-		//Assert.That(status[0], Is.Zero);
+			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, gm, false, out var access, out var status, out var gen), ResultIs.Successful);
+		Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
+		Assert.That(status[0], Is.Zero);
 	}
 
 	[Test]
 	public void AccessCheckByTypeResultListAndAuditAlarmByHandleTest()
 	{
+		using ElevPriv priv = new("SeAuditPrivilege", GetCurrentProcess(), TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_ADJUST_PRIVILEGES);
+		using ImpersonationContext ic = new(priv.hTok);
 		using var pSD = AdvApi32Tests.GetSD(AdvApi32Tests.fn, siNoSacl);
-		using var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
-		var ps = PRIVILEGE_SET.InitializeWithCapacity(100);
-		var psSz = ps.SizeInBytes;
 		var gm = GENERIC_MAPPING.GenericFileMapping;
 		ACCESS_MASK accessMask = ACCESS_MASK.GENERIC_READ;
 		MapGenericMask(ref accessMask, gm);
-		var otl = new[] { new OBJECT_TYPE_LIST(ObjectTypeListLevel.ACCESS_OBJECT_GUID) };
-		var access = new uint[otl.Length];
-		var status = new uint[otl.Length];
-		Assert.That(AccessCheckByTypeResultListAndAuditAlarmByHandle(subSys, default, hTok, objType, null, pSD, pCurSid ?? PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
-			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, (uint)otl.Length, gm, false, access, status, out var gen), ResultIs.Successful);
-		Assert.That(ps.PrivilegeCount, Is.GreaterThanOrEqualTo(0));
+		OBJECT_TYPE_LIST[] otl = [OBJECT_TYPE_LIST.Self, new(ObjectTypeListLevel.ACCESS_PROPERTY_SET_GUID)];
+		Assert.That(AccessCheckByTypeResultListAndAuditAlarmByHandle(subSys, 1, ic.hTok, objType, null, pSD, PSID.NULL, accessMask, AUDIT_EVENT_TYPE.AuditEventObjectAccess,
+			AccessCheckFlags.AUDIT_ALLOW_NO_PRIVILEGE, otl, gm, false, out var access, out var status, out var gen), ResultIs.Successful);
 		Assert.That(access[0], Is.EqualTo((uint)FileAccess.FILE_GENERIC_READ));
 		Assert.That(status[0], Is.Zero);
 	}
@@ -103,11 +117,10 @@ public class WinBaseTests
 	}
 
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.GetAuthCasesFromFile), [true, true])]
-	public void CreateProcessWithLogonWTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
+	public void CreateProcessWithLogonWTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string? password, string share, string printer, string notes)
 	{
-		var sti = new STARTUPINFO { ShowWindowCommand = ShowWindowCommand.SW_SHOWMINIMIZED };
-		Assert.That(CreateProcessWithLogonW(username, domain, password, 0, @"C:\Windows\notepad.exe", null, CREATE_PROCESS.NORMAL_PRIORITY_CLASS, null, null,
-			sti, out var pi), ResultIs.Successful);
+		Assert.That(CreateProcessWithLogonW(username, dn, password ?? "", ProcessLogonFlags.LOGON_NETCREDENTIALS_ONLY, @"C:\Windows\notepad.exe", null, CREATE_PROCESS.NORMAL_PRIORITY_CLASS, null, null,
+			new(ShowWindowCommand.SW_SHOWNORMAL), out var pi), ResultIs.Successful);
 		using (pi)
 			TerminateProcess(pi!.hProcess, 0);
 	}
@@ -201,58 +214,51 @@ public class WinBaseTests
 	}
 
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
-	public void LogonUserExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
+	public void LogonUserTest(bool validUser, bool validCred, string? urn, string? dn, string? dc, string? domain, string? username, string? pwd, string? share, string? printer, string? notes)
 	{
-		Assert.That(LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out var pSid,
-			out var buf, out _, out _), validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful : ResultIs.Failure);
-		hTok.Dispose();
-		pSid.Dispose();
-		buf.Dispose();
-	}
-
-	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
-	public void LogonUserExExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
-	{
-		using (new ElevPriv("SeTcbPrivilege"))
-		using (var hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS))
-		{
-			Assert.That(LsaAddAccountRights(hPol, pCurSid ?? PSID.NULL, ["SeInteractiveLogonRight"], 1), ResultIs.Successful);
-			var grps = new TOKEN_GROUPS(1);
-			grps.Groups[0] = new SID_AND_ATTRIBUTES(pCurSid ?? PSID.NULL, 0);
-			Assert.That(LogonUserExExW(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, grps, out var hTok, out var pSid,
-				out var buf, out _, out _), /*validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful :*/ ResultIs.Failure);
-			hTok.Dispose();
-			pSid.Dispose();
-			buf.Dispose();
-		}
-	}
-
-	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
-	public void LogonUserTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
-	{
-		Assert.That(LogonUser(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok),
+		Assert.That(LogonUser(urn!, domain, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok),
 			validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful : ResultIs.Failure);
 		hTok.Dispose();
 	}
 
 	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
-	public void LookupAccountNameSidTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string username, string password, string notes)
+	public void LogonUserExTest(bool validUser, bool validCred, string? urn, string? dn, string? dc, string? domain, string? username, string? pwd, string? share, string? printer, string? notes)
 	{
-		var fun = $"{domain}\\{username}";
+		Assert.That(LogonUserEx(urn!, domain, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT),
+			validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful : ResultIs.Failure);
+	}
+
+	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
+	public void LogonUserExExTest(bool validUser, bool validCred, string? urn, string? dn, string? dc, string? domain, string? username, string? pwd, string? share, string? printer, string? notes)
+	{
+		const GroupAttributes ga = GroupAttributes.SE_GROUP_ENABLED | GroupAttributes.SE_GROUP_ENABLED_BY_DEFAULT | GroupAttributes.SE_GROUP_MANDATORY;
+		using (new ElevPriv("SeTcbPrivilege"))
+		using (var hPol = LsaOpenPolicy(LsaPolicyRights.POLICY_ALL_ACCESS))
+		using (var pLocalSid = SafePSID.CreateWellKnown(WELL_KNOWN_SID_TYPE.WinLocalSid))
+		using (var pLocalAcctSid = SafePSID.CreateWellKnown(WELL_KNOWN_SID_TYPE.WinLocalAccountSid))
+		{
+			using SafeHGlobalStruct<TOKEN_GROUPS> grps = new TOKEN_GROUPS([new SID_AND_ATTRIBUTES(pLocalSid, (uint)ga), new SID_AND_ATTRIBUTES(pLocalAcctSid, (uint)ga)]);
+			Assert.That(LogonUserExExW(urn!, domain, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT),
+				validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful : ResultIs.Failure);
+		}
+	}
+
+	[Test, TestCaseSource(typeof(TestCaseSources), nameof(TestCaseSources.AuthCasesFromFile))]
+	public void LookupAccountNameSidTest(bool validUser, bool validCred, string? urn, string? dn, string? dc, string? domain, string? username, string? pwd, string? share, string? printer, string? notes)
+	{
+		var fun = $"{dn}\\{username}";
 		TestContext.WriteLine(fun);
-		Assert.That(LookupAccountName(null, fun, out var sid, out var dom, out var snu), Is.EqualTo(validUser));
+		Assert.That(LookupAccountName(null, fun, out var sid, out var dom, out var snu),
+			validCred && validUser ? (NUnit.Framework.Constraints.IResolveConstraint)ResultIs.Successful : ResultIs.Failure); 
 		Assert.That(sid.IsValidSid, Is.EqualTo(validUser));
 		if (!validUser) return;
 
-		Assert.That(dom, Is.EqualTo(domain).IgnoreCase);
+		Assert.That(dom, Is.EqualTo(dn).IgnoreCase);
 		Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
 
-		int chName = 1024, chDom = 1024;
-		var name = new StringBuilder(chName);
-		var domN = new StringBuilder(chDom);
-		Assert.That(LookupAccountSid(null, sid, name, ref chName, domN, ref chDom, out snu), ResultIs.Successful);
-		Assert.That(name.ToString(), Is.EqualTo(username).IgnoreCase);
-		Assert.That(domN.ToString(), Is.EqualTo(domain).IgnoreCase);
+		Assert.That(LookupAccountSid(null, sid, out var name, out var domN, out snu), ResultIs.Successful);
+		Assert.That(name, Is.EqualTo(username).IgnoreCase);
+		Assert.That(domN, Is.EqualTo(dn).IgnoreCase);
 		Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
 
 		Assert.That(LookupAccountSid2(null, sid, out var name2, out var domN2, out var snu2), ResultIs.Successful);

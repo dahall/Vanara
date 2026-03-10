@@ -230,8 +230,8 @@ public class ClipboardTests
 		ido!.SetData("RECT", r);
 		Assert.That(ido!.GetData<RECT>("RECT"), Is.EqualTo(r));
 
-		var lcid = Kernel32.GetUserDefaultLCID();
-		ido!.SetData(CLIPFORMAT.CF_LOCALE, lcid);
+		LCID lcid = Kernel32.GetUserDefaultLCID();
+		ido!.SetData(CLIPFORMAT.CF_LOCALE, (uint)lcid);
 		//Assert.That(ido!.GetData<LCID>(CLIPFORMAT.CF_LOCALE), Is.EqualTo(lcid));
 		//Assert.That(ido!.GetData(CLIPFORMAT.CF_LOCALE), lcid);
 

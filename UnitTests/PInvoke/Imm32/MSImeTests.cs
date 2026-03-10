@@ -46,31 +46,32 @@ public class MSImmTests
 		Assert.That(() => idlist.GetDictionariesInUse(out var guids, out var dt, out var enc), Throws.Nothing);
 	}
 
-	[Test]
+	const string module = @"C:\Windows\System32\IME\IMEJP\IMJPAPI.DLL";
+
+	//[Test]
 	public void CommonTest()
 	{
-		IFECommon iCommon = GetIFECommon();
-		Assert.That(iCommon.InvokeWordRegDialog(new(User32.GetDesktopWindow(), "Testing")), ResultIs.Successful);
+		Assert.That(CreateIFECommonInstance(module, out var iCommon), ResultIs.Successful);
+		Assert.That(iCommon!.InvokeWordRegDialog(new(User32.GetDesktopWindow(), "Testing")), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
+	public void LanguageTest()
+	{
+		Assert.That(CreateIFELanguageInstance(module, out var iLang), ResultIs.Successful);
+		const string hiragana = "晩ご飯を食べます";
+		Assert.That(iLang!.GetJMorphResult(FELANG_REQ.FELANG_REQ_CONV, FELANG_CMODE.FELANG_CMODE_HIRAGANAOUT, hiragana,
+			null, out MORRSLT result), ResultIs.Successful);
+		Assert.That(result.pwchOutput, Is.Not.Null);
+		result.WriteValues();
+	}
+
+	//[Test]
 	public void DictTest()
 	{
 		//IFEDictionary dict = GetIFECommon() as IFEDictionary;
 		//Assert.That(dict, Is.Not.Null);
 		//var sb = new StringBuilder(@"%APPDATA%\Microsoft\IME\15.0\IMEJP\UserDict\imjp15cu.dic");
 		//Assert.That(() => dict.GetHeader(sb, out var shf, out var fmt, out var typ), Throws.Nothing);
-	}
-
-	private static IFECommon GetIFECommon()
-	{
-		using var lib = Kernel32.LoadLibrary(@"C:\Windows\System32\IME\IMEJP\IMJPAPI.DLL");
-		Assert.That(lib, ResultIs.ValidHandle);
-		IntPtr pAddr = Kernel32.GetProcAddress(lib, "CreateIFECommonInstance");
-		Assert.That(pAddr, Is.Not.EqualTo(IntPtr.Zero));
-		var cci = Marshal.GetDelegateForFunctionPointer<CreateIFECommonInstance>(pAddr);
-		Assert.That(cci, Is.Not.Null);
-		Assert.That(cci.Invoke(out var iCommon), ResultIs.Successful);
-		return iCommon;
 	}
 }

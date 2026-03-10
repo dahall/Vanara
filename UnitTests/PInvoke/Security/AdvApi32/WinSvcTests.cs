@@ -8,8 +8,8 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public class WinSvcTests
 {
-	private const string svcKey = "Windows Management Instrumentation";
-	private const string svcName = "Winmgmt";
+	private const string svcKey = "Workstation";
+	private const string svcName = "LanmanWorkstation";
 	private SafeSC_HANDLE? hSvc;
 	private SafeSC_HANDLE? hSvcMgr;
 
@@ -95,9 +95,9 @@ public class WinSvcTests
 	[Test]
 	public void EnumDependentServicesTest()
 	{
-		var l = EnumDependentServices(hSvc!);
-		TestContext.WriteLine(string.Join("; ", l.Select(i => i.lpDisplayName)));
+		var l = EnumDependentServices(hSvc!).ToList();
 		Assert.That(l, Is.Not.Empty);
+		TestContext.WriteLine(string.Join("; ", l.Select(i => i.lpDisplayName)));
 	}
 
 	[Test]

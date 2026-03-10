@@ -52,7 +52,7 @@ public class ShellContextMenu : IDisposable
 	[Obsolete("Use ShellContextMenu.CreateFromItems instead to get better disposal handling. This constructor will be removed in the next release as it fails due to disposal issues.")]
 	public ShellContextMenu(params ShellItem[] items)
 	{
-		Init(SHCreateDefaultContextMenuEx(null, out disposables, Array.ConvertAll(items, i => i.PIDL)));
+		Init(SHCreateDefaultContextMenuEx(GetDesktopWindow(), null, out disposables, Array.ConvertAll(items, i => i.PIDL)));
 		if (ComInterface is IShellExtInit ext)
 			ext.Initialize(items[0].IsFolder ? items[0].PIDL : items[0].Parent!.PIDL).ThrowIfFailed("Failed to initialize IShellExtInit.");
 	}
@@ -281,7 +281,7 @@ public class ShellContextMenu : IDisposable
 	/// </param>
 	/// <returns>A ShellContextMenu instance representing the context menu for the specified shell items.</returns>
 	public static ShellContextMenu CreateFromItems(IEnumerable<ShellItem> items, out IDisposable keepAlive) =>
-		new(SHCreateDefaultContextMenuEx(null, out keepAlive, Array.ConvertAll(items.ToArray(), i => i.PIDL)));
+		new(SHCreateDefaultContextMenuEx(GetDesktopWindow(), null, out keepAlive, Array.ConvertAll(items.ToArray(), i => i.PIDL)));
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 	/// <param name="disposing">
@@ -469,7 +469,7 @@ public class ShellContextMenu : IDisposable
 			Type = mii.fType;
 			State = mii.fState;
 			BitmapHandle = mii.hbmpItem;
-			if (icm is not null && !mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR))
+			if (icm is not null && !mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) && !Text.StartsWith("Sync or Backup")) // Exclude Google Drive as it can't handle GetCommandString for some reason
 			{
 				uint id = mii.wID - m_CmdFirst;
 				Verb = icm.GetCommandString(id, GCS.GCS_VERBW, out string? str).Succeeded ? str : null;

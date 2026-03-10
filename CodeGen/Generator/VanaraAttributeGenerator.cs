@@ -42,6 +42,7 @@
 */
 
 using Microsoft.CodeAnalysis.CSharp;
+using System.CodeDom.Compiler;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using System.Xml;
@@ -287,7 +288,9 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				// Build new syntax tree, starting with nsDecl, adding any containing types with their modifiers, and finally the localTypeDecl with the new values from methLookup.Values
 				SyntaxNode topDecl = localTypeDecl.decl!
 					.WithoutTrivia()
-					.WithAttributeLists([])
+					.WithAttributeLists([AttributeList([Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
+						.WithArgumentList(AttributeArgumentList([AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Vanara"))),
+							AttributeArgument(LiteralExpression(SyntaxKind.NullLiteralExpression))]))])])
 					.WithMembers(List(methLookup.OrderBy(bb => bb.topMethodName).Select(bb => bb.ToMethod())));
 				foreach (var parent in localTypeDecl.Ancestors)
 				{
@@ -906,7 +909,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 					{
 						SizeParamType.Ptr when isNullable => ParseExpression($"{decl.Identifier.Text} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
 						SizeParamType.Ptr => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
-						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString() ?? string.Empty"),
+						SizeParamType.String when isNullable => IdentifierName($"{decl.Identifier.Text}?.ToString()"),
+						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString()"),
 						SizeParamType.StructPtr when !useStructHandle => ParseExpression($"new global::Vanara.InteropServices.PinnedObject({decl.Identifier.Text})"),
 						SizeParamType.StructPtr => ParseExpression($"global::Vanara.InteropServices.SafeHGlobalHandle.CreateFromStructure({decl.Identifier.Text})"),
 						SizeParamType.ArrayPtr when attrInfo.ArrayPtr!.ElementType.IsUnmanagedType => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
@@ -987,7 +991,9 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(szVarName), IdentifierName(attrInfo.OutSzParam.Identifier.Text))));
 		// 2. Create a statement that creates a variable for the output of syntaxNode and initializes it to the value of 'sz'
 		var cElemName = UniqueName($"__i{szVarName}");
-		if (!isInParam)
+		if (isInParam)
+			cElemName = szVarName;
+		else
 		{
 			// 3. Create a variable that holds the number of elements initialized to the value of szVarName
 			tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(VariableDeclaration(PredefinedType(Token(SyntaxKind.IntKeyword)))

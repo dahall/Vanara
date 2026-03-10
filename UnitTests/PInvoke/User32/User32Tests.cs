@@ -161,7 +161,9 @@ public partial class User32Tests
 	[Test]
 	public void GetAsyncKeyStateTest()
 	{
-		Assert.That(GetAsyncKeyState(VK.VK_SPACE), ResultIs.Not.Value(0));
+		GetAsyncKeyState(VK.VK_ESCAPE);
+		SendInput([new INPUT((KEYEVENTF)0, (ushort)VK.VK_ESCAPE)], Marshal.SizeOf<INPUT>());
+		Assert.That(GetAsyncKeyState(VK.VK_ESCAPE), ResultIs.Not.Value(0));
 	}
 
 	[Test]

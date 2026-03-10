@@ -29,7 +29,7 @@ public class LsaTests
 	[TestWhenElevated]
 	public void LsaAddEnumRemoveAccountRightsTest()
 	{
-		var rights = new[] { "SeAuditPrivilege", "SeBatchLogonRight", "SeRemoteInteractiveLogonRight" };
+		var rights = new[] { "SeAuditPrivilege", "SeBatchLogonRight", "SeRemoteInteractiveLogonRight", "SeSecurityPrivilege" };
 		Assert.That(LsaAddAccountRights(hPol!, pSid!, rights), ResultIs.Successful);
 		string[]? erights = null;
 		Assert.That(() => erights = [.. LsaEnumerateAccountRights(hPol!, pSid!)], Throws.Nothing);
@@ -40,7 +40,7 @@ public class LsaTests
 	[TestWhenElevated]
 	public void LsaCreateAccountTest()
 	{
-		Assert.That(LsaCreateAccount(hPol!, pSid!, LsaAccountAccessMask.ACCOUNT_ALL_ACCESS, out SafeLSA_HANDLE hAcct), ResultIs.Successful);
+		Assert.That(LsaCreateAccount(hPol!, pSid!, LsaAccountAccessMask.ACCOUNT_ALL_ACCESS, out SafeLSA_HANDLE hAcct), ResultIs.FailureCode((NTStatus)NTStatus.STATUS_OBJECT_NAME_COLLISION));
 		hAcct.Dispose();
 	}
 

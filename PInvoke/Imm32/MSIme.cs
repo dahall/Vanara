@@ -74,7 +74,7 @@ public static partial class Imm32
 	// VOID **ppvObj );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFECommonInstance")]
-	public delegate HRESULT CreateIFECommonInstance(out IFECommon ppvObj);
+	public delegate HRESULT CreateIFECommonInstanceDelegate(out IFECommon ppvObj);
 
 	/// <summary>Returns a pointer to an IFEDictionary interface.</summary>
 	/// <param name="ppvObj">Address of the pointer variable that receives the IFEDictionary interface pointer of the object created.</param>
@@ -87,7 +87,7 @@ public static partial class Imm32
 	// [out] VOID **ppvObj );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFEDictionaryInstance")]
-	public delegate HRESULT CreateIFEDictionaryInstance(out IFEDictionary ppvObj);
+	public delegate HRESULT CreateIFEDictionaryInstanceDelegate(out IFEDictionary ppvObj);
 
 	/// <summary>Returns a pointer to an IFELanguage interface.</summary>
 	/// <param name="clsid">Reserved. Must be set to <c>NULL</c>.</param>
@@ -97,7 +97,7 @@ public static partial class Imm32
 	// [in] REFCLSID clsid, [out] VOID **ppvObj );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFELanguageInstance")]
-	public delegate HRESULT CreateIFELanguageInstance([In, Optional] IntPtr clsid, out IFELanguage ppvObj);
+	public delegate HRESULT CreateIFELanguageInstanceDelegate([In, Optional] IntPtr clsid, out IFELanguage ppvObj);
 
 	[PInvokeData("msime.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -390,7 +390,7 @@ public static partial class Imm32
 		// https://docs.microsoft.com/en-us/windows/win32/api/msime/nf-msime-ifecommon-isdefaultime HRESULT IsDefaultIME( [out] const
 		// CHAR *szName, [in] INT cszName );
 		[PreserveSig]
-		HRESULT IsDefaultIME([Out, Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? szName, [In] int cszName);
+		HRESULT IsDefaultIME([In, Optional, MarshalAs(UnmanagedType.LPStr), SizeDef(nameof(cszName), SizingMethod.Count | SizingMethod.Bytes)] string? szName, [In] int cszName);
 
 		/// <summary>
 		/// Allows the Microsoft IME to become the default IME in the keyboard layout.
@@ -1251,8 +1251,8 @@ public static partial class Imm32
 		// DWORD dwRequest, [in] DWORD dwCMode, [in] INT cwchInput, [in] const WCHAR *pwchInput, [in] DWORD *pfCInfo, [out] MORRSLT
 		// **ppResult );
 		[PreserveSig]
-		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string? pwchInput,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
+		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cwchInput))] string pwchInput,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FELANG_CLMN[]? pfCInfo, [Out, StructPointer(typeof(MORRSLT))] out SafeCoTaskMemHandle ppResult);
 
 		/// <summary>Gets the conversion mode capability of the IFELanguage object.</summary>
 		/// <param name="pdwCaps">
@@ -1381,39 +1381,91 @@ public static partial class Imm32
 		void GetConversion([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
 	}
 
+	/// <summary>Returns a pointer to an IFECommon interface.</summary>
+	/// <param name="modulePath">The path of the module that contains the function, for example, "IMJPAPI.DLL".</param>
+	/// <param name="ppvObj">Address of the pointer variable that receives the IFECommon interface pointer of the object created.</param>
+	/// <returns><c>S_OK</c> if successful, otherwise an OLE-defined error code.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/msime/nf-msime-createifecommoninstance HRESULT CreateIFECommonInstance( [out]
+	// VOID **ppvObj );
+	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFECommonInstance")]
+	public static HRESULT CreateIFECommonInstance(string modulePath, out IFECommon? ppvObj)
+	{
+		var hr = LoadDelegate(modulePath, out var lib, out CreateIFECommonInstanceDelegate? delImpl);
+		if (hr.Succeeded)
+			return delImpl!.Invoke(out ppvObj);
+		ppvObj = null;
+		return hr;
+	}
+
+	/// <summary>Returns a pointer to an IFEDictionary interface.</summary>
+	/// <param name="modulePath">The path of the module that contains the function, for example, "IMJPAPI.DLL".</param>
+	/// <param name="ppvObj">Address of the pointer variable that receives the IFEDictionary interface pointer of the object created.</param>
+	/// <returns><c>S_OK</c> if successful, otherwise an OLE-defined error code.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/msime/nf-msime-createifedictionaryinstance HRESULT CreateIFEDictionaryInstance(
+	// [out] VOID **ppvObj );
+	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFEDictionaryInstance")]
+	public static HRESULT CreateIFEDictionaryInstance(string modulePath, out IFEDictionary? ppvObj)
+	{
+		var hr = LoadDelegate(modulePath, out var lib, out CreateIFEDictionaryInstanceDelegate? delImpl);
+		if (hr.Succeeded)
+			return delImpl!.Invoke(out ppvObj);
+		ppvObj = null;
+		return hr;
+	}
+
+	/// <summary>Returns a pointer to an IFELanguage interface.</summary>
+	/// <param name="modulePath">The path of the module that contains the function, for example, "IMJPAPI.DLL".</param>
+	/// <param name="ppvObj">Address of the pointer variable that receives the IFELanguage interface pointer of the object created.</param>
+	/// <returns><c>S_OK</c> if successful, otherwise an OLE-defined error code.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/msime/nf-msime-createifelanguageinstance HRESULT CreateIFELanguageInstance(
+	// [in] REFCLSID clsid, [out] VOID **ppvObj );
+	[PInvokeData("msime.h", MSDNShortId = "NF:msime.CreateIFELanguageInstance")]
+	public static HRESULT CreateIFELanguageInstance(string modulePath, out IFELanguage? ppvObj)
+	{
+		var hr = LoadDelegate(modulePath, out var lib, out CreateIFELanguageInstanceDelegate? delImpl);
+		if (hr.Succeeded)
+			return delImpl!.Invoke(default, out ppvObj);
+		ppvObj = null;
+		return hr;
+	}
+
+	private static HRESULT LoadDelegate<TDel>(string modulePath, out Kernel32.SafeHINSTANCE lib, out TDel? delImpl)
+	{
+		lib = Kernel32.LoadLibrary(modulePath);
+		delImpl = default;
+		if (lib.IsInvalid) return Win32Error.GetLastError().ToHRESULT();
+		IntPtr pAddr = Kernel32.GetProcAddress(lib, typeof(TDel).Name.Replace("Delegate", ""));
+		if (pAddr == IntPtr.Zero) return Win32Error.GetLastError().ToHRESULT();
+		try { delImpl = Marshal.GetDelegateForFunctionPointer<TDel>(pAddr); }
+		catch (Exception ex) { return ex.HResult; }
+		return HRESULT.S_OK;
+	}
+
 	/// <summary>Used when invoking the Microsoft IME's Dictionary Tool or Word Register Dialog Window from the app.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="IMEDLG"/> struct.</remarks>
+	/// <param name="hwnd">The parent window handle of the Register Word Dialog.</param>
+	/// <param name="display">
+	/// <see langword="null"/>, or the string to be registered. It shows in the Word Register Dialog's "Display" field.
+	/// </param>
+	/// <param name="tabId">The initial tab ID, 0 or 1.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msime/ns-msime-imedlg typedef struct _IMEDLG { int cbIMEDLG; HWND hwnd; StrPtrUni
 	// lpwstrWord; int nTabId; } IMEDLG;
 	[PInvokeData("msime.h", MSDNShortId = "NS:msime._IMEDLG")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct IMEDLG
+	public struct IMEDLG(HWND hwnd, string? display = null, int tabId = 0)
 	{
 		/// <summary>The size of this structure. You must set this value before using the structure.</summary>
-		public int cbIMEDLG;
+		public int cbIMEDLG = Marshal.SizeOf<IMEDLG>();
 
 		/// <summary>The parent window handle of the Register Word Dialog.</summary>
-		public HWND hwnd;
+		public HWND hwnd = hwnd;
 
 		/// <summary><see langword="null"/>, or the string to be registered. It shows in the Word Register Dialog's "Display" field.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string? lpwstrWord;
+		public string? lpwstrWord = display;
 
 		/// <summary>The initial tab ID, 0 or 1.</summary>
-		public int nTabId;
-
-		/// <summary>Initializes a new instance of the <see cref="IMEDLG"/> struct.</summary>
-		/// <param name="hwnd">The parent window handle of the Register Word Dialog.</param>
-		/// <param name="display">
-		/// <see langword="null"/>, or the string to be registered. It shows in the Word Register Dialog's "Display" field.
-		/// </param>
-		/// <param name="tabId">The initial tab ID, 0 or 1.</param>
-		public IMEDLG(HWND hwnd, string? display = null, int tabId = 0)
-		{
-			cbIMEDLG = Marshal.SizeOf<IMEDLG>();
-			this.hwnd = hwnd;
-			lpwstrWord = display;
-			nTabId = tabId;
-		}
+		public int nTabId = tabId;
 	}
 
 	[PInvokeData("msime.h")]
@@ -1554,6 +1606,11 @@ public static partial class Imm32
 		/// <summary>The name of the part of speech.</summary>
 		public IntPtr szName;
 	}
+
+	/// <summary>Class ID for the current FE COM interfaces</summary>
+	[PInvokeData("msime.h")]
+	[ComImport, Guid("6a91029e-aa49-471b-aee7-7d332785660d"), ClassInterface(ClassInterfaceType.None)]
+	public class VERSION_DEPENDENT_MSIME_JAPANESE { }
 
 	/*
 	// Word Descriptor

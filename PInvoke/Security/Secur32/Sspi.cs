@@ -5735,12 +5735,25 @@ public static partial class Secur32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-sspiencodeauthidentityasstrings SECURITY_STATUS SEC_ENTRY
 	// SspiEncodeAuthIdentityAsStrings( PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity, PCWSTR *ppszUserName, PCWSTR *ppszDomainName,
 	// PCWSTR *ppszPackedCredentialsString );
-	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("sspi.h", MSDNShortId = "0610a7b8-67e9-4c01-893f-da579eeea2f8")]
-	public static extern Win32Error SspiEncodeAuthIdentityAsStrings([In] PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity,
-		[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SspiStringMarshaler))] out string ppszUserName,
-		[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SspiStringMarshaler))] out string ppszDomainName,
-		[Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(SspiStringMarshaler))] out string ppszPackedCredentialsString);
+	public static Win32Error SspiEncodeAuthIdentityAsStrings([In] PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity,
+		out string? ppszUserName,
+		out string? ppszDomainName,
+		out string? ppszPackedCredentialsString)
+	{
+		var ret = SspiEncodeAuthIdentityAsStrings(pAuthIdentity, out IntPtr p1, out var p2, out var p3);
+		if (ret.Failed) { ppszUserName = ppszDomainName = ppszPackedCredentialsString = null; return ret; }
+		ppszUserName = Marshal.PtrToStringUni(p1);
+		SspiFreeAuthIdentity(p1);
+		ppszDomainName = Marshal.PtrToStringUni(p2);
+		SspiFreeAuthIdentity(p2);
+		ppszPackedCredentialsString = Marshal.PtrToStringUni(p3);
+		SspiFreeAuthIdentity(p3);
+		return ret;
+
+		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
+		static extern Win32Error SspiEncodeAuthIdentityAsStrings([In] PSEC_WINNT_AUTH_IDENTITY_OPAQUE pAuthIdentity, out IntPtr ppszUserName, out IntPtr ppszDomainName, out IntPtr ppszPackedCredentialsString);
+	}
 
 	/// <summary>
 	/// <para>Encodes a set of three credential strings as an authentication identity structure.</para>
@@ -7674,7 +7687,7 @@ public static partial class Secur32
 			LUID? pvLogonId, out TimeStamp ptsExpiry) where TAuthData : struct
 		{
 			using var pinnedLuid = new PinnedObject(pvLogonId);
-			using var pinnedAuthData = pAuthData.HasValue ? SafeHGlobalHandle.CreateFromStructure(pAuthData) : SafeHGlobalHandle.Null;
+			using SafeHGlobalStruct<TAuthData> pinnedAuthData = pAuthData;
 			AcquireCredentialsHandle(pszPrincipal, pszPackage, fCredentialUse, pinnedLuid, (IntPtr)pinnedAuthData, IntPtr.Zero, IntPtr.Zero, out var hCred, out ptsExpiry).ThrowIfFailed();
 			return new SafeCredHandle(hCred);
 		}
@@ -7873,31 +7886,5 @@ public static partial class Secur32
 		/// <param name="count">The count of bytes to get.</param>
 		/// <returns>A byte array.</returns>
 		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count) ?? [];
-	}
-
-	internal class SspiStringMarshaler : ICustomMarshaler
-	{
-		public static ICustomMarshaler GetInstance(string _) => new SspiStringMarshaler();
-
-		public void CleanUpManagedData(object ManagedObj)
-		{
-		}
-
-		public void CleanUpNativeData(IntPtr pNativeData)
-		{
-			if (pNativeData == IntPtr.Zero) return;
-			SspiFreeAuthIdentity(pNativeData);
-		}
-
-		public int GetNativeDataSize() => -1;
-
-		public IntPtr MarshalManagedToNative(object _) => IntPtr.Zero;
-
-		public object MarshalNativeToManaged(IntPtr pNativeData)
-		{
-			string? ret = StringHelper.GetString(pNativeData, CharSet.Unicode);
-			System.Diagnostics.Debug.WriteLine($"SspiStringMarshaler: {ret ?? "null"}");
-			return ret?.Clone() ?? "";
-		}
 	}
 }
