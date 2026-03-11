@@ -52,7 +52,7 @@ public static partial class Shell32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/thumbcache/nn-thumbcache-ithumbnailprovider
 	[PInvokeData("thumbcache.h", MSDNShortId = "55c4739a-4835-4f53-a435-804ddf06ffcf")]
-	[ComImport, Guid("e357fccd-a995-4576-b01f-234630154e96"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(PhotoThumbnailProvider))]
+	[ComImport, Guid("e357fccd-a995-4576-b01f-234630154e96"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IThumbnailProvider
 	{
 		/// <summary>Gets a thumbnail image and alpha type.</summary>
@@ -72,7 +72,7 @@ public static partial class Shell32
 		/// </param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT GetThumbnail(uint cx, out SafeHBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha);
+		HRESULT GetThumbnail(uint cx, out HBITMAP phbmp, out WTS_ALPHATYPE pdwAlpha);
 	}
 
 	/// <summary>An implementation of IThumbnailProvider for photo thumbnails is supplied in Microsoft Windows as CLSID_PhotoThumbnailProvider.</summary>
