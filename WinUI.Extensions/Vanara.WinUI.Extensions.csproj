@@ -3,9 +3,8 @@
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>$(TargetFrameworksNotStdCore)</TargetFrameworks>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>    
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <UseWPF>true</UseWPF>
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winui;uwp;windows platform</PackageTags>
@@ -18,11 +17,12 @@ SystemFoundationExtensions
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);NU1510;</NoWarn>
   </PropertyGroup>
+<!-- @dahall: should be safe to remove? -->
   <ItemGroup Condition=" $(NET40_OR_GREATER) ">
     <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
