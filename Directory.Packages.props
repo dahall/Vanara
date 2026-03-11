@@ -51,7 +51,7 @@
     <PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120" />
     <PackageVersion Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageVersion Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.7463" />
-    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.5.250108004" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NUnit" Version="4.4.0" />
     <PackageVersion Include="NUnit.DeepObjectCompare" Version="2.0.1" />
