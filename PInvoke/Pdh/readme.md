@@ -95,6 +95,11 @@ Native Structure | Header | Managed Structure
 [PDH_RAW_LOG_RECORD](https://www.google.com/search?num=5&q=PDH_RAW_LOG_RECORD+site%3Alearn.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_RAW_LOG_RECORD](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_RAW_LOG_RECORD)  
 [PDH_STATISTICS](https://www.google.com/search?num=5&q=PDH_STATISTICS+site%3Alearn.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_STATISTICS](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_STATISTICS)  
 [PDH_TIME_INFO](https://www.google.com/search?num=5&q=PDH_TIME_INFO+site%3Alearn.microsoft.com) | pdh.h | [Vanara.PInvoke.Pdh.PDH_TIME_INFO](https://github.com/dahall/Vanara/search?l=C%23&q=PDH_TIME_INFO)  
+[PERF_COUNTER_BLOCK](https://www.google.com/search?num=5&q=PERF_COUNTER_BLOCK+site%3Alearn.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_COUNTER_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_COUNTER_BLOCK)  
+[PERF_COUNTER_DEFINITION](https://www.google.com/search?num=5&q=PERF_COUNTER_DEFINITION+site%3Alearn.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_COUNTER_DEFINITION](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_COUNTER_DEFINITION)  
+[PERF_DATA_BLOCK](https://www.google.com/search?num=5&q=PERF_DATA_BLOCK+site%3Alearn.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_DATA_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_DATA_BLOCK)  
+[PERF_INSTANCE_DEFINITION](https://www.google.com/search?num=5&q=PERF_INSTANCE_DEFINITION+site%3Alearn.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_INSTANCE_DEFINITION](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_INSTANCE_DEFINITION)  
+[PERF_OBJECT_TYPE](https://www.google.com/search?num=5&q=PERF_OBJECT_TYPE+site%3Alearn.microsoft.com) | winperf.h | [Vanara.PInvoke.Pdh.PERF_OBJECT_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=PERF_OBJECT_TYPE)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  

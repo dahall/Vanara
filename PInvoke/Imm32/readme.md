@@ -149,3 +149,5 @@ Native Class | Header | Managed Class
 --- | --- | ---  
 [ImePlugInDictDictionaryList1041](https://www.google.com/search?num=5&q=ImePlugInDictDictionaryList1041+site%3Alearn.microsoft.com) | msimeapi.h | [Vanara.PInvoke.Imm32.ImePlugInDictDictionaryList1041](https://github.com/dahall/Vanara/search?l=C%23&q=ImePlugInDictDictionaryList1041)  
 [ImePlugInDictDictionaryList2052](https://www.google.com/search?num=5&q=ImePlugInDictDictionaryList2052+site%3Alearn.microsoft.com) | msimeapi.h | [Vanara.PInvoke.Imm32.ImePlugInDictDictionaryList2052](https://github.com/dahall/Vanara/search?l=C%23&q=ImePlugInDictDictionaryList2052)  
+[SafeHIMC](https://www.google.com/search?num=5&q=SafeHIMC+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Imm32.SafeHIMC](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHIMC)  
+[VERSION_DEPENDENT_MSIME_JAPANESE](https://www.google.com/search?num=5&q=VERSION_DEPENDENT_MSIME_JAPANESE+site%3Alearn.microsoft.com) | msime.h | [Vanara.PInvoke.Imm32.VERSION_DEPENDENT_MSIME_JAPANESE](https://github.com/dahall/Vanara/search?l=C%23&q=VERSION_DEPENDENT_MSIME_JAPANESE)  
