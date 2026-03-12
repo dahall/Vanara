@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
+    <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-	<Nullable>enable</Nullable>
-	<UseWinUI>true</UseWinUI>
+	  <Nullable>enable</Nullable>
+	  <UseWinUI>true</UseWinUI>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
 	  <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
 	  <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
 	  <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>	  
-    <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winui;uwp;windows platform</PackageTags>
     <PackageReleaseNotes>Currently implements:
