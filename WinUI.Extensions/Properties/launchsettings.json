@@ -1,10 +1,10 @@
 ﻿{
     "profiles": {
-      "electrifier (Package)": {
-        "commandName": "MsixPackage"
-      },
-      "electrifier (Unpackaged)": {
-        "commandName": "Project"
-      }
+        "Vanara.WinUi.Extensions (Package)": {
+            "commandName": "MsixPackage"
+        },
+        "Vanara.WinUi.Extensions (Unpackaged)": {
+            "commandName": "Project"
+        }
     }
 }
