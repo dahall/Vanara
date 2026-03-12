@@ -409,12 +409,9 @@ public static partial class Shell32
 		{
 			try
 			{
-				HRESULT hr = itp.GetThumbnail(imgSz, out hbmp, out _);
-				if (hr.Succeeded)
-				{
-					imgSz = GetWidth(hbmp);
-				}
-
+				HRESULT hr = itp.GetThumbnail(imgSz, out var _hbmp, out _);
+				hbmp = hr.Succeeded ? new(_hbmp, true) : SafeHBITMAP.Null;
+				imgSz = GetWidth(_hbmp);
 				return hr;
 			}
 			finally
