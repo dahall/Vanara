@@ -1,11 +1,8 @@
 ﻿global using System;
 global using System.Runtime.InteropServices;
-global using System.Text;
 global using Vanara.Extensions;
-global using Vanara.InteropServices;
-global using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+using System.Runtime.Versioning;
 
-#if NET5_0_OR_GREATER
-[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
-#endif
+[assembly: SupportedOSPlatform("windows")]
+
 [assembly: DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
