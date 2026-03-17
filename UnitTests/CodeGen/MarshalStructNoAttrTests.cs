@@ -1,11 +1,9 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Testing;
+﻿using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 using NUnit.Framework;
-using System.Threading.Tasks;
 using Vanara.CodeGen;
-using Vanara.Marshaler;
 using VerifyCS = Microsoft.CodeAnalysis.CSharp.Testing.CSharpCodeFixVerifier<MarshalerStructNoAttrAnalyzer, Vanara.CodeGen.MarshalerStructAttrFixProvider, Microsoft.CodeAnalysis.Testing.DefaultVerifier>;
+using static Vanara.PInvoke.Tests.CodeAnalysisHelpers;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -64,7 +62,7 @@ public class MarshalStructNoAttrTests
 		if (cerr == 0)
 			await Analyze(source);
 		else
-			await Analyze(source, VerifyCS.Diagnostic(MarshalerStructNoAttrAnalyzer.DiagnosticId).WithLocation(pos).WithArguments(arg));
+			await Analyze(source, MakeDiag(pos, arg));
 	}
 
 	[TestCase(1, "MarshaledStruct s", "[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Vanara.InteropServices.VanaraCustomMarshaler<MarshaledStruct>))] MarshaledStruct s", "MarshaledStruct")]
@@ -81,39 +79,16 @@ public class MarshalStructNoAttrTests
 		if (cerr == 0)
 			await CodeFix(source, fixedSrc);
 		else
-			await CodeFix(source, fixedSrc, VerifyCS.Diagnostic(MarshalerStructNoAttrAnalyzer.DiagnosticId).WithLocation(pos).WithArguments(arg));
+			await CodeFix(source, fixedSrc, MakeDiag(pos, arg));
 	}
 
-	private static async Task Analyze(string source, params DiagnosticResult[] expected)
-	{
-		var test = new CSharpAnalyzerTest<MarshalerStructNoAttrAnalyzer, DefaultVerifier>
-		{
-			ReferenceAssemblies = ReferenceAssemblies.Net.Net80Windows,
-			TestCode = source,
-			TestState =
-			{
-				AdditionalReferences = { typeof(MarshaledAttribute).Assembly.Location },
-			}
-		};
-		test.ExpectedDiagnostics.AddRange(expected);
-		await test.RunAsync();
-	}
+	private static async Task Analyze(string source, params DiagnosticResult[] expected) => await Analyze<MarshalerStructNoAttrAnalyzer>(source, expected);
 
-	private static async Task CodeFix(string source, string sourceFix, params DiagnosticResult[] expected)
-	{
-		var test = new CSharpCodeFixTest<MarshalerStructNoAttrAnalyzer, MarshalerStructAttrFixProvider, DefaultVerifier>
-		{
-			ReferenceAssemblies = ReferenceAssemblies.Net.Net80Windows,
-			TestCode = source,
-			FixedCode = sourceFix,
-			TestState =
-			{
-				AdditionalReferences = { typeof(MarshaledAttribute).Assembly.Location },
-			}
-		};
-		test.ExpectedDiagnostics.AddRange(expected);
-		await test.RunAsync();
-	}
+	private static async Task CodeFix(string source, string sourceFix, params DiagnosticResult[] expected) =>
+		await CodeFix<MarshalerStructNoAttrAnalyzer, MarshalerStructAttrFixProvider>(source, sourceFix, expected);
+
+	private static DiagnosticResult MakeDiag(LinePosition lp, string arg) =>
+		VerifyCS.Diagnostic(MarshalerStructNoAttrAnalyzer.DiagnosticId).WithLocation(lp).WithArguments(arg);
 }
 /*
 [Marshaled]

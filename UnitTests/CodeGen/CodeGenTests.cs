@@ -2,14 +2,9 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Threading;
 using Vanara.Generators;
 
 namespace Vanara.PInvoke.Tests;
@@ -158,8 +153,8 @@ public partial class CodeGenTests
 
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), "handles.csv", out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(0));
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
 	}
@@ -191,8 +186,8 @@ public partial class CodeGenTests
 
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
-
-		WriteTrees(TestContext.Out, output.SyntaxTrees, false);
+		CodeAnalysisHelpers.
+				WriteTrees(TestContext.Out, output.SyntaxTrees, false);
 	}
 
 	[Test]
@@ -222,8 +217,8 @@ public partial class CodeGenTests
 
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
-
-		WriteTrees(TestContext.Out, output.SyntaxTrees, false);
+		CodeAnalysisHelpers.
+				WriteTrees(TestContext.Out, output.SyntaxTrees, false);
 	}
 
 	[Test]
@@ -233,7 +228,7 @@ public partial class CodeGenTests
 		CreateGeneratorDriverAndRun(compilation, new HandlesFromFileGenerator(), "handles.csv", out var output, out var diag);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(7));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
 	}
 
 	[TestCase("handlesbad1.csv", "VANGEN001")]
@@ -349,11 +344,25 @@ public partial class CodeGenTests
 
 		var compilation = GetCompilation(src, src2);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(0));
 	}
+
+	const string marshalArrBad = /* lang=c#-test */ """
+		// marshalArrBad
+		using System;
+		using System.Runtime.InteropServices;
+		using Vanara.InteropServices;
+		namespace Vanara.PInvoke
+		{
+			public static partial class Test64
+			{
+				public static extern bool Method(uint cToBeHashed, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpbToBeHashed);
+			}
+		}
+		""";
 
 	const string marshalArrMult = /* lang=c#-test */ """
 		// marshalArrMult
@@ -375,28 +384,14 @@ public partial class CodeGenTests
 		}
 		""";
 
-	const string marshalArrBad = /* lang=c#-test */ """
-		// marshalArrBad
-		using System;
-		using System.Runtime.InteropServices;
-		using Vanara.InteropServices;
-		namespace Vanara.PInvoke
-		{
-			public static partial class Test64
-			{
-				public static extern bool Method(uint cToBeHashed, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgpbToBeHashed);
-			}
-		}
-		""";
-
 	[TestCase(marshalArrMult, 2, 0)]
 	[TestCase(marshalArrBad, 1, 1)]
 	public void MarshalAsLPArrayTest(string src, int treeCount, int errCount)
 	{
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 	}
@@ -761,7 +756,7 @@ public partial class CodeGenTests
 	{
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
 	}
@@ -891,8 +886,8 @@ public partial class CodeGenTests
 	{
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(treeCount));
 	}
@@ -904,32 +899,8 @@ public partial class CodeGenTests
 			driverOptions: new GeneratorDriverOptions(default, trackIncrementalGeneratorSteps: true)).
 		RunGeneratorsAndUpdateCompilation(compilation, out output, out diag);
 
-	private static readonly string VanaraCoreRef = $@"Vanara.Core.dll";
-
-	private static readonly List<MetadataReference> metaRefs =
-		[.. AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Select(a => MetadataReference.CreateFromFile(a.Location)).Cast<MetadataReference>().Concat([MetadataReference.CreateFromFile(VanaraCoreRef)])];
-
-	private static MethodDeclarationSyntax? FindMethod(string name, SyntaxTree tree) =>
-		tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().FirstOrDefault(m => m.Identifier.Text == name);
-
 	private static CSharpCompilation GetCompilation(params string[] sourceCode) => CSharpCompilation.Create(nameof(CodeGenTests),
-		Array.ConvertAll(sourceCode, i => CSharpSyntaxTree.ParseText(i)), metaRefs, new(OutputKind.DynamicallyLinkedLibrary));
-
-	private static void WriteDiags(ImmutableArray<Diagnostic> diag, DiagnosticSeverity sev = DiagnosticSeverity.Error)
-	{
-		foreach (var d in diag.Where(d => d.Severity == sev))
-			TestContext.Out.WriteLine($"{d.Severity} {d.Id}: {d.GetMessage()} @ {d.Location.SourceSpan}");
-	}
-
-	private static void WriteTrees(TextWriter tw, IEnumerable<SyntaxTree> trees, bool skipFirst = true)
-	{
-		foreach (var tree in trees.Skip(skipFirst ? 1 : 0))
-		{
-			var fn = Path.GetFileName(tree.FilePath);
-			tw.WriteLine($"== {fn} {new string('=', 78 - fn.Length)}");
-			tw.WriteLine(tree);
-		}
-	}
+		Array.ConvertAll(sourceCode, i => CSharpSyntaxTree.ParseText(i)), CodeAnalysisHelpers.MetaReferences, new(OutputKind.DynamicallyLinkedLibrary));
 }
 
 internal class InMemoryAdditionalText(string path, string content) : AdditionalText

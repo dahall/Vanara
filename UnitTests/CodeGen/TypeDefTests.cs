@@ -20,8 +20,8 @@ public partial class CodeGenTests
 			""";
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new TypeDefGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 
@@ -44,8 +44,8 @@ public partial class CodeGenTests
 			""";
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new TypeDefGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 
@@ -68,8 +68,8 @@ public partial class CodeGenTests
 			""";
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new TypeDefGenerator(), null, out var output, out var diag);
-		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		WriteDiags(diag);
+		CodeAnalysisHelpers.WriteTrees(TestContext.Out, output.SyntaxTrees);
+		CodeAnalysisHelpers.WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 

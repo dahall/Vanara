@@ -38,7 +38,7 @@ public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 			varSyntax.Parent is VariableDeclarationSyntax varDeclSyntax && varDeclSyntax.Type is not NullableTypeSyntax &&
 			context.SemanticModel.GetTypeInfo(varDeclSyntax.Type).Type is ITypeSymbol typeSym && IsSafeHANDLEDerivedType(typeSym, context.Compilation))
 		{
-			Dictionary<string, string?> properties = new() { { "SafeHandleType", typeSym.Name } };
+			Dictionary<string, string?> properties = new() { ["SafeHandleType"] = typeSym.Name };
 			var diagnostic = Diagnostic.Create(Rule, nodeSyntax.GetLocation(), ImmutableDictionary.CreateRange(properties), typeSym.Name);
 			context.ReportDiagnostic(diagnostic);
 		}

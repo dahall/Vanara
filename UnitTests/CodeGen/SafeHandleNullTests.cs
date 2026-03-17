@@ -1,11 +1,9 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Testing;
+﻿using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 using NUnit.Framework;
-using System.Threading.Tasks;
 using Vanara.CodeGen;
-using Vanara.Marshaler;
 using VerifyCS = Microsoft.CodeAnalysis.CSharp.Testing.CSharpCodeFixVerifier<SafeHANDLENullAnalyzer, Vanara.CodeGen.SafeHANDLENullCodeFixProvider, Microsoft.CodeAnalysis.Testing.DefaultVerifier>;
+using static Vanara.PInvoke.Tests.CodeAnalysisHelpers;
 
 namespace Vanara.PInvoke.Tests;
 
@@ -51,7 +49,7 @@ public class SafeHandleNullTests
 		if (arg is null)
 			await Analyze(source);
 		else
-			await Analyze(source, VerifyCS.Diagnostic(SafeHANDLENullAnalyzer.DiagnosticId).WithLocation(new LinePosition(pos.Line, pos.Character + value.IndexOf("= ") + 2)).WithArguments(arg!));
+			await Analyze(source, MakeDiag(pos.Line, pos.Character + value.IndexOf("= ") + 2, arg!));
 	}
 
 	[TestCase("IntPtr h = default", "IntPtr h = default", null)]
@@ -67,37 +65,14 @@ public class SafeHandleNullTests
 		if (arg is null)
 			await CodeFix(source, fixedSrc);
 		else
-			await CodeFix(source, fixedSrc, VerifyCS.Diagnostic(SafeHANDLENullAnalyzer.DiagnosticId).WithLocation(new LinePosition(pos.Line, pos.Character + value.IndexOf("= ") + 2)).WithArguments(arg!));
+			await CodeFix(source, fixedSrc, MakeDiag(pos.Line, pos.Character + value.IndexOf("= ") + 2, arg!));
 	}
 
-	private static async Task Analyze(string source, params DiagnosticResult[] expected)
-	{
-		var test = new CSharpAnalyzerTest<SafeHANDLENullAnalyzer, DefaultVerifier>
-		{
-			ReferenceAssemblies = ReferenceAssemblies.Net.Net80Windows,
-			TestCode = source,
-			TestState =
-			{
-				AdditionalReferences = { typeof(MarshaledAttribute).Assembly.Location },
-			}
-		};
-		test.ExpectedDiagnostics.AddRange(expected);
-		await test.RunAsync();
-	}
+	private static async Task Analyze(string source, params DiagnosticResult[] expected) => await Analyze<SafeHANDLENullAnalyzer>(source, expected);
 
-	private static async Task CodeFix(string source, string sourceFix, params DiagnosticResult[] expected)
-	{
-		var test = new CSharpCodeFixTest<SafeHANDLENullAnalyzer, SafeHANDLENullCodeFixProvider, DefaultVerifier>
-		{
-			ReferenceAssemblies = ReferenceAssemblies.Net.Net80Windows,
-			TestCode = source,
-			FixedCode = sourceFix,
-			TestState =
-			{
-				AdditionalReferences = { typeof(MarshaledAttribute).Assembly.Location },
-			}
-		};
-		test.ExpectedDiagnostics.AddRange(expected);
-		await test.RunAsync();
-	}
+	private static async Task CodeFix(string source, string sourceFix, params DiagnosticResult[] expected) =>
+		await CodeFix<SafeHANDLENullAnalyzer, SafeHANDLENullCodeFixProvider>(source, sourceFix, expected);
+
+	private static DiagnosticResult MakeDiag(int line, int character, string arg) =>
+		VerifyCS.Diagnostic(SafeHANDLENullAnalyzer.DiagnosticId).WithLocation(new LinePosition(line, character)).WithArguments(arg);
 }
