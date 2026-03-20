@@ -1,6 +1,7 @@
 ﻿// Work in progress, may not ever complete as it is so poorly supported anymore.
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
@@ -2402,11 +2403,11 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/exdisp/nn-exdisp-ishellwindows
 	[PInvokeData("exdisp.h", MSDNShortId = "e609c8b6-2b2e-4188-894c-5c85960206ea")]
 	[ComImport, Guid("85CB6900-4D95-11CF-960C-0080C7F4EE85"), InterfaceType(ComInterfaceType.InterfaceIsDual), CoClass(typeof(ShellWindows))]
-	public interface IShellWindows : ICollection
+	public interface IShellWindows
 	{
 		/// <summary>Gets the number of windows in the Shell windows collection.</summary>
 		/// <value>Returns a <see cref="int"/> value.</value>
-		new int Count { [DispId(0x60020000)] get; }
+		int Count { [DispId(0x60020000)] get; }
 
 		/// <summary>Returns the registered Shell window for a specified index.</summary>
 		/// <param name="index">
@@ -2423,7 +2424,7 @@ public static partial class Shell32
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[DispId(-4)]
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler, CustomMarshalers, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-		new IEnumerator GetEnumerator();
+		IEnumerator GetEnumerator();
 
 		/// <summary>Registers an open window as a Shell window; the window is specified by handle.</summary>
 		/// <param name="pid">The window's IDispatch interface.</param>
@@ -2558,6 +2559,22 @@ public static partial class Shell32
 			return null;
 		else
 			throw hr.GetException()!;
+	}
+
+	/// <summary>Returns an enumerable collection of elements of type T from the specified IShellWindows instance.</summary>
+	/// <remarks>Only elements that can be cast to type T are included in the returned enumerable. Elements of other types are skipped.</remarks>
+	/// <typeparam name="T">The type of elements to enumerate from the IShellWindows collection.</typeparam>
+	/// <param name="this">The IShellWindows instance to enumerate.</param>
+	/// <returns>
+	/// An <see cref="IEnumerable{T}"/> containing the elements of type T found in the IShellWindows collection. The collection may be empty
+	/// if no elements of type T are present.
+	/// </returns>
+	public static IEnumerable<T> Cast<T>(this IShellWindows @this)
+	{
+		var iiterator = @this.GetEnumerator();
+		while (iiterator.MoveNext())
+			if (iiterator.Current is T t)
+				yield return t;
 	}
 
 	/*

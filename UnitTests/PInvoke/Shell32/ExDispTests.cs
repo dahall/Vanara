@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Linq;
 using static Vanara.PInvoke.Shell32;
 using IServiceProvider = Vanara.PInvoke.Shell32.IServiceProvider;
 
