@@ -5237,7 +5237,50 @@ public static partial class User32
 	// lpString, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
-	public static extern int GetWindowText([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int nMaxCount);
+	public static extern int GetWindowText([In] HWND hWnd, [Out] StringBuilder? lpString, int nMaxCount);
+
+	/// <summary>
+	/// Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a control, the text of
+	/// the control is copied. However, <c>GetWindowText</c> cannot retrieve the text of a control in another application.
+	/// </summary>
+	/// <param name="hWnd">A handle to the window or control containing the text.</param>
+	/// <param name="lpString">The buffer that will receive the text.</param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is ERROR_SUCCESS. If the window has no title bar or text or if the title bar is empty, the
+	/// return value is still ERROR_SUCCESS, but <paramref name="lpString"/> will be set to <see langword="null"/>. If the window or control
+	/// handle is invalid, the function returns ERROR_INVALID_HANDLE.
+	/// </para>
+	/// <para>This function cannot retrieve the text of an edit control in another application.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the target window is owned by the current process, <c>GetWindowText</c> causes a WM_GETTEXT message to be sent to the specified
+	/// window or control. If the target window is owned by another process and has a caption, <c>GetWindowText</c> retrieves the window
+	/// caption text. If the window does not have a caption, the return value is a null string. This behavior is by design. It allows
+	/// applications to call <c>GetWindowText</c> without becoming unresponsive if the process that owns the target window is not responding.
+	/// However, if the target window is not responding and it belongs to the calling application, <c>GetWindowText</c> will cause the
+	/// calling application to become unresponsive.
+	/// </para>
+	/// <para>To retrieve the text of a control in another process, send a WM_GETTEXT message directly instead of calling <c>GetWindowText</c>.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtexta int GetWindowTextA( HWND hWnd, StrPtrAnsi
+	// lpString, int nMaxCount );
+	[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
+	public static Win32Error GetWindowText([In, AddAsMember] HWND hWnd, out string? lpString)
+	{
+		lpString = null;
+		if (!IsWindow(hWnd))
+			return Win32Error.ERROR_INVALID_HANDLE;
+		var l = GetWindowTextLength(hWnd);
+		if (l == 0)
+			return Win32Error.GetLastError();
+		StringBuilder sb = new(l + 1);
+		if (GetWindowText(hWnd, sb, sb.Capacity) == 0)
+			return Win32Error.GetLastError();
+		lpString = sb.ToString();
+		return Win32Error.ERROR_SUCCESS;
+	}
 
 	/// <summary>
 	/// <para>
