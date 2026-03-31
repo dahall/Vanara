@@ -122,7 +122,7 @@ public struct DATE(DateTime value) : IEquatable<DATE>, IComparable<DATE>, IEquat
 	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
 
 	/// <inheritdoc/>
-	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
+	public readonly double ToDouble(IFormatProvider? provider) => value;
 
 	/// <inheritdoc/>
 	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
