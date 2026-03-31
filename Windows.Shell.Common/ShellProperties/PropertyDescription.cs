@@ -128,7 +128,7 @@ public class PropertyDescription : IDisposable
 	public PROPERTYKEY PropertyKey => key;
 
 	/// <summary>Gets the variant type of the property. If the type cannot be determined, this property returns <c>null</c>.</summary>
-	public Type PropertyType => PROPVARIANT.GetType(iDesc?.GetPropertyType().GetCorrespondingType() ?? VARTYPE.VT_EMPTY)!;
+	public Type? PropertyType => (iDesc?.GetPropertyType() ?? VARTYPE.VT_EMPTY).GetCorrespondingType();
 
 	/// <summary>Gets the relative description type for a property description.</summary>
 	public PROPDESC_RELATIVEDESCRIPTION_TYPE RelativeDescriptionType => iDesc?.GetRelativeDescriptionType() ?? 0;

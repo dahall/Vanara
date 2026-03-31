@@ -189,9 +189,9 @@ public class SearchCondition : ICloneable, IDisposable
 				break;
 
 			case CONDITION_TYPE.CT_LEAF_CONDITION:
-				var propvar = new PROPVARIANT();
-				((ICondition2)pc).GetLeafConditionInfo(out var propkey, out _, propvar);
+				((ICondition2)pc).GetLeafConditionInfo(out var propkey, out _, out var propvar);
 				yield return (l, propkey.GetCanonicalName(), pc.GetValueType() ?? "", propvar.Value);
+				propvar.Clear();
 				break;
 
 			default:
