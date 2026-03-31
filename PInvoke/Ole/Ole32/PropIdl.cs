@@ -581,8 +581,8 @@ public static partial class Ole32
 		/// <para>For more information, see Property Storage Considerations.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readmultiple
-		[PreserveSig]
-		HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_IMMUTABLE[] rgpropvar);
+		[PreserveSig, SuppressAutoGen]
+		HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_UNMGD[] rgpropvar);
 
 		/// <summary>
 		/// <para>
@@ -670,8 +670,8 @@ public static partial class Ole32
 		/// <para>For more information, see Property Storage Considerations.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-writemultiple
-		[PreserveSig]
-		HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_IMMUTABLE[] rgpropvar, uint propidNameFirst);
+		[PreserveSig, SuppressAutoGen]
+		HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_UNMGD[] rgpropvar, uint propidNameFirst);
 
 		/// <summary>
 		/// <para>The <c>DeleteMultiple</c> method deletes as many of the indicated properties as exist in this property set.</para>
@@ -1056,9 +1056,55 @@ public static partial class Ole32
 	/// </list>
 	/// </returns>
 	[SecurityCritical, SuppressUnmanagedCodeSecurity]
+	[System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute(0)]
 	[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 	[PInvokeData("Propidl.h", MSDNShortId = "aa380073")]
 	public static extern HRESULT PropVariantClear([In, Out] PROPVARIANT pvar);
+
+	/// <summary>
+	/// The PropVariantClear function frees all elements that can be freed in a given PROPVARIANT structure. For complex elements with
+	/// known element pointers, the underlying elements are freed prior to freeing the containing element.
+	/// </summary>
+	/// <param name="pvar">
+	/// A pointer to an initialized PROPVARIANT structure for which any deallocatable elements are to be freed. On return, all zeroes are
+	/// written to the PROPVARIANT structure.
+	/// </param>
+	/// <returns>
+	/// <list type="definition">
+	/// <item>
+	/// <term>S_OK</term>
+	/// <definition>The VT types are recognized and all items that can be freed have been freed.</definition>
+	/// </item>
+	/// <item>
+	/// <term>STG_E_INVALID_PARAMETER</term>
+	/// <definition>The variant has an unknown VT type.</definition>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[SecurityCritical, SuppressUnmanagedCodeSecurity]
+	[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
+	[PInvokeData("Propidl.h", MSDNShortId = "aa380073")]
+	public static extern HRESULT PropVariantClear(ref PROPVARIANT_UNMGD pvar);
+
+	/// <summary>The PropVariantCopy function copies the contents of one PROPVARIANT structure to another.</summary>
+	/// <param name="pDst">Pointer to an uninitialized PROPVARIANT structure that receives the copy.</param>
+	/// <param name="pSrc">Pointer to the PROPVARIANT structure to be copied.</param>
+	/// <returns>
+	/// <list type="definition">
+	/// <item>
+	/// <term>S_OK</term>
+	/// <definition>The VT types are recognized and all items that can be freed have been freed.</definition>
+	/// </item>
+	/// <item>
+	/// <term>STG_E_INVALID_PARAMETER</term>
+	/// <definition>The variant has an unknown VT type.</definition>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute(0)]
+	[DllImport(Lib.Ole32, ExactSpelling = true)]
+	[PInvokeData("Propidl.h", MSDNShortId = "aa380192")]
+	public static extern HRESULT PropVariantCopy([In, Out] PROPVARIANT pDst, [In] PROPVARIANT pSrc);
 
 	/// <summary>The PropVariantCopy function copies the contents of one PROPVARIANT structure to another.</summary>
 	/// <param name="pDst">Pointer to an uninitialized PROPVARIANT structure that receives the copy.</param>
@@ -1077,7 +1123,27 @@ public static partial class Ole32
 	/// </returns>
 	[DllImport(Lib.Ole32, ExactSpelling = true)]
 	[PInvokeData("Propidl.h", MSDNShortId = "aa380192")]
-	public static extern HRESULT PropVariantCopy([In, Out] PROPVARIANT pDst, [In] PROPVARIANT pSrc);
+	public static extern HRESULT PropVariantCopy(ref PROPVARIANT_UNMGD pDst, in PROPVARIANT_UNMGD pSrc);
+
+	/// <summary>
+	/// <para>The <b>PropVariantInit</b> function initializes a <c>PROPVARIANT</c> structure.</para>
+	/// <para>
+	/// <b>Note</b>  This function is implemented as a macro, available by including the provided ole2.h header file. This function is not
+	/// exported from any system-provided DLL.
+	/// </para>
+	/// <para></para>
+	/// </summary>
+	/// <param name="pvar">Pointer to an uninitialized <c>PROPVARIANT</c> structure that is initialized.</param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// Initializes a <c>PROPVARIANT</c> structure, and sets its type to VT_EMPTY. <b>PropVariantInit</b> should not be used to clear a
+	/// <b>PROPVARIANT</b> structure that contains data; for example, when it contains the result of a call to
+	/// <c>IPropertyStorage::ReadMultiple</c>. Such a <b>PROPVARIANT</b> structure should be cleared using the <c>PropVariantClear</c> function.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/propidl/nf-propidl-propvariantinit
+	// void PropVariantInit( [out] pvar );
+	[PInvokeData("propidl.h", MSDNShortId = "NF:propidl.PropVariantInit")]
+	public static void PropVariantInit(ref PROPVARIANT_UNMGD pvar) => pvar = new();
 
 	/// <summary>
 	/// The <c>ReadMultiple</c> method reads specified properties from the current property set.
@@ -1107,7 +1173,7 @@ public static partial class Ole32
 	{
 		if (ipst is null) throw new ArgumentNullException(nameof(ipst));
 		if (rgpspec is null) throw new ArgumentNullException(nameof(rgpspec));
-		var outVals = new PROPVARIANT_IMMUTABLE[rgpspec.Length];
+		var outVals = new PROPVARIANT_UNMGD[rgpspec.Length];
 		var hr = ipst.ReadMultiple((uint)rgpspec.Length, rgpspec, outVals);
 		rgpropvar = hr.Succeeded ? Array.ConvertAll(outVals, p => (PROPVARIANT)p) : null;
 		return hr;
@@ -1231,7 +1297,7 @@ public static partial class Ole32
 		if (ipst is null) throw new ArgumentNullException(nameof(ipst));
 		if (rgpspec is null) throw new ArgumentNullException(nameof(rgpspec));
 		if (rgpropvar is null) throw new ArgumentNullException(nameof(rgpropvar));
-		return ipst.WriteMultiple((uint)rgpspec.Length, rgpspec, Array.ConvertAll(rgpropvar, p => (PROPVARIANT_IMMUTABLE)p), propidNameFirst);
+		return ipst.WriteMultiple((uint)rgpspec.Length, rgpspec, Array.ConvertAll(rgpropvar, p => (PROPVARIANT_UNMGD)p), propidNameFirst);
 	}
 
 	/// <summary>
@@ -1298,12 +1364,41 @@ public static partial class Ole32
 	}
 
 	/// <summary>
+	/// A range of memory of arbitrary type that represents a serialized <c>PROPVARIANT</c> structure. Programs should not inspect the
+	/// contents of a <b>SERIALIZEDPROPERTYVALUE</b>; instead, they should manipulate it with the <c>StgSerializePropVariant</c> and
+	/// <c>StgDeserializePropVariant</c> functions.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/propidl/ns-propidl-serializedpropertyvalue typedef struct
+	// tagSERIALIZEDPROPERTYVALUE { DWORD dwType; BYTE rgb[1]; } SERIALIZEDPROPERTYVALUE;
+	[PInvokeData("propidl.h", MSDNShortId = "NS:propidl.tagSERIALIZEDPROPERTYVALUE")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SERIALIZEDPROPERTYVALUE
+	{
+		/// <summary>
+		/// <para>Type: <b>DWORD</b></para>
+		/// <para>
+		/// Encodes type information about the serialized <c>PROPVARIANT</c> structure. Programs should not inspect this member directly;
+		/// instead, they should use the <c>StgDeserializePropVariant</c> function and inspect the <b>vt</b> member of the resulting
+		/// <b>PROPVARIANT</b> structure.
+		/// </para>
+		/// </summary>
+		public uint dwType;
+
+		/// <summary>
+		/// <para>Type: <b>BYTE[1]</b></para>
+		/// <para>A variable-length additional data that depends on the type passed in <b>dwType</b>.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+		public byte[] rgb;
+	}
+
+	/// <summary>
 	/// <para>
-	/// The <c>STATPROPSETSTG</c> structure contains information about a property set. To get this information, call
-	/// IPropertyStorage::Stat, which fills in a buffer containing the information describing the current property set. To enumerate the
-	/// <c>STATPROPSETSTG</c> structures for the property sets in the current property-set storage, call IPropertySetStorage::Enum to get
-	/// a pointer to an enumerator. You can then call the enumeration methods of the IEnumSTATPROPSETSTG interface on the enumerator. The
-	/// structure is defined as follows:
+	/// The <c>STATPROPSETSTG</c> structure contains information about a property set. To get this information, call IPropertyStorage::Stat,
+	/// which fills in a buffer containing the information describing the current property set. To enumerate the <c>STATPROPSETSTG</c>
+	/// structures for the property sets in the current property-set storage, call IPropertySetStorage::Enum to get a pointer to an
+	/// enumerator. You can then call the enumeration methods of the IEnumSTATPROPSETSTG interface on the enumerator. The structure is
+	/// defined as follows:
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/ns-propidl-tagstatpropsetstg typedef struct tagSTATPROPSETSTG { FMTID

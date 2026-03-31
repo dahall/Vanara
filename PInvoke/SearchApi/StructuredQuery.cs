@@ -406,7 +406,7 @@ public static partial class SearchApi
 		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
 		// ICondition **ppcResult );
 		ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
-			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+			in PROPVARIANT_UNMGD ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
@@ -592,7 +592,7 @@ public static partial class SearchApi
 		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
 		// ICondition **ppcResult );
 		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
-			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+			in PROPVARIANT_UNMGD ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
@@ -879,7 +879,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createleaf
 		// HRESULT CreateLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, REFPROPVARIANT propvar, LPCWSTR pszSemanticType, LPCWSTR pszLocaleName, IRichChunk *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 9)]
-		object? CreateLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [In] PROPVARIANT propvar, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSemanticType,
+		object? CreateLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, in PROPVARIANT_UNMGD propvar, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSemanticType,
 			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszLocaleName, [In, Optional] IRichChunk? pPropertyNameTerm, [In, Optional] IRichChunk? pOperationTerm,
 			[In, Optional] IRichChunk? pValueTerm, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
@@ -1166,7 +1166,7 @@ public static partial class SearchApi
 		/// <remarks>For more information, see STRUCTURED_QUERY_SINGLE_OPTION.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-setoption HRESULT
 		// SetOption( STRUCTURED_QUERY_SINGLE_OPTION option, const PROPVARIANT *pOptionValue );
-		void SetOption([In] STRUCTURED_QUERY_SINGLE_OPTION option, [In] PROPVARIANT pOptionValue);
+		void SetOption([In] STRUCTURED_QUERY_SINGLE_OPTION option, in PROPVARIANT_UNMGD pOptionValue);
 
 		/// <summary>Retrieves a specified simple option value for this query parser.</summary>
 		/// <param name="option">
@@ -1179,7 +1179,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-getoption HRESULT
 		// GetOption( STRUCTURED_QUERY_SINGLE_OPTION option, PROPVARIANT *pOptionValue );
-		void GetOption([In] STRUCTURED_QUERY_SINGLE_OPTION option, [Out] PROPVARIANT pOptionValue);
+		void GetOption([In] STRUCTURED_QUERY_SINGLE_OPTION option, out PROPVARIANT_UNMGD pOptionValue);
 
 		/// <summary>Sets a complex option, such as a specified condition generator, to use when parsing an input string.</summary>
 		/// <param name="option">
@@ -1200,7 +1200,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-setmultioption HRESULT
 		// SetMultiOption( STRUCTURED_QUERY_MULTIOPTION option, LPCWSTR pszOptionKey, const PROPVARIANT *pOptionValue );
-		void SetMultiOption([In] STRUCTURED_QUERY_MULTIOPTION option, [In, MarshalAs(UnmanagedType.LPWStr)] string pszOptionKey, [In] PROPVARIANT pOptionValue);
+		void SetMultiOption([In] STRUCTURED_QUERY_MULTIOPTION option, [In, MarshalAs(UnmanagedType.LPWStr)] string pszOptionKey, in PROPVARIANT_UNMGD pOptionValue);
 
 		/// <summary>Retrieves a schema provider for browsing the currently loaded schema.</summary>
 		/// <returns>
@@ -1366,7 +1366,7 @@ public static partial class SearchApi
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparsermanager-setoption HRESULT
 		// SetOption( QUERY_PARSER_MANAGER_OPTION option, const PROPVARIANT *pOptionValue );
-		void SetOption(QUERY_PARSER_MANAGER_OPTION option, [In] PROPVARIANT pOptionValue);
+		void SetOption(QUERY_PARSER_MANAGER_OPTION option, in PROPVARIANT_UNMGD pOptionValue);
 	}
 
 	/// <summary>
@@ -1499,7 +1499,7 @@ public static partial class SearchApi
 		// [in] IRichChunk *pPropertyNameTerm, [in] IRichChunk *pOperationTerm, [in] IRichChunk *pValueTerm, [in] BOOL fExpand, [out, retval]
 		// ICondition **ppcResult );
 		new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string? pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszValueType,
-			[In] PROPVARIANT ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+			in PROPVARIANT_UNMGD ppropvar, [Optional] IRichChunk? pPropertyNameTerm, [Optional] IRichChunk? pOperationTerm, [Optional] IRichChunk? pValueTerm, [In, Optional, MarshalAs(UnmanagedType.Bool)] bool fExpand);
 
 		/// <summary>
 		/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative

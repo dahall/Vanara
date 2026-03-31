@@ -266,7 +266,7 @@ public static partial class PropSys
 	// PSCoerceToCanonicalValue( REFPROPERTYKEY key, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "8225dd01-47cc-451e-b6a6-c16ddf62ca20")]
-	public static extern HRESULT PSCoerceToCanonicalValue(in PROPERTYKEY key, PROPVARIANT ppropvar);
+	public static extern HRESULT PSCoerceToCanonicalValue(in PROPERTYKEY key, in PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Creates an adapter from an IPropertyStore.</para>
@@ -891,7 +891,7 @@ public static partial class PropSys
 	// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, StrPtrUni pwszText, DWORD cchText );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "71442967-ee8a-448c-83cf-949934ddd152")]
-	public static extern HRESULT PSFormatForDisplay(in PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
+	public static extern HRESULT PSFormatForDisplay(in PROPERTYKEY propkey, in PROPVARIANT_UNMGD propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
 		[MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszText, uint cchText);
 
 	/// <summary>
@@ -1101,7 +1101,7 @@ public static partial class PropSys
 	// REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni *ppszDisplay );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "d411ea72-fb29-47b6-a7f6-0839b3e2caf2")]
-	public static extern HRESULT PSFormatForDisplayAlloc(in PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff,
+	public static extern HRESULT PSFormatForDisplayAlloc(in PROPERTYKEY key, in PROPVARIANT_UNMGD propvar, PROPDESC_FORMAT_FLAGS pdff,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDisplay);
 
 	/// <summary>
@@ -1329,7 +1329,7 @@ public static partial class PropSys
 	// PSGetImageReferenceForValue( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, StrPtrUni *ppszImageRes );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "E37AF2ED-E3F9-4e50-9317-9DAF03AC543F")]
-	public static extern HRESULT PSGetImageReferenceForValue(in PROPERTYKEY propkey, PROPVARIANT propvar,
+	public static extern HRESULT PSGetImageReferenceForValue(in PROPERTYKEY propkey, in PROPVARIANT_UNMGD propvar,
 		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszImageRes);
 
 	/// <summary>
@@ -1504,7 +1504,7 @@ public static partial class PropSys
 	// PSGetNamedPropertyFromPropertyStorage( PCUSERIALIZEDPROPSTORAGE psps, DWORD cb, LPCWSTR pszName, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "bb4eedc0-9ef5-46f2-83e5-340b77b3d876")]
-	public static extern HRESULT PSGetNamedPropertyFromPropertyStorage(IntPtr psps, uint cb, [MarshalAs(UnmanagedType.LPWStr)] string pszName, PROPVARIANT ppropvar);
+	public static extern HRESULT PSGetNamedPropertyFromPropertyStorage(IntPtr psps, uint cb, [MarshalAs(UnmanagedType.LPWStr)] string pszName, in PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Retrieves the property's canonical name given its PROPERTYKEY.</summary>
 	/// <param name="propkey">A pointer to a PROPERTYKEY structure containing the property's identifiers.</param>
@@ -2187,7 +2187,7 @@ public static partial class PropSys
 	// PSGetPropertyFromPropertyStorage( PCUSERIALIZEDPROPSTORAGE psps, DWORD cb, REFPROPERTYKEY rpkey, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "c649d25d-7971-4804-a5a2-3fd6860659b4")]
-	public static extern HRESULT PSGetPropertyFromPropertyStorage(IntPtr psps, uint cb, in PROPERTYKEY rpkey, PROPVARIANT ppropvar);
+	public static extern HRESULT PSGetPropertyFromPropertyStorage(IntPtr psps, uint cb, in PROPERTYKEY rpkey, in PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Gets the property key for a canonical property name.</summary>
 	/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
@@ -2276,7 +2276,7 @@ public static partial class PropSys
 	// IPropertyStore *pps, IPropertyDescription *ppd, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "9369dc85-b006-4b30-a25e-58d53b76f334")]
-	public static extern HRESULT PSGetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPVARIANT ppropvar);
+	public static extern HRESULT PSGetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, in PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Gets the class identifier (CLSID) of a per-computer, registered file property handler.</para>
@@ -2472,7 +2472,7 @@ public static partial class PropSys
 	// IPropertyStore *pps, IPropertyDescription *ppd, REFPROPVARIANT propvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "b4f8c50d-93cd-4371-88b0-6ce58f023981")]
-	public static extern HRESULT PSSetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPVARIANT propvar);
+	public static extern HRESULT PSSetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, in PROPVARIANT_UNMGD propvar);
 
 	/// <summary>
 	/// <para>Creates a string that identifies a property from that property's key.</para>

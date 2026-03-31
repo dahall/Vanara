@@ -871,7 +871,7 @@ public static partial class PropSys
 		/// When this method returns, contains the address of a pointer to the description string that compares the second property with
 		/// the first property. The string is null-terminated.
 		/// </param>
-		void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
+		void GetRelativeDescription(in PROPVARIANT_UNMGD propvar1, in PROPVARIANT_UNMGD propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
 
 		/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
 		/// <returns>
@@ -914,7 +914,7 @@ public static partial class PropSys
 		/// the canonical value.
 		/// </param>
 		[PreserveSig]
-		HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
+		HRESULT CoerceToCanonicalValue(ref PROPVARIANT_UNMGD propvar);
 
 		/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -954,13 +954,13 @@ public static partial class PropSys
 		/// </list>
 		/// </returns>
 		[PreserveSig]
-		HRESULT FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
+		HRESULT FormatForDisplay(in PROPVARIANT_UNMGD propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
 
 		/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 		/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
 		[PreserveSig]
-		HRESULT IsValueCanonical([In] PROPVARIANT propvar);
+		HRESULT IsValueCanonical(in PROPVARIANT_UNMGD propvar);
 	}
 
 	/// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
@@ -1052,7 +1052,7 @@ public static partial class PropSys
 		/// When this method returns, contains the address of a pointer to the description string that compares the second property with
 		/// the first property. The string is null-terminated.
 		/// </param>
-		new void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
+		new void GetRelativeDescription(in PROPVARIANT_UNMGD propvar1, in PROPVARIANT_UNMGD propvar2, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc1, [MarshalAs(UnmanagedType.LPWStr)] out string ppszDesc2);
 
 		/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
 		/// <returns>
@@ -1095,7 +1095,7 @@ public static partial class PropSys
 		/// the canonical value.
 		/// </param>
 		[PreserveSig]
-		new HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
+		new HRESULT CoerceToCanonicalValue(ref PROPVARIANT_UNMGD propvar);
 
 		/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
@@ -1135,13 +1135,13 @@ public static partial class PropSys
 		/// </list>
 		/// </returns>
 		[PreserveSig]
-		new HRESULT FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
+		new HRESULT FormatForDisplay(in PROPVARIANT_UNMGD propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);
 
 		/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 		/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
 		[PreserveSig]
-		new HRESULT IsValueCanonical([In] PROPVARIANT propvar);
+		new HRESULT IsValueCanonical(in PROPVARIANT_UNMGD propvar);
 
 		/// <summary>Gets the image reference associated with a property value.</summary>
 		/// <param name="propvar">The PROPVARIANT for which to get an image.</param>
@@ -1151,7 +1151,7 @@ public static partial class PropSys
 		/// </param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, [MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
+		HRESULT GetImageReferenceForValue(in PROPVARIANT_UNMGD propvar, [MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
 	}
 
 	/// <summary>Exposes methods that enumerate and retrieve property description list details.</summary>
@@ -1201,15 +1201,15 @@ public static partial class PropSys
 
 		/// <summary>Gets a value from an enumeration information structure.</summary>
 		/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
-		void GetValue([Out] PROPVARIANT ppropvar);
+		void GetValue(out PROPVARIANT_UNMGD ppropvar);
 
 		/// <summary>Gets a minimum value from an enumeration information structure.</summary>
 		/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
-		void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
+		void GetRangeMinValue(out PROPVARIANT_UNMGD ppropvarMin);
 
 		/// <summary>Gets a set value from an enumeration information structure.</summary>
 		/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
-		void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
+		void GetRangeSetValue(out PROPVARIANT_UNMGD ppropvarSet);
 
 		/// <summary>Gets display text from an enumeration information structure.</summary>
 		/// <param name="ppszDisplay">
@@ -1230,15 +1230,15 @@ public static partial class PropSys
 
 		/// <summary>Gets a value from an enumeration information structure.</summary>
 		/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
-		new void GetValue([Out] PROPVARIANT ppropvar);
+		new void GetValue(out PROPVARIANT_UNMGD ppropvar);
 
 		/// <summary>Gets a minimum value from an enumeration information structure.</summary>
 		/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
-		new void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
+		new void GetRangeMinValue(out PROPVARIANT_UNMGD ppropvarMin);
 
 		/// <summary>Gets a set value from an enumeration information structure.</summary>
 		/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
-		new void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
+		new void GetRangeSetValue(out PROPVARIANT_UNMGD ppropvarSet);
 
 		/// <summary>Gets display text from an enumeration information structure.</summary>
 		/// <param name="ppszDisplay">
@@ -1284,7 +1284,7 @@ public static partial class PropSys
 		/// </param>
 		/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT FindMatchingIndex([In] PROPVARIANT propvarCmp, out uint pnIndex);
+		HRESULT FindMatchingIndex(in PROPVARIANT_UNMGD propvarCmp, out uint pnIndex);
 	}
 
 	/// <summary>This interface exposes methods used to enumerate and manipulate property values.</summary>
@@ -1358,7 +1358,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb761473(v=vs.85) HRESULT GetValue( [in]
 		// REFPROPERTYKEY key, [out] PROPVARIANT *pv );
-		void GetValue(in PROPERTYKEY pkey, [In, Out] PROPVARIANT pv);
+		void GetValue(in PROPERTYKEY pkey, out PROPVARIANT_UNMGD pv);
 
 		/// <summary>Sets a new property value, or replaces or removes an existing value.</summary>
 		/// <param name="pkey">The pkey.</param>
@@ -1433,7 +1433,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb761475(v=vs.85) HRESULT SetValue( [in]
 		// REFPROPERTYKEY key, [in] REFPROPVARIANT propvar );
-		void SetValue(in PROPERTYKEY pkey, [In] PROPVARIANT pv);
+		void SetValue(in PROPERTYKEY pkey, in PROPVARIANT_UNMGD pv);
 
 		/// <summary>After a change has been made, this method saves the changes.</summary>
 		/// <remarks>
@@ -1641,7 +1641,7 @@ public static partial class PropSys
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-getpropertydescription HRESULT
 		// GetPropertyDescription( REFPROPERTYKEY propkey, REFIID riid, void **ppv );
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IPropertyDescription GetPropertyDescription(ref PROPERTYKEY propkey, in Guid riid);
+		IPropertyDescription GetPropertyDescription(in PROPERTYKEY propkey, in Guid riid);
 
 		/// <summary>
 		/// Gets an instance of the subsystem object that implements IPropertyDescription, to obtain the property description for a
@@ -1970,7 +1970,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplay HRESULT
 		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni pszText, DWORD cchText );
-		void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, uint cchText);
+		void FormatForDisplay(in PROPERTYKEY key, in PROPVARIANT_UNMGD propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, uint cchText);
 
 		/// <summary>Gets a string representation of a property value to an allocated memory buffer.</summary>
 		/// <param name="key">
@@ -2117,7 +2117,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplayalloc HRESULT
 		// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, StrPtrUni *ppszDisplay );
-		string FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
+		string FormatForDisplayAlloc(in PROPERTYKEY key, in PROPVARIANT_UNMGD propvar, PROPDESC_FORMAT_FLAGS pdff);
 
 		/// <summary>Informs the schema subsystem of the addition of a property description schema file.</summary>
 		/// <param name="pszPath">
@@ -2213,15 +2213,42 @@ public static class PSExtensions
 			yield return ps.GetAt(i);
 	}
 
+	/// <summary>Gets data for a specific property.</summary>
+	/// <param name="ps">The <see cref="PropSys.IPropertyStore"/> instance from which to request the value.</param>
+	/// <param name="pkey">The pkey.</param>
+	/// <param name="pv">
+	/// <para>[out] Type: <c>PROPVARIANT*</c></para>
+	/// <para>When this method returns, contains a <c>PROPVARIANT</c> structure that contains the property data.</para>
+	/// </param>
+	/// <remarks>
+	/// <para>
+	/// If the <c>PROPERTYKEY</c> referenced in key is not present in the property store, this method returns <c>S_OK</c> and the
+	/// <c>vt</c> member of the structure pointed to by pv is set to VT_EMPTY.
+	/// </para>
+	/// <para>
+	/// File property handler implementers can use <c>IPropertyStore::GetValue</c> to retrieve the property value by using the
+	/// filestream with which <c>Initialize</c> initialized the property handler. The value can also be computed from an in-memory
+	/// cache, or other means. However, most consumers of the property system obtain <c>IPropertyStore</c> through
+	/// <c>GetPropertyStore</c> and are not—and have no need to be—aware of the method of initialization.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb761473(v=vs.85) HRESULT GetValue( [in]
+	// REFPROPERTYKEY key, [out] PROPVARIANT *pv );
+	public static void GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, out PROPVARIANT pv)
+	{
+		ps.GetValue(pkey, out PROPVARIANT_UNMGD pvUnmgd);
+		pv = new(pvUnmgd);
+	}
+
 	/// <summary>Gets data for a specific property from a property store.</summary>
 	/// <param name="ps">The <see cref="PropSys.IPropertyStore"/> instance from which to request the value.</param>
 	/// <param name="pkey">The key whose value to retrieve.</param>
 	/// <returns>An object with the property data or <see langword="null"/> if <paramref name="pkey"/> was not found.</returns>
 	public static object? GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey)
 	{
-		using var pv = new PROPVARIANT();
-		ps.GetValue(pkey, pv);
-		var ret = pv.Value;
+		ps.GetValue(pkey, out PROPVARIANT_UNMGD pv);
+		using PROPVARIANT ppv = new(pv);
+		var ret = ppv.Value;
 		return ret is IEnumerable<PROPVARIANT> pve ? pve.Select(o => o.Value).ToArray() : ret;
 	}
 
@@ -2235,7 +2262,7 @@ public static class PSExtensions
 	public static void SetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, object? value, bool commit = true)
 	{
 		using var pv = new PROPVARIANT(value);
-		pkey.CoerceToCanonicalValue(pv);
+		pkey.CoerceToCanonicalValue(pv._pv);
 		ps.SetValue(pkey, pv);
 		if (commit) ps.Commit();
 	}

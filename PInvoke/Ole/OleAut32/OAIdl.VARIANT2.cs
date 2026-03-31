@@ -473,7 +473,7 @@ public static partial class OleAut32
 	// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-varcyfromi8 HRESULT VarCyFromI8( LONG64 i64In, CY *pcyOut );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "NF:oleauto.VarCyFromI8")]
-	public static extern HRESULT VarCyFromI8(CY i64In, out CY pcyOut);
+	public static extern HRESULT VarCyFromI8(long i64In, out CY pcyOut);
 
 	/// <summary>Converts a float value to a currency value.</summary>
 	/// <param name="fltIn">The value to convert.</param>

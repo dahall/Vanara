@@ -286,9 +286,8 @@ public static class TaskbarList
 		using ComReleaser<IPropertyStore> pPropStore = ComReleaserFactory.Create(GetWindowPropertyStore(hwnd));
 
 		// Get the value
-		using PROPVARIANT pv = new();
-		pPropStore.Item.GetValue(propkey, pv);
-		return pv.Value?.ToString();
+		pPropStore.Item.GetValue(propkey, out var pv);
+		return new PROPVARIANT(pv).Value?.ToString();
 	}
 
 	internal static IPropertyStore GetWindowPropertyStore(HWND hwnd) => SHGetPropertyStoreForWindow<IPropertyStore>(hwnd)!;

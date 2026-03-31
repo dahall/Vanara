@@ -59,10 +59,10 @@ public class Ole32Tests
 	[Test]
 	public void PropVariantClearTest()
 	{
-		PROPVARIANT pv = new();
-		_ = InitPropVariantFromStringVector(["A", "B", "C", "D"], 4, pv);
+		PROPVARIANT_UNMGD pv = new();
+		_ = InitPropVariantFromStringVector(["A", "B", "C", "D"], ref pv);
 		Assert.That(pv.vt != VARTYPE.VT_EMPTY);
-		Assert.That(PropVariantClear(pv).Succeeded);
+		Assert.That(PropVariantClear(ref pv).Succeeded);
 		Assert.That(pv.vt == VARTYPE.VT_EMPTY && pv.uhVal == 0);
 	}
 
@@ -71,7 +71,7 @@ public class Ole32Tests
 	{
 		using PROPVARIANT pv = new();
 		string[] strArr = ["A", "B", "C", "D"];
-		_ = InitPropVariantFromStringVector(strArr, 4, pv);
+		_ = InitPropVariantFromStringVector(strArr, ref pv.GetRefValue());
 		Assert.That(pv.vt == (VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR));
 		Assert.That(pv.Value, Is.EquivalentTo(strArr));
 		using PROPVARIANT pvc = new();
@@ -129,5 +129,14 @@ public class Ole32Tests
 	{
 		Assert.That(CLSID_ContextSwitcher, Is.EqualTo(typeof(ContextSwitcher).GUID));
 		_ = new ContextSwitcher();
+	}
+
+	[Test]
+	public void StgConvertVariantToPropertyTest()
+	{
+		using PROPVARIANT pv = new("Test");
+		var pProp = StgConvertVariantToProperty(pv, 1252);
+		Assert.That(pProp.dwType, Is.Not.EqualTo(0));
+		Assert.That(pProp.rgb, Has.Length.GreaterThan(0));
 	}
 }

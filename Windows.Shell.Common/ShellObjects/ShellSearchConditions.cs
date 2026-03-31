@@ -26,9 +26,8 @@ public class SearchCondition : ICloneable, IDisposable
 	{
 		get
 		{
-			var pv = new PROPVARIANT();
-			condition.GetComparisonInfo(out var n, out var o, pv);
-			return (n, o, pv.Value);
+			condition.GetComparisonInfo(out var n, out var o, out var pv);
+			return (n, o, new PROPVARIANT(pv).Value);
 		}
 	}
 
@@ -43,9 +42,8 @@ public class SearchCondition : ICloneable, IDisposable
 	{
 		get
 		{
-			var pv = new PROPVARIANT();
-			((ICondition2)condition).GetLeafConditionInfo(out var n, out var o, pv);
-			return (n, o, pv.Value);
+			((ICondition2)condition).GetLeafConditionInfo(out var n, out var o, out var pv);
+			return (n, o, pv.GetValue());
 		}
 	}
 

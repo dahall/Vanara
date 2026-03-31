@@ -2398,7 +2398,7 @@ public static partial class OleAut32
 			if (ManagedObj is null) return IntPtr.Zero;
 			if (ManagedObj.GetType().IsArray)
 			{
-				var sa = SafeSAFEARRAY.CreateFromArray((Array)ManagedObj, Ole32.PROPVARIANT.GetVarType(ManagedObj.GetType().GetElementType()));
+				var sa = SafeSAFEARRAY.CreateFromArray((Array)ManagedObj, ManagedObj.GetType().GetElementType().GetVarType());
 				store.Add(ManagedObj, sa);
 				return sa.DangerousGetHandle();
 			}

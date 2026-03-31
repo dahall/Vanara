@@ -7207,7 +7207,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "5350a1b1-a099-4b09-af89-f652e40b1d20")]
 	public static extern HRESULT SHPropStgReadMultiple(IPropertyStorage pps, uint uCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT_UNMGD[] rgvar);
 
 	/// <summary>
 	/// <para>
@@ -7252,7 +7252,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "38bc4d53-818d-48c5-9ec5-d2e33d98c63e")]
 	public static extern HRESULT SHPropStgWriteMultiple(IPropertyStorage pps, ref uint puCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar, uint propidNameFirst);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT_UNMGD[] rgvar, uint propidNameFirst);
 
 	/// <summary>
 	/// <para>

@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions.Reflection;
+using static Vanara.PInvoke.OleAut32;
 
 namespace Vanara.PInvoke;
 
@@ -276,11 +281,11 @@ public static partial class Ole32
 		VT_ERROR = 10,
 
 		/// <summary>A Boolean value. True is -1 and false is 0.</summary>
-		[CorrespondingType(typeof(bool))]
+		[CorrespondingType(typeof(VARIANT_BOOL))]
 		VT_BOOL = 11,
 
 		/// <summary>A variant pointer.</summary>
-		[CorrespondingType(typeof(object))]
+		[CorrespondingType(typeof(PROPVARIANT_UNMGD))]
 		VT_VARIANT = 12,
 
 		/// <summary>An IUnknown pointer.</summary>
@@ -327,8 +332,8 @@ public static partial class Ole32
 		[CorrespondingType(typeof(IntPtr))]
 		VT_VOID = 24,
 
-		/// <summary>A C-style void.</summary>
-		[CorrespondingType(typeof(double))]
+		/// <summary>An HRESULT value.</summary>
+		[CorrespondingType(typeof(HRESULT))]
 		VT_HRESULT = 25,
 
 		/// <summary>A pointer type.</summary>
@@ -336,9 +341,11 @@ public static partial class Ole32
 		VT_PTR = 26,
 
 		/// <summary>A safe array. Use VT_ARRAY in VARIANT.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		VT_SAFEARRAY = 27,
 
 		/// <summary>A C-style array.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		VT_CARRAY = 28,
 
 		/// <summary>A user-defined type.</summary>
@@ -393,6 +400,7 @@ public static partial class Ole32
 		VT_CLSID = 72,
 
 		/// <summary>A stream with a GUID version.</summary>
+		[CorrespondingType(typeof(VERSIONEDSTREAM))]
 		VT_VERSIONED_STREAM = 73,
 
 		/// <summary>A simple counted array.</summary>
@@ -403,6 +411,18 @@ public static partial class Ole32
 
 		/// <summary>A void pointer for local use.</summary>
 		VT_BYREF = 0x4000,
+
+		/// <summary/>
+		VT_RESERVED = 0x8000,
+
+		/// <summary/>
+		VT_ILLEGAL = 0xffff,
+
+		/// <summary/>
+		VT_ILLEGALMASKED = 0xfff,
+
+		/// <summary/>
+		VT_TYPEMASK = 0xfff
 	}
 
 	/// <summary>Gets the .NET runtime type which corresponds to the <see cref="VARTYPE"/>.</summary>
@@ -420,18 +440,102 @@ public static partial class Ole32
 	/// </returns>
 	public static Type? GetCorrespondingType(this VARTYPE vt)
 	{
-		var elemVT = vt & ~(VARTYPE)0xF000;
+		var elemVT = vt & (VARTYPE)0xFFF;
 		var specVT = vt & (VARTYPE)0xF000;
 		var type = CorrespondingTypeAttribute.GetCorrespondingTypes(elemVT).FirstOrDefault();
 		if (type is null || elemVT == 0)
 			return null;
 		// Change type if by reference
-		if (specVT.IsFlagSet(VARTYPE.VT_BYREF) && type.IsValueType)
-			type = type.MakePointerType();
+		if (specVT.IsFlagSet(VARTYPE.VT_BYREF))
+			type = type.MakeByRefType();
 		// Change type if vector
 		if (specVT.IsFlagSet(VARTYPE.VT_VECTOR) || specVT.IsFlagSet(VARTYPE.VT_ARRAY))
 			type = type.MakeArrayType();
 		return type;
+	}
+
+	/// <summary>Gets the VARTYPE for a provided type.</summary>
+	/// <param name="type">The type to analyze.</param>
+	/// <returns>A best fit <see cref="VARTYPE"/> for the provided type.</returns>
+	[RequiresUnreferencedCode("Uses reflection when passing COM objects.")]
+	public static VARTYPE GetVarType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] this Type? type)
+	{
+		if (type == null)
+			return VARTYPE.VT_NULL;
+
+		var isEnumerable = type.IsArray || type != typeof(string) && typeof(System.Collections.IEnumerable).IsAssignableFrom(type);
+		Type elemtype = type.GetElementType() ?? type;
+
+		VARTYPE ret = 0;
+		if (isEnumerable)
+		{
+			if (elemtype == typeof(object))
+				return VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
+
+			ret |= VARTYPE.VT_VECTOR;
+			var i = type.GetInterface("IEnumerable`1");
+			if (i != null)
+			{
+				var args = i.GetGenericArguments();
+				if (args.Length == 1)
+					elemtype = args[0];
+			}
+		}
+
+		if (elemtype.IsNullable() || elemtype.IsPointer || elemtype.IsByRef || type.IsNullable() || type.IsPointer || type.IsByRef)
+			ret |= VARTYPE.VT_BYREF;
+
+		var isCom = elemtype.IsComInterface();
+		HashSet<Type> interfaces = isCom ? GetAllInterfaces(elemtype) : [];
+		return elemtype switch
+		{
+			_ when elemtype == typeof(BLOB) => ret | VARTYPE.VT_BLOB,
+			_ when elemtype == typeof(VARIANT_BOOL) => ret | VARTYPE.VT_BOOL,
+			_ when elemtype == typeof(BStrWrapper) => ret | VARTYPE.VT_BSTR,
+			_ when elemtype == typeof(CLIPDATA) => ret | VARTYPE.VT_CF,
+			_ when elemtype == typeof(Guid) => ret | VARTYPE.VT_CLSID,
+			_ when elemtype == typeof(CurrencyWrapper) => ret | VARTYPE.VT_CY,
+			_ when elemtype == typeof(Win32Error) => ret | VARTYPE.VT_ERROR,
+			_ when elemtype == typeof(FILETIME) => ret | VARTYPE.VT_FILETIME,
+			_ when elemtype == typeof(HRESULT) => ret | VARTYPE.VT_HRESULT,
+			_ when elemtype == typeof(VERSIONEDSTREAM) => ret | VARTYPE.VT_VERSIONED_STREAM,
+			_ when elemtype == typeof(PROPVARIANT_UNMGD) => ret | VARTYPE.VT_VARIANT,
+			_ when isCom && interfaces.Contains(typeof(IStream)) => ret | VARTYPE.VT_STREAM,
+			_ when isCom && interfaces.Contains(typeof(IStorage)) => ret | VARTYPE.VT_STORAGE,
+			_ when isCom && (interfaces.Contains(typeof(IDispatch)) || IsIDispatch(elemtype)) => ret | VARTYPE.VT_DISPATCH,
+			_ when isCom => ret | VARTYPE.VT_UNKNOWN,
+			_ when elemtype == typeof(IntPtr) => VARTYPE.VT_PTR,
+			_ => Type.GetTypeCode(elemtype) switch
+			{
+				TypeCode.DBNull => ret | VARTYPE.VT_NULL,
+				TypeCode.Boolean => ret | VARTYPE.VT_BOOL,
+				TypeCode.Char => ret | VARTYPE.VT_LPWSTR,
+				TypeCode.SByte => ret | VARTYPE.VT_I1,
+				TypeCode.Byte => ret | VARTYPE.VT_UI1,
+				TypeCode.Int16 => ret | VARTYPE.VT_I2,
+				TypeCode.UInt16 => ret | VARTYPE.VT_UI2,
+				TypeCode.Int32 => ret | VARTYPE.VT_I4,
+				TypeCode.UInt32 => ret | VARTYPE.VT_UI4,
+				TypeCode.Int64 => ret | VARTYPE.VT_I8,
+				TypeCode.UInt64 => ret | VARTYPE.VT_UI8,
+				TypeCode.Single => ret | VARTYPE.VT_R4,
+				TypeCode.Double => ret | VARTYPE.VT_R8,
+				TypeCode.Decimal => ret | VARTYPE.VT_DECIMAL,
+				TypeCode.DateTime => ret | VARTYPE.VT_DATE,
+				TypeCode.String => ret | VARTYPE.VT_LPWSTR,
+				_ => ret | VARTYPE.VT_USERDEFINED,
+			}
+		};
+
+		static HashSet<Type> GetAllInterfaces(Type t)
+		{
+			HashSet<Type> ret = [.. t.GetInterfaces()];
+			if (t.IsInterface)
+				ret.Add(t);
+			return ret;
+		}
+
+		static bool IsIDispatch(Type t) => t == typeof(IDispatch) || (t.GetCustomAttribute<InterfaceTypeAttribute>() is InterfaceTypeAttribute ita && ita.Value is ComInterfaceType.InterfaceIsIDispatch or ComInterfaceType.InterfaceIsDual);
 	}
 
 	/// <summary>Contains an operating system platform and processor architecture.</summary>

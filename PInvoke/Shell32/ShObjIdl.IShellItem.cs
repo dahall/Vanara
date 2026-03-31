@@ -762,7 +762,7 @@ public static partial class Shell32
 		/// <summary>Gets a PROPVARIANT structure from a specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 		/// <returns>Contains a pointer to a PROPVARIANT structure.</returns>
-		PROPVARIANT GetProperty(in PROPERTYKEY key);
+		PROPVARIANT_UNMGD GetProperty(in PROPERTYKEY key);
 
 		/// <summary>Gets the class identifier (CLSID) value of specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>

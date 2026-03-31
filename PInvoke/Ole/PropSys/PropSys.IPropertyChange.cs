@@ -49,7 +49,7 @@ public static partial class PropSys
 		/// <summary>Applies a change to a property value.</summary>
 		/// <param name="propvarIn">A reference to a source PROPVARIANT structure.</param>
 		/// <param name="ppropvarOut">A pointer to a changed PROPVARIANT structure.</param>
-		void ApplyToPropVariant([In] PROPVARIANT propvarIn, out PROPVARIANT ppropvarOut);
+		void ApplyToPropVariant(in PROPVARIANT_UNMGD propvarIn, out PROPVARIANT_UNMGD ppropvarOut);
 	}
 
 	/// <summary>Exposes methods for several multiple change operations that may be passed to IFileOperation.</summary>
@@ -121,7 +121,7 @@ public static partial class PropSys
 	public static extern HRESULT PSCreatePropertyChangeArray(
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTYKEY[]? rgpropkey,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PKA_FLAGS[]? rgflags,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPVARIANT[]? rgpropvar,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPVARIANT_UNMGD[]? rgpropvar,
 		uint cChanges, in Guid riid, out IPropertyChangeArray ppv);
 
 	/// <summary>Creates a simple property change.</summary>
@@ -134,5 +134,5 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propsys.h", MSDNShortId = "bb776494")]
 	public static extern HRESULT PSCreateSimplePropertyChange([In] PKA_FLAGS flags, in PROPERTYKEY key,
-		[In] PROPVARIANT propvar, in Guid riid, out IPropertyChange ppv);
+		in PROPVARIANT_UNMGD propvar, in Guid riid, out IPropertyChange ppv);
 }
