@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows ShlwApi.dl
 
 - Includes methods from shlwapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ShlwApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ShlwApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ShlwApi)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (211 of 211 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

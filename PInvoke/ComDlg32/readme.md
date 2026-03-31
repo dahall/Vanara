@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows ComDlg32.d
 
 - Includes methods from comdlg32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ComDlg32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ComDlg32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ComDlg32)  
+### Dependencies  
+- Vanara.PInvoke.User32  
 ### Methods - 100% API coverage (11 of 11 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

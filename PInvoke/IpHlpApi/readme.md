@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows IpHlpApi.d
 
 - Includes methods from iphlpapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IpHlpApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IpHlpApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)  
+### Dependencies  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (162 of 162 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

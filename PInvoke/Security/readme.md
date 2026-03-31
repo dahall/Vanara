@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 
 - Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll, tdh.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
+### Dependencies  
+- Vanara.PInvoke.Cryptography  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (587 of 587 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
@@ -1186,6 +1189,8 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7](https://www.google.com/search?num=5&q=<G>$CF5591EBFFB1CFBAE25F6A885EA501A7+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PSIDExtensions.&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BG%26gt%3B%24CF5591EBFFB1CFBAE25F6A885EA501A7)  
+[&lt;M&gt;$C7DE9C93324644C1D25CCD0CB882ED0E](https://www.google.com/search?num=5&q=<M>$C7DE9C93324644C1D25CCD0CB882ED0E+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PSIDExtensions.&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7.&lt;M&gt;$C7DE9C93324644C1D25CCD0CB882ED0E](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BM%26gt%3B%24C7DE9C93324644C1D25CCD0CB882ED0E)  
 [AceComparer](https://www.google.com/search?num=5&q=AceComparer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.AdvApi32.AceComparer](https://github.com/dahall/Vanara/search?l=C%23&q=AceComparer)  
 [AUTHZ_ACCESS_REPLY](https://www.google.com/search?num=5&q=AUTHZ_ACCESS_REPLY+site%3Alearn.microsoft.com) | authz.h | [Vanara.PInvoke.Authz.AUTHZ_ACCESS_REPLY](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHZ_ACCESS_REPLY)  
 [AUTHZ_SECURITY_ATTRIBUTES_INFORMATION](https://www.google.com/search?num=5&q=AUTHZ_SECURITY_ATTRIBUTES_INFORMATION+site%3Alearn.microsoft.com) | authz.h | [Vanara.PInvoke.Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)  

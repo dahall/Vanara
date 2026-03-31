@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Common Log
 
 - Includes methods from clfsw32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ClfsW32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ClfsW32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ClfsW32)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (61 of 61 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

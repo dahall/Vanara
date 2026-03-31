@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.WindowsUpdate.dll
 Wrapper classes around the Windows Update API to simplify and ensure proper use.
+### Dependencies
+- Vanara.PInvoke.WUApi
 ### Classes
 Class | Description
 ---- | ----

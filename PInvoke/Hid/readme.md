@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Human Inte
 
 - Includes methods from hid.dll, vhfum.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Hid?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Hid?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Hid)  
+### Dependencies  
+- Vanara.PInvoke.WindowsDriverFramework  
 ### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

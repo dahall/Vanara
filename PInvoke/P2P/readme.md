@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows P2P.dll fo
 
 - Includes methods from Vanara.PInvoke.P2P.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.P2P?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.P2P?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.P2P)  
+### Dependencies  
+- Vanara.PInvoke.Security  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (109 of 109 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

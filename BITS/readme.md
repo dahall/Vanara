@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.BITS.dll
 Complete .NET coverage of Windows BITS (Background Intelligent Transfer Service) functionality. Provides access to all library functions through Windows 11 and gracefully fails when new features are not available on older OS versions.
+### Dependencies
+- Vanara.PInvoke.BITS
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

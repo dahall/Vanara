@@ -1,5 +1,21 @@
 ## Assembly report for Vanara.SystemServices.dll
 Classes for system related items derived from the Vanara PInvoke libraries. Includes extensions for Process (privileges and elavation), FileInfo (compression info), Shared Network Drives and Devices, and ServiceController (SetStartType) that pull extended information through native API calls.
+### Dependencies
+- Vanara.PInvoke.AMSI
+- Vanara.PInvoke.FirewallApi
+- Vanara.PInvoke.IpHlpApi
+- Vanara.PInvoke.Mpr
+- Vanara.PInvoke.NetApi32
+- Vanara.PInvoke.NetListMgr
+- Vanara.PInvoke.NtDll
+- Vanara.PInvoke.PowrProf
+- Vanara.PInvoke.SetupAPI
+- Vanara.PInvoke.ShlwApi
+- Vanara.PInvoke.User32
+- Vanara.PInvoke.WinINet
+- Vanara.PInvoke.WlanApi
+- Vanara.PInvoke.WTSApi32
+- Vanara.Security
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

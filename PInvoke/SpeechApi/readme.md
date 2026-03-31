@@ -1,5 +1,9 @@
 ## Assembly report for Vanara.PInvoke.SpeechApi.dll
 PInvoke API (methods, structures and constants) imported from Windows Speech API.
+### Dependencies
+- Vanara.PInvoke.CoreAudio
+- Vanara.PInvoke.Shell32
+- Vanara.PInvoke.UrlMon
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

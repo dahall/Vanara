@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from Windows CldApi.dll.
 
 - Includes methods from cldapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CldApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CldApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CldApi)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (34 of 34 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

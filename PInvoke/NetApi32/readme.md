@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows NetApi32.d
 
 - Includes methods from netapi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NetApi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NetApi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NetApi32)  
+### Dependencies  
+- Vanara.PInvoke.Security  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (156 of 156 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

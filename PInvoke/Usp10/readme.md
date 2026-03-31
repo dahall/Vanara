@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Usp10.dll.
 
 - Includes methods from usp10.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Usp10?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Usp10?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Usp10)  
+### Dependencies  
+- Vanara.PInvoke.Gdi32  
 ### Methods - 100% API coverage (40 of 40 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

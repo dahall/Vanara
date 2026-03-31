@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Direct3D11
 
 - Includes methods from d3d11.dll, d3dcsx.dll, d3d11sdklayers.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct3D11?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct3D11?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct3D11)  
+### Dependencies  
+- Vanara.PInvoke.D3DCompiler  
 ### Methods - 27% API coverage (13 of 47 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

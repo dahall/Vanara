@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows VirtDisk.d
 
 - Includes methods from virtdisk.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.VirtDisk?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.VirtDisk?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VirtDisk)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

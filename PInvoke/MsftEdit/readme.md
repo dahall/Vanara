@@ -3,6 +3,10 @@ PInvoke API (methods, structures and constants) imported from Windows MsftEdit.d
 
 - Includes methods from Vanara.PInvoke.MsftEdit.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.MsftEdit?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.MsftEdit?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.MsftEdit)  
+### Dependencies  
+- Vanara.PInvoke.Imm32  
+- Vanara.PInvoke.Ole  
+- Vanara.PInvoke.UIAutomation  
 ### Methods - 100% API coverage (8 of 8 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

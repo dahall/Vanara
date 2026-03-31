@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Multimedia
 
 - Includes methods from avicap32.dll, avifil32.dll, msacm32.dll, msvfw32.dll, winmm.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Multimedia?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Multimedia?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Multimedia)  
+### Dependencies  
+- Vanara.PInvoke.ComDlg32  
 ### Methods - 100% API coverage (253 of 253 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

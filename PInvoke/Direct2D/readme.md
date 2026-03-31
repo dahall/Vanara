@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Direct2D.d
 
 - Includes methods from d2d1.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct2D?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct2D?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct2D)  
+### Dependencies  
+- Vanara.PInvoke.DWrite  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (19 of 19 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

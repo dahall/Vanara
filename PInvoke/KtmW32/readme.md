@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from Windows KtmW32.dll.
 
 - Includes methods from ktmw32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.KtmW32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.KtmW32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.KtmW32)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (39 of 39 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

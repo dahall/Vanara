@@ -1,5 +1,8 @@
 ## Assembly report for Vanara.WPF.Extensions.dll
 Extension methods and conversions from Vanara P/Invoke types and methods to WPF types and methods.
+### Dependencies
+- Vanara.PInvoke.Gdi32
+- Vanara.PInvoke.User32
 ### Classes
 Class | Description
 ---- | ----

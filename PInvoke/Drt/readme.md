@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Drt.dll fo
 
 - Includes methods from Vanara.PInvoke.Drt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Drt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Drt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Drt)  
+### Dependencies  
+- Vanara.PInvoke.Cryptography  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

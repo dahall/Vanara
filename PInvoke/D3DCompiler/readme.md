@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows D3DCompile
 
 - Includes methods from d3dcompiler_47.dll, dxilconv.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.D3DCompiler?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.D3DCompiler?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.D3DCompiler)  
+### Dependencies  
+- Vanara.PInvoke.DXGI  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

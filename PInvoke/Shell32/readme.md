@@ -3,6 +3,10 @@ PInvoke API (methods, structures and constants) imported from Windows Shell32.dl
 
 - Includes methods from shell32.dll, url.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Shell32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Shell32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Shell32)  
+### Dependencies  
+- Vanara.PInvoke.ComCtl32  
+- Vanara.PInvoke.Ole  
+- Vanara.PInvoke.ShlwApi  
 ### Methods - 100% API coverage (195 of 195 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

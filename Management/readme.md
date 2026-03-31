@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.Management.dll
 Extensions and helper classes for System.Management.
+### Dependencies
+- Vanara.Core
 ### Classes
 Class | Description
 ---- | ----

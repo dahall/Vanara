@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows EnhancedSt
 
 - Includes methods from ehstorapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.EnhancedStorage?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.EnhancedStorage?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.EnhancedStorage)  
+### Dependencies  
+- Vanara.PInvoke.PortableDeviceApi  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

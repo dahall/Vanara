@@ -1,5 +1,9 @@
 ## Assembly report for Vanara.Net.dll
 Abstracted classes around Win32 networking functions to provide simplified and object-oriented access to key networking capabilities like DNS, DHCP, filtering, access, and discovery.
+### Dependencies
+- Vanara.PInvoke.Dhcp
+- Vanara.PInvoke.DnsApi
+- Vanara.PInvoke.Drt
 ### Classes
 Class | Description
 ---- | ----

@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Dcomp.dll 
 
 - Includes methods from dcomp.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Dcomp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Dcomp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Dcomp)  
+### Dependencies  
+- Vanara.PInvoke.Direct2D  
 ### Methods - 100% API coverage (12 of 12 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

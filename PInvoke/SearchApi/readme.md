@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from Windows Search.
 
 - Includes methods from Vanara.PInvoke.SearchApi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SearchApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SearchApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SearchApi)  
+### Dependencies  
+- Vanara.PInvoke.Shell32  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

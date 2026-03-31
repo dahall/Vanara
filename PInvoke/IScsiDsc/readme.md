@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows ISCSI Disc
 
 - Includes methods from iscsidsc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IScsiDsc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IScsiDsc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IScsiDsc)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (45 of 45 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

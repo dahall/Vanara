@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows UIAutomati
 
 - Includes methods from uiautomationcore.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UIAutomation?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UIAutomation?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UIAutomation)  
+### Dependencies  
+- Vanara.PInvoke.Accessibility  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
