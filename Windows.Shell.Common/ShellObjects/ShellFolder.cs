@@ -257,7 +257,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		if (disposed) return;
 		if (iShellFolder is not null)
 		{
-			Marshal.FinalReleaseComObject(iShellFolder);
+			//Marshal.FinalReleaseComObject(iShellFolder);
 			iShellFolder = null!;
 		}
 		categories?.Dispose();

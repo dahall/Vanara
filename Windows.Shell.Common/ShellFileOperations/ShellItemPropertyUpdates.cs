@@ -136,7 +136,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	{
 		if (changes is not null)
 		{
-			Marshal.FinalReleaseComObject(changes);
+			//Marshal.FinalReleaseComObject(changes);
 			changes = null!;
 		}
 	}

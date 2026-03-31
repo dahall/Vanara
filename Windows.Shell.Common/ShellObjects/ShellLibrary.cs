@@ -185,7 +185,7 @@ public class ShellLibrary : ShellFolder
 		folders = null;
 		if (lib is not null)
 		{
-			Marshal.FinalReleaseComObject(lib);
+			//Marshal.FinalReleaseComObject(lib);
 			lib = null!;
 		}
 		base.Dispose(disposing);
@@ -223,7 +223,7 @@ public class ShellLibrary : ShellFolder
 		{
 			if (lib is not null)
 			{
-				Marshal.FinalReleaseComObject(lib);
+				//Marshal.FinalReleaseComObject(lib);
 				lib = null!;
 			}
 			base.Dispose(disposing);

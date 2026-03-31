@@ -163,7 +163,8 @@ public class PropertyDescription : IDisposable
 	{
 		if (disposed) return;
 		iDesc2 = null;
-		Marshal.FinalReleaseComObject(iDesc);
+		//Marshal.FinalReleaseComObject(iDesc);
+		iDesc = null!;
 		disposed = true;
 	}
 
@@ -263,7 +264,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	protected virtual void Dispose(bool disposing)
 	{
 		if (disposed) return;
-		if (iList is not null) Marshal.FinalReleaseComObject(iList);
+		//if (iList is not null) Marshal.FinalReleaseComObject(iList);
 		iList = null;
 		disposed = true;
 	}

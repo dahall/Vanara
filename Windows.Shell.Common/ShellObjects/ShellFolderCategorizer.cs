@@ -76,7 +76,7 @@ public class ShellFolderCategorizer : IDisposable, IEnumerable<ShellFolderCatego
 		if (disposed) return;
 		if (ICategoryProvider is not null)
 		{
-			Marshal.ReleaseComObject(ICategoryProvider);
+			//Marshal.ReleaseComObject(ICategoryProvider);
 			ICategoryProvider = null!;
 		}
 		disposed = true;

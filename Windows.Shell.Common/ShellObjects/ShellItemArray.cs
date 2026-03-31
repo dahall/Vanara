@@ -127,7 +127,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	{
 		if (array is not null)
 		{
-			Marshal.FinalReleaseComObject(array);
+			//Marshal.FinalReleaseComObject(array);
 			array = null;
 		}
 	}

@@ -407,17 +407,10 @@ public static partial class Shell32
 		/// <returns>The result of function.</returns>
 		public static HRESULT LoadImageFromThumbnailProvider(IThumbnailProvider itp, ref uint imgSz, out SafeHBITMAP hbmp)
 		{
-			try
-			{
-				HRESULT hr = itp.GetThumbnail(imgSz, out var _hbmp, out _);
-				hbmp = hr.Succeeded ? new(_hbmp, true) : SafeHBITMAP.Null;
-				imgSz = GetWidth(_hbmp);
-				return hr;
-			}
-			finally
-			{
-				Marshal.ReleaseComObject(itp);
-			}
+			HRESULT hr = itp.GetThumbnail(imgSz, out var _hbmp, out _);
+			hbmp = hr.Succeeded ? new(_hbmp, true) : SafeHBITMAP.Null;
+			imgSz = GetWidth(_hbmp);
+			return hr;
 		}
 
 		/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>

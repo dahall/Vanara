@@ -203,7 +203,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 			props = null;
 			if (disposing)
 			{
-				Marshal.ReleaseComObject(Interface);
+				Interface = null!;
 			}
 			disposedValue = true;
 		}
