@@ -99,7 +99,7 @@ public static partial class PortableDeviceApi
 		/// <param name="pValue">A <c>PROPVARIANT</c> structure. The caller is responsible for freeing this memory by calling <c>PropVariantClear</c>.</param>
 		// https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicepropvariantcollection-getat HRESULT GetAt( [in] const
 		// DWORD dwIndex, [out] PROPVARIANT *pValue );
-		void GetAt([In] uint dwIndex, [Out] PROPVARIANT pValue);
+		void GetAt([In] uint dwIndex, out PROPVARIANT_UNMGD pValue);
 
 		/// <summary>The <c>Add</c> method adds an item to the collection.</summary>
 		/// <param name="pValue">
@@ -118,7 +118,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicepropvariantcollection-add HRESULT Add( [in] const
 		// PROPVARIANT *pValue );
-		void Add([In] PROPVARIANT pValue);
+		void Add(in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>The <c>GetType</c> method retrieves the data type of the items in the collection.</summary>
 		/// <returns>A Platform SDK <c>VARTYPE</c> enumeration value that indicates the data type of all the items in the collection.</returns>
@@ -203,7 +203,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevalues-getat HRESULT GetAt( [in] const DWORD index,
 		// [in, out] PROPERTYKEY *pKey, [in, out] PROPVARIANT *pValue );
-		void GetAt(uint index, out PROPERTYKEY pKey, [Out] PROPVARIANT? pValue);
+		void GetAt(uint index, out PROPERTYKEY pKey, out PROPVARIANT_UNMGD? pValue);
 
 		/// <summary>The <c>SetValue</c> method adds a new <c>PROPVARIANT</c> value or overwrites an existing one.</summary>
 		/// <param name="key">A <c>REFPROPERTYKEY</c> that specifies the item to create or overwrite.</param>
@@ -227,7 +227,7 @@ public static partial class PortableDeviceApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/wpd_sdk/iportabledevicevalues-setvalue HRESULT SetValue( [in] REFPROPERTYKEY
 		// key, [in] const PROPVARIANT *pValue );
-		void SetValue(in PROPERTYKEY key, [In] PROPVARIANT pValue);
+		void SetValue(in PROPERTYKEY key, in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>The <c>GetValue</c> method retrieves a <c>PROPVARIANT</c> value specified by a key.</summary>
 		/// <param name="key">A <c>REFPROPERTYKEY</c> key that specifies the item to retrieve.</param>
@@ -784,13 +784,13 @@ public static partial class PortableDeviceApi
 	/// <param name="intf">The <see cref="IPortableDevicePropVariantCollection"/> instance.</param>
 	/// <returns>A sequence of <see cref="PROPVARIANT"/> values from the collection.</returns>
 	public static IEnumerable<PROPVARIANT> Enumerate(this IPortableDevicePropVariantCollection intf) =>
-		new Vanara.Collections.IEnumFromIndexer<PROPVARIANT>(intf.GetCount, i => { PROPVARIANT pv = new(); intf.GetAt(i, pv); return pv; });
+		new Vanara.Collections.IEnumFromIndexer<PROPVARIANT>(intf.GetCount, i => { intf.GetAt(i, out var pv); return new PROPVARIANT(pv); });
 
 	/// <summary>Enumerates the items in the collection.</summary>
 	/// <param name="intf">The <see cref="IPortableDeviceValues"/> instance.</param>
 	/// <returns>A sequence of <see cref="Tuple{PROPERTYKEY, PROPVARIANT}"/> values from the collection.</returns>
 	public static IEnumerable<(PROPERTYKEY, PROPVARIANT)> Enumerate(this IPortableDeviceValues intf) =>
-		new Vanara.Collections.IEnumFromIndexer<(PROPERTYKEY, PROPVARIANT)>(intf.GetCount, i => { PROPVARIANT pv = new(); intf.GetAt(i, out PROPERTYKEY pk, pv); return (pk, pv); });
+		new Vanara.Collections.IEnumFromIndexer<(PROPERTYKEY, PROPVARIANT)>(intf.GetCount, i => { intf.GetAt(i, out PROPERTYKEY pk, out var pv); return (pk, new PROPVARIANT(pv)); });
 
 	/// <summary>Enumerates the items in the collection.</summary>
 	/// <param name="intf">The <see cref="IPortableDeviceValuesCollection"/> instance.</param>

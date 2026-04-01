@@ -2236,8 +2236,8 @@ public static class PSExtensions
 	// REFPROPERTYKEY key, [out] PROPVARIANT *pv );
 	public static void GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey, out PROPVARIANT pv)
 	{
-		ps.GetValue(pkey, out PROPVARIANT_UNMGD pvUnmgd);
-		pv = new(pvUnmgd);
+		pv = new();
+		ps.GetValue(pkey, out pv._pv);
 	}
 
 	/// <summary>Gets data for a specific property from a property store.</summary>
@@ -2246,9 +2246,9 @@ public static class PSExtensions
 	/// <returns>An object with the property data or <see langword="null"/> if <paramref name="pkey"/> was not found.</returns>
 	public static object? GetValue(this PropSys.IPropertyStore ps, in PROPERTYKEY pkey)
 	{
-		ps.GetValue(pkey, out PROPVARIANT_UNMGD pv);
-		using PROPVARIANT ppv = new(pv);
-		var ret = ppv.Value;
+		PROPVARIANT pv = new();
+		ps.GetValue(pkey, out pv._pv);
+		var ret = pv.Value;
 		return ret is IEnumerable<PROPVARIANT> pve ? pve.Select(o => o.Value).ToArray() : ret;
 	}
 

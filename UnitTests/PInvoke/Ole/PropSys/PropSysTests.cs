@@ -186,8 +186,7 @@ public class PropSysTests
 		var hr = PropVariantChangeType(out var pvd, pv, PROPVAR_CHANGE_FLAGS.PVCHF_DEFAULT, VARTYPE.VT_UI8);
 		Assert.That(hr.Succeeded);
 		Assert.That(pvd.vt, Is.EqualTo(VARTYPE.VT_UI8));
-		Assert.That(pvd.GetValue(), Is.EqualTo(4L));
-		PropVariantClear(ref pvd);
+		Assert.That(pvd.Value, Is.EqualTo(4L));
 	}
 
 	[Test()]

@@ -2763,7 +2763,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicmetadataqueryreader-getmetadatabyname HRESULT
 		// GetMetadataByName( LPCWSTR wzName, PROPVARIANT *pvarValue );
-		void GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, [Out] PROPVARIANT pvarValue);
+		void GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets an enumerator of all metadata items at the current relative location within the metadata hierarchy.</summary>
 		/// <returns>
@@ -2854,7 +2854,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicmetadataqueryreader-getmetadatabyname HRESULT
 		// GetMetadataByName( LPCWSTR wzName, PROPVARIANT *pvarValue );
-		new void GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, [Out] PROPVARIANT pvarValue);
+		new void GetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets an enumerator of all metadata items at the current relative location within the metadata hierarchy.</summary>
 		/// <returns>
@@ -2893,7 +2893,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicmetadataquerywriter-setmetadatabyname HRESULT
 		// SetMetadataByName( LPCWSTR wzName, const PROPVARIANT *pvarValue );
-		void SetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, [In] PROPVARIANT pvarValue);
+		void SetMetadataByName([MarshalAs(UnmanagedType.LPWStr)] string wzName, in PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Removes a metadata item from a specific location using a metadata query expression.</summary>
 		/// <param name="wzName">
@@ -2972,7 +2972,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvaluebyindex HRESULT
 		// GetValueByIndex( UINT nIndex, PROPVARIANT *pvarSchema, PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		void GetValueByIndex(uint nIndex, [In, Out] PROPVARIANT pvarSchema, [In, Out] PROPVARIANT pvarId, [In, Out] PROPVARIANT pvarValue);
+		void GetValueByIndex(uint nIndex, out PROPVARIANT_UNMGD pvarSchema, out PROPVARIANT_UNMGD pvarId, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets the metadata item value.</summary>
 		/// <param name="pvarSchema">
@@ -2989,7 +2989,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvalue HRESULT GetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		void GetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT? pvarValue);
+		void GetValue(in PROPVARIANT_UNMGD pvarSchema, in PROPVARIANT_UNMGD pvarId, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets an enumerator of all the metadata items.</summary>
 		/// <returns>
@@ -3349,7 +3349,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvaluebyindex HRESULT
 		// GetValueByIndex( UINT nIndex, PROPVARIANT *pvarSchema, PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		new void GetValueByIndex(uint nIndex, [In, Out] PROPVARIANT pvarSchema, [In, Out] PROPVARIANT pvarId, [In, Out] PROPVARIANT pvarValue);
+		new void GetValueByIndex(uint nIndex, out PROPVARIANT_UNMGD pvarSchema, out PROPVARIANT_UNMGD pvarId, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets the metadata item value.</summary>
 		/// <param name="pvarSchema">
@@ -3366,7 +3366,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareader-getvalue HRESULT GetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, PROPVARIANT *pvarValue );
-		new void GetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In, Out, Optional] PROPVARIANT? pvarValue);
+		new void GetValue(in PROPVARIANT_UNMGD pvarSchema, in PROPVARIANT_UNMGD pvarId, out PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Gets an enumerator of all the metadata items.</summary>
 		/// <returns>
@@ -3392,7 +3392,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-setvalue HRESULT SetValue(
 		// const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, const PROPVARIANT *pvarValue );
-		void SetValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
+		void SetValue(in PROPVARIANT_UNMGD pvarSchema, in PROPVARIANT_UNMGD pvarId, in PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Sets the metadata item to the specified index.</summary>
 		/// <param name="nIndex">
@@ -3417,7 +3417,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-setvaluebyindex HRESULT
 		// SetValueByIndex( UINT nIndex, const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId, const PROPVARIANT *pvarValue );
-		void SetValueByIndex(uint nIndex, [In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId, [In] PROPVARIANT pvarValue);
+		void SetValueByIndex(uint nIndex, in PROPVARIANT_UNMGD pvarSchema, in PROPVARIANT_UNMGD pvarId, in PROPVARIANT_UNMGD pvarValue);
 
 		/// <summary>Removes the metadata item that matches the given parameters.</summary>
 		/// <param name="pvarSchema">
@@ -3430,7 +3430,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriter-removevalue HRESULT
 		// RemoveValue( const PROPVARIANT *pvarSchema, const PROPVARIANT *pvarId );
-		void RemoveValue([In, Optional] PROPVARIANT? pvarSchema, [In] PROPVARIANT pvarId);
+		void RemoveValue(in PROPVARIANT_UNMGD pvarSchema, in PROPVARIANT_UNMGD pvarId);
 
 		/// <summary>Removes the metadata item at the specified index.</summary>
 		/// <param name="nIndex">

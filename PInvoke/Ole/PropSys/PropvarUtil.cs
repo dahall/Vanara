@@ -957,9 +957,15 @@ public static partial class PropSys
 	/// <returns>
 	/// Returns S_OK if successful, or a standard COM error value otherwise. If the requested coercion is not possible, an error is returned.
 	/// </returns>
-	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776514")]
-	public static extern HRESULT PropVariantChangeType(out PROPVARIANT_UNMGD ppropvarDest, in PROPVARIANT_UNMGD propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt);
+	public static HRESULT PropVariantChangeType(out PROPVARIANT ppropvarDest, in PROPVARIANT_UNMGD propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt)
+	{
+		ppropvarDest = new();
+		return PropVariantChangeType(out ppropvarDest._pv, propvarSrc, flags, vt);
+
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		static extern HRESULT PropVariantChangeType(out PROPVARIANT_UNMGD ppropvarDest, in PROPVARIANT_UNMGD propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt);
+	}
 
 	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on default comparison units and settings.</summary>
 	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>

@@ -597,7 +597,7 @@ public static partial class PhotoAcquisition
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireitem-getproperty HRESULT
 		// GetProperty( [in] REFPROPERTYKEY key, [out] PROPVARIANT *pv );
 		[PreserveSig]
-		HRESULT GetProperty(in PROPERTYKEY key, [Out] PROPVARIANT pv);
+		HRESULT GetProperty(in PROPERTYKEY key, out PROPVARIANT_UNMGD pv);
 
 		/// <summary>The method sets a property for an item.</summary>
 		/// <param name="key">Specifies a key for the property to set.</param>
@@ -605,7 +605,7 @@ public static partial class PhotoAcquisition
 		/// <remarks>The property is stored in memory, but is not written to the file.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/photoacquire/nf-photoacquire-iphotoacquireitem-setproperty HRESULT
 		// SetProperty( [in] REFPROPERTYKEY key, [in] const PROPVARIANT *pv );
-		void SetProperty(in PROPERTYKEY key, [In] PROPVARIANT pv);
+		void SetProperty(in PROPERTYKEY key, in PROPVARIANT_UNMGD pv);
 
 		/// <summary>The method retrieves a read-only stream containing the contents of an item.</summary>
 		/// <returns>Returns a stream object with the file contents.</returns>
@@ -652,8 +652,7 @@ public static partial class PhotoAcquisition
 	public static object? GetProperty(this IPhotoAcquireItem item, in PROPERTYKEY key)
 	{
 		if (item == null) throw new ArgumentNullException(nameof(item));
-		using var pv = new PROPVARIANT();
-		return item.GetProperty(key, pv).Succeeded ? pv.Value : null;
+		return item.GetProperty(key, out var pv).Succeeded ? new PROPVARIANT(pv).Value : null;
 	}
 
 	/// <summary>
@@ -1563,7 +1562,7 @@ public static partial class PhotoAcquisition
 		// *pPropVarDefault );
 		[PreserveSig]
 		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pUnknown,
-			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT? pPropVarDefault);
+			out PROPVARIANT_UNMGD pPropVarResult, in PROPVARIANT_UNMGD pPropVarDefault);
 	}
 
 	/// <summary>The interface is used to work with image acquisition settings, such as file name format.</summary>
@@ -2009,7 +2008,7 @@ public static partial class PhotoAcquisition
 		// *pPropVarDefault );
 		[PreserveSig]
 		HRESULT GetUserInput(in Guid riidType, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pUnknown,
-			[Out] PROPVARIANT pPropVarResult, [In, Optional] PROPVARIANT? pPropVarDefault);
+			out PROPVARIANT_UNMGD pPropVarResult, in PROPVARIANT_UNMGD pPropVarDefault);
 	}
 
 	/// <summary>Retrieves descriptive information entered by the user, such as the tag name of the images to store.</summary>
@@ -2030,9 +2029,8 @@ public static partial class PhotoAcquisition
 	public static string? GetUserInput(this IPhotoProgressDialog dlg, [In, Optional] IUserInputString? pUnknown, [In, Optional] string? pPropVarDefault)
 	{
 		if (dlg == null) throw new ArgumentNullException(nameof(dlg));
-		using PROPVARIANT res = new();
 		using PROPVARIANT def = pPropVarDefault is null ? new() : new(pPropVarDefault, VarEnum.VT_BSTR);
-		return dlg.GetUserInput(typeof(IUserInputString).GUID, pUnknown, res, def) == HRESULT.S_OK ? res.bstrVal : null;
+		return dlg.GetUserInput(pUnknown, out var res, def) == HRESULT.S_OK ? new PROPVARIANT(res).Value?.ToString() : null;
 	}
 
 	/// <summary>
