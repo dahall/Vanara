@@ -1,10 +1,41 @@
 ﻿using NUnit.Framework;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Reflection;
 
 namespace Vanara.PInvoke.Tests;
 
 [TestFixture]
 public class BOOLTests
 {
+	private static readonly ConcurrentDictionary<Type, bool> cachedTypes = [];
+	private static bool IsUnmanagedType(Type t)
+	{
+		var result = false;
+		if (cachedTypes.TryGetValue(t, out bool value))
+			return value;
+		else if (t.IsPrimitive || t.IsPointer || t.IsEnum)
+			result = true;
+		else if (t.IsGenericType || !t.IsValueType)
+			result = false;
+		else
+			result = t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).All(x => IsUnmanagedType(x.FieldType));
+		cachedTypes[t] = result;
+		return result;
+	}
+
+	[Test]
+	public void IsUnmanagedTypeTest()
+	{
+		byte[] buffer = new byte[4];
+		Assert.That(IsUnmanagedType(typeof(BOOL)));
+		Assert.That(() => Marshal.StructureToPtr((object)new BOOL(true), Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0), false), Throws.Nothing);
+		Assert.That(buffer[0], Is.EqualTo(1));
+
+		Assert.That(IsUnmanagedType(typeof(BOOLEAN)));
+		Assert.That(IsUnmanagedType(typeof(VARIANT_BOOL)));
+	}
+
 	[Test]
 	public void BOOLTest()
 	{
@@ -72,6 +103,24 @@ public class BOOLTests
 		Assert.That(conv.ToUInt32(null), Is.Not.EqualTo(0));
 		Assert.That(conv.ToUInt64(null), Is.Not.EqualTo(0));
 		Assert.That(Convert.ChangeType(b, typeof(bool)), Is.EqualTo(true));
+	}
+
+	[Test]
+	public void BOOLMemTest()
+	{
+		using SafeCoTaskMemStruct<BOOL> mem = (BOOL)true;
+	}
+
+	[Test]
+	public void BOOLEANMemTest()
+	{
+		using SafeCoTaskMemStruct<BOOLEAN> mem = (BOOLEAN)true;
+	}
+
+	[Test]
+	public void VARIANT_BOOLMemTest()
+	{
+		using SafeCoTaskMemStruct<VARIANT_BOOL> mem = (VARIANT_BOOL)true;
 	}
 
 	[Test]

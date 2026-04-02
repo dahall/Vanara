@@ -1,10 +1,9 @@
-﻿using Vanara.Marshaler;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 
 namespace Vanara;
 
 /// <summary>Managed instance of the four-byte BOOL type.</summary>
-[TypeDef(typeof(uint), ConvertTo = typeof(bool), Excludes = ExcludeOptions.Numerics)]
+[TypeDef(typeof(uint), ConvertTo = typeof(bool), Excludes = ExcludeOptions.Numerics, GetConvValue = "value != 0", SetConvValue = "value ? True : False")]
 public partial struct BOOL
 {
 	internal const uint True = 1U;

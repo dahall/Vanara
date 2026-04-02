@@ -313,7 +313,7 @@ public partial struct __TYPENAME____INTERFACES__
 	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
 
 	/// <inheritdoc/>
-	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToType(conversionType, provider);
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => conversionType == typeof(__TYPENAME__) ? this : ((IConvertible)Value).ToType(conversionType, provider);
 
 	/// <inheritdoc/>
 	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
