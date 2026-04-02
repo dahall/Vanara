@@ -30,6 +30,23 @@ public partial struct BOOL
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator BOOL(IntPtr value) => value != IntPtr.Zero;
+
+	/// <summary>Implements the operator !.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static BOOL operator !(BOOL value) => !value.Value;
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(BOOL value) => value.Value;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(BOOL value) => !value.Value;
+#endif
 }
 
 /*[StructLayout(LayoutKind.Sequential), Serializable]
