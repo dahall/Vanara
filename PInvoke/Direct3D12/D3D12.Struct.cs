@@ -849,26 +849,26 @@ public static partial class D3D12
 	// D3D12_COMMAND_LIST_TYPE Type; INT Priority; D3D12_COMMAND_QUEUE_FLAGS Flags; UINT NodeMask; } D3D12_COMMAND_QUEUE_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_COMMAND_QUEUE_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_COMMAND_QUEUE_DESC
+	public struct D3D12_COMMAND_QUEUE_DESC(D3D12_COMMAND_LIST_TYPE type = 0, D3D12_COMMAND_QUEUE_FLAGS flags = 0, D3D12_COMMAND_QUEUE_PRIORITY priority = 0, uint nodeMask = 0)
 	{
 		/// <summary>Specifies one member of <c>D3D12_COMMAND_LIST_TYPE</c>.</summary>
-		public D3D12_COMMAND_LIST_TYPE Type;
+		public D3D12_COMMAND_LIST_TYPE Type = type;
 
 		/// <summary>
 		/// The priority for the command queue, as a <see cref="D3D12_COMMAND_QUEUE_PRIORITY"/> enumeration constant to select normal or
 		/// high priority.
 		/// </summary>
-		public D3D12_COMMAND_QUEUE_PRIORITY Priority;
+		public D3D12_COMMAND_QUEUE_PRIORITY Priority = priority;
 
 		/// <summary>Specifies any flags from the <c>D3D12_COMMAND_QUEUE_FLAGS</c> enumeration.</summary>
-		public D3D12_COMMAND_QUEUE_FLAGS Flags;
+		public D3D12_COMMAND_QUEUE_FLAGS Flags = flags;
 
 		/// <summary>
 		/// For single GPU operation, set this to zero. If there are multiple GPU nodes, set a bit to identify the node (the device's
 		/// physical adapter) to which the command queue applies. Each bit in the mask corresponds to a single node. Only 1 bit must be set.
 		/// Refer to <c>Multi-adapter systems</c>.
 		/// </summary>
-		public uint NodeMask;
+		public uint NodeMask = nodeMask;
 	}
 
 	/// <summary>Describes the arguments (parameters) of a command signature.</summary>
@@ -939,13 +939,13 @@ public static partial class D3D12
 	// D3D12_CONSTANT_BUFFER_VIEW_DESC { D3D12_GPU_VIRTUAL_ADDRESS BufferLocation; UINT SizeInBytes; } D3D12_CONSTANT_BUFFER_VIEW_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_CONSTANT_BUFFER_VIEW_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_CONSTANT_BUFFER_VIEW_DESC
+	public struct D3D12_CONSTANT_BUFFER_VIEW_DESC(ulong bufferLocation, uint sizeInBytes)
 	{
 		/// <summary>The D3D12_GPU_VIRTUAL_ADDRESS of the constant buffer. D3D12_GPU_VIRTUAL_ADDRESS is a typedef'd alias of UINT64.</summary>
-		public D3D12_GPU_VIRTUAL_ADDRESS BufferLocation;
+		public D3D12_GPU_VIRTUAL_ADDRESS BufferLocation = bufferLocation;
 
 		/// <summary>The size in bytes of the constant buffer.</summary>
-		public uint SizeInBytes;
+		public uint SizeInBytes = sizeInBytes;
 	}
 
 	/// <summary>Describes a CPU descriptor handle.</summary>
@@ -7720,6 +7720,19 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_SHADER_BYTECODE"/> struct.</summary>
 		/// <param name="pShaderBlob">The <see cref="ID3DBlob"/> with shader data.</param>
 		public D3D12_SHADER_BYTECODE(ID3DBlob pShaderBlob) : this(pShaderBlob.GetBufferPointer(), pShaderBlob.GetBufferSize()) { }
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_SHADER_BYTECODE"/> struct.</summary>
+		/// <param name="pShaderBlob">The <see cref="ISafeMemoryHandleBase"/> with shader data.</param>
+		public D3D12_SHADER_BYTECODE(ISafeMemoryHandleBase pShaderBlob) : this(pShaderBlob.DangerousGetHandle(), pShaderBlob.Size) { }
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_SHADER_BYTECODE"/> struct.</summary>
+		/// <param name="pShaderBlob">The <see cref="byte"/>[] with shader data.</param>
+		/// <param name="mem">The memory allocated for the shader data.</param>
+		public D3D12_SHADER_BYTECODE(byte[] pShaderBlob, out ISafeMemoryHandleBase mem) : this(IntPtr.Zero, pShaderBlob.Length)
+		{
+			mem = new SafeCoTaskMemHandle(pShaderBlob);
+			pShaderBytecode = mem.DangerousGetHandle();
+		}
 	}
 
 	/// <summary>Describes a shader cache session.</summary>

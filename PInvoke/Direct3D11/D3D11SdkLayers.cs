@@ -5489,7 +5489,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-addstoragefilterentries
 		// HRESULT AddStorageFilterEntries( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddStorageFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT AddStorageFilterEntries([In, StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the storage filter at the top of the storage-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5550,7 +5550,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushStorageFilter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushStorageFilter([StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5581,7 +5581,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddRetrievalFilterEntries([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT AddRetrievalFilterEntries([StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5642,7 +5642,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D11_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushRetrievalFilter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D11_INFO_QUEUE_FILTER>))] D3D11_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushRetrievalFilter([StructPointer(typeof(D3D11_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
