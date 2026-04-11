@@ -116,9 +116,6 @@ public class ShellLibrary : ShellFolder
 		set => lib.SetIcon(value.ToString());
 	}
 
-	/// <summary>Gets the name relative to the parent for the item.</summary>
-	public override string? Name { get; protected set; }
-
 	/// <summary>Gets or sets a value indicating whether to pin the library to the navigation pane.</summary>
 	/// <value><c>true</c> if pinned to the navigation pane; otherwise, <c>false</c>.</value>
 	public bool PinnedToNavigationPane

@@ -397,6 +397,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	protected ShellContextMenu? menu;
 	private readonly DisposingList disposables = [];
 	private ShellItemImages? images;
+	private string name;
 	private PIDL? pidl;
 	private PropertyDescriptionList? propDescList;
 	private ShellItemPropertyStore? props;
@@ -439,9 +440,6 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	protected ShellItem() { }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
-	~ShellItem() => Dispose(false);
 
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged
@@ -505,8 +503,8 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Gets the name relative to the parent for the item.</summary>
 	public virtual string? Name
 	{
-		get => GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
-		protected set { }
+		get => name;
+		protected set => name = value ?? throw new ArgumentNullException(nameof(value));
 	}
 
 	/// <summary>Gets the parent for the current item.</summary>
@@ -570,35 +568,43 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Creates the most specialized derivative of ShellItem from a path.</summary>
 	/// <param name="path">The file system path of the item.</param>
 	/// <returns>A ShellItem derivative for the supplied path.</returns>
-	public static ShellItem Open(string path) => Open(ShellUtil.GetShellItemForPath(path) ?? throw new FileNotFoundException(null, path));
+	public static ShellItem Open(string path) => Open(ShellUtil.GetShellItemForPath(path) ?? throw new FileNotFoundException(null, path), false);
 
 	/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 	/// <param name="iItem">The IShellItem object.</param>
+	/// <param name="clone">
+	/// If <see langword="true"/>, the supplied IShellItem will be duplicated to ensure that the new ShellItem has its own reference. If <see
+	/// langword="false"/>, the new ShellItem will reference the supplied IShellItem directly. Cloning is recommended if you are not sure
+	/// whether the supplied IShellItem is being used elsewhere, but can be set to <see langword="false"/> for a small performance boost if
+	/// you are sure that it is not.
+	/// </param>
 	/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
-	public static ShellItem Open(IShellItem iItem)
+	public static ShellItem Open(IShellItem iItem, bool clone = true)
 	{
+		IShellItem iNewItem = clone ? iItem.Clone() : iItem;
+
 		// Try to get specialized folder type from property
-		var attr = iItem.GetAttributes(SFGAO.SFGAO_FOLDER | SFGAO.SFGAO_LINK);
+		var attr = iNewItem!.GetAttributes(SFGAO.SFGAO_FOLDER | SFGAO.SFGAO_LINK);
 		var isFolder = attr.IsFlagSet(SFGAO.SFGAO_FOLDER);
 		try
 		{
 			if (attr.IsFlagSet(SFGAO.SFGAO_LINK))
-				return new ShellLink(iItem);
-			if (isFolder && SHLoadLibraryFromItem(iItem, STGM.STGM_READWRITE, typeof(IShellLibrary).GUID, out var pil).Succeeded)
-				return new ShellLibrary((IShellLibrary)pil!, iItem);
+				return new ShellLink(iNewItem);
+			if (isFolder && SHLoadLibraryFromItem(iNewItem, STGM.STGM_READWRITE, typeof(IShellLibrary).GUID, out var pil).Succeeded)
+				return new ShellLibrary((IShellLibrary)pil!, iNewItem);
 		}
 		catch
 		{
 			// If there was an exception, just return the wrapper.
 		}
-		return isFolder ? new ShellFolder(iItem) : new ShellItem(iItem);
+		return isFolder ? new ShellFolder(iNewItem) : new ShellItem(iNewItem);
 	}
 
 	/// <summary>Creates the most specialized derivative of ShellItem from a parented PIDL.</summary>
 	/// <param name="iFolder">The IShellFolder for the parent.</param>
 	/// <param name="pidl">The relative ID List for a child item within <paramref name="iFolder"/>.</param>
 	/// <returns>A ShellItem derivative for the supplied parented PIDL.</returns>
-	public static ShellItem Open(IShellFolder iFolder, PIDL pidl) => Open(SHCreateItemWithParent<IShellItem>(iFolder, pidl) ?? throw new FileNotFoundException());
+	public static ShellItem Open(IShellFolder iFolder, PIDL pidl) => Open(SHCreateItemWithParent<IShellItem>(iFolder, pidl) ?? throw new FileNotFoundException(), false);
 
 	/// <summary>Creates the most specialized derivative of ShellItem from a PIDL.</summary>
 	/// <param name="idList">The ID list.</param>
@@ -606,7 +612,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	public static ShellItem Open(PIDL idList)
 	{
 		if (idList is null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
-		return IsMinVista ? Open(SHCreateItemFromIDList<IShellItem>(idList) ?? throw new FileNotFoundException()) : Open(new ShellItemImpl(idList, false));
+		return IsMinVista ? Open(SHCreateItemFromIDList<IShellItem>(idList) ?? throw new FileNotFoundException(), false) : Open(new ShellItemImpl(idList, false), false);
 	}
 
 	/// <summary>Implements the operator !=.</summary>
@@ -649,13 +655,11 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		if (disposed) return;
 
-		disposables.Dispose();
-		images = null;
-		iShellItem2 = null;
-
 		if (disposing)
 		{
-			// Release managed resources here
+			images = null;
+			iShellItem2 = null;
+			disposables.Dispose();
 		}
 
 		disposed = true;
@@ -901,7 +905,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			while (ie.Next(1, a, out var f).Succeeded && f == 1)
 			{
 				ShellItem? i = null;
-				try { i = Open(a[0]); } catch (Exception e) { Debug.WriteLine($"Unable to open child: {e.Message}"); }
+				try { i = Open(a[0], true); } catch (Exception e) { Debug.WriteLine($"Unable to open child: {e.Message}"); }
 				if (i is not null) yield return i;
 			}
 			Marshal.ReleaseComObject(ie);
@@ -919,11 +923,12 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Initializes this instance with the specified IShellItem.</summary>
 	/// <param name="si">The IShellItem object.</param>
-	[MemberNotNull(nameof(iShellItem))]
+	[MemberNotNull(nameof(iShellItem), nameof(name))]
 	protected virtual void Init(IShellItem? si)
 	{
 		disposables.Add(iShellItem = si ?? throw new ArgumentNullException(nameof(si)));
 		iShellItem2 = si as IShellItem2;
+		name = GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY) ?? GetDisplayName(SIGDN.SIGDN_PARENTRELATIVEPARSING) ?? "";
 	}
 
 	/// <summary>Adds the specified disposable object to the internal collection for later disposal.</summary>

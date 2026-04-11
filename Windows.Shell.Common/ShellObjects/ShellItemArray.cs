@@ -110,7 +110,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 	public void CopyTo(ShellItem[] array, int arrayIndex)
 	{
-		var a = GetItems().Select(ShellItem.Open).ToArray();
+		var a = GetItems().Select(i => ShellItem.Open(i, true)).ToArray();
 		Array.Copy(a, 0, array, arrayIndex, a.Length);
 	}
 
@@ -134,7 +134,7 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="IEnumerator{ShellItem}"/> that can be used to iterate through the collection.</returns>
-	public IEnumerator<ShellItem> GetEnumerator() => GetItems().Select(ShellItem.Open).GetEnumerator();
+	public IEnumerator<ShellItem> GetEnumerator() => GetItems().Select(i => ShellItem.Open(i, true)).GetEnumerator();
 
 	/// <summary>Creates an <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</summary>
 	/// <returns>An <see cref="System.Runtime.InteropServices.ComTypes.IDataObject"/> from the contents of the array.</returns>

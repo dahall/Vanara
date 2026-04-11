@@ -1037,6 +1037,16 @@ public static partial class Shell32
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc = null, BHID bhid = 0) where T : class => si.BindToHandler<T>(pbc, bhid.Guid());
 
+	/// <summary>Extension method to create a clone of an <see cref="IShellItem"/> instance.</summary>
+	/// <param name="si">An <see cref="IShellItem"/> instance.</param>
+	/// <returns>A new <see cref="IShellItem"/> instance that is a clone of the original.</returns>
+	public static IShellItem Clone(this IShellItem si)
+	{
+		SHGetIDListFromObject(si, out var pidl).ThrowIfFailed();
+		SHCreateItemFromIDList(pidl, out IShellItem? inew).ThrowIfFailed();
+		return inew!;
+	}
+
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
 	/// <param name="sia">An <see cref="IShellItemArray"/> instance.</param>
