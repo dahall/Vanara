@@ -441,6 +441,9 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	protected ShellItem() { }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+	~ShellItem() => Dispose(false);
+
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged
 	{
