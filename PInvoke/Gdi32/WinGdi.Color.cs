@@ -537,7 +537,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1e16771a-80c5-47bb-9c98-14169d4dd773")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetICMProfile([In, AddAsMember] HDC hdc, ref uint pBufSize, [Out, SizeDef(nameof(pBufSize), SizingMethod.Query)] StringBuilder? pszFilename);
+	public static extern bool GetICMProfile([In, AddAsMember] HDC hdc, ref uint pBufSize, [Out, SizeDef(nameof(pBufSize), SizingMethod.CheckLastError)] StringBuilder? pszFilename);
 
 	/// <summary>The <c>GetLogColorSpace</c> function retrieves the color space definition identified by a specified handle.</summary>
 	/// <param name="hColorSpace">Specifies the handle to a color space.</param>

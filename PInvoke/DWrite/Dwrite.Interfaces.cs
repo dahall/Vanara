@@ -4601,7 +4601,8 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-getlinemetrics HRESULT GetLineMetrics(
 		// DWRITE_LINE_METRICS *lineMetrics, UINT32 maxLineCount, UINT32 *actualLineCount );
-		void GetLineMetrics([Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DWRITE_LINE_METRICS[]? lineMetrics, uint maxLineCount, out uint actualLineCount);
+		[PreserveSig]
+		HRESULT GetLineMetrics([Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxLineCount), SizingMethod.CheckLastError, OutVarName = nameof(actualLineCount))] DWRITE_LINE_METRICS[]? lineMetrics, uint maxLineCount, out uint actualLineCount);
 
 		/// <summary>Retrieves overall metrics for the formatted string.</summary>
 		/// <returns>
@@ -4646,7 +4647,8 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-getclustermetrics HRESULT
 		// GetClusterMetrics( DWRITE_CLUSTER_METRICS *clusterMetrics, UINT32 maxClusterCount, UINT32 *actualClusterCount );
-		void GetClusterMetrics([Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DWRITE_CLUSTER_METRICS[]? clusterMetrics, uint maxClusterCount, out uint actualClusterCount);
+		[PreserveSig]
+		HRESULT GetClusterMetrics([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxClusterCount), SizingMethod.CheckLastError, OutVarName = nameof(actualClusterCount))] DWRITE_CLUSTER_METRICS[]? clusterMetrics, uint maxClusterCount, out uint actualClusterCount);
 
 		/// <summary>
 		/// Determines the minimum possible width the layout can be set to without emergency breaking between the characters of whole
@@ -4786,8 +4788,9 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-hittesttextrange HRESULT
 		// HitTestTextRange( UINT32 textPosition, UINT32 textLength, FLOAT originX, FLOAT originY, DWRITE_HIT_TEST_METRICS
 		// *hitTestMetrics, UINT32 maxHitTestMetricsCount, UINT32 *actualHitTestMetricsCount );
-		void HitTestTextRange(uint textPosition, uint textLength, float originX, float originY,
-			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] DWRITE_HIT_TEST_METRICS[]? hitTestMetrics,
+		[PreserveSig]
+		HRESULT HitTestTextRange(uint textPosition, uint textLength, float originX, float originY,
+			[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(maxHitTestMetricsCount), SizingMethod.CheckLastError, OutVarName = nameof(actualHitTestMetricsCount))] DWRITE_HIT_TEST_METRICS[]? hitTestMetrics,
 			uint maxHitTestMetricsCount, out uint actualHitTestMetricsCount);
 	}
 

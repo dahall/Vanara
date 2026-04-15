@@ -1622,7 +1622,7 @@ public static partial class HttpApi
 		using var mem = new SafeCoTaskMemStruct<TIn>(pInput);
 		using var output = new SafeCoTaskMemStruct<TOut>();
 		var err = HttpQueryServiceConfiguration(default, ConfigId, mem, mem.Size, output, output.Size, out var len, default);
-		if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		if ((uint)err is Win32Error.ERROR_INSUFFICIENT_BUFFER or Win32Error.ERROR_MORE_DATA)
 		{
 			output.Size = len;
 			err = HttpQueryServiceConfiguration(default, ConfigId, mem, mem.Size, output, output.Size, out _, default);
@@ -1749,7 +1749,7 @@ public static partial class HttpApi
 	{
 		using var output = new SafeCoTaskMemStruct<TOut>();
 		var err = HttpQueryServiceConfiguration(default, ConfigId, default, 0, output, output.Size, out var len, default);
-		if (err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		if ((uint)err is Win32Error.ERROR_INSUFFICIENT_BUFFER or Win32Error.ERROR_MORE_DATA)
 		{
 			output.Size = len;
 			err = HttpQueryServiceConfiguration(default, ConfigId, default, 0, output, output.Size, out _, default);

@@ -1073,7 +1073,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
 		[In] SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, out REG_VALUE_TYPE pdwValueType,
-		[Out, SizeDef(nameof(pcbValueData), SizingMethod.Query)] IntPtr pbValueData, ref uint pcbValueData);
+		[Out, SizeDef(nameof(pcbValueData), SizingMethod.CheckLastError)] IntPtr pbValueData, ref uint pcbValueData);
 
 	/// <summary>
 	/// The <c>CryptInitOIDFunctionSet</c> initializes and returns the handle of the OID function set identified by a supplied function

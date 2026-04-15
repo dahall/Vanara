@@ -56,7 +56,7 @@ public static partial class Kernel32
 	[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, Optional, MarshalAs(UnmanagedType.LPArray),
-		SizeDef(nameof(ProcessorMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
+		SizeDef(nameof(ProcessorMaskCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
 		ushort ProcessorMaskCount, out ushort RequiredMaskCount);
 
 	/// <summary>Retrieves the multi-group processor mask of the specified node.</summary>

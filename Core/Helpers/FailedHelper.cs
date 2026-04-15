@@ -5,8 +5,6 @@ namespace Vanara.PInvoke;
 /// <summary>Helper methods for dealing with failure results.</summary>
 public static class FailedHelper
 {
-	private static readonly List<HRESULT> errors = FunctionHelper.buffErrs.ConvertAll(e => (HRESULT)e);
-
 	/// <summary>Determines whether the specified result indicates a failure.</summary>
 	/// <remarks>
 	/// This method evaluates the specified result by converting it to a boolean value using the <see
@@ -30,7 +28,7 @@ public static class FailedHelper
 			IConvertible c => !c.ToBoolean(null) && IErrFail(Win32Error.GetLastError()),
 			_ => throw new ArgumentException("Type must be bool, IHandle, or IConvertible.", nameof(r)),
 		};
-		bool IErrFail(IErrorProvider hr) => hr.Failed && (!ignoreBufErr || !errors.Contains(hr.ToHRESULT()));
+		bool IErrFail(IErrorProvider hr) => hr.Failed && (!ignoreBufErr || !FunctionHelper.buffErrs.Contains(hr.ToHRESULT()));
 	}
 
 	/// <summary>Throws an exception if the operation represented by the result parameter failed.</summary>
@@ -56,7 +54,7 @@ public static class FailedHelper
 			IConvertible c when !c.ToBoolean(null) => Win32Error.GetLastError(),
 			_ => new HRESULT(0),
 		};
-		if (hr.Failed && (!ignoreBufErr || !errors.Contains(hr.ToHRESULT())))
+		if (hr.Failed && (!ignoreBufErr || !FunctionHelper.buffErrs.Contains(hr.ToHRESULT())))
 			throw hr.GetException()!;
 	}
 }

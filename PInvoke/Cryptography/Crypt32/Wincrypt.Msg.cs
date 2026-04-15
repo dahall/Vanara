@@ -681,7 +681,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecodeMessage(CryptMsgType dwMsgTypeFlags, in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara,
 		uint dwSignerIndex, [In, SizeDef(nameof(cbEncodedBlob))] IntPtr pbEncodedBlob, uint cbEncodedBlob, CryptMsgType dwPrevInnerContentType,
-		out CryptMsgType pdwMsgType, out CryptMsgType pdwInnerContentType, [Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded,
+		out CryptMsgType pdwMsgType, out CryptMsgType pdwInnerContentType, [Out, SizeDef(nameof(pcbDecoded), SizingMethod.CheckLastError)] IntPtr pbDecoded,
 		ref uint pcbDecoded, out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptDecryptAndVerifyMessageSignature</c> function decrypts a message and verifies its signature.</summary>
@@ -759,7 +759,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecryptAndVerifyMessageSignature(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara,
 		uint dwSignerIndex, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
-		[Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted,
+		[Out, SizeDef(nameof(pcbDecrypted), SizingMethod.CheckLastError)] IntPtr pbDecrypted, ref uint pcbDecrypted,
 		out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
@@ -848,7 +848,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob,
-		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted,
+		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.CheckLastError)] IntPtr pbDecrypted, ref uint pcbDecrypted,
 		out SafePCCERT_CONTEXT ppXchgCert);
 
 	/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
@@ -937,7 +937,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob,
-		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
+		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.CheckLastError)] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
 
 	/// <summary>The <c>CryptEncryptMessage</c> function encrypts and encodes a message.</summary>
 	/// <param name="pEncryptPara">
@@ -1009,7 +1009,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "927f2e9a-96cf-4744-bd57-420b5034d28d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptEncryptMessage(in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PCCERT_CONTEXT[] rgpRecipientCert,
-		[In, SizeDef(nameof(cbToBeEncrypted))] IntPtr pbToBeEncrypted, uint cbToBeEncrypted, [Out, SizeDef(nameof(pcbEncryptedBlob), SizingMethod.Query)] IntPtr pbEncryptedBlob, ref uint pcbEncryptedBlob);
+		[In, SizeDef(nameof(cbToBeEncrypted))] IntPtr pbToBeEncrypted, uint cbToBeEncrypted, [Out, SizeDef(nameof(pcbEncryptedBlob), SizingMethod.CheckLastError)] IntPtr pbEncryptedBlob, ref uint pcbEncryptedBlob);
 	
 	/// <summary>
 	/// The <c>CryptGetMessageCertificates</c> function returns the handle of an open certificate store containing the message's
@@ -1205,8 +1205,8 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptHashMessage(in CRYPT_HASH_MESSAGE_PARA pHashPara, [MarshalAs(UnmanagedType.Bool)] bool fDetachedHash, uint cToBeHashed,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] rgcbToBeHashed,
-		[Out, SizeDef(nameof(pcbHashedBlob), SizingMethod.Query)] IntPtr pbHashedBlob, ref uint pcbHashedBlob,
-		[Out, Optional, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		[Out, SizeDef(nameof(pcbHashedBlob), SizingMethod.CheckLastError)] IntPtr pbHashedBlob, ref uint pcbHashedBlob,
+		[Out, Optional, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// The <c>CryptMsgCalculateEncodedLength</c> function calculates the maximum number of bytes needed for an encoded cryptographic
@@ -2616,7 +2616,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "5a05eb09-208f-4e94-abfa-c2f14c0a3164")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptMsgGetParam(HCRYPTMSG hCryptMsg, CryptMsgParamType dwParamType, uint dwIndex,
-		[Out, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
+		[Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -3852,7 +3852,7 @@ public static partial class Crypt32
 	public static extern bool CryptSignAndEncryptMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PCCERT_CONTEXT[] rgpRecipientCert,
 		[In, SizeDef(nameof(cbToBeSignedAndEncrypted))] IntPtr pbToBeSignedAndEncrypted, uint cbToBeSignedAndEncrypted,
-		[Out, SizeDef(nameof(pcbSignedAndEncryptedBlob), SizingMethod.Query)] IntPtr pbSignedAndEncryptedBlob, ref uint pcbSignedAndEncryptedBlob);
+		[Out, SizeDef(nameof(pcbSignedAndEncryptedBlob), SizingMethod.CheckLastError)] IntPtr pbSignedAndEncryptedBlob, ref uint pcbSignedAndEncryptedBlob);
 
 	/// <summary>
 	/// The <c>CryptSignMessage</c> function creates a hash of the specified content, signs the hash, and then encodes both the original
@@ -3936,7 +3936,7 @@ public static partial class Crypt32
 	public static extern bool CryptSignMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, [MarshalAs(UnmanagedType.Bool)] bool fDetachedSignature, uint cToBeSigned,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeSigned,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] rgcbToBeSigned,
-		[Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.Query)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
+		[Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.CheckLastError)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
 
 	/// <summary>
 	/// The <c>CryptSignMessageWithKey</c> function signs a message by using a CSP's private key specified in the parameters. A
@@ -3999,7 +3999,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "d31024bf-7022-440b-8134-a02578510357")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignMessageWithKey(in CRYPT_KEY_SIGN_MESSAGE_PARA pSignPara, [In, SizeDef(nameof(cbToBeSigned))] IntPtr pbToBeSigned,
-		uint cbToBeSigned, [Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.Query)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
+		uint cbToBeSigned, [Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.CheckLastError)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
 
 	/// <summary>The <c>CryptVerifyDetachedMessageHash</c> function verifies a detached hash.</summary>
 	/// <param name="pHashPara">A pointer to a CRYPT_HASH_MESSAGE_PARA structure containing the hash parameters.</param>
@@ -4073,7 +4073,7 @@ public static partial class Crypt32
 		[In, SizeDef(nameof(cbDetachedHashBlob))] IntPtr pbDetachedHashBlob, uint cbDetachedHashBlob,
 		uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbToBeHashed,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbToBeHashed,
-		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// The <c>CryptVerifyDetachedMessageSignature</c> function verifies a signed message containing a detached signature or signatures.
@@ -4228,8 +4228,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "3b5185b9-e24b-4302-a60c-74ccbd19077c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara, [In, SizeDef(nameof(cbHashedBlob))] IntPtr pbHashedBlob,
-		uint cbHashedBlob, [Out, SizeDef(nameof(pcbToBeHashed), SizingMethod.Query)] IntPtr pbToBeHashed,
-		ref uint pcbToBeHashed, [Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		uint cbHashedBlob, [Out, SizeDef(nameof(pcbToBeHashed), SizingMethod.CheckLastError)] IntPtr pbToBeHashed,
+		ref uint pcbToBeHashed, [Out, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <para>The <c>CryptVerifyMessageSignature</c> function verifies a signed message's signature.</para>
@@ -4339,7 +4339,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex,
 		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
-		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded, out SafePCCERT_CONTEXT ppSignerCert);
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.CheckLastError)] IntPtr pbDecoded, ref uint pcbDecoded, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>
 	/// The <c>CryptVerifyMessageSignatureWithKey</c> function verifies a signed message's signature by using specified public key information.
@@ -4419,7 +4419,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, in CERT_PUBLIC_KEY_INFO pPublicKeyInfo,
 		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
-		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded);
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.CheckLastError)] IntPtr pbDecoded, ref uint pcbDecoded);
 
 	/// <summary>
 	/// The <c>CryptVerifyMessageSignatureWithKey</c> function verifies a signed message's signature by using specified public key information.
@@ -4499,7 +4499,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, [In, Optional] IntPtr pPublicKeyInfo,
 		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
-		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded);
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.CheckLastError)] IntPtr pbDecoded, ref uint pcbDecoded);
 
 	/// <summary>
 	/// The <c>CMSG_CMS_SIGNER_INFO</c> structure contains the content of the defined SignerInfo in signed or signed and enveloped

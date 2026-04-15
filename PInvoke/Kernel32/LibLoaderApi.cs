@@ -1322,6 +1322,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ StrPtrAuto lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
+	[SuppressAutoGen]
 	public static extern uint GetModuleFileName(HINSTANCE hModule, [SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder? lpFilename, uint nSize);
 
 	/// <summary>

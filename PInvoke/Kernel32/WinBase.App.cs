@@ -591,7 +591,7 @@ public static partial class Kernel32
 	// _Out_opt_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373344(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
-	public static extern HRESULT GetApplicationRestartSettings([In] HPROCESS hProcess, [Out, SizeDef(nameof(pcchSize), SizingMethod.Query | SizingMethod.CheckLastError)] StringBuilder? pwzCommandline,
+	public static extern HRESULT GetApplicationRestartSettings([In] HPROCESS hProcess, [Out, SizeDef(nameof(pcchSize), SizingMethod.CheckLastError)] StringBuilder? pwzCommandline,
 		[Range(0, RESTART_MAX_CMD_LINE)] ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
 
 	/// <summary>The <c>GetCurrentActCtx</c> function returns the handle to the active activation context of the calling thread.</summary>
