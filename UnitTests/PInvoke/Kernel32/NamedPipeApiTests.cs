@@ -18,7 +18,7 @@ public class NamedPipeApiTests
 		byte[] buffer = new byte[1024];
 		Assert.That(PeekNamedPipe(hPipe, buffer, (uint)buffer.Length - 1, out uint peekRead, out uint peekAvail, out uint peekLeft), ResultIs.Successful);
 		//Assert.That(peekRead, Is.EqualTo(PipeClientWriter.bytesToWrite.Length));
-		Assert.That(ReadFile(hPipe, buffer, (uint)buffer.Length - 1, out uint nRead), ResultIs.Successful);
+		Assert.That(ReadFile(hPipe, buffer, out uint nRead), ResultIs.Successful);
 		Assert.That(nRead, Is.EqualTo(PipeClientWriter.bytesToWrite.Length));
 
 		Assert.That(DisconnectNamedPipe(hPipe), ResultIs.Successful);

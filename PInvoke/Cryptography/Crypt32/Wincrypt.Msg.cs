@@ -2615,7 +2615,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5a05eb09-208f-4e94-abfa-c2f14c0a3164")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgGetParam(HCRYPTMSG hCryptMsg, CryptMsgParamType dwParamType, uint dwIndex,
+	public static extern bool CryptMsgGetParam([In] HCRYPTMSG hCryptMsg, CryptMsgParamType dwParamType, [Optional] uint dwIndex,
 		[Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
@@ -4497,7 +4497,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "6fe0f9ee-1838-4eb7-8254-05b878eb8f56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, [In, Optional] IntPtr pPublicKeyInfo,
+	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara,
+		[In, Optional, StructPointer(typeof(CERT_PUBLIC_KEY_INFO))] IntPtr pPublicKeyInfo,
 		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
 		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.CheckLastError)] IntPtr pbDecoded, ref uint pcbDecoded);
 

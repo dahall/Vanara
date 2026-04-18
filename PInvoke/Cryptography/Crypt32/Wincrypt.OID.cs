@@ -786,7 +786,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "9d4643c8-a582-4c19-bd77-33b94e953818")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetDefaultOIDDllList(HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszDllList, ref int pcchDllList);
+		[Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszDllList, ref int pcchDllList);
 
 	/// <summary>
 	/// The <c>CryptGetDefaultOIDDllList</c> function acquires the list of the names of DLL files that contain registered default object

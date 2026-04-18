@@ -1102,8 +1102,54 @@ public static partial class Kernel32
 	// UINT32 flags, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "A1887D61-0FAD-4BE8-850F-F104CC074798")]
-	public static extern Win32Error GetCurrentPackageInfo(PACKAGE_FLAGS flags, ref uint bufferLength,
-		[Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes), ArrayPointer(typeof(PACKAGE_INFO), nameof(count))] IntPtr buffer, out uint count);
+	public static extern Win32Error GetCurrentPackageInfo(PACKAGE_FLAGS flags, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
+
+	/// <summary>
+	/// <para>Gets the package information for the calling process.</para>
+	/// </summary>
+	/// <param name="flags">
+	/// <para>Type: <c>const UINT32</c></para>
+	/// <para>The package constants that specify how package information is retrieved. The <c>PACKAGE_FILTER_*</c> flags are supported.</para>
+	/// </param>
+	/// <param name="buffer">
+	/// <para>Type: <c>BYTE*</c></para>
+	/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LONG</c></para>
+	/// <para>
+	/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+	/// codes include the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>APPMODEL_ERROR_NO_PACKAGE</term>
+	/// <term>The process has no package identity.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[PInvokeData("appmodel.h", MSDNShortId = "A1887D61-0FAD-4BE8-850F-F104CC074798")]
+	public static Win32Error GetCurrentPackageInfo(PACKAGE_FLAGS flags, out PACKAGE_INFO[] buffer)
+	{
+		uint bufferLength = 0;
+		buffer = [];
+		Win32Error err = GetCurrentPackageInfo(flags, ref bufferLength, default, out var count);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return err;
+		using SafeCoTaskMemHandle buf = new((int)bufferLength);
+		err = GetCurrentPackageInfo(flags, ref bufferLength, buf, out count);
+		if (err.Succeeded)
+			buffer = buf.ToArray<PACKAGE_INFO>((int)count);
+		return err;
+	}
 
 	/// <summary>
 	/// Gets the package information for the calling process, with the option to specify the type of folder path to retrieve for the package.
@@ -1160,8 +1206,65 @@ public static partial class Kernel32
 	// UINT32 flags, PackagePathType packagePathType, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
-	public static extern Win32Error GetCurrentPackageInfo2(PACKAGE_FLAGS flags, PackagePathType packagePathType, ref uint bufferLength,
-		[Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes), ArrayPointer(typeof(PACKAGE_INFO), nameof(count))] IntPtr buffer, out uint count);
+	public static extern Win32Error GetCurrentPackageInfo2(PACKAGE_FLAGS flags, PackagePathType packagePathType, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
+
+	/// <summary>
+	/// Gets the package information for the calling process, with the option to specify the type of folder path to retrieve for the package.
+	/// </summary>
+	/// <param name="flags">
+	/// <para>Type: <c>const UINT32</c></para>
+	/// <para>The package constants that specify how package information is retrieved. The <c>PACKAGE_FILTER_*</c> flags are supported.</para>
+	/// </param>
+	/// <param name="packagePathType">
+	/// <para>Type: <c>PackagePathType</c></para>
+	/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+	/// </param>
+	/// <param name="buffer">
+	/// <para>Type: <c>BYTE*</c></para>
+	/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LONG</c></para>
+	/// <para>
+	/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+	/// codes include the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>APPMODEL_ERROR_NO_PACKAGE</term>
+	/// <term>The process has no package identity.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+	/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+	/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+	/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+	/// types of games to support mods.
+	/// </remarks>
+	[PInvokeData("appmodel.h")]
+	public static Win32Error GetCurrentPackageInfo2(PACKAGE_FLAGS flags, PackagePathType packagePathType, out PACKAGE_INFO[] buffer)
+	{
+		uint bufferLength = 0;
+		buffer = [];
+		Win32Error err = GetCurrentPackageInfo2(flags, packagePathType, ref bufferLength, default, out var count);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return err;
+		using SafeCoTaskMemHandle buf = new((int)bufferLength);
+		err = GetCurrentPackageInfo2(flags, packagePathType, ref bufferLength, buf, out count);
+		if (err.Succeeded)
+			buffer = buf.ToArray<PACKAGE_INFO>((int)count);
+		return err;
+	}
 
 	/// <summary>
 	/// <para>Retrieves the package graph's current generation ID.</para>
@@ -1215,8 +1318,61 @@ public static partial class Kernel32
 	// *buffer, _Out_opt_ UINT32 *count );
 	[PInvokeData("appmodel.h")]
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT GetCurrentPackageInfo3(PACKAGE_FLAGS flags, [In] PackageInfo3Type packageInfoType, ref uint bufferLength,
-		[Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes), ArrayPointer(typeof(PACKAGE_INFO), nameof(count))] IntPtr buffer, out uint count);
+	public static extern HRESULT GetCurrentPackageInfo3(PACKAGE_FLAGS flags, [In] PackageInfo3Type packageInfoType, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
+
+	/// <summary>
+	/// <para>Retrieves the package graph's current generation ID.</para>
+	/// <para>See <b>Remarks</b> for info about how to call the function.</para>
+	/// </summary>
+	/// <param name="flags">
+	/// <para>Type: <b>const UINT32</b></para>
+	/// <para>The <c>package constants</c> that specify how package information is retrieved. The <b>PACKAGE_FILTER_*</b> flags are supported.</para>
+	/// </param>
+	/// <param name="packageInfoType">Type: <b>PackageInfo3Type</b></param>
+	/// <param name="buffer">
+	/// <para>Type: <b>BYTE*</b></para>
+	/// <para>The package graph's current generation ID, represented as an array of <c>PACKAGE_INFO</c> structures.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b>LONG</b></para>
+	/// <para>
+	/// If the function succeeds it returns <b>ERROR_SUCCESS</b>. Otherwise, the function returns an error code. The possible error codes
+	/// include the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>APPMODEL_ERROR_NO_PACKAGE</b></description>
+	/// <description>The process has no package identity.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>ERROR_INSUFFICIENT_BUFFER</b></description>
+	/// <description>The buffer is not large enough to hold the data. The required size is specified by <i>bufferLength</i>.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// This function does not have an associated header file or library file. Your application can call <c><b>LoadLibrary</b></c> with the
+	/// DLL name ( <c>Kernelbase.dll</c>) to obtain a module handle. It can then call <c><b>GetProcAddress</b></c> with the module handle and
+	/// the name of this function to get the function address.
+	/// </remarks>
+	[PInvokeData("appmodel.h")]
+	public static HRESULT GetCurrentPackageInfo3(PACKAGE_FLAGS flags, [In] PackageInfo3Type packageInfoType, out PACKAGE_INFO[] buffer)
+	{
+		uint bufferLength = 0;
+		buffer = [];
+		HRESULT err = GetCurrentPackageInfo3(flags, packageInfoType, ref bufferLength, default, out var count);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return err;
+		using SafeCoTaskMemHandle buf = new((int)bufferLength);
+		err = GetCurrentPackageInfo3(flags, packageInfoType, ref bufferLength, buf, out count);
+		if (err.Succeeded)
+			buffer = buf.ToArray<PACKAGE_INFO>((int)count);
+		return err;
+	}
 
 	/// <summary>
 	/// <para>Gets the package path for the calling process.</para>
@@ -1386,9 +1542,8 @@ public static partial class Kernel32
 	// PACKAGE_INFO_REFERENCE packageInfoReference, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "F08135F9-FF45-4309-84B5-77F4AFD7FC0C")]
-	public static extern Win32Error GetPackageApplicationIds(PACKAGE_INFO_REFERENCE packageInfoReference, ref uint bufferLength,
-		[Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes),
-		ArrayPointer(typeof(string), nameof(count), CharSet = CharSet.Unicode, ElementsAreByRef = true)] IntPtr buffer, out uint count);
+	[SuppressAutoGen]
+	public static extern Win32Error GetPackageApplicationIds(PACKAGE_INFO_REFERENCE packageInfoReference, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
 
 	/// <summary>Gets the IDs of apps in the specified package.</summary>
 	/// <param name="packageInfoReference">
@@ -1677,8 +1832,56 @@ public static partial class Kernel32
 	// PACKAGE_INFO_REFERENCE packageInfoReference, const UINT32 flags, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "28F45B3B-A61F-44D3-B606-6966AD5866FA")]
-	public static extern Win32Error GetPackageInfo(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, ref uint bufferLength,
-		[Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes), ArrayPointer(typeof(PACKAGE_INFO), nameof(count))] IntPtr buffer, out uint count);
+	public static extern Win32Error GetPackageInfo(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
+
+	/// <summary>
+	/// <para>Gets the package information for the specified package.</para>
+	/// </summary>
+	/// <param name="packageInfoReference">
+	/// <para>Type: <c>PACKAGE_INFO_REFERENCE</c></para>
+	/// <para>A reference to package information.</para>
+	/// </param>
+	/// <param name="flags">
+	/// <para>Type: <c>const UINT32</c></para>
+	/// <para>The package constants that specify how package information is retrieved.</para>
+	/// </param>
+	/// <param name="buffer">
+	/// <para>Type: <c>BYTE*</c></para>
+	/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LONG</c></para>
+	/// <para>
+	/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+	/// codes include the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackageinfo LONG GetPackageInfo(
+	// PACKAGE_INFO_REFERENCE packageInfoReference, const UINT32 flags, UINT32 *bufferLength, BYTE *buffer, UINT32 *count );
+	[PInvokeData("appmodel.h", MSDNShortId = "28F45B3B-A61F-44D3-B606-6966AD5866FA")]
+	public static Win32Error GetPackageInfo(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, out PACKAGE_INFO[] buffer)
+	{
+		uint size = 0;
+		buffer = [];
+		var err = GetPackageInfo(packageInfoReference, flags, ref size, IntPtr.Zero, out _);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return err;
+		using SafeCoTaskMemHandle buf = new((int)size);
+		err = GetPackageInfo(packageInfoReference, flags, ref size, buf, out var count);
+		if (err.Succeeded)
+			buffer = buf.ToArray<PACKAGE_INFO>((int)count);
+		return err;
+	}
 
 	/// <summary>
 	/// Gets the package information for the specified package, with the option to specify the type of folder path to retrieve for the package.
@@ -1736,8 +1939,68 @@ public static partial class Kernel32
 	// *buffer, UINT32 *count );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
-	public static extern Win32Error GetPackageInfo2(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, PackagePathType packagePathType,
-		ref uint bufferLength, [Out, SizeDef(nameof(bufferLength), SizingMethod.CheckLastError | SizingMethod.Bytes), ArrayPointer(typeof(PACKAGE_INFO), nameof(count))] IntPtr buffer, out uint count);
+	public static extern Win32Error GetPackageInfo2(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, PackagePathType packagePathType, ref uint bufferLength, [Out] IntPtr buffer, out uint count);
+
+	/// <summary>
+	/// Gets the package information for the specified package, with the option to specify the type of folder path to retrieve for the package.
+	/// </summary>
+	/// <param name="packageInfoReference">
+	/// <para>Type: <c>PACKAGE_INFO_REFERENCE</c></para>
+	/// <para>A reference to package information.</para>
+	/// </param>
+	/// <param name="flags">
+	/// <para>Type: <c>const UINT32</c></para>
+	/// <para>The package constants that specify how package information is retrieved.</para>
+	/// </param>
+	/// <param name="packagePathType">
+	/// <para>Type: <c>PackagePathType</c></para>
+	/// <para>Indicates the type of folder path to retrieve for the package (the original install folder or the mutable folder).</para>
+	/// </param>
+	/// <param name="buffer">
+	/// <para>Type: <c>BYTE*</c></para>
+	/// <para>The package information, represented as an array of PACKAGE_INFO structures.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LONG</c></para>
+	/// <para>
+	/// If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code. The possible error
+	/// codes include the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The buffer is not large enough to hold the data. The required size is specified by bufferLength.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// The packagePathType parameter is useful for applications that use the windows.mutablePackageDirectories extension in their
+	/// package manifest. This extension specifies a folder under the %ProgramFiles%\ModifiableWindowsApps path where the contents of
+	/// the application's install folder are projected so that users can modify the installation files. This feature is currently
+	/// available only for certain types of desktop PC games that are published by Microsoft and our partners, and it enables these
+	/// types of games to support mods.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackageinfo2 LONG GetPackageInfo2(
+	// PACKAGE_INFO_REFERENCE packageInfoReference, const UINT32 flags, PackagePathType packagePathType, UINT32 *bufferLength, BYTE
+	// *buffer, UINT32 *count );
+	[PInvokeData("appmodel.h")]
+	public static Win32Error GetPackageInfo2(PACKAGE_INFO_REFERENCE packageInfoReference, PACKAGE_INFORMATION flags, PackagePathType packagePathType, out PACKAGE_INFO[] buffer)
+	{
+		uint size = 0;
+		buffer = [];
+		var err = GetPackageInfo2(packageInfoReference, flags, packagePathType, ref size, IntPtr.Zero, out _);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			return err;
+		using SafeCoTaskMemHandle buf = new((int)size);
+		err = GetPackageInfo2(packageInfoReference, flags, packagePathType, ref size, buf, out var count);
+		if (err.Succeeded)
+			buffer = buf.ToArray<PACKAGE_INFO>((int)count);
+		return err;
+	}
 
 	/// <summary>
 	/// <para>Gets the path for the specified package.</para>

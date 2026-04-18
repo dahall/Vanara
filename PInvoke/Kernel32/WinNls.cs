@@ -4431,9 +4431,8 @@ public static partial class Kernel32
 	// cchDate );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("", MSDNShortId = "eb2622bc-a98d-42bd-ab59-7a849000d79d")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCalendarDateFormatEx(string? lpszLocale, DATE_FORMAT dwFlags, in CALDATETIME lpCalDateTime, string lpFormat,
-		[SizeDef(nameof(cchDate))] StringBuilder lpDateStr, int cchDate);
+	public static extern int GetCalendarDateFormatEx(string lpszLocale, DATE_FORMAT dwFlags, in CALDATETIME lpCalDateTime, string? lpFormat,
+		[SizeDef(nameof(cchDate), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDateStr, int cchDate);
 
 	/// <summary>
 	/// Retrieves information about a calendar for a locale specified by identifier. <note type="note">For interoperability reasons, the

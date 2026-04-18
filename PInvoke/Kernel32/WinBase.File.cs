@@ -2064,7 +2064,7 @@ public static partial class Kernel32
 	/// <para>For a table of valid values, see the Remarks section.</para>
 	/// </param>
 	/// <returns>The requested file information. The structure that is returned corresponds to the class that is specified by FileInformationClass.</returns>
-	public static T GetFileInformationByHandleEx<T>(HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass) where T : struct
+	public static T GetFileInformationByHandleEx<T>([In, AddAsMember] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
 		SafeHGlobalHandle mem;

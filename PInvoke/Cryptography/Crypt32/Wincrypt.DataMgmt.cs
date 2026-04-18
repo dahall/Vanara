@@ -2000,7 +2000,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional, Ignore] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -2122,7 +2122,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional, Ignore] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoFromBCryptKeyHandle</c> function exports the public key information associated with a provider's
@@ -2535,7 +2535,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0c419b7-ebb3-42c6-9f6a-59b55a2db1b2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional, Ignore] uint dwFlags,
+	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags,
 		CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo,
 		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
