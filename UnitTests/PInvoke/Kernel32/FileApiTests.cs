@@ -77,7 +77,7 @@ public class FileApiTests
 		Assert.That(pos, Is.Zero);
 
 		byte[] bytes = new byte[100];
-		b = ReadFile(f, bytes, (uint)bytes.Length, out read, IntPtr.Zero);
+		b = ReadFile(f, bytes, out read);
 		if (!b) TestContext.WriteLine($"ReadFile:{Win32Error.GetLastError()}");
 		Assert.That(b);
 		Assert.That(read, Is.Not.Zero.And.LessThanOrEqualTo(bytes.Length));
