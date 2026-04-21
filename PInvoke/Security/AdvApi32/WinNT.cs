@@ -5890,18 +5890,9 @@ public static partial class AdvApi32
 		/// </remarks>
 		public (SafePSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePACL pDacl, SafePACL pSacl, SafePSID pOwner, SafePSID pPrimaryGroup) MakeAbsolute()
 		{
-			uint cSD = 0, cOwn = 0, cGrp = 0, cDacl = 0, cSacl = 0;
-			if (!MakeAbsoluteSD(this, IntPtr.Zero, ref cSD, IntPtr.Zero, ref cDacl, IntPtr.Zero, ref cSacl, IntPtr.Zero, ref cOwn, IntPtr.Zero, ref cGrp))
-				Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-
-			var pSD = new SafePSECURITY_DESCRIPTOR((int)cSD);
-			var pDacl = cDacl == 0 ? SafePACL.Null : new SafePACL((int)cDacl);
-			var pSacl = cSacl == 0 ? SafePACL.Null : new SafePACL((int)cSacl);
-			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SizeT)cOwn);
-			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SizeT)cGrp);
-			if (!MakeAbsoluteSD(this, pSD, ref cSD, pDacl, ref cDacl, pSacl, ref cSacl, pOwn, ref cOwn, pGrp, ref cGrp))
+			if (!MakeAbsoluteSD(this, out var pSD, out var pDacl, out var pSacl, out var pOwn, out var pGrp))
 				Win32Error.ThrowLastError();
-			return (pSD, pDacl, pSacl, pOwn, pGrp);
+			return (pSD!, pDacl!, pSacl!, pOwn!, pGrp!);
 		}
 
 		/// <summary>

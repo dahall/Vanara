@@ -3086,6 +3086,7 @@ public static partial class AdvApi32
 	// PEVENT_TRACE_PROPERTIES *PropertyArray, ULONG PropertyArrayCount, PULONG LoggerCount );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("evntrace.h", MSDNShortId = "6b6144b0-9152-4b5e-863d-06e823fbe084")]
+	[SuppressAutoGen]
 	public static extern Win32Error QueryAllTraces([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] PropertyArray, uint PropertyArrayCount, out uint LoggerCount);
 
 	/// <summary>

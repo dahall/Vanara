@@ -5310,41 +5310,21 @@ public static partial class AdvApi32
 	/// A pointer to a buffer that the function fills with the main body of an absolute-format security descriptor. This information is
 	/// formatted as a SECURITY_DESCRIPTOR structure.
 	/// </param>
-	/// <param name="lpdwAbsoluteSecurityDescriptorSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the pAbsoluteSD parameter. If the buffer is not large
-	/// enough for the security descriptor, the function fails and sets this variable to the minimum required size.
-	/// </param>
 	/// <param name="pDacl">
 	/// A pointer to a buffer the function fills with the discretionary access control list (DACL) of the absolute-format security
 	/// descriptor. The main body of the absolute-format security descriptor references this pointer.
-	/// </param>
-	/// <param name="lpdwDaclSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the pDacl parameter. If the buffer is not large
-	/// enough for the access control list (ACL), the function fails and sets this variable to the minimum required size.
 	/// </param>
 	/// <param name="pSacl">
 	/// A pointer to a buffer the function fills with the system access control list (SACL) of the absolute-format security descriptor.
 	/// The main body of the absolute-format security descriptor references this pointer.
 	/// </param>
-	/// <param name="lpdwSaclSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the pSacl parameter. If the buffer is not large
-	/// enough for the ACL, the function fails and sets this variable to the minimum required size.
-	/// </param>
 	/// <param name="pOwner">
 	/// A pointer to a buffer the function fills with the security identifier (SID) of the owner of the absolute-format security
 	/// descriptor. The main body of the absolute-format security descriptor references this pointer.
 	/// </param>
-	/// <param name="lpdwOwnerSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the pOwner parameter. If the buffer is not large
-	/// enough for the SID, the function fails and sets this variable to the minimum required size.
-	/// </param>
 	/// <param name="pPrimaryGroup">
 	/// A pointer to a buffer the function fills with the SID of the absolute-format security descriptor's primary group. The main body
 	/// of the absolute-format security descriptor references this pointer.
-	/// </param>
-	/// <param name="lpdwPrimaryGroupSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the pPrimaryGroup parameter. If the buffer is not
-	/// large enough for the SID, the function fails and sets this variable to the minimum required size.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the function returns nonzero.</para>
@@ -5382,12 +5362,25 @@ public static partial class AdvApi32
 	// PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, LPDWORD
 	// lpdwAbsoluteSecurityDescriptorSize, PACL pDacl, LPDWORD lpdwDaclSize, PACL pSacl, LPDWORD lpdwSaclSize, PSID pOwner, LPDWORD
 	// lpdwOwnerSize, PSID pPrimaryGroup, LPDWORD lpdwPrimaryGroupSize );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "47c75071-f10d-43cf-a841-2dd49fc39afa")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MakeAbsoluteSD([In] PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, [In, Out] SafePSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor,
-		ref uint lpdwAbsoluteSecurityDescriptorSize, [In, Out] SafePACL pDacl, ref uint lpdwDaclSize, [In, Out] SafePACL pSacl, ref uint lpdwSaclSize,
-		[In, Out] SafePSID pOwner, ref uint lpdwOwnerSize, [In, Out] SafePSID pPrimaryGroup, ref uint lpdwPrimaryGroupSize);
+	public static bool MakeAbsoluteSD([In] PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, out SafePSECURITY_DESCRIPTOR? pAbsoluteSecurityDescriptor,
+		out SafePACL? pDacl, out SafePACL? pSacl, out SafePSID? pOwner, out SafePSID? pPrimaryGroup)
+	{
+		uint absSize = 0, daclSize = 0, saclSize = 0, ownerSize = 0, groupSize = 0;
+		var res = MakeAbsoluteSD(pSelfRelativeSecurityDescriptor, IntPtr.Zero, ref absSize, IntPtr.Zero, ref daclSize, IntPtr.Zero, ref saclSize,
+			IntPtr.Zero, ref ownerSize, IntPtr.Zero, ref groupSize);
+		if (!res && GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			res = MakeAbsoluteSD(pSelfRelativeSecurityDescriptor, pAbsoluteSecurityDescriptor = new((int)absSize), ref absSize,
+				pDacl = new((int)daclSize), ref daclSize, pSacl = new((int)saclSize), ref saclSize,
+				pOwner = new((SizeT)ownerSize), ref ownerSize, pPrimaryGroup = new((SizeT)groupSize), ref groupSize);
+		else
+		{
+			pAbsoluteSecurityDescriptor = null;
+			pDacl = pSacl = null;
+			pOwner = pPrimaryGroup = null;
+		}
+		return res;
+	}
 
 	/// <summary>
 	/// The <c>MakeSelfRelativeSD</c> function creates a security descriptor in self-relative format by using a security descriptor in
@@ -5443,6 +5436,64 @@ public static partial class AdvApi32
 	[PInvokeData("securitybaseapi.h", MSDNShortId = "497c7e2f-75b7-41b9-9693-37e041b7af58")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool MakeSelfRelativeSD([In] PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, SafePSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor, ref uint lpdwBufferLength);
+
+	/// <summary>
+	/// The <c>MakeSelfRelativeSD</c> function creates a security descriptor in self-relative format by using a security descriptor in
+	/// absolute format as a template.
+	/// </summary>
+	/// <param name="pAbsoluteSecurityDescriptor">
+	/// A pointer to a SECURITY_DESCRIPTOR structure in absolute format. The function creates a version of this security descriptor in
+	/// self-relative format without modifying the original.
+	/// </param>
+	/// <param name="pSelfRelativeSecurityDescriptor">
+	/// A pointer to a buffer the function fills with a security descriptor in self-relative format.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible return codes include,
+	/// but are not limited to, the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code/value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER 0x7A</term>
+	/// <term>One or more of the buffers is too small.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// A security descriptor in absolute format contains pointers to the information it contains, rather than containing the information
+	/// itself. A security descriptor in self-relative format contains the information in a contiguous block of memory. In a self-relative
+	/// security descriptor, a SECURITY_DESCRIPTOR structure always starts the information, but the security descriptor's other components
+	/// can follow the structure in any order. Instead of using memory addresses, the components of the security descriptor are identified by
+	/// offsets from the beginning of the security descriptor. This format is useful when a security descriptor must be stored on a floppy
+	/// disk or transmitted by means of a communications protocol.
+	/// </para>
+	/// <para>
+	/// A server that copies secured objects to various media can use the <c>MakeSelfRelativeSD</c> function to create a self-relative
+	/// security descriptor from an absolute security descriptor and the MakeAbsoluteSD function to create an absolute security descriptor
+	/// from a self-relative security descriptor.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-makeselfrelativesd BOOL
+	// MakeSelfRelativeSD( PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, PSECURITY_DESCRIPTOR pSelfRelativeSecurityDescriptor,
+	// LPDWORD lpdwBufferLength );
+	[PInvokeData("securitybaseapi.h", MSDNShortId = "497c7e2f-75b7-41b9-9693-37e041b7af58")]
+	public static bool MakeSelfRelativeSD([In] PSECURITY_DESCRIPTOR pAbsoluteSecurityDescriptor, out SafePSECURITY_DESCRIPTOR? pSelfRelativeSecurityDescriptor)
+	{
+		uint size = 0;
+		var res = MakeSelfRelativeSD(pAbsoluteSecurityDescriptor, SafePSECURITY_DESCRIPTOR.Null, ref size);
+		if (!res && GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			res = MakeSelfRelativeSD(pAbsoluteSecurityDescriptor, pSelfRelativeSecurityDescriptor = new((int)size), ref size);
+		else
+			pSelfRelativeSecurityDescriptor = null;
+		return res;
+	}
 
 	/// <summary>
 	/// The MapGenericMask function maps the generic access rights in an access mask to specific and standard access rights. The function
