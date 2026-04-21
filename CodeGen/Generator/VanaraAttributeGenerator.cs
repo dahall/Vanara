@@ -59,6 +59,7 @@ namespace Vanara.Generators;
 public partial class VanaraAttributeGenerator : IIncrementalGenerator
 {
 	const string hMemTypeStr = "global::Vanara.InteropServices.SafeHGlobalHandle";
+	const string hMemMgrStr = "global::Vanara.InteropServices.HGlobalMemoryMethods";
 	static readonly TypeSyntax hMemType = ParseTypeName(hMemTypeStr);
 
 	[Flags]
@@ -1158,13 +1159,16 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 			// Call the invoke method with a reference to the first element of the array
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(ParseExpression($"__{id}")));
+
+			if (attrInfo.ModType.HasFlag(ModType.Out) && !attrInfo.StructType.IsUnmanagedType)
+				tmpbuilder.statements.assignOutParams.Add(ParseStatement($"{id} = __{id}.ToStructure<{attrInfo.StructType.Name}>();"));
 		}
 
 		// Handle optional out values with no modifier
 		else if (typeIsPtr && attrInfo.IsOptional && !decl.Modifiers.Any())
 		{
 			// Replace method param with designated type, remove all attributes, and add out modifier
-			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
+			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "In", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
 
 			// Init out param to default
 			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), MethodBodyBuilder.defaultExpr)));
@@ -1183,7 +1187,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		else if (decl.Modifiers.Any(SyntaxKind.OutKeyword))
 		{
 			// Replace method param with designated type, remove all attributes, and add out modifier
-			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
+			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "In", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
 
 			// Init out param to default
 			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), iArrayStructType is not null && !attrInfo.IsOptional ? ParseExpression("[]") : MethodBodyBuilder.defaultExpr)));
@@ -1196,26 +1200,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			// TODO: Handle FreeStatement as well
 			if (typeIsPtr && attrInfo.MemMgr is not null)
 			{
-				// Add structure extraction statement in assignOutParams
-				const string assignOutTemplate = """
-				if (__{0} != default) {{
-					try {{
-						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
-						{0} = __{0}.ToStructure<{2}>(__memSz);
-					}}
-					finally {{ {1}.Instance.FreeMem(__{0}); }}
-				}}
-				""";
-				const string assignOutArrayTemplate = """
-				if (__{0} != default) {{
-					try {{
-						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
-						{0} = ((global::Vanara.PInvoke.IArrayStruct<{3}>?)__{0}.ToStructure<{2}>(__memSz))?.GetArray() ?? [];
-					}}
-					finally {{ {1}.Instance.FreeMem(__{0}); }}
-				}}
-				""";
-				tmpbuilder.statements.assignOutParams.Add(ParseStatement(string.Format(iArrayStructType is null ? assignOutTemplate : assignOutArrayTemplate, id, attrInfo.MemMgr.Name, attrInfo.StructType.Name, iArrayStructType?.Name)));
+				AssignOutParam(attrInfo.MemMgr.Name);
 			}
 
 			// Handle out value that is a memory handle
@@ -1244,6 +1229,30 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 
 		builder = tmpbuilder;
+
+		void AssignOutParam(string memMgrName)
+		{
+			// Add structure extraction statement in assignOutParams
+			const string assignOutTemplate = """
+				if (__{0} != default) {{
+					try {{
+						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
+						{0} = __{0}.ToStructure<{2}>(__memSz);
+					}}
+					finally {{ {1}.Instance.FreeMem(__{0}); }}
+				}}
+				""";
+			const string assignOutArrayTemplate = """
+				if (__{0} != default) {{
+					try {{
+						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
+						{0} = ((global::Vanara.PInvoke.IArrayStruct<{3}>?)__{0}.ToStructure<{2}>(__memSz))?.GetArray() ?? [];
+					}}
+					finally {{ {1}.Instance.FreeMem(__{0}); }}
+				}}
+				""";
+			tmpbuilder.statements.assignOutParams.Add(ParseStatement(string.Format(iArrayStructType is null ? assignOutTemplate : assignOutArrayTemplate, id, memMgrName, attrInfo.StructType.Name, iArrayStructType?.Name)));
+		}
 	}
 
 	private abstract class ParamInfo(ParameterSyntax ps)
