@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Versioning;
 
 namespace Vanara.PInvoke;
 
@@ -581,6 +582,58 @@ public static partial class User32
 	// wParam );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.IS_POINTER_CANCELED_WPARAM")]
 	public static bool IS_POINTER_CANCELED_WPARAM(IntPtr wParam) => IS_POINTER_FLAG_SET_WPARAM(wParam, POINTER_MESSAGE_FLAG.POINTER_MESSAGE_FLAG_CANCELED);
+
+	/// <summary>
+	/// <para>
+	/// [Some information relates to pre-released product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here.]
+	/// </para>
+	/// <para>
+	/// <b>ConvertPrimaryPointerToMouseDrag</b> allows an app that is handling pointer input to ask the system to generate mouse messages for
+	/// the on-going pointer contact. This API is expected to be called after receiving a <b>WM_POINTERDOWN</b> for a primary pointer
+	/// contact, before receiving the <b>WM_POINTERUP</b> for the same pointer ID.
+	/// </para>
+	/// </summary>
+	/// <returns>
+	/// <para>Type: <b>BOOL</b></para>
+	/// <para>
+	/// If the function returns <b>TRUE</b>, the primary pointer contact was promoted to mouse. The window receiving input will get mouse
+	/// messages ( <b>WM_LBUTTONDOWN</b>, <b>WM_MOUSEMOVE</b>, and <b>WM_LBUTTONUP</b>) in addition to the pointer messages for the remainder
+	/// of the contact.
+	/// </para>
+	/// <para>
+	/// If the function returns <b>FALSE</b>, the primary pointer contact was not promoted. This could happen because the calling thread did
+	/// not have a primary pointer contact, or because the thread had multiple simultaneous contacts.
+	/// </para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c><b>GetLastError</b></c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Touch and pen input use different window messages than mouse input. See <c>Pointer Input</c> for more info. By default, apps that do
+	/// not handle pointer messages have the primary pointer contact automatically promoted to mouse input. Apps that do handle pointer
+	/// messages do not receive mouse messages, which can cause problems when calling APIs that expect mouse input, such as <c><b>DoDragDrop</b></c>.
+	/// </para>
+	/// <para>
+	/// <b>DoDragDrop</b> expects to be called while mouse input is active — typically in response to a <b>WM_LBUTTONDOWN</b> or
+	/// <b>WM_MOUSEMOVE</b> while the button is held. It captures mouse input and processes drag-and-drop, exiting when it receives
+	/// <b>WM_LBUTTONUP</b>. During the drag, each move and up event interacts with the window under the cursor if that window is registered
+	/// as a drop target.
+	/// </para>
+	/// <para>
+	/// <b>ConvertPrimaryPointerToMouseDrag</b> bridges this gap by allowing a pointer-aware app to promote the on-going pointer contact to
+	/// mouse on demand. The app can use pointer messages to determine whether the input should become a drag (for example, by detecting a
+	/// press and hold), then call this function immediately before calling <b>DoDragDrop</b> to switch the contact to mouse input for the
+	/// remainder of the interaction.
+	/// </para>
+	/// <para>The calling thread must have exactly one pointer contact, and it must be primary. See <c><b>IS_POINTER_PRIMARY_WPARAM</b></c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/winmsg/winuser/nf-winuser-convertprimarypointertomousedrag
+	// BOOL ConvertPrimaryPointerToMouseDrag();
+	[PInvokeData("None", MSDNShortId = "NF:winuser.ConvertPrimaryPointerToMouseDrag")]
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+	[SupportedOSPlatform("windows10.0.22000.0")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ConvertPrimaryPointerToMouseDrag();
 
 	/// <summary>
 	/// Configures the pointer injection device for the calling application, and initializes the maximum number of simultaneous pointers that
