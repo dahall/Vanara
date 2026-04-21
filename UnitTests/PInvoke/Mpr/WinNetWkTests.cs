@@ -68,12 +68,8 @@ public class WinNetWkTests
 	[Test]
 	public void WNetGetConnectionTest()
 	{
-		uint sz = 0;
-		Assert.That(WNetGetConnection(ldev, null, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		var sb = new StringBuilder((int)sz);
-		WNetGetConnection(ldev, sb, ref sz).ThrowIfFailed();
-		Assert.That(sb.ToString(), Contains.Substring(@"\\"));
+		Assert.That(WNetGetConnection(ldev, out var sb), ResultIs.Successful);
+		Assert.That(sb, Contains.Substring(@"\\"));
 	}
 
 	[Test]
@@ -88,27 +84,16 @@ public class WinNetWkTests
 	[Test]
 	public void WNetGetProviderNameTest()
 	{
-		uint sz = 0;
-		var sb = new StringBuilder(1);
-		Assert.That(WNetGetProviderName(WNNC_NET.WNNC_NET_SMB, sb, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		sb = new StringBuilder((int)sz);
-		WNetGetProviderName(WNNC_NET.WNNC_NET_SMB, sb, ref sz).ThrowIfFailed();
-		Assert.That(sb.ToString(), Is.EqualTo(prov));
+		Assert.That(WNetGetProviderName(WNNC_NET.WNNC_NET_SMB, out var sb), ResultIs.Successful);
+		Assert.That(sb, Is.EqualTo(prov));
 	}
 
 	[Test]
 	public void WNetGetResourceInformationTest()
 	{
-		uint sz = 1;
 		var lnr = new NETRESOURCE(remSh + shDir);
-		var ptr = new SafeCoTaskMemHandle((int)sz);
-		Assert.That(WNetGetResourceInformation(lnr, (IntPtr)ptr, ref sz, out var _), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		ptr.Size = (int)sz;
-		WNetGetResourceInformation(lnr, (IntPtr)ptr, ref sz, out var sys).ThrowIfFailed();
-		var rnr = ptr.ToStructure<NETRESOURCE>()!;
-		Assert.That((int)rnr.dwUsage, Is.Not.Zero);
+		Assert.That(WNetGetResourceInformation(lnr, out var rnr, out var sys), ResultIs.Successful);
+		Assert.That((int)rnr!.dwUsage, Is.Not.Zero);
 		Assert.That(rnr.lpRemoteName, Is.EqualTo(remSh));
 		Assert.That(sys, Is.Not.EqualTo(IntPtr.Zero));
 	}
@@ -116,49 +101,28 @@ public class WinNetWkTests
 	[Test]
 	public void WNetGetResourceParentTest()
 	{
-		uint sz = 1;
 		var lnr = new NETRESOURCE(remSh + shDir, null, prov);
-		var ptr = new SafeCoTaskMemHandle((int)sz);
-		Assert.That(WNetGetResourceParent(lnr, (IntPtr)ptr, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		ptr.Size = (int)sz;
-		WNetGetResourceParent(lnr, (IntPtr)ptr, ref sz).ThrowIfFailed();
-		var nrp = ptr.ToStructure<NETRESOURCE>()!;
-		Assert.That((int)nrp.dwUsage, Is.Not.Zero);
-		Assert.That(nrp.lpRemoteName, Is.EqualTo(remSh));
+		Assert.That(WNetGetResourceParent(lnr, out var nrp), ResultIs.Successful);
+		Assert.That((int)nrp!.dwUsage, Is.Not.Zero);
+		Assert.That(nrp!.lpRemoteName, Is.EqualTo(remSh));
 	}
 
 	[Test]
 	public void WNetGetUniversalNameTest()
 	{
-		uint sz = 1;
-		var ptr = new SafeCoTaskMemHandle((int)sz);
-		Assert.That(WNetGetUniversalName(ldev + shDir, INFO_LEVEL.REMOTE_NAME_INFO_LEVEL, (IntPtr)ptr, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		ptr.Size = (int)sz;
-		WNetGetUniversalName(ldev + shDir, INFO_LEVEL.REMOTE_NAME_INFO_LEVEL, (IntPtr)ptr, ref sz).ThrowIfFailed();
-		var rni = ptr.ToStructure<REMOTE_NAME_INFO>();
+		Assert.That(WNetGetUniversalName<REMOTE_NAME_INFO>(ldev + shDir, out var rni), ResultIs.Successful);
 		Assert.That(rni.lpUniversalName, Is.EqualTo(remSh + shDir));
 		Assert.That(rni.lpRemainingPath, Is.EqualTo(shDir));
 
-		sz = 1;
-		Assert.That(WNetGetUniversalName(ldev + shDir, INFO_LEVEL.UNIVERSAL_NAME_INFO_LEVEL, (IntPtr)ptr, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		ptr.Size = (int)sz;
-		WNetGetUniversalName(ldev + shDir, INFO_LEVEL.UNIVERSAL_NAME_INFO_LEVEL, (IntPtr)ptr, ref sz).ThrowIfFailed();
-		var uni = ptr.ToStructure<UNIVERSAL_NAME_INFO>();
+		Assert.That(WNetGetUniversalName<UNIVERSAL_NAME_INFO>(ldev + shDir, out var uni), ResultIs.Successful);
 		Assert.That(uni.lpUniversalName, Is.EqualTo(remSh + shDir));
 	}
 
 	[Test]
 	public void WNetGetUserTest()
 	{
-		uint sz = 0;
-		Assert.That(WNetGetUser(ldev, null, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
-
-		var sb = new StringBuilder((int)sz);
-		WNetGetUser(ldev, sb, ref sz).ThrowIfFailed();
-		Assert.That(sb.ToString(), Contains.Substring(@"da"));
+		Assert.That(WNetGetUser(ldev, out var sb), ResultIs.Successful);
+		Assert.That(sb, Contains.Substring(@"da"));
 	}
 
 	[Test]
@@ -176,11 +140,9 @@ public class WinNetWkTests
 	[Test]
 	public void WNetUseConnectionTest()
 	{
-		var sz = 20U;
-		var sb = new StringBuilder((int)sz);
-		WNetUseConnection(HWND.NULL, new NETRESOURCE(remSh), null, null, CONNECT.CONNECT_REDIRECT, sb, ref sz, out var drv).ThrowIfFailed();
-		Assert.That(sb.Length, Is.GreaterThan(0));
+		WNetUseConnection(HWND.NULL, new NETRESOURCE(remSh), null, null, CONNECT.CONNECT_REDIRECT, out var sb, out var drv).ThrowIfFailed();
+		Assert.That(sb?.Length ?? 0, Is.GreaterThan(0));
 		TestContext.WriteLine($"{sb} {drv}");
-		WNetCancelConnection2(sb.ToString(), 0, true);
+		WNetCancelConnection2(sb!, 0, true);
 	}
 }
