@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Enumerations | Structures | Interfaces
 --- | --- | ---
-ACT_AUTHORIZATION_STATE_VALUE ACT_AUTHORIZE ACT_UNAUTHORIZE CERT_CAPABILITY CERT_TYPE CERT_VALIDATION_POLICY ENHANCED_STORAGE_AUTHN_STATE  | ACT_AUTHORIZATION_STATE SILO_INFO ENHANCED_STORAGE_PASSWORD_SILO_INFORMATION      | IEnhancedStorageACT IEnhancedStorageACT2 IEnhancedStorageACT3 IEnhancedStorageSilo IEnhancedStorageSiloAction IEnumEnhancedStorageACT  
+ACT_AUTHORIZATION_STATE_VALUE<br>ACT_AUTHORIZE<br>ACT_UNAUTHORIZE<br>CERT_CAPABILITY<br>CERT_TYPE<br>CERT_VALIDATION_POLICY<br>ENHANCED_STORAGE_AUTHN_STATE<br> | ACT_AUTHORIZATION_STATE<br>SILO_INFO<br>ENHANCED_STORAGE_PASSWORD_SILO_INFORMATION<br><br><br><br><br> | IEnhancedStorageACT<br>IEnhancedStorageACT2<br>IEnhancedStorageACT3<br>IEnhancedStorageSilo<br>IEnhancedStorageSiloAction<br>IEnumEnhancedStorageACT<br><br>

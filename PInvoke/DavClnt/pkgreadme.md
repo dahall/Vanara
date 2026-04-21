@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-DavAddConnection DavCancelConnectionsToServer DavDeleteConnection DavFlushFile DavGetExtendedError DavGetHTTPFromUNCPath DavGetTheLockOwnerOfTheFile DavGetUNCFromHTTPPath DavInvalidateCache DavRegisterAuthCallback DavUnregisterAuthCallback  | AUTHNEXTSTEP DAV_AUTHN_SCHEME           | DAV_CALLBACK_AUTH_BLOB DAV_CALLBACK_AUTH_UNP DAV_CALLBACK_CRED         
+DavAddConnection<br>DavCancelConnectionsToServer<br>DavDeleteConnection<br>DavFlushFile<br>DavGetExtendedError<br>DavGetHTTPFromUNCPath<br>DavGetTheLockOwnerOfTheFile<br>DavGetUNCFromHTTPPath<br>DavInvalidateCache<br>DavRegisterAuthCallback<br>DavUnregisterAuthCallback<br> | AUTHNEXTSTEP<br>DAV_AUTHN_SCHEME<br><br><br><br><br><br><br><br><br><br> | DAV_CALLBACK_AUTH_BLOB<br>DAV_CALLBACK_AUTH_UNP<br>DAV_CALLBACK_CRED<br><br><br><br><br><br><br><br><br>

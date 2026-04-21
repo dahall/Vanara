@@ -6,7 +6,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 ### Dependencies  
 - Vanara.PInvoke.Kernel32  
 - Vanara.PInvoke.Gdi32  
-### Methods - 99% API coverage (569 of 570 functions)  
+### Methods - 99% API coverage (569 of 571 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -54,6 +54,7 @@ Native Method | Header | Managed Method
 [CloseTouchInputHandle](https://www.google.com/search?num=5&q=CloseTouchInputHandle+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseTouchInputHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CloseTouchInputHandle)  
 [CloseWindow](https://www.google.com/search?num=5&q=CloseWindow+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseWindow](https://github.com/dahall/Vanara/search?l=C%23&q=CloseWindow)  
 [CloseWindowStation](https://www.google.com/search?num=5&q=CloseWindowStation+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseWindowStation](https://github.com/dahall/Vanara/search?l=C%23&q=CloseWindowStation)  
+[ConvertPrimaryPointerToMouseDrag](https://www.google.com/search?num=5&q=ConvertPrimaryPointerToMouseDrag+site%3Alearn.microsoft.com) |  |   
 [CopyAcceleratorTableA](https://www.google.com/search?num=5&q=CopyAcceleratorTableA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyAcceleratorTable](https://github.com/dahall/Vanara/search?l=C%23&q=CopyAcceleratorTable)  
 [CopyAcceleratorTableW](https://www.google.com/search?num=5&q=CopyAcceleratorTableW+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyAcceleratorTable](https://github.com/dahall/Vanara/search?l=C%23&q=CopyAcceleratorTable)  
 [CopyIcon](https://www.google.com/search?num=5&q=CopyIcon+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=CopyIcon)  

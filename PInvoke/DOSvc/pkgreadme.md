@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Enumerations | Structures | Interfaces
 --- | --- | ---
-DeliveryOptimizationFileProperty DODownloadCostPolicy DODownloadProperty DODownloadPropertyEx DODownloadState DownloadMode SwarmStatus  | DO_DOWNLOAD_ENUM_CATEGORY DO_DOWNLOAD_RANGE DO_DOWNLOAD_RANGES_INFO DO_DOWNLOAD_STATUS DOSwarmStats    | IDODownload IDODownloadStatusCallback IDOManager     
+DeliveryOptimizationFileProperty<br>DODownloadCostPolicy<br>DODownloadProperty<br>DODownloadPropertyEx<br>DODownloadState<br>DownloadMode<br>SwarmStatus<br> | DO_DOWNLOAD_ENUM_CATEGORY<br>DO_DOWNLOAD_RANGE<br>DO_DOWNLOAD_RANGES_INFO<br>DO_DOWNLOAD_STATUS<br>DOSwarmStats<br><br><br> | IDODownload<br>IDODownloadStatusCallback<br>IDOManager<br><br><br><br><br>

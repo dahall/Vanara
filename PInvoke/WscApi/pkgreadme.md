@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Interfaces
 --- | --- | ---
-WscGetSecurityProviderHealth WscRegisterForChanges WscUnRegisterChanges     | SECURITY_PRODUCT_TYPE WSC_SECURITY_PRODUCT_STATE WSC_SECURITY_PRODUCT_SUBSTATUS WSC_SECURITY_SIGNATURE_STATUS WSC_SECURITY_PROVIDER WSC_SECURITY_PROVIDER_HEALTH  | IWSCDefaultProduct IWscProduct IWscProduct2 IWscProduct3 IWscProductList  
+WscGetSecurityProviderHealth<br>WscRegisterForChanges<br>WscUnRegisterChanges<br><br><br><br> | SECURITY_PRODUCT_TYPE<br>WSC_SECURITY_PRODUCT_STATE<br>WSC_SECURITY_PRODUCT_SUBSTATUS<br>WSC_SECURITY_SIGNATURE_STATUS<br>WSC_SECURITY_PROVIDER<br>WSC_SECURITY_PROVIDER_HEALTH<br> | IWSCDefaultProduct<br>IWscProduct<br>IWscProduct2<br>IWscProduct3<br>IWscProductList<br><br>

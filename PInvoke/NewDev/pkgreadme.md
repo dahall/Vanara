@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations
 --- | ---
-DiInstallDevice DiInstallDriver DiRollbackDriver DiShowUpdateDevice DiShowUpdateDriver DiUninstallDevice DiUninstallDriver UpdateDriverForPlugAndPlayDevices  | DIID_FLAG DIIRFLAG DIURFLAG INSTALLFLAG ROLLBACK_FLAG    
+DiInstallDevice<br>DiInstallDriver<br>DiRollbackDriver<br>DiShowUpdateDevice<br>DiShowUpdateDriver<br>DiUninstallDevice<br>DiUninstallDriver<br>UpdateDriverForPlugAndPlayDevices<br> | DIID_FLAG<br>DIIRFLAG<br>DIURFLAG<br>INSTALLFLAG<br>ROLLBACK_FLAG<br><br><br><br>

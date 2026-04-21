@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-MappingDoAction MappingFreePropertyBag MappingFreeServices MappingGetServices MappingRecognizeText  | ELS_ONLINE_SVC ELS_SVC_TYPE     | MAPPING_DATA_RANGE MAPPING_ENUM_OPTIONS MAPPING_OPTIONS MAPPING_PROPERTY_BAG MAPPING_SERVICE_INFO 
+MappingDoAction<br>MappingFreePropertyBag<br>MappingFreeServices<br>MappingGetServices<br>MappingRecognizeText<br> | ELS_ONLINE_SVC<br>ELS_SVC_TYPE<br><br><br><br> | MAPPING_DATA_RANGE<br>MAPPING_ENUM_OPTIONS<br>MAPPING_OPTIONS<br>MAPPING_PROPERTY_BAG<br>MAPPING_SERVICE_INFO<br>

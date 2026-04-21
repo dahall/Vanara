@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations
 --- | ---
-GetDpiForMonitor GetDpiForShellUIComponent GetProcessDpiAwareness GetScaleFactorForDevice GetScaleFactorForMonitor RegisterScaleChangeEvent RegisterScaleChangeNotifications RevokeScaleChangeNotifications SetProcessDpiAwareness UnregisterScaleChangeEvent  | DISPLAY_DEVICE_TYPE MONITOR_DPI_TYPE PROCESS_DPI_AWARENESS SCALE_CHANGE_FLAGS SHELL_UI_COMPONENT      
+GetDpiForMonitor<br>GetDpiForShellUIComponent<br>GetProcessDpiAwareness<br>GetScaleFactorForDevice<br>GetScaleFactorForMonitor<br>RegisterScaleChangeEvent<br>RegisterScaleChangeNotifications<br>RevokeScaleChangeNotifications<br>SetProcessDpiAwareness<br>UnregisterScaleChangeEvent<br> | DISPLAY_DEVICE_TYPE<br>MONITOR_DPI_TYPE<br>PROCESS_DPI_AWARENESS<br>SCALE_CHANGE_FLAGS<br>SHELL_UI_COMPONENT<br><br><br><br><br><br>

@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes
 ---
-SystemFoundationExtensions 
+SystemFoundationExtensions<br>

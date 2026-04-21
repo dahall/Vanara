@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Structures
 --- | ---
-DirectXMath                       | <bytes>e__FixedBuffer <f>e__FixedBuffer <i>e__FixedBuffer <u>e__FixedBuffer <u>e__FixedBuffer <vector4_f32>e__FixedBuffer XMFLOAT2 XMFLOAT3 XMFLOAT3X3 XMFLOAT3X4 XMFLOAT4 XMFLOAT4X3 XMINT2 XMINT3 XMINT4 XMMATRIX XMUINT2 XMUINT3 XMUINT4 XMVECTOR XMVECTORI32 XMVECTORU8 
+DirectXMath<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> | <bytes>e__FixedBuffer<br><f>e__FixedBuffer<br><i>e__FixedBuffer<br><u>e__FixedBuffer<br><u>e__FixedBuffer<br><vector4_f32>e__FixedBuffer<br>XMFLOAT2<br>XMFLOAT3<br>XMFLOAT3X3<br>XMFLOAT3X4<br>XMFLOAT4<br>XMFLOAT4X3<br>XMINT2<br>XMINT3<br>XMINT4<br>XMMATRIX<br>XMUINT2<br>XMUINT3<br>XMUINT4<br>XMVECTOR<br>XMVECTORI32<br>XMVECTORU8<br>

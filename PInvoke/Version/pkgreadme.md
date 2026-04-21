@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-GetFileVersionInfo GetFileVersionInfoEx GetFileVersionInfoSize GetFileVersionInfoSizeEx VerFindFile VerInstallFile VerLanguageName VerQueryValue   | FILE_VER_GET VFF VFFF VFT VFT2 VIF VIFF VOS VS_FF  | VS_FIXEDFILEINFO         
+GetFileVersionInfo<br>GetFileVersionInfoEx<br>GetFileVersionInfoSize<br>GetFileVersionInfoSizeEx<br>VerFindFile<br>VerInstallFile<br>VerLanguageName<br>VerQueryValue<br><br> | FILE_VER_GET<br>VFF<br>VFFF<br>VFT<br>VFT2<br>VIF<br>VIFF<br>VOS<br>VS_FF<br> | VS_FIXEDFILEINFO<br><br><br><br><br><br><br><br><br>
