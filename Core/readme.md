@@ -210,6 +210,7 @@ Struct | Description
 [Vanara.PInvoke.TEXTMETRIC](https://github.com/dahall/Vanara/search?l=C%23&q=TEXTMETRIC) | The <c>TEXTMETRIC</c> structure contains basic information about a physical font. All sizes are specified in logical units; that is, they depend on the current mapping mode of the display context.
 [Vanara.PInvoke.time_t](https://github.com/dahall/Vanara/search?l=C%23&q=time_t) | Managed instance of the time_t type.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Union](https://github.com/dahall/Vanara/search?l=C%23&q=Union) | The union
+[Vanara.VARIANT_BOOL](https://github.com/dahall/Vanara/search?l=C%23&q=VARIANT_BOOL) | Managed instance of the two-byte VARIANT_BOOL type.
 [Vanara.PInvoke.WIN32_FIND_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=WIN32_FIND_DATA) | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 [Vanara.PInvoke.Win32Error](https://github.com/dahall/Vanara/search?l=C%23&q=Win32Error) | Represents a Win32 Error Code. This can be used in place of a return value.
 ### Interfaces
@@ -409,3 +410,4 @@ Class | Description
 [Vanara.Collections.VirtualListMethodCarrier&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualListMethodCarrier%26lt%3BT%26gt%3B) | Wrapper for `Vanara.Collections.IVirtualListMethods` that allows for the use of delegates instead of implementing the interface.
 [Vanara.Collections.VirtualReadOnlyDictionary&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualReadOnlyDictionary%26lt%3BT%26gt%3B) | A generic base class for providing a read-only dictionary that gets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
 [Vanara.Collections.VirtualReadOnlyList&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=VirtualReadOnlyList%26lt%3BT%26gt%3B) | A virtual read-only list that implements a lot of the scaffolding.
+[Vanara.PInvoke.WrapsAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=WrapsAttribute) | Specifies one or more types that the attributed class is intended to wrap or represent.

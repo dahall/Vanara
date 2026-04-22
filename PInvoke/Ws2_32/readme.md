@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) for WinSock and WinSock2 importe
 
 - Includes methods from ws2_32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Ws2_32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (138 of 138 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

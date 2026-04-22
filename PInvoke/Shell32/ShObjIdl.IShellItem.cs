@@ -762,7 +762,7 @@ public static partial class Shell32
 		/// <summary>Gets a PROPVARIANT structure from a specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 		/// <returns>Contains a pointer to a PROPVARIANT structure.</returns>
-		PROPVARIANT GetProperty(in PROPERTYKEY key);
+		PROPVARIANT_UNMGD GetProperty(in PROPERTYKEY key);
 
 		/// <summary>Gets the class identifier (CLSID) value of specified property key.</summary>
 		/// <param name="key">A reference to a PROPERTYKEY structure.</param>
@@ -1036,6 +1036,16 @@ public static partial class Shell32
 	/// <param name="bhid">A BHID enumeration value that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc = null, BHID bhid = 0) where T : class => si.BindToHandler<T>(pbc, bhid.Guid());
+
+	/// <summary>Extension method to create a clone of an <see cref="IShellItem"/> instance.</summary>
+	/// <param name="si">An <see cref="IShellItem"/> instance.</param>
+	/// <returns>A new <see cref="IShellItem"/> instance that is a clone of the original.</returns>
+	public static IShellItem Clone(this IShellItem si)
+	{
+		SHGetIDListFromObject(si, out var pidl).ThrowIfFailed();
+		SHCreateItemFromIDList(pidl, out IShellItem? inew).ThrowIfFailed();
+		return inew!;
+	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>

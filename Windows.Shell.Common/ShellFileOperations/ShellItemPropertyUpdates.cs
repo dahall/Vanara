@@ -54,7 +54,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	internal KeyValuePair<PROPERTYKEY, object?> this[int index] => GetUse(index, p =>
 	{
 		p.ApplyToPropVariant(new PROPVARIANT(), out var pv);
-		return new KeyValuePair<PROPERTYKEY, object?>(p.GetPropertyKey(), pv.Value);
+		return new KeyValuePair<PROPERTYKEY, object?>(p.GetPropertyKey(), new PROPVARIANT(pv).Value);
 	});
 
 	/// <summary>Adds an element with the provided key and value to the <see cref="IDictionary{TKey, TValue}"/>.</summary>
@@ -136,7 +136,7 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	{
 		if (changes is not null)
 		{
-			Marshal.FinalReleaseComObject(changes);
+			//Marshal.FinalReleaseComObject(changes);
 			changes = null!;
 		}
 	}

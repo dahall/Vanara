@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Rpc librar
 
 - Includes methods from rpcrt4.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Rpc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Rpc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Rpc)  
+### Dependencies  
+- Vanara.PInvoke.Security  
 ### Methods - 5% API coverage (26 of 514 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

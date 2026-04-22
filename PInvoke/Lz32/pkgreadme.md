@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-GetExpandedName LZClose LZCopy LZInit LZOpenFile LZRead LZSeek  | LZ_OF LZERROR       | HLZFILE       
+GetExpandedName<br>LZClose<br>LZCopy<br>LZInit<br>LZOpenFile<br>LZRead<br>LZSeek<br> | LZ_OF<br>LZERROR<br><br><br><br><br><br> | HLZFILE<br><br><br><br><br><br><br>

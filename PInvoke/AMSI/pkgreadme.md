@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures | Interfaces
 --- | --- | --- | ---
-AmsiCloseSession AmsiInitialize AmsiNotifyOperation AmsiOpenSession AmsiScanBuffer AmsiScanString AmsiUninitialize  | AMSI_ATTRIBUTE AMSI_RESULT       | HAMSICONTEXT HAMSISESSION       | IAmsiStream IAntimalware IAntimalware2 IAntimalwareProvider IAntimalwareProvider2   
+AmsiCloseSession<br>AmsiInitialize<br>AmsiNotifyOperation<br>AmsiOpenSession<br>AmsiScanBuffer<br>AmsiScanString<br>AmsiUninitialize<br> | AMSI_ATTRIBUTE<br>AMSI_RESULT<br><br><br><br><br><br> | HAMSICONTEXT<br>HAMSISESSION<br><br><br><br><br><br> | IAmsiStream<br>IAntimalware<br>IAntimalware2<br>IAntimalwareProvider<br>IAntimalwareProvider2<br><br><br>

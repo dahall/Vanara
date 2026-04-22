@@ -128,7 +128,7 @@ public class PropertyDescription : IDisposable
 	public PROPERTYKEY PropertyKey => key;
 
 	/// <summary>Gets the variant type of the property. If the type cannot be determined, this property returns <c>null</c>.</summary>
-	public Type PropertyType => PROPVARIANT.GetType(iDesc?.GetPropertyType() ?? VARTYPE.VT_EMPTY)!;
+	public Type? PropertyType => (iDesc?.GetPropertyType() ?? VARTYPE.VT_EMPTY).GetCorrespondingType();
 
 	/// <summary>Gets the relative description type for a property description.</summary>
 	public PROPDESC_RELATIVEDESCRIPTION_TYPE RelativeDescriptionType => iDesc?.GetRelativeDescriptionType() ?? 0;
@@ -148,7 +148,7 @@ public class PropertyDescription : IDisposable
 
 	/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 	/// <param name="propvar">On entry, contains a PROPVARIANT that contains the original value. When this method returns, contains the canonical value.</param>
-	public bool CoerceToCanonicalValue(PROPVARIANT propvar) => iDesc?.CoerceToCanonicalValue(propvar).Succeeded ?? false;
+	public bool CoerceToCanonicalValue(PROPVARIANT propvar) => iDesc?.CoerceToCanonicalValue(ref propvar.GetRefValue()).Succeeded ?? false;
 
 	/// <inheritdoc/>
 	public void Dispose()
@@ -163,7 +163,8 @@ public class PropertyDescription : IDisposable
 	{
 		if (disposed) return;
 		iDesc2 = null;
-		Marshal.FinalReleaseComObject(iDesc);
+		//Marshal.FinalReleaseComObject(iDesc);
+		iDesc = null!;
 		disposed = true;
 	}
 
@@ -177,7 +178,7 @@ public class PropertyDescription : IDisposable
 	/// <param name="pv">A object that contains the type and value of the property.</param>
 	/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 	/// <returns>The formatted value.</returns>
-	internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags, out var sz).Succeeded ? sz! : "";
+	internal string FormatForDisplay(in PROPVARIANT_UNMGD pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags, out var sz).Succeeded ? sz! : "";
 
 	/// <summary>Gets the image location for a value.</summary>
 	/// <param name="obj">The value.</param>
@@ -205,7 +206,7 @@ public class PropertyDescription : IDisposable
 
 	/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 	/// <param name="propvar">A PROPVARIANT that contains the type and value of the property.</param>
-	public bool IsValueCanonical(PROPVARIANT propvar) => iDesc?.IsValueCanonical(propvar).Succeeded ?? false;
+	public bool IsValueCanonical(in PROPVARIANT_UNMGD propvar) => iDesc?.IsValueCanonical(propvar).Succeeded ?? false;
 
 	/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
 	/// <returns>A <see cref="string" /> that represents this instance.</returns>
@@ -263,7 +264,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	protected virtual void Dispose(bool disposing)
 	{
 		if (disposed) return;
-		if (iList is not null) Marshal.FinalReleaseComObject(iList);
+		//if (iList is not null) Marshal.FinalReleaseComObject(iList);
 		iList = null;
 		disposed = true;
 	}
@@ -365,15 +366,15 @@ public class PropertyType : IDisposable
 
 	/// <summary>Gets a minimum value.</summary>
 	/// <value>The minimum value.</value>
-	public object? RangeMinValue { get { try { var t = new PROPVARIANT(); iType.GetRangeMinValue(t); return t.Value; } catch { return null; } } }
+	public object? RangeMinValue { get { try { iType.GetRangeMinValue(out var t); return t.GetValue(); } catch { return null; } } }
 
 	/// <summary>Gets a set value.</summary>
 	/// <value>The set value.</value>
-	public object? RangeSetValue { get { try { var t = new PROPVARIANT(); iType.GetRangeSetValue(t); return t.Value; } catch { return null; } } }
+	public object? RangeSetValue { get { try { iType.GetRangeSetValue(out var t); return t.GetValue(); } catch { return null; } } }
 
 	/// <summary>Gets a value.</summary>
 	/// <value>The value.</value>EnumType != PROPENUMTYPE.PET_DEFAULTVALUE ? 
-	public object? Value { get { try { var t = new PROPVARIANT(); iType.GetValue(t); return t.Value; } catch { return null; } } }
+	public object? Value { get { try { iType.GetValue(out var t); return t.GetValue(); } catch { return null; } } }
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public virtual void Dispose()

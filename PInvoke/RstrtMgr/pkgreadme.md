@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-RmAddFilter RmCancelCurrentTask RmEndSession RmGetFilterList RmGetList RmJoinSession RmRegisterResources RmRemoveFilter RmRestart RmShutdown RmStartSession  | RM_APP_STATUS RM_APP_TYPE RM_FILTER_ACTION RM_FILTER_TRIGGER RM_REBOOT_REASON RM_SHUTDOWN_TYPE       | RM_FILTER_INFO RM_PROCESS_INFO RM_UNIQUE_PROCESS         
+RmAddFilter<br>RmCancelCurrentTask<br>RmEndSession<br>RmGetFilterList<br>RmGetList<br>RmJoinSession<br>RmRegisterResources<br>RmRemoveFilter<br>RmRestart<br>RmShutdown<br>RmStartSession<br> | RM_APP_STATUS<br>RM_APP_TYPE<br>RM_FILTER_ACTION<br>RM_FILTER_TRIGGER<br>RM_REBOOT_REASON<br>RM_SHUTDOWN_TYPE<br><br><br><br><br><br> | RM_FILTER_INFO<br>RM_PROCESS_INFO<br>RM_UNIQUE_PROCESS<br><br><br><br><br><br><br><br><br>

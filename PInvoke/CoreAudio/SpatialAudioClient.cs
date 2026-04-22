@@ -332,7 +332,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/spatialaudioclient/nf-spatialaudioclient-ispatialaudioclient-isspatialaudiostreamavailable
 		// HRESULT IsSpatialAudioStreamAvailable( REFIID streamUuid, const PROPVARIANT *auxiliaryInfo );
 		[PreserveSig]
-		HRESULT IsSpatialAudioStreamAvailable(in Guid streamUuid, [In, Optional] PROPVARIANT? auxiliaryInfo);
+		HRESULT IsSpatialAudioStreamAvailable(in Guid streamUuid, in PROPVARIANT_UNMGD auxiliaryInfo);
 
 		/// <summary>Activates and initializes spatial audio stream using one of the spatial audio stream activation structures.</summary>
 		/// <param name="activationParams">
@@ -350,7 +350,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/spatialaudioclient/nf-spatialaudioclient-ispatialaudioclient-activatespatialaudiostream
 		// HRESULT ActivateSpatialAudioStream( const PROPVARIANT *activationParams, REFIID riid, void **stream );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
-		object? ActivateSpatialAudioStream([In] PROPVARIANT activationParams, in Guid riid);
+		object? ActivateSpatialAudioStream(in PROPVARIANT_UNMGD activationParams, in Guid riid);
 	}
 
 	/// <summary>
@@ -514,7 +514,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/spatialaudioclient/nf-spatialaudioclient-ispatialaudioclient-isspatialaudiostreamavailable
 		// HRESULT IsSpatialAudioStreamAvailable( REFIID streamUuid, const PROPVARIANT *auxiliaryInfo );
 		[PreserveSig]
-		new HRESULT IsSpatialAudioStreamAvailable(in Guid streamUuid, [In, Optional] PROPVARIANT? auxiliaryInfo);
+		new HRESULT IsSpatialAudioStreamAvailable(in Guid streamUuid, in PROPVARIANT_UNMGD auxiliaryInfo);
 
 		/// <summary>Activates and initializes spatial audio stream using one of the spatial audio stream activation structures.</summary>
 		/// <param name="activationParams">
@@ -532,7 +532,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/spatialaudioclient/nf-spatialaudioclient-ispatialaudioclient-activatespatialaudiostream
 		// HRESULT ActivateSpatialAudioStream( const PROPVARIANT *activationParams, REFIID riid, void **stream );
 		[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
-		new object? ActivateSpatialAudioStream([In] PROPVARIANT activationParams, in Guid riid);
+		new object? ActivateSpatialAudioStream(in PROPVARIANT_UNMGD activationParams, in Guid riid);
 
 		/// <summary>
 		/// Queries whether the audio rendering endpoint that the ISpatialAudioClient2 was created on supports hardware offloaded audio

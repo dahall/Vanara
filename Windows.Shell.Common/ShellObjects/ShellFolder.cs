@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Xml.Linq;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
@@ -105,7 +107,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 				iShellFolder.ParseDisplayName(HWND.NULL, BindContext, childName, out _, out var tempPidl, ref attr).ThrowIfFailed();
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, tempPidl), false);
 			}
-			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied child name.", nameof(childName)));
+			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied child name.", nameof(childName)), false);
 		}
 	}
 
@@ -123,7 +125,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 				ppv = SHCreateItemWithParent<IShellItem>(iShellFolder, relativePidl);
 			else
 				ppv = new ShellItemImpl(PIDL.Combine(PIDL, relativePidl), false);
-			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied relative PIDL.", nameof(relativePidl)));
+			return Open(ppv ?? throw new ArgumentException("Cannot create IShellItem instance for supplied relative PIDL.", nameof(relativePidl)), false);
 		}
 	}
 
@@ -170,7 +172,7 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 
 	/// <summary>Gets the registered categorizers.</summary>
 	/// <value>The categorizers.</value>
-	public ShellFolderCategorizer Categories => categories ??= new(IShellFolder);
+	public ShellFolderCategorizer Categories => categories ??= AddDisposable(new ShellFolderCategorizer(IShellFolder));
 
 	/// <summary>
 	/// Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.
@@ -254,22 +256,8 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// <inheritdoc/>
 	protected override void Dispose(bool disposing)
 	{
-		if (disposed) return;
-		if (iShellFolder is not null)
-		{
-			Marshal.FinalReleaseComObject(iShellFolder);
-			iShellFolder = null!;
-		}
-		categories?.Dispose();
-		categories = null;
 		base.Dispose(disposing);
-	}
-
-	/// <inheritdoc/>
-	protected override void Init(IShellItem? si)
-	{
-		base.Init(si);
-		iShellFolder = GetInstance();
+		iShellFolder = null!;
 	}
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>

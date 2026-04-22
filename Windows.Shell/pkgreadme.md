@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Enumerations
 --- | ---
-FilterShellItemEventArgs NavigatedEventArgs NavigatingEventArgs NavigationFailedEventArgs ShellBrowser ShellBrowserNavigatedEventArgs ShellBrowserViewHandler ShellDataObject ShellFileDescriptor TaskbarButton TaskbarButtonThumbnail TaskbarButtonThumbnails ThumbnailToolbar ThumbnailToolbarButton ThumbnailToolbarButtonCollection  | NavigationLogDirection SFVMUD ShellBrowserViewMode TaskbarItemTabThumbnailOption Visibility           
+FilterShellItemEventArgs<br>NavigatedEventArgs<br>NavigatingEventArgs<br>NavigationFailedEventArgs<br>ShellBrowser<br>ShellBrowserNavigatedEventArgs<br>ShellBrowserViewHandler<br>ShellDataObject<br>ShellFileDescriptor<br>TaskbarButton<br>TaskbarButtonThumbnail<br>TaskbarButtonThumbnails<br>ThumbnailToolbar<br>ThumbnailToolbarButton<br>ThumbnailToolbarButtonCollection<br> | NavigationLogDirection<br>SFVMUD<br>ShellBrowserViewMode<br>TaskbarItemTabThumbnailOption<br>Visibility<br><br><br><br><br><br><br><br><br><br><br>

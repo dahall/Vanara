@@ -1396,7 +1396,7 @@ public static partial class FunDisc
 		// https://docs.microsoft.com/en-us/windows/win32/api/functiondiscoveryapi/nf-functiondiscoveryapi-ifunctioninstancecollectionquery-addpropertyconstraint
 		// HRESULT AddPropertyConstraint( REFPROPERTYKEY Key, const PROPVARIANT *pv, PropertyConstraint enumPropertyConstraint );
 		[PreserveSig]
-		HRESULT AddPropertyConstraint(in PROPERTYKEY Key, PROPVARIANT pv, PropertyConstraint enumPropertyConstraint);
+		HRESULT AddPropertyConstraint(in PROPERTYKEY Key, in PROPVARIANT_UNMGD pv, PropertyConstraint enumPropertyConstraint);
 
 		/// <summary>
 		/// <para>

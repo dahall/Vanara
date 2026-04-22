@@ -6,8 +6,8 @@
     <TargetFrameworksNotStdCore>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworksNotStdCore>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <Version>5.0.1</Version>
-    <PackageVersion>5.0.1</PackageVersion>
+    <Version>5.0.5</Version>
+    <PackageVersion>5.0.5</PackageVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -30,7 +30,7 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Generator\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" PrivateAssets="all" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" Condition="'$(MSBuildProjectName)'!='Vanara.Core'"/>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" Condition="'$(MSBuildProjectName)'!='Vanara.Core'" />
   </ItemGroup>
   <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>

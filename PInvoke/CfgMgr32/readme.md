@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows CfgMgr32.d
 
 - Includes methods from cfgmgr32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CfgMgr32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CfgMgr32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CfgMgr32)  
+### Dependencies  
+- Vanara.PInvoke.Security  
+- Vanara.PInvoke.SetupAPI  
 ### Methods - 100% API coverage (124 of 124 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

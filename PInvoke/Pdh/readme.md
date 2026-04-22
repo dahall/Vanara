@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from Windows Pdh.dll.
 
 - Includes methods from pdh.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Pdh?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Pdh?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Pdh)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

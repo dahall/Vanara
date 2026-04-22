@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Enumerations
 --- | ---
-AccessControlHelper AccessExtension AccountPrivileges AccountUtils ActiveDirectoryExtension BadValueException CentralAccessPolicy CentralAccessPolicyEntry ClaimValue LogonRights PinnedAcl PinnedSecurityDescriptor PinnedSid PrivilegeAndAttributes PrivilegedCodeBlock PrivilegeExtension SystemAccountInfo SystemSecurity UAC WindowsLoggedInIdentity  | AccountLogonRights DesiredAccess SystemPrivilege                  
+AccessControlHelper<br>AccessExtension<br>AccountPrivileges<br>AccountUtils<br>ActiveDirectoryExtension<br>BadValueException<br>CentralAccessPolicy<br>CentralAccessPolicyEntry<br>ClaimValue<br>LogonRights<br>PinnedAcl<br>PinnedSecurityDescriptor<br>PinnedSid<br>PrivilegeAndAttributes<br>PrivilegedCodeBlock<br>PrivilegeExtension<br>SystemAccountInfo<br>SystemSecurity<br>UAC<br>WindowsLoggedInIdentity<br> | AccountLogonRights<br>DesiredAccess<br>SystemPrivilege<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

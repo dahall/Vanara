@@ -106,13 +106,13 @@ public class PortableDeviceApiTests
 	{
 		var caps = device.Capabilities();
 
-		foreach (var catid in caps.GetFunctionalCategories().Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value))
+		foreach (Guid catid in caps.GetFunctionalCategories().Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value!.Value))
 		{
 			TestContext.WriteLine(GetPI(catid, "WPD_FUNCTIONAL_CATEGORY_")?.Name ?? catid.ToString());
-			foreach (var type in caps.GetSupportedContentTypes(catid).Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value))
+			foreach (Guid type in caps.GetSupportedContentTypes(catid).Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value!.Value))
 			{
 				TestContext.WriteLine("  t: " + (GetPI(type, "WPD_CONTENT_TYPE_")?.Name ?? type.ToString()));
-				foreach (var fmt in caps.GetSupportedFormats(type).Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value))
+				foreach (Guid fmt in caps.GetSupportedFormats(type).Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value!.Value))
 					TestContext.WriteLine("    f: " + (GetPI(fmt, "WPD_OBJECT_FORMAT_")?.Name ?? type.ToString()));
 			}
 			foreach (var obj in caps.GetFunctionalObjects(catid).Enumerate().Where(pv => pv.VarType == VarEnum.VT_LPWSTR).Select(pv => pv.pwszVal))
@@ -173,7 +173,7 @@ public class PortableDeviceApiTests
 	{
 		var caps = device.Capabilities();
 
-		foreach (var evt in caps.GetSupportedEvents().Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value))
+		foreach (Guid evt in caps.GetSupportedEvents().Enumerate().Where(pv => pv.VarType == VarEnum.VT_CLSID).Select(pv => pv.puuid!.Value!.Value))
 		{
 			TestContext.WriteLine(GetPI(evt, "WPD_EVENT_")?.Name ?? evt.ToString());
 			foreach (var opt in caps.GetEventOptions(evt).Enumerate())

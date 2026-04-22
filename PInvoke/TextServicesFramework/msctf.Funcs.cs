@@ -158,7 +158,9 @@ public static partial class MSCTF
 	// langid, _Out_ LAYOUTORTIP *pLayoutOrTip, _In_ UINT uBufLength, _In_ DWORD dwFlags );
 	[DllImport(Lib_input, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("")]
-	public static extern uint EnumLayoutOrTipForSetup([In] LANGID langid, out LAYOUTORTIP pLayoutOrTip, uint uBufLength, uint dwFlags = 0);
+	public static extern uint EnumLayoutOrTipForSetup([In] LANGID langid,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(uBufLength), SizingMethod.QueryResultInReturn)] LAYOUTORTIP[]? pLayoutOrTip,
+		uint uBufLength, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>InitLocalMsCtfMonitor</c> function initializes TextServicesFramework on the current desktop and prepares the floating

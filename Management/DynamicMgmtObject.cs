@@ -9,6 +9,7 @@ namespace Vanara.Management;
 /// <summary>A dynamic object to handle WMI <see cref="ManagementBaseObject"/> references.</summary>
 /// <seealso cref="System.Dynamic.DynamicObject"/>
 /// <seealso cref="System.IDisposable"/>
+[Vanara.PInvoke.Wraps(typeof(ManagementObject))]
 public class DynamicMgmtObject : DynamicObject, IDisposable
 {
 	private readonly ManagementObject obj;

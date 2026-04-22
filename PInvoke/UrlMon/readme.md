@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from UrlMon.dll.
 
 - Includes methods from urlmon.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UrlMon?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UrlMon?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UrlMon)  
+### Dependencies  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (49 of 49 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

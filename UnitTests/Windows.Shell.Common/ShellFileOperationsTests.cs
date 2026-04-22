@@ -231,4 +231,103 @@ public class ShellFileOperationsTests
 		}
 		dlg.Stop();
 	}
+
+	const string SourcePath = @"C:\Temp\Test.docx";
+	const string TargetPath = @"C:\Temp\Test.docx";
+
+	[Test]
+	public void UserTestOnBadShellItemDisposal()
+	{
+		Thread NewThread = new(() => Console.WriteLine(ShellCopyFile(SourcePath, TargetPath))) { IsBackground = true };
+		Assert.That(() =>
+		{
+			NewThread.SetApartmentState(ApartmentState.STA);
+			NewThread.Start();
+			NewThread.Join();
+
+			for (int Retry = 0; Retry < 10; Retry++)
+			{
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				Thread.Sleep(500);
+			}
+		}, Throws.Nothing);
+	}
+
+	private static string ShellCopyFile(string SourcePath, string TargetPath)
+	{
+		ShellFileOperations.OperationFlags Flags = ShellFileOperations.OperationFlags.AddUndoRecord
+												   | ShellFileOperations.OperationFlags.Silent
+												   | ShellFileOperations.OperationFlags.NoErrorUI
+												   | ShellFileOperations.OperationFlags.EarlyFailure
+												   | ShellFileOperations.OperationFlags.NoConfirmation
+												   | ShellFileOperations.OperationFlags.RenameOnCollision
+												   | ShellFileOperations.OperationFlags.PreserveFileExtensions;
+
+		using ShellFileOperations Operation = new() { Options = Flags };
+		string? NewPath = null;
+		string? DirectoryPath = Path.GetDirectoryName(TargetPath);
+
+		if (string.IsNullOrEmpty(DirectoryPath))
+		{
+			DirectoryPath = TargetPath;
+		}
+
+		ShellItem SourceItem = new(SourcePath);
+		ShellFolder DestItem = new(DirectoryPath);
+		{
+			void Operation_PostCopyItem(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
+			{
+				if (args.Result.Succeeded)
+				{
+					if (args.SourceItem == SourceItem)
+					{
+						if (args.DestItem == DestItem)
+						{
+							if (DestItem.IsFileSystem && !string.IsNullOrEmpty(DestItem.FileSystemPath))
+							{
+								NewPath = DestItem.FileSystemPath;
+							}
+							else
+							{
+								NewPath = args.DestFolder is ShellItem DestFolder && DestFolder.IsFileSystem && !string.IsNullOrEmpty(DestFolder.FileSystemPath)
+									? Path.Combine(DestFolder.FileSystemPath, string.IsNullOrEmpty(args.Name) ? DestItem.Name! : args.Name!)
+									: Path.Combine(DirectoryPath, string.IsNullOrEmpty(args.Name) ? DestItem.Name! : args.Name!);
+							}
+						}
+						else if (!string.IsNullOrEmpty(args.Name))
+						{
+							NewPath = args.DestFolder is ShellItem DestFolder && DestFolder.IsFileSystem && !string.IsNullOrEmpty(DestFolder.FileSystemPath)
+								? Path.Combine(DestFolder.FileSystemPath, args.Name)
+								: Path.Combine(DirectoryPath, args.Name);
+						}
+					}
+				}
+			}
+
+			Operation.PostCopyItem += Operation_PostCopyItem;
+
+			try
+			{
+				Operation.QueueCopyOperation(SourceItem, DestItem, Path.GetFileName(TargetPath));
+				Operation.PerformOperations();
+			}
+			finally
+			{
+				Operation.PostCopyItem -= Operation_PostCopyItem;
+			}
+		}
+
+		if (Operation.AnyOperationsAborted)
+		{
+			throw new OperationCanceledException();
+		}
+
+		if (string.IsNullOrEmpty(NewPath))
+		{
+			NewPath = TargetPath;
+		}
+
+		return NewPath!;
+	}
 }

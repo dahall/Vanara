@@ -1,8 +1,11 @@
 ## Assembly report for Vanara.WinUI.Extensions.dll
+
 Extension methods and conversions from Vanara P/Invoke types and methods to WinUI types and methods.
 
-_UWP-Compatible types and methods are included in the Vanara.UWP.Extensions assembly._
-
+### Dependencies
+- Vanara.PInvoke.Gdi32
+- Vanara.PInvoke.User32
+- Vanara.Windows.Shell.Common
 ### Classes
 Class | Description
 ---- | ----
@@ -14,8 +17,4 @@ Namespace | Description
 --------- | -----------
 
 ### **Vanara.WinUI.Extensions**
-
-
 docs\icons\Vanara64x64.png
-
-[]

@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from dlls associated wi
 
 - Includes methods from qwave.dll, traffic.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.QoS?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.QoS?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.QoS)  
+### Dependencies  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (27 of 27 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

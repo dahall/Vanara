@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-AvQuerySystemResponsiveness AvRevertMmThreadCharacteristics AvRtCreateThreadOrderingGroup AvRtCreateThreadOrderingGroupEx AvRtDeleteThreadOrderingGroup AvRtJoinThreadOrderingGroup AvRtLeaveThreadOrderingGroup AvRtWaitOnThreadOrderingGroup AvSetMmMaxThreadCharacteristics AvSetMmThreadCharacteristics AvSetMmThreadPriority  | AVRT_PRIORITY            | HAVRT           
+AvQuerySystemResponsiveness<br>AvRevertMmThreadCharacteristics<br>AvRtCreateThreadOrderingGroup<br>AvRtCreateThreadOrderingGroupEx<br>AvRtDeleteThreadOrderingGroup<br>AvRtJoinThreadOrderingGroup<br>AvRtLeaveThreadOrderingGroup<br>AvRtWaitOnThreadOrderingGroup<br>AvSetMmMaxThreadCharacteristics<br>AvSetMmThreadCharacteristics<br>AvSetMmThreadPriority<br> | AVRT_PRIORITY<br><br><br><br><br><br><br><br><br><br><br> | HAVRT<br><br><br><br><br><br><br><br><br><br><br>

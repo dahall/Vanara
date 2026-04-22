@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures | Interfaces
 --- | --- | --- | ---
-CreateSecurityPage EditSecurity EditSecurityAdvanced      | PropertySheetCallbackMessage SECURITY_OBJECT_ID SI_OBJECT_INFO_Flags SI_PAGE_ACTIVATED SI_PAGE_TYPE    | EFFPERM_RESULT_LIST SECURITY_OBJECT SI_OBJECT_INFO SID_INFO SID_INFO_LIST SI_ACCESS SI_INHERIT_TYPE  | IEffectivePermission IEffectivePermission2 ISecurityInformation ISecurityInformation2 ISecurityInformation3 ISecurityInformation4 ISecurityObjectTypeInfo 
+CreateSecurityPage<br>EditSecurity<br>EditSecurityAdvanced<br><br><br><br><br> | PropertySheetCallbackMessage<br>SECURITY_OBJECT_ID<br>SI_OBJECT_INFO_Flags<br>SI_PAGE_ACTIVATED<br>SI_PAGE_TYPE<br><br><br> | EFFPERM_RESULT_LIST<br>SECURITY_OBJECT<br>SI_OBJECT_INFO<br>SID_INFO<br>SID_INFO_LIST<br>SI_ACCESS<br>SI_INHERIT_TYPE<br> | IEffectivePermission<br>IEffectivePermission2<br>ISecurityInformation<br>ISecurityInformation2<br>ISecurityInformation3<br>ISecurityInformation4<br>ISecurityObjectTypeInfo<br>

@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows OLE DB.
 
 - Includes methods from Vanara.PInvoke.OleDb.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.OleDb?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.OleDb?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.OleDb)  
+### Dependencies  
+- Vanara.PInvoke.Odbc32  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (2 of 2 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

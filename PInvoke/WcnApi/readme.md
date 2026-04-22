@@ -3,6 +3,10 @@ PInvoke API (methods, structures and constants) imported from Windows Connect No
 
 - Includes methods from wcnapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WcnApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WcnApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WcnApi)  
+### Dependencies  
+- Vanara.PInvoke.IpHlpApi  
+- Vanara.PInvoke.Ole  
+- Vanara.PInvoke.WlanApi  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

@@ -373,7 +373,7 @@ public static partial class SearchApi
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
 		// HRESULT GetComparisonInfo( StrPtrUni *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
-		void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
+		void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, out PROPVARIANT_UNMGD ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
@@ -710,7 +710,7 @@ public static partial class SearchApi
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
 		// HRESULT GetComparisonInfo( StrPtrUni *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
-		new void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
+		new void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, out PROPVARIANT_UNMGD ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
@@ -813,7 +813,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition2-getleafconditioninfo
 		// HRESULT GetLeafConditionInfo( PROPERTYKEY *ppropkey, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
 		[PInvokeData("structuredquerycondition.h", MSDNShortId = "")]
-		void GetLeafConditionInfo(out PROPERTYKEY ppropkey, out CONDITION_OPERATION pcop, [Out] PROPVARIANT ppropvar);
+		void GetLeafConditionInfo(out PROPERTYKEY ppropkey, out CONDITION_OPERATION pcop, out PROPVARIANT_UNMGD ppropvar);
 	}
 
 	/// <summary>Represents a chunk of data as a string and a PROPVARIANT value.</summary>
@@ -854,7 +854,7 @@ public static partial class SearchApi
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-irichchunk-getdata
 		// HRESULT GetData( ULONG *pFirstPos, ULONG *pLength, StrPtrUni *ppsz, PROPVARIANT *pValue );
-		void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz, [In, Out] PROPVARIANT pValue);
+		void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz, out PROPVARIANT_UNMGD pValue);
 	}
 
 	/// <summary>

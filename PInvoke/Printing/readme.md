@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows winspool.d
 
 - Includes methods from winspool.drv, prntvpt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Printing?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Printing?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Printing)  
+### Dependencies  
+- Vanara.PInvoke.Gdi32  
+- Vanara.PInvoke.Opc  
 ### Methods - 100% API coverage (108 of 108 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

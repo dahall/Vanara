@@ -154,7 +154,7 @@ class Program
 		WriteFile(hStdout, bmsg, (uint)bmsg.Length, out _, default);
 
 		var inBuf = new byte[2];
-		ReadFile(hStdin, inBuf, (uint)inBuf.Length, out _, default);
+		ReadFile(hStdin, inBuf, out _);
 	}
 
 	//public static bool Move(string SourcePath, string DestinationPath, string NewName = null)

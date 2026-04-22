@@ -25,9 +25,6 @@ public class DisposingList : List<object>, IDisposable
 	/// <param name="collection">The collection whose elements are copied to the new list. Cannot be null.</param>
 	public DisposingList(IEnumerable<object> collection) : base(collection) { }
 
-	/// <summary>Finalizes an instance of the <see cref="DisposingList"/> class.</summary>
-	~DisposingList() => Dispose(false);
-
 	/// <summary>Releases the unmanaged resources used by the collection and optionally releases the managed resources.</summary>
 	/// <remarks>
 	/// This method is called by the public Dispose() method and the finalizer. When disposing is true, this method disposes all managed
@@ -39,19 +36,21 @@ public class DisposingList : List<object>, IDisposable
 	{
 		if (disposed)
 			return;
-		Reverse(); // dispose in reverse order of addition
-		foreach (var item in this.WhereNotNull())
+		lock (this)
 		{
-			if (item is IDisposable d)
-				d.Dispose();
-			else if (item.GetType().IsCOMObject)
+			for (int i = Count - 1; i >= 0; i--)
 			{
-				// Do nothing as this is causing issues with certain COM objects. (#573)
-				// Marshal.ReleaseComObject(item);
+				if (this[i] is IDisposable d)
+					d.Dispose();
+				else if (this[i].GetType().IsCOMObject)
+				{
+					// Do nothing as this is causing issues with certain COM objects. (#573)
+					// Marshal.ReleaseComObject(item);
+				}
+				RemoveAt(i);
 			}
+			disposed = true;
 		}
-		Clear();
-		disposed = true;
 	}
 
 	/// <inheritdoc/>

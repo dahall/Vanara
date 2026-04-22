@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from FirewallApi.dll fo
 
 - Includes methods from firewallapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FirewallApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FirewallApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FirewallApi)  
+### Dependencies  
+- Vanara.Core  
 ### Methods - 100% API coverage (11 of 11 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

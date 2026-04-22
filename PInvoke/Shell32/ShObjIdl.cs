@@ -2536,7 +2536,7 @@ public static partial class Shell32
 	// SHGetTemporaryPropertyForItem( IShellItem *psi, REFPROPERTYKEY propkey, PROPVARIANT *ppropvar );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "53953a5a-04a2-4749-a03b-8cbd5ac889f1")]
-	public static extern HRESULT SHGetTemporaryPropertyForItem(IShellItem psi, in PROPERTYKEY propkey, PROPVARIANT ppropvar);
+	public static extern HRESULT SHGetTemporaryPropertyForItem(IShellItem psi, in PROPERTYKEY propkey, out PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Applies the default set of properties on a Shell item.</para>
@@ -2608,7 +2608,7 @@ public static partial class Shell32
 	// SHSetTemporaryPropertyForItem( IShellItem *psi, REFPROPERTYKEY propkey, REFPROPVARIANT propvar );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "779b1b2e-cd4b-404f-9d50-ac87b81640d2")]
-	public static extern HRESULT SHSetTemporaryPropertyForItem(IShellItem psi, in PROPERTYKEY propkey, PROPVARIANT propvar);
+	public static extern HRESULT SHSetTemporaryPropertyForItem(IShellItem psi, in PROPERTYKEY propkey, in PROPVARIANT_UNMGD propvar);
 
 	/// <summary>
 	/// <para>Deprecated. Returns a pointer to an ITEMIDLIST structure when passed a path.</para>

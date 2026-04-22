@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Filtering 
 
 - Includes methods from fwpuclnt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FwpUClnt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FwpUClnt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FwpUClnt)  
+### Dependencies  
+- Vanara.PInvoke.Rpc  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (185 of 185 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

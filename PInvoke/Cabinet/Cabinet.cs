@@ -137,7 +137,8 @@ public static partial class Cabinet
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "0e32501c-5213-43e6-88ca-1e424181d7a2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Compress(COMPRESSOR_HANDLE CompressorHandle, IntPtr UncompressedData, SizeT UncompressedDataSize, IntPtr CompressedBuffer, SizeT CompressedBufferSize, out SizeT CompressedDataSize);
+	public static extern bool Compress(COMPRESSOR_HANDLE CompressorHandle, [In, SizeDef(nameof(UncompressedDataSize))] IntPtr UncompressedData, SizeT UncompressedDataSize,
+		[Out, SizeDef(nameof(CompressedBufferSize), SizingMethod.CheckLastError, OutVarName = nameof(CompressedDataSize))] IntPtr CompressedBuffer, SizeT CompressedBufferSize, out SizeT CompressedDataSize);
 
 	/// <summary>Generates a new <c>COMPRESSOR_HANDLE</c>.</summary>
 	/// <param name="Algorithm">
@@ -402,7 +403,8 @@ public static partial class Cabinet
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "654b88c7-14f2-43d4-8850-675ea303b439")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Decompress(DECOMPRESSOR_HANDLE DecompressorHandle, IntPtr CompressedData, SizeT CompressedDataSize, IntPtr UncompressedBuffer, SizeT UncompressedBufferSize, out SizeT UncompressedDataSize);
+	public static extern bool Decompress(DECOMPRESSOR_HANDLE DecompressorHandle, [Out, SizeDef(nameof(CompressedDataSize))] IntPtr CompressedData, SizeT CompressedDataSize,
+		[Out, SizeDef(nameof(UncompressedBufferSize), SizingMethod.CheckLastError, OutVarName = nameof(UncompressedDataSize))] IntPtr UncompressedBuffer, SizeT UncompressedBufferSize, out SizeT UncompressedDataSize);
 
 	/// <summary>Queries a compressor for information for a particular compression algorithm.</summary>
 	/// <param name="CompressorHandle">Handle to the compressor being queried for information.</param>

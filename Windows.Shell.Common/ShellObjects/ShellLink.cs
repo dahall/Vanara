@@ -338,7 +338,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		if (disposed) return;
 		if (link is not null)
 		{
-			Marshal.FinalReleaseComObject(link);
+			//Marshal.FinalReleaseComObject(link);
 			link = null!;
 		}
 		base.Dispose(disposing);

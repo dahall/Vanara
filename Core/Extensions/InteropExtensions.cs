@@ -341,7 +341,12 @@ public static partial class InteropExtensions
 	public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default,
 		Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 	{
-		if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler? marshaler))
+		if (value is null)
+		{
+			bytesAllocated = prefixBytes;
+			return IntPtr.Zero;
+		}
+		else if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler? marshaler))
 		{
 			using SafeAllocatedMemoryHandle mem = marshaler.MarshalManagedToNative(value);
 			return AllocWrite(bytesAllocated = mem.Size + prefixBytes, (p, c) => Marshal.Copy(mem.GetBytes(), 0, p.Offset(prefixBytes), mem.Size), memAlloc, memLock, memUnlock);

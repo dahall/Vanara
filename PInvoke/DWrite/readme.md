@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows DWrite.dll
 
 - Includes methods from dwrite.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DWrite?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DWrite?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DWrite)  
+### Dependencies  
+- Vanara.PInvoke.Gdi32  
+- Vanara.PInvoke.DXGI  
 ### Methods - 100% API coverage (1 of 1 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

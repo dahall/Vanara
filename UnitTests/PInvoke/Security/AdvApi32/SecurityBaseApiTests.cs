@@ -648,6 +648,10 @@ public class SecurityBaseApiTests
 		Assert.That(LookupPrivilegeValue(null, "SeDebugPrivilege", out var luid));
 		var ps = new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 		Assert.That(PrivilegeCheck(t, ref ps, out var res));
+		Assert.That(res, Is.False);
+		Assert.That(ps.PrivilegeCount, Is.EqualTo(1));
+		Assert.That(ps.Privilege[0].Luid, Is.EqualTo(luid));
+		Assert.That(ps.Privilege[0].Attributes, Is.Not.EqualTo(PrivilegeAttributes.SE_PRIVILEGE_USED_FOR_ACCESS));
 		Assert.That((uint)ps.Privilege[0].Attributes, Is.Not.Zero);
 		TestContext.WriteLine($"Has {luid}={res}, {ps.Privilege[0].Attributes}");
 

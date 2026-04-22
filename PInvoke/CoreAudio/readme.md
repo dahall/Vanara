@@ -3,6 +3,9 @@ PInvoke API (interfaces, methods, structures and constants) imported from Window
 
 - Includes methods from mmdevapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CoreAudio?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CoreAudio?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CoreAudio)  
+### Dependencies  
+- Vanara.PInvoke.Multimedia  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (1 of 1 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

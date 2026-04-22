@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Msi.dll.
 
 - Includes methods from msi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Msi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Msi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Msi)  
+### Dependencies  
+- Vanara.PInvoke.Cryptography  
 ### Methods - 100% API coverage (148 of 148 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

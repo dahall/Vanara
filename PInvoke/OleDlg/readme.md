@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows OleDlg.dll
 
 - Includes methods from oledlg.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.OleDlg?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.OleDlg?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.OleDlg)  
+### Dependencies  
+- Vanara.PInvoke.ComDlg32  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (12 of 12 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

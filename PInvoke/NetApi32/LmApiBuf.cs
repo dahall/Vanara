@@ -89,7 +89,7 @@ public static partial class NetApi32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using NetApiBufferFree.</summary>
 	[AutoSafeHandle("NetApiBufferFree(handle) == 0")]
-	public partial class SafeNetApiBuffer
+	public partial class SafeNetApiBuffer : IMemoryHandle
 	{
 		/// <summary>
 		/// Gets or sets the size of the buffer in bytes. When setting, this reallocates the existing buffer and does not guarantee that
@@ -101,6 +101,8 @@ public static partial class NetApi32
 			get { var err = NetApiBufferSize(handle, out var sz); return err.Succeeded ? sz : throw err.GetException()!; }
 			set { NetApiBufferReallocate(handle, value, out var h).ThrowIfFailed(); SetHandle(h); }
 		}
+
+		SizeT IMemoryHandle.Size { get => Size; set => Size = value; }
 
 		/// <summary>Allocates memory for a new <see cref="SafeNetApiBuffer"/>.</summary>
 		/// <param name="size">The size of the buffer in bytes.</param>
@@ -115,7 +117,7 @@ public static partial class NetApi32
 		/// <typeparam name="T">The type of the structure.</typeparam>
 		/// <param name="count">The count of structures in the list.</param>
 		/// <returns>The list of structures.</returns>
-		public IEnumerable<T?> ToIEnum<T>(int count) => this.ToIEnum<T>(count);
+		public IEnumerable<T?> ToIEnum<T>(int count) => handle.ToIEnum<T>(count);
 
 		/// <inheritdoc/>
 		public override string? ToString() => StringHelper.GetString(handle);

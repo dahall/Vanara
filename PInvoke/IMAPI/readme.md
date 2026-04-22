@@ -3,6 +3,8 @@ PInvoke API (interfaces and constants) imported from Windows Image Mastering API
 
 - Includes methods from imapi2.dll, imapi2fs.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.IMAPI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.IMAPI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IMAPI)  
+### Dependencies  
+- Vanara.PInvoke.Ole  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

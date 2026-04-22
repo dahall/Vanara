@@ -727,7 +727,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>An enumerator that can be used to iterate through the collection.</returns>
-		public IEnumerator<ShellItem> GetEnumerator() => Items.Select(ShellItem.Open).GetEnumerator();
+		public IEnumerator<ShellItem> GetEnumerator() => Items.Select(i => ShellItem.Open(i, true)).GetEnumerator();
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>An enumerator that can be used to iterate through the collection.</returns>

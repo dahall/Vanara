@@ -562,7 +562,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-activate HRESULT Activate( REFIID
 		// iid, DWORD dwClsCtx, PROPVARIANT *pActivationParams, void **ppInterface );
 		[PreserveSig]
-		HRESULT Activate([In] in Guid iid, [In] CLSCTX dwClsCtx, [In, Optional] PROPVARIANT? pActivationParams, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppInterface);
+		HRESULT Activate([In] in Guid iid, [In] CLSCTX dwClsCtx, [In, Optional, StructPointer(typeof(PROPVARIANT_UNMGD))] IntPtr pActivationParams, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppInterface);
 
 		/// <summary>The <c>OpenPropertyStore</c> method retrieves an interface to the device's property store.</summary>
 		/// <param name="stgmAccess">
@@ -792,10 +792,10 @@ public static partial class CoreAudio
 	/// </item>
 	/// </list>
 	/// </remarks>
-	public static TOut Activate<TOut>(this IMMDevice device, [In] CLSCTX dwClsCtx = CLSCTX.CLSCTX_ALL, [In] PROPVARIANT? pActivationParams = null) where TOut : class
+	public static TOut Activate<TOut>(this IMMDevice device, [In] CLSCTX dwClsCtx = CLSCTX.CLSCTX_ALL, [In] PROPVARIANT_UNMGD? pActivationParams = null) where TOut : class
 	{
-		device.Activate(typeof(TOut).GUID, dwClsCtx, pActivationParams, out var intf).ThrowIfFailed();
-		return (TOut)intf!;
+		device.Activate(dwClsCtx, pActivationParams, out TOut? intf).ThrowIfFailed();
+		return intf!;
 	}
 
 	/// <summary>The <c>Activate</c> method creates a COM object with the specified interface.</summary>
@@ -944,9 +944,9 @@ public static partial class CoreAudio
 	public static TOut Activate<TOut, TIn>(this IMMDevice device, [In] CLSCTX dwClsCtx, in TIn pActivationParams) where TOut : class where TIn : struct
 	{
 		using SafeCoTaskMemStruct<TIn> mem = pActivationParams;
-		PROPVARIANT pv = new(new BLOB() { cbSize = mem.Size, pBlobData = mem }, VarEnum.VT_BLOB);
-		device.Activate(typeof(TOut).GUID, dwClsCtx, pv, out var intf).ThrowIfFailed();
-		return (TOut)intf!;
+		using PROPVARIANT pv = new((BLOB)mem, VarEnum.VT_BLOB);
+		device.Activate(dwClsCtx, pv, out TOut? intf).ThrowIfFailed();
+		return intf!;
 	}
 
 	/// <summary>
@@ -1624,7 +1624,7 @@ public static partial class CoreAudio
 	// IActivateAudioInterfaceCompletionHandler *completionHandler, IActivateAudioInterfaceAsyncOperation **activationOperation );
 	[DllImport("mmdevapi.dll", SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mmdeviceapi.h", MSDNShortId = "7BAFD9DB-DCD7-4093-A24B-9A8556C6C45B")]
-	public static extern HRESULT ActivateAudioInterfaceAsync([MarshalAs(UnmanagedType.LPWStr)] string deviceInterfacePath, in Guid riid, [In, Optional] PROPVARIANT? activationParams,
+	public static extern HRESULT ActivateAudioInterfaceAsync([MarshalAs(UnmanagedType.LPWStr)] string deviceInterfacePath, in Guid riid, in PROPVARIANT_UNMGD activationParams,
 		[MarshalAs(UnmanagedType.IUnknown)] IActivateAudioInterfaceCompletionHandler completionHandler, [MarshalAs(UnmanagedType.IUnknown)] out IActivateAudioInterfaceAsyncOperation activationOperation);
 
 	/// <summary>The <c>DIRECTX_AUDIO_ACTIVATION_PARAMS</c> structure specifies the initialization parameters for a DirectSound stream.</summary>

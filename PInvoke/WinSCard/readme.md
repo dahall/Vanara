@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows WinSCard.d
 
 - Includes methods from winscard.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinSCard?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinSCard?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinSCard)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (47 of 47 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

@@ -55,7 +55,7 @@ public class PreferFewerAttributeOverloadAnalyzer : DiagnosticAnalyzer
 			.OfType<IMethodSymbol>()
 			.Where(m => !SymbolEqualityComparer.Default.Equals(m, calledMethod) &&
 						m.DeclaredAccessibility == calledMethod.DeclaredAccessibility &&
-						m.IsStatic == calledMethod.IsStatic)
+						m.IsStatic == calledMethod.IsStatic && !m.IsExtern)
 			.ToList();
 
 		if (overloads.Count == 0)
@@ -73,12 +73,12 @@ public class PreferFewerAttributeOverloadAnalyzer : DiagnosticAnalyzer
 			if (overloadAttrCount >= calledAttrCount)
 				continue;
 
-			// Check that the overload could accept the arguments being passed
-			if (!IsOverloadCompatible(context.SemanticModel, invocation, calledMethod, overload))
-				continue;
+			//// Check that the overload could accept the arguments being passed
+			//if (!IsOverloadCompatible(context.SemanticModel, invocation, calledMethod, overload))
+			//	continue;
 
 			// Found a better overload — report diagnostic
-			var overloadSignature = FormatMethodSignature(overload);
+			var overloadSignature = FormatMethodSignature(calledMethod, invocation.ArgumentList.Arguments, overload);
 			var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), overloadSignature);
 			context.ReportDiagnostic(diagnostic);
 			return; // Report only the best match
@@ -162,9 +162,19 @@ public class PreferFewerAttributeOverloadAnalyzer : DiagnosticAnalyzer
 	}
 
 	/// <summary>Formats a method signature for display in the diagnostic message.</summary>
-	private static string FormatMethodSignature(IMethodSymbol method)
+	private static string FormatMethodSignature(IMethodSymbol method, SeparatedSyntaxList<ArgumentSyntax> args, IMethodSymbol overload)
 	{
-		var parameters = string.Join(", ", method.Parameters.Select(p => p.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)));
-		return $"{method.Name}({parameters})";
+		//// For each matching paramenter in overload from method, use the argument syntax identifier to create a signature like "Method(arg1, arg2, ...)"
+		//string[] outArgs = new string[overload.Parameters.Length];
+		//for (int i = 0; i < overload.Parameters.Length; i++)
+		//{
+		//	IParameterSymbol? p = overload.Parameters[i];
+		//	var matchingParam = method.Parameters.FirstOrDefault(mp => mp.Name == p.Name);
+		//	var matchingParamIndex = matchingParam != null ? method.Parameters.IndexOf(matchingParam) : -1;
+		//	outArgs[i] = matchingParamIndex >= 0 && matchingParamIndex < args.Count
+		//		? args[matchingParamIndex].ToString()
+		//		: p.Name;
+		//}
+		return overload.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 	}
 }

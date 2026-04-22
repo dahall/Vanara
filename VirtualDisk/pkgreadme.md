@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Enumerations
 --- | ---
-VirtualDisk VirtualDiskMetadata VirtualDiskSetInformation VirtualDiskSettingData VirtualDiskSnapshotInformation  | CompactionMode DeviceType Subtype   
+VirtualDisk<br>VirtualDiskMetadata<br>VirtualDiskSetInformation<br>VirtualDiskSettingData<br>VirtualDiskSnapshotInformation<br> | CompactionMode<br>DeviceType<br>Subtype<br><br><br>

@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows DStorage.d
 
 - Includes methods from Vanara.PInvoke.DStorage.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DStorage?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DStorage?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DStorage)  
+### Dependencies  
+- Vanara.PInvoke.Direct3D12  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (4 of 4 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

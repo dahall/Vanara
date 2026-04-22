@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Imm32.dll.
 
 - Includes methods from imm32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Imm32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Imm32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Imm32)  
+### Dependencies  
+- Vanara.PInvoke.User32  
 ### Methods - 100% API coverage (46 of 46 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
@@ -23,7 +25,7 @@ Native Method | Header | Managed Method
 [ImmGetCompositionFont](https://www.google.com/search?num=5&q=ImmGetCompositionFontA+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetCompositionFont](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetCompositionFont)  
 [ImmGetCompositionString](https://www.google.com/search?num=5&q=ImmGetCompositionStringA+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetCompositionString](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetCompositionString)  
 [ImmGetCompositionWindow](https://www.google.com/search?num=5&q=ImmGetCompositionWindow+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetCompositionWindow](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetCompositionWindow)  
-[ImmGetContext](https://www.google.com/search?num=5&q=ImmGetContext+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetContext](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetContext)  
+[ImmGetContext](https://www.google.com/search?num=5&q=ImmGetContext+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Imm32.&lt;ImmGetContext&gt;g__ImmGetContext|120_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BImmGetContext%26gt%3Bg__ImmGetContext%7C120_0)  
 [ImmGetConversionList](https://www.google.com/search?num=5&q=ImmGetConversionListA+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetConversionList](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetConversionList)  
 [ImmGetConversionStatus](https://www.google.com/search?num=5&q=ImmGetConversionStatus+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetConversionStatus](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetConversionStatus)  
 [ImmGetDefaultIMEWnd](https://www.google.com/search?num=5&q=ImmGetDefaultIMEWnd+site%3Alearn.microsoft.com) | imm.h | [Vanara.PInvoke.Imm32.ImmGetDefaultIMEWnd](https://github.com/dahall/Vanara/search?l=C%23&q=ImmGetDefaultIMEWnd)  

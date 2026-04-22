@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes
 ---
-GdiObjExtensions2 SystemWindowsExtensions 
+GdiObjExtensions2<br>SystemWindowsExtensions<br>

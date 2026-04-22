@@ -429,7 +429,7 @@ public partial class ShellFileOperations : IDisposable
 
 			if (disposeOp && op != null)
 			{
-				Marshal.FinalReleaseComObject(op);
+				//Marshal.FinalReleaseComObject(op);
 				op = null!;
 			}
 

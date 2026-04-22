@@ -1159,7 +1159,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-irowsetevents-onnewitem HRESULT OnNewItem(
 		// REFPROPVARIANT itemID, ROWSETEVENT_ITEMSTATE newItemState );
 		[PInvokeData("searchapi.h")]
-		void OnNewItem([In] PROPVARIANT itemID, [In] ROWSETEVENT_ITEMSTATE newItemState);
+		void OnNewItem(in PROPVARIANT_UNMGD itemID, [In] ROWSETEVENT_ITEMSTATE newItemState);
 
 		/// <summary>
 		/// Called by the indexer to notify clients that an item has been modified. This item may have matched some (or all) of the
@@ -1212,7 +1212,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-irowsetevents-onchangeditem HRESULT OnChangedItem(
 		// REFPROPVARIANT itemID, ROWSETEVENT_ITEMSTATE rowsetItemState, ROWSETEVENT_ITEMSTATE changedItemState );
 		[PInvokeData("searchapi.h")]
-		void OnChangedItem([In] PROPVARIANT itemID, [In] ROWSETEVENT_ITEMSTATE rowsetItemState, [In] ROWSETEVENT_ITEMSTATE changedItemState);
+		void OnChangedItem(in PROPVARIANT_UNMGD itemID, [In] ROWSETEVENT_ITEMSTATE rowsetItemState, [In] ROWSETEVENT_ITEMSTATE changedItemState);
 
 		/// <summary>
 		/// Called by the indexer to notify clients that an item has been deleted. This item may have matched some (or all) of the search
@@ -1230,7 +1230,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-irowsetevents-ondeleteditem HRESULT OnDeletedItem(
 		// REFPROPVARIANT itemID, ROWSETEVENT_ITEMSTATE deletedItemState );
 		[PInvokeData("searchapi.h")]
-		void OnDeletedItem([In] PROPVARIANT itemID, [In] ROWSETEVENT_ITEMSTATE deletedItemState);
+		void OnDeletedItem(in PROPVARIANT_UNMGD itemID, [In] ROWSETEVENT_ITEMSTATE deletedItemState);
 
 		/// <summary>Called by the indexer to notify clients of an event related to the client rowset.</summary>
 		/// <param name="eventType">
@@ -1244,7 +1244,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-irowsetevents-onrowsetevent HRESULT OnRowsetEvent(
 		// ROWSETEVENT_TYPE eventType, REFPROPVARIANT eventData );
 		[PInvokeData("searchapi.h")]
-		void OnRowsetEvent([In] ROWSETEVENT_TYPE eventType, [In] PROPVARIANT eventData);
+		void OnRowsetEvent([In] ROWSETEVENT_TYPE eventType, in PROPVARIANT_UNMGD eventData);
 	}
 
 	/// <summary>Sets or retrieves the current indexer prioritization level for the scope specified by this query.</summary>
@@ -1384,7 +1384,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-setparameter HRESULT
 		// SetParameter( LPCWSTR pszName, PROPVARIANT *pValue );
 		[PInvokeData("searchapi.h")]
-		void SetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] PROPVARIANT pValue);
+		void SetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName, in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>Gets the status of the catalog.</summary>
 		/// <param name="pStatus">
@@ -1702,7 +1702,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchcatalogmanager-setparameter HRESULT
 		// SetParameter( LPCWSTR pszName, PROPVARIANT *pValue );
 		[PInvokeData("searchapi.h")]
-		new void SetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] PROPVARIANT pValue);
+		new void SetParameter([In, MarshalAs(UnmanagedType.LPWStr)] string pszName, in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>Gets the status of the catalog.</summary>
 		/// <param name="pStatus">
@@ -3081,7 +3081,7 @@ public static partial class SearchApi
 		// LPCWSTR pszName, const PROPVARIANT *pValue );
 		[PInvokeData("searchapi.h")]
 		[Obsolete]
-		void SetParameter([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] PROPVARIANT pValue);
+		void SetParameter([MarshalAs(UnmanagedType.LPWStr)] string pszName, in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>Retrieves the proxy name to be used by the protocol handler.</summary>
 		/// <remarks>
@@ -3320,7 +3320,7 @@ public static partial class SearchApi
 		// LPCWSTR pszName, const PROPVARIANT *pValue );
 		[PInvokeData("searchapi.h")]
 		[Obsolete]
-		new void SetParameter([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In] PROPVARIANT pValue);
+		new void SetParameter([MarshalAs(UnmanagedType.LPWStr)] string pszName, in PROPVARIANT_UNMGD pValue);
 
 		/// <summary>Retrieves the proxy name to be used by the protocol handler.</summary>
 		/// <remarks>
@@ -4606,7 +4606,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor-addrequestparameter HRESULT
 		// AddRequestParameter( PROPSPEC *pSpec, PROPVARIANT *pVar );
 		[PInvokeData("searchapi.h")]
-		void AddRequestParameter(in PROPSPEC pSpec, [In] PROPVARIANT pVar);
+		void AddRequestParameter(in PROPSPEC pSpec, in PROPVARIANT_UNMGD pVar);
 
 		/// <summary>Gets the document format, represented as a Multipurpose Internet Mail Extensions (MIME) string.</summary>
 		/// <param name="wszDocFormat">
@@ -4887,7 +4887,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor-addrequestparameter HRESULT
 		// AddRequestParameter( PROPSPEC *pSpec, PROPVARIANT *pVar );
 		[PInvokeData("searchapi.h")]
-		new void AddRequestParameter(in PROPSPEC pSpec, [In] PROPVARIANT pVar);
+		new void AddRequestParameter(in PROPSPEC pSpec, in PROPVARIANT_UNMGD pVar);
 
 		/// <summary>Gets the document format, represented as a Multipurpose Internet Mail Extensions (MIME) string.</summary>
 		/// <param name="wszDocFormat">
@@ -5223,7 +5223,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor-addrequestparameter HRESULT
 		// AddRequestParameter( PROPSPEC *pSpec, PROPVARIANT *pVar );
 		[PInvokeData("searchapi.h")]
-		new void AddRequestParameter(in PROPSPEC pSpec, [In] PROPVARIANT pVar);
+		new void AddRequestParameter(in PROPSPEC pSpec, in PROPVARIANT_UNMGD pVar);
 
 		/// <summary>Gets the document format, represented as a Multipurpose Internet Mail Extensions (MIME) string.</summary>
 		/// <param name="wszDocFormat">
@@ -5596,7 +5596,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor-addrequestparameter HRESULT
 		// AddRequestParameter( PROPSPEC *pSpec, PROPVARIANT *pVar );
 		[PInvokeData("searchapi.h")]
-		new void AddRequestParameter(in PROPSPEC pSpec, [In] PROPVARIANT pVar);
+		new void AddRequestParameter(in PROPSPEC pSpec, in PROPVARIANT_UNMGD pVar);
 
 		/// <summary>Gets the document format, represented as a Multipurpose Internet Mail Extensions (MIME) string.</summary>
 		/// <param name="wszDocFormat">
@@ -6322,7 +6322,7 @@ public static partial class SearchApi
 		/// <para>Type: <c>PROPVARIANT</c></para>
 		/// <para>The name of the column referenced in the ISearchQueryHelper::WriteProperties methods pColumns property array.</para>
 		/// </summary>
-		public PROPVARIANT Value;
+		public PROPVARIANT_UNMGD Value;
 
 		/// <summary>
 		/// <para>Type: <c>LCID</c></para>
