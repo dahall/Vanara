@@ -1247,7 +1247,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365790")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool TransactNamedPipe([In] HPIPE hNamedPipe, [In, SizeDef(nameof(nInBufferSize))] IntPtr lpInBuffer,
-		uint nInBufferSize, [Out, SizeDef(nameof(nOutBufferSize))] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, ref NativeOverlapped lpOverlapped);
+		uint nInBufferSize, [Out, SizeDef(nameof(nOutBufferSize), SizingMethod.Guess)] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Waits until either a time-out interval elapses or an instance of the specified named pipe is available for connection (that is,

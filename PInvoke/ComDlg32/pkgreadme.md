@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures | Interfaces
 --- | --- | --- | ---
-ChooseColor ChooseFont CommDlgExtendedError FindText GetFileTitle GetOpenFileName GetSaveFileName PageSetupDlg PrintDlg PrintDlgEx ReplaceText  | CC ERR CF DN OFN OFN_EX PD PD_EXCL PD_RESULT PSD   | CHOOSECOLOR CHOOSEFONT DEVNAMES FINDREPLACE OFNOTIFY OFNOTIFYEX OPENFILENAME PAGESETUPDLG PRINTDLG PRINTDLGEX PRINTPAGERANGE  | IPrintDialogCallback IPrintDialogServices          
+ChooseColor<br>ChooseFont<br>CommDlgExtendedError<br>FindText<br>GetFileTitle<br>GetOpenFileName<br>GetSaveFileName<br>PageSetupDlg<br>PrintDlg<br>PrintDlgEx<br>ReplaceText<br> | CC<br>ERR<br>CF<br>DN<br>OFN<br>OFN_EX<br>PD<br>PD_EXCL<br>PD_RESULT<br>PSD<br><br> | CHOOSECOLOR<br>CHOOSEFONT<br>DEVNAMES<br>FINDREPLACE<br>OFNOTIFY<br>OFNOTIFYEX<br>OPENFILENAME<br>PAGESETUPDLG<br>PRINTDLG<br>PRINTDLGEX<br>PRINTPAGERANGE<br> | IPrintDialogCallback<br>IPrintDialogServices<br><br><br><br><br><br><br><br><br><br>

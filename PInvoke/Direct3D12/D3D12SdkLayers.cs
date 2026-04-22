@@ -5076,7 +5076,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushStorageFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushStorageFilter([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5118,7 +5118,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		HRESULT AddRetrievalFilterEntries([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5179,7 +5179,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		HRESULT PushRetrievalFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		HRESULT PushRetrievalFilter([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5570,7 +5570,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushstoragefilter HRESULT
 		// PushStorageFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT PushStorageFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		new HRESULT PushStorageFilter([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5612,7 +5612,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-addretrievalfilterentries
 		// HRESULT AddRetrievalFilterEntries( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT AddRetrievalFilterEntries([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		new HRESULT AddRetrievalFilterEntries([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Get the retrieval filter at the top of the retrieval-filter stack.</summary>
 		/// <param name="pFilter">
@@ -5673,7 +5673,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-pushretrievalfilter HRESULT
 		// PushRetrievalFilter( [in] D3D12_INFO_QUEUE_FILTER *pFilter );
 		[PreserveSig]
-		new HRESULT PushRetrievalFilter([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<D3D12_INFO_QUEUE_FILTER>))] D3D12_INFO_QUEUE_FILTER pFilter);
+		new HRESULT PushRetrievalFilter([In, StructPointer(typeof(D3D12_INFO_QUEUE_FILTER))] IntPtr pFilter);
 
 		/// <summary>Pop a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>

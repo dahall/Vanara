@@ -41,10 +41,10 @@ public static partial class CoreAudio
             HRESULT SetShareMode([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, in DeviceShareMode mode);
 
             [PreserveSig]
-            HRESULT GetPropertyValue([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, [MarshalAs(UnmanagedType.Bool)] bool bFxStore, in PROPERTYKEY key, [Out] PROPVARIANT pv);
+            HRESULT GetPropertyValue([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, [MarshalAs(UnmanagedType.Bool)] bool bFxStore, in PROPERTYKEY key, out PROPVARIANT_UNMGD pv);
 
             [PreserveSig]
-            HRESULT SetPropertyValue([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, [MarshalAs(UnmanagedType.Bool)] bool bFxStore, in PROPERTYKEY key, [Out] PROPVARIANT pv);
+            HRESULT SetPropertyValue([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, [MarshalAs(UnmanagedType.Bool)] bool bFxStore, in PROPERTYKEY key, out PROPVARIANT_UNMGD pv);
 
             [PreserveSig]
             HRESULT SetDefaultEndpoint([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName, [MarshalAs(UnmanagedType.U4)] ERole role);

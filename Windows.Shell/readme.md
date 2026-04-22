@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.Windows.Shell.dll
 Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.
+### Dependencies
+- Vanara.Windows.Shell.Common
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

@@ -1502,7 +1502,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptFormatObject(CertEncodingType dwCertEncodingType, [Optional, Ignore] uint dwFormatType, CryptFormatStr dwFormatStrType, [Optional, Ignore] IntPtr pFormatStruct,
 		[In] SafeOID lpszStructType, [In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
-		[Out, Optional, SizeDef(nameof(pcbFormat), SizingMethod.Query)] IntPtr pbFormat, ref uint pcbFormat);
+		[Out, Optional, SizeDef(nameof(pcbFormat), SizingMethod.CheckLastError)] IntPtr pbFormat, ref uint pcbFormat);
 
 	/// <summary>The <c>CryptStringToBinary</c> function converts a formatted string into an array of bytes.</summary>
 	/// <param name="pszString">A pointer to a string that contains the formatted string to be converted.</param>
@@ -1639,5 +1639,5 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "13b6f5ef-174a-4254-8492-6e7dcc58945f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptStringToBinary([In, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchString))] string pszString, uint cchString,
-		CryptStringFormat dwFlags, [Out, Optional, SizeDef(nameof(pcbBinary), SizingMethod.Query)] IntPtr pbBinary, ref uint pcbBinary, out uint pdwSkip, out CryptStringFormat pdwFlags);
+		CryptStringFormat dwFlags, [Out, Optional, SizeDef(nameof(pcbBinary), SizingMethod.CheckLastError)] IntPtr pbBinary, ref uint pcbBinary, out uint pdwSkip, out CryptStringFormat pdwFlags);
 }

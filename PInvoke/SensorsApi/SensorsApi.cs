@@ -255,7 +255,7 @@ public static partial class SensorsApi
 		/// <remarks>To retrieve multiple property values as a collection, call ISensor::GetProperties.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensor-getproperty
 		// HRESULT GetProperty( [in] REFPROPERTYKEY key, [out] PROPVARIANT *pProperty );
-		public void GetProperty(in PROPERTYKEY key, [Out] PROPVARIANT pProperty);
+		public void GetProperty(in PROPERTYKEY key, out PROPVARIANT_UNMGD pProperty);
 
 		/// <summary>Retrieves multiple sensor properties.</summary>
 		/// <param name="pKeys">
@@ -492,7 +492,7 @@ public static partial class SensorsApi
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/sensorsapi/nf-sensorsapi-isensordatareport-getsensorvalue
 		// HRESULT GetSensorValue( [in] REFPROPERTYKEY pKey, [out] PROPVARIANT *pValue );
-		public void GetSensorValue(in PROPERTYKEY pKey, [Out] PROPVARIANT pValue);
+		public void GetSensorValue(in PROPERTYKEY pKey, out PROPVARIANT_UNMGD pValue);
 
 		/// <summary>Retrieves a collection of data field values.</summary>
 		/// <param name="pKeys">
@@ -851,9 +851,8 @@ public static partial class SensorsApi
 	// HRESULT GetProperty( [in] REFPROPERTYKEY key, [out] PROPVARIANT *pProperty );
 	public static object? GetProperty(this ISensor s, in PROPERTYKEY key)
 	{
-		PROPVARIANT pv = new();
-		s.GetProperty(key, pv);
-		return pv.Value;
+		s.GetProperty(key, out var pv);
+		return new PROPVARIANT(pv).Value;
 	}
 
 	/// <summary>Retrieves a single data field value from the data report.</summary>
@@ -869,9 +868,8 @@ public static partial class SensorsApi
 	// HRESULT GetSensorValue( [in] REFPROPERTYKEY pKey, [out] PROPVARIANT *pValue );
 	public static object? GetSensorValue(this ISensorDataReport r, in PROPERTYKEY pKey)
 	{
-		PROPVARIANT pv = new();
-		r.GetSensorValue(pKey, pv);
-		return pv.Value;
+		r.GetSensorValue(pKey, out var pv);
+		return new PROPVARIANT(pv).Value;
 	}
 
 	/// <summary>CLSID_Sensor</summary>

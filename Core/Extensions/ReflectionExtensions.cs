@@ -266,6 +266,9 @@ namespace Vanara.Extensions.Reflection
 		/// <summary>Gets a value that determines if the type is a primitive type that can be blitted.</summary>
 		public static bool IsBlittablePrimitive(this Type? type) => type is not null && (IsIntegral(type) || IsNativeSized(type) || IsFloatingPoint(type));
 
+		/// <summary>Gets a value that determines if the type is a COM interface.</summary>
+		public static bool IsComInterface(this Type? type) => type is not null && type.IsInterface && type.GetCustomAttribute<ComImportAttribute>() != null;
+
 		/// <summary>Gets a value that determines if the type is a floating point type.</summary>
 		public static bool IsFloatingPoint(this Type? type) => Type.GetTypeCode(type) is TypeCode.Single or TypeCode.Double;
 

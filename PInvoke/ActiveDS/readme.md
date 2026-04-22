@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Active Dir
 
 - Includes methods from activeds.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ActiveDS?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ActiveDS?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ActiveDS)  
+### Dependencies  
+- Vanara.PInvoke.Ole  
 ### Methods - 100% API coverage (18 of 18 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

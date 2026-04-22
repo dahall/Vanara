@@ -58,6 +58,10 @@ namespace Vanara.Generators;
 [Generator(LanguageNames.CSharp)]
 public partial class VanaraAttributeGenerator : IIncrementalGenerator
 {
+	const string hMemTypeStr = "global::Vanara.InteropServices.SafeHGlobalHandle";
+	const string hMemMgrStr = "global::Vanara.InteropServices.HGlobalMemoryMethods";
+	static readonly TypeSyntax hMemType = ParseTypeName(hMemTypeStr);
+
 	[Flags]
 	internal enum SizingMethod
 	{
@@ -802,7 +806,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			{
 				var ai when ai.StructPtr is not null => ai switch
 				{
-					var sai when !ai.StructPtr.Marshal && ai.ModType == ModType.Out => (ParseTypeName($"global::Vanara.InteropServices.SafeHGlobalStruct<{ai.StructPtr.StructType.Name}>"), SizeParamType.StructPtr, "***THIS SHOULD NEVER HAPPEN***"),
+					//var sai when !ai.StructPtr.Marshal && ai.ModType == ModType.Out => (ParseTypeName($"global::Vanara.InteropServices.SafeHGlobalStruct<{ai.StructPtr.StructType.Name}>"), SizeParamType.StructPtr, "***THIS SHOULD NEVER HAPPEN***"),
+					var sai when !ai.StructPtr.Marshal && ai.ModType == ModType.Out => (hMemType, SizeParamType.StructPtr, "***THIS SHOULD NEVER HAPPEN***"),
 					var sai when ai.StructPtr.IsOptional => (ParseTypeName(ai.StructPtr.StructType.Name + '?'), SizeParamType.StructPtr | SizeParamType.Nullable, $"global::Vanara.Extensions.InteropExtensions.SizeOf<{ai.StructPtr.StructType.Name}>()"),
 					_ => (ParseTypeName(ai.StructPtr.StructType.Name), SizeParamType.StructPtr, $"global::Vanara.Extensions.InteropExtensions.SizeOf<{ai.StructPtr.StructType.Name}>()"),
 				},
@@ -859,12 +864,14 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		var szVarName = attrInfo.SzParam is null ? UniqueName("__sz") : attrInfo.SzParam.Identifier.Text;
 		TypeSyntax szVarTypeDecl = attrInfo.SzParam is null ? PredefinedType(Token(SyntaxKind.IntKeyword)) : attrInfo.SzParam.Type!;
 		// Get size based on count
-		if (isInParam)
+		if (isInParam || attrInfo.InitSize == -1)
 			attrInfo.SzValueExpr = szVarTypeDecl.ToString() == "int" ? string.Format(getLenExpr, decl.Identifier.Text) : $"({szVarTypeDecl})Convert.ChangeType({string.Format(getLenExpr, decl.Identifier.Text)}, typeof({szVarTypeDecl}))";
+		else if (attrInfo.InitSize > 0)
+			attrInfo.SzValueExpr = szVarTypeDecl.ToString() == "int" ? attrInfo.InitSize.ToString() : $"({szVarTypeDecl})Convert.ChangeType({attrInfo.InitSize}, typeof({szVarTypeDecl}))";
 		// Initialize size variable
 		tmpbuilder.statements.setupVariables[szVarName] = LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
 			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(szVarName))
-				.WithInitializer(EqualsValueClause(attrInfo.SizingMethod.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(attrInfo.SzValueExpr ?? "0"))))));
+				.WithInitializer(EqualsValueClause(attrInfo.SizingMethod.HasFlag(SizingMethod.Query) && attrInfo.InitSize == 0 ? MethodBodyBuilder.defaultExpr : ParseExpression(attrInfo.SzValueExpr ?? "0"))))));
 		// If attrInfo.OutSzParam is specified, create statement that assigns attrInfo.OutSzParam to default value
 		if (attrInfo.OutSzParam is not null)
 			tmpbuilder.statements.setupVariables[attrInfo.OutSzParam.Identifier.Text] = LocalDeclarationStatement(VariableDeclaration(attrInfo.OutSzParam.Type!)
@@ -883,8 +890,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		{
 			SizeParamType.String => (MethodBodyBuilder.defaultExpr, ParseExpression("string.Empty")),
 			SizeParamType.Array or SizeParamType.Ptr or SizeParamType.ArrayPtr => (MethodBodyBuilder.defaultExpr, ParseExpression("[]")),
-			SizeParamType.StructPtr when !attrInfo.StructPtr!.Marshal => (ParseExpression($"global::Vanara.InteropServices.SafeHGlobalStruct<{attrInfo.StructPtr!.StructType.Name}>.Null"), MethodBodyBuilder.defaultExpr),
-			SizeParamType.StructPtr => (MethodBodyBuilder.defaultExpr, MethodBodyBuilder.defaultExpr),
+			SizeParamType.StructPtr when !attrInfo.StructPtr!.Marshal => (ParseExpression($"{hMemTypeStr}.Null"), MethodBodyBuilder.defaultExpr),
+			SizeParamType.StructPtr => (MethodBodyBuilder.defaultExpr, ParseExpression("new()")),
 			_ => default,
 		};
 		if (outNullVal is null || outDefVal is null)
@@ -894,27 +901,35 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 		if (!isInParam)
 			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier),
-				isNullable || useStructHandle ? outNullVal : outDefVal)));
+				isNullable || (attrInfo.StructPtr is not null && !attrInfo.StructPtr.Marshal) ? outNullVal : outDefVal)));
 
 		// **********************************
 		// Setup argument values
 		// **********************************
 		// If isInParam is true, create an assignment statement that assigns decl parameter to the appropriate value 
-		string? inArgName = isInParam ? $"__{decl.Identifier.Text}" : null;
-		if (isInParam)
+		string? setupArgName = $"__{decl.Identifier.Text}";
+		if (isInParam || attrInfo.InitSize != 0)
 		{
-			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(decl.Type!)
-				.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(inArgName!))
+			var setupArgType = (szType & ~SizeParamType.Nullable) switch
+			{
+				SizeParamType.StructPtr when isInParam || attrInfo.InitSize != 0 => hMemType,
+				SizeParamType.ArrayPtr when !attrInfo.ArrayPtr!.ElementType.IsUnmanagedType => hMemType,
+				_ => decl.Type!,
+			};
+			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(setupArgType)
+				.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(setupArgName!))
 					.WithInitializer(EqualsValueClause((szType & ~SizeParamType.Nullable) switch
 					{
 						SizeParamType.Ptr when isNullable => ParseExpression($"{decl.Identifier.Text} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
 						SizeParamType.Ptr => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
+						SizeParamType.String when attrInfo.InitSize != 0 => ParseExpression($"new({(attrInfo.InitSize == -1 ? "1" : attrInfo.InitSize.ToString())})"),
 						SizeParamType.String when isNullable => IdentifierName($"{decl.Identifier.Text}?.ToString()"),
 						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString()"),
-						SizeParamType.StructPtr when !useStructHandle => ParseExpression($"new global::Vanara.InteropServices.PinnedObject({decl.Identifier.Text})"),
-						SizeParamType.StructPtr => ParseExpression($"global::Vanara.InteropServices.SafeHGlobalHandle.CreateFromStructure({decl.Identifier.Text})"),
+						SizeParamType.StructPtr when !useStructHandle && isInParam => ParseExpression($"new global::Vanara.InteropServices.PinnedObject({decl.Identifier.Text})"),
+						SizeParamType.StructPtr when !useStructHandle && !isInParam => ParseExpression($"new({(attrInfo.InitSize == -1 ? string.Format(getLenExpr, decl.Identifier.Text) : attrInfo.InitSize.ToString())})"),
+						SizeParamType.StructPtr => ParseExpression($"{hMemTypeStr}.CreateFromStructure({decl.Identifier.Text})"),
 						SizeParamType.ArrayPtr when attrInfo.ArrayPtr!.ElementType.IsUnmanagedType => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
-						SizeParamType.ArrayPtr => ParseExpression($"global::Vanara.InteropServices.SafeHGlobalHandle.CreateFromList({decl.Identifier.Text})"),
+						SizeParamType.ArrayPtr => ParseExpression($"{hMemTypeStr}.CreateFromList({decl.Identifier.Text})"),
 						_ => IdentifierName(decl.Identifier.Text),
 					}))))));
 		}
@@ -931,7 +946,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			{
 				tmpbuilder.statements.invokeForQueryArgs = [.. tmpbuilder.statements.invokeForQueryArgs.Select(a => a switch
 				{
-					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) => Argument(DefaultExpression(decl.Type!)),
+					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) => Argument(attrInfo.InitSize == 0 ? DefaultExpression(decl.Type!) : IdentifierName(setupArgName)),
 					ArgumentSyntax arg when attrInfo.SzParam is not null && arg.NameEquals(attrInfo.SzParam.Identifier.Text) => Argument(IdentifierName(szVarName)),
 					_ => a
 				})];
@@ -940,7 +955,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			{
 				tmpbuilder.statements.invokeForQueryArgs = [.. tmpbuilder.statements.invokeForQueryArgs.Select(a => a switch
 				{
-					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) => Argument(DefaultExpression(decl.Type!)),
+					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) => Argument(attrInfo.InitSize == 0 ? DefaultExpression(decl.Type!) : IdentifierName(setupArgName)),
 					ArgumentSyntax arg when attrInfo.SzParam is not null && arg.NameEquals(attrInfo.SzParam.Identifier.Text) => attrInfo switch {
 						var ai when ai.OutSzParam is not null && ai.SzParam.Modifiers.Any(SyntaxKind.RefKeyword) => Argument(null, MethodBodyBuilder.refToken, IdentifierName(szVarName)),
 						var ai when ai.OutSzParam is not null => Argument(IdentifierName(szVarName)),
@@ -959,7 +974,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 						SizeParamType.String => Argument(ParseExpression("new StringBuilder(0)")),
 						SizeParamType.Array => Argument(ParseExpression("[]")),
 						SizeParamType.Ptr => Argument(ParseExpression("IntPtr.Zero")),
-						SizeParamType.StructPtr or SizeParamType.ArrayPtr => Argument(MethodBodyBuilder.defaultExpr),
+						SizeParamType.StructPtr or SizeParamType.ArrayPtr => Argument(attrInfo.InitSize == 0 ? MethodBodyBuilder.defaultExpr : IdentifierName(setupArgName)),
 						_ => a,
 					},
 					ArgumentSyntax arg when attrInfo.SzParam is not null && arg.NameEquals(attrInfo.SzParam.Identifier.Text) => attrInfo switch {
@@ -1027,23 +1042,30 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (!isInParam)
 		{
 			var outVarDecl = VariableDeclaration(decl.Type!);
-			outVarDecl = (szType & ~SizeParamType.Nullable) switch
+			if (attrInfo.InitSize == 0)
 			{
-				SizeParamType.String => outVarDecl
-					.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
-						.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
-							.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
-				SizeParamType.Array => (decl.Type is ArrayTypeSyntax ats ? ats : (decl.Type is NullableTypeSyntax nts && nts.ElementType is ArrayTypeSyntax nats ? nats : null))?
-					.CreateArrayVariableDeclaration(outVarName, cElemName) ?? outVarDecl,
-				SizeParamType.StructPtr when useStructHandle => VariableDeclaration(ParseTypeName($"global::Vanara.InteropServices.SafeHGlobalStruct<{attrInfo.StructPtr!.StructType.Name}>"))
-					.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
-						.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
-							.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
-				SizeParamType.Ptr or SizeParamType.StructPtr => ArrayType(ParseTypeName("byte")).CreateArrayVariableDeclaration(outVarName, cElemName),
-				SizeParamType.ArrayPtr => ArrayType(ParseTypeName(attrInfo.ArrayPtr!.ElementType.Name)).CreateArrayVariableDeclaration(outVarName, cElemName),
-				_ => outVarDecl,
-			};
-			tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(outVarDecl));
+				outVarDecl = (szType & ~SizeParamType.Nullable) switch
+				{
+					SizeParamType.String => outVarDecl
+						.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
+							.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
+								.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
+					SizeParamType.Array => (decl.Type is ArrayTypeSyntax ats ? ats : (decl.Type is NullableTypeSyntax nts && nts.ElementType is ArrayTypeSyntax nats ? nats : null))?
+						.CreateArrayVariableDeclaration(outVarName, cElemName) ?? outVarDecl,
+					SizeParamType.StructPtr when useStructHandle => VariableDeclaration(hMemType)
+						.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
+							.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
+								.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
+					SizeParamType.Ptr or SizeParamType.StructPtr => ArrayType(ParseTypeName("byte")).CreateArrayVariableDeclaration(outVarName, cElemName),
+					SizeParamType.ArrayPtr => ArrayType(ParseTypeName(attrInfo.ArrayPtr!.ElementType.Name)).CreateArrayVariableDeclaration(outVarName, cElemName),
+					_ => outVarDecl,
+				};
+				tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(outVarDecl));
+			}
+			else
+			{
+				tmpbuilder.statements.assignAfterQuery.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName($"{outVarName}.{(szType.IsFlagSet(SizeParamType.String) ? "Capacity" : "Size")}"), IdentifierName(cElemName))));
+			}
 		}
 
 		// **********************************
@@ -1055,17 +1077,17 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		{
 			tmpbuilder.statements.invokeArgs.Replace(sdArg, (szType & ~SizeParamType.Nullable) switch
 			{
-				SizeParamType t when isInParam => Argument(IdentifierName(inArgName!)),
+				SizeParamType t when isInParam => Argument(IdentifierName(setupArgName!)),
 				SizeParamType.StructPtr when attrInfo.StructPtr?.Marshaler is not null => Argument(ParseExpression($"global::Vanara.InteropServices.MarshalHelper.MarshalFromNative<{attrInfo.StructPtr.Marshaler.Name}, {attrInfo.StructPtr.StructType.Name}>({outVarName})")),
 				SizeParamType.StructPtr when useStructHandle => Argument(IdentifierName(outVarName)),
 				SizeParamType.ArrayPtr when attrInfo.ArrayPtr?.Marshaler is not null => Argument(ParseExpression($"global::Vanara.InteropServices.MarshalHelper.MarshalFromNative<{attrInfo.ArrayPtr.Marshaler.Name}, {attrInfo.ArrayPtr.ElementType.Name}[]>({outVarName})")),
-				SizeParamType.Ptr or SizeParamType.StructPtr when isNullable => Argument(ParseExpression($"{outVarName} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
-				SizeParamType.Ptr or SizeParamType.StructPtr or SizeParamType.ArrayPtr => Argument(ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
+				SizeParamType.Ptr or SizeParamType.StructPtr when isNullable && attrInfo.InitSize == 0 => Argument(ParseExpression($"{outVarName} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
+				SizeParamType.Ptr or SizeParamType.StructPtr or SizeParamType.ArrayPtr when attrInfo.InitSize == 0 => Argument(ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
 				SizeParamType.Array => Argument(IdentifierName(outVarName)),
 				_ => Argument(IdentifierName(outVarName)),
 			});
 			if (isInParam)
-				tmpbuilder.statements.invokeForQueryArgs?.Replace(sdArg, Argument(IdentifierName(inArgName!)));
+				tmpbuilder.statements.invokeForQueryArgs?.Replace(sdArg, Argument(IdentifierName(setupArgName!)));
 		}
 
 		// **********************************
@@ -1080,7 +1102,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			ExpressionSyntax? assignExpr = (szType & ~SizeParamType.Nullable) switch
 			{
 				SizeParamType.String => ParseExpression($"{outVarName}.ToString()"),
-				SizeParamType.StructPtr when useStructHandle => ParseExpression($"{outVarName}.Value"),
+				SizeParamType.StructPtr when (useStructHandle && attrInfo.StructPtr!.Marshal) || attrInfo.InitSize != 0 => ParseExpression($"{outVarName}.ToStructure<{attrInfo.StructPtr!.StructType.Name}>()!"),
 				SizeParamType.StructPtr when attrInfo.StructPtr!.Marshal => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0).ToStructure<{attrInfo.StructPtr!.StructType.Name}>({cElemName})"),
 				_ => ParseExpression(outVarName),
 			};
@@ -1133,17 +1155,20 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			if (attrInfo.StructType.IsUnmanagedType)
 				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using global::Vanara.InteropServices.PinnedObject __{id} = new({id});"));
 			else
-				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using global::Vanara.InteropServices.SafeHGlobalStruct<{attrInfo.StructType.Name}> __{id} = {id};"));
+				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using var __{id} = {hMemTypeStr}.CreateFromStructure({id});"));
 
 			// Call the invoke method with a reference to the first element of the array
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(ParseExpression($"__{id}")));
+
+			if (attrInfo.ModType.HasFlag(ModType.Out) && !attrInfo.StructType.IsUnmanagedType)
+				tmpbuilder.statements.assignOutParams.Add(ParseStatement($"{id} = __{id}.ToStructure<{attrInfo.StructType.Name}>();"));
 		}
 
 		// Handle optional out values with no modifier
 		else if (typeIsPtr && attrInfo.IsOptional && !decl.Modifiers.Any())
 		{
 			// Replace method param with designated type, remove all attributes, and add out modifier
-			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
+			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "In", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
 
 			// Init out param to default
 			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), MethodBodyBuilder.defaultExpr)));
@@ -1152,7 +1177,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			if (attrInfo.StructType.IsUnmanagedType)
 				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using global::Vanara.InteropServices.PinnedObject __{id} = new({id});"));
 			else
-				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using global::Vanara.InteropServices.SafeHGlobalStruct<{attrInfo.StructType.Name}> __{id} = {id};"));
+				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using var __{id} = {hMemTypeStr}.CreateFromStructure({id});"));
 
 			// Call the invoke method with pinned variable
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(IdentifierName($"__{id}")));
@@ -1162,7 +1187,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		else if (decl.Modifiers.Any(SyntaxKind.OutKeyword))
 		{
 			// Replace method param with designated type, remove all attributes, and add out modifier
-			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
+			tmpbuilder.parameters.Replace(decl, decl.WithoutAttributes("StructPointer", "In", "Out", "Optional").WithoutTrivia().WithType(newType).WithModifiers([Token(SyntaxKind.OutKeyword)]));
 
 			// Init out param to default
 			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), iArrayStructType is not null && !attrInfo.IsOptional ? ParseExpression("[]") : MethodBodyBuilder.defaultExpr)));
@@ -1175,26 +1200,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			// TODO: Handle FreeStatement as well
 			if (typeIsPtr && attrInfo.MemMgr is not null)
 			{
-				// Add structure extraction statement in assignOutParams
-				const string assignOutTemplate = """
-				if (__{0} != default) {{
-					try {{
-						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
-						{0} = __{0}.ToStructure<{2}>(__memSz);
-					}}
-					finally {{ {1}.Instance.FreeMem(__{0}); }}
-				}}
-				""";
-				const string assignOutArrayTemplate = """
-				if (__{0} != default) {{
-					try {{
-						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
-						{0} = ((global::Vanara.PInvoke.IArrayStruct<{3}>?)__{0}.ToStructure<{2}>(__memSz))?.GetArray() ?? [];
-					}}
-					finally {{ {1}.Instance.FreeMem(__{0}); }}
-				}}
-				""";
-				tmpbuilder.statements.assignOutParams.Add(ParseStatement(string.Format(iArrayStructType is null ? assignOutTemplate : assignOutArrayTemplate, id, attrInfo.MemMgr.Name, attrInfo.StructType.Name, iArrayStructType?.Name)));
+				AssignOutParam(attrInfo.MemMgr.Name);
 			}
 
 			// Handle out value that is a memory handle
@@ -1223,6 +1229,30 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 
 		builder = tmpbuilder;
+
+		void AssignOutParam(string memMgrName)
+		{
+			// Add structure extraction statement in assignOutParams
+			const string assignOutTemplate = """
+				if (__{0} != default) {{
+					try {{
+						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
+						{0} = __{0}.ToStructure<{2}>(__memSz);
+					}}
+					finally {{ {1}.Instance.FreeMem(__{0}); }}
+				}}
+				""";
+			const string assignOutArrayTemplate = """
+				if (__{0} != default) {{
+					try {{
+						global::Vanara.PInvoke.SizeT __memSz = {1}.Instance is global::Vanara.InteropServices.IGetMemorySize __igetmemsz ? __igetmemsz.GetSize(__{0}) : int.MaxValue;
+						{0} = ((global::Vanara.PInvoke.IArrayStruct<{3}>?)__{0}.ToStructure<{2}>(__memSz))?.GetArray() ?? [];
+					}}
+					finally {{ {1}.Instance.FreeMem(__{0}); }}
+				}}
+				""";
+			tmpbuilder.statements.assignOutParams.Add(ParseStatement(string.Format(iArrayStructType is null ? assignOutTemplate : assignOutArrayTemplate, id, memMgrName, attrInfo.StructType.Name, iArrayStructType?.Name)));
+		}
 	}
 
 	private abstract class ParamInfo(ParameterSyntax ps)
@@ -1348,6 +1378,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		public StructPtrInfo? StructPtr { get; init; } = GetAttr("Vanara.PInvoke.StructPointerAttribute", attrDatas) is null ? null : new StructPtrInfo(ps, attrDatas);
 		public string? BufferVarName { get; init; } = GetNamedArg(attr, attrDatas, "BufferVarName") as string;
 		public string? OutVarName { get; init; } = GetNamedArg(attr, attrDatas, "OutVarName") as string;
+		public int InitSize { get; init; } = GetNamedArg(attr, attrDatas, "InitSize") is int initSize ? initSize : 0;
 
 		public static SizeDefInfo? Validate(SyntaxNode node, ImmutableArray<AttributeData> attrDatas, MethodDeclarationSyntax methodDecl, out (string, string)? err)
 		{

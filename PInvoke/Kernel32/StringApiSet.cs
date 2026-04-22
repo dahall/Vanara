@@ -537,7 +537,7 @@ public static partial class Kernel32
 	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ StrPtrAuto lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
-	public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc,
+	public static extern int FoldString(STRING_MAPPING dwMapFlags, [In, SizeDef(nameof(cchSrc))] string lpSrcStr, int cchSrc,
 		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest);
 
 	/// <summary>

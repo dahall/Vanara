@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.Windows.Extensions.dll
 Extension methods and conversions from Vanara P/Invoke types and methods to Windows Forms types and methods.
+### Dependencies
+- Vanara.PInvoke.User32
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

@@ -745,13 +745,33 @@ public partial class CodeGenTests
 		}
 		""";
 
-	[TestCase(sizeDefCount, 2, 0)]
-	[TestCase(sizeDefBytes, 2, 0)]
-	[TestCase(sizeDefNullTerm, 2, 0)]
-	[TestCase(sizeDefQuery, 2, 0)]
-	[TestCase(sizeDefQueryPtr, 2, 0)]
-	[TestCase(sizeDefQueryPtr2, 2, 0)]
-	[TestCase(sizeDefMult, 2, 0)]
+	const string sizeDefInitSizeNegOne = /* lang=c#-test */ """
+		// sizeDefInitSizeNegOne
+		using System;
+		using System.Runtime.InteropServices;
+		using System.ComponentModel.DataAnnotations;
+		namespace Vanara.PInvoke
+		{
+			/// <summary>A 64-bit test dll</summary>
+			public static partial class Test64
+			{
+				public static extern Win32Error WNetGetResourceParent(Guid lpNetResource,
+					[Out, SizeDef(nameof(lpcbBuffer), SizingMethod.CheckLastError, InitSize = -1), StructPointer(typeof(Guid))] IntPtr lpBuffer, ref uint lpcbBuffer);
+				public static extern Win32Error WNetGetResourceParent2(Guid lpNetResource,
+					[Out, Optional, SizeDef(nameof(lpcbBuffer), SizingMethod.CheckLastError, InitSize = -1), StructPointer(typeof(Guid))] IntPtr lpBuffer, ref uint lpcbBuffer);
+				public static extern Win32Error WNetGetProviderName(uint dwNetType, [SizeDef(nameof(lpBufferSize), SizingMethod.CheckLastError, InitSize = 1)] StringBuilder lpProviderName, ref uint lpBufferSize);
+			}
+		}
+		""";
+
+	//[TestCase(sizeDefCount, 2, 0)]
+	//[TestCase(sizeDefBytes, 2, 0)]
+	//[TestCase(sizeDefNullTerm, 2, 0)]
+	//[TestCase(sizeDefQuery, 2, 0)]
+	//[TestCase(sizeDefQueryPtr, 2, 0)]
+	//[TestCase(sizeDefQueryPtr2, 2, 0)]
+	//[TestCase(sizeDefMult, 2, 0)]
+	[TestCase(sizeDefInitSizeNegOne, 2, 0)]
 	public void SizeDefGenTest(string src, int treeCount, int errCount)
 	{
 		var compilation = GetCompilation(src);

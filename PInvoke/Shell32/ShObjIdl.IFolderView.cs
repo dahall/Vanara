@@ -495,7 +495,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setviewproperty
 		// DEPRECATED_HRESULT SetViewProperty( PCUITEMID_CHILD pidl, REFPROPERTYKEY propkey, REFPROPVARIANT propvar );
 		[Obsolete]
-		void SetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, [In] PROPVARIANT propvar);
+		void SetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, in PROPVARIANT_UNMGD propvar);
 
 		/// <summary>
 		/// <para>
@@ -521,7 +521,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getviewproperty
 		// DEPRECATED_HRESULT GetViewProperty( PCUITEMID_CHILD pidl, REFPROPERTYKEY propkey, PROPVARIANT *ppropvar );
 		[Obsolete]
-		void GetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, [In, Out] PROPVARIANT ppropvar);
+		void GetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, out PROPVARIANT_UNMGD ppropvar);
 
 		/// <summary>
 		/// <para>

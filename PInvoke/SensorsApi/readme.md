@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows SensorsApi
 
 - Includes methods from sensorsapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.SensorsApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.SensorsApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.SensorsApi)  
+### Dependencies  
+- Vanara.PInvoke.PortableDeviceApi  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

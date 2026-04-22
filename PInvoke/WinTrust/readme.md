@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows WinTrust.d
 
 - Includes methods from wintrust.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinTrust?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinTrust?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinTrust)  
+### Dependencies  
+- Vanara.PInvoke.Cryptography  
 ### Methods - 100% API coverage (49 of 49 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

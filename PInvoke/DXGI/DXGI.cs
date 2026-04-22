@@ -1510,7 +1510,7 @@ public static partial class DXGI
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgicommon/ns-dxgicommon-dxgi_sample_desc typedef struct DXGI_SAMPLE_DESC { UINT
 	// Count; UINT Quality; } DXGI_SAMPLE_DESC;
 	[PInvokeData("dxgicommon.h"), StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_SAMPLE_DESC(uint count, uint quality)
+	public struct DXGI_SAMPLE_DESC(uint count, uint quality = 0)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>

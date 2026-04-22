@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-WcmFreeMemory WcmGetProfileList WcmQueryProperty WcmSetProfileList WcmSetProperty     | WCM_CONNECTION_COST WCM_CONNECTION_COST_SOURCE WCM_MEDIA_TYPE WCM_PROPERTY      | WCM_BILLING_CYCLE_INFO WCM_CONNECTION_COST_DATA WCM_DATAPLAN_STATUS WCM_POLICY_VALUE WCM_PROFILE_INFO WCM_PROFILE_INFO_LIST WCM_TIME_INTERVAL WCM_USAGE_DATA 
+WcmFreeMemory<br>WcmGetProfileList<br>WcmQueryProperty<br>WcmSetProfileList<br>WcmSetProperty<br><br><br><br> | WCM_CONNECTION_COST<br>WCM_CONNECTION_COST_SOURCE<br>WCM_MEDIA_TYPE<br>WCM_PROPERTY<br><br><br><br><br> | WCM_BILLING_CYCLE_INFO<br>WCM_CONNECTION_COST_DATA<br>WCM_DATAPLAN_STATUS<br>WCM_POLICY_VALUE<br>WCM_PROFILE_INFO<br>WCM_PROFILE_INFO_LIST<br>WCM_TIME_INTERVAL<br>WCM_USAGE_DATA<br>

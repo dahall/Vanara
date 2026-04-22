@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants imported from Windows Wer.dll.
 
 - Includes methods from wer.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Wer?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Wer?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Wer)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (15 of 15 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

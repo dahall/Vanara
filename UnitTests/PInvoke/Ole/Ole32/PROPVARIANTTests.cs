@@ -15,9 +15,9 @@ public class PROPVARIANTTests
 	[Test]
 	public void CompareToTest()
 	{
-		PROPVARIANT pv1 = new(1);
-		PROPVARIANT pv2 = new(1);
-		PROPVARIANT pv3 = new(5f);
+		using PROPVARIANT pv1 = new(1);
+		using PROPVARIANT pv2 = new(1);
+		using PROPVARIANT pv3 = new(5f);
 		Assert.That(pv1.CompareTo(pv2), Is.EqualTo(0));
 		Assert.That(pv1.CompareTo(pv3), Is.LessThan(0));
 		Assert.That(pv3.CompareTo(pv1), Is.GreaterThan(0));
@@ -26,9 +26,9 @@ public class PROPVARIANTTests
 	[Test]
 	public void EqualsTest()
 	{
-		PROPVARIANT pv1 = new(1);
-		PROPVARIANT pv2 = new(1);
-		PROPVARIANT pv3 = new(5f);
+		using PROPVARIANT pv1 = new(1);
+		using PROPVARIANT pv2 = new(1);
+		using PROPVARIANT pv3 = new(5f);
 		Assert.That(pv1.Equals(pv2), Is.True);
 		Assert.That(pv1.Equals(pv3), Is.False);
 		Assert.That(pv3.Equals(pv1), Is.False);
@@ -37,8 +37,16 @@ public class PROPVARIANTTests
 	[Test]
 	public void EqualsTest1()
 	{
-		PROPVARIANT pv3 = new(5f);
-		Assert.That(pv3.Equals(5f), Is.False);
+		using PROPVARIANT pv3 = new(5f);
+		Assert.That(pv3.Equals(5f));
+	}
+
+	[Test]
+	public void EqualsTest2()
+	{
+		PROPVARIANT_UNMGD pv3 = new(5f);
+		try { Assert.That(pv3.Equals(5f)); }
+		finally { pv3.Clear(); }
 	}
 
 	[Test]
@@ -46,7 +54,7 @@ public class PROPVARIANTTests
 	{
 		using SafeHGlobalHandle pVar = new(100);
 		Marshal.GetNativeVariantForObject(0xFFFFFFFF, (IntPtr)pVar);
-		PROPVARIANT pv = PROPVARIANT.FromNativeVariant((IntPtr)pVar);
+		using PROPVARIANT pv = PROPVARIANT.FromNativeVariant((IntPtr)pVar);
 		Assert.That(pv.vt, Is.EqualTo(VARTYPE.VT_UI4));
 		_ = VariantClear((IntPtr)pVar);
 	}
@@ -147,25 +155,32 @@ public class PROPVARIANTTests
 	public void PROPVARIANTOtherPropsTest(VARTYPE vt, string prop)
 	{
 		object? value;
-		Assert.That(() =>
-		{
-			if ((value = GetSampleData(vt)) == null) return;
-			using PROPVARIANT pv = new(value, (VarEnum)vt);
-			bool isa = value.GetType().IsArray || value is SafeSAFEARRAY;
-			Assert.That(pv.vt, Is.EqualTo(vt));
-			object? pvVal = pv.Value;
-			if (isa)
-				Assert.That(pvVal, Is.EquivalentTo((IEnumerable)value));
-			else
-				Assert.That(pvVal, Is.EqualTo(value));
-			System.Reflection.PropertyInfo? pi = pv.GetType().GetProperty(prop);
-			Assert.That(pi, Is.Not.Null);
-			object? piVal = pi!.GetValue(pv);
-			if (isa)
-				Assert.That(piVal, Is.EquivalentTo((IEnumerable)value));
-			else
-				Assert.That(piVal, Is.EqualTo(value));
-		}, Throws.Nothing);
+		if ((value = GetSampleData(vt)) == null) return;
+		bool isRef = (vt & VARTYPE.VT_BYREF) != 0 || vt == VARTYPE.VT_DECIMAL;
+		var setvalue = isRef ? (IntPtr)new PinnedObject(value) : value;
+		using PROPVARIANT pv = new(setvalue, (VarEnum)vt);
+		bool isa = value.GetType().IsArray || value is SafeSAFEARRAY;
+		Assert.That(pv.vt, Is.EqualTo(vt));
+		object? pvVal = pv.Value;
+		if (isa)
+			Assert.That(pvVal, Is.EquivalentTo((IEnumerable)value));
+		else
+			Assert.That(pvVal, Is.EqualTo(value));
+		System.Reflection.PropertyInfo? pi = pv.GetType().GetProperty(prop);
+		Assert.That(pi, Is.Not.Null);
+		object? piVal = pi!.GetValue(pv);
+		if (vt == VARTYPE.VT_CF)
+			Assert.That(piVal is StructPointer<CLIPDATA> pcd && value.Equals(pcd.Value!.Value));
+		else if (isa)
+			Assert.That(piVal, Is.EquivalentTo((IEnumerable)value));
+		else if (isRef)
+			Assert.That(Ptr(piVal), Is.EqualTo((IntPtr)setvalue));
+		else
+			Assert.That(piVal, Is.EqualTo(value));
+
+		static IntPtr Ptr(object? value) => value is not null && value.GetType().IsGenericType && value.GetType().GetGenericTypeDefinition() == typeof(StructPointer<>) &&
+				value.GetType().GetMethod("op_Explicit", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static, null, [value.GetType()], null)?
+					.Invoke(null, [value]) is IntPtr p ? p : IntPtr.Zero;
 	}
 
 	[TestCase(true, VARTYPE.VT_BOOL, "boolVal")]
@@ -203,8 +218,9 @@ public class PROPVARIANTTests
 	{
 		string[] arr = ["A", "B", "C"];
 		using PROPVARIANT pv = new(arr);
+		Assert.That(pv.Value, Is.EquivalentTo(arr));
 		using PROPVARIANT pv2 = new(pv);
-		Assert.That(pv2.Value, Is.EquivalentTo(arr).And.EquivalentTo((IEnumerable)pv.Value!));
+		Assert.That(pv2.Value, Is.EquivalentTo(arr));
 	}
 
 	[Test]
@@ -256,6 +272,8 @@ public class PROPVARIANTTests
 
 			case VARTYPE.VT_CY:
 			case VARTYPE.VT_BYREF | VARTYPE.VT_CY:
+				return new CY(12345.6789M);
+
 			case VARTYPE.VT_BYREF | VARTYPE.VT_DECIMAL:
 				return 12345.6789M;
 
@@ -270,14 +288,14 @@ public class PROPVARIANTTests
 
 			case VARTYPE.VT_DATE:
 			case VARTYPE.VT_BYREF | VARTYPE.VT_DATE:
-				return new DateTime(1999, 12, 31, 23, 59, 59);
+				return new DATE(new DateTime(1999, 12, 31, 23, 59, 59));
 
 			case VARTYPE.VT_DISPATCH:
 				return Activator.CreateInstance(Type.GetTypeFromProgID("Excel.Application")!);
 
 			case VARTYPE.VT_ERROR:
 			case VARTYPE.VT_BYREF | VARTYPE.VT_ERROR:
-				return new Win32Error(5);
+				return (Win32Error)5;
 
 			case VARTYPE.VT_FILETIME:
 				return new DateTime(1999, 12, 31, 23, 59, 59).ToFileTimeStruct();

@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes
 ---
-DynamicMgmtObject ManagementExtensions 
+DynamicMgmtObject<br>ManagementExtensions<br>

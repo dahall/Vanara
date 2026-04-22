@@ -26,9 +26,8 @@ public class SearchCondition : ICloneable, IDisposable
 	{
 		get
 		{
-			var pv = new PROPVARIANT();
-			condition.GetComparisonInfo(out var n, out var o, pv);
-			return (n, o, pv.Value);
+			condition.GetComparisonInfo(out var n, out var o, out var pv);
+			return (n, o, new PROPVARIANT(pv).Value);
 		}
 	}
 
@@ -43,9 +42,8 @@ public class SearchCondition : ICloneable, IDisposable
 	{
 		get
 		{
-			var pv = new PROPVARIANT();
-			((ICondition2)condition).GetLeafConditionInfo(out var n, out var o, pv);
-			return (n, o, pv.Value);
+			((ICondition2)condition).GetLeafConditionInfo(out var n, out var o, out var pv);
+			return (n, o, pv.GetValue());
 		}
 	}
 
@@ -191,9 +189,9 @@ public class SearchCondition : ICloneable, IDisposable
 				break;
 
 			case CONDITION_TYPE.CT_LEAF_CONDITION:
-				var propvar = new PROPVARIANT();
-				((ICondition2)pc).GetLeafConditionInfo(out var propkey, out _, propvar);
+				((ICondition2)pc).GetLeafConditionInfo(out var propkey, out _, out var propvar);
 				yield return (l, propkey.GetCanonicalName(), pc.GetValueType() ?? "", propvar.Value);
+				propvar.Clear();
 				break;
 
 			default:

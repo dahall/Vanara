@@ -7,22 +7,13 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class VariantTests
 {
-	[Test]
-	public void VariantStructTest()
+	[TestCase(123, VARTYPE.VT_I4)]
+	[TestCase(1234L, VARTYPE.VT_I8)]
+	[TestCase("Test", VARTYPE.VT_BSTR)]
+	public void VariantStructTest(object o, VARTYPE vt)
 	{
-		object o = 123;
 		VARIANT v = new(o);
-		Assert.That(v.vt, Is.EqualTo(VARTYPE.VT_I4));
-		Assert.That(v.ToObject(), Is.TypeOf<int>());
-
-		o = 1234L;
-		v = new VARIANT(o);
-		Assert.That(v.vt, Is.EqualTo(VARTYPE.VT_I8));
-		Assert.That(v.ToObject(), Is.TypeOf<long>());
-
-		o = "Test";
-		v = new VARIANT(o);
-		Assert.That(v.vt, Is.EqualTo(VARTYPE.VT_BSTR));
-		Assert.That(v.ToObject(), Is.TypeOf<string>());
+		Assert.That(v.vt, Is.EqualTo(vt));
+		Assert.That(v.ToObject(), Is.TypeOf(o.GetType()));
 	}
 }

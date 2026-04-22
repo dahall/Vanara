@@ -158,7 +158,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtonArray")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetButtonArray(HIDP_REPORT_TYPE ReportType, USAGE UsagePage, [Optional] HIDP_LINK_COLLECTION LinkCollection,
-		USAGE Usage, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5), SizeDef(nameof(ButtonDataLength), SizingMethod.Query)] HIDP_BUTTON_ARRAY_DATA[] ButtonData,
+		USAGE Usage, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(ButtonDataLength), SizingMethod.CheckLastError)] HIDP_BUTTON_ARRAY_DATA[]? ButtonData,
 		ref ushort ButtonDataLength, PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
 
 	/// <summary>
@@ -398,7 +398,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetData")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetData([In] HIDP_REPORT_TYPE ReportType,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), SizeDef(nameof(DataLength), SizingMethod.Query)] HIDP_DATA[] DataList,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), SizeDef(nameof(DataLength), SizingMethod.CheckLastError)] HIDP_DATA[]? DataList,
 		ref uint DataLength, [In] PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
 
 	/// <summary>The <b>HidP_GetExtendedAttributes</b> routine returns the extended attributes of a HID control.</summary>
@@ -458,7 +458,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetExtendedAttributes")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetExtendedAttributes([In] HIDP_REPORT_TYPE ReportType, ushort DataIndex,
-		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, SizeDef(nameof(LengthAttributes), SizingMethod.Bytes | SizingMethod.Query)] ManagedStructPointer<HIDP_EXTENDED_ATTRIBUTES> Attributes,
+		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, SizeDef(nameof(LengthAttributes), SizingMethod.Bytes | SizingMethod.CheckLastError)] ManagedStructPointer<HIDP_EXTENDED_ATTRIBUTES> Attributes,
 		ref uint LengthAttributes);
 
 	/// <summary>The <b>HidP_GetLinkCollectionNodes</b> routine returns a <c>top-level collection's</c>  <c>link collection array</c>.</summary>
@@ -511,7 +511,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetLinkCollectionNodes")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetLinkCollectionNodes([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1),
-		SizeDef(nameof(LinkCollectionNodesLength), SizingMethod.Query)] HIDP_LINK_COLLECTION_NODE[] LinkCollectionNodes,
+		SizeDef(nameof(LinkCollectionNodesLength), SizingMethod.CheckLastError)] HIDP_LINK_COLLECTION_NODE[]? LinkCollectionNodes,
 		ref uint LinkCollectionNodesLength, [In] PHIDP_PREPARSED_DATA PreparsedData);
 
 	/// <summary>
@@ -828,7 +828,7 @@ public static partial class Hid
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	[SuppressAutoGen]
 	public static extern NTStatus HidP_GetUsages([In] HIDP_REPORT_TYPE ReportType, [In] USAGE UsagePage,
-		HIDP_LINK_COLLECTION LinkCollection, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] USAGE[] UsageList, ref uint UsageLength,
+		HIDP_LINK_COLLECTION LinkCollection, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), SizeDef(nameof(UsageLength), SizingMethod.CheckLastError)] USAGE[] UsageList, ref uint UsageLength,
 		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
 
 	/// <summary>

@@ -1,5 +1,8 @@
 ## Assembly report for Vanara.Windows.Shell.Common.dll
 Common classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.
+### Dependencies
+- Vanara.PInvoke.SearchApi
+- Vanara.Windows.Extensions
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

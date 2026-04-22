@@ -3270,7 +3270,7 @@ public static partial class OleAut32
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-readmultiple
 		[PreserveSig]
-		HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar);
+		HRESULT ReadMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_UNMGD[] rgpropvar);
 
 		/// <summary>
 		/// <para>
@@ -3360,7 +3360,7 @@ public static partial class OleAut32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-writemultiple
 		[PreserveSig]
-		HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar, uint propidNameFirst);
+		HRESULT WriteMultiple(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_UNMGD[] rgpropvar, uint propidNameFirst);
 
 		/// <summary>
 		/// <para>The <c>DeleteMultiple</c> method deletes as many of the indicated properties as exist in this property set.</para>
@@ -3888,7 +3888,7 @@ public static partial class OleAut32
 		// https://docs.microsoft.com/en-us/windows/win32/api/wia_xp/nf-wia_xp-iwiapropertystorage-getpropertyattributes HRESULT
 		// GetPropertyAttributes( ULONG cpspec, PROPSPEC [] rgpspec, ULONG [] rgflags, PROPVARIANT [] rgpropvar );
 		HRESULT GetPropertyAttributes(uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPSPEC[] rgpspec,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgflags, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[] rgpropvar);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] rgflags, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT_UNMGD[] rgpropvar);
 
 		/// <summary>The <c>IWiaPropertyStorage::GetCount</c> method returns the number of properties stored in the property storage.</summary>
 		/// <returns>

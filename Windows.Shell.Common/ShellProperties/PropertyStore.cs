@@ -273,9 +273,8 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <exception cref="ArgumentOutOfRangeException">key</exception>
 	public PROPVARIANT GetPropVariant(PROPERTYKEY key) => Run(ps =>
 	{
-		var pv = new PROPVARIANT();
-		ps.GetValue(key, pv);
-		return pv;
+		ps.GetValue(key, out var pv);
+		return new PROPVARIANT(pv);
 	})!;
 
 	/// <summary>Queries whether the property handler allows a specific property to be edited in the UI by the user.</summary>

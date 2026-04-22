@@ -312,10 +312,9 @@ public partial class CoreAudioTests
 		using var pEnum = ComReleaserFactory.Create(new IMMDeviceEnumerator());
 		using var pDev = ComReleaserFactory.Create(pEnum.Item.GetDevice(devId)!);
 		using var pProps = ComReleaserFactory.Create(pDev.Item.OpenPropertyStore(STGM.STGM_READ)!);
-		using var pv = new PROPVARIANT();
 		try
 		{
-			pProps.Item.GetValue(PKEY_Device_FriendlyName, pv);
+			pProps.Item.GetValue(PKEY_Device_FriendlyName, out PROPVARIANT pv);
 			lookup.Add(devId, pv.pwszVal!);
 			return pv.pwszVal;
 		}
@@ -327,8 +326,7 @@ public partial class CoreAudioTests
 	{
 		try
 		{
-			using var pv = new PROPVARIANT();
-			propertyStore.GetValue(propertyKey, pv);
+			propertyStore.GetValue(propertyKey, out PROPVARIANT pv);
 
 			if (propertyKey == AudioPropertyKeys.PKEY_AudioEngine_DeviceFormat || propertyKey == AudioPropertyKeys.PKEY_AudioEngine_OEMFormat)
 			{

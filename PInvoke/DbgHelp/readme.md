@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows DbgHelp.dl
 
 - Includes methods from dbghelp.dll, imagehlp.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DbgHelp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DbgHelp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DbgHelp)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
+- Vanara.PInvoke.Version  
 ### Methods - 100% API coverage (219 of 219 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

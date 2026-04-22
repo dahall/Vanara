@@ -8,6 +8,7 @@ using static Vanara.PInvoke.BITS;
 namespace Vanara.IO;
 
 /// <summary>Manages the set of files for a background copy job.</summary>
+[Wraps(typeof(IBackgroundCopyJob))]
 public class BackgroundCopyFileCollection : ICollection<BackgroundCopyFileInfo>, IDisposable
 {
 	private IBackgroundCopyJob m_ijob;

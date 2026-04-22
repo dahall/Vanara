@@ -3,7 +3,10 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 
 - Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll, tdh.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
-### Methods - 100% API coverage (587 of 587 functions)  
+### Dependencies  
+- Vanara.PInvoke.Cryptography  
+- Vanara.PInvoke.Kernel32  
+### Methods - 99% API coverage (587 of 590 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -257,10 +260,10 @@ Native Method | Native DLL | Header | Managed Method
 [GetSecurityInfo](https://www.google.com/search?num=5&q=GetSecurityInfo+site%3Alearn.microsoft.com) | advapi32.dll | aclapi.h | [Vanara.PInvoke.AdvApi32.GetSecurityInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetSecurityInfo)  
 [GetServiceDisplayName](https://www.google.com/search?num=5&q=GetServiceDisplayNameA+site%3Alearn.microsoft.com) | advapi32.dll | winsvc.h | [Vanara.PInvoke.AdvApi32.GetServiceDisplayName](https://github.com/dahall/Vanara/search?l=C%23&q=GetServiceDisplayName)  
 [GetServiceKeyName](https://www.google.com/search?num=5&q=GetServiceKeyNameA+site%3Alearn.microsoft.com) | advapi32.dll | winsvc.h | [Vanara.PInvoke.AdvApi32.GetServiceKeyName](https://github.com/dahall/Vanara/search?l=C%23&q=GetServiceKeyName)  
-[GetSidIdentifierAuthority](https://www.google.com/search?num=5&q=GetSidIdentifierAuthority+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidIdentifierAuthority&gt;g__GetSidIdentifierAuthority|740_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidIdentifierAuthority%26gt%3Bg__GetSidIdentifierAuthority%7C740_0)  
+[GetSidIdentifierAuthority](https://www.google.com/search?num=5&q=GetSidIdentifierAuthority+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidIdentifierAuthority&gt;g__GetSidIdentifierAuthority|741_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidIdentifierAuthority%26gt%3Bg__GetSidIdentifierAuthority%7C741_0)  
 [GetSidLengthRequired](https://www.google.com/search?num=5&q=GetSidLengthRequired+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.GetSidLengthRequired](https://github.com/dahall/Vanara/search?l=C%23&q=GetSidLengthRequired)  
-[GetSidSubAuthority](https://www.google.com/search?num=5&q=GetSidSubAuthority+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidSubAuthority&gt;g__GetSidSubAuthority|742_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidSubAuthority%26gt%3Bg__GetSidSubAuthority%7C742_0)  
-[GetSidSubAuthorityCount](https://www.google.com/search?num=5&q=GetSidSubAuthorityCount+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidSubAuthorityCount&gt;g__GetSidSubAuthorityCount|743_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidSubAuthorityCount%26gt%3Bg__GetSidSubAuthorityCount%7C743_0)  
+[GetSidSubAuthority](https://www.google.com/search?num=5&q=GetSidSubAuthority+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidSubAuthority&gt;g__GetSidSubAuthority|743_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidSubAuthority%26gt%3Bg__GetSidSubAuthority%7C743_0)  
+[GetSidSubAuthorityCount](https://www.google.com/search?num=5&q=GetSidSubAuthorityCount+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.&lt;GetSidSubAuthorityCount&gt;g__GetSidSubAuthorityCount|744_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetSidSubAuthorityCount%26gt%3Bg__GetSidSubAuthorityCount%7C744_0)  
 [GetThreadWaitChain](https://www.google.com/search?num=5&q=GetThreadWaitChain+site%3Alearn.microsoft.com) | advapi32.dll | wct.h | [Vanara.PInvoke.AdvApi32.GetThreadWaitChain](https://github.com/dahall/Vanara/search?l=C%23&q=GetThreadWaitChain)  
 [GetTokenInformation](https://www.google.com/search?num=5&q=GetTokenInformation+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.GetTokenInformation](https://github.com/dahall/Vanara/search?l=C%23&q=GetTokenInformation)  
 [GetTraceEnableFlags](https://www.google.com/search?num=5&q=GetTraceEnableFlags+site%3Alearn.microsoft.com) | advapi32.dll | Evntrace.h | [Vanara.PInvoke.AdvApi32.GetTraceEnableFlags](https://github.com/dahall/Vanara/search?l=C%23&q=GetTraceEnableFlags)  
@@ -296,6 +299,8 @@ Native Method | Native DLL | Header | Managed Method
 [IsValidSid](https://www.google.com/search?num=5&q=IsValidSid+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.IsValidSid](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidSid)  
 [IsWellKnownSid](https://www.google.com/search?num=5&q=IsWellKnownSid+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.IsWellKnownSid](https://github.com/dahall/Vanara/search?l=C%23&q=IsWellKnownSid)  
 [LockServiceDatabase](https://www.google.com/search?num=5&q=LockServiceDatabase+site%3Alearn.microsoft.com) | advapi32.dll | winsvc.h | [Vanara.PInvoke.AdvApi32.LockServiceDatabase](https://github.com/dahall/Vanara/search?l=C%23&q=LockServiceDatabase)  
+[LogoffSecondaryUserFromSessionW](https://www.google.com/search?num=5&q=LogoffSecondaryUserFromSessionW+site%3Alearn.microsoft.com) | advapi32.dll |  |   
+[LogonSecondaryUserIntoSessionW](https://www.google.com/search?num=5&q=LogonSecondaryUserIntoSessionW+site%3Alearn.microsoft.com) | advapi32.dll |  |   
 [LogonUser](https://www.google.com/search?num=5&q=LogonUserA+site%3Alearn.microsoft.com) | advapi32.dll | winbase.h | [Vanara.PInvoke.AdvApi32.LogonUser](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUser)  
 [LogonUserEx](https://www.google.com/search?num=5&q=LogonUserExA+site%3Alearn.microsoft.com) | advapi32.dll | winbase.h | [Vanara.PInvoke.AdvApi32.LogonUserEx](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUserEx)  
 [LogonUserExExW](https://www.google.com/search?num=5&q=LogonUserExExW+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.LogonUserExExW](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUserExExW)  
@@ -523,6 +528,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetTokenInformation](https://www.google.com/search?num=5&q=SetTokenInformation+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.SetTokenInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetTokenInformation)  
 [SetTraceCallback](https://www.google.com/search?num=5&q=SetTraceCallback+site%3Alearn.microsoft.com) | advapi32.dll | Evntrace.h | [Vanara.PInvoke.AdvApi32.SetTraceCallback](https://github.com/dahall/Vanara/search?l=C%23&q=SetTraceCallback)  
 [SetUserFileEncryptionKey](https://www.google.com/search?num=5&q=SetUserFileEncryptionKey+site%3Alearn.microsoft.com) | advapi32.dll | winefs.h | [Vanara.PInvoke.AdvApi32.SetUserFileEncryptionKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetUserFileEncryptionKey)  
+[SslCopyTlsExtensions](https://www.google.com/search?num=5&q=SslCopyTlsExtensions+site%3Alearn.microsoft.com) | schannel.dll |  |   
 [SslCrackCertificate](https://www.google.com/search?num=5&q=SslCrackCertificate+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslCrackCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslCrackCertificate)  
 [SslEmptyCache](https://www.google.com/search?num=5&q=SslEmptyCacheA+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslEmptyCache](https://github.com/dahall/Vanara/search?l=C%23&q=SslEmptyCache)  
 [SslFreeCertificate](https://www.google.com/search?num=5&q=SslFreeCertificate+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslFreeCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeCertificate)  
@@ -1186,6 +1192,8 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7](https://www.google.com/search?num=5&q=<G>$CF5591EBFFB1CFBAE25F6A885EA501A7+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PSIDExtensions.&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BG%26gt%3B%24CF5591EBFFB1CFBAE25F6A885EA501A7)  
+[&lt;M&gt;$C7DE9C93324644C1D25CCD0CB882ED0E](https://www.google.com/search?num=5&q=<M>$C7DE9C93324644C1D25CCD0CB882ED0E+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.PSIDExtensions.&lt;G&gt;$CF5591EBFFB1CFBAE25F6A885EA501A7.&lt;M&gt;$C7DE9C93324644C1D25CCD0CB882ED0E](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BM%26gt%3B%24C7DE9C93324644C1D25CCD0CB882ED0E)  
 [AceComparer](https://www.google.com/search?num=5&q=AceComparer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.AdvApi32.AceComparer](https://github.com/dahall/Vanara/search?l=C%23&q=AceComparer)  
 [AUTHZ_ACCESS_REPLY](https://www.google.com/search?num=5&q=AUTHZ_ACCESS_REPLY+site%3Alearn.microsoft.com) | authz.h | [Vanara.PInvoke.Authz.AUTHZ_ACCESS_REPLY](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHZ_ACCESS_REPLY)  
 [AUTHZ_SECURITY_ATTRIBUTES_INFORMATION](https://www.google.com/search?num=5&q=AUTHZ_SECURITY_ATTRIBUTES_INFORMATION+site%3Alearn.microsoft.com) | authz.h | [Vanara.PInvoke.Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)  

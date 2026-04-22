@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Portable D
 
 - Includes methods from portabledeviceapi.dll, portabledeviceconnectapi.dll, portabledevicetypes.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.PortableDeviceApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.PortableDeviceApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.PortableDeviceApi)  
+### Dependencies  
+- Vanara.PInvoke.SetupAPI  
+- Vanara.PInvoke.Ole  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

@@ -3,6 +3,9 @@ PInvoke API (interfaces, methods, structures and constants) imported from Window
 
 - Includes methods from uianimation.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UIAnimation?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UIAnimation?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UIAnimation)  
+### Dependencies  
+- Vanara.PInvoke.Dcomp  
+- Vanara.PInvoke.Ole  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

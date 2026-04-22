@@ -989,7 +989,8 @@ public static partial class Kernel32
 	// DWORD GetTapeParameters( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _Out_ LPDWORD lpdwSize, _Out_ LPVOID lpTapeInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362526(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362526")]
-	public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, [Optional, SizeDef(nameof(lpdwSize), SizingMethod.Query | SizingMethod.CheckLastError)] IntPtr lpTapeInformation);
+	[SuppressAutoGen]
+	public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, [Optional, SizeDef(nameof(lpdwSize), SizingMethod.CheckLastError)] IntPtr lpTapeInformation);
 
 	/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>
 	/// <typeparam name="T">Either <see cref="TAPE_GET_MEDIA_PARAMETERS"/> or <see cref="TAPE_GET_DRIVE_PARAMETERS"/>.</typeparam>

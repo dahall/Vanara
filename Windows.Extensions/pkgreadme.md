@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Classes | Enumerations
 --- | ---
-GdiExtension GdiObjExtensions2 SafeTempHDC SmartBitmapLock  | Corners    
+GdiExtension<br>GdiObjExtensions2<br>SafeTempHDC<br>SmartBitmapLock<br> | Corners<br><br><br><br>

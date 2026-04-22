@@ -275,7 +275,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
 		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags,
-		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.CheckLastError)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptDecodeObjectEx</c> function decodes a structure of the type indicated by the lpszStructType parameter.
@@ -589,7 +589,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
 		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags, in CRYPT_DECODE_PARA pDecodePara,
-		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.CheckLastError)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptDecodeObjectEx</c> function decodes a structure of the type indicated by the lpszStructType parameter.
@@ -903,7 +903,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
 		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags, [In, Optional] IntPtr pDecodePara,
-		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.CheckLastError)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptEncodeObject</c> function encodes a structure of the type indicated by the value of the lpszStructType parameter.
@@ -1013,7 +1013,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "9576a2a7-4379-4c1b-8ad5-284720cf7ccc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptEncodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
-		[In] IntPtr pvStructInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
+		[In] IntPtr pvStructInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.CheckLastError)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CryptEncodeObjectEx</c> function encodes a structure of the type indicated by the value of the lpszStructType parameter.
@@ -1333,7 +1333,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "45134db8-059b-43d3-90c2-9b6cc970fca0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptEncodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pvStructInfo,
-		CryptEncodeFlags dwFlags, in CRYPT_ENCODE_PARA pEncodePara, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pvEncoded, ref uint pcbEncoded);
+		CryptEncodeFlags dwFlags, in CRYPT_ENCODE_PARA pEncodePara, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.CheckLastError)] IntPtr pvEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CRYPT_DECODE_PARA</c> structure is used by the CryptDecodeObjectEx function to provide access to memory allocation and

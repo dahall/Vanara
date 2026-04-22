@@ -172,5 +172,5 @@ public class PhotoAcquireProgress : IPhotoAcquireProgressCB
 	HRESULT IPhotoAcquireProgressCB.EndSession(HRESULT hr) => HRESULT.S_OK;
 	HRESULT IPhotoAcquireProgressCB.GetDeleteAfterAcquire(out bool pfDeleteAfterAcquire) { pfDeleteAfterAcquire = true; return HRESULT.S_OK; }
 	HRESULT IPhotoAcquireProgressCB.ErrorAdvise(HRESULT hr, string pszErrorMessage, ERROR_ADVISE_MESSAGE_TYPE nMessageType, out ERROR_ADVISE_RESULT pnErrorAdviseResult) { pnErrorAdviseResult = ERROR_ADVISE_RESULT.PHOTOACQUIRE_RESULT_OK; return HRESULT.S_OK; }
-	HRESULT IPhotoAcquireProgressCB.GetUserInput(in Guid riidType, object? pUnknown, Ole32.PROPVARIANT pPropVarResult, Ole32.PROPVARIANT? pPropVarDefault) => HRESULT.S_OK;
+	HRESULT IPhotoAcquireProgressCB.GetUserInput(in Guid riidType, object? pUnknown, out Ole32.PROPVARIANT_UNMGD pPropVarResult, in Ole32.PROPVARIANT_UNMGD pPropVarDefault) { pPropVarResult = pPropVarDefault; return HRESULT.S_OK; }
 }

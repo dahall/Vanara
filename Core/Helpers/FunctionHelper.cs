@@ -5,7 +5,7 @@ namespace Vanara.PInvoke;
 /// <summary>Generic functions to help with standard function patterns like getting a string from a method.</summary>
 public static class FunctionHelper
 {
-	internal static readonly List<HRESULT> buffErrs = [(HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA, (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER, (HRESULT)(Win32Error)Win32Error.ERROR_BUFFER_OVERFLOW, HRESULT.TYPE_E_BUFFERTOOSMALL, (HRESULT)(NTStatus)NTStatus.HIDP_STATUS_BUFFER_TOO_SMALL];
+	internal static readonly HashSet<HRESULT> buffErrs = [(HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA, (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER, (HRESULT)(Win32Error)Win32Error.ERROR_BUFFER_OVERFLOW, HRESULT.TYPE_E_BUFFERTOOSMALL, (HRESULT)(NTStatus)NTStatus.HIDP_STATUS_BUFFER_TOO_SMALL];
 
 #nullable disable
 	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
@@ -319,7 +319,7 @@ public static class FunctionHelper
 	/// <param name="err">The error.</param>
 	/// <returns><c>true</c> if buffer size is good; otherwise <c>false</c>.</returns>
 	public static bool ChkGoodBuf<TSize, TRet>(TSize sz, TRet err) where TSize : struct where TRet : IErrorProvider, IConvertible =>
-		!sz.Equals(default(TSize)) && buffErrs.ConvertAll(e => (HRESULT)e).Contains(err.ToHRESULT());
+		!sz.Equals(default(TSize)) && buffErrs.Contains(err.ToHRESULT());
 
 #nullable disable
 	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>

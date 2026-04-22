@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows WinHTTP.dl
 
 - Includes methods from winhttp.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinHTTP?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinHTTP?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinHTTP)  
+### Dependencies  
+- Vanara.PInvoke.Security  
+- Vanara.PInvoke.Ws2_32  
 ### Methods - 100% API coverage (48 of 48 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

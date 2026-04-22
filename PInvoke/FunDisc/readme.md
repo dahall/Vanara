@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Functional
 
 - Includes methods from fundisc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FunDisc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FunDisc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FunDisc)  
+### Dependencies  
+- Vanara.PInvoke.Ole  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

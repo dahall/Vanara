@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Text Servi
 
 - Includes methods from msctf.dll, input.dll, msimtf.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.TextServicesFramework?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.TextServicesFramework?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.TextServicesFramework)  
+### Dependencies  
+- Vanara.PInvoke.Ole  
+- Vanara.PInvoke.User32  
 ### Methods - 100% API coverage (26 of 26 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  

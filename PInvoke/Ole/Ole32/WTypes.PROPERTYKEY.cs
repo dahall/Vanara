@@ -140,7 +140,7 @@ public static partial class Ole32
 		/// On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this function returns
 		/// successfully, contains the canonical value.
 		/// </param>
-		public readonly void CoerceToCanonicalValue(PROPVARIANT value) => PropSys.PSCoerceToCanonicalValue(this, value).ThrowIfFailed();
+		public readonly void CoerceToCanonicalValue(in PROPVARIANT_UNMGD value) => PropSys.PSCoerceToCanonicalValue(this, value).ThrowIfFailed();
 
 		/// <inheritdoc/>
 		public override readonly bool Equals(object? obj) => obj is PROPERTYKEY other && Equals(other);

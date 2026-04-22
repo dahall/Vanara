@@ -62,6 +62,16 @@ public sealed class SizeDefAttribute(string? refVarName, SizingMethod method = S
 
 	/// <summary>Gets the name of the reference variable.</summary>
 	public string? RefVarName { get; } = refVarName;
+
+	/// <summary>
+	/// Gets or sets the size of the initial buffer set before the first call to the method in a query scenario. This is used to initialize
+	/// the buffer size for the first call when using a sizing method that involves querying for the required size. The generator will use
+	/// this value for the initial call, and then update it based on the returned required size for subsequent calls if necessary. If zero,
+	/// the generator will set the buffer pointer to NULL. If -1, the generator will use the default size of the type (byte for IntPtr,
+	/// element size for arrays and structures). If a positive value, the generator will use that value as the initial buffer size. This
+	/// allows for optimization in cases where a typical size is known, reducing the number of calls needed to determine the required size.
+	/// </summary>
+	public int InitSize { get; set; } = 0;
 }
 
 /// <summary>Attribute to indicate that a field or parameter should be ignored when generating code.</summary>

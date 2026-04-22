@@ -203,7 +203,7 @@ public abstract class ADsBaseObject<TInterface> : IDisposable, IADsObject where 
 			props = null;
 			if (disposing)
 			{
-				Marshal.ReleaseComObject(Interface);
+				Interface = null!;
 			}
 			disposedValue = true;
 		}
@@ -349,6 +349,7 @@ public class ADsCollection<T> : IDictionary<string, T> where T : class, IADsObje
 /// </para>
 /// <note>The <see cref="ADsComputer"/> object is not implemented by the LDAP ADSI provider. For more information, see ADSI Objects of LDAP.</note>
 /// </summary>
+[Wraps(typeof(IADsComputer))]
 public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 {
 	private ADsContainer? children;
@@ -434,6 +435,7 @@ public class ADsComputer : ADsBaseObject<IADsComputer>, IADsContainerObject
 /// The <see cref="ADsComputerOperations"/> class exposes methods for retrieving the status of a computer over a network and to enable remote
 /// shutdown. Directory service providers may choose to implement this class to support basic system administration over a network through ADSI.
 /// </summary>
+[Wraps(typeof(IADsComputerOperations))]
 public class ADsComputerOperations : ADsBaseObject<IADsComputerOperations>
 {
 	internal ADsComputerOperations(IADsComputer comp) : base((IADsComputerOperations)comp)
@@ -479,6 +481,7 @@ public class ADsComputerOperations : ADsBaseObject<IADsComputerOperations>
 /// <para>The following code example determines if an ADSI object is a container.</para>
 /// <para>The following code example determines if an ADSI object is a container.</para>
 /// </remarks>
+[Wraps(typeof(IADsContainer))]
 public class ADsContainer : ICollection<IADsObject>
 {
 	internal string? classFilter = null;
@@ -816,6 +819,7 @@ public class ADsContainer : ICollection<IADsObject>
 /// password controls. For example, to change the password of a user account, call IADsUser::ChangePassword on the user object.
 /// </summary>
 /// <remarks>For the WinNT provider supplied by Microsoft, this interface is implemented on the <c>WinNTDomain</c> object.</remarks>
+[Wraps(typeof(IADsDomain))]
 public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject
 {
 	private ADsContainer? children;
@@ -840,6 +844,7 @@ public class ADsDomain : ADsBaseObject<IADsDomain>, IADsContainerObject
 /// </summary>
 /// <remarks>Under the WinNT provider, this interface is implemented on the <c>WinNTService</c> object.</remarks>
 // TODO: Inherit from ADsService??
+[Wraps(typeof(IADsFileService))]
 public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObject
 {
 	private ADsContainer? children;
@@ -861,6 +866,7 @@ public class ADsFileService : ADsBaseObject<IADsFileService>, IADsContainerObjec
 /// Specifically, it serves to maintain and manage open resources and active sessions of the file service.
 /// </summary>
 // TODO: Inherit from ADsServiceOperations??
+[Wraps(typeof(IADsFileServiceOperations))]
 public class ADsFileServiceOperations : ADsBaseObject<IADsFileServiceOperations>
 {
 	internal ADsFileServiceOperations(IADsService o) : base((IADsFileServiceOperations)o)
@@ -902,6 +908,7 @@ public class ADsFileServiceOperations : ADsBaseObject<IADsFileServiceOperations>
 /// and then enumerate the container to reach the file share of interest, or bind directly to the file share.
 /// </para>
 /// </remarks>
+[Wraps(typeof(IADsFileShare))]
 public class ADsFileShare : ADsBaseObject<IADsFileShare>
 {
 	internal ADsFileShare(IADs intf) : base((IADsFileShare)intf)
@@ -913,6 +920,7 @@ public class ADsFileShare : ADsBaseObject<IADsFileShare>
 /// Manages group membership data in a directory service. It enables you to get member objects, test if a given object belongs to the group,
 /// and to add, or remove, an object to, or from, the group.
 /// </summary>
+[Wraps(typeof(IADsGroup))]
 public class ADsGroup : ADsBaseObject<IADsGroup>
 {
 	private ADsMembership? members;
@@ -939,6 +947,7 @@ public class ADsGroup : ADsBaseObject<IADsGroup>
 /// used to manage a collection of ADSI objects belonging to a group. To access the collection of group members, use the <see
 /// cref="ADsGroup.Members"/> property method implemented by the ADSI group object.
 /// </summary>
+[Wraps(typeof(IADsMembers))]
 public class ADsMembership : IReadOnlyCollection<IADsObject>
 {
 	private readonly IADsMembers Interface;
@@ -1117,6 +1126,7 @@ public class ADsMembership : IReadOnlyCollection<IADsObject>
 /// with a simple and consistent representation of various underlying directory services.
 /// </para>
 /// </summary>
+[Wraps(typeof(IADs))]
 public class ADsObject : ADsBaseObject<IADs>
 {
 	internal ADsObject(IADs intf) : base(intf)
@@ -1248,6 +1258,7 @@ public class ADsObject : ADsBaseObject<IADs>
 /// print queue.
 /// </para>
 /// </remarks>
+[Wraps(typeof(IADsPrintJob))]
 public class ADsPrintJob : ADsBaseObject<IADsPrintJob>
 {
 	private ADsPrintJobOperations? ops;
@@ -1277,6 +1288,7 @@ public class ADsPrintJob : ADsBaseObject<IADsPrintJob>
 /// </item>
 /// </list>
 /// </summary>
+[Wraps(typeof(IADsPrintJobOperations))]
 public class ADsPrintJobOperations : ADsBaseObject<IADsPrintJobOperations>
 {
 	internal ADsPrintJobOperations(IADsPrintJob o) : base((IADsPrintJobOperations)o)
@@ -1328,6 +1340,7 @@ public class ADsPrintJobOperations : ADsBaseObject<IADsPrintJobOperations>
 /// </item>
 /// </list>
 /// </remarks>
+[Wraps(typeof(IADsPrintQueue))]
 public class ADsPrintQueue : ADsBaseObject<IADsPrintQueue>
 {
 	private ADsPrintQueueOperations? ops;
@@ -1358,6 +1371,7 @@ public class ADsPrintQueue : ADsBaseObject<IADsPrintQueue>
 /// </item>
 /// </list>
 /// </summary>
+[Wraps(typeof(IADsPrintQueueOperations))]
 public class ADsPrintQueueOperations : ADsBaseObject<IADsPrintQueueOperations>
 {
 	internal ADsPrintQueueOperations(IADsPrintQueue o) : base((IADsPrintQueueOperations)o)
@@ -1395,6 +1409,7 @@ public class ADsPrintQueueOperations : ADsBaseObject<IADsPrintQueueOperations>
 /// methods of this class, you must call <see cref="Save"/> to save the changes in the persistent store of the underlying directory.
 /// </para>
 /// </summary>
+[Wraps(typeof(IADsPropertyList))]
 public class ADsPropertyCache : /*DynamicObject,*/ IDictionary<string, object?>
 {
 	private readonly IADs Interface;
@@ -1575,6 +1590,7 @@ public class ADsPropertyCache : /*DynamicObject,*/ IDictionary<string, object?>
 /// When a remote user opens a folder or a subfolder on a public share point on the target computer, ADSI considers this folder to be an open
 /// resource and represents it with a resource object that implements this interface.
 /// </remarks>
+[Wraps(typeof(IADsResource))]
 public class ADsResource : ADsBaseObject<IADsResource>
 {
 	internal ADsResource(IADs i) : base((IADsResource)i)
@@ -1590,6 +1606,7 @@ public class ADsResource : ADsBaseObject<IADsResource>
 /// Schema objects are organized in the schema container of a given directory. To access an object's schema class, use the object's
 /// <c>Schema</c> property to obtain the ADsPath string and use that string to bind to its schema class object.
 /// </remarks>
+[Wraps(typeof(IADsClass))]
 public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 {
 	private ADsContainer? cont;
@@ -1791,6 +1808,7 @@ public class ADsSchemaClass : ADsBaseObject<IADsClass>, IADsContainerObject
 /// <remarks>
 /// <para>The <see cref="ADsSchemaProperty"/> class methods can add new attributes and property objects to a provider-specific implementation.</para>
 /// </remarks>
+[Wraps(typeof(IADsProperty))]
 public class ADsSchemaProperty : ADsBaseObject<IADsProperty>
 {
 	private ADsSchemaPropertySyntax? syntax = null;
@@ -1836,6 +1854,7 @@ public class ADsSchemaProperty : ADsBaseObject<IADsProperty>
 /// </para>
 /// <para>Use the <see cref="ADsSchemaPropertySyntax"/> class to process the property values of any instance of ADSI schema class object.</para>
 /// </summary>
+[Wraps(typeof(IADsSyntax))]
 public class ADsSchemaPropertySyntax : ADsBaseObject<IADs>
 {
 	private readonly IADsSyntax isyntax;
@@ -1866,6 +1885,7 @@ public class ADsSchemaPropertySyntax : ADsBaseObject<IADs>
 /// unique to file services.
 /// </para>
 /// </remarks>
+[Wraps(typeof(IADsService))]
 public class ADsService : ADsBaseObject<IADsService>
 {
 	private ADsServiceOperations? ops;
@@ -1888,6 +1908,7 @@ public class ADsService : ADsBaseObject<IADsService>
 /// managed by ADsFileService and ADsFileServiceOperations.
 /// </para>
 /// </summary>
+[Wraps(typeof(IADsServiceOperations))]
 public class ADsServiceOperations : ADsBaseObject<IADsServiceOperations>
 {
 	internal ADsServiceOperations(IADsService o) : base((IADsServiceOperations)o)
@@ -1931,6 +1952,7 @@ public class ADsServiceOperations : ADsBaseObject<IADsServiceOperations>
 /// </para>
 /// <para>Sessions are managed by the file service. To obtain session objects, first bind to this service ("LanmanServer" or "FPNW").</para>
 /// </remarks>
+[Wraps(typeof(IADsSession))]
 public class ADsSession : ADsBaseObject<IADsSession>
 {
 	internal ADsSession(IADs i) : base((IADsSession)i)
@@ -2005,6 +2027,7 @@ public class ADsSession : ADsBaseObject<IADsSession>
 /// instead of "domain user".
 /// </para>
 /// </remarks>
+[Wraps(typeof(IADsUser))]
 public class ADsUser : ADsBaseObject<IADsUser>
 {
 	private ADsMembership? groups;
@@ -2084,6 +2107,7 @@ public class ADsUser : ADsBaseObject<IADsUser>
 /// </para>
 /// <para>Of the ADSI system-supplied providers, only the LDAP provider supports this interface.</para>
 /// </summary>
+[Wraps(typeof(IDirectoryObject))]
 public class DirectoryObject
 {
 	private readonly IDirectoryObject? dirObj;
@@ -2151,6 +2175,7 @@ public class DirectoryObject
 /// <para>Provides a low overhead method that clients can use to perform queries in the underlying directory.</para>
 /// <para>Of the ADSI system-supplied providers, only the LDAP provider supports this interface.</para>
 /// </summary>
+[Wraps(typeof(IDirectorySearch))]
 public class DirectorySearch
 {
 	private readonly IDirectorySearch? iSearch;

@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows NewDev.dll
 
 - Includes methods from newdev.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NewDev?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NewDev?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NewDev)  
+### Dependencies  
+- Vanara.PInvoke.SetupAPI  
 ### Methods - 100% API coverage (8 of 8 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

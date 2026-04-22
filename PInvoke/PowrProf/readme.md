@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows PowrProf.d
 
 - Includes methods from powrprof.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.PowrProf?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.PowrProf?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.PowrProf)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (80 of 80 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

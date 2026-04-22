@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from UserEnv.dll.
 
 - Includes methods from userenv.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.UserEnv?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.UserEnv?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UserEnv)  
+### Dependencies  
+- Vanara.PInvoke.Security  
 ### Methods - 100% API coverage (29 of 29 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

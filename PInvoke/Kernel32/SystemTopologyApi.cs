@@ -56,7 +56,7 @@ public static partial class Kernel32
 	[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, Optional, MarshalAs(UnmanagedType.LPArray),
-		SizeDef(nameof(ProcessorMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
+		SizeDef(nameof(ProcessorMaskCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
 		ushort ProcessorMaskCount, out ushort RequiredMaskCount);
 
 	/// <summary>Retrieves the multi-group processor mask of the specified node.</summary>
@@ -75,15 +75,7 @@ public static partial class Kernel32
 	// https://learn.microsoft.com/en-us/windows/win32/api/systemtopologyapi/nf-systemtopologyapi-getnumanodeprocessormask2
 	// BOOL GetNumaNodeProcessorMask2( USHORT NodeNumber, PGROUP_AFFINITY ProcessorMasks, USHORT ProcessorMaskCount, PUSHORT RequiredMaskCount );
 	[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
-	public static GROUP_AFFINITY[] GetNumaNodeProcessorMask2(ushort NodeNumber)
-	{
-		if (!GetNumaNodeProcessorMask2(NodeNumber, null, 0, out var c))
-			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		var result = new GROUP_AFFINITY[c];
-		if (c > 0)
-			Win32Error.ThrowLastErrorIfFalse(GetNumaNodeProcessorMask2(NodeNumber, result, c, out _));
-		return result;
-	}
+	public static GROUP_AFFINITY[] GetNumaNodeProcessorMask2(ushort NodeNumber) => Win32Error.ThrowLastErrorIfFalse(GetNumaNodeProcessorMask2(NodeNumber, out var pm)) ? pm! : [];
 
 	/// <summary>Retrieves the processor mask for a node regardless of the processor group the node belongs to.</summary>
 	/// <param name="Node">The node number.</param>

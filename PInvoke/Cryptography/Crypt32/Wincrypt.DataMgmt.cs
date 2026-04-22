@@ -1793,7 +1793,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfo(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
-		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
+		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfo</c> function exports the public key information associated with the corresponding private key of
@@ -1878,7 +1878,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfo(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
-		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
+		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -2000,7 +2000,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional, Ignore] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -2122,7 +2122,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional, Ignore] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.CheckLastError)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoFromBCryptKeyHandle</c> function exports the public key information associated with a provider's
@@ -2535,9 +2535,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0c419b7-ebb3-42c6-9f6a-59b55a2db1b2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional, Ignore] uint dwFlags,
+	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags,
 		CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo,
-		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <note>Important: This API is deprecated. New and existing software should start using Cryptography Next Generation APIs.
@@ -2637,7 +2637,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptHashToBeSigned([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType,
 		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
-		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.CheckLastError)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <para>
@@ -5327,7 +5327,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncodeCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.CheckLastError)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// <para>
@@ -5512,7 +5512,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncodeCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.CheckLastError)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
 	/// <param name="hBCryptKey">
@@ -5626,7 +5626,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In, SizeDef(nameof(cbEncodedToBeSigned))] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.Query)] IntPtr pbSignature, ref uint pcbSignature);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.CheckLastError)] IntPtr pbSignature, ref uint pcbSignature);
 
 	/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
 	/// <param name="hBCryptKey">
@@ -5740,7 +5740,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In, SizeDef(nameof(cbEncodedToBeSigned))] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.Query)] IntPtr pbSignature, ref uint pcbSignature);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.CheckLastError)] IntPtr pbSignature, ref uint pcbSignature);
 
 	/// <summary>
 	/// The <c>CryptVerifyCertificateSignature</c> function verifies the signature of a certificate, certificate revocation list (CRL),

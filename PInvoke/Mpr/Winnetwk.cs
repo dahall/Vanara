@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Vanara.PInvoke;
@@ -1646,7 +1647,7 @@ public static partial class Mpr
 	// DWORD WNetGetConnection( _In_ LPCTSTR lpLocalName, _Out_ StrPtrAuto lpRemoteName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385453(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385453")]
-	public static extern Win32Error WNetGetConnection(string lpLocalName, StringBuilder? lpRemoteName, ref uint lpnLength);
+	public static extern Win32Error WNetGetConnection(string lpLocalName, [SizeDef(nameof(lpnLength), SizingMethod.CheckLastError)] StringBuilder? lpRemoteName, ref uint lpnLength);
 
 	/// <summary>
 	/// The <c>WNetGetLastError</c> function retrieves the most recent extended error code set by a WNet function. The network provider
@@ -1755,7 +1756,7 @@ public static partial class Mpr
 	// DWORD WNetGetProviderName( _In_ DWORD dwNetType, _Out_ StrPtrAuto lpProviderName, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385464(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385464")]
-	public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, StringBuilder? lpProviderName, ref uint lpBufferSize);
+	public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, [SizeDef(nameof(lpBufferSize), SizingMethod.CheckLastError, InitSize = 1)] StringBuilder lpProviderName, ref uint lpBufferSize);
 
 	/// <summary>
 	/// When provided with a remote path to a network resource, the <c>WNetGetResourceInformation</c> function identifies the network
@@ -1843,7 +1844,8 @@ public static partial class Mpr
 	// StrPtrAuto *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385469")]
-	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out StrPtrAuto lplpSystem);
+	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, [Out, SizeDef(nameof(lpcbBuffer), SizingMethod.CheckLastError, InitSize = -1), StructPointer(typeof(NETRESOURCE))] IntPtr lpBuffer,
+		ref uint lpcbBuffer, out StrPtrAuto lplpSystem);
 
 	/// <summary>
 	/// <para>
@@ -1942,7 +1944,8 @@ public static partial class Mpr
 	// DWORD WNetGetResourceParent( _In_ LPNETRESOURCE lpNetResource, _Out_ LPVOID lpBuffer, _Inout_ LPDWORD lpcbBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385470(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385470")]
-	public static extern Win32Error WNetGetResourceParent(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer);
+	public static extern Win32Error WNetGetResourceParent(NETRESOURCE lpNetResource,
+		[Out, SizeDef(nameof(lpcbBuffer), SizingMethod.CheckLastError, InitSize = -1), StructPointer(typeof(NETRESOURCE))] IntPtr lpBuffer, ref uint lpcbBuffer);
 
 	/// <summary>
 	/// The <c>WNetGetUniversalName</c> function takes a drive-based path for a network resource and returns an information structure
@@ -2050,6 +2053,117 @@ public static partial class Mpr
 	public static extern Win32Error WNetGetUniversalName(string lpLocalPath, INFO_LEVEL dwInfoLevel, IntPtr lpBuffer, ref uint lpBufferSize);
 
 	/// <summary>
+	/// The <c>WNetGetUniversalName</c> function takes a drive-based path for a network resource and returns an information structure
+	/// that contains a more universal form of the name.
+	/// </summary>
+	/// <param name="lpLocalPath">
+	/// <para>A pointer to a constant null-terminated string that is a drive-based path for a network resource.</para>
+	/// <para>
+	/// For example, if drive H has been mapped to a network drive share, and the network resource of interest is a file named Sample.doc
+	/// in the directory \Win32\Examples on that share, the drive-based path is H:\Win32\Examples\Sample.doc.
+	/// </para>
+	/// </param>
+	/// <param name="dwInfoLevel">
+	/// <para>
+	/// The type of structure that the function stores in the buffer pointed to by the lpBuffer parameter. This parameter can be one of
+	/// the following values defined in the Winnetwk.h header file.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>UNIVERSAL_NAME_INFO_LEVEL</term>
+	/// <term>The function stores a UNIVERSAL_NAME_INFO structure in the buffer.</term>
+	/// </item>
+	/// <item>
+	/// <term>REMOTE_NAME_INFO_LEVEL</term>
+	/// <term>The function stores a REMOTE_NAME_INFO structure in the buffer.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <para>The <c>UNIVERSAL_NAME_INFO</c> structure points to a Universal Naming Convention (UNC) name string.</para>
+	/// <para>
+	/// The <c>REMOTE_NAME_INFO</c> structure points to a UNC name string and two additional connection information strings. For more
+	/// information, see the following Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">A pointer to a buffer that receives the structure specified by the dwInfoLevel parameter.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+	/// <para>If the function fails, the return value is a system error code, such as one of the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_BAD_DEVICE</term>
+	/// <term>The string pointed to by the lpLocalPath parameter is invalid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_CONNECTION_UNAVAIL</term>
+	/// <term>There is no current connection to the remote device, but there is a remembered (persistent) connection to it.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_EXTENDED_ERROR</term>
+	/// <term>A network-specific error occurred. Use the WNetGetLastError function to obtain a description of the error.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_MORE_DATA</term>
+	/// <term>
+	/// The buffer pointed to by the lpBuffer parameter is too small. The function sets the variable pointed to by the lpBufferSize
+	/// parameter to the required buffer size. More entries are available with subsequent calls.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_SUPPORTED</term>
+	/// <term>
+	/// The dwInfoLevel parameter is set to UNIVERSAL_NAME_INFO_LEVEL, but the network provider does not support UNC names. (None of the
+	/// network providers support this function.)
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NO_NET_OR_BAD_PATH</term>
+	/// <term>
+	/// None of the network providers recognize the local name as having a connection. However, the network is not available for at least
+	/// one provider to whom the connection may belong.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NO_NETWORK</term>
+	/// <term>The network is unavailable.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_CONNECTED</term>
+	/// <term>The device specified by the lpLocalPath parameter is not redirected.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </returns>
+	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385474")]
+	public static Win32Error WNetGetUniversalName<T>(string lpLocalPath, out T? lpBuffer, INFO_LEVEL? dwInfoLevel = null)
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, INFO_LEVEL>(dwInfoLevel, out var level))
+			throw new ArgumentException($"The type {typeof(T).FullName} is not valid for this method.", nameof(T));
+		lpBuffer = default;
+		using SafeCoTaskMemHandle mem = new(Marshal.SizeOf<T>());
+		uint sz = mem.Size;
+		var err = WNetGetUniversalName(lpLocalPath, level, mem, ref sz);
+		if (err == Win32Error.ERROR_MORE_DATA)
+		{
+			mem.Size = sz;
+			err = WNetGetUniversalName(lpLocalPath, level, mem, ref sz);
+			if (err.Succeeded)
+				lpBuffer = mem.ToStructure<T>();
+		}
+		return err;
+	}
+
+	/// <summary>
 	/// The <c>WNetGetUser</c> function retrieves the current default user name, or the user name used to establish a network connection.
 	/// </summary>
 	/// <param name="lpName">
@@ -2102,7 +2216,7 @@ public static partial class Mpr
 	// DWORD WNetGetUser( _In_ LPCTSTR lpName, _Out_ StrPtrAuto lpUserName, _Inout_ LPDWORD lpnLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385476(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385476")]
-	public static extern Win32Error WNetGetUser([Optional] string? lpName, StringBuilder? lpUserName, ref uint lpnLength);
+	public static extern Win32Error WNetGetUser([Optional] string? lpName, [Out, SizeDef(nameof(lpnLength), SizingMethod.CheckLastError)] StringBuilder? lpUserName, ref uint lpnLength);
 
 	/// <summary>
 	/// The <c>WNetOpenEnum</c> function starts an enumeration of network resources or existing connections. You can continue the
@@ -2592,7 +2706,8 @@ public static partial class Mpr
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
 	public static extern Win32Error WNetUseConnection([Optional] HWND hwndOwner, NETRESOURCE lpNetResource, [Optional] string? lpPassword,
-		[Optional] string? lpUserID, [Optional] CONNECT dwFlags, [Optional] StringBuilder? lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
+		[Optional] string? lpUserID, [Optional] CONNECT dwFlags, [Optional, Out, SizeDef(nameof(lpBufferSize))] StringBuilder? lpAccessName,
+		[Range(0, 266)] ref uint lpBufferSize, out CONNECT lpResult);
 
 	/// <summary>
 	/// The <c>CONNECTDLGSTRUCT</c> structure is used by the <c>WNetConnectionDialog1</c> function to establish browsing dialog box parameters.
@@ -3034,7 +3149,7 @@ public static partial class Mpr
 		/// <para>The string can be MAX_PATH characters in length, and it must follow the network provider's naming conventions.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
-		public string lpRemoteName;
+		public string lpRemoteName = string.Empty;
 
 		/// <summary>A pointer to a NULL-terminated string that contains a comment supplied by the network provider.</summary>
 		[MarshalAs(UnmanagedType.LPTStr, SizeConst = 1024)]

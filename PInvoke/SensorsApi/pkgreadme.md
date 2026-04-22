@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Enumerations | Interfaces
 --- | ---
-LOCATION_DESIRED_ACCURACY LOCATION_POSITION_SOURCE MagnetometerAccuracy SensorConnectionType SensorState SimpleDeviceOrientation   | ILocationPermissions ISensor ISensorCollection ISensorDataReport ISensorEvents ISensorManager ISensorManagerEvents 
+LOCATION_DESIRED_ACCURACY<br>LOCATION_POSITION_SOURCE<br>MagnetometerAccuracy<br>SensorConnectionType<br>SensorState<br>SimpleDeviceOrientation<br><br> | ILocationPermissions<br>ISensor<br>ISensorCollection<br>ISensorDataReport<br>ISensorEvents<br>ISensorManager<br>ISensorManagerEvents<br>

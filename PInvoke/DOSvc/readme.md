@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Delivery O
 
 - Includes methods from dosvc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DOSvc?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DOSvc?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DOSvc)  
+### Dependencies  
+- Vanara.PInvoke.BITS  
+- Vanara.PInvoke.Ole  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

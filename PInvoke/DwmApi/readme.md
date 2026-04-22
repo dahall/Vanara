@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows DwmApi.dll
 
 - Includes methods from dwmapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DwmApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DwmApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DwmApi)  
+### Dependencies  
+- Vanara.PInvoke.Gdi32  
 ### Methods - 100% API coverage (26 of 26 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

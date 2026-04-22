@@ -40,7 +40,7 @@ public class ShellFolderTests
 	{
 		using var pidl = new PIDL(testFld);
 		Assert.That(() => { Assert.That(new ShellFolder(pidl).FileSystemPath, Is.EqualTo(testFld)); }, Throws.Nothing);
-		Assert.That(() => new ShellFolder((PIDL?)null), Throws.Exception);
+		Assert.That(() => new ShellFolder(PIDL.Null), Throws.Exception);
 		Assert.That(() => new ShellFolder(new PIDL(@"C:\Tamp")), Throws.Exception);
 		Assert.That(() => new ShellFolder(new PIDL(testFile)), Throws.Nothing);
 	}

@@ -564,7 +564,7 @@ public static partial class Crypt32
 	[PInvokeData("mssip.h", MSDNShortId = "e3fabaa7-2dda-4c6c-8d1a-3ee5363e10b5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional, Ignore] uint dwIndex,
-		ref uint pcbSignedDataMsg, [Out, SizeDef(nameof(pcbSignedDataMsg), SizingMethod.Query)] IntPtr pbSignedDataMsg);
+		ref uint pcbSignedDataMsg, [Out, SizeDef(nameof(pcbSignedDataMsg), SizingMethod.CheckLastError)] IntPtr pbSignedDataMsg);
 
 	/// <summary>
 	/// The SIP_DISPATCH_INFOa&gt; structure. The exported functions must have been previously registered by calling the

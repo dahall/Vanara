@@ -3,6 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows CredUI.dll
 
 - Includes methods from credui.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.CredUI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.CredUI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CredUI)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
+- Vanara.PInvoke.Security  
 ### Methods - 100% API coverage (14 of 14 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

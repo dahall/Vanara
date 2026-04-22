@@ -297,7 +297,7 @@ public class ShellContextMenu : IDisposable
 		}
 
 		m_MessageWindow?.Dispose();
-		Marshal.FinalReleaseComObject(ComInterface);
+		//Marshal.FinalReleaseComObject(ComInterface);
 		ComInterface = null!;
 		disposables?.Dispose();
 		m_hMenu?.Dispose();

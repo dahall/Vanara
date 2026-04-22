@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows AclUI.dll.
 
 - Includes methods from aclui.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.AclUI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.AclUI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.AclUI)  
+### Dependencies  
+- Vanara.PInvoke.Security  
 ### Methods - 100% API coverage (3 of 3 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

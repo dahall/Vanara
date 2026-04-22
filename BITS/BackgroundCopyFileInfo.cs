@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 
 namespace Vanara.IO;
 
 /// <summary>Information about a file in a background copy job.</summary>
+[Wraps(typeof(IBackgroundCopyFile))]
 public class BackgroundCopyFileInfo
 {
 	internal BG_FILE_INFO fi;
@@ -152,6 +154,7 @@ public class BackgroundCopyFileInfo
 }
 
 /// <summary>Identifies a range of bytes to download from a file.</summary>
+[Wraps(typeof(BG_FILE_RANGE))]
 [StructLayout(LayoutKind.Sequential)]
 public class BackgroundCopyFileRange
 {

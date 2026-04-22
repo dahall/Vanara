@@ -2884,7 +2884,7 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetProcessDefaultCpuSetMasks([In, AddAsMember] HPROCESS Process,
 		[Out, Optional, MarshalAs(UnmanagedType.LPArray),
-		SizeDef(nameof(CpuSetMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? CpuSetMasks,
+		SizeDef(nameof(CpuSetMaskCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? CpuSetMasks,
 		ushort CpuSetMaskCount, out ushort RequiredMaskCount);
 
 	/// <summary>

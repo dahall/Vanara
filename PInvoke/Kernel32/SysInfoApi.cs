@@ -629,7 +629,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "d5646fe6-9112-42cd-ace9-00dd1b590ecb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DnsHostnameToComputerName(string Hostname, [SizeDef(nameof(nSize))] StringBuilder? ComputerName,
+	public static extern bool DnsHostnameToComputerName(string Hostname, [SizeDef(nameof(nSize), SizingMethod.CheckLastError)] StringBuilder? ComputerName,
 		[Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint nSize);
 
 	/// <summary>Enumerates all system firmware tables of the specified type.</summary>
@@ -769,7 +769,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724295")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerName([SizeDef(nameof(lpnSize))] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
+	public static extern bool GetComputerName([SizeDef(nameof(lpnSize), SizingMethod.CheckLastError)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
 
 	/// <summary>
 	/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
@@ -888,7 +888,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724301")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, [SizeDef(nameof(lpnSize))] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
+	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, [SizeDef(nameof(lpnSize), SizingMethod.CheckLastError)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
 
 	/// <summary>Gets a value indicating whether the developer drive is enabled.</summary>
 	/// <returns>Returns a DEVELOPER_DRIVE_ENABLEMENT_STATE value indicating the developer drive enablement state.</returns>
@@ -1081,7 +1081,7 @@ public static partial class Kernel32
 	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType,
-		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] IntPtr Buffer, ref uint ReturnedLength);
+		[SizeDef(nameof(ReturnedLength), SizingMethod.Bytes | SizingMethod.CheckLastError)] IntPtr Buffer, ref uint ReturnedLength);
 
 	/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
 	/// <param name="RelationshipType">
@@ -1238,7 +1238,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405497")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[SuppressAutoGen]
-	public static extern bool GetProcessorSystemCycleTime(ushort Group, [SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes)] IntPtr Buffer, ref uint ReturnedLength);
+	public static extern bool GetProcessorSystemCycleTime(ushort Group, [SizeDef(nameof(ReturnedLength), SizingMethod.CheckLastError | SizingMethod.Bytes)] IntPtr Buffer, ref uint ReturnedLength);
 
 	/// <summary>
 	/// Retrieves the cycle time each processor in the specified processor group spent executing deferred procedure calls (DPCs) and

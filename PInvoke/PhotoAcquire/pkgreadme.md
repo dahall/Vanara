@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Enumerations | Interfaces
 --- | ---
-DEVICE_SELECTION_DEVICE_TYPE DSF ERROR_ADVISE_MESSAGE_TYPE ERROR_ADVISE_RESULT PAPS PHOTOACQ PROGRESS_DIALOG_CHECKBOX_ID PROGRESS_DIALOG_IMAGE_TYPE USER_INPUT_STRING_TYPE    | IPhotoAcquire IPhotoAcquireDeviceSelectionDialog IPhotoAcquireItem IPhotoAcquireOptionsDialog IPhotoAcquirePlugin IPhotoAcquireProgressCB IPhotoAcquireSettings IPhotoAcquireSource IPhotoProgressActionCB IPhotoProgressDialog IUserInputString 
+DEVICE_SELECTION_DEVICE_TYPE<br>DSF<br>ERROR_ADVISE_MESSAGE_TYPE<br>ERROR_ADVISE_RESULT<br>PAPS<br>PHOTOACQ<br>PROGRESS_DIALOG_CHECKBOX_ID<br>PROGRESS_DIALOG_IMAGE_TYPE<br>USER_INPUT_STRING_TYPE<br><br><br> | IPhotoAcquire<br>IPhotoAcquireDeviceSelectionDialog<br>IPhotoAcquireItem<br>IPhotoAcquireOptionsDialog<br>IPhotoAcquirePlugin<br>IPhotoAcquireProgressCB<br>IPhotoAcquireSettings<br>IPhotoAcquireSource<br>IPhotoProgressActionCB<br>IPhotoProgressDialog<br>IUserInputString<br>

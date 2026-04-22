@@ -18,4 +18,4 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 Functions | Enumerations | Structures
 --- | --- | ---
-CimCloseImage CimCloseStream CimCommitImage CimCreateAlternateStream CimCreateFile CimCreateHardLink CimCreateImage CimDeletePath CimDismountImage CimMountImage CimWriteStream  | CIM_MOUNT_IMAGE_FLAGS            | CIMFS_FILE_METADATA CIMFS_IMAGE_HANDLE CIMFS_STREAM_HANDLE         
+CimCloseImage<br>CimCloseStream<br>CimCommitImage<br>CimCreateAlternateStream<br>CimCreateFile<br>CimCreateHardLink<br>CimCreateImage<br>CimDeletePath<br>CimDismountImage<br>CimMountImage<br>CimWriteStream<br> | CIM_MOUNT_IMAGE_FLAGS<br><br><br><br><br><br><br><br><br><br><br> | CIMFS_FILE_METADATA<br>CIMFS_IMAGE_HANDLE<br>CIMFS_STREAM_HANDLE<br><br><br><br><br><br><br><br><br>

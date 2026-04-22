@@ -203,7 +203,7 @@ public class ConsoleTestProcess
 			if (!WriteFile(hStdout, lpszPrompt1, (uint)lpszPrompt1.Length, out _, default))
 				return ShowErr("WriteFile");
 
-			if (!ReadFile(hStdin, chBuffer, (uint)chBuffer.Length, out _, default))
+			if (!ReadFile(hStdin, chBuffer, out _))
 				break;
 			if (chBuffer[0] == 'q')
 				break;
@@ -225,7 +225,7 @@ public class ConsoleTestProcess
 			if (!WriteFile(hStdout, lpszPrompt2, (uint)lpszPrompt2.Length, out _, default))
 				return ShowErr("WriteFile");
 
-			if (!ReadFile(hStdin, chBuffer, (uint)chBuffer.Length, out uint cRead, default))
+			if (!ReadFile(hStdin, chBuffer, out uint cRead))
 				break;
 			if (chBuffer[0] == '\r')
 				NewLine();
@@ -624,6 +624,6 @@ public class ConsoleTestProcess
 		WriteFile(hStdout, bmsg, (uint)bmsg.Length, out _, default);
 
 		byte[] inBuf = new byte[2];
-		ReadFile(hStdin, inBuf, (uint)inBuf.Length, out _, default);
+		ReadFile(hStdin, inBuf, out _);
 	}
 }

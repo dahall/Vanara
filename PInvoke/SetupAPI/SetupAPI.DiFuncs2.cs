@@ -393,7 +393,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassPropertyKeys")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetClassPropertyKeys(in Guid ClassGuid,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray,
 		uint PropertyKeyCount, out uint RequiredPropertyKeyCount, DICLASSPROP Flags);
 
 	/// <summary>
@@ -528,7 +528,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetClassPropertyKeysExW")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetClassPropertyKeysEx(in Guid ClassGuid,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
 		out uint RequiredPropertyKeyCount, DICLASSPROP Flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? MachineName,
 		[In, Optional, Ignore] IntPtr Reserved);
 
@@ -1311,7 +1311,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDeviceInterfacePropertyKeys")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetDeviceInterfacePropertyKeys(HDEVINFO DeviceInfoSet, in SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
-		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[] PropertyKeyArray, uint PropertyKeyCount,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
 		out uint RequiredPropertyKeyCount, [In, Optional] uint Flags);
 
 	/// <summary>The <c>SetupDiGetDeviceProperty</c> function retrieves a device instance property.</summary>
@@ -1603,7 +1603,7 @@ public static partial class SetupAPI
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDevicePropertyKeys")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetDevicePropertyKeys(HDEVINFO DeviceInfoSet, in SP_DEVINFO_DATA DeviceInfoData,
-		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.Query, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(PropertyKeyCount), SizingMethod.CheckLastError, OutVarName = nameof(RequiredPropertyKeyCount))] DEVPROPKEY[]? PropertyKeyArray, uint PropertyKeyCount,
 		out uint RequiredPropertyKeyCount, uint Flags = 0);
 
 	/// <summary>The <c>SetupDiGetDeviceRegistryProperty</c> function retrieves a specified Plug and Play device property.</summary>
@@ -2113,7 +2113,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetHwProfileList")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiGetHwProfileList([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(HwProfileListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] uint[] HwProfileList,
+	public static extern bool SetupDiGetHwProfileList([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(HwProfileListSize), SizingMethod.CheckLastError, OutVarName = nameof(RequiredSize))] uint[]? HwProfileList,
 		uint HwProfileListSize, out uint RequiredSize, out uint CurrentlyActiveIndex);
 
 	/// <summary>
@@ -2149,7 +2149,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetHwProfileListExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupDiGetHwProfileListEx([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(HwProfileListSize), SizingMethod.Query, OutVarName = nameof(RequiredSize))] uint[] HwProfileList,
+	public static extern bool SetupDiGetHwProfileListEx([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(HwProfileListSize), SizingMethod.CheckLastError, OutVarName = nameof(RequiredSize))] uint[]? HwProfileList,
 		uint HwProfileListSize, out uint RequiredSize, out uint CurrentlyActiveIndex,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? MachineName, [In, Optional] IntPtr Reserved);
 

@@ -1,10 +1,9 @@
-﻿using Vanara.Marshaler;
-using Vanara.PInvoke;
+﻿using Vanara.PInvoke;
 
 namespace Vanara;
 
 /// <summary>Managed instance of the four-byte BOOL type.</summary>
-[TypeDef(typeof(uint), ConvertTo = typeof(bool), Excludes = ExcludeOptions.Numerics)]
+[TypeDef(typeof(uint), ConvertTo = typeof(bool), Excludes = ExcludeOptions.Numerics, GetConvValue = "value != 0", SetConvValue = "value ? True : False")]
 public partial struct BOOL
 {
 	internal const uint True = 1U;
@@ -30,6 +29,23 @@ public partial struct BOOL
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator BOOL(IntPtr value) => value != IntPtr.Zero;
+
+	/// <summary>Implements the operator !.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static BOOL operator !(BOOL value) => !value.Value;
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(BOOL value) => value.Value;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(BOOL value) => !value.Value;
+#endif
 }
 
 /*[StructLayout(LayoutKind.Sequential), Serializable]

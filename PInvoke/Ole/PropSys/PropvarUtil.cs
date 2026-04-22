@@ -30,7 +30,7 @@ public static partial class PropSys
 		PVCHF_NOHEXSTRING = 0x00000010
 	}
 
-	/// <summary>Values used by the <see cref="PropVariantCompareEx"/> function.</summary>
+	/// <summary>Values used by the <see cref="PropVariantCompareEx(PROPVARIANT, PROPVARIANT, PROPVAR_COMPARE_UNIT, PROPVAR_COMPARE_FLAGS)"/> function.</summary>
 	[Flags]
 	[PInvokeData("Propvarutil.h")]
 	public enum PROPVAR_COMPARE_FLAGS
@@ -60,7 +60,7 @@ public static partial class PropSys
 		PVCF_DIGITSASNUMBERS_CASESENSITIVE = 0x00000020,
 	}
 
-	/// <summary>Values used by the <see cref="PropVariantCompareEx"/> function.</summary>
+	/// <summary>Values used by the <see cref="PropVariantCompareEx(PROPVARIANT, PROPVARIANT, PROPVAR_COMPARE_UNIT, PROPVAR_COMPARE_FLAGS)"/> function.</summary>
 	[PInvokeData("Propvarutil.h")]
 	public enum PROPVAR_COMPARE_UNIT
 	{
@@ -123,7 +123,7 @@ public static partial class PropSys
 	// ClearPropVariantArray( PROPVARIANT *rgPropVar, UINT cVars );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "e8d7f951-8a9e-441b-9fa7-bf21cf08c8ac")]
-	public static extern HRESULT ClearPropVariantArray([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPVARIANT[] rgPropVar, uint cVars);
+	public static extern HRESULT ClearPropVariantArray([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPVARIANT_UNMGD[] rgPropVar, uint cVars);
 
 	/// <summary>Frees the memory and references used by an array of VARIANT structures stored in an array.</summary>
 	/// <param name="pvars">
@@ -158,7 +158,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762288")]
-	public static extern HRESULT InitPropVariantFromBooleanVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.Bool)] bool[]? prgf, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromBooleanVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.Bool)] bool[]? prgf, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure using the contents of a buffer.</summary>
 	/// <param name="pv">Pointer to the buffer.</param>
@@ -167,7 +167,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762289")]
-	public static extern HRESULT InitPropVariantFromBuffer([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U1)] byte[] pv, uint cb, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromBuffer([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U1)] byte[] pv, uint cb, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a class identifier (CLSID).</summary>
 	/// <param name="clsid">Reference to the CLSID.</param>
@@ -175,7 +175,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762290")]
-	public static extern HRESULT InitPropVariantFromCLSID(in Guid clsid, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromCLSID(in Guid clsid, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of double values.</summary>
 	/// <param name="prgn">
@@ -187,7 +187,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762292")]
-	public static extern HRESULT InitPropVariantFromDoubleVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.R8)] double[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromDoubleVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.R8)] double[]? prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on information stored in a <see cref="FILETIME"/> structure.</summary>
 	/// <param name="pftIn">Pointer to the date and time as a <see cref="FILETIME"/> structure.</param>
@@ -195,7 +195,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762293")]
-	public static extern HRESULT InitPropVariantFromFileTime(in FILETIME pftIn, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromFileTime(in FILETIME pftIn, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure from a specified vector of <see cref="FILETIME"/> values.</summary>
 	/// <param name="prgft">
@@ -207,7 +207,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762294")]
-	public static extern HRESULT InitPropVariantFromFileTimeVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FILETIME[]? prgft, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromFileTimeVector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] FILETIME[]? prgft, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Initializes a PROPVARIANT structure based on a <c>GUID</c>. The structure is initialized as VT_LPWSTR.</para>
@@ -233,7 +233,7 @@ public static partial class PropSys
 	// InitPropVariantFromGUIDAsString( REFGUID guid, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "bcc343f7-741f-4cdd-bd2f-ae4786faab0e")]
-	public static extern HRESULT InitPropVariantFromGUIDAsString(in Guid guid, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromGUIDAsString(in Guid guid, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of 16-bit integer values.</summary>
 	/// <param name="prgn">Pointer to a source vector of SHORT values. If this parameter is NULL, the vector is initialized with zeros.</param>
@@ -242,7 +242,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762298")]
-	public static extern HRESULT InitPropVariantFromInt16Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I2)] short[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromInt16Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I2)] short[] prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of 32-bit integer values.</summary>
 	/// <param name="prgn">Pointer to a source vector of LONG values. If this parameter is NULL, the vector is initialized with zeros.</param>
@@ -251,7 +251,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762300")]
-	public static extern HRESULT InitPropVariantFromInt32Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I4)] int[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromInt32Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I4)] int[] prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of 64-bit integer values.</summary>
 	/// <param name="prgn">
@@ -262,12 +262,12 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762302")]
-	public static extern HRESULT InitPropVariantFromInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I8)] long[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.I8)] long[]? prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified <see cref="PROPVARIANT"/> vector element.</summary>
 	/// <remarks>
 	/// This function extracts a single value from the source <see cref="PROPVARIANT"/> structure and uses that value to initialize the
-	/// output <c>PROPVARIANT</c> structure. The calling application must use <see cref="PropVariantClear"/> to free the
+	/// output <c>PROPVARIANT</c> structure. The calling application must use <see cref="PropVariantClear(PROPVARIANT)"/> to free the
 	/// <c>PROPVARIANT</c> referred to by ppropvar when it is no longer needed.
 	/// <para>
 	/// If the source <c>PROPVARIANT</c> is a vector or array, iElem must be less than the number of elements in the vector or array.
@@ -282,7 +282,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762303")]
-	public static extern HRESULT InitPropVariantFromPropVariantVectorElem([In] PROPVARIANT propvarIn, uint iElem, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromPropVariantVectorElem(in PROPVARIANT_UNMGD propvarIn, uint iElem, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Initializes a PROPVARIANT structure based on a string resource embedded in an executable file.</para>
@@ -315,18 +315,18 @@ public static partial class PropSys
 	// InitPropVariantFromResource( HINSTANCE hinst, UINT id, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "c958f823-f820-4b0b-86ed-84ad18befbd1")]
-	public static extern HRESULT InitPropVariantFromResource(HINSTANCE hinst, uint id, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromResource(HINSTANCE hinst, uint id, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes the property variant from string.</summary>
 	/// <param name="psz">Pointer to a buffer that contains the source Unicode string.</param>
 	/// <param name="ppropvar">When this function returns, contains the initialized PROPVARIANT structure.</param>
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[PInvokeData("propvarutil.h", MSDNShortId = "cee95d17-532d-8e34-a392-a04778f9bc00")]
-	public static HRESULT InitPropVariantFromString(string psz, [In, Out] PROPVARIANT ppropvar)
+	public static HRESULT InitPropVariantFromString(string psz, ref PROPVARIANT_UNMGD ppropvar)
 	{
-		_ = PropVariantClear(ppropvar);
+		_ = PropVariantClear(ref ppropvar);
 		if (psz is null) return HRESULT.E_INVALIDARG;
-		ppropvar._ptr = Marshal.StringToCoTaskMemUni(psz);
+		ppropvar.ptr = Marshal.StringToCoTaskMemUni(psz);
 		ppropvar.vt = VARTYPE.VT_LPWSTR;
 		return HRESULT.S_OK;
 	}
@@ -361,7 +361,7 @@ public static partial class PropSys
 	// InitPropVariantFromStringAsVector( PCWSTR psz, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "fc48f2e0-ce4a-4f48-a624-202def4bcff0")]
-	public static extern HRESULT InitPropVariantFromStringAsVector([MarshalAs(UnmanagedType.LPWStr)] string? psz, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromStringAsVector([MarshalAs(UnmanagedType.LPWStr)] string? psz, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified string vector.</summary>
 	/// <param name="prgsz">Pointer to a buffer that contains the source string vector.</param>
@@ -370,7 +370,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762307")]
-	public static extern HRESULT InitPropVariantFromStringVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromStringVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>
 	/// <para>Initializes a PROPVARIANT structure based on a string stored in a STRRET structure.</para>
@@ -401,7 +401,7 @@ public static partial class PropSys
 	// InitPropVariantFromStrRet( STRRET *pstrret, PCUITEMID_CHILD pidl, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "5c02e2ee-14c2-4966-83e7-16dfbf81b879")]
-	public static extern HRESULT InitPropVariantFromStrRet(IntPtr pstrret, IntPtr pidl, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromStrRet(IntPtr pstrret, IntPtr pidl, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified string vector.</summary>
 	/// <param name="prgn">The PRGN.</param>
@@ -410,7 +410,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762310")]
-	public static extern HRESULT InitPropVariantFromUInt16Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U2)] ushort[] prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromUInt16Vector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U2)] ushort[] prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a vector of 32-bit unsigned integer values.</summary>
 	/// <param name="prgn">
@@ -421,7 +421,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762312")]
-	public static extern HRESULT InitPropVariantFromUInt32Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U4)] uint[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromUInt32Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U4)] uint[]? prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a vector of 64-bit unsigned integer values.</summary>
 	/// <param name="prgn">
@@ -432,7 +432,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762314")]
-	public static extern HRESULT InitPropVariantFromUInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U8)] ulong[]? prgn, uint cElems, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT InitPropVariantFromUInt64Vector([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.U8)] ulong[]? prgn, uint cElems, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Initializes a vector element in a <see cref="PROPVARIANT"/> structure with a value stored in another PROPVARIANT.</summary>
 	/// <param name="propvarSingle">Reference to the source <see cref="PROPVARIANT"/> structure that contains a single value.</param>
@@ -442,7 +442,7 @@ public static partial class PropSys
 	/// </returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb762315")]
-	public static extern HRESULT InitPropVariantVectorFromPropVariant([In] PROPVARIANT propvarSingle, [Out] PROPVARIANT ppropvarVector);
+	public static extern HRESULT InitPropVariantVectorFromPropVariant(in PROPVARIANT_UNMGD propvarSingle, out PROPVARIANT_UNMGD ppropvarVector);
 
 	/// <summary>Initializes a VARIANT structure from an array of Boolean values.</summary>
 	/// <param name="prgf">
@@ -957,9 +957,15 @@ public static partial class PropSys
 	/// <returns>
 	/// Returns S_OK if successful, or a standard COM error value otherwise. If the requested coercion is not possible, an error is returned.
 	/// </returns>
-	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776514")]
-	public static extern HRESULT PropVariantChangeType([Out] PROPVARIANT ppropvarDest, [In] PROPVARIANT propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt);
+	public static HRESULT PropVariantChangeType(out PROPVARIANT ppropvarDest, in PROPVARIANT_UNMGD propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt)
+	{
+		ppropvarDest = new();
+		return PropVariantChangeType(out ppropvarDest._pv, propvarSrc, flags, vt);
+
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		static extern HRESULT PropVariantChangeType(out PROPVARIANT_UNMGD ppropvarDest, in PROPVARIANT_UNMGD propvarSrc, PROPVAR_CHANGE_FLAGS flags, VARTYPE vt);
+	}
 
 	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on default comparison units and settings.</summary>
 	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>
@@ -978,7 +984,26 @@ public static partial class PropSys
 	/// </list>
 	/// </returns>
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776516")]
-	public static int PropVariantCompare(PROPVARIANT propvar1, PROPVARIANT propvar2) => PropVariantCompareEx(propvar1, propvar2, PROPVAR_COMPARE_UNIT.PVCU_DEFAULT, PROPVAR_COMPARE_FLAGS.PVCF_DEFAULT);
+	public static int PropVariantCompare([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2) => PropVariantCompareEx(propvar1, propvar2, PROPVAR_COMPARE_UNIT.PVCU_DEFAULT, PROPVAR_COMPARE_FLAGS.PVCF_DEFAULT);
+
+	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on default comparison units and settings.</summary>
+	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>
+	/// <param name="propvar2">Reference to the second <see cref="PROPVARIANT"/> structure.</param>
+	/// <returns>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>Returns 1 if propvar1 is greater than propvar2</description>
+	/// </item>
+	/// <item>
+	/// <description>Returns 0 if propvar1 equals propvar2</description>
+	/// </item>
+	/// <item>
+	/// <description>Returns -1 if propvar1 is less than propvar2</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776516")]
+	public static int PropVariantCompare(in PROPVARIANT_UNMGD propvar1, in PROPVARIANT_UNMGD propvar2) => PropVariantCompareEx(propvar1, propvar2, PROPVAR_COMPARE_UNIT.PVCU_DEFAULT, PROPVAR_COMPARE_FLAGS.PVCF_DEFAULT);
 
 	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on specified comparison units and flags.</summary>
 	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>
@@ -1000,7 +1025,29 @@ public static partial class PropSys
 	/// </returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true, PreserveSig = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776517")]
-	public static extern int PropVariantCompareEx(PROPVARIANT propvar1, PROPVARIANT propvar2, PROPVAR_COMPARE_UNIT unit, PROPVAR_COMPARE_FLAGS flags);
+	public static extern int PropVariantCompareEx([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, PROPVAR_COMPARE_UNIT unit, PROPVAR_COMPARE_FLAGS flags);
+
+	/// <summary>Compares two <see cref="PROPVARIANT"/> structures, based on specified comparison units and flags.</summary>
+	/// <param name="propvar1">Reference to the first <see cref="PROPVARIANT"/> structure.</param>
+	/// <param name="propvar2">Reference to the second <see cref="PROPVARIANT"/> structure.</param>
+	/// <param name="unit">Specifies, where appropriate, one of the comparison units defined in PROPVAR_COMPARE_UNIT.</param>
+	/// <param name="flags">Specifies one of the following:</param>
+	/// <returns>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>Returns 1 if propvar1 is greater than propvar2</description>
+	/// </item>
+	/// <item>
+	/// <description>Returns 0 if propvar1 equals propvar2</description>
+	/// </item>
+	/// <item>
+	/// <description>Returns -1 if propvar1 is less than propvar2</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[DllImport(Lib.PropSys, ExactSpelling = true, PreserveSig = true)]
+	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776517")]
+	public static extern int PropVariantCompareEx(in PROPVARIANT_UNMGD propvar1, in PROPVARIANT_UNMGD propvar2, PROPVAR_COMPARE_UNIT unit, PROPVAR_COMPARE_FLAGS flags);
 
 	/// <summary>
 	/// <para>Extracts a single Boolean element from a PROPVARIANT structure of type , , or .</para>
@@ -1033,7 +1080,7 @@ public static partial class PropSys
 	// PropVariantGetBooleanElem( REFPROPVARIANT propvar, ULONG iElem, BOOL *pfVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "830dca70-1777-418d-b3ac-78028411700e")]
-	public static extern HRESULT PropVariantGetBooleanElem([In] PROPVARIANT propvar, uint iElem, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
+	public static extern HRESULT PropVariantGetBooleanElem(in PROPVARIANT_UNMGD propvar, uint iElem, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
 
 	/// <summary>
 	/// <para>Extracts a single <c>double</c> element from a PROPVARIANT structure of type , , or .</para>
@@ -1066,7 +1113,7 @@ public static partial class PropSys
 	// PropVariantGetDoubleElem( REFPROPVARIANT propvar, ULONG iElem, DOUBLE *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "387e23df-bfbd-42c0-adef-dc53ba95a9f2")]
-	public static extern HRESULT PropVariantGetDoubleElem([In] PROPVARIANT propvar, uint iElem, out double pnVal);
+	public static extern HRESULT PropVariantGetDoubleElem(in PROPVARIANT_UNMGD propvar, uint iElem, out double pnVal);
 
 	/// <summary>Retrieves the element count of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1076,7 +1123,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, ExactSpelling = true, PreserveSig = true)]
 	[return: MarshalAs(UnmanagedType.I4)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776522")]
-	public static extern int PropVariantGetElementCount([In] PROPVARIANT propVar);
+	public static extern int PropVariantGetElementCount(in PROPVARIANT_UNMGD propVar);
 
 	/// <summary>
 	/// <para>
@@ -1114,7 +1161,7 @@ public static partial class PropSys
 	// PropVariantGetFileTimeElem( REFPROPVARIANT propvar, ULONG iElem, FILETIME *pftVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "e38b16ed-84cb-4444-bfbd-1165595bc9b5")]
-	public static extern HRESULT PropVariantGetFileTimeElem([In] PROPVARIANT propvar, uint iElem, out FILETIME pftVal);
+	public static extern HRESULT PropVariantGetFileTimeElem(in PROPVARIANT_UNMGD propvar, uint iElem, out FILETIME pftVal);
 
 	/// <summary>
 	/// <para>Extracts a single Int16 element from a PROPVARIANT structure of type VT_I2, VT_VECTOR | VT_I2, or VT_ARRAY | VT_I2.</para>
@@ -1162,7 +1209,7 @@ public static partial class PropSys
 	// PropVariantGetInt16Elem( REFPROPVARIANT propvar, ULONG iElem, SHORT *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "1dbb6887-81c9-411d-9fce-c9e2f3479a43")]
-	public static extern HRESULT PropVariantGetInt16Elem([In] PROPVARIANT propvar, uint iElem, out short pnVal);
+	public static extern HRESULT PropVariantGetInt16Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out short pnVal);
 
 	/// <summary>
 	/// <para>Extracts a single Int32 element from a PROPVARIANT of type VT_I4, VT_VECTOR | VT_I4, or VT_ARRAY | VT_I4.</para>
@@ -1209,7 +1256,7 @@ public static partial class PropSys
 	// PropVariantGetInt32Elem( REFPROPVARIANT propvar, ULONG iElem, LONG *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "de7dc6d4-d85a-44cb-8af7-840fd6e68d5c")]
-	public static extern HRESULT PropVariantGetInt32Elem([In] PROPVARIANT propvar, uint iElem, out int pnVal);
+	public static extern HRESULT PropVariantGetInt32Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out int pnVal);
 
 	/// <summary>
 	/// <para>Extracts a single Int64 element from a PROPVARIANT structure of type VT_I8, VT_VECTOR | VT_I8, or VT_ARRAY | VT_I8.</para>
@@ -1257,7 +1304,7 @@ public static partial class PropSys
 	// PropVariantGetInt64Elem( REFPROPVARIANT propvar, ULONG iElem, LONGLONG *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6dd7212a-587f-4f9e-a2e5-dbd2a9c15a5b")]
-	public static extern HRESULT PropVariantGetInt64Elem([In] PROPVARIANT propvar, uint iElem, out long pnVal);
+	public static extern HRESULT PropVariantGetInt64Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out long pnVal);
 
 	/// <summary>
 	/// <para>
@@ -1329,7 +1376,7 @@ public static partial class PropSys
 	// PropVariantGetStringElem( REFPROPVARIANT propvar, ULONG iElem, StrPtrUni *ppszVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6e803d93-5b55-4b73-8e23-a584f5f91969")]
-	public static extern HRESULT PropVariantGetStringElem([In] PROPVARIANT propvar, uint iElem, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszVal);
+	public static extern HRESULT PropVariantGetStringElem(in PROPVARIANT_UNMGD propvar, uint iElem, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszVal);
 
 	/// <summary>
 	/// <para>
@@ -1379,7 +1426,7 @@ public static partial class PropSys
 	// PropVariantGetUInt16Elem( REFPROPVARIANT propvar, ULONG iElem, USHORT *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "da50e35b-f17f-4de6-b2e7-5a885e2149e5")]
-	public static extern HRESULT PropVariantGetUInt16Elem([In] PROPVARIANT propvar, uint iElem, out ushort pnVal);
+	public static extern HRESULT PropVariantGetUInt16Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out ushort pnVal);
 
 	/// <summary>
 	/// <para>
@@ -1429,7 +1476,7 @@ public static partial class PropSys
 	// PropVariantGetUInt32Elem( REFPROPVARIANT propvar, ULONG iElem, ULONG *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "b31975b6-d717-4e8d-bf5a-2ade96034031")]
-	public static extern HRESULT PropVariantGetUInt32Elem([In] PROPVARIANT propvar, uint iElem, out uint pnVal);
+	public static extern HRESULT PropVariantGetUInt32Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out uint pnVal);
 
 	/// <summary>
 	/// <para>
@@ -1479,7 +1526,7 @@ public static partial class PropSys
 	// PropVariantGetUInt64Elem( REFPROPVARIANT propvar, ULONG iElem, ULONGLONG *pnVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "35955104-b567-4c4f-850a-0a4778673ce8")]
-	public static extern HRESULT PropVariantGetUInt64Elem([In] PROPVARIANT propvar, uint iElem, out ulong pnVal);
+	public static extern HRESULT PropVariantGetUInt64Elem(in PROPVARIANT_UNMGD propvar, uint iElem, out ulong pnVal);
 
 	/// <summary>
 	/// Extracts a Boolean property value of a <see cref="PROPVARIANT"/> structure. If no value can be extracted, then a default value is assigned.
@@ -1489,7 +1536,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776531")]
-	public static extern HRESULT PropVariantToBoolean([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.Bool)] out bool pfRet);
+	public static extern HRESULT PropVariantToBoolean(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.Bool)] out bool pfRet);
 
 	/// <summary>
 	/// <para>Extracts a Boolean vector from a PROPVARIANT structure.</para>
@@ -1555,7 +1602,7 @@ public static partial class PropSys
 	// PropVariantToBooleanVector( REFPROPVARIANT propvar, BOOL *prgf, ULONG crgf, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "93ccd129-4fa4-40f3-96f3-b87b50414b0a")]
-	public static extern HRESULT PropVariantToBooleanVector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint crgf, out uint pcElem);
+	public static extern HRESULT PropVariantToBooleanVector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint crgf, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated Boolean vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1571,7 +1618,7 @@ public static partial class PropSys
 	/// </returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776533")]
-	public static extern HRESULT PropVariantToBooleanVectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToBooleanVectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(BOOL), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -1613,7 +1660,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "223767a7-a4de-4e7e-ad8b-2a6bdcea0a47")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PropVariantToBooleanWithDefault([In] PROPVARIANT propvarIn, [MarshalAs(UnmanagedType.Bool)] bool fDefault);
+	public static extern bool PropVariantToBooleanWithDefault(in PROPVARIANT_UNMGD propvarIn, [MarshalAs(UnmanagedType.Bool)] bool fDefault);
 
 	/// <summary>Extracts the BSTR property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1621,7 +1668,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776535")]
-	public static extern HRESULT PropVariantToBSTR([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
+	public static extern HRESULT PropVariantToBSTR(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.BStr)] out string pbstrOut);
 
 	/// <summary>Extracts the buffer value from a <see cref="PROPVARIANT"/> structure of type VT_VECTOR | VT_UI1 or VT_ARRRAY | VT_UI1.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1632,7 +1679,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776536")]
-	public static extern HRESULT PropVariantToBuffer([In] PROPVARIANT propVar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pv, uint cb);
+	public static extern HRESULT PropVariantToBuffer(in PROPVARIANT_UNMGD propVar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pv, uint cb);
 
 	/// <summary>Extracts double value from a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1642,7 +1689,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776538")]
-	public static extern HRESULT PropVariantToDouble([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.R8)] out double pdblRet);
+	public static extern HRESULT PropVariantToDouble(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.R8)] out double pdblRet);
 
 	/// <summary>
 	/// <para>Extracts a vector of doubles from a PROPVARIANT structure.</para>
@@ -1686,7 +1733,7 @@ public static partial class PropSys
 	// PropVariantToDoubleVector( REFPROPVARIANT propvar, DOUBLE *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "2d90bf96-8a3f-4949-8480-bb75f0deeb2e")]
-	public static extern HRESULT PropVariantToDoubleVector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToDoubleVector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly-allocated double vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1699,7 +1746,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776540")]
-	public static extern HRESULT PropVariantToDoubleVectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToDoubleVectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(double), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>Extracts a double property value of a PROPVARIANT structure. If no value exists, then the specified default value is returned.</para>
@@ -1734,7 +1781,7 @@ public static partial class PropSys
 	// PropVariantToDoubleWithDefault( REFPROPVARIANT propvarIn, DOUBLE dblDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "81584e13-0ef7-47ce-b78f-b4a79712ff1e")]
-	public static extern double PropVariantToDoubleWithDefault([In] PROPVARIANT propvarIn, double dblDefault);
+	public static extern double PropVariantToDoubleWithDefault(in PROPVARIANT_UNMGD propvarIn, double dblDefault);
 
 	/// <summary>Extracts the <see cref="FILETIME"/> structure from a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1743,7 +1790,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776542")]
-	public static extern HRESULT PropVariantToFileTime([In] PROPVARIANT propVar, PSTIME_FLAGS pstfOut, out FILETIME pftOut);
+	public static extern HRESULT PropVariantToFileTime(in PROPVARIANT_UNMGD propVar, PSTIME_FLAGS pstfOut, out FILETIME pftOut);
 
 	/// <summary>
 	/// <para>Extracts data from a PROPVARIANT structure into a FILETIME vector.</para>
@@ -1810,7 +1857,7 @@ public static partial class PropSys
 	// PropVariantToFileTimeVector( REFPROPVARIANT propvar, FILETIME *prgft, ULONG crgft, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "ef665f50-3f3b-47db-9133-490305da5341")]
-	public static extern HRESULT PropVariantToFileTimeVector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FILETIME[] prgft, uint crgft, out uint pcElem);
+	public static extern HRESULT PropVariantToFileTimeVector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FILETIME[] prgft, uint crgft, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly-allocated <see cref="FILETIME"/> vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1824,7 +1871,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776544")]
-	public static extern HRESULT PropVariantToFileTimeVectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToFileTimeVectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(FILETIME), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>Extracts a GUID value from a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1832,7 +1879,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776545")]
-	public static extern HRESULT PropVariantToGUID([In] PROPVARIANT propVar, out Guid pguid);
+	public static extern HRESULT PropVariantToGUID(in PROPVARIANT_UNMGD propVar, out Guid pguid);
 
 	/// <summary>Extracts an Int16 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1840,7 +1887,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776546")]
-	public static extern HRESULT PropVariantToInt16([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.I2)] out short piRet);
+	public static extern HRESULT PropVariantToInt16(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.I2)] out short piRet);
 
 	/// <summary>
 	/// <para>Extracts a vector of <c>Int16</c> values from a PROPVARIANT structure.</para>
@@ -1902,7 +1949,7 @@ public static partial class PropSys
 	// PropVariantToInt16Vector( REFPROPVARIANT propvar, SHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "33240552-7caa-4114-aad6-7341551b1fbe")]
-	public static extern HRESULT PropVariantToInt16Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToInt16Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated Int16 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1915,7 +1962,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776548")]
-	public static extern HRESULT PropVariantToInt16VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToInt16VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(short), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -1951,7 +1998,7 @@ public static partial class PropSys
 	// PropVariantToInt16WithDefault( REFPROPVARIANT propvarIn, SHORT iDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "51221281-6e06-49f4-83c0-7330f2a6d67e")]
-	public static extern short PropVariantToInt16WithDefault([In] PROPVARIANT propvarIn, short iDefault);
+	public static extern short PropVariantToInt16WithDefault(in PROPVARIANT_UNMGD propvarIn, short iDefault);
 
 	/// <summary>Extracts an Int32 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -1959,7 +2006,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776550")]
-	public static extern HRESULT PropVariantToInt32([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.I4)] out int plRet);
+	public static extern HRESULT PropVariantToInt32(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.I4)] out int plRet);
 
 	/// <summary>
 	/// <para>Extracts a vector of <c>long</c> values from a PROPVARIANT structure.</para>
@@ -2025,7 +2072,7 @@ public static partial class PropSys
 	// PropVariantToInt32Vector( REFPROPVARIANT propvar, LONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "771fa1d7-c648-49d4-a6a2-5aa23f8c20b7")]
-	public static extern HRESULT PropVariantToInt32Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToInt32Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated Int32 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2038,7 +2085,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776552")]
-	public static extern HRESULT PropVariantToInt32VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToInt32VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(int), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -2079,7 +2126,7 @@ public static partial class PropSys
 	// PropVariantToInt32WithDefault( REFPROPVARIANT propvarIn, LONG lDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "1d014cad-a9a5-4a58-855e-21c6d3ba6dcd")]
-	public static extern int PropVariantToInt32WithDefault([In] PROPVARIANT propvarIn, int lDefault);
+	public static extern int PropVariantToInt32WithDefault(in PROPVARIANT_UNMGD propvarIn, int lDefault);
 
 	/// <summary>Extracts an Int64 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2087,7 +2134,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776554")]
-	public static extern HRESULT PropVariantToInt64([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.I8)] out long pllRet);
+	public static extern HRESULT PropVariantToInt64(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.I8)] out long pllRet);
 
 	/// <summary>
 	/// <para>Extracts data from a PROPVARIANT structure into an <c>Int64</c> vector.</para>
@@ -2153,7 +2200,7 @@ public static partial class PropSys
 	// PropVariantToInt64Vector( REFPROPVARIANT propvar, LONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "cda5589a-726f-4e43-aec4-bb7a7ca62b1a")]
-	public static extern HRESULT PropVariantToInt64Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] long[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToInt64Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] long[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated Int64 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2166,7 +2213,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776557")]
-	public static extern HRESULT PropVariantToInt64VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToInt64VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(long), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -2207,7 +2254,7 @@ public static partial class PropSys
 	// PropVariantToInt64WithDefault( REFPROPVARIANT propvarIn, LONGLONG llDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6a051235-3e32-40d3-a17e-efc571592dae")]
-	public static extern long PropVariantToInt64WithDefault([In] PROPVARIANT propvarIn, long llDefault);
+	public static extern long PropVariantToInt64WithDefault(in PROPVARIANT_UNMGD propvarIn, long llDefault);
 
 	/// <summary>
 	/// <para>Extracts a string value from a PROPVARIANT structure.</para>
@@ -2293,7 +2340,7 @@ public static partial class PropSys
 	// REFPROPVARIANT propvar, StrPtrUni psz, UINT cch );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "d545dc12-a780-4d95-8660-13b3f65725f9")]
-	public static extern HRESULT PropVariantToString([In] PROPVARIANT propvar, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);
+	public static extern HRESULT PropVariantToString(in PROPVARIANT_UNMGD propvar, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);
 
 	/// <summary>Extracts a string property value from a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2301,7 +2348,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776560")]
-	public static extern HRESULT PropVariantToStringAlloc([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszOut);
+	public static extern HRESULT PropVariantToStringAlloc(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszOut);
 
 	/// <summary>
 	/// <para>Extracts a vector of strings from a PROPVARIANT structure.</para>
@@ -2404,7 +2451,7 @@ public static partial class PropSys
 	// PropVariantToStringVector( REFPROPVARIANT propvar, StrPtrUni *prgsz, ULONG crgsz, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6618ee02-1939-4c9c-8690-a8cd5d668cdb")]
-	public static extern HRESULT PropVariantToStringVector([In] PROPVARIANT propvar, IntPtr prgsz, uint crgsz, out uint pcElem);
+	public static extern HRESULT PropVariantToStringVector(in PROPVARIANT_UNMGD propvar, IntPtr prgsz, uint crgsz, out uint pcElem);
 
 	/// <summary>
 	/// <para>Extracts a vector of strings from a PROPVARIANT structure.</para>
@@ -2469,7 +2516,7 @@ public static partial class PropSys
 	/// If a <c>BSTR</c> in the source PROPVARIANT is <c>NULL</c>, it is converted to a newly allocated string containing "" in the output.
 	/// </para>
 	/// </remarks>
-	public static HRESULT PropVariantToStringVector([In] PROPVARIANT propvar, out string[] prgsz)
+	public static HRESULT PropVariantToStringVector(in PROPVARIANT_UNMGD propvar, out string[] prgsz)
 	{
 		VarEnum ve = (VarEnum)((int)propvar.vt & 0x0FFF);
 		if ((!propvar.vt.HasFlag(VARTYPE.VT_VECTOR) || ve != VarEnum.VT_LPWSTR && ve != VarEnum.VT_BSTR) && (!propvar.vt.HasFlag(VARTYPE.VT_ARRAY) || ve != VarEnum.VT_BSTR))
@@ -2502,7 +2549,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776562")]
-	public static extern HRESULT PropVariantToStringVectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToStringVectorAlloc(in PROPVARIANT_UNMGD propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// Extracts the string property value of a <see cref="PROPVARIANT"/> structure. If no value exists, then the specified default value
@@ -2514,7 +2561,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.LPWStr)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776563")]
-	public static extern string PropVariantToStringWithDefault([In] PROPVARIANT propvarIn, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszDefault);
+	public static extern string PropVariantToStringWithDefault(in PROPVARIANT_UNMGD propvarIn, [In, MarshalAs(UnmanagedType.LPWStr)] string? pszDefault);
 
 	/// <summary>
 	/// <para>Extracts a string from a PROPVARIANT structure and places it into a STRRET structure.</para>
@@ -2574,7 +2621,7 @@ public static partial class PropSys
 	// REFPROPVARIANT propvar, STRRET *pstrret );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "a1a33606-172d-4ee7-98c9-ffec8eed98bf")]
-	public static extern HRESULT PropVariantToStrRet([In] PROPVARIANT propvar, IntPtr pstrret);
+	public static extern HRESULT PropVariantToStrRet(in PROPVARIANT_UNMGD propvar, IntPtr pstrret);
 
 	/// <summary>Extracts a UInt16 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2582,7 +2629,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776565")]
-	public static extern HRESULT PropVariantToUInt16([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.U2)] out ushort puiRet);
+	public static extern HRESULT PropVariantToUInt16(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.U2)] out ushort puiRet);
 
 	/// <summary>
 	/// <para>Extracts data from a PROPVARIANT structure into an <c>unsigned short</c> vector.</para>
@@ -2648,7 +2695,7 @@ public static partial class PropSys
 	// PropVariantToUInt16Vector( REFPROPVARIANT propvar, USHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "34fe404c-cef6-47d9-9eaf-8ab151bd4726")]
-	public static extern HRESULT PropVariantToUInt16Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt16Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated UInt16 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2661,7 +2708,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776567")]
-	public static extern HRESULT PropVariantToUInt16VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt16VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(ushort), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -2702,7 +2749,7 @@ public static partial class PropSys
 	// PropVariantToUInt16WithDefault( REFPROPVARIANT propvarIn, USHORT uiDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "4346cef2-5e43-47bf-9bfb-0ede923872fd")]
-	public static extern ushort PropVariantToUInt16WithDefault([In] PROPVARIANT propvarIn, ushort uiDefault);
+	public static extern ushort PropVariantToUInt16WithDefault(in PROPVARIANT_UNMGD propvarIn, ushort uiDefault);
 
 	/// <summary>Extracts a UInt32 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2710,7 +2757,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776569")]
-	public static extern HRESULT PropVariantToUInt32([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.U4)] out uint pulRet);
+	public static extern HRESULT PropVariantToUInt32(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.U4)] out uint pulRet);
 
 	/// <summary>
 	/// <para>Extracts data from a PROPVARIANT structure into an <c>ULONG</c> vector.</para>
@@ -2776,7 +2823,7 @@ public static partial class PropSys
 	// PropVariantToUInt32Vector( REFPROPVARIANT propvar, ULONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "721a2f67-dfd1-4d95-8290-4457b8954a02")]
-	public static extern HRESULT PropVariantToUInt32Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt32Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated UInt32 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2789,7 +2836,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776571")]
-	public static extern HRESULT PropVariantToUInt32VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt32VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(uint), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>Extracts a <c>ULONG</c> value from a PROPVARIANT structure. If no value exists, then a specified default value is returned.</para>
@@ -2828,7 +2875,7 @@ public static partial class PropSys
 	// PropVariantToUInt32WithDefault( REFPROPVARIANT propvarIn, ULONG ulDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "8ace8c3f-fea2-4b20-9e0b-3abfbd569b54")]
-	public static extern uint PropVariantToUInt32WithDefault([In] PROPVARIANT propvarIn, uint ulDefault);
+	public static extern uint PropVariantToUInt32WithDefault(in PROPVARIANT_UNMGD propvarIn, uint ulDefault);
 
 	/// <summary>Extracts a UInt64 property value of a <see cref="PROPVARIANT"/> structure.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2836,7 +2883,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776573")]
-	public static extern HRESULT PropVariantToUInt64([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.U8)] out ulong pullRet);
+	public static extern HRESULT PropVariantToUInt64(in PROPVARIANT_UNMGD propVar, [MarshalAs(UnmanagedType.U8)] out ulong pullRet);
 
 	/// <summary>
 	/// <para>Extracts data from a PROPVARIANT structure into a <c>ULONGLONG</c> vector.</para>
@@ -2902,7 +2949,7 @@ public static partial class PropSys
 	// PropVariantToUInt64Vector( REFPROPVARIANT propvar, ULONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "596c7a35-6645-4f66-b924-b71278778776")]
-	public static extern HRESULT PropVariantToUInt64Vector([In] PROPVARIANT propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt64Vector(in PROPVARIANT_UNMGD propvar, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a <see cref="PROPVARIANT"/> structure into a newly allocated UInt64 vector.</summary>
 	/// <param name="propVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2915,7 +2962,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776575")]
-	public static extern HRESULT PropVariantToUInt64VectorAlloc([In] PROPVARIANT propVar, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT PropVariantToUInt64VectorAlloc(in PROPVARIANT_UNMGD propVar, [ArrayPointer(typeof(ulong), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>
 	/// <para>
@@ -2956,7 +3003,7 @@ public static partial class PropSys
 	// PSSTDAPI_(ULONGLONG) PropVariantToUInt64WithDefault( REFPROPVARIANT propvarIn, ULONGLONG ullDefault );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "8ca0e25e-6a3f-41ff-9a4a-7cca9a02d07c")]
-	public static extern ulong PropVariantToUInt64WithDefault([In] PROPVARIANT propvarIn, ulong ullDefault);
+	public static extern ulong PropVariantToUInt64WithDefault(in PROPVARIANT_UNMGD propvarIn, ulong ullDefault);
 
 	/// <summary>Converts the contents of a <see cref="PROPVARIANT"/> structure to a VARIANT structure.</summary>
 	/// <param name="pPropVar">Reference to the source <see cref="PROPVARIANT"/> structure.</param>
@@ -2964,7 +3011,7 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776577")]
-	public static extern HRESULT PropVariantToVariant([In] PROPVARIANT pPropVar, IntPtr pVar);
+	public static extern HRESULT PropVariantToVariant(in PROPVARIANT_UNMGD pPropVar, IntPtr pVar);
 
 	/// <summary>
 	/// <para>
@@ -2998,7 +3045,7 @@ public static partial class PropSys
 	// PropVariantToWinRTPropertyValue( REFPROPVARIANT propvar, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "38DD3673-17FD-4F2A-BA58-A1A9983B92BF")]
-	public static extern HRESULT PropVariantToWinRTPropertyValue([In] PROPVARIANT propvar, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT PropVariantToWinRTPropertyValue(in PROPVARIANT_UNMGD propvar, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
 
 	/// <summary>Deserializes a specified <c>SERIALIZEDPROPERTYVALUE</c> structure, creating a <c>PROPVARIANT</c> structure.</summary>
 	/// <param name="pprop">
@@ -3020,7 +3067,7 @@ public static partial class PropSys
 	// HRESULT StgDeserializePropVariant( _In_ const SERIALIZEDPROPERTYVALUE *pprop, _In_ ULONG cbMax, _Out_ PROPVARIANT *ppropvar); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776578(v=vs.85).aspx
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776578")]
-	public static extern HRESULT StgDeserializePropVariant([In] IntPtr pprop, [In] uint cbMax, [In, Out] PROPVARIANT ppropvar);
+	public static extern HRESULT StgDeserializePropVariant([In] IntPtr pprop, [In] uint cbMax, ref PROPVARIANT_UNMGD ppropvar);
 
 	/// <summary>Serializes a specified <c>PROPVARIANT</c> structure, creating a <c>SERIALIZEDPROPERTYVALUE</c> structure.</summary>
 	/// <param name="ppropvar">
@@ -3042,7 +3089,7 @@ public static partial class PropSys
 	// HRESULT StgSerializePropVariant( _In_ const PROPVARIANT *ppropvar, _Out_ SERIALIZEDPROPERTYVALUE **ppProp, _Out_ ULONG *pcb); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776579(v=vs.85).aspx
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776579")]
-	public static extern HRESULT StgSerializePropVariant([In] PROPVARIANT ppropvar, out SafeCoTaskMemHandle ppProp, out uint pcb);
+	public static extern HRESULT StgSerializePropVariant(in PROPVARIANT_UNMGD ppropvar, out SafeCoTaskMemHandle ppProp, out uint pcb);
 
 	/// <summary>Compares two variant structures, based on default comparison rules.</summary>
 	/// <param name="var1">
@@ -3402,6 +3449,7 @@ public static partial class PropSys
 	// VariantToBooleanArray( REFVARIANT var, BOOL *prgf, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "80a1e7d4-ec11-4b16-ba05-b97f3bbf02d0")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToBooleanArray(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Bool), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] bool[] prgf,
 		uint crgn, out uint pcElem);
@@ -3440,7 +3488,7 @@ public static partial class PropSys
 	// VariantToBooleanArrayAlloc( REFVARIANT var, BOOL **pprgf, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6a623ee0-d99e-47db-82f9-9008c618a526")]
-	public static extern HRESULT VariantToBooleanArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgf, out uint pcElem);
+	public static extern HRESULT VariantToBooleanArrayAlloc(in VARIANT var, [ArrayPointer(typeof(BOOL), nameof(pcElem))] out SafeCoTaskMemHandle pprgf, out uint pcElem);
 
 	/// <summary>Extracts a <c>BOOL</c> value from a VARIANT structure. If no value exists, then the specified default value is returned.</summary>
 	/// <param name="varIn">
@@ -3676,8 +3724,9 @@ public static partial class PropSys
 	// REFVARIANT var, DOUBLE *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6830c2e2-d19a-45d5-af15-debfb08548bc")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToDoubleArray(in VARIANT var,
-		[Out,	MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] double[] prgn,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] double[] prgn,
 		uint crgn, out uint pcElem);
 
 	/// <summary>Allocates an array of <c>DOUBLE</c> values then extracts data from a VARIANT structure into that array.</summary>
@@ -3714,7 +3763,7 @@ public static partial class PropSys
 	// VariantToDoubleArrayAlloc( REFVARIANT var, DOUBLE **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "334d192e-7f63-47b4-88d4-9361e679cb15")]
-	public static extern HRESULT VariantToDoubleArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToDoubleArrayAlloc(in VARIANT var, [ArrayPointer(typeof(double), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts a <c>DOUBLE</c> value from a VARIANT structure. If no value exists, then the specified default value is returned.
@@ -3848,6 +3897,7 @@ public static partial class PropSys
 	// REFVARIANT var, SHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "dd00d986-acfa-445e-a0f6-0f52860b762b")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToInt16Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] short[] prgn,
 		uint crgn, out uint pcElem);
@@ -3873,7 +3923,7 @@ public static partial class PropSys
 	// VariantToInt16ArrayAlloc( REFVARIANT var, SHORT **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "616c9d03-f641-49e3-af95-80ebaea3e8aa")]
-	public static extern HRESULT VariantToInt16ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToInt16ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(short), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an <c>Int16</c> property value of a variant structure. If no value exists, then the specified default value is returned.
@@ -3942,6 +3992,7 @@ public static partial class PropSys
 	// REFVARIANT var, LONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "9407e400-1621-4d96-b541-579aa3ac7a67")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToInt32Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] int[] prgn,
 		uint crgn, out uint pcElem);
@@ -3967,7 +4018,7 @@ public static partial class PropSys
 	// VariantToInt32ArrayAlloc( REFVARIANT var, LONG **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6010ee34-d7d2-4b8b-a49b-0f2aa88a3b54")]
-	public static extern HRESULT VariantToInt32ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToInt32ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(int), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an <c>Int32</c> property value of a variant structure. If no value exists, then the specified default value is returned.
@@ -4036,6 +4087,7 @@ public static partial class PropSys
 	// REFVARIANT var, LONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "936e87e8-8102-4da2-b388-147fab6ec16f")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToInt64Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] long[] prgn,
 		uint crgn, out uint pcElem);
@@ -4061,7 +4113,7 @@ public static partial class PropSys
 	// VariantToInt64ArrayAlloc( REFVARIANT var, LONGLONG **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "15a583bd-fdef-4802-a18b-0a21b9be5448")]
-	public static extern HRESULT VariantToInt64ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToInt64ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(long), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an <c>Int64</c> property value of a variant structure. If no value exists, then the specified default value is returned.
@@ -4093,7 +4145,18 @@ public static partial class PropSys
 	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776616")]
-	public static extern HRESULT VariantToPropVariant([In] IntPtr pVar, [In, Out] PROPVARIANT pPropVar);
+	public static extern HRESULT VariantToPropVariant([In] IntPtr pVar, ref PROPVARIANT_UNMGD pPropVar);
+
+	/// <summary>Copies the contents of a VARIANT structure to a <see cref="PROPVARIANT"/> structure.</summary>
+	/// <param name="pVar">Pointer to a source VARIANT structure.</param>
+	/// <param name="pPropVar">
+	/// Pointer to a <see cref="PROPVARIANT"/> structure. When this function returns, the <see cref="PROPVARIANT"/> contains the
+	/// converted information.
+	/// </param>
+	/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+	[DllImport(Lib.PropSys, ExactSpelling = true)]
+	[PInvokeData("Propvarutil.h", MSDNShortId = "bb776616")]
+	public static extern HRESULT VariantToPropVariant([In, MarshalAs(UnmanagedType.Struct)] in object pVar, ref PROPVARIANT_UNMGD pPropVar);
 
 	/// <summary>
 	/// Extracts the variant value of a variant structure to a string. If no value can be extracted, then a default value is assigned.
@@ -4167,6 +4230,7 @@ public static partial class PropSys
 	// REFVARIANT var, StrPtrUni *prgsz, ULONG crgsz, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "d19b12ad-408c-4502-ad59-49386784bd69")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToStringArray(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr), SizeDef(nameof(crgsz), SizingMethod.Query, OutVarName = nameof(pcElem))] string[] prgsz,
 		uint crgsz, out uint pcElem);
@@ -4193,6 +4257,33 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "2725b824-b26c-4b33-bc18-a6f4c0ef74e6")]
 	public static extern HRESULT VariantToStringArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgsz, out uint pcElem);
+
+	/// <summary>Extracts data from a vector structure into a newly-allocated String array.</summary>
+	/// <param name="var">
+	/// <para>Type: <c>REFVARIANT</c></para>
+	/// <para>Reference to a source variant structure.</para>
+	/// </param>
+	/// <param name="pprgsz">
+	/// <para>Type: <c>StrPtrUni**</c></para>
+	/// <para>The address of a pointer to the string data extracted from source variant structure.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/propvarutil/nf-propvarutil-varianttostringarrayalloc PSSTDAPI
+	// VariantToStringArrayAlloc( REFVARIANT var, StrPtrUni **pprgsz, ULONG *pcElem );
+	[PInvokeData("propvarutil.h", MSDNShortId = "2725b824-b26c-4b33-bc18-a6f4c0ef74e6")]
+	public static HRESULT VariantToStringArrayAlloc(in VARIANT var, out string?[] pprgsz)
+	{
+		pprgsz = [];
+		HRESULT hr = VariantToStringArrayAlloc(var, out SafeCoTaskMemHandle hMem, out uint pcElem);
+		if (hr.Failed)
+			return hr;
+		using (hMem)
+			pprgsz = [.. hMem.ToStringEnum(pcElem, CharSet.Unicode)];
+		return hr;
+	}
 
 	/// <summary>
 	/// Extracts the string property value of a variant structure. If no value exists, then the specified default value is returned.
@@ -4282,6 +4373,7 @@ public static partial class PropSys
 	// REFVARIANT var, USHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "8da12aa7-f54e-4a38-b9bb-0dd019f8823b")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToUInt16Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] ushort[] prgn,
 		uint crgn, out uint pcElem);
@@ -4307,7 +4399,7 @@ public static partial class PropSys
 	// VariantToUInt16ArrayAlloc( REFVARIANT var, USHORT **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "59e8d295-3be4-4e9a-a096-ead777d3aa8a")]
-	public static extern HRESULT VariantToUInt16ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt16ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(ushort), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an unsigned <c>Int16</c> property value of a variant structure. If no value exists, then the specified default value is returned.
@@ -4376,6 +4468,7 @@ public static partial class PropSys
 	// REFVARIANT var, ULONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "506a02f8-6390-44a0-9f14-bfc8fb7ad180")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToUInt32Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] uint[] prgn,
 		uint crgn, out uint pcElem);
@@ -4401,7 +4494,7 @@ public static partial class PropSys
 	// VariantToUInt32ArrayAlloc( REFVARIANT var, ULONG **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "4d6cbfc8-fe1c-4bd0-8d29-32bce01d31f8")]
-	public static extern HRESULT VariantToUInt32ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt32ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(uint), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an unsigned <c>Int32</c> property value of a variant structure. If no value currently exists, then the specified default
@@ -4471,6 +4564,7 @@ public static partial class PropSys
 	// REFVARIANT var, ULONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "90b39ed2-a8a9-424c-bfd2-90517b9224fd")]
+	[SuppressAutoGen]
 	public static extern HRESULT VariantToUInt64Array(in VARIANT var,
 		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(crgn), SizingMethod.Query, OutVarName = nameof(pcElem))] ulong[] prgn,
 		uint crgn, out uint pcElem);
@@ -4496,7 +4590,7 @@ public static partial class PropSys
 	// VariantToUInt64ArrayAlloc( REFVARIANT var, ULONGLONG **pprgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "898edef6-a688-4a39-897c-70f29952db49")]
-	public static extern HRESULT VariantToUInt64ArrayAlloc(in VARIANT var, out SafeCoTaskMemHandle pprgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt64ArrayAlloc(in VARIANT var, [ArrayPointer(typeof(ulong), nameof(pcElem))] out SafeCoTaskMemHandle pprgn, out uint pcElem);
 
 	/// <summary>
 	/// Extracts an unsigned <c>Int64</c> property value of a variant structure. If no value currently exists, then the specified default
@@ -4533,5 +4627,5 @@ public static partial class PropSys
 	// WinRTPropertyValueToPropVariant( IUnknown *punkPropertyValue, PROPVARIANT *ppropvar );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "3D6853B0-0A3F-4ACF-9C93-478688DAE9CF")]
-	public static extern HRESULT WinRTPropertyValueToPropVariant([MarshalAs(UnmanagedType.IUnknown)] object punkPropertyValue, PROPVARIANT ppropvar);
+	public static extern HRESULT WinRTPropertyValueToPropVariant([MarshalAs(UnmanagedType.IUnknown)] object punkPropertyValue, out PROPVARIANT_UNMGD ppropvar);
 }

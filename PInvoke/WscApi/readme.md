@@ -3,6 +3,8 @@ PInvoke API (methods, structures and constants) imported from Windows Security C
 
 - Includes methods from wscapi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WscApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WscApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WscApi)  
+### Dependencies  
+- Vanara.PInvoke.Kernel32  
 ### Methods - 100% API coverage (3 of 3 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  

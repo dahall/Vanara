@@ -1,5 +1,7 @@
 ## Assembly report for Vanara.DirectoryServices.dll
 Wrapper classes around Win32 ADs methods and interfaces to provide simplified and object-oriented access to Active Directory and other directory service calls.
+### Dependencies
+- Vanara.PInvoke.ActiveDS
 ### Interfaces
 Interface | Description
 ---- | ----
