@@ -8,11 +8,62 @@ using System.Buffers;
 
 namespace Vanara.InteropServices;
 
+/// <summary>Represents a structure handler based on allocated memory.</summary>
+public interface IStructMemoryHandle<TStruct> : IMemoryHandle where TStruct : struct
+{
+	/// <summary>Gets a value indicating whether the current memory has a valid value of its underlying type.</summary>
+	/// <value><see langword="true"/> if this instance has a value; otherwise, <see langword="false"/>.</value>
+	bool HasValue { get; }
+
+	/// <summary>
+	/// Gets or sets the value of the current <see cref="IStructMemoryHandle{TStruct}"/> object if it has been assigned a valid
+	/// underlying value.
+	/// </summary>
+	/// <value>
+	/// The value of the current <see cref="IStructMemoryHandle{TStruct}"/> object if the HasValue property is true. An exception is
+	/// thrown if the HasValue property is false.
+	/// </value>
+	/// <exception cref="InvalidOperationException">The HasValue property is false.</exception>
+	TStruct Value { get; set; }
+
+#if ALLOWSPAN
+	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
+	/// <returns>A referenced structure.</returns>
+	ref TStruct AsRef();
+
+	/// <summary>Creates a new span over this allocated memory.</summary>
+	/// <returns>The span representation of the structure.</returns>
+	Span<TStruct> AsSpan();
+#endif
+
+	/// <summary>Gets the memory address of a field within <typeparamref name="TStruct"/>.</summary>
+	/// <param name="fieldName">Name of the field.</param>
+	/// <returns>The pointer to the field in memory.</returns>
+	IntPtr GetFieldAddress(string fieldName);
+
+	/// <summary>Retrieves a string from the current memory block at the specified offset, using the given character encoding.</summary>
+	/// <param name="offsetFromStart">
+	/// The offset, in bytes, from the start of the memory block at which to begin reading the string. Must not exceed the size of the memory block.
+	/// </param>
+	/// <param name="charSet">The character encoding to use when interpreting the string. The default is CharSet.Auto.</param>
+	/// <returns>A string read from the specified offset, or null if the memory block has no value.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">Thrown if offsetFromStart is greater than the size of the memory block.</exception>
+	string? GetStringAtOffset(long offsetFromStart, CharSet charSet = CharSet.Auto);
+
+	/// <summary>Retrieves the value of the current <see cref="IStructMemoryHandle{TStruct}"/> object, or the specified default value.</summary>
+	/// <param name="defaultValue">A value to return if the <see cref="HasValue"/> property is <see langword="false"/>.</param>
+	/// <returns>
+	/// The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <see langword="true"/>; otherwise, the
+	/// <paramref name="defaultValue"/> parameter.
+	/// </returns>
+	TStruct GetValueOrDefault(in TStruct defaultValue = default);
+}
+
 /// <summary>Base abstract class for a structure handler based on <see cref="SafeMemoryHandle{TMem}"/>.</summary>
 /// <typeparam name="TStruct">The type of the structure.</typeparam>
 /// <typeparam name="TMem">The type of the memory.</typeparam>
 /// <seealso cref="SafeMemoryHandle{TMem}"/>
-public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
+public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<TStruct>, IStructMemoryHandle<TStruct> where TMem : IMemoryMethods, new() where TStruct : struct
 {
 	/// <summary>The structure size, in bytes, of TStruct.</summary>
 	protected static readonly SizeT BaseStructSize = InteropExtensions.SizeOf<TStruct>();
@@ -36,19 +87,10 @@ public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<T
 	[ExcludeFromCodeCoverage]
 	public SafeMemStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) { }
 
-	/// <summary>Gets a value indicating whether the current memory has a valid value of its underlying type.</summary>
-	/// <value><see langword="true"/> if this instance has a value; otherwise, <see langword="false"/>.</value>
+	/// <inheritdoc/>
 	public bool HasValue => !IsClosed && !IsInvalid;
 
-	/// <summary>
-	/// Gets or sets the value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object if it has been assigned a valid
-	/// underlying value.
-	/// </summary>
-	/// <value>
-	/// The value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object if the HasValue property is true. An exception is
-	/// thrown if the HasValue property is false.
-	/// </value>
-	/// <exception cref="InvalidOperationException">The HasValue property is false.</exception>
+	/// <inheritdoc/>
 	public TStruct Value
 	{
 		get => HasValue ? handle.ToStructure<TStruct>(Size) : throw new InvalidOperationException("The HasValue property is false.");
@@ -136,22 +178,14 @@ public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<T
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	public bool Equals(TStruct other) => HasValue && EqualityComparer<TStruct>.Default.Equals(handle.ToStructure<TStruct>(Size), other);
 
-	/// <summary>Gets the memory address of a field within <typeparamref name="TStruct"/>.</summary>
-	/// <param name="fieldName">Name of the field.</param>
-	/// <returns>The pointer to the field in memory.</returns>
+	/// <inheritdoc/>
 	public virtual IntPtr GetFieldAddress(string fieldName) => handle.Offset(FieldOffset(fieldName));
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 	public override int GetHashCode() => handle.ToInt32();
 
-	/// <summary>Retrieves a string from the current memory block at the specified offset, using the given character encoding.</summary>
-	/// <param name="offsetFromStart">
-	/// The offset, in bytes, from the start of the memory block at which to begin reading the string. Must not exceed the size of the memory block.
-	/// </param>
-	/// <param name="charSet">The character encoding to use when interpreting the string. The default is CharSet.Auto.</param>
-	/// <returns>A string read from the specified offset, or null if the memory block has no value.</returns>
-	/// <exception cref="ArgumentOutOfRangeException">Thrown if offsetFromStart is greater than the size of the memory block.</exception>
+	/// <inheritdoc/>
 	public virtual string? GetStringAtOffset(long offsetFromStart, CharSet charSet = CharSet.Auto)
 	{
 		if (!HasValue)
@@ -161,12 +195,7 @@ public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<T
 		return StringHelper.GetString(handle.Offset(offsetFromStart), charSet, Size - offsetFromStart);
 	}
 
-	/// <summary>Retrieves the value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object, or the specified default value.</summary>
-	/// <param name="defaultValue">A value to return if the <see cref="HasValue"/> property is <see langword="false"/>.</param>
-	/// <returns>
-	/// The value of the <see cref="Value"/> property if the <see cref="HasValue"/> property is <see langword="true"/>; otherwise, the
-	/// <paramref name="defaultValue"/> parameter.
-	/// </returns>
+	/// <inheritdoc/>
 	public virtual TStruct GetValueOrDefault(in TStruct defaultValue = default) => HasValue ? Value : defaultValue;
 
 	/// <summary>Initializes the size field by the specified name or the first four bytes of the structure's memory.</summary>
@@ -188,12 +217,10 @@ public class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEquatable<T
 	protected static long FieldOffset(string name) => FieldAddress(name).ToInt64();
 
 #if ALLOWSPAN
-	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
-	/// <returns>A referenced structure.</returns>
+	/// <inheritdoc/>
 	public ref TStruct AsRef() => ref MemoryMarshal.GetReference(AsSpan());
 
-	/// <summary>Creates a new span over this allocated memory.</summary>
-	/// <returns>The span representation of the structure.</returns>
+	/// <inheritdoc/>
 	public Span<TStruct> AsSpan() => base.AsSpan<TStruct>(1);
 #endif
 }
