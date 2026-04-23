@@ -1158,6 +1158,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using var __{id} = {hMemTypeStr}.CreateFromStructure({id});"));
 
 			// Call the invoke method with a reference to the first element of the array
+			tmpbuilder.statements.invokeForQueryArgs?.Replace(GetArg(id), Argument(ParseExpression($"__{id}")));
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(ParseExpression($"__{id}")));
 
 			if (attrInfo.ModType.HasFlag(ModType.Out) && !attrInfo.StructType.IsUnmanagedType)
@@ -1180,6 +1181,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				tmpbuilder.statements.setupArgs.Add(ParseStatement($"using var __{id} = {hMemTypeStr}.CreateFromStructure({id});"));
 
 			// Call the invoke method with pinned variable
+			tmpbuilder.statements.invokeForQueryArgs?.Replace(GetArg(id), Argument(IdentifierName($"__{id}")));
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(IdentifierName($"__{id}")));
 		}
 
@@ -1194,6 +1196,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 			// Call the invoke method with "out var" variable
 			//tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(IdentifierName($"__{id}")));
+			tmpbuilder.statements.invokeForQueryArgs?.Replace(GetArg(id), Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(decl.Type!, SingleVariableDesignation(Identifier($"__{id}")))));
 			tmpbuilder.statements.invokeArgs.Replace(GetArg(id), Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(decl.Type!, SingleVariableDesignation(Identifier($"__{id}")))));
 
 			// Handle out value that is an out IntPtr and StructPointer provides a memory manager
