@@ -1,5 +1,6 @@
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices.ComTypes;
+using System.Xml.Linq;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -1165,7 +1166,7 @@ public static partial class ShlwApi
 	// pszLanguages, DWORD *pcchLanguages );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "a680a7fd-f980-485d-b52a-eb4d482ebc17")]
-	public static extern HRESULT GetAcceptLanguages(StringBuilder? pszLanguages, ref uint pcchLanguages);
+	public static extern HRESULT GetAcceptLanguages([Out, SizeDef(nameof(pcchLanguages), SizingMethod.CheckLastError)] StringBuilder? pszLanguages, ref uint pcchLanguages);
 
 	/// <summary>
 	/// <para>
@@ -1223,7 +1224,7 @@ public static partial class ShlwApi
 	// BYTE *pbHash, DWORD cbHash );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7b42b3ae-c021-49be-b5a7-d3bc0a5d346a")]
-	public static extern HRESULT HashData(IntPtr pbData, uint cbData, IntPtr pbHash, uint cbHash);
+	public static extern HRESULT HashData([In, SizeDef(nameof(cbData))] IntPtr pbData, uint cbData, [In, Out, SizeDef(nameof(cbHash))] IntPtr pbHash, uint cbHash);
 
 	/// <summary>
 	/// <para>Determines whether a character represents a space.</para>
@@ -1565,7 +1566,7 @@ public static partial class ShlwApi
 	// LWSTDAPI IStream_Read(IStream *pstm, void *pv, ULONG cb );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "07a3a500-babb-458b-ba98-9344c63ea014")]
-	public static extern HRESULT IStream_Read(IStream pstm, IntPtr pv, uint cb);
+	public static extern HRESULT IStream_Read(IStream pstm, [In, Out, SizeDef(nameof(cb))] IntPtr pv, uint cb);
 
 	/// <summary>
 	/// Reads bytes from a specified stream and returns a value that indicates whether all bytes were successfully read.
@@ -1707,7 +1708,7 @@ public static partial class ShlwApi
 	// void *pv, ULONG cb );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "fdcfdaf8-7fcb-433e-b3d4-98ca143fbe6b")]
-	public static extern HRESULT IStream_Write(IStream pstm, IntPtr pv, uint cb);
+	public static extern HRESULT IStream_Write(IStream pstm, [In, SizeDef(nameof(cb))] IntPtr pv, uint cb);
 
 	/// <summary>
 	/// <para>Writes data of unknown format from a buffer to a specified stream.</para>
@@ -2486,7 +2487,7 @@ public static partial class ShlwApi
 	// *pInit, UINT cbInit );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f3ae8241-f3a6-4007-a10f-ff05960c5de8")]
-	public static extern IStream? SHCreateMemStream([Optional] IntPtr pInit, [Optional] uint cbInit);
+	public static extern IStream? SHCreateMemStream([Optional, In, SizeDef(nameof(cbInit))] IntPtr pInit, [Optional] uint cbInit);
 
 	/// <summary>
 	/// <para>Creates a halftone palette for the specified device context.</para>
@@ -2933,7 +2934,7 @@ public static partial class ShlwApi
 	// dwIndex, StrPtrAnsi pszName, LPDWORD pcchName );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "51bf9cf7-87bc-407c-b2ee-18db3cdfe1dc")]
-	public static extern Win32Error SHEnumKeyEx(HKEY hkey, uint dwIndex, StringBuilder pszName, ref uint pcchName);
+	public static extern Win32Error SHEnumKeyEx(HKEY hkey, uint dwIndex, [Out, SizeDef(nameof(pcchName), SizingMethod.CheckLastError)] StringBuilder? pszName, ref uint pcchName);
 
 	/// <summary>
 	/// <para>Enumerates the values of the specified open registry key.</para>
@@ -2995,8 +2996,8 @@ public static partial class ShlwApi
 	// dwIndex, StrPtrAnsi pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
-		out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, [Out, SizeDef(nameof(pcchValueName), SizingMethod.CheckLastError)] StringBuilder? pszValueName, ref uint pcchValueName,
+		out REG_VALUE_TYPE pdwType, [Optional, Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Enumerates the values of the specified open registry key.</para>
@@ -3058,7 +3059,7 @@ public static partial class ShlwApi
 	// dwIndex, StrPtrAnsi pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName,
+	public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, [Out, SizeDef(nameof(pcchValueName), SizingMethod.CheckLastError)] StringBuilder? pszValueName, ref uint pcchValueName,
 		out REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 	/// <summary>
@@ -3180,7 +3181,7 @@ public static partial class ShlwApi
 	// *pft, DWORD *pdwFlags, StrPtrUni pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2208ed29-6029-4051-bdcc-885c42fe5c1b")]
-	public static extern int SHFormatDateTime(in FILETIME pft, ref FDTF pdwFlags, StringBuilder pszBuf, uint cchBuf);
+	public static extern int SHFormatDateTime(in FILETIME pft, ref FDTF pdwFlags, [Out, SizeDef(nameof(cchBuf), SizingMethod.CheckLastError)] StringBuilder? pszBuf, uint cchBuf);
 
 	/// <summary>
 	/// <para>
@@ -3341,7 +3342,7 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
-	public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out REG_VALUE_TYPE pdwType, [Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Retrieves a registry value.</para>
@@ -3966,7 +3967,7 @@ public static partial class ShlwApi
 	// pszValue, DWORD *pdwReserved, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "9969acae-5965-40fe-bde9-6de9ddf26bb8")]
-	public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, [Optional] IntPtr pdwReserved, out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, [Optional] IntPtr pdwReserved, out REG_VALUE_TYPE pdwType, [Optional, Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Closes a handle to a user-specific registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4051,7 +4052,7 @@ public static partial class ShlwApi
 	// pszPath, REGSAM samDesired, HUSKEY hRelativeUSKey, PHUSKEY phNewUSKey, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "10e3e31e-bff6-4260-95fa-2d750de16ab3")]
-	public static extern Win32Error SHRegCreateUSKey([Optional] string? pszPath, uint samDesired, [Optional] HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, SHREGSET dwFlags);
+	public static extern Win32Error SHRegCreateUSKey([Optional] string? pszPath, uint samDesired, [Optional] HUSKEY hRelativeUSKey, [AddAsCtor] out SafeHUSKEY phNewUSKey, SHREGSET dwFlags);
 
 	/// <summary>
 	/// <para>Deletes an empty registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4082,7 +4083,7 @@ public static partial class ShlwApi
 	// HUSKEY hUSKey, LPCSTR pszSubKey, SHREGDEL_FLAGS delRegFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "adb09a2b-674c-472d-9f16-8e150476f1f5")]
-	public static extern Win32Error SHRegDeleteEmptyUSKey(HUSKEY hUSKey, string pszSubKey, SHREGDEL_FLAGS delRegFlags);
+	public static extern Win32Error SHRegDeleteEmptyUSKey([AddAsMember] HUSKEY hUSKey, string pszSubKey, SHREGDEL_FLAGS delRegFlags);
 
 	/// <summary>
 	/// <para>Deletes a registry subkey value in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4114,7 +4115,7 @@ public static partial class ShlwApi
 	// hUSKey, LPCSTR pszValue, SHREGDEL_FLAGS delRegFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f70407af-d8ee-4333-be32-01887d4add4c")]
-	public static extern Win32Error SHRegDeleteUSValue(HUSKEY hUSKey, string pszValue, SHREGDEL_FLAGS delRegFlags);
+	public static extern Win32Error SHRegDeleteUSValue([AddAsMember] HUSKEY hUSKey, string pszValue, SHREGDEL_FLAGS delRegFlags);
 
 	/// <summary>
 	/// <para>Duplicates a registry key's HKEY handle.</para>
@@ -4332,7 +4333,7 @@ public static partial class ShlwApi
 	// iDefault );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "027e3470-46be-4d37-b815-e1fd550d0c60")]
-	public static extern int SHRegGetIntW(IntPtr hk, [MarshalAs(UnmanagedType.LPWStr)] string pwzKey, int iDefault);
+	public static extern int SHRegGetIntW(HKEY hk, [MarshalAs(UnmanagedType.LPWStr)] string pwzKey, int iDefault);
 
 	/// <summary>
 	/// <para>Retrieves a file path from the registry, expanding environment variables as needed.</para>
@@ -4705,7 +4706,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
 	public static extern Win32Error SHRegGetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, SRRF srrfFlags,
-		ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+		ref REG_VALUE_TYPE pdwType, [Out, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -4912,7 +4913,8 @@ public static partial class ShlwApi
 	// SHRegGetValueFromHKCUHKLM( PCWSTR pwszKey, PCWSTR pwszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "5c4b13f4-0dd8-476e-9e89-ace23d541389")]
-	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, [Optional] string? pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, [Optional] string? pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>[This function is no longer supported.]</para>
@@ -5280,7 +5282,7 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "96559f8c-8527-4924-928e-f27049069407")]
-	public static extern Win32Error SHRegSetUSValue(string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+	public static extern Win32Error SHRegSetUSValue(string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, [In, SizeDef(nameof(cbData))] IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 	/// <summary>
 	/// <para>Writes a value to a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -5372,7 +5374,7 @@ public static partial class ShlwApi
 	// hUSKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f94569c6-415b-4263-bab4-8a5baca47901")]
-	public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string? pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+	public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string? pszValue, REG_VALUE_TYPE dwType, [In, SizeDef(nameof(cbData))] IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 	/// <summary>
 	/// <para>Releases a thread reference before the thread procedure returns.</para>
@@ -5497,7 +5499,7 @@ public static partial class ShlwApi
 	// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
-	public static extern Win32Error SHSetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, REG_VALUE_TYPE dwType, [Optional] IntPtr pvData, [Optional] uint cbData);
+	public static extern Win32Error SHSetValue(HKEY hkey, [Optional] string? pszSubKey, [Optional] string? pszValue, REG_VALUE_TYPE dwType, [Optional, In, SizeDef(nameof(cbData))] IntPtr pvData, [Optional] uint cbData);
 
 	/// <summary>
 	/// <para>Sets the value of a registry key.</para>

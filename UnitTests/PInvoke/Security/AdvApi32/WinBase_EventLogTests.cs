@@ -9,7 +9,7 @@ public class WinBase_EventLogTests
 {
 	private static readonly string eventLogName = TestCaseSources.LogFile;
 
-	[Test]
+	[TestWhenElevated]
 	public void OpenBackupClearCloseEventLogTest()
 	{
 		using var hEL = OpenEventLog(null, eventLogName);
@@ -30,18 +30,16 @@ public class WinBase_EventLogTests
 	{
 		using var hES = RegisterEventSource(null, "TestSource");
 		Assert.That(hES, ResultIs.ValidHandle);
-		using var mem = SafeHGlobalHandle.CreateFromStructure<EVENTLOG_FULL_INFORMATION>();
-		Assert.That(GetEventLogInformation(hES, 0, mem, mem.Size, out var req), ResultIs.Successful);
-		mem.ToStructure<EVENTLOG_FULL_INFORMATION>().WriteValues();
+		Assert.That(GetEventLogInformation(hES!, out var evl), ResultIs.Successful);
+		evl.WriteValues();
 	}
 
 	[Test]
 	public void GetEventLogInformationTest()
 	{
 		using var hEL = OpenEventLog(null, eventLogName);
-		using var mem = SafeHGlobalHandle.CreateFromStructure<EVENTLOG_FULL_INFORMATION>();
-		Assert.That(GetEventLogInformation(hEL, 0, mem, mem.Size, out var req), ResultIs.Successful);
-		mem.ToStructure<EVENTLOG_FULL_INFORMATION>().WriteValues();
+		Assert.That(GetEventLogInformation(hEL, out var evl), ResultIs.Successful);
+		evl.WriteValues();
 	}
 
 	[Test]
@@ -72,7 +70,7 @@ public class WinBase_EventLogTests
 			var t = new System.Threading.Thread(ThreadProc);
 			t.Start(((HEVENTLOG)hEL, hEvent));
 			System.Threading.Thread.Sleep(100);
-			Assert.That(ReportEvent(hEL, EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE, 5, 5, SafePSID.Current, 2, 0, ["Testing", "1, 2, 3"], default), ResultIs.Successful);
+			Assert.That(ReportEvent(hEL, EVENTLOG_TYPE.EVENTLOG_INFORMATION_TYPE, 5, 5, SafePSID.Current, 0, ["Testing", "1, 2, 3"], default), ResultIs.Successful);
 			while (t.IsAlive)
 			{
 				System.Threading.Thread.Sleep(100);

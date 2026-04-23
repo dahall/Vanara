@@ -117,7 +117,7 @@ public class WinRegTests
 					Assert.That(mem.ToString(-1, CharSet.Auto), Is.EqualTo(strVal));
 
 					memSz = mem.Size;
-					Assert.That(RegQueryMultipleValues(hKey, [new VALENT("V1"), new VALENT("V2"), new VALENT("V3")], 3, mem, ref memSz), ResultIs.Successful);
+					Assert.That(RegQueryMultipleValues(hKey, "V1", "V2", "V3"), Has.Count.EqualTo(3));
 
 					Assert.That(RegDeleteKeyValue(hPKey, tmpRegKey, "V1"), ResultIs.Successful);
 					Assert.That(RegDeleteKeyValue(hPKey, tmpRegKey, "V2"), ResultIs.Successful);

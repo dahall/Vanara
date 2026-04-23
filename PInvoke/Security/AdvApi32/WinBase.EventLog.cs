@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class AdvApi32
 {
@@ -30,7 +32,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "5cfd5bad-4401-4abd-9e81-5f139e4ecf73")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BackupEventLog(HEVENTLOG hEventLog, string lpBackupFileName);
+	public static extern bool BackupEventLog([AddAsMember] HEVENTLOG hEventLog, string lpBackupFileName);
 
 	/// <summary>Clears the specified event log, and optionally saves the current copy of the log to a backup file.</summary>
 	/// <param name="hEventLog">A handle to the event log to be cleared. The OpenEventLog function returns this handle.</param>
@@ -51,7 +53,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "b66896f6-baee-43c4-9d9b-5663c164d092")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ClearEventLog(HEVENTLOG hEventLog, [Optional] string? lpBackupFileName);
+	public static extern bool ClearEventLog([AddAsMember] HEVENTLOG hEventLog, [Optional] string? lpBackupFileName);
 
 	/// <summary>Closes the specified event log.</summary>
 	/// <param name="hEventLog">
@@ -114,7 +116,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "627e0af2-3ce6-47fe-89c6-d7c0483cb94b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetEventLogInformation(HEVENTLOG hEventLog, EVENTLOG_INFO dwInfoLevel, IntPtr lpBuffer, uint cbBufSize, out uint pcbBytesNeeded);
+	public static extern bool GetEventLogInformation(HEVENTLOG hEventLog, EVENTLOG_INFO dwInfoLevel, [SizeDef(nameof(cbBufSize), SizingMethod.CheckLastError, OutVarName = nameof(pcbBytesNeeded))] IntPtr lpBuffer, uint cbBufSize, out uint pcbBytesNeeded);
 
 	/// <summary>Retrieves information about the specified event log.</summary>
 	/// <param name="hEventLog">A handle to the event log. The OpenEventLog or RegisterEventSource function returns this handle.</param>
@@ -129,7 +131,10 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-geteventloginformation BOOL GetEventLogInformation( HANDLE
 	// hEventLog, DWORD dwInfoLevel, LPVOID lpBuffer, DWORD cbBufSize, LPDWORD pcbBytesNeeded );
 	[PInvokeData("winbase.h", MSDNShortId = "627e0af2-3ce6-47fe-89c6-d7c0483cb94b")]
-	public static bool GetEventLogInformation(HEVENTLOG hEventLog, out EVENTLOG_FULL_INFORMATION lpBuffer) => GetEventLogInformation(hEventLog, 0, out lpBuffer, sizeof(uint), out _);
+	public static bool GetEventLogInformation([AddAsMember] HEVENTLOG hEventLog, out EVENTLOG_FULL_INFORMATION lpBuffer)
+	{
+		unsafe { fixed (void* p = &lpBuffer) return GetEventLogInformation(hEventLog, 0, (IntPtr)p, (uint)Marshal.SizeOf<EVENTLOG_FULL_INFORMATION>(), out _); }
+	}
 
 	/// <summary>Retrieves the number of records in the specified event log.</summary>
 	/// <param name="hEventLog">A handle to the open event log. The OpenEventLog or OpenBackupEventLog function returns this handle.</param>
@@ -147,7 +152,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "80cc8735-26a2-4ad3-a111-28f2c0c52e98")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNumberOfEventLogRecords(HEVENTLOG hEventLog, out uint NumberOfRecords);
+	public static extern bool GetNumberOfEventLogRecords([AddAsMember] HEVENTLOG hEventLog, out uint NumberOfRecords);
 
 	/// <summary>Retrieves the absolute record number of the oldest record in the specified event log.</summary>
 	/// <param name="hEventLog">A handle to the open event log. The OpenEventLog or OpenBackupEventLog function returns this handle.</param>
@@ -168,7 +173,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "2f64f82b-a5f5-4701-844b-5979a0124414")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetOldestEventLogRecord(HEVENTLOG hEventLog, out uint OldestRecord);
+	public static extern bool GetOldestEventLogRecord([AddAsMember] HEVENTLOG hEventLog, out uint OldestRecord);
 
 	/// <summary>
 	/// Enables an application to receive notification when an event is written to the specified event log. When the event is written to
@@ -203,7 +208,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "12b9a7bf-2aad-48b7-8cfd-a72b353ba2b2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool NotifyChangeEventLog(HEVENTLOG hEventLog, HEVENT hEvent);
+	public static extern bool NotifyChangeEventLog([AddAsMember] HEVENTLOG hEventLog, HEVENT hEvent);
 
 	/// <summary>Opens a handle to a backup event log created by the BackupEventLog function.</summary>
 	/// <param name="lpUNCServerName">
@@ -226,6 +231,7 @@ public static partial class AdvApi32
 	// lpUNCServerName, LPCSTR lpFileName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "cfef0912-9d35-44aa-a1d3-f9bb37213ce0")]
+	[return: AddAsCtor]
 	public static extern SafeHEVENTLOG OpenBackupEventLog([Optional] string? lpUNCServerName, string lpFileName);
 
 	/// <summary>Opens a handle to the specified event log.</summary>
@@ -253,6 +259,7 @@ public static partial class AdvApi32
 	// lpUNCServerName, LPCSTR lpSourceName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "6cd8797a-aeaf-4603-b43c-b1ff45b6200a")]
+	[return: AddAsCtor]
 	public static extern SafeHEVENTLOG OpenEventLog([Optional] string? lpUNCServerName, string lpSourceName);
 
 	/// <summary>
@@ -401,11 +408,6 @@ public static partial class AdvApi32
 	/// The size of the lpBuffer buffer, in bytes. This function will read as many log entries as will fit in the buffer; the function
 	/// will not return partial entries.
 	/// </param>
-	/// <param name="pnBytesRead">A pointer to a variable that receives the number of bytes read by the function.</param>
-	/// <param name="pnMinNumberOfBytesNeeded">
-	/// A pointer to a variable that receives the required size of the lpBuffer buffer. This value is valid only this function returns
-	/// zero and GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>.
-	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
@@ -419,13 +421,19 @@ public static partial class AdvApi32
 	/// <para>Examples</para>
 	/// <para>For an example, see Querying for Event Information.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readeventloga BOOL ReadEventLogA( HANDLE hEventLog, DWORD
-	// dwReadFlags, DWORD dwRecordOffset, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, DWORD *pnBytesRead, DWORD
-	// *pnMinNumberOfBytesNeeded );
-	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "10b37174-661a-4dc6-a7fe-752739494156")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadEventLog(HEVENTLOG hEventLog, EVENTLOG_READ dwReadFlags, uint dwRecordOffset, SafePEVENTLOGRECORD lpBuffer, uint nNumberOfBytesToRead, out uint pnBytesRead, out uint pnMinNumberOfBytesNeeded);
+	public static bool ReadEventLog([AddAsMember] HEVENTLOG hEventLog, EVENTLOG_READ dwReadFlags, out SafePEVENTLOGRECORD lpBuffer, [Optional] uint dwRecordOffset, [Range(0, 0x7ffff)] uint nNumberOfBytesToRead = 0x10000)
+	{
+		lpBuffer = new SafePEVENTLOGRECORD((int)nNumberOfBytesToRead);
+		var ret = ReadEventLog(hEventLog, dwReadFlags, dwRecordOffset, lpBuffer, nNumberOfBytesToRead, out var pnBytesRead, out var pnMinNumberOfBytesNeeded);
+		if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			lpBuffer.Size = (int)pnMinNumberOfBytesNeeded;
+			ret = ReadEventLog(hEventLog, dwReadFlags, dwRecordOffset, lpBuffer, pnMinNumberOfBytesNeeded, out pnBytesRead, out pnMinNumberOfBytesNeeded);
+		}
+		lpBuffer.Size = (int)pnBytesRead;
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>Retrieves a registered handle to the specified event log.</para>
@@ -465,6 +473,7 @@ public static partial class AdvApi32
 	// lpUNCServerName, LPCSTR lpSourceName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "53706f83-6bc9-45d6-981c-bd0680d7bc08")]
+	[return: AddAsCtor]
 	public static extern SafeHEVENTSOURCE RegisterEventSource([Optional] string? lpUNCServerName, string lpSourceName);
 
 	/// <summary>Writes an entry at the end of the specified event log.</summary>
@@ -605,12 +614,12 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "e39273c3-9e42-41a1-9ec1-1cdff2ab7b55")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReportEvent(HEVENTLOG hEventLog, EVENTLOG_TYPE wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize,
+	public static extern bool ReportEvent([AddAsMember] HEVENTLOG hEventLog, EVENTLOG_TYPE wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize,
 		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
 
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	private static extern bool GetEventLogInformation(HEVENTLOG hEventLog, uint dwInfoLevel, out EVENTLOG_FULL_INFORMATION lpBuffer, uint cbBufSize, out uint pcbBytesNeeded);
+	private static extern bool GetEventLogInformation(SafeHEVENTLOG hEventLog, uint dwInfoLevel, out EVENTLOG_FULL_INFORMATION lpBuffer, uint cbBufSize, out uint pcbBytesNeeded);
 
 	/// <summary>Indicates whether the event log is full.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_eventlog_full_information typedef struct
@@ -624,7 +633,13 @@ public static partial class AdvApi32
 		public bool dwFull;
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HEVENTLOG"/> that is disposed using <see cref="DeregisterEventSource"/>.</summary>
-	[AutoSafeHandle("DeregisterEventSource(handle)", typeof(HEVENTLOG))]
-	public partial class SafeHEVENTSOURCE { }
+	/// <summary>Provides a <see cref="SafeHandle"/> for an event source that is disposed using <see cref="DeregisterEventSource"/>.</summary>
+	[AutoSafeHandle("DeregisterEventSource(handle)")]
+	public partial class SafeHEVENTSOURCE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="SafeHEVENTSOURCE"/> to <see cref="HEVENTLOG"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HEVENTLOG(SafeHEVENTSOURCE h) => h.handle;
+	}
 }

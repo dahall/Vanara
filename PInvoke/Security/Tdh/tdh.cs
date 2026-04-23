@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.ComponentModel.DataAnnotations;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke;
@@ -7,6 +8,9 @@ namespace Vanara.PInvoke;
 public static partial class Tdh
 {
 	private const string Lib_Tdh = "tdh.dll";
+
+	/// <summary>The max number of conditions able to be specified in the filter.</summary>
+	public const int MAX_PAYLOAD_PREDICATES = 8;
 
 	private delegate Win32Error GetD(IntPtr p, ref uint sz);
 
@@ -246,6 +250,7 @@ public static partial class Tdh
 		/// Null-terminated Unicode string that contains the name of the .tmf file used for parsing the WPP log. Typically, the .tmf file
 		/// name is picked up from the event GUID so you do not have to specify the file name.
 		/// </summary>
+		[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 		TDH_CONTEXT_WPP_TMFFILE,
 
 		/// <summary>
@@ -253,12 +258,14 @@ public static partial class Tdh
 		/// contains the file. Only specify this context information if you also specify the TDH_CONTEXT_WPP_TMFFILE context type. If the
 		/// file is not found, TDH searches the following locations in the given order:
 		/// </summary>
+		[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 		TDH_CONTEXT_WPP_TMFSEARCHPATH,
 
 		/// <summary>
 		/// A 1-byte Boolean flag that indicates if the WPP event time stamp should be converted to Universal Time Coordinate (UTC). If 1,
 		/// the time stamp is converted to UTC. If 0, the time stamp is in local time. By default, the time stamp is in local time.
 		/// </summary>
+		[CorrespondingType(typeof(BOOLEAN))]
 		TDH_CONTEXT_WPP_GMT,
 
 		/// <summary>
@@ -268,12 +275,14 @@ public static partial class Tdh
 		/// contains this header in the data section). However, this value may not be accurate. For example, on a 64-bit computer, a 32-bit
 		/// application will log 4-byte pointers; however, the session will set PointerSize to 8.
 		/// </summary>
+		[CorrespondingType(typeof(byte))]
 		TDH_CONTEXT_POINTERSIZE,
 
 		/// <summary>
 		/// Null-terminated Unicode string that contains the name of the .pdb file for the binary that contains WPP messages. This parameter
 		/// can be used as an alternative to TDH_CONTEXT_WPP_TMFFILE or TDH_CONTEXT_WPP_TMFSEARCHPATH.
 		/// </summary>
+		[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 		TDH_CONTEXT_PDB_PATH,
 	}
 
@@ -294,57 +303,75 @@ public static partial class Tdh
 		TDH_INTYPE_NULL,
 
 		/// <summary/>
+		[CorrespondingType(typeof(string), EncodingType = typeof(UnicodeEncoding))]
 		TDH_INTYPE_UNICODESTRING,
 
 		/// <summary/>
+		[CorrespondingType(typeof(string), EncodingType = typeof(UTF8Encoding))]
 		TDH_INTYPE_ANSISTRING,
 
 		/// <summary/>
+		[CorrespondingType(typeof(byte))]
 		TDH_INTYPE_INT8,
 
 		/// <summary/>
+		[CorrespondingType(typeof(sbyte))]
 		TDH_INTYPE_UINT8,
 
 		/// <summary/>
+		[CorrespondingType(typeof(short))]
 		TDH_INTYPE_INT16,
 
 		/// <summary/>
+		[CorrespondingType(typeof(ushort))]
 		TDH_INTYPE_UINT16,
 
 		/// <summary/>
+		[CorrespondingType(typeof(int))]
 		TDH_INTYPE_INT32,
 
 		/// <summary/>
+		[CorrespondingType(typeof(uint))]
 		TDH_INTYPE_UINT32,
 
 		/// <summary/>
+		[CorrespondingType(typeof(long))]
 		TDH_INTYPE_INT64,
 
 		/// <summary/>
+		[CorrespondingType(typeof(ulong))]
 		TDH_INTYPE_UINT64,
 
 		/// <summary/>
+		[CorrespondingType(typeof(float))]
 		TDH_INTYPE_FLOAT,
 
 		/// <summary/>
+		[CorrespondingType(typeof(double))]
 		TDH_INTYPE_DOUBLE,
 
 		/// <summary/>
+		[CorrespondingType(typeof(BOOLEAN))]
 		TDH_INTYPE_BOOLEAN,
 
 		/// <summary/>
+		[CorrespondingType(typeof(byte[]))]
 		TDH_INTYPE_BINARY,
 
 		/// <summary/>
+		[CorrespondingType(typeof(Guid))]
 		TDH_INTYPE_GUID,
 
 		/// <summary/>
+		[CorrespondingType(typeof(IntPtr))]
 		TDH_INTYPE_POINTER,
 
 		/// <summary/>
+		[CorrespondingType(typeof(FILETIME))]
 		TDH_INTYPE_FILETIME,
 
 		/// <summary/>
+		[CorrespondingType(typeof(SYSTEMTIME))]
 		TDH_INTYPE_SYSTEMTIME,
 
 		/// <summary/>
@@ -393,6 +420,7 @@ public static partial class Tdh
 		TDH_INTYPE_ANSICHAR,
 
 		/// <summary/>
+		[CorrespondingType(typeof(SizeT))]
 		TDH_INTYPE_SIZET,
 
 		/// <summary/>
@@ -900,8 +928,8 @@ public static partial class Tdh
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhCreatePayloadFilter")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhCreatePayloadFilter(in Guid ProviderGuid, in EVENT_DESCRIPTOR EventDescriptor,
-		[In, MarshalAs(UnmanagedType.U1)] bool EventMatchANY, uint PayloadPredicateCount,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PAYLOAD_FILTER_PREDICATE[] PayloadPredicates, out IntPtr PayloadFilter);
+		[In, MarshalAs(UnmanagedType.U1)] bool EventMatchANY, [Range(0, MAX_PAYLOAD_PREDICATES)] uint PayloadPredicateCount,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PAYLOAD_FILTER_PREDICATE[] PayloadPredicates, out SafeTdhPayloadFilter PayloadFilter);
 
 	/// <summary>
 	/// The <c>TdhDeletePayloadFilter</c> function frees the memory allocated for a single payload filter by the TdhCreatePayloadFilter function.
@@ -1171,6 +1199,7 @@ public static partial class Tdh
 	// PPROVIDER_FILTER_INFO *Buffer, [in, out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviderFilters", MinClient = PInvokeClient.Windows7)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern Win32Error TdhEnumerateProviderFilters(in Guid Guid, [In, Optional] uint TdhContextCount,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TDH_CONTEXT[]? TdhContext,
 		out uint FilterCount, [Out, Optional] IntPtr Buffer, ref uint BufferSize);
@@ -1472,114 +1501,9 @@ public static partial class Tdh
 	// Buffer, [out] PUSHORT UserDataConsumed );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhFormatProperty", MinClient = PInvokeClient.Windows7)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
-	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, in EVENT_MAP_INFO MapInfo, uint PointerSize,
-		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
-		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? Buffer, out ushort UserDataConsumed);
-
-	/// <summary>Formats a property value for display.</summary>
-	/// <param name="EventInfo">
-	/// A TRACE_EVENT_INFO structure that contains the event information. To get this structure, call the TdhGetEventInformation function.
-	/// </param>
-	/// <param name="MapInfo">
-	/// An EVENT_MAP_INFO structure that maps integer and bit values to strings. To get this structure, call the TdhGetEventMapInformation
-	/// function. To get the name of the map, use the <c>MapNameOffset</c> member of the EVENT_PROPERTY_INFO structure. If you do not provide
-	/// the map information for a mapped property, the function formats the integer or bit value.
-	/// </param>
-	/// <param name="PointerSize">
-	/// The size of a pointer value in the event data. To get the size, access the EVENT_RECORD.EventHeader.Flags member. The pointer size is
-	/// 4 bytes if the EVENT_HEADER_FLAG_32_BIT_HEADER flag is set; otherwise, it is 8 bytes if the EVENT_HEADER_FLAG_64_BIT_HEADER flag is
-	/// set. The EVENT_RECORD structure (evntcons.h) is passed to your [PEVENT_RECORD_CALLBACK callback function].
-	/// </param>
-	/// <param name="PropertyInType">
-	/// The input type of the property. Use the <c>InType</c> member of the EVENT_PROPERTY_INFO structure to set this parameter.
-	/// </param>
-	/// <param name="PropertyOutType">
-	/// The output type of the property. Use the <c>OutType</c> member of the EVENT_PROPERTY_INFO structure to set this parameter.
-	/// </param>
-	/// <param name="PropertyLength">
-	/// The length, in bytes, of the property. Use the <c>Length</c> member of the EVENT_PROPERTY_INFO structure to set this parameter.
-	/// </param>
-	/// <param name="UserDataLength">The size, in bytes, of the UserData buffer. See Remarks.</param>
-	/// <param name="UserData">The buffer that contains the event data. See Remarks.</param>
-	/// <param name="BufferSize">
-	/// The size, in bytes, of the Buffer buffer. If the function succeeds, this parameter receives the size of the buffer used. If the
-	/// buffer is too small, the function returns ERROR_INSUFFICIENT_BUFFER and sets this parameter to the required buffer size. If the
-	/// buffer size is zero on input, no data is returned in the buffer and this parameter receives the required buffer size.
-	/// </param>
-	/// <param name="Buffer">
-	/// A caller-allocated buffer that contains the formatted property value. To determine the required buffer size, set this parameterto
-	/// <c>NULL</c> and BufferSize to zero.
-	/// </param>
-	/// <param name="UserDataConsumed">
-	/// The length, in bytes, of the consumed event data. Use this value to adjust the values of the UserData and UserDataLength parameters.
-	/// See Remarks.
-	/// </param>
-	/// <returns>
-	/// <para>Returns ERROR_SUCCESS if successful. Otherwise, this function returns one of the following return codes in addition to others.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
-	/// <term>
-	/// The size of the <c>pBuffer</c> buffer is too small. Use the required buffer size set in <c>pBufferSize</c> to allocate a new buffer.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
-	/// <term>One or more of the parameters is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term><c>ERROR_EVT_INVALID_EVENT_DATA</c></term>
-	/// <term>The event data does not match the event definition in the manifest.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// Typically, you call this function in a loop. Use the TRACE_EVENT_INFO.TopLevelPropertyCount member to control the loop (the
-	/// TdhGetEventInformation function returns the TRACE_EVENT_INFO structure). Before entering the loop, you set the UserData and
-	/// UserDataLength parameters to the value of the <c>UserData</c> and <c>UserDataLength</c> members of the EVENT_RECORD structure,
-	/// respectively. The EVENT_RECORD structure is passed to your [PEVENT_RECORD_CALLBACK callback function].
-	/// </para>
-	/// <para>
-	/// Determine whether the property is an array. The property is an array if the EVENT_PROPERTY_INFO.Flags member is set to
-	/// PropertyParamCount or the EVENT_PROPERTY_INFO.count member is greater than 1. Call the <c>TdhFormatProperty</c> function in a loop
-	/// based on the number of elements in the array.
-	/// </para>
-	/// <para>
-	/// After calling the <c>TdhFormatProperty</c> function, use the UserDataConsumed parameter value to set the new values of the UserData
-	/// and UserDataLength parameters (Subtract UserDataConsumed from UserDataLength and use UserDataLength to increment the UserData pointer).
-	/// </para>
-	/// <para>
-	/// If the property is an IP V6 address, you must set the PropertyLength parameter to the size of the <c>IN6_ADDR</c> structure. The
-	/// property is considered an IP V6 address if the following conditions are met:
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>The <c>InType</c> member of the EVENT_PROPERTY_INFO structure is TDH_INTYPE_BINARY</term>
-	/// </item>
-	/// <item>
-	/// <term>The <c>OutType</c> member of the EVENT_PROPERTY_INFO structure is TDH_OUTTYPE_IPV6</term>
-	/// </item>
-	/// <item>
-	/// <term>The <c>Length</c> member of the EVENT_PROPERTY_INFO structure is 0</term>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>For an example that shows how to call this function , see Using TdhFormatProperty to Consume Event Data.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/tdh/nf-tdh-tdhformatproperty Win32Error TdhFormatProperty( [in] PTRACE_EVENT_INFO
-	// EventInfo, [in, optional] PEVENT_MAP_INFO MapInfo, [in] ULONG PointerSize, [in] USHORT PropertyInType, [in] USHORT PropertyOutType,
-	// [in] USHORT PropertyLength, [in] USHORT UserDataLength, [in] PBYTE UserData, [in, out] PULONG BufferSize, [out, optional] PWCHAR
-	// Buffer, [out] PUSHORT UserDataConsumed );
-	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhFormatProperty", MinClient = PInvokeClient.Windows7)]
-	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
-	public static extern Win32Error TdhFormatProperty(SafeCoTaskMemStruct<TRACE_EVENT_INFO> EventInfo, [In, Optional] IntPtr MapInfo, uint PointerSize,
-		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In] IntPtr UserData,
-		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? Buffer, out ushort UserDataConsumed);
+	public static extern Win32Error TdhFormatProperty([In, StructPointer(typeof(TRACE_EVENT_INFO))] IntPtr EventInfo, [In, Optional, StructPointer(typeof(EVENT_MAP_INFO))] IntPtr MapInfo, uint PointerSize,
+		ushort PropertyInType, ushort PropertyOutType, ushort PropertyLength, ushort UserDataLength, [In, SizeDef(nameof(UserDataLength))] IntPtr UserData,
+		ref uint BufferSize, [Out, Optional, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(BufferSize), SizingMethod.CheckLastError)] StringBuilder? Buffer, out ushort UserDataConsumed);
 
 	/// <summary>Retrieves the value of a decoding parameter.</summary>
 	/// <param name="Handle">
@@ -1679,6 +1603,7 @@ public static partial class Tdh
 	// BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventInformation")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern Win32Error TdhGetEventInformation(in EVENT_RECORD Event, uint TdhContextCount,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TDH_CONTEXT[]? TdhContext, [Out] IntPtr Buffer, ref uint BufferSize);
 
@@ -2019,10 +1944,86 @@ public static partial class Tdh
 	// [in] ULONG BufferSize, [out] PBYTE pBuffer );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetProperty")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern Win32Error TdhGetProperty(in EVENT_RECORD pEvent, uint TdhContextCount,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TDH_CONTEXT[]? pTdhContext, uint PropertyDataCount,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTY_DATA_DESCRIPTOR[] pPropertyData,
 		uint BufferSize, [Out] IntPtr pBuffer);
+
+	/// <summary>Retrieves a property value from the event data.</summary>
+	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
+	/// <param name="pTdhContext">
+	/// Array of context values for WPP or classic ETW events only; otherwise, <c>NULL</c>. For details, see the TDH_CONTEXT structure. The
+	/// array must not contain duplicate context types.
+	/// </param>
+	/// <param name="pPropertyData">
+	/// <para>Array of PROPERTY_DATA_DESCRIPTOR structures that defines the property to retrieve.</para>
+	/// <para>
+	/// If you called the TdhGetPropertySize function to retrieve the required buffer size for the property, you can use the same data descriptors.
+	/// </para>
+	/// <para>
+	/// If you are retrieving a property that is not a member of a structure, you can specify a single data descriptor. If you are retrieving
+	/// a property that is a member of a structure, specify an array of two data descriptors (structures cannot contain or reference other structures).
+	/// </para>
+	/// </param>
+	/// <param name="pBuffer">User-allocated buffer that receives the property data.</param>
+	/// <returns>
+	/// <para>Returns ERROR_SUCCESS if successful. Otherwise, this function returns one of the following return codes in addition to others.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term><c>ERROR_NOT_FOUND</c></term>
+	/// <term>The schema for the event was not found or the specified property was not found.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INSUFFICIENT_BUFFER</c></term>
+	/// <term>The pBuffer buffer is too small. To get the required buffer size, call TdhGetPropertySize.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_INVALID_PARAMETER</c></term>
+	/// <term>One or more of the parameters is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_FILE_NOT_FOUND</c></term>
+	/// <term>
+	/// The <c>resourceFileName</c> attribute in the manifest contains the location of the provider binary. When you register the manifest,
+	/// the location is written to the registry. TDH was unable to find the binary based on the registered location.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term><c>ERROR_WMI_SERVER_UNAVAILABLE</c></term>
+	/// <term>The WMI service is not available.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the event is a WPP or classic ETW event, you can specify context information that is used to help parse the event information. The
+	/// event is a WPP event if the EVENT_HEADER_FLAG_TRACE_MESSAGE flag is set in the <c>Flags</c> member of EVENT_HEADER (see the
+	/// <c>EventHeader</c> member of EVENT_RECORD). The event is a legacy ETW event if the EVENT_HEADER_FLAG_CLASSIC_HEADER flag is set.
+	/// </para>
+	/// <para>For a list of properties for WPP events and their data types, see PROPERTY_DATA_DESCRIPTOR.</para>
+	/// <para>Examples</para>
+	/// <para>
+	/// For an example that shows how to call this function to retrieve the value of a top-level property or the member of a structure, see
+	/// Using TdhGetProperty to Consume Event Data.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetProperty")]
+	public static Win32Error TdhGetProperty<T>(in EVENT_RECORD pEvent, [In, Optional] TDH_CONTEXT[]? pTdhContext, [In] PROPERTY_DATA_DESCRIPTOR[] pPropertyData, out T? pBuffer)
+	{
+		pBuffer = default;
+		var err = TdhGetPropertySize(pEvent, (uint?)pTdhContext?.Length ?? 0, pTdhContext, (uint)pPropertyData.Length, pPropertyData, out var sz);
+		if (err.Failed)
+			return err;
+		using SafeHGlobalHandle buf = new(sz);
+		if ((err = TdhGetProperty(pEvent, (uint?)pTdhContext?.Length ?? 0, pTdhContext, (uint)pPropertyData.Length, pPropertyData, sz, buf)).Succeeded)
+			pBuffer = buf.ToType<T>();
+		return err;
+	}
 
 	/// <summary>Retrieves the size of one or more property values in the event data.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -2090,6 +2091,7 @@ public static partial class Tdh
 	// pPropertyData, [out] ULONG *pPropertySize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetPropertySize")]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern Win32Error TdhGetPropertySize(in EVENT_RECORD pEvent, uint TdhContextCount,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TDH_CONTEXT[]? pTdhContext, uint PropertyDataCount,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTY_DATA_DESCRIPTOR[] pPropertyData,
@@ -2139,7 +2141,7 @@ public static partial class Tdh
 	// [in] PEVENT_RECORD EventRecord, [in, out] PULONG BufferSize, [out] PBYTE Buffer );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetWppMessage", MinClient = PInvokeClient.Windows8)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
-	public static extern Win32Error TdhGetWppMessage([In] TDH_HANDLE Handle, in EVENT_RECORD EventRecord, ref uint BufferSize, [Out] IntPtr Buffer);
+	public static extern Win32Error TdhGetWppMessage([In] TDH_HANDLE Handle, in EVENT_RECORD EventRecord, ref uint BufferSize, [Out, SizeDef(nameof(BufferSize), SizingMethod.CheckLastError)] IntPtr Buffer);
 
 	/// <summary>Retrieves a specific property associated with a WPP message.</summary>
 	/// <param name="Handle">
@@ -2197,7 +2199,7 @@ public static partial class Tdh
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetWppProperty", MinClient = PInvokeClient.Windows8)]
 	[DllImport(Lib_Tdh, SetLastError = false, ExactSpelling = true)]
 	public static extern Win32Error TdhGetWppProperty([In] TDH_HANDLE Handle, in EVENT_RECORD EventRecord,
-		[MarshalAs(UnmanagedType.LPWStr)] string PropertyName, ref uint BufferSize, [Out] IntPtr Buffer);
+		[MarshalAs(UnmanagedType.LPWStr)] string PropertyName, ref uint BufferSize, [Out, SizeDef(nameof(BufferSize), SizingMethod.CheckLastError)] IntPtr Buffer);
 
 	/// <summary>Loads the manifest used to decode a log file.</summary>
 	/// <param name="Manifest">The full path to the manifest.</param>
@@ -2782,6 +2784,12 @@ public static partial class Tdh
 		/// <para>The offset is used for pattern maps and WMI value maps that map strings to strings.</para>
 		/// </summary>
 		public uint InputOffset { readonly get => Value; set => Value = value; }
+
+		/// <summary>Gets the string associated with the map value in <c>Value</c> or <c>InputOffset</c>.</summary>
+		public readonly string? GetOutputString(IStructMemoryHandle<EVENT_MAP_INFO> mem) => mem.GetStringAtOffset(OutputOffset);
+
+		/// <summary>Gets the map value as a string.</summary>
+		public readonly string? GetInputString(IStructMemoryHandle<EVENT_MAP_INFO> mem) => mem.AsRef().MapEntryValueType == MAP_VALUETYPE.EVENTMAP_ENTRY_VALUETYPE_STRING ? mem.GetStringAtOffset(InputOffset) : null;
 	}
 
 	/// <summary>Defines the metadata about the event map.</summary>
@@ -2828,6 +2836,15 @@ public static partial class Tdh
 		/// <summary>Array of map entries. For details, see the EVENT_MAP_ENTRY structure.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 		public EVENT_MAP_ENTRY[] MapEntryArray;
+
+		/// <summary>Gets the name of the event map.</summary>
+		public readonly string? GetName(IStructMemoryHandle<EVENT_MAP_INFO> mem) => mem.GetStringAtOffset(NameOffset);
+
+		/// <summary>Gets the format string of the event map.</summary>
+		public readonly string? GetFormatString(IStructMemoryHandle<EVENT_MAP_INFO> mem) => mem.GetStringAtOffset(FormatStringOffset);
+
+		/// <summary>Gets the map entries as a span.</summary>
+		public readonly ReadOnlySpan<EVENT_MAP_ENTRY> GetMapEntries(IStructMemoryHandle<EVENT_MAP_INFO> mem) => mem.GetFieldAddress(nameof(MapEntryArray)).AsSpan<EVENT_MAP_ENTRY>((int)EntryCount);
 	}
 
 	/// <summary>Provides information about a single property of the event or filter.</summary>
@@ -3535,4 +3552,11 @@ public static partial class Tdh
 		/// </summary>
 		public uint ProviderNameOffset;
 	}
+
+	/// <summary>
+	/// A pointer to a single payload filter that is allocated by the TdhCreatePayloadFilter function and automatically freed by the
+	/// TdhDeletePayloadFilter function when the filter is no longer in use.
+	/// </summary>
+	[AutoSafeHandle("TdhDeletePayloadFilter(ref handle).Succeeded")]
+	public partial class SafeTdhPayloadFilter { }
 }

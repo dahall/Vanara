@@ -470,7 +470,7 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "4dc5688f-4b7a-4baf-9671-868cac7f1896")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminCalcHashFromFileHandle(HFILE hFile, ref uint pcbHash, [Optional] IntPtr pbHash, uint dwFlags = 0);
+	public static extern bool CryptCATAdminCalcHashFromFileHandle(HFILE hFile, ref uint pcbHash, [Optional, Out, SizeDef(nameof(pcbHash), SizingMethod.CheckLastError)] IntPtr pbHash, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>The <c>CryptCATAdminCalcHashFromFileHandle2</c> function calculates the hash for a file by using the specified algorithm.</para>
@@ -530,7 +530,7 @@ public static partial class WinTrust
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "CBFA60A8-5E5A-4FAD-8AD3-26539802CD53")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, [Optional] IntPtr pbHash, uint dwFlags = 0);
+	public static extern bool CryptCATAdminCalcHashFromFileHandle2(HCATADMIN hCatAdmin, HFILE hFile, ref uint pcbHash, [Optional, Out, SizeDef(nameof(pcbHash), SizingMethod.CheckLastError)] IntPtr pbHash, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>

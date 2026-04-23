@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.AccessControl;
 using static Vanara.PInvoke.Kernel32;
@@ -1008,6 +1009,78 @@ public static partial class AdvApi32
 	public static extern bool AddConditionalAce([In, Out] PACL pAcl, uint dwAceRevision, AceFlags AceFlags, AceType AceType, ACCESS_MASK AccessMask, PSID pSid, [MarshalAs(UnmanagedType.LPWStr)] string ConditionStr, out uint ReturnLength);
 
 	/// <summary>
+	/// The <c>AddConditionalAce</c> function adds a conditional access control entry (ACE) to the specified access control list (ACL). A
+	/// conditional ACE specifies a logical condition that is evaluated during access checks.
+	/// </summary>
+	/// <param name="pAcl">
+	/// <para>A pointer to an ACL. This function adds an ACE to this ACL.</para>
+	/// <para>The value of this parameter cannot be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="dwAceRevision">
+	/// Specifies the revision level of the ACL being modified. This value can be ACL_REVISION or ACL_REVISION_DS. Use ACL_REVISION_DS if
+	/// the ACL contains object-specific ACEs.
+	/// </param>
+	/// <param name="AceFlags">
+	/// A set of bit flags that control ACE inheritance. The function sets these flags in the <c>AceFlags</c> member of the ACE_HEADER
+	/// structure of the new ACE. This parameter can be a combination of the following values.
+	/// </param>
+	/// <param name="AceType">
+	/// <para>The type of the ACE.</para>
+	/// <para>This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ACCESS_ALLOWED_CALLBACK_ACE_TYPE 0x9</term>
+	/// <term>Access-allowed callback ACE that uses the ACCESS_ALLOWED_CALLBACK_ACE structure.</term>
+	/// </item>
+	/// <item>
+	/// <term>ACCESS_DENIED_CALLBACK_ACE_TYPE 0xA</term>
+	/// <term>Access-denied callback ACE that uses the ACCESS_DENIED_CALLBACK_ACE structure.</term>
+	/// </item>
+	/// <item>
+	/// <term>SYSTEM_AUDIT_CALLBACK_ACE_TYPE 0xD</term>
+	/// <term>System audit callback ACE that uses the SYSTEM_AUDIT_CALLBACK_ACE structure.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="AccessMask">Specifies the mask of access rights to be granted to the specified SID.</param>
+	/// <param name="pSid">A pointer to the SID that represents a user, group, or logon account being granted access.</param>
+	/// <param name="ConditionStr">A string that specifies the conditional statement to be evaluated for the ACE.</param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns <c>TRUE</c>.</para>
+	/// <para>
+	/// If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError. The following are possible
+	/// error values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+	/// <term>The new ACE does not fit into the pAcl buffer.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-addconditionalace BOOL AddConditionalAce( PACL pAcl, DWORD
+	// dwAceRevision, DWORD AceFlags, UCHAR AceType, DWORD AccessMask, PSID pSid, PWCHAR ConditionStr, DWORD *ReturnLength );
+	[PInvokeData("winbase.h", MSDNShortId = "89f038be-d15c-4c0b-8145-ba531bdf87ce")]
+	public static bool AddConditionalAce([In, Out, AddAsMember] SafePACL pAcl, AceFlags AceFlags, AceType AceType, ACCESS_MASK AccessMask, PSID pSid, [MarshalAs(UnmanagedType.LPWStr)] string ConditionStr, uint dwAceRevision = ACL_REVISION)
+	{
+		var ret = AddConditionalAce(pAcl, dwAceRevision, AceFlags, AceType, AccessMask, pSid, ConditionStr, out var len);
+		if (!ret && GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			pAcl.Size = len;
+			ret = AddConditionalAce(pAcl, dwAceRevision, AceFlags, AceType, AccessMask, pSid, ConditionStr, out _);
+		}
+		return ret;
+	}
+
+	/// <summary>
 	/// Closes an encrypted file after a backup or restore operation, and frees associated system resources. This is one of a group of
 	/// Encrypted File System (EFS) functions that is intended to implement backup and restore functionality, while maintaining files in
 	/// their encrypted state.
@@ -1982,7 +2055,7 @@ public static partial class AdvApi32
 	/// <summary>
 	/// <para>Retrieves the name of the user associated with the current thread.</para>
 	/// <para>
-	/// Use the <see cref="Secur32.GetUserNameEx"/> function to retrieve the user name in a specified format. Additional information is
+	/// Use the <c>GetUserNameEx</c> function to retrieve the user name in a specified format. Additional information is
 	/// provided by the IADsADSystemInfo interface.
 	/// </para>
 	/// </summary>
@@ -2026,7 +2099,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "87adc46a-c069-4ee5-900a-03b646306e64")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUserName(StringBuilder lpBuffer, ref uint pcbBuffer);
+	public static extern bool GetUserName([Out, SizeDef(nameof(pcbBuffer), SizingMethod.CheckLastError | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer, [Range(0, UNLEN + 1)] ref uint pcbBuffer);
 
 	/// <summary>The <c>ImpersonateNamedPipeClient</c> function impersonates a named-pipe client application.</summary>
 	/// <param name="hNamedPipe">A handle to a named pipe.</param>

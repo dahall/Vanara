@@ -1171,7 +1171,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincred.h", MSDNShortId = "7a22fb2b-edfc-45f2-b2d2-729f3761584d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CredUnprotect([MarshalAs(UnmanagedType.Bool)] bool fAsSelf, StringBuilder pszProtectedCredentials, uint cchProtectedCredentials, StringBuilder pszCredentials, ref uint pcchMaxChars);
+	public static extern bool CredUnprotect([MarshalAs(UnmanagedType.Bool)] bool fAsSelf, [In, SizeDef(nameof(cchProtectedCredentials))] string pszProtectedCredentials,
+		uint cchProtectedCredentials, [Out, SizeDef(nameof(pcchMaxChars), SizingMethod.CheckLastError)] StringBuilder? pszCredentials, ref uint pcchMaxChars);
 
 	/// <summary>
 	/// <para>

@@ -544,7 +544,7 @@ public static partial class AdvApi32
 		SC_MANAGER_LOCK = 0x0008,
 
 		/// <summary>
-		/// Required to call the <see cref="QueryServiceLockStatus"/> function to retrieve the lock status information for the database.
+		/// Required to call the <c>QueryServiceLockStatus</c> function to retrieve the lock status information for the database.
 		/// </summary>
 		SC_MANAGER_QUERY_LOCK_STATUS = 0x0010,
 
@@ -1436,7 +1436,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("winsvc.h", MSDNShortId = "ms681987")]
-	public static extern bool ChangeServiceConfig(SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
+	public static extern bool ChangeServiceConfig([AddAsMember] SC_HANDLE hService, ServiceTypes nServiceType, ServiceStartType nStartType, ServiceErrorControlType nErrorControl,
 		[Optional] string? lpBinaryPathName, [Optional] string? lpLoadOrderGroup, out uint lpdwTagId,
 		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? lpDependencies,
 		[Optional] string? lpServiceStartName, [Optional] string? lpPassword, [Optional] string? lpDisplayName);
@@ -1585,7 +1585,7 @@ public static partial class AdvApi32
 	/// information, call GetLastError.
 	/// </returns>
 	[PInvokeData("winsvc.h", MSDNShortId = "ms681988")]
-	public static bool ChangeServiceConfig2<T>(SC_HANDLE hService, ServiceConfigOption dwInfoLevel, in T lpInfo) where T : struct
+	public static bool ChangeServiceConfig2<T>([AddAsMember] SC_HANDLE hService, ServiceConfigOption dwInfoLevel, in T lpInfo) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(dwInfoLevel, typeof(T))) throw new ArgumentException("Type mismatch", nameof(lpInfo));
 		using var ptr = SafeCoTaskMemHandle.CreateFromStructure(lpInfo);
@@ -1865,7 +1865,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "c112b587-7455-4f15-93e1-ded73de6dbbd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ControlService(SC_HANDLE hService, ServiceControl dwControl, out SERVICE_STATUS lpServiceStatus);
+	public static extern bool ControlService([AddAsMember] SC_HANDLE hService, ServiceControl dwControl, out SERVICE_STATUS lpServiceStatus);
 
 	/// <summary>Sends a control code to a service.</summary>
 	/// <param name="hService">
@@ -2092,7 +2092,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "de249903-7545-4fb6-925a-aa647f862f93")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ControlServiceEx(SC_HANDLE hService, ServiceControl dwControl, ServiceInfoLevels dwInfoLevel, ref SERVICE_CONTROL_STATUS_REASON_PARAMS pControlParams);
+	public static extern bool ControlServiceEx([AddAsMember] SC_HANDLE hService, ServiceControl dwControl, ServiceInfoLevels dwInfoLevel, ref SERVICE_CONTROL_STATUS_REASON_PARAMS pControlParams);
 
 	/// <summary>
 	/// <para>Creates a service object and adds it to the specified service control manager database.</para>
@@ -2469,7 +2469,8 @@ public static partial class AdvApi32
 	// lpServiceStartName, LPCSTR lpPassword );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "47288924-3294-4a50-b27d-7df80d5c957c")]
-	public static extern SafeSC_HANDLE CreateService(SC_HANDLE hSCManager, string lpServiceName, [Optional] string? lpDisplayName, uint dwDesiredAccess, ServiceTypes dwServiceType,
+	[return: AddAsCtor]
+	public static extern SafeSC_HANDLE CreateService([AddAsMember] SC_HANDLE hSCManager, string lpServiceName, [Optional] string? lpDisplayName, uint dwDesiredAccess, ServiceTypes dwServiceType,
 		ServiceStartType dwStartType, ServiceErrorControlType dwErrorControl, string lpBinaryPathName, [Optional] string? lpLoadOrderGroup, out uint lpdwTagId,
 		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? lpDependencies,
 		[Optional] string? lpServiceStartName, [Optional] string? lpPassword);
@@ -3004,7 +3005,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </returns>
 	[PInvokeData("winsvc.h", MSDNShortId = "905d4453-96d4-4055-8a17-36714c547cdd")]
-	public static IEnumerable<ENUM_SERVICE_STATUS> EnumDependentServices(SC_HANDLE hService, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
+	public static IEnumerable<ENUM_SERVICE_STATUS> EnumDependentServices([AddAsMember] SC_HANDLE hService, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
 	{
 		EnumDependentServices(hService, dwServiceState, IntPtr.Zero, 0, out var sz, out var cnt);
 		if (sz == 0) Win32Error.ThrowLastError();
@@ -3113,7 +3114,7 @@ public static partial class AdvApi32
 	/// <param name="dwServiceType">The type of services to be enumerated. This parameter can be one or more of the following values.</param>
 	/// <param name="dwServiceState">The state of the services to be enumerated. This parameter can be one of the following values.</param>
 	/// <returns>A list of ENUM_SERVICE_STATUS structures with the name and service status information for each service in the database.</returns>
-	public static IEnumerable<ENUM_SERVICE_STATUS> EnumServicesStatus(SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
+	public static IEnumerable<ENUM_SERVICE_STATUS> EnumServicesStatus([AddAsMember] SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL)
 	{
 		var hRes = 0U;
 		Win32Error lastErr;
@@ -3253,7 +3254,7 @@ public static partial class AdvApi32
 	/// enumerated. If this parameter is <c>NULL</c>, group membership is ignored and all services are enumerated.
 	/// </param>
 	/// <returns>A list of ENUM_SERVICE_STATUS structures with the name and service status information for each service in the database.</returns>
-	public static IEnumerable<ENUM_SERVICE_STATUS_PROCESS> EnumServicesStatusEx(SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL, string? pszGroupName = null)
+	public static IEnumerable<ENUM_SERVICE_STATUS_PROCESS> EnumServicesStatusEx([AddAsMember] SC_HANDLE hSCManager, ServiceTypes dwServiceType = ServiceTypes.SERVICE_TYPE_ALL, SERVICE_STATE dwServiceState = SERVICE_STATE.SERVICE_STATE_ALL, string? pszGroupName = null)
 	{
 		var hRes = 0U;
 		Win32Error lastErr;
@@ -3315,7 +3316,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "704812f3-134c-4161-b3b4-a955d87ff563")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetServiceDisplayName(SC_HANDLE hSCManager, string lpServiceName, StringBuilder? lpDisplayName, ref uint lpcchBuffer);
+	public static extern bool GetServiceDisplayName([AddAsMember] SC_HANDLE hSCManager, string lpServiceName, [Out, SizeDef(nameof(lpcchBuffer), SizingMethod.CheckLastError)] StringBuilder? lpDisplayName, ref uint lpcchBuffer);
 
 	/// <summary>Retrieves the service name of the specified service.</summary>
 	/// <param name="hSCManager">A handle to the computer's service control manager database, as returned by OpenSCManager.</param>
@@ -3360,7 +3361,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "d2421566-de4a-49e5-bb41-ea98c6f6d19d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetServiceKeyName(SC_HANDLE hSCManager, string lpDisplayName, StringBuilder? lpServiceName, ref uint lpcchBuffer);
+	public static extern bool GetServiceKeyName([AddAsMember] SC_HANDLE hSCManager, string lpDisplayName, [Out, SizeDef(nameof(lpcchBuffer), SizingMethod.CheckLastError)] StringBuilder? lpServiceName, ref uint lpcchBuffer);
 
 	/// <summary>
 	/// <para>[As of Windows Vista, this function is provided for application compatibility and has no effect on the database.]</para>
@@ -3426,7 +3427,7 @@ public static partial class AdvApi32
 	// hSCManager );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "87861465-c966-479a-b906-27ae36cc83c8")]
-	public static extern SC_LOCK LockServiceDatabase(SC_HANDLE hSCManager);
+	public static extern SC_LOCK LockServiceDatabase([AddAsMember] SC_HANDLE hSCManager);
 
 	/// <summary>
 	/// Reports the boot status to the service control manager. It is used by boot verification programs. This function can be called
@@ -3560,7 +3561,7 @@ public static partial class AdvApi32
 	// SC_HANDLE hService, DWORD dwNotifyMask, PSERVICE_NOTIFYA pNotifyBuffer );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "e22b7f69-f096-486f-97fa-0465bef499cd")]
-	public static extern Win32Error NotifyServiceStatusChange(SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, IntPtr pNotifyBuffer); // ref SERVICE_NOTIFY_2 pNotifyBuffer);
+	public static extern Win32Error NotifyServiceStatusChange([AddAsMember] SC_HANDLE hService, SERVICE_NOTIFY_FLAGS dwNotifyMask, IntPtr pNotifyBuffer); // ref SERVICE_NOTIFY_2 pNotifyBuffer);
 
 	/// <summary>
 	/// <para>
@@ -3704,7 +3705,8 @@ public static partial class AdvApi32
 	// LPCSTR lpServiceName, DWORD dwDesiredAccess );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "e0a42613-95ad-4d0f-a464-c6df33014064")]
-	public static extern SafeSC_HANDLE OpenService(SC_HANDLE hSCManager, string lpServiceName, ServiceAccessTypes dwDesiredAccess);
+	[return: AddAsCtor]
+	public static extern SafeSC_HANDLE OpenService([AddAsMember] SC_HANDLE hSCManager, string lpServiceName, ServiceAccessTypes dwDesiredAccess);
 
 	/// <summary>
 	/// Retrieves the configuration parameters of the specified service. Optional configuration parameters are available using the
@@ -3893,7 +3895,7 @@ public static partial class AdvApi32
 	/// information, call GetLastError.
 	/// </returns>
 	[PInvokeData("winsvc.h", MSDNShortId = "ms684935")]
-	public static bool QueryServiceConfig2<T>(SC_HANDLE hService, ServiceConfigOption dwInfoLevel, [NotNullWhen(true)] out T? configInfo)
+	public static bool QueryServiceConfig2<T>([AddAsMember] SC_HANDLE hService, ServiceConfigOption dwInfoLevel, [NotNullWhen(true)] out T? configInfo)
 	{
 		if (!CorrespondingTypeAttribute.CanGet(dwInfoLevel, typeof(T))) throw new ArgumentException("Type mismatch", nameof(configInfo));
 		var b = QueryServiceConfig2(hService, dwInfoLevel, IntPtr.Zero, 0, out var size);
@@ -3923,7 +3925,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "499b63fd-e77b-4b90-9ee7-ff4b7b12c431")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryServiceDynamicInformation(SERVICE_STATUS_HANDLE hServiceStatus, uint dwInfoLevel, out SafeLocalHandle ppDynamicInfo);
+	public static extern bool QueryServiceDynamicInformation([AddAsMember] SERVICE_STATUS_HANDLE hServiceStatus, uint dwInfoLevel, out SafeLocalHandle ppDynamicInfo);
 
 	/// <summary>
 	/// <para>[This function has no effect as of Windows Vista.]</para>
@@ -3986,7 +3988,9 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "5139d31b-65f1-41ba-852a-91eab1dc366e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryServiceLockStatus(SC_HANDLE hSCManager, IntPtr lpLockStatus, uint cbBufSize, out uint pcbBytesNeeded);
+	public static extern bool QueryServiceLockStatus([AddAsMember] SC_HANDLE hSCManager, [Out, StructPointer(typeof(QUERY_SERVICE_LOCK_STATUS)),
+		SizeDef(nameof(cbBufSize), SizingMethod.CheckLastError | SizingMethod.Bytes, OutVarName = nameof(pcbBytesNeeded))] IntPtr lpLockStatus,
+		uint cbBufSize, out uint pcbBytesNeeded);
 
 	/// <summary>
 	/// The <c>QueryServiceObjectSecurity</c> function retrieves a copy of the security descriptor associated with a service object. You
@@ -4005,13 +4009,6 @@ public static partial class AdvApi32
 	/// A pointer to a buffer that receives a copy of the security descriptor of the specified service object. The calling process must
 	/// have the appropriate access to view the specified aspects of the security descriptor of the object. The SECURITY_DESCRIPTOR
 	/// structure is returned in self-relative format.
-	/// </param>
-	/// <param name="cbBufSize">
-	/// The size of the buffer pointed to by the lpSecurityDescriptor parameter, in bytes. The largest size allowed is 8 kilobytes.
-	/// </param>
-	/// <param name="pcbBytesNeeded">
-	/// A pointer to a variable that receives the number of bytes needed to return the requested security descriptor information, if the
-	/// function fails.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -4067,10 +4064,22 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsvc/nf-winsvc-queryserviceobjectsecurity BOOL QueryServiceObjectSecurity(
 	// SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor, DWORD cbBufSize,
 	// LPDWORD pcbBytesNeeded );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "5d95945f-f11b-42af-b302-8d924917b9ab")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryServiceObjectSecurity(SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor, uint cbBufSize, out uint pcbBytesNeeded);
+	public static bool QueryServiceObjectSecurity([AddAsMember] SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, out SafePSECURITY_DESCRIPTOR lpSecurityDescriptor)
+	{
+		lpSecurityDescriptor = SafePSECURITY_DESCRIPTOR.Null;
+		var ret = QueryServiceObjectSecurity(hService, dwSecurityInformation, default, default, out var req);
+		if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			lpSecurityDescriptor = new(req);
+			ret = QueryServiceObjectSecurity(hService, dwSecurityInformation, lpSecurityDescriptor, lpSecurityDescriptor.Size, out _);
+		}
+		return ret;
+
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool QueryServiceObjectSecurity(SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor, int cbBufSize, out int pcbBytesNeeded);
+	}
 
 	/// <summary>
 	/// <para>Retrieves the current status of the specified service.</para>
@@ -4218,7 +4227,7 @@ public static partial class AdvApi32
 	/// A variable that receives the service status information. The format of this data depends on the value of the dwInfoLevel parameter.
 	/// </returns>
 	/// <exception cref="ArgumentException">Type mismatch - T</exception>
-	public static T QueryServiceStatusEx<T>(SC_HANDLE hService, SC_STATUS_TYPE InfoLevel = SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO) where T : struct
+	public static T QueryServiceStatusEx<T>([AddAsMember] SC_HANDLE hService, SC_STATUS_TYPE InfoLevel = SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(InfoLevel, typeof(T))) throw new ArgumentException("Type mismatch", nameof(T));
 		var b = QueryServiceStatusEx(hService, InfoLevel, IntPtr.Zero, 0, out var size);
@@ -4438,7 +4447,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("lmserver.h", MSDNShortId = "91a985d4-d1af-4161-ae67-a8a9d6740838")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetServiceBits([In] SERVICE_STATUS_HANDLE hServiceStatus, uint dwServiceBits, [MarshalAs(UnmanagedType.Bool)] bool bSetBitsOn, [MarshalAs(UnmanagedType.Bool)] bool bUpdateImmediately);
+	public static extern bool SetServiceBits([In, AddAsMember] SERVICE_STATUS_HANDLE hServiceStatus, uint dwServiceBits, [MarshalAs(UnmanagedType.Bool)] bool bSetBitsOn, [MarshalAs(UnmanagedType.Bool)] bool bUpdateImmediately);
 
 	/// <summary>
 	/// <para>
@@ -4508,7 +4517,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "39481d9a-79d5-4bbf-8480-4095a34dddb6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetServiceObjectSecurity(SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor);
+	public static extern bool SetServiceObjectSecurity([AddAsMember] SC_HANDLE hService, SECURITY_INFORMATION dwSecurityInformation, PSECURITY_DESCRIPTOR lpSecurityDescriptor);
 
 	/// <summary>
 	/// <para>Updates the service control manager's status information for the calling service.</para>
@@ -4609,7 +4618,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winsvc.h", MSDNShortId = "bb5943ff-2814-40f2-bee0-ae7132befde9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetServiceStatus(SERVICE_STATUS_HANDLE hServiceStatus, in SERVICE_STATUS lpServiceStatus);
+	public static extern bool SetServiceStatus([AddAsMember] SERVICE_STATUS_HANDLE hServiceStatus, in SERVICE_STATUS lpServiceStatus);
 
 	/// <summary>Starts a service.</summary>
 	/// <param name="hService">
@@ -4742,7 +4751,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "f185a878-e1c3-4fe5-8ec9-c5296d27f985")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool StartService(SC_HANDLE hService, [Optional] int dwNumServiceArgs, [Optional] string[]? lpServiceArgVectors);
+	public static extern bool StartService([AddAsMember] SC_HANDLE hService, [Optional] int dwNumServiceArgs, [Optional] string[]? lpServiceArgVectors);
 
 	/// <summary>
 	/// Connects the main thread of a service process to the service control manager, which causes the thread to be the service control

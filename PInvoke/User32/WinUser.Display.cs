@@ -510,6 +510,7 @@ public static partial class User32
 	// *modeInfoArray, DISPLAYCONFIG_TOPOLOGY_ID *currentTopologyId );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b1792d7f-f216-4250-a6b6-a11b251a9cec")]
+	[SuppressAutoGen]
 	public static extern Win32Error QueryDisplayConfig(QDC flags, ref uint numPathArrayElements, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DISPLAYCONFIG_PATH_INFO[] pathArray,
 		ref uint numModeInfoArrayElements, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] DISPLAYCONFIG_MODE_INFO[] modeInfoArray, IntPtr currentTopologyId = default);
 
@@ -663,6 +664,7 @@ public static partial class User32
 	// *modeInfoArray, DISPLAYCONFIG_TOPOLOGY_ID *currentTopologyId );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b1792d7f-f216-4250-a6b6-a11b251a9cec")]
+	[SuppressAutoGen]
 	public static extern Win32Error QueryDisplayConfig(QDC flags, ref uint numPathArrayElements, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DISPLAYCONFIG_PATH_INFO[] pathArray,
 		ref uint numModeInfoArrayElements, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] DISPLAYCONFIG_MODE_INFO[] modeInfoArray, out DISPLAYCONFIG_TOPOLOGY_ID currentTopologyId);
 

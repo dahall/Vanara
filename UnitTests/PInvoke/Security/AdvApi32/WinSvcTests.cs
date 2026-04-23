@@ -29,7 +29,7 @@ public class WinSvcTests
 		hSvcMgr?.Dispose();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void ChangeAndQueryServiceConfig2Test()
 	{
 		Assert.That(QueryServiceConfig2(hSvc!, ServiceConfigOption.SERVICE_CONFIG_DESCRIPTION, out SERVICE_DESCRIPTION sd), ResultIs.Successful);
@@ -37,7 +37,7 @@ public class WinSvcTests
 		Thread.Sleep(10000);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void ChangeAndQueryServiceConfigTest()
 	{
 		var st = GetStartType();
@@ -57,7 +57,7 @@ public class WinSvcTests
 		}
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void ControlServiceExTest()
 	{
 		var reason = new SERVICE_CONTROL_STATUS_REASON_PARAMS();
@@ -69,7 +69,7 @@ public class WinSvcTests
 		Assert.That(GetState(hSvc!), Is.EqualTo(ServiceState.SERVICE_RUNNING));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void ControlServiceTest()
 	{
 		Assert.That(ControlService(hSvc!, ServiceControl.SERVICE_CONTROL_PAUSE, out var status), ResultIs.Successful);
@@ -80,7 +80,7 @@ public class WinSvcTests
 		Assert.That(GetState(hSvc!), Is.EqualTo(ServiceState.SERVICE_RUNNING));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void CreateDeleteServiceTest()
 	{
 		var access = (uint)ServiceAccessRights.SERVICE_ALL_ACCESS;
@@ -92,7 +92,7 @@ public class WinSvcTests
 			Assert.That(DeleteService(hMySvc), ResultIs.Successful);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void EnumDependentServicesTest()
 	{
 		var l = EnumDependentServices(hSvc!).ToList();
@@ -100,7 +100,7 @@ public class WinSvcTests
 		TestContext.WriteLine(string.Join("; ", l.Select(i => i.lpDisplayName)));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void EnumServicesStatusExTest()
 	{
 		var l = EnumServicesStatusEx(hSvcMgr!); //, ServiceTypes.SERVICE_DRIVER, SERVICE_STATE.SERVICE_ACTIVE);
@@ -108,7 +108,7 @@ public class WinSvcTests
 		Assert.That(l, Is.Not.Empty);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void EnumServicesStatusTest()
 	{
 		var l = EnumServicesStatus(hSvcMgr!);
@@ -116,7 +116,7 @@ public class WinSvcTests
 		Assert.That(l, Is.Not.Empty);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void GetServiceDisplayNameTest()
 	{
 		var sb = new StringBuilder(1024, 1024);
@@ -125,7 +125,7 @@ public class WinSvcTests
 		Assert.That(sb.ToString(), Is.EqualTo(svcKey));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void GetServiceKeyNameTest()
 	{
 		var sb = new StringBuilder(1024, 1024);
@@ -135,7 +135,7 @@ public class WinSvcTests
 		Assert.That(sb.ToString(), Is.EqualTo(svcName));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void LockServiceDatabaseTest()
 	{
 		SC_LOCK hLock;
@@ -143,7 +143,7 @@ public class WinSvcTests
 		Assert.That(UnlockServiceDatabase(hLock), ResultIs.Successful);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void NotifyServiceStatusChangeTest()
 	{
 		var cnt = 0;
@@ -194,14 +194,14 @@ public class WinSvcTests
 		}
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void OpenCloseSCManagerTest()
 	{
 		using var scm = OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT);
 		Assert.That(scm, ResultIs.ValidHandle);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void OpenCloseServiceTest()
 	{
 		//opens task scheduler service
@@ -217,7 +217,7 @@ public class WinSvcTests
 		TestContext.WriteLine(sd.lpDescription);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void QueryServiceStatusExTest()
 	{
 		//query service status
@@ -228,22 +228,21 @@ public class WinSvcTests
 		status.WriteValues();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void QueryServiceStatusTest()
 	{
 		Assert.That(QueryServiceStatus(hSvc!, out var i), ResultIs.Successful);
 		i.WriteValues();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void QuerySetServiceObjectSecurityTest()
 	{
-		using var pSD = new SafePSECURITY_DESCRIPTOR(1024);
-		Assert.That(QueryServiceObjectSecurity(hSvc!, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, pSD, pSD.Size, out var req), ResultIs.Successful);
+		Assert.That(QueryServiceObjectSecurity(hSvc!, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var pSD), ResultIs.Successful);
 		Assert.That(SetServiceObjectSecurity(hSvc!, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, pSD), ResultIs.Successful);
 	}
 
-	// [Test] These functions can only be called from within a service executable
+	// [TestWhenElevated] These functions can only be called from within a service executable
 	public static void RegisterQueryBitsServiceCtrlHandlerTest()
 	{
 		SERVICE_STATUS_HANDLE hSt;
@@ -258,7 +257,7 @@ public class WinSvcTests
 		}
 	}
 
-	// [Test] These functions can only be called from within a service executable
+	// [TestWhenElevated] These functions can only be called from within a service executable
 	public static void RegisterServiceCtrlHandlerExTest()
 	{
 		SERVICE_STATUS_HANDLE hSt;
@@ -276,7 +275,7 @@ public class WinSvcTests
 		static Win32Error HandlerProc(ServiceControl dwControl, uint dwEventType, IntPtr lpEventData, IntPtr lpContext) => Win32Error.ERROR_SUCCESS;
 	}
 
-	// [Test] These functions can only be called from within a service executable
+	// [TestWhenElevated] These functions can only be called from within a service executable
 	public static void StartServiceCtrlDispatcherTest()
 	{
 		var dispatchTable = new[]
@@ -289,7 +288,7 @@ public class WinSvcTests
 		static void DummyProc(uint dwNumServicesArgs, string[] lpServiceArgVectors) => throw new NotImplementedException();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void StartStopServiceTest()
 	{
 		using var hSvcLocal = OpenService(hSvcMgr!, "DsSvc", ServiceAccessTypes.SERVICE_ALL_ACCESS);

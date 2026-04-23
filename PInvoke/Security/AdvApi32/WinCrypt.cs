@@ -374,7 +374,7 @@ public static partial class AdvApi32
 		CRYPT_LITTLE_ENDIAN = 1
 	}
 
-	/// <summary>Flags for <see cref="CryptGetDefaultProvider"/> and <see cref="CryptSetProviderEx"/>.</summary>
+	/// <summary>Flags for <c>CryptGetDefaultProvider</c> and <c>CryptSetProviderEx</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "5d15641e-1ad7-441d-9423-65fd51de9812")]
 	[Flags]
 	public enum CryptProviderFlags
@@ -389,7 +389,7 @@ public static partial class AdvApi32
 		CRYPT_DELETE_DEFAULT = 0x00000004,
 	}
 
-	/// <summary>Flags for <see cref="CryptSignHash"/> and <see cref="CryptVerifySignature"/>.</summary>
+	/// <summary>Flags for <c>CryptSignHash</c> and <c>CryptVerifySignature</c>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "3119eabc-90ff-42c6-b3fa-e8be625f6d1e")]
 	[Flags]
 	public enum CryptSignFlags
@@ -1320,7 +1320,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "57e13662-3189-4f8d-b90a-d1fbdc09b63c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptAcquireContext(out SafeHCRYPTPROV phProv, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szContainer, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProvider, uint dwProvType, CryptAcquireContextFlags dwFlags);
+	public static extern bool CryptAcquireContext([AddAsCtor] out SafeHCRYPTPROV phProv, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szContainer, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szProvider, uint dwProvType, CryptAcquireContextFlags dwFlags);
 
 	/// <summary>
 	/// The CryptContextAddRef function adds one to the reference count of an HCRYPTPROV cryptographic service provider (CSP) handle. This
@@ -1363,7 +1363,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "074666a7-369c-43bc-97d9-3bcc9703976b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptContextAddRef(HCRYPTPROV hProv, IntPtr pdwReserved = default, uint dwFlags = 0);
+	public static extern bool CryptContextAddRef([AddAsMember] HCRYPTPROV hProv, [Ignore] IntPtr pdwReserved = default, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The CryptCreateHash function initiates the hashing of a stream of data. It creates and returns to the calling application a handle to
@@ -1478,7 +1478,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "05e3db57-8d83-48e2-8590-68039ea27253")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptCreateHash(HCRYPTPROV hProv, ALG_ID Algid, HCRYPTKEY hKey, [Optional] uint dwFlags, out SafeHCRYPTHASH phHash);
+	public static extern bool CryptCreateHash([AddAsMember] HCRYPTPROV hProv, ALG_ID Algid, HCRYPTKEY hKey, [Optional] uint dwFlags, [AddAsCtor] out SafeHCRYPTHASH phHash);
 
 	/// <summary>
 	/// <para>The CryptDecrypt function decrypts data previously encrypted by using the CryptEncrypt function.</para>
@@ -2006,7 +2006,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7c3d2838-6fd1-4f6c-9586-8b94b459a31a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecrypt([In] HCRYPTKEY hKey, [In] HCRYPTHASH hHash, [In, MarshalAs(UnmanagedType.Bool)] bool Final,
+	public static extern bool CryptDecrypt([In, AddAsMember] HCRYPTKEY hKey, [In] HCRYPTHASH hHash, [In, MarshalAs(UnmanagedType.Bool)] bool Final,
 		CryptDecryptFlags dwFlags, [In, Out] byte[] pbData, ref uint pdwDataLen);
 
 	/// <summary>
@@ -2374,7 +2374,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b031e3b4-0102-400e-96db-019d31402adc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDeriveKey(HCRYPTPROV hProv, ALG_ID Algid, HCRYPTHASH hBaseData, CryptGenKeyFlags dwFlags, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptDeriveKey([AddAsMember] HCRYPTPROV hProv, ALG_ID Algid, HCRYPTHASH hBaseData, CryptGenKeyFlags dwFlags, [AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>
 	/// The CryptDestroyHash function destroys the hash object referenced by the hHash parameter. After a hash object has been destroyed, it
@@ -2569,7 +2569,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "527fce4d-8d42-437b-9692-42583092efbb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDuplicateHash(HCRYPTHASH hHash, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out SafeHCRYPTHASH phHash);
+	public static extern bool CryptDuplicateHash([AddAsMember] HCRYPTHASH hHash, [Optional, Ignore] IntPtr pdwReserved, [Optional, Ignore] uint dwFlags, [AddAsCtor] out SafeHCRYPTHASH phHash);
 
 	/// <summary>The CryptDuplicateKey function makes an exact copy of a key and the state of the key.</summary>
 	/// <param name="hKey">A handle to the key to be duplicated.</param>
@@ -2628,7 +2628,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c5658008-7c92-4877-871a-a764884efd79")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDuplicateKey(HCRYPTKEY hKey, [Optional] IntPtr pdwReserved, [Optional] uint dwFlags, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptDuplicateKey([AddAsMember] HCRYPTKEY hKey, [Optional, Ignore] IntPtr pdwReserved, [Optional, Ignore] uint dwFlags, [AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>
 	/// <para>
@@ -2835,7 +2835,183 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "697c4960-552b-4c3a-95cf-4632af56945b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncrypt(HCRYPTKEY hKey, [Optional] HCRYPTHASH hHash, [MarshalAs(UnmanagedType.Bool)] bool Final, CryptEncryptFlags dwFlags, [In, Out, Optional] IntPtr pbData, ref uint pdwDataLen, uint dwBufLen);
+	public static extern bool CryptEncrypt(HCRYPTKEY hKey, [Optional] HCRYPTHASH hHash, [MarshalAs(UnmanagedType.Bool)] bool Final, CryptEncryptFlags dwFlags, [In, Out] IntPtr pbData, ref uint pdwDataLen, uint dwBufLen);
+
+	/// <summary>
+	/// <para>
+	/// The CryptEncrypt function encrypts data. The algorithm used to encrypt the data is designated by the key held by the CSP module and
+	/// is referenced by the hKey parameter.
+	/// </para>
+	/// <para>
+	/// Important changes to support Secure/Multipurpose Internet Mail Extensions (S/MIME) email interoperability have been made to CryptoAPI
+	/// that affect the handling of enveloped messages. For more information, see the Remarks section of CryptMsgOpenToEncode.
+	/// </para>
+	/// <para>
+	/// <c>Important</c> The <c>CryptEncrypt</c> function is not guaranteed to be thread safe and may return incorrect results if invoked
+	/// simultaneously by multiple callers.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para>A handle to the encryption key. An application obtains this handle by using either the CryptGenKey or the CryptImportKey function.</para>
+	/// <para>The key specifies the encryption algorithm used.</para>
+	/// </param>
+	/// <param name="hHash">
+	/// <para>
+	/// A handle to a hash object. If data is to be hashed and encrypted simultaneously, a handle to a hash object can be passed in the hHash
+	/// parameter. The hash value is updated with the plaintext passed in. This option is useful when generating signed and encrypted text.
+	/// </para>
+	/// <para>
+	/// Before calling <c>CryptEncrypt</c>, the application must obtain a handle to the hash object by calling the CryptCreateHash function.
+	/// After the encryption is complete, the hash value can be obtained by using the CryptGetHashParam function, or the hash can be signed
+	/// by using the CryptSignHash function.
+	/// </para>
+	/// <para>If no hash is to be done, this parameter must be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="Final">
+	/// A Boolean value that specifies whether this is the last section in a series being encrypted. Final is set to <c>TRUE</c> for the last
+	/// or only block and to <c>FALSE</c> if there are more blocks to be encrypted. For more information, see Remarks.
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>The following dwFlags value is defined but reserved for future use.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_OAEP</term>
+	/// <term>
+	/// Use Optimal Asymmetric Encryption Padding (OAEP) (PKCS #1 version 2). This flag is only supported by the Microsoft Enhanced
+	/// Cryptographic Provider with RSA encryption/decryption.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pbData">
+	/// A pointer to a buffer that contains the plaintext to be encrypted. The plaintext in this buffer is overwritten with the ciphertext
+	/// created by this function.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+	/// <para>The error codes prefaced by NTE are generated by the particular CSP being used. Some possible error codes follow.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_INVALID_HANDLE</term>
+	/// <term>One of the parameters specifies a handle that is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_INVALID_PARAMETER</term>
+	/// <term>One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_ALGID</term>
+	/// <term>The hKey session key specifies an algorithm that this CSP does not support.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_DATA</term>
+	/// <term>
+	/// The data to be encrypted is not valid. For example, when a block cipher is used and the Final flag is FALSE, the value specified by
+	/// pdwDataLen must be a multiple of the block size.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_FLAGS</term>
+	/// <term>The dwFlags parameter is nonzero.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_HASH</term>
+	/// <term>The hHash parameter contains a handle that is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_HASH_STATE</term>
+	/// <term>An attempt was made to add data to a hash object that is already marked "finished."</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_KEY</term>
+	/// <term>The hKey parameter does not contain a valid handle to a key.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_LEN</term>
+	/// <term>The size of the output buffer is too small to hold the generated ciphertext.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_UID</term>
+	/// <term>The CSP context that was specified when the key was created cannot be found.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_DOUBLE_ENCRYPT</term>
+	/// <term>The application attempted to encrypt the same data twice.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_FAIL</term>
+	/// <term>The function failed in some unexpected way.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_NO_MEMORY</term>
+	/// <term>The CSP ran out of memory during the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If a large amount of data is to be encrypted, it can be done in sections by calling <c>CryptEncrypt</c> repeatedly. The Final
+	/// parameter must be set to <c>TRUE</c> on the last call to <c>CryptEncrypt</c>, so that the encryption engine can properly finish the
+	/// encryption process. The following extra actions are performed when Final is <c>TRUE</c>:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// If the key is a block cipher key, the data is padded to a multiple of the block size of the cipher. If the data length equals the
+	/// block size of the cipher, one additional block of padding is appended to the data. To find the block size of a cipher, use
+	/// CryptGetKeyParam to get the KP_BLOCKLEN value of the key.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If the cipher is operating in a chaining mode, the next <c>CryptEncrypt</c> operation resets the cipher's feedback register to the
+	/// KP_IV value of the key.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>If the cipher is a stream cipher, the next <c>CryptEncrypt</c> resets the cipher to its initial state.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// There is no way to set the cipher's feedback register to the KP_IV value of the key without setting the Final parameter to
+	/// <c>TRUE</c>. If this is necessary, as in the case where you do not want to add an additional padding block or change the size of each
+	/// block, you can simulate this by creating a duplicate of the original key by using the CryptDuplicateKey function, and passing the
+	/// duplicate key to the <c>CryptEncrypt</c> function. This causes the KP_IV of the original key to be placed in the duplicate key. After
+	/// you create or import the original key, you cannot use the original key for encryption because the feedback register of the key will
+	/// be changed. The following pseudocode shows how this can be done.
+	/// </para>
+	/// <para>
+	/// The Microsoft Enhanced Cryptographic Provider supports direct encryption with RSA public keys and decryption with RSA private keys.
+	/// The encryption uses PKCS #1 padding. On decryption, this padding is verified. The length of plaintext data that can be encrypted with
+	/// a call to <c>CryptEncrypt</c> with an RSA key is the length of the key modulus minus eleven bytes. The eleven bytes is the chosen
+	/// minimum for PKCS #1 padding. The ciphertext is returned in little-endian format.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>For examples that use this function, see Example C Program: Encrypting a File and Example C Program: Decrypting a File.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptencrypt BOOL CryptEncrypt( HCRYPTKEY hKey, HCRYPTHASH
+	// hHash, BOOL Final, DWORD dwFlags, BYTE *pbData, DWORD *pdwDataLen, DWORD dwBufLen );
+	[PInvokeData("wincrypt.h", MSDNShortId = "697c4960-552b-4c3a-95cf-4632af56945b")]
+	public static bool CryptEncrypt(HCRYPTKEY hKey, [Optional] HCRYPTHASH hHash, [MarshalAs(UnmanagedType.Bool)] bool Final, CryptEncryptFlags dwFlags, [In, Out] IMemoryHandle pbData)
+	{
+		uint dataLen = (uint)pbData.Size;
+		var ret = CryptEncrypt(hKey, hHash, Final, dwFlags, pbData.DangerousGetHandle(), ref dataLen, (uint)pbData.Size);
+		if (!ret && Win32Error.GetLastError() == Win32Error.ERROR_MORE_DATA)
+		{
+			pbData.Size = dataLen;
+			ret = CryptEncrypt(hKey, hHash, Final, dwFlags, pbData.DangerousGetHandle(), ref dataLen, (uint)pbData.Size);
+		}
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -2917,17 +3093,6 @@ public static partial class AdvApi32
 	/// <para>
 	/// When a block cipher is used, this data length must be a multiple of the block size unless this is the final section of data to be
 	/// encrypted and the Final parameter is <c>TRUE</c>.
-	/// </para>
-	/// </param>
-	/// <param name="dwBufLen">
-	/// <para>Specifies the total size, in bytes, of the input pbData buffer.</para>
-	/// <para>
-	/// Note that, depending on the algorithm used, the encrypted text can be larger than the original plaintext. In this case, the pbData
-	/// buffer needs to be large enough to contain the encrypted text and any padding.
-	/// </para>
-	/// <para>
-	/// As a rule, if a stream cipher is used, the ciphertext is the same size as the plaintext. If a block cipher is used, the ciphertext is
-	/// up to a block length larger than the plaintext.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -3039,218 +3204,10 @@ public static partial class AdvApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptencrypt BOOL CryptEncrypt( HCRYPTKEY hKey, HCRYPTHASH
 	// hHash, BOOL Final, DWORD dwFlags, BYTE *pbData, DWORD *pdwDataLen, DWORD dwBufLen );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "697c4960-552b-4c3a-95cf-4632af56945b")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncrypt(HCRYPTKEY hKey, [Optional] HCRYPTHASH hHash, [MarshalAs(UnmanagedType.Bool)] bool Final, CryptEncryptFlags dwFlags, [In, Out] byte[]? pbData, ref int pdwDataLen, int dwBufLen);
-
-	/// <summary>
-	/// <para>
-	/// The CryptEncrypt function encrypts data. The algorithm used to encrypt the data is designated by the key held by the CSP module and
-	/// is referenced by the hKey parameter.
-	/// </para>
-	/// <para>
-	/// Important changes to support Secure/Multipurpose Internet Mail Extensions (S/MIME) email interoperability have been made to CryptoAPI
-	/// that affect the handling of enveloped messages. For more information, see the Remarks section of CryptMsgOpenToEncode.
-	/// </para>
-	/// <para>
-	/// <c>Important</c> The <c>CryptEncrypt</c> function is not guaranteed to be thread safe and may return incorrect results if invoked
-	/// simultaneously by multiple callers.
-	/// </para>
-	/// </summary>
-	/// <param name="hKey">
-	/// <para>A handle to the encryption key. An application obtains this handle by using either the CryptGenKey or the CryptImportKey function.</para>
-	/// <para>The key specifies the encryption algorithm used.</para>
-	/// </param>
-	/// <param name="hHash">
-	/// <para>
-	/// A handle to a hash object. If data is to be hashed and encrypted simultaneously, a handle to a hash object can be passed in the hHash
-	/// parameter. The hash value is updated with the plaintext passed in. This option is useful when generating signed and encrypted text.
-	/// </para>
-	/// <para>
-	/// Before calling <c>CryptEncrypt</c>, the application must obtain a handle to the hash object by calling the CryptCreateHash function.
-	/// After the encryption is complete, the hash value can be obtained by using the CryptGetHashParam function, or the hash can be signed
-	/// by using the CryptSignHash function.
-	/// </para>
-	/// <para>If no hash is to be done, this parameter must be <c>NULL</c>.</para>
-	/// </param>
-	/// <param name="Final">
-	/// A Boolean value that specifies whether this is the last section in a series being encrypted. Final is set to <c>TRUE</c> for the last
-	/// or only block and to <c>FALSE</c> if there are more blocks to be encrypted. For more information, see Remarks.
-	/// </param>
-	/// <param name="dwFlags">
-	/// <para>The following dwFlags value is defined but reserved for future use.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CRYPT_OAEP</term>
-	/// <term>
-	/// Use Optimal Asymmetric Encryption Padding (OAEP) (PKCS #1 version 2). This flag is only supported by the Microsoft Enhanced
-	/// Cryptographic Provider with RSA encryption/decryption.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="pbData">
-	/// <para>
-	/// A pointer to a buffer that contains the plaintext to be encrypted. The plaintext in this buffer is overwritten with the ciphertext
-	/// created by this function.
-	/// </para>
-	/// <para>
-	/// The pdwDataLen parameter points to a variable that contains the length, in bytes, of the plaintext. The dwBufLen parameter contains
-	/// the total size, in bytes, of this buffer.
-	/// </para>
-	/// <para>
-	/// If this parameter contains <c>NULL</c>, this function will calculate the required size for the ciphertext and place that in the value
-	/// pointed to by the pdwDataLen parameter.
-	/// </para>
-	/// </param>
-	/// <param name="pdwDataLen">
-	/// <para>
-	/// A pointer to a <c>DWORD</c> value that , on entry, contains the length, in bytes, of the plaintext in the pbData buffer. On exit,
-	/// this <c>DWORD</c> contains the length, in bytes, of the ciphertext written to the pbData buffer.
-	/// </para>
-	/// <para>
-	/// If the buffer allocated for pbData is not large enough to hold the encrypted data, GetLastError returns <c>ERROR_MORE_DATA</c> and
-	/// stores the required buffer size, in bytes, in the <c>DWORD</c> value pointed to by pdwDataLen.
-	/// </para>
-	/// <para>
-	/// If pbData is <c>NULL</c>, no error is returned, and the function stores the size of the encrypted data, in bytes, in the <c>DWORD</c>
-	/// value pointed to by pdwDataLen. This allows an application to determine the correct buffer size.
-	/// </para>
-	/// <para>
-	/// When a block cipher is used, this data length must be a multiple of the block size unless this is the final section of data to be
-	/// encrypted and the Final parameter is <c>TRUE</c>.
-	/// </para>
-	/// </param>
-	/// <param name="dwBufLen">
-	/// <para>Specifies the total size, in bytes, of the input pbData buffer.</para>
-	/// <para>
-	/// Note that, depending on the algorithm used, the encrypted text can be larger than the original plaintext. In this case, the pbData
-	/// buffer needs to be large enough to contain the encrypted text and any padding.
-	/// </para>
-	/// <para>
-	/// As a rule, if a stream cipher is used, the ciphertext is the same size as the plaintext. If a block cipher is used, the ciphertext is
-	/// up to a block length larger than the plaintext.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
-	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
-	/// <para>The error codes prefaced by NTE are generated by the particular CSP being used. Some possible error codes follow.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_INVALID_HANDLE</term>
-	/// <term>One of the parameters specifies a handle that is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_PARAMETER</term>
-	/// <term>One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_ALGID</term>
-	/// <term>The hKey session key specifies an algorithm that this CSP does not support.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_DATA</term>
-	/// <term>
-	/// The data to be encrypted is not valid. For example, when a block cipher is used and the Final flag is FALSE, the value specified by
-	/// pdwDataLen must be a multiple of the block size.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_FLAGS</term>
-	/// <term>The dwFlags parameter is nonzero.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_HASH</term>
-	/// <term>The hHash parameter contains a handle that is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_HASH_STATE</term>
-	/// <term>An attempt was made to add data to a hash object that is already marked "finished."</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_KEY</term>
-	/// <term>The hKey parameter does not contain a valid handle to a key.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_LEN</term>
-	/// <term>The size of the output buffer is too small to hold the generated ciphertext.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_UID</term>
-	/// <term>The CSP context that was specified when the key was created cannot be found.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_DOUBLE_ENCRYPT</term>
-	/// <term>The application attempted to encrypt the same data twice.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_FAIL</term>
-	/// <term>The function failed in some unexpected way.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_NO_MEMORY</term>
-	/// <term>The CSP ran out of memory during the operation.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// If a large amount of data is to be encrypted, it can be done in sections by calling <c>CryptEncrypt</c> repeatedly. The Final
-	/// parameter must be set to <c>TRUE</c> on the last call to <c>CryptEncrypt</c>, so that the encryption engine can properly finish the
-	/// encryption process. The following extra actions are performed when Final is <c>TRUE</c>:
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// If the key is a block cipher key, the data is padded to a multiple of the block size of the cipher. If the data length equals the
-	/// block size of the cipher, one additional block of padding is appended to the data. To find the block size of a cipher, use
-	/// CryptGetKeyParam to get the KP_BLOCKLEN value of the key.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the cipher is operating in a chaining mode, the next <c>CryptEncrypt</c> operation resets the cipher's feedback register to the
-	/// KP_IV value of the key.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>If the cipher is a stream cipher, the next <c>CryptEncrypt</c> resets the cipher to its initial state.</term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// There is no way to set the cipher's feedback register to the KP_IV value of the key without setting the Final parameter to
-	/// <c>TRUE</c>. If this is necessary, as in the case where you do not want to add an additional padding block or change the size of each
-	/// block, you can simulate this by creating a duplicate of the original key by using the CryptDuplicateKey function, and passing the
-	/// duplicate key to the <c>CryptEncrypt</c> function. This causes the KP_IV of the original key to be placed in the duplicate key. After
-	/// you create or import the original key, you cannot use the original key for encryption because the feedback register of the key will
-	/// be changed. The following pseudocode shows how this can be done.
-	/// </para>
-	/// <para>
-	/// The Microsoft Enhanced Cryptographic Provider supports direct encryption with RSA public keys and decryption with RSA private keys.
-	/// The encryption uses PKCS #1 padding. On decryption, this padding is verified. The length of plaintext data that can be encrypted with
-	/// a call to <c>CryptEncrypt</c> with an RSA key is the length of the key modulus minus eleven bytes. The eleven bytes is the chosen
-	/// minimum for PKCS #1 padding. The ciphertext is returned in little-endian format.
-	/// </para>
-	/// <para>Examples</para>
-	/// <para>For examples that use this function, see Example C Program: Encrypting a File and Example C Program: Decrypting a File.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptencrypt BOOL CryptEncrypt( HCRYPTKEY hKey, HCRYPTHASH
-	// hHash, BOOL Final, DWORD dwFlags, BYTE *pbData, DWORD *pdwDataLen, DWORD dwBufLen );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "697c4960-552b-4c3a-95cf-4632af56945b")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncrypt([In] HCRYPTKEY hKey, [In] HCRYPTHASH hHash, [In, MarshalAs(UnmanagedType.Bool)] bool Final,
-		CryptEncryptFlags dwFlags, [In, Out] byte[] pbData, ref uint pdwDataLen, uint dwBufLen);
+	public static bool CryptEncrypt([In, AddAsMember] HCRYPTKEY hKey, [In] HCRYPTHASH hHash, [In, MarshalAs(UnmanagedType.Bool)] bool Final,
+		CryptEncryptFlags dwFlags, [In, Out] byte[] pbData, ref uint pdwDataLen) =>
+		CryptEncrypt(hKey, hHash, Final, dwFlags, Marshal.UnsafeAddrOfPinnedArrayElement(pbData, 0), ref pdwDataLen, (uint)pbData.Length);
 
 	/// <summary>
 	/// Retrieves a dictionary of types of cryptographic service provider (CSP) supported on the computer and associated names.
@@ -3752,7 +3709,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptExportKey")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptExportKey(HCRYPTKEY hKey, [Optional] HCRYPTKEY hExpKey, BlobType dwBlobType, CryptExportKeyFlags dwFlags, [Out, Optional] IntPtr pbData, ref uint pdwDataLen);
+	public static extern bool CryptExportKey([AddAsMember] HCRYPTKEY hKey, [Optional] HCRYPTKEY hExpKey, BlobType dwBlobType, CryptExportKeyFlags dwFlags, [Out, Optional, SizeDef(nameof(pdwDataLen), SizingMethod.CheckLastError)] IntPtr pbData, ref uint pdwDataLen);
 
 	/// <summary>
 	/// A handle to the key to be exported is passed to the function, and the function returns a key BLOB. This key BLOB can be sent over a
@@ -4363,7 +4320,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b65dd856-2dfa-4cda-9b2f-b32f3c291470")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGenKey(HCRYPTPROV hProv, ALG_ID Algid, CryptGenKeyFlags dwFlags, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptGenKey([AddAsMember] HCRYPTPROV hProv, ALG_ID Algid, CryptGenKeyFlags dwFlags, [AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>The CryptGenRandom function fills a buffer with cryptographically random bytes.</summary>
 	/// <param name="hProv">Handle of a cryptographic service provider (CSP) created by a call to CryptAcquireContext.</param>
@@ -4438,7 +4395,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3e5a437f-7439-43c9-a191-2908d2df0eb6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGenRandom(HCRYPTPROV hProv, uint dwLen, [In, Out] IntPtr pbBuffer);
+	public static extern bool CryptGenRandom([AddAsMember] HCRYPTPROV hProv, uint dwLen, [In, SizeDef(nameof(dwLen))] IntPtr pbBuffer);
 
 	/// <summary>
 	/// The CryptGetDefaultProvider function finds the default cryptographic service provider (CSP) of a specified provider type for the
@@ -4558,7 +4515,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5d15641e-1ad7-441d-9423-65fd51de9812")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetDefaultProvider(uint dwProvType, [Optional] IntPtr pdwReserved, CryptProviderFlags dwFlags, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszProvName, ref uint pcbProvName);
+	public static extern bool CryptGetDefaultProvider(uint dwProvType, [Optional, Ignore] IntPtr pdwReserved, CryptProviderFlags dwFlags,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(pcbProvName), SizingMethod.CheckLastError)] StringBuilder? pszProvName, ref uint pcbProvName);
 
 	/// <summary>
 	/// The CryptGetHashParam function retrieves data that governs the operations of a hash object. The actual hash value can be retrieved by
@@ -4660,7 +4618,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ed008c07-1a40-4075-bdaa-eb7f7e12d9c3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetHashParam(HCRYPTHASH hHash, HashParam dwParam, [Out, Optional] IntPtr pbData, ref uint pdwDataLen, uint dwFlags = 0);
+	public static extern bool CryptGetHashParam(HCRYPTHASH hHash, HashParam dwParam, [Out, SizeDef(nameof(pdwDataLen), SizingMethod.CheckLastError)] IntPtr pbData, ref uint pdwDataLen, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The CryptGetHashParam function retrieves data that governs the operations of a hash object. The actual hash value can be retrieved by
@@ -4699,7 +4657,7 @@ public static partial class AdvApi32
 	/// <para><c>Note</c> CSPs can add more values that this function can query.</para>
 	/// </param>
 	/// <returns>The specified value data. The form of this data varies, depending on the value number.</returns>
-	public static T? CryptGetHashParam<T>(HCRYPTHASH hHash, HashParam dwParam) => CryptGetValue<HCRYPTHASH, HashParam, T>(CryptGetHashParam, hHash, dwParam);
+	public static T? CryptGetHashParam<T>([AddAsMember] HCRYPTHASH hHash, HashParam dwParam) => CryptGetValue<HCRYPTHASH, HashParam, T>(CryptGetHashParam, hHash, dwParam);
 
 	/// <summary>
 	/// The CryptGetKeyParam function retrieves data that governs the operations of a key. If the Microsoft Cryptographic Service Provider is
@@ -4966,7 +4924,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "07956d74-0e22-484b-9bf1-e0184a2ff32f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetKeyParam(HCRYPTKEY hKey, KeyParam dwParam, [Out, Optional] IntPtr pbData, ref uint pdwDataLen, uint dwFlags = 0);
+	public static extern bool CryptGetKeyParam(HCRYPTKEY hKey, KeyParam dwParam, [Out, SizeDef(nameof(pdwDataLen), SizingMethod.CheckLastError)] IntPtr pbData,
+		ref uint pdwDataLen, [Ignore] uint dwFlags = 0);
 
 	/// <summary>
 	/// The CryptGetKeyParam function retrieves data that governs the operations of a key. If the Microsoft Cryptographic Service Provider is
@@ -5167,7 +5126,7 @@ public static partial class AdvApi32
 	/// </list>
 	/// </param>
 	/// <returns>The specified value data. The form of this data varies, depending on the value number.</returns>
-	public static T? CryptGetKeyParam<T>(HCRYPTKEY hKey, KeyParam dwParam) => CryptGetValue<HCRYPTKEY, KeyParam, T>(CryptGetKeyParam, hKey, dwParam);
+	public static T? CryptGetKeyParam<T>([AddAsMember] HCRYPTKEY hKey, KeyParam dwParam) => CryptGetValue<HCRYPTKEY, KeyParam, T>(CryptGetKeyParam, hKey, dwParam);
 
 	/// <summary>The CryptGetProvParam function retrieves parameters that govern the operations of a cryptographic service provider (CSP).</summary>
 	/// <param name="hProv">
@@ -5664,7 +5623,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c0b7c1c8-aa42-4d40-a7f7-99c0821c8977")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetProvParam(HCRYPTPROV hProv, ProvParam dwParam, [Out, Optional] IntPtr pbData, ref uint pdwDataLen, uint dwFlags);
+	public static extern bool CryptGetProvParam(HCRYPTPROV hProv, ProvParam dwParam, [Out, SizeDef(nameof(pdwDataLen), SizingMethod.CheckLastError)] IntPtr pbData, ref uint pdwDataLen, [Ignore] uint dwFlags = 0);
 
 	/// <summary>The CryptGetProvParam function retrieves parameters that govern the operations of a cryptographic service provider (CSP).</summary>
 	/// <typeparam name="T">The expected return type.</typeparam>
@@ -5970,7 +5929,7 @@ public static partial class AdvApi32
 	/// </list>
 	/// </param>
 	/// <returns>The specified value data. The form of this data varies, depending on the value number.</returns>
-	public static T? CryptGetProvParam<T>(HCRYPTPROV hProv, ProvParam dwParam, uint dwFlags) => CryptGetValue<HCRYPTPROV, ProvParam, T>(CryptGetProvParam, hProv, dwParam, dwFlags);
+	public static T? CryptGetProvParam<T>([AddAsMember] HCRYPTPROV hProv, ProvParam dwParam, uint dwFlags) => CryptGetValue<HCRYPTPROV, ProvParam, T>(CryptGetProvParam, hProv, dwParam, dwFlags);
 
 	/// <summary>
 	/// The CryptGetUserKey function retrieves a handle of one of a user's two public/private key pairs. This function is used only by the
@@ -6025,7 +5984,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d9166b98-e5f1-4e5c-b6f1-2a086b102e0f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptGetUserKey(HCRYPTPROV hProv, CertKeySpec dwKeySpec, out SafeHCRYPTKEY phUserKey);
+	public static extern bool CryptGetUserKey([AddAsMember] HCRYPTPROV hProv, CertKeySpec dwKeySpec, [AddAsCtor] out SafeHCRYPTKEY phUserKey);
 
 	/// <summary>
 	/// The CryptHashData function adds data to a specified hash object. This function and CryptHashSessionKey can be called multiple times
@@ -6119,7 +6078,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ec1482a2-c2cb-4c5f-af9c-d493134413d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashData(HCRYPTHASH hHash, [In] IntPtr pbData, uint dwDataLen, uint dwFlags);
+	public static extern bool CryptHashData([AddAsMember] HCRYPTHASH hHash, [In, SizeDef(nameof(dwDataLen))] IntPtr pbData, uint dwDataLen, [Optional] uint dwFlags);
 
 	/// <summary>
 	/// The CryptHashSessionKey function computes the cryptographic hash of a session key object. This function can be called multiple times
@@ -6199,7 +6158,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "75781993-7faf-4149-80cc-ae50dbd4de2a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashSessionKey(HCRYPTHASH hHash, HCRYPTKEY hKey, CryptHashSessionKeyFlags dwFlags);
+	public static extern bool CryptHashSessionKey([AddAsMember] HCRYPTHASH hHash, HCRYPTKEY hKey, CryptHashSessionKeyFlags dwFlags);
 
 	/// <summary>
 	/// The CryptImportKey function transfers a cryptographic key from a key BLOB into a cryptographic service provider (CSP). This function
@@ -6391,199 +6350,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "f48b6ec9-e03b-43b0-9f22-120ae93d934c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptImportKey(HCRYPTPROV hProv, [In] IntPtr pbData, uint dwDataLen, HCRYPTKEY hPubKey, uint dwFlags, out SafeHCRYPTKEY phKey);
-
-	/// <summary>
-	/// The CryptImportKey function transfers a cryptographic key from a key BLOB into a cryptographic service provider (CSP). This function
-	/// can be used to import an Schannel session key, regular session key, public key, or public/private key pair. For all but the public
-	/// key, the key or key pair is encrypted.
-	/// </summary>
-	/// <param name="hProv">The handle of a CSP obtained with the CryptAcquireContext function.</param>
-	/// <param name="pbData">
-	/// A <c>BYTE</c> array that contains a PUBLICKEYSTRUC BLOB header followed by the encrypted key. This key BLOB is created by the
-	/// CryptExportKey function, either in this application or by another application possibly running on a different computer.
-	/// </param>
-	/// <param name="dwDataLen">Contains the length, in bytes, of the key BLOB.</param>
-	/// <param name="hPubKey">
-	/// <para>
-	/// A handle to the cryptographic key that decrypts the key stored in pbData. This key must come from the same CSP to which hProv refers.
-	/// The meaning of this parameter differs depending on the CSP type and the type of key BLOB being imported:
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>
-	/// If the key BLOB is encrypted with the key exchange key pair, for example, a <c>SIMPLEBLOB</c>, this parameter can be the handle to
-	/// the key exchange key.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the key BLOB is encrypted with a session key, for example, an encrypted <c>PRIVATEKEYBLOB</c>, this parameter contains the handle
-	/// of this session key.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>If the key BLOB is not encrypted, for example, a <c>PUBLICKEYBLOB</c>, this parameter is not used and must be zero.</term>
-	/// </item>
-	/// <item>
-	/// <term>
-	/// If the key BLOB is encrypted with a session key in an Schannel CSP, for example, an encrypted <c>OPAQUEKEYBLOB</c> or any other
-	/// vendor-specific <c>OPAQUEKEYBLOB</c>, this parameter is not used and must be set to zero.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// <c>Note</c> Some CSPs may modify this parameter as a result of the operation. Applications that subsequently use this key for other
-	/// purposes should call the CryptDuplicateKey function to create a duplicate key handle. When the application has finished using the
-	/// handle, release it by calling the CryptDestroyKey function.
-	/// </para>
-	/// </param>
-	/// <param name="dwFlags">
-	/// Currently used only when a public/private key pair in the form of a <c>PRIVATEKEYBLOB</c> is imported into the CSP.
-	/// <para>This parameter can be one of the following values.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CRYPT_EXPORTABLE</term>
-	/// <term>
-	/// The key being imported is eventually to be reexported. If this flag is not used, then calls to CryptExportKey with the key handle fail.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CRYPT_OAEP</term>
-	/// <term>This flag causes PKCS #1 version 2 formatting to be checked with RSA encryption and decryption when importing SIMPLEBLOBs.</term>
-	/// </item>
-	/// <item>
-	/// <term>CRYPT_NO_SALT</term>
-	/// <term>A no-salt value gets allocated for a 40-bit symmetric key. For more information, see Salt Value Functionality.</term>
-	/// </item>
-	/// <item>
-	/// <term>CRYPT_USER_PROTECTED</term>
-	/// <term>
-	/// If this flag is set, the CSP notifies the user through a dialog box or some other method when certain actions are attempted using
-	/// this key. The precise behavior is specified by the CSP or the CSP type used. If the provider context was acquired with CRYPT_SILENT
-	/// set, using this flag causes a failure and the last error is set to NTE_SILENT_CONTEXT.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>CRYPT_IPSEC_HMAC_KEY</term>
-	/// <term>
-	/// Allows for the import of an RC2 key that is larger than 16 bytes. If this flag is not set, calls to the CryptImportKey function with
-	/// RC2 keys that are greater than 16 bytes fail, and a call to GetLastError will return NTE_BAD_DATA.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <param name="phKey">
-	/// A pointer to a <c>HCRYPTKEY</c> value that receives the handle of the imported key. When you have finished using the key, release the
-	/// handle by calling the CryptDestroyKey function.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero.</para>
-	/// <para>If the function fails, it returns zero. For extended error information, call GetLastError.</para>
-	/// <para>Error codes prefaced by "NTE" are generated by the particular CSP being used. Some possible error codes follow.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_BUSY</term>
-	/// <term>Some CSPs set this error if a private key is imported into a container while another thread or process is using this key.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_HANDLE</term>
-	/// <term>One of the parameters specifies a handle that is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>ERROR_INVALID_PARAMETER</term>
-	/// <term>One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_ALGID</term>
-	/// <term>The simple key BLOB to be imported is not encrypted with the expected key exchange algorithm.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_DATA</term>
-	/// <term>
-	/// Either the algorithm that works with the public key to be imported is not supported by this CSP, or an attempt was made to import a
-	/// session key that was encrypted with something other than one of your public keys.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_FLAGS</term>
-	/// <term>The dwFlags parameter specified is not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_TYPE</term>
-	/// <term>The key BLOB type is not supported by this CSP and is possibly not valid.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_UID</term>
-	/// <term>The hProv parameter does not contain a valid context handle.</term>
-	/// </item>
-	/// <item>
-	/// <term>NTE_BAD_VER</term>
-	/// <term>The version number of the key BLOB does not match the CSP version. This usually indicates that the CSP needs to be upgraded.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// When importing a Hash-Based Message Authentication Code (HMAC) key, the caller must identify the imported key as a
-	/// <c>PLAINTEXTKEYBLOB</c> type and set the appropriate algorithm identifier in the <c>aiKeyAlg</c> field of the PUBLICKEYSTRUC BLOB header.
-	/// </para>
-	/// <para>
-	/// The <c>CryptImportKey</c> function can be used to import a plaintext key for symmetric algorithms; however, we recommend that, for
-	/// ease of use, you use the CryptGenKey function instead. When you import a plaintext key, the structure of the key BLOB that is passed
-	/// in the pbData parameter is a PLAINTEXTKEYBLOB.
-	/// </para>
-	/// <para>You can use the <c>PLAINTEXTKEYBLOB</c> type with any algorithm or type of key combination supported by the CSP in use.</para>
-	/// <para>For an example of importing a plaintext key, see Example C Program: Importing a Plaintext Key.</para>
-	/// <para>The following example shows how you can set the header fields.</para>
-	/// <para>The length of the key is specified in keyBlob.keyLength, which is followed by the actual key data.</para>
-	/// <para>
-	/// <c>Note</c> The HMAC algorithms do not have their own algorithm identifiers; use CALG_RC2 instead. <c>CRYPT_IPSEC_HMAC_KEY</c> allows
-	/// the import of RC2 keys longer than 16 bytes.
-	/// </para>
-	/// <para>
-	/// For any of the Data Encryption Standard (DES) key permutations that use <c>PLAINTEXTKEYBLOB</c>, only the full key size, including
-	/// parity bit, can be imported.
-	/// </para>
-	/// <para>The following key sizes are supported.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Algorithm</term>
-	/// <term>Supported key size</term>
-	/// </listheader>
-	/// <item>
-	/// <term>CALG_DES</term>
-	/// <term>64 bits</term>
-	/// </item>
-	/// <item>
-	/// <term>CALG_3DES_112</term>
-	/// <term>128 bits</term>
-	/// </item>
-	/// <item>
-	/// <term>CALG_3DES</term>
-	/// <term>192 bits</term>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>
-	/// The following example shows how to import a key from a key BLOB. For a full example for this function, see Example C Program: Signing
-	/// a Hash and Verifying the Hash Signature. For additional code that uses this function, see Example C Program: Decrypting a File.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptimportkey BOOL CryptImportKey( HCRYPTPROV hProv, const
-	// BYTE *pbData, DWORD dwDataLen, HCRYPTKEY hPubKey, DWORD dwFlags, HCRYPTKEY *phKey );
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "f48b6ec9-e03b-43b0-9f22-120ae93d934c")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptImportKey(HCRYPTPROV hProv, [In] byte[] pbData, int dwDataLen, HCRYPTKEY hPubKey, uint dwFlags, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptImportKey([AddAsMember] HCRYPTPROV hProv, [In, SizeDef(nameof(dwDataLen))] IntPtr pbData, uint dwDataLen, HCRYPTKEY hPubKey, uint dwFlags, [AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>
 	/// <para>
@@ -6876,7 +6643,7 @@ public static partial class AdvApi32
 	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsethashparam BOOL CryptSetHashParam( [in] HCRYPTHASH
 	// hHash, [in] DWORD dwParam, [in] const BYTE *pbData, [in] DWORD dwFlags );
 	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptSetHashParam")]
-	public static bool CryptSetHashParam<TIn>(HCRYPTHASH hHash, HashParam dwParam, TIn pbData) => CryptSetValue(CryptSetHashParam, hHash, dwParam, pbData);
+	public static bool CryptSetHashParam<TIn>([AddAsMember] HCRYPTHASH hHash, HashParam dwParam, TIn pbData) => CryptSetValue(CryptSetHashParam, hHash, dwParam, pbData);
 
 	/// <summary>
 	/// The CryptSetKeyParam function customizes various aspects of a session key's operations. The values set by this function are not
@@ -7529,7 +7296,7 @@ public static partial class AdvApi32
 	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsetkeyparam BOOL CryptSetKeyParam( [in] HCRYPTKEY hKey,
 	// [in] DWORD dwParam, [in] const BYTE *pbData, [in] DWORD dwFlags );
 	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptSetKeyParam")]
-	public static bool CryptSetKeyParam<TIn>(HCRYPTKEY hKey, KeyParam dwParam, TIn pbData, uint dwFlags) => CryptSetValue(CryptSetKeyParam, hKey, dwParam, pbData, dwFlags);
+	public static bool CryptSetKeyParam<TIn>([AddAsMember] HCRYPTKEY hKey, KeyParam dwParam, TIn pbData, uint dwFlags) => CryptSetValue(CryptSetKeyParam, hKey, dwParam, pbData, dwFlags);
 
 	/// <summary>
 	/// <para>The CryptSetProvider function specifies the current user's default cryptographic service provider (CSP).</para>
@@ -8173,7 +7940,7 @@ public static partial class AdvApi32
 	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptsetprovparam BOOL CryptSetProvParam( [in] HCRYPTPROV
 	// hProv, [in] DWORD dwParam, [in] const BYTE *pbData, [in] DWORD dwFlags );
 	[PInvokeData("wincrypt.h", MSDNShortId = "NF:wincrypt.CryptSetProvParam")]
-	public static bool CryptSetProvParam<TIn>(HCRYPTPROV hProv, ProvParam dwParam, TIn pbData, uint dwFlags) => CryptSetValue(CryptSetProvParam, hProv, dwParam, pbData, dwFlags);
+	public static bool CryptSetProvParam<TIn>([AddAsMember] HCRYPTPROV hProv, ProvParam dwParam, TIn pbData, uint dwFlags) => CryptSetValue(CryptSetProvParam, hProv, dwParam, pbData, dwFlags);
 
 	/// <summary>
 	/// The CryptSignHash function signs data. Because all signature algorithms are asymmetric and thus slow, CryptoAPI does not allow data
@@ -8327,7 +8094,8 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9cf0de04-fdad-457d-8137-16d98f915cd5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSignHash(HCRYPTHASH hHash, CertKeySpec dwKeySpec, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szDescription, CryptSignFlags dwFlags, [Out, Optional] IntPtr pbSignature, ref uint pdwSigLen);
+	public static extern bool CryptSignHash([AddAsMember] HCRYPTHASH hHash, CertKeySpec dwKeySpec, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szDescription,
+		CryptSignFlags dwFlags, [Out, Optional, SizeDef(nameof(pdwSigLen), SizingMethod.CheckLastError)] IntPtr pbSignature, ref uint pdwSigLen);
 
 	/// <summary>
 	/// <para>The CryptVerifySignature function verifies the signature of a hash object.</para>
@@ -8446,7 +8214,7 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3119eabc-90ff-42c6-b3fa-e8be625f6d1e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifySignature(HCRYPTHASH hHash, [In] IntPtr pbSignature, uint dwSigLen, HCRYPTKEY hPubKey, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szDescription, CryptSignFlags dwFlags);
+	public static extern bool CryptVerifySignature([AddAsMember] HCRYPTHASH hHash, [In, SizeDef(nameof(dwSigLen))] IntPtr pbSignature, uint dwSigLen, HCRYPTKEY hPubKey, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? szDescription, CryptSignFlags dwFlags);
 
 	private static TRet? CryptGetValue<THandle, TEnum, TRet>(CryptGetValueMethod<THandle, TEnum> func, THandle hKey, TEnum dwParam, uint dwFlags = 0) where THandle : struct where TEnum : Enum
 	{

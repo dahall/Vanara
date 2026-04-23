@@ -1880,7 +1880,58 @@ public static partial class AdvApi32
 	// SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, LPDWORD lpcbSecurityDescriptor );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winreg.h", MSDNShortId = "26bd8f89-9241-4c13-a214-c2b276d68c92")]
-	public static extern Win32Error RegGetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, ref uint lpcbSecurityDescriptor);
+	public static extern Win32Error RegGetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, [Out] PSECURITY_DESCRIPTOR pSecurityDescriptor, ref uint lpcbSecurityDescriptor);
+
+	/// <summary>
+	/// <para>
+	/// The <c>RegGetKeySecurity</c> function retrieves a copy of the security descriptor protecting the specified open registry key.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para>A handle to an open key for which to retrieve the security descriptor.</para>
+	/// </param>
+	/// <param name="SecurityInformation">
+	/// <para>A SECURITY_INFORMATION value that indicates the requested security information.</para>
+	/// </param>
+	/// <param name="pSecurityDescriptor">
+	/// <para>A pointer to a buffer that receives a copy of the requested security descriptor.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns ERROR_SUCCESS.</para>
+	/// <para>
+	/// If the function fails, it returns a nonzero error code defined in WinError.h. You can use the FormatMessage function with the
+	/// FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the buffer specified by the pSecurityDescriptor parameter is too small, the function returns ERROR_INSUFFICIENT_BUFFER and the
+	/// lpcbSecurityDescriptor parameter contains the number of bytes required for the requested security descriptor.
+	/// </para>
+	/// <para>
+	/// To read the owner, group, or discretionary access control list (DACL) from the key's security descriptor, the calling process
+	/// must have been granted READ_CONTROL access when the handle was opened. To get READ_CONTROL access, the caller must be the owner
+	/// of the key or the key's DACL must grant the access.
+	/// </para>
+	/// <para>
+	/// To read the system access control list (SACL) from the security descriptor, the calling process must have been granted
+	/// ACCESS_SYSTEM_SECURITY access when the key was opened. The correct way to get this access is to enable the SE_SECURITY_NAME
+	/// privilege in the caller's current token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("winreg.h", MSDNShortId = "26bd8f89-9241-4c13-a214-c2b276d68c92")]
+	public static Win32Error RegGetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, out SafePSECURITY_DESCRIPTOR pSecurityDescriptor)
+	{
+		uint sz = 0;
+		Win32Error err = RegGetKeySecurity(hKey, SecurityInformation, default, ref sz);
+		if (err.Failed && err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
+		{
+			pSecurityDescriptor = SafePSECURITY_DESCRIPTOR.Null;
+			return err;
+		}
+		pSecurityDescriptor = new SafePSECURITY_DESCRIPTOR((int)sz);
+		return RegGetKeySecurity(hKey, SecurityInformation, pSecurityDescriptor, ref sz);
+	}
 
 	/// <summary>
 	/// <para>Retrieves the type and data for the specified registry value.</para>
@@ -2072,7 +2123,8 @@ public static partial class AdvApi32
 	// lpSubKey, LPCSTR lpValue, DWORD dwFlags, LPDWORD pdwType, PVOID pvData, LPDWORD pcbData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "1c06facb-6735-4b3f-b77d-f162e3faaada")]
-	public static extern Win32Error RegGetValue(HKEY hkey, [Optional] string? lpSubKey, [Optional] string? lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType, [Optional] IntPtr pvData, ref uint pcbData);
+	public static extern Win32Error RegGetValue(HKEY hkey, [Optional] string? lpSubKey, [Optional] string? lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.CheckLastError)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>Loads the specified registry hive as an application hive.</para>
@@ -2799,49 +2851,32 @@ public static partial class AdvApi32
 	public static extern unsafe Win32Error RegQueryInfoKey(HKEY hKey, [Optional] void* lpClass, [Optional] uint* lpcchClass, [Optional] void* lpReserved, [Optional] uint* lpcSubKeys, [Optional] uint* lpcbMaxSubKeyLen,
 		[Optional] uint* lpcbMaxClassLen, [Optional] uint* lpcValues, [Optional] uint* lpcbMaxValueNameLen, [Optional] uint* lpcbMaxValueLen, [Optional] uint* lpcbSecurityDescriptor, [Optional] FILETIME* lpftLastWriteTime);
 
-	/// <summary>
-	/// <para>Retrieves the type and data for a list of value names associated with an open registry key.</para>
-	/// </summary>
+	/// <summary>Retrieves the type and data for a list of value names associated with an open registry key.</summary>
 	/// <param name="hKey">
 	/// <para>
 	/// A handle to an open registry key. The key must have been opened with the KEY_QUERY_VALUE access right. For more information, see
-	/// Registry Key Security and Access Rights.
+	/// <c>Registry Key Security and Access Rights</c>.
 	/// </para>
-	/// <para>This handle is returned by the</para>
-	/// <para>RegCreateKeyEx</para>
-	/// <para>,</para>
-	/// <para>RegCreateKeyTransacted</para>
-	/// <para>,</para>
-	/// <para>RegOpenKeyEx</para>
-	/// <para>, or</para>
-	/// <para>RegOpenKeyTransacted</para>
-	/// <para>function. It can also be one of the following</para>
-	/// <para>predefined keys</para>
-	/// <para>:</para>
+	/// <para>
+	/// This handle is returned by the <c>RegCreateKeyEx</c>, <c>RegCreateKeyTransacted</c>, <c>RegOpenKeyEx</c>, or
+	/// <c>RegOpenKeyTransacted</c> function. It can also be one of the following <c>predefined keys</c>: HKEY_CLASSES_ROOT,
+	/// HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, HKEY_PERFORMANCE_DATA, HKEY_USERS
+	/// </para>
+	/// <list/>
 	/// </param>
 	/// <param name="val_list">
 	/// <para>
-	/// A pointer to an array of VALENT structures that describe one or more value entries. On input, the <c>ve_valuename</c> member of
-	/// each structure must contain a pointer to the name of a value to retrieve. The function fails if any of the specified values do
-	/// not exist in the specified key.
+	/// A pointer to an array of <c>VALENT</c> structures that describe one or more value entries. On input, the <b>ve_valuename</b> member
+	/// of each structure must contain a pointer to the name of a value to retrieve. The function fails if any of the specified values do not
+	/// exist in the specified key.
 	/// </para>
 	/// <para>If the function succeeds, each element of the array contains the information for the specified value.</para>
-	/// </param>
-	/// <param name="num_vals">
-	/// <para>The number of elements in the val_list array.</para>
 	/// </param>
 	/// <param name="lpValueBuf">
 	/// <para>A pointer to a buffer. If the function succeeds, the buffer receives the data for each value.</para>
 	/// <para>
-	/// If lpValueBuf is <c>NULL</c>, the value pointed to by the ldwTotsize parameter must be zero, in which case the function returns
-	/// ERROR_MORE_DATA and ldwTotsize receives the required size of the buffer, in bytes.
-	/// </para>
-	/// </param>
-	/// <param name="ldwTotsize">
-	/// <para>
-	/// A pointer to a variable that specifies the size of the buffer pointed to by the lpValueBuf parameter, in bytes. If the function
-	/// succeeds, ldwTotsize receives the number of bytes copied to the buffer. If the function fails because the buffer is too small,
-	/// ldwTotsize receives the required size, in bytes.
+	/// If <i>lpValueBuf</i> is <b>NULL</b>, the value pointed to by the <i>ldwTotsize</i> parameter must be zero, in which case the function
+	/// returns ERROR_MORE_DATA and <i>ldwTotsize</i> receives the required size of the buffer, in bytes.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -2849,26 +2884,30 @@ public static partial class AdvApi32
 	/// <para>If the function fails, the return value is one of the following error codes.</para>
 	/// <list type="table">
 	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
+	/// <description>Return code</description>
+	/// <description>Description</description>
 	/// </listheader>
 	/// <item>
-	/// <term>ERROR_CANTREAD</term>
-	/// <term>RegQueryMultipleValues cannot instantiate or access the provider of the dynamic key.</term>
+	/// <description><b>ERROR_CANTREAD</b></description>
+	/// <description><c>RegQueryMultipleValues</c> cannot instantiate or access the provider of the dynamic key.</description>
 	/// </item>
 	/// <item>
-	/// <term>ERROR_MORE_DATA</term>
-	/// <term>The buffer pointed to by lpValueBuf was too small. In this case, ldwTotsize receives the required buffer size.</term>
+	/// <description><b>ERROR_MORE_DATA</b></description>
+	/// <description>
+	/// The buffer pointed to by <i>lpValueBuf</i> was too small. In this case, <i>ldwTotsize</i> receives the required buffer size.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>ERROR_TRANSFER_TOO_LONG</term>
-	/// <term>The total size of the requested data (size of the val_list array + ldwTotSize) is more than the system limit of one megabyte.</term>
+	/// <description><b>ERROR_TRANSFER_TOO_LONG</b></description>
+	/// <description>
+	/// The total size of the requested data (size of the <i>val_list</i> array + <i>ldwTotSize</i>) is more than the system limit of one megabyte.
+	/// </description>
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The <c>RegQueryMultipleValues</c> function allows an application to query one or more values of a static or dynamic key. If the
+	/// The <b>RegQueryMultipleValues</b> function allows an application to query one or more values of a static or dynamic key. If the
 	/// target key is a static key, the system provides all of the values in an atomic fashion. To prevent excessive serialization, the
 	/// aggregate data returned by the function cannot exceed one megabyte.
 	/// </para>
@@ -2878,14 +2917,37 @@ public static partial class AdvApi32
 	/// serialization. The provider can provide at most one megabyte of total output data during an atomic call to this function.
 	/// </para>
 	/// <para>
-	/// <c>RegQueryMultipleValues</c> is supported remotely; that is, the hKey parameter passed to the function can refer to a remote computer.
+	/// <b>RegQueryMultipleValues</b> is supported remotely; that is, the <i>hKey</i> parameter passed to the function can refer to a remote computer.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// The winreg.h header defines RegQueryMultipleValues as an alias that automatically selects the ANSI or Unicode version of this
+	/// function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that is
+	/// not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see <c>Conventions
+	/// for Function Prototypes</c>.
+	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regquerymultiplevaluesa LSTATUS RegQueryMultipleValuesA(
-	// HKEY hKey, PVALENTA val_list, DWORD num_vals, __out_data_source(REGISTRY)StrPtrAnsi lpValueBuf, LPDWORD ldwTotsize );
-	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
-	[PInvokeData("winreg.h", MSDNShortId = "e718534a-6e68-40f5-9cdd-170ce9b5e6e5")]
-	public static extern Win32Error RegQueryMultipleValues(HKEY hKey, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] VALENT[] val_list, uint num_vals, [Optional] IntPtr lpValueBuf, ref uint ldwTotsize);
+	// https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regquerymultiplevaluesw LSTATUS RegQueryMultipleValuesW( [in]
+	// HKEY hKey, [out] PVALENTW val_list, [in] DWORD num_vals, [out, optional] LPWSTR lpValueBuf, [in, out, optional] LPDWORD ldwTotsize );
+	[PInvokeData("winreg.h", MSDNShortId = "NF:winreg.RegQueryMultipleValuesW")]
+	public static Win32Error RegQueryMultipleValues(HKEY hKey, [In, Out] VALENT[] val_list, out SafeAllocatedMemoryHandleBase lpValueBuf)
+	{
+		uint sz = 0;
+		var err = RegQueryMultipleValues(hKey, val_list, (uint)val_list.Length, default, ref sz);
+		if (err == Win32Error.ERROR_MORE_DATA)
+		{
+			lpValueBuf = new SafeHGlobalHandle(sz);
+			err = RegQueryMultipleValues(hKey, val_list, (uint)val_list.Length, lpValueBuf, ref sz);
+		}
+		else
+			lpValueBuf = SafeHGlobalHandle.Null;
+		return err;
+
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		static extern Win32Error RegQueryMultipleValues(HKEY hKey, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] VALENT[] val_list, uint num_vals, [Optional] IntPtr lpValueBuf, ref uint ldwTotsize);
+	}
 
 	/// <summary>Retrieves the type and data for a list of value names associated with an open registry key.</summary>
 	/// <param name="hKey">
@@ -2927,11 +2989,9 @@ public static partial class AdvApi32
 	public static IReadOnlyDictionary<string, object?> RegQueryMultipleValues(HKEY hKey, params string[] val_list)
 	{
 		var val = Array.ConvertAll(val_list, s => new VALENT(s));
-		uint sz = 0;
-		RegQueryMultipleValues(hKey, val, (uint)val.Length, default, ref sz).ThrowUnless(Win32Error.ERROR_MORE_DATA);
-		using SafeCoTaskMemHandle mem = new(sz);
-		RegQueryMultipleValues(hKey, val, (uint)val.Length, mem, ref sz).ThrowIfFailed();
-		return val.ToDictionary(v => v.ve_valuename, v => v.ve_type.GetValue(v.ve_valueptr, v.ve_valuelen));
+		RegQueryMultipleValues(hKey, val, out var mem).ThrowIfFailed();
+		using (mem)
+			return val.ToDictionary(v => v.ve_valuename, v => v.ve_type.GetValue(v.ve_valueptr, v.ve_valuelen));
 	}
 
 	/// <summary>

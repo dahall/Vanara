@@ -1310,7 +1310,8 @@ public static partial class WinTrust
 	// _Out_opt_ ALG_ID *pHashAlgid );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wintrust.h", MSDNShortId = "130b3c3e-cc67-44ec-acc7-daa87b714299")]
-	public static extern int WTHelperGetFileHash([MarshalAs(UnmanagedType.LPWStr)] string pwszFilename, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pvReserved, [Out] IntPtr pbFileHash, ref uint pcbFileHash, out ALG_ID pHashAlgid);
+	public static extern int WTHelperGetFileHash([MarshalAs(UnmanagedType.LPWStr)] string pwszFilename, [Optional, Ignore] uint dwFlags,
+		[In, Out, Optional, Ignore] IntPtr pvReserved, [Out, SizeDef(nameof(pcbFileHash), SizingMethod.CheckLastError)] IntPtr pbFileHash, ref uint pcbFileHash, out ALG_ID pHashAlgid);
 
 	/// <summary>
 	/// <para>
