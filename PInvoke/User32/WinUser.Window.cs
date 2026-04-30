@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Principal;
 
 namespace Vanara.PInvoke;
@@ -4329,7 +4330,7 @@ public static partial class User32
 	// lpClassName, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetClassName([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpClassName, int nMaxCount);
+	public static extern int GetClassName([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.Count, InitSize = 257)] StringBuilder lpClassName, int nMaxCount);
 
 	/// <summary>
 	/// <para>
