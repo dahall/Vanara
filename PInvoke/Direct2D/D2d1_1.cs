@@ -3787,7 +3787,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapfromdxgisurface(idxgisurface_constd2d1_bitmap_properties1__id2d1bitmap1)
 		// HRESULT CreateBitmapFromDxgiSurface( IDXGISurface *surface, const D2D1_BITMAP_PROPERTIES1 &amp; bitmapProperties, ID2D1Bitmap1
 		// **bitmap );
-		ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional, StructPointer(typeof(D2D1_BITMAP_PROPERTIES))] IntPtr bitmapProperties);
+		ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional, StructPointer(typeof(D2D1_BITMAP_PROPERTIES1))] IntPtr bitmapProperties);
 
 		/// <summary>Creates an effect for the specified class ID.</summary>
 		/// <param name="effectId">
