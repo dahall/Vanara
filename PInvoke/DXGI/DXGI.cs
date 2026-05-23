@@ -934,7 +934,7 @@ public static partial class DXGI
 
 		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
 		/// <param name="color">The color.</param>
-		public D3DCOLORVALUE(System.Drawing.Color color) : this(color.R / 255f, color.G / 255f, color.B / 255f, color.A)
+		public D3DCOLORVALUE(System.Drawing.Color color) : this(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f)
 		{
 		}
 
