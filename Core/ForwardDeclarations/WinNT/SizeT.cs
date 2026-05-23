@@ -150,7 +150,7 @@ public struct SizeT : IEquatable<SizeT>, IEquatable<nuint>, IComparable<SizeT>, 
 	/// <summary>Decrements the <see cref="SizeT"/> by 1.</summary>
 	/// <param name="s1">The value to decrement.</param>
 	/// <returns>The value of <paramref name="s1"/> decremented by 1.</returns>
-	public static SizeT operator --(SizeT s1) => s1.Value += 1;
+	public static SizeT operator --(SizeT s1) => s1.Value -= 1;
 
 	/// <summary>Indicates whether two <see cref="SizeT"/> instances are not equal.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
