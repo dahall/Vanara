@@ -435,7 +435,7 @@ public static partial class Ole32
 		public GuidPtr puuid => _pv.puuid;
 
 		/// <summary>Gets the PROPVARIANT value as a reference accounting for its source potentially being a pointer to NULL..</summary>
-		public StructPointer<PROPVARIANT_UNMGD> pvarVal => _pv.pvarVal;
+		public StructPointer<PROPVARIANT_IMMUTABLE> pvarVal => _pv.pvarVal;
 
 		/// <summary>Gets a stream with a Guid version.</summary>
 		public StructPointer<VERSIONEDSTREAM> pVersionedStream => _pv.pVersionedStream;
@@ -604,7 +604,6 @@ public static partial class Ole32
 	/// </para>
 	/// <note>This structure is mostly used for arrays where the fixed structure size is critical for interop.</note>
 	/// </summary>
-	[Obsolete("Use PROPVARIANT_UNMGD instead. This structure is immutable and does not support all types that PROPVARIANT does. It is only intended for use in scenarios where a fixed struct size is required, such as in arrays. For general use, PROPVARIANT_UNMGD is recommended.", false)]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PROPVARIANT_IMMUTABLE
 	{
@@ -632,6 +631,16 @@ public static partial class Ole32
 		/// <param name="pv">The PROPVARIANT_IMMUTABLE instance.</param>
 		/// <returns>The resulting <see cref="PROPVARIANT"/> instance from the conversion.</returns>
 		public static explicit operator PROPVARIANT(in PROPVARIANT_IMMUTABLE pv) => new() { _pv = new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, blob = pv._blob } };
+
+		/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT_UNMGD"/> to <see cref="PROPVARIANT_IMMUTABLE"/>.</summary>
+		/// <param name="pv">The PROPVARIANT_UNMGD instance.</param>
+		/// <returns>The resulting <see cref="PROPVARIANT_IMMUTABLE"/> instance from the conversion.</returns>
+		public static implicit operator PROPVARIANT_IMMUTABLE(PROPVARIANT_UNMGD pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, _blob = pv.blob };
+
+		/// <summary>Performs an implicit conversion from <see cref="PROPVARIANT_IMMUTABLE"/> to <see cref="PROPVARIANT_UNMGD"/>.</summary>
+		/// <param name="pv">The PROPVARIANT_IMMUTABLE instance.</param>
+		/// <returns>The resulting <see cref="PROPVARIANT_UNMGD"/> instance from the conversion.</returns>
+		public static explicit operator PROPVARIANT_UNMGD(in PROPVARIANT_IMMUTABLE pv) => new() { vt = pv.vt, wReserved1 = pv.wReserved1, wReserved2 = pv.wReserved2, wReserved3 = pv.wReserved3, blob = pv._blob };
 	}
 	
 	/// <summary>
@@ -978,7 +987,7 @@ public static partial class Ole32
 		/// of VT_LPSTR|VT_VECTOR has a DWORD element count, followed by a pointer to an array of LPSTR elements.
 		/// </summary>
 		[FieldOffset(8)]
-		public CA<PROPVARIANT_UNMGD> capropvar;
+		public CA<PROPVARIANT_IMMUTABLE> capropvar;
 
 		/// <summary>
 		/// If the type indicator is combined with VT_BYREF by an OR operator, the value is a reference. Reference types are interpreted as a
@@ -1132,7 +1141,7 @@ public static partial class Ole32
 		/// reference to data, similar to the reference type in C++ (for example, "int&amp;").
 		/// </summary>
 		[FieldOffset(8)]
-		public StructPointer<PROPVARIANT_UNMGD> pvarVal;
+		public StructPointer<PROPVARIANT_IMMUTABLE> pvarVal;
 
 		/// <summary>Initializes a new instance of the <see cref="PROPVARIANT_UNMGD"/> class with an object.</summary>
 		/// <param name="obj">The object to wrap. Based on the object type, it will infer the value type and allocate memory as needed.</param>
