@@ -1,5 +1,6 @@
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Vanara.PInvoke;
 
@@ -172,13 +173,55 @@ public static partial class AzRoles
 	}
 
 	/// <summary>
+	/// Defines the common policy administration members shared by both <see cref="IAzApplication"/> and <see cref="IAzScope"/>.
+	/// This includes core properties, policy administrator and reader management, and child object (application groups, roles, tasks) management.
+	/// </summary>
+	[PInvokeData("azroles.h")]
+	public interface IAzApplicationScope
+	{
+		string ApplicationData { get; set; }
+		IAzApplicationGroups ApplicationGroups { get; }
+		string Description { get; set; }
+		string Name { get; set; }
+		object PolicyAdministrators { get; }
+		object PolicyAdministratorsName { get; }
+		object PolicyReaders { get; }
+		object PolicyReadersName { get; }
+		IAzRoles Roles { get; }
+		IAzTasks Tasks { get; }
+		bool Writable { get; }
+		object GetProperty([In] AZ_PROP_CONSTANTS lPropId, [Optional, In] object? varReserved);
+		void AddPolicyAdministrator([In] string bstrAdmin, [Optional, In] object? varReserved);
+		void AddPolicyAdministratorName([In] string bstrAdmin, [Optional, In] object? varReserved);
+		void AddPolicyReader([In] string bstrReader, [Optional, In] object? varReserved);
+		void AddPolicyReaderName([In] string bstrReader, [Optional, In] object? varReserved);
+		void AddPropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In] object varProp, [Optional, In] object? varReserved);
+		IAzApplicationGroup CreateApplicationGroup([In] string bstrGroupName, [Optional, In] object? varReserved);
+		IAzRole CreateRole([In] string bstrRoleName, [Optional, In] object? varReserved);
+		IAzTask CreateTask([In] string bstrTaskName, [Optional, In] object? varReserved);
+		void DeleteApplicationGroup([In] string bstrGroupName, [Optional, In] object? varReserved);
+		void DeletePolicyAdministrator([In] string bstrAdmin, [Optional, In] object? varReserved);
+		void DeletePolicyAdministratorName([In] string bstrAdmin, [Optional, In] object? varReserved);
+		void DeletePolicyReader([In] string bstrReader, [Optional, In] object? varReserved);
+		void DeletePolicyReaderName([In] string bstrReader, [Optional, In] object? varReserved);
+		void DeletePropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In] object varProp, [Optional, In] object? varReserved);
+		void DeleteRole([In] string bstrRoleName, [Optional, In] object? varReserved);
+		void DeleteTask([In] string bstrTaskName, [Optional, In] object? varReserved);
+		IAzApplicationGroup OpenApplicationGroup([In] string bstrGroupName, [Optional, In] object? varReserved);
+		IAzRole OpenRole([In] string bstrRoleName, [Optional, In] object? varReserved);
+		IAzTask OpenTask([In] string bstrTaskName, [Optional, In] object? varReserved);
+		void SetProperty([In] AZ_PROP_CONSTANTS lPropId, [In] object varProp, [Optional, In] object? varReserved);
+		void Submit([Optional, In] AZ_SUBMIT_FLAGS lFlags, [Optional, In] object? varReserved);
+	}
+
+	/// <summary>
 	/// The <b>Microsoft.Interop.Security.Azroles.IAzApplication</b> interoperability wrapper methods and properties are documented under the
 	/// COM version of the method or property. A link to the correlating COM documentation follows each member name.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/secauthz/microsoft-interop-security-azroles-iazapplication-interface
 	[PInvokeData("azroles.h")]
 	[ComImport, Guid("987BC7C7-B813-4D27-BEDE-6BA5AE867E95")]
-	public interface IAzApplication
+	public interface IAzApplication : IAzApplicationScope
 	{
 		/// <summary>
 		/// <para>The <b>Name</b> property sets or retrieves the name of the application.</para>
@@ -187,7 +230,7 @@ public static partial class AzRoles
 		/// <remarks>The maximum length of the <b>Name</b> property is 512 characters.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_name HRESULT get_Name( BSTR *pbstrName );
 		[DispId(1610743808)]
-		string Name
+		new string Name
 		{
 			[DispId(1610743808)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -206,7 +249,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-put_description HRESULT put_Description(
 		// BSTR bstrDescription );
 		[DispId(1610743810)]
-		string Description
+		new string Description
 		{
 			[DispId(1610743810)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -230,7 +273,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_applicationdata HRESULT
 		// get_ApplicationData( BSTR *pbstrApplicationData );
 		[DispId(1610743812)]
-		string ApplicationData
+		new string ApplicationData
 		{
 			[DispId(1610743812)]
 			[return: MarshalAs(UnmanagedType.BStr)]
@@ -339,7 +382,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_writable HRESULT get_Writable( BOOL
 		// *pfProp );
 		[DispId(1610743822)]
-		bool Writable
+		new bool Writable
 		{
 			[DispId(1610743822)]
 			[return: MarshalAs(UnmanagedType.Bool)]
@@ -424,7 +467,7 @@ public static partial class AzRoles
 		// lPropId, [in, optional] VARIANT varReserved, [out] VARIANT *pvarProp );
 		[DispId(1610743823)]
 		[return: MarshalAs(UnmanagedType.Struct)]
-		object GetProperty([In] AZ_PROP_CONSTANTS lPropId, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new object GetProperty([In] AZ_PROP_CONSTANTS lPropId, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>SetProperty</b> method sets the specified value to the <c>IAzApplication</c> object property with the specified property ID.
@@ -511,7 +554,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-setproperty HRESULT SetProperty( [in] LONG
 		// lPropId, [in] VARIANT varProp, [in, optional] VARIANT varReserved );
 		[DispId(1610743824)]
-		void SetProperty([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void SetProperty([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>
@@ -550,7 +593,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazauthorizationstore-get_policyadministrators HRESULT
 		// get_PolicyAdministrators( VARIANT *pvarAdmins );
 		[DispId(1610743825)]
-		object PolicyAdministrators
+		new object PolicyAdministrators
 		{
 			[DispId(1610743825)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -574,7 +617,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazauthorizationstore-get_policyreaders HRESULT
 		// get_PolicyReaders( VARIANT *pvarReaders );
 		[DispId(1610743826)]
-		object PolicyReaders
+		new object PolicyReaders
 		{
 			[DispId(1610743826)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -618,7 +661,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-addpolicyadministrator HRESULT
 		// AddPolicyAdministrator( [in] BSTR bstrAdmin, [in, optional] VARIANT varReserved );
 		[DispId(1610743827)]
-		void AddPolicyAdministrator([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void AddPolicyAdministrator([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeletePolicyAdministrator</b> method removes the specified <c>security identifier</c> (SID) in text form from the list of
@@ -656,7 +699,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletepolicyadministrator HRESULT
 		// DeletePolicyAdministrator( [in] BSTR bstrAdmin, [in, optional] VARIANT varReserved );
 		[DispId(1610743828)]
-		void DeletePolicyAdministrator([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeletePolicyAdministrator([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>AddPolicyReader</b> method adds the specified <c>security identifier</c> (SID) in text form to the list of principals that
@@ -675,7 +718,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-addpolicyreader HRESULT AddPolicyReader(
 		// [in] BSTR bstrReader, [in, optional] VARIANT varReserved );
 		[DispId(1610743829)]
-		void AddPolicyReader([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void AddPolicyReader([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeletePolicyReader</b> method removes the specified <c>security identifier</c> (SID) in text form from the list of
@@ -693,7 +736,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletepolicyreader HRESULT
 		// DeletePolicyReader( [in] BSTR bstrReader, [in, optional] VARIANT varReserved );
 		[DispId(1610743830)]
-		void DeletePolicyReader([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeletePolicyReader([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>
@@ -825,7 +868,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_tasks HRESULT get_Tasks( IAzTasks
 		// **ppTaskCollection );
 		[DispId(1610743839)]
-		IAzTasks Tasks
+		new IAzTasks Tasks
 		{
 			[DispId(1610743839)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -840,7 +883,7 @@ public static partial class AzRoles
 		// bstrTaskName, [in, optional] VARIANT varReserved, [out] IAzTask **ppTask );
 		[DispId(1610743840)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzTask OpenTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzTask OpenTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>The <b>CreateTask</b> method creates an <c>IAzTask</c> object with the specified name.</summary>
 		/// <param name="bstrTaskName">Name for the new <c>IAzTask</c> object.</param>
@@ -854,7 +897,7 @@ public static partial class AzRoles
 		// bstrTaskName, [in, optional] VARIANT varReserved, [out] IAzTask **ppTask );
 		[DispId(1610743841)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzTask CreateTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzTask CreateTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeleteTask</b> method removes the <c>IAzTask</c> object with the specified name from the <c>IAzApplication</c> object.
@@ -869,7 +912,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletetask HRESULT DeleteTask( [in] BSTR
 		// bstrTaskName, [in, optional] VARIANT varReserved );
 		[DispId(1610743842)]
-		void DeleteTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeleteTask([In, MarshalAs(UnmanagedType.BStr)] string bstrTaskName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>
@@ -885,7 +928,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_applicationgroups HRESULT
 		// get_ApplicationGroups( IAzApplicationGroups **ppGroupCollection );
 		[DispId(1610743843)]
-		IAzApplicationGroups ApplicationGroups
+		new IAzApplicationGroups ApplicationGroups
 		{
 			[DispId(1610743843)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -900,7 +943,7 @@ public static partial class AzRoles
 		// OpenApplicationGroup( [in] BSTR bstrGroupName, [in, optional] VARIANT varReserved, [out] IAzApplicationGroup **ppGroup );
 		[DispId(1610743844)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzApplicationGroup OpenApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzApplicationGroup OpenApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>The <b>CreateApplicationGroup</b> method creates an <c>IAzApplicationGroup</c> object with the specified name.</summary>
 		/// <param name="bstrGroupName">Name for the new <c>IAzApplicationGroup</c> object.</param>
@@ -914,7 +957,7 @@ public static partial class AzRoles
 		// CreateApplicationGroup( [in] BSTR bstrGroupName, [in, optional] VARIANT varReserved, [out] IAzApplicationGroup **ppGroup );
 		[DispId(1610743845)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzApplicationGroup CreateApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzApplicationGroup CreateApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeleteApplicationGroup</b> method removes the <c>IAzApplicationGroup</c> object with the specified name from the
@@ -931,7 +974,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deleteapplicationgroup HRESULT
 		// DeleteApplicationGroup( [in] BSTR bstrGroupName, [in, optional] VARIANT varReserved );
 		[DispId(1610743846)]
-		void DeleteApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeleteApplicationGroup([In, MarshalAs(UnmanagedType.BStr)] string bstrGroupName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>
@@ -945,7 +988,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_roles HRESULT get_Roles( IAzRoles
 		// **ppRoleCollection );
 		[DispId(1610743847)]
-		IAzRoles Roles
+		new IAzRoles Roles
 		{
 			[DispId(1610743847)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -960,7 +1003,7 @@ public static partial class AzRoles
 		// bstrRoleName, [in, optional] VARIANT varReserved, [out] IAzRole **ppRole );
 		[DispId(1610743848)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzRole OpenRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzRole OpenRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>The <b>CreateRole</b> method creates an <c>IAzRole</c> object with the specified name.</summary>
 		/// <param name="bstrRoleName">Name for the new <c>IAzRole</c> object.</param>
@@ -974,7 +1017,7 @@ public static partial class AzRoles
 		// bstrRoleName, [in, optional] VARIANT varReserved, [out] IAzRole **ppRole );
 		[DispId(1610743849)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IAzRole CreateRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new IAzRole CreateRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeleteRole</b> method removes the <c>IAzRole</c> object with the specified name from the <c>IAzApplication</c> object.
@@ -989,7 +1032,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deleterole HRESULT DeleteRole( [in] BSTR
 		// bstrRoleName, [in, optional] VARIANT varReserved );
 		[DispId(1610743850)]
-		void DeleteRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeleteRole([In, MarshalAs(UnmanagedType.BStr)] string bstrRoleName, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>InitializeClientContextFromToken</b> method gets an <c>IAzClientContext</c> object pointer from the specified client token.
@@ -1059,7 +1102,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/mt-mt/windows/win32/api/azroles/nf-azroles-iazapplication-addpropertyitem HRESULT AddPropertyItem(
 		// [in] LONG lPropId, [in] VARIANT varProp, [in, optional] VARIANT varReserved );
 		[DispId(1610743852)]
-		void AddPropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void AddPropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>The <b>DeletePropertyItem</b> method removes the specified principal from the specified list of principals.</summary>
 		/// <param name="lPropId">
@@ -1114,7 +1157,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletepropertyitem HRESULT
 		// DeletePropertyItem( [in] LONG lPropId, [in] VARIANT varProp, [in, optional] VARIANT varReserved );
 		[DispId(1610743853)]
-		void DeletePropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeletePropertyItem([In] AZ_PROP_CONSTANTS lPropId, [In, MarshalAs(UnmanagedType.Struct)] object varProp, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>The <b>Submit</b> method persists changes made to the <c>IAzApplication</c> object.</summary>
 		/// <param name="lFlags">
@@ -1133,7 +1176,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-submit HRESULT Submit( [in] LONG lFlags,
 		// [in, optional] VARIANT varReserved );
 		[DispId(1610743854)]
-		void Submit([Optional, DefaultParameterValue((AZ_SUBMIT_FLAGS)0), In] AZ_SUBMIT_FLAGS lFlags, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void Submit([Optional, DefaultParameterValue((AZ_SUBMIT_FLAGS)0), In] AZ_SUBMIT_FLAGS lFlags, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>
@@ -1413,7 +1456,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_policyadministratorsname HRESULT
 		// get_PolicyAdministratorsName( VARIANT *pvarAdmins );
 		[DispId(1610743860)]
-		object PolicyAdministratorsName
+		new object PolicyAdministratorsName
 		{
 			[DispId(1610743860)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -1434,7 +1477,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-get_policyreadersname HRESULT
 		// get_PolicyReadersName( VARIANT *pvarReaders );
 		[DispId(1610743861)]
-		object PolicyReadersName
+		new object PolicyReadersName
 		{
 			[DispId(1610743861)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -1480,7 +1523,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-addpolicyadministratorname HRESULT
 		// AddPolicyAdministratorName( [in] BSTR bstrAdmin, [in, optional] VARIANT varReserved );
 		[DispId(1610743862)]
-		void AddPolicyAdministratorName([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void AddPolicyAdministratorName([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeletePolicyAdministratorName</b> method removes the specified account name from the list of principals that act as policy administrators.
@@ -1521,7 +1564,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletepolicyadministratorname HRESULT
 		// DeletePolicyAdministratorName( [in] BSTR bstrAdmin, [in, optional] VARIANT varReserved );
 		[DispId(1610743863)]
-		void DeletePolicyAdministratorName([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeletePolicyAdministratorName([In, MarshalAs(UnmanagedType.BStr)] string bstrAdmin, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>AddPolicyReaderName</b> method adds the specified account name to the list of principals that act as policy readers.
@@ -1542,7 +1585,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-addpolicyreadername HRESULT
 		// AddPolicyReaderName( [in] BSTR bstrReader, [in, optional] VARIANT varReserved );
 		[DispId(1610743864)]
-		void AddPolicyReaderName([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void AddPolicyReaderName([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// The <b>DeletePolicyReaderName</b> method removes the specified account name from the list of principals that act as policy readers.
@@ -1563,7 +1606,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplication-deletepolicyreadername HRESULT
 		// DeletePolicyReaderName( [in] BSTR bstrReader, [in, optional] VARIANT varReserved );
 		[DispId(1610743865)]
-		void DeletePolicyReaderName([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
+		new void DeletePolicyReaderName([In, MarshalAs(UnmanagedType.BStr)] string bstrReader, [Optional, In, MarshalAs(UnmanagedType.Struct)] object? varReserved);
 
 		/// <summary>
 		/// <para>The <b>DelegatedPolicyUsersName</b> property retrieves the account names of principals that act as delegated policy users.</para>
@@ -6283,7 +6326,7 @@ public static partial class AzRoles
 	// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nn-azroles-iazapplicationgroups
 	[PInvokeData("azroles.h", MSDNShortId = "NN:azroles.IAzApplicationGroups")]
 	[ComImport, Guid("4CE66AD5-9F3C-469D-A911-B99887A7E685")]
-	public interface IAzApplicationGroups : IEnumerable
+	public interface IAzApplicationGroups : IReadOnlyList<object>
 	{
 		/// <summary>
 		/// <para>
@@ -6296,7 +6339,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplicationgroups-get_item HRESULT get_Item( LONG Index,
 		// VARIANT *pvarObtPtr );
 		[DispId(0)]
-		object this[[In] int Index]
+		new object this[[In] int Index]
 		{
 			[DispId(0)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -6314,7 +6357,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplicationgroups-get_count HRESULT get_Count( LONG
 		// *plCount );
 		[DispId(1)]
-		int Count
+		new int Count
 		{
 			[DispId(1)]
 			get;
@@ -6336,7 +6379,7 @@ public static partial class AzRoles
 	// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nn-azroles-iazapplications
 	[PInvokeData("azroles.h", MSDNShortId = "NN:azroles.IAzApplications")]
 	[ComImport, Guid("929B11A9-95C5-4A84-A29A-20AD42C2F16C")]
-	public interface IAzApplications : IEnumerable
+	public interface IAzApplications : IReadOnlyList<object>
 	{
 		/// <summary>
 		/// <para>
@@ -6348,7 +6391,7 @@ public static partial class AzRoles
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplications-get_item HRESULT get_Item( long Index,
 		// VARIANT *pvarObtPtr );
 		[DispId(0)]
-		object this[[In] int Index]
+		new object this[[In] int Index]
 		{
 			[DispId(0)]
 			[return: MarshalAs(UnmanagedType.Struct)]
@@ -6365,7 +6408,7 @@ public static partial class AzRoles
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/azroles/nf-azroles-iazapplications-get_count HRESULT get_Count( long *plCount );
 		[DispId(1)]
-		int Count
+		new int Count
 		{
 			[DispId(1)]
 			get;
