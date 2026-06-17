@@ -1777,9 +1777,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "caa757a2-fc3f-4883-8d3e-b98d28f92517")]
 	[return: AddAsCtor]
-	public static extern SafeHFILE OpenFileById([In] HFILE hVolumeHint,
-		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<FILE_ID_DESCRIPTOR>))] in FILE_ID_DESCRIPTOR lpFileId,
-		FileAccess dwDesiredAccess, FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
+	public static extern SafeHFILE OpenFileById([In] HFILE hVolumeHint, in FILE_ID_DESCRIPTOR lpFileId, FileAccess dwDesiredAccess,
+		FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 	/// <summary>
 	/// <para>Decrements the count of power requests of the specified type for a power request object.</para>
