@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+        "Vanara.WinUi.Extensions (Package)": {
+            "commandName": "MsixPackage"
+        },
+        "Vanara.WinUi.Extensions (Unpackaged)": {
+            "commandName": "Project"
+        }
+    }
+}

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="electrifier.Controls.ExplorerBrowser"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:electrifier.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             mc:Ignorable="d">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="320"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <CommandBar Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
+                    DefaultLabelPosition="Collapsed"
+                    HorizontalAlignment="Left">
+            <AppBarButton Icon="Back" Label="Navigate back" />
+            <AppBarButton Icon="Forward" Label="Navigate forward" />
+            <AppBarButton Icon="Up" Label="Parent folder" />
+            <AppBarButton Icon="Pin" Label="Pin to Quick access"  />
+            <AppBarSeparator />
+            <AppBarButton Icon="OpenFile" Label="New">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <AppBarButton Icon="Folder" Label="Folder" />
+                            <AppBarButton Icon="Link" Label="Shortcut" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton Icon="Cut" Label="Cut" />
+            <AppBarButton Icon="Copy" Label="Copy" />
+            <AppBarButton Icon="Paste" Label="Paste" />
+            <AppBarButton Icon="Rename" Label="Rename" />
+            <AppBarButton Icon="Share" Label="Share" />
+            <AppBarButton Icon="Delete" Label="Delete" />
+            <AppBarButton Icon="Undo" Label="Undo"  />
+            <AppBarSeparator />
+            <AppBarSeparator />
+            <AppBarButton Icon="SelectAll" Label="Select all" />
+            <AppBarButton Icon="Pin" Label="Select All"  />
+            <AppBarButton Icon="Pin" Label="Invert Selection"  />
+            <AppBarButton Icon="Pin" Label="Select None"  />
+            <AppBarSeparator />
+            <AppBarElementContainer>
+                <SplitButton Content="View">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <Button Content="Tiles" />
+                                <Button Content="Content" />
+                                <AppBarSeparator />
+                                <Button Content="Details pane" />
+                                <Button Content="File Manager pane"/>
+                                <AppBarSeparator />
+                                <Button Content="Show"/>
+                                <AppBarSeparator />
+                                <Button Content="Two Pages"/>
+                                <AppBarButton Icon="TwoPage" Label="Double pane mode" />
+                                <AppBarButton Icon="Refresh" Label="Refresh" />
+                                <AppBarButton Icon="Orientation" Label="Orientation" />
+                                <Button Content="Hide Filenames (Spy Mode)" />
+                                <Button Content="File Extensions: Use default (Windows Explorer settings)"/>
+                                <Button Content="Files Extensions: Show for uncommon files only Hide"/>
+                                <Button Content="Files Extensions: Show for uncommon files only"/>
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarButton Icon="View" Label="View">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <AppBarButton Icon="View" Label="Tiles" />
+                            <AppBarButton Icon="View" Label="Details" />
+                            <MenuFlyoutSeparator />
+                            <AppBarButton Icon="View" Label="Compact Mode" />
+                            <MenuFlyoutSeparator />
+                            <AppBarButton Icon="View" Label="Show hidden Files" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Icon="Filter" Label="Filter">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <AppBarButton Icon="Important" Label="Hide files" />
+                            <AppBarButton Icon="Important" Label="Hide folders" />
+                            <AppBarButton Icon="Important" Label="Hide hidden" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarElementContainer>
+                <SplitButton Content="Filter">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <RadioButtons>
+                                    <RadioButton Content="Show all Folders" />
+                                    <RadioButton Content="Hide all Folders" />
+                                    <RadioButton Content="Hide hidden Folders" />
+                                </RadioButtons>
+                                <AppBarSeparator />
+                                <RadioButtons>
+                                    <RadioButton Content="All Files" />
+                                    <RadioButton Content="No Hidden Folders" />
+                                    <RadioButton Content="Hide Folders" />
+                                </RadioButtons>
+                                <AppBarSeparator />
+                                <RadioButtons>
+                                    <RadioButton Content="Always show Thumbnails" />
+                                    <RadioButton Content="Fast mode (Use Stock Icons only)" />
+                                </RadioButtons>
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <AppBarButton Icon="View" Label="View">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <AppBarButton Icon="View" Label="Tiles" />
+                            <AppBarButton Icon="View" Label="Details" />
+                            <MenuFlyoutSeparator />
+                            <AppBarButton Icon="View" Label="Compact Mode" />
+                            <MenuFlyoutSeparator />
+                            <AppBarButton Icon="View" Label="Show hidden Files" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarElementContainer>
+                <SplitButton Content="File´s Tags">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <AppBarButton Icon="Home" Label="Home" />
+                                <AppBarButton Icon="Edit" Label="Work" />
+                                <AppBarButton Icon="Pictures" Label="Photos" />
+                                <AppBarButton Icon="Important" Label="Important" />
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+            </AppBarElementContainer>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Undo"
+                              Label="Undo"
+                                />
+                <AppBarSeparator />
+                <AppBarButton Icon="Pin"
+                              Label="Pin to Quick access"
+                                />
+                <AppBarSeparator />
+                <AppBarButton Icon="SelectAll"
+                              Label="Select all"
+                                />
+                <!-- TODO: The Icon="ViewAll" is the one, that Windows Explorer uses for `Select none` -->
+                <AppBarButton Icon="ClearSelection"
+                              Label="Select none"
+                                />
+                <AppBarButton Icon="Shuffle"
+                              Label="Invert selection"
+                                />
+                <AppBarSeparator />
+                <AppBarButton Icon="Repair"
+                              Label="Properties"
+                                />
+                <AppBarButton Icon="Setting"
+                              Label="Options"
+                                />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        <SplitView Grid.Column="0"
+                   Grid.Row="1"
+                   PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                   IsPaneOpen="True"
+                   OpenPaneLength="192"
+                   DisplayMode="Inline">
+            <SplitView.Pane>
+                <local:ShellNamespaceTreeControl x:Name="PrimaryShellTreeView" />
+            </SplitView.Pane>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <local:ShellListView x:Name="PrimaryShellListView"
+                                     Grid.Row="0" />
+                <CommandBar Grid.Column="0"
+                            Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            VerticalContentAlignment="Center">
+                    <AppBarButton IsCompact="True">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold"
+                                 Text="Items: " />
+                        </TextBlock>
+                    </AppBarButton>
+                    <AppBarSeparator />
+                    <AppBarButton IsCompact="True">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold"
+                                 Text="Folders: " />
+                        </TextBlock>
+                    </AppBarButton>
+                    <AppBarSeparator />
+                    <AppBarButton IsCompact="True">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold"
+                                 Text="Files: " />
+                        </TextBlock>
+                    </AppBarButton>
+                    <AppBarSeparator />
+                    <AppBarButton IsCompact="True">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold"
+                                 Text="Size: " />
+                            <Run Text="KB" />
+                        </TextBlock>
+                    </AppBarButton>
+                    <AppBarSeparator />
+                    <AppBarButton IsCompact="True">
+                        <TextBlock>
+                            <Run FontWeight="SemiBold"
+                                 Text="Hidden: " />
+                        </TextBlock>
+                    </AppBarButton>
+                </CommandBar>
+            </Grid>
+        </SplitView>
+        <Border Grid.Column="1"
+                Grid.Row="1"
+                MinWidth="192"
+                BorderThickness="7"
+                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+        </Border>
+    </Grid>
+</UserControl>

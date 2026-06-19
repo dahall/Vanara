@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vanara WinUI3 i18n resource. Language: de-DE -->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local="using:electrifier.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+</ResourceDictionary>
