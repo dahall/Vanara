@@ -2,6 +2,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Linq;
 using Vanara.CodeGen;
@@ -34,10 +36,20 @@ public class PreferFewerAttributeOverloadAnalyzer : DiagnosticAnalyzer
 	{
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 		context.EnableConcurrentExecution();
-		context.RegisterSyntaxNodeAction(AnalyzeInvocation, SyntaxKind.InvocationExpression);
+		context.RegisterCompilationStartAction(compilationContext =>
+		{
+			// Cache interop attribute counts per method symbol for the lifetime of this compilation.
+			// Without caching, GetMembers + CountInteropAttributes runs on every invocation node.
+			var attrCountCache = new ConcurrentDictionary<IMethodSymbol, int>(SymbolEqualityComparer.Default);
+			int GetCachedAttrCount(IMethodSymbol m) => attrCountCache.GetOrAdd(m, static sym => sym.CountInteropAttributes());
+
+			compilationContext.RegisterSyntaxNodeAction(
+				ctx => AnalyzeInvocation(ctx, GetCachedAttrCount),
+				SyntaxKind.InvocationExpression);
+		});
 	}
 
-	private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
+	private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, Func<IMethodSymbol, int> getAttrCount)
 	{
 		var invocation = (InvocationExpressionSyntax)context.Node;
 
@@ -50,39 +62,35 @@ public class PreferFewerAttributeOverloadAnalyzer : DiagnosticAnalyzer
 		if (containingType is null || !containingType.IsInNamespace("Vanara"))
 			return;
 
-		// Find all overloads of the same method name in the same type
-		var overloads = containingType.GetMembers(calledMethod.Name)
-			.OfType<IMethodSymbol>()
-			.Where(m => !SymbolEqualityComparer.Default.Equals(m, calledMethod) &&
-						m.DeclaredAccessibility == calledMethod.DeclaredAccessibility &&
-						m.IsStatic == calledMethod.IsStatic && !m.IsExtern)
-			.ToList();
-
-		if (overloads.Count == 0)
-			return;
-
-		// Count interop attributes on the called method's parameters
-		int calledAttrCount = calledMethod.CountInteropAttributes();
+		// Count interop attributes on the called method (cached).
+		int calledAttrCount = getAttrCount(calledMethod);
 		if (calledAttrCount == 0)
 			return; // Already using a clean overload
 
-		// Check if any overload has fewer interop attributes and is compatible
-		foreach (var overload in overloads)
+		// Find all overloads of the same method name in the same type with fewer attributes (cached counts).
+		IMethodSymbol? betterOverload = null;
+		foreach (var member in containingType.GetMembers(calledMethod.Name))
 		{
-			int overloadAttrCount = overload.CountInteropAttributes();
-			if (overloadAttrCount >= calledAttrCount)
-				continue;
+			if (member is not IMethodSymbol overload) continue;
+			if (SymbolEqualityComparer.Default.Equals(overload, calledMethod)) continue;
+			if (overload.DeclaredAccessibility != calledMethod.DeclaredAccessibility) continue;
+			if (overload.IsStatic != calledMethod.IsStatic || overload.IsExtern) continue;
 
-			//// Check that the overload could accept the arguments being passed
-			//if (!IsOverloadCompatible(context.SemanticModel, invocation, calledMethod, overload))
-			//	continue;
-
-			// Found a better overload — report diagnostic
-			var overloadSignature = FormatMethodSignature(calledMethod, invocation.ArgumentList.Arguments, overload);
-			var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), overloadSignature);
-			context.ReportDiagnostic(diagnostic);
-			return; // Report only the best match
+			int overloadAttrCount = getAttrCount(overload);
+			if (overloadAttrCount < calledAttrCount)
+			{
+				betterOverload = overload;
+				break;
+			}
 		}
+
+		if (betterOverload is null)
+			return;
+
+		// Found a better overload — report diagnostic
+		var overloadSignature = FormatMethodSignature(calledMethod, invocation.ArgumentList.Arguments, betterOverload);
+		var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation(), overloadSignature);
+		context.ReportDiagnostic(diagnostic);
 	}
 
 	/// <summary>

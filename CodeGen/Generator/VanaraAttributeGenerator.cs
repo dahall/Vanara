@@ -172,6 +172,20 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			var types = deferralMappings.SelectMany(dm => new FungibleTypeDecl[] { dm.src, dm.dest }).Distinct()
 				.ToDictionary(t => t, t => (methods: new Dictionary<MemberDeclarationSyntax, MethodBodyBuilder>(SyntaxComparer.Default), usings: new List<UsingDirectiveSyntax>()));
 
+			// Cache using-directives per SyntaxTree so the full tree is traversed at most once per file,
+			// rather than once per attribute node processed inside the inner loops below.
+			var treeUsingsCache = new Dictionary<SyntaxTree, IReadOnlyList<UsingDirectiveSyntax>>();
+			IReadOnlyList<UsingDirectiveSyntax> GetTreeUsings(SyntaxTree tree)
+			{
+				if (!treeUsingsCache.TryGetValue(tree, out var cached))
+					treeUsingsCache[tree] = cached = tree.GetRoot().DescendantNodes()
+						.OfType<UsingDirectiveSyntax>()
+						.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None))
+						.Select(u => u.WithoutTrivia())
+						.ToList();
+				return cached;
+			}
+
 			// Process each type group's methods
 			foreach (var typeGroup in paramNodes.GroupBy(TypeFromNode))
 			{
@@ -196,9 +210,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 						if (methBuilder is not null)
 						{
 							methLookup[methDecl] = methBuilder;
-							// Add distinct using directives
-							usings.AddRange(syntaxNode.SyntaxTree.GetRoot().DescendantNodes().OfType<UsingDirectiveSyntax>()
-								.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None)).Select(u => u.WithoutTrivia()));
+							// Add distinct using directives (tree traversal result is cached per file).
+							usings.AddRange(GetTreeUsings(syntaxNode.SyntaxTree));
 						}
 					}
 					catch (Exception ex)
@@ -239,9 +252,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 						handler.bodyBuilder(context, compilation, types.Keys, syntaxNode, methDecl, attrDatas, ref methBuilder!);
 						if (methBuilder is not null)
 						{
-							// Add distinct using directives
-							usings.AddRange(syntaxNode.SyntaxTree.GetRoot().DescendantNodes().OfType<UsingDirectiveSyntax>()
-								.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None)).Select(u => u.WithoutTrivia()));
+							// Add distinct using directives (tree traversal result is cached per file).
+							usings.AddRange(GetTreeUsings(syntaxNode.SyntaxTree));
 						}
 
 						// Get the destination type from the parameter or return type and ensure it exists in types, creating it if necessary from handles

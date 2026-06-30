@@ -27,10 +27,19 @@ public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 	{
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 		context.EnableConcurrentExecution();
-		context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression);
+		// Resolve SafeHANDLE once per compilation instead of on every null/default literal node.
+		context.RegisterCompilationStartAction(compilationContext =>
+		{
+			var safeHandleType = compilationContext.Compilation.GetTypeByMetadataName("Vanara.PInvoke.SafeHANDLE");
+			if (safeHandleType is null)
+				return;
+			compilationContext.RegisterSyntaxNodeAction(
+				ctx => AnalyzeNode(ctx, safeHandleType),
+				SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression);
+		});
 	}
 
-	private static void AnalyzeNode(SyntaxNodeAnalysisContext context)
+	private static void AnalyzeNode(SyntaxNodeAnalysisContext context, INamedTypeSymbol safeHandleType)
 	{
 		var nodeSyntax = (LiteralExpressionSyntax)context.Node;
 
@@ -39,10 +48,11 @@ public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 			&& varSyntax.Parent is VariableDeclarationSyntax varDeclSyntax && varDeclSyntax.Type is not NullableTypeSyntax
 			&& context.SemanticModel.GetTypeInfo(varDeclSyntax.Type).Type is ITypeSymbol typeSym)
 		{
-			ReportIfDerivedType(typeSym, context);
+			ReportIfDerivedType(typeSym, safeHandleType, context);
 		}
-		// If this is an argument, determine if the parameter type it is going to IsSafeHANDLEDerivedType and create diagnotic
-		else if (nodeSyntax.AncestorsAndSelf().FirstOrDefault(n => n is ArgumentSyntax) is ArgumentSyntax argumentSyntax
+		// If this is an argument, determine if the parameter type it is going to IsSafeHANDLEDerivedType and create diagnostic.
+		// null/default literals are always direct children of ArgumentSyntax; avoid the LINQ AncestorsAndSelf walk.
+		else if (nodeSyntax.Parent is ArgumentSyntax argumentSyntax
 			&& argumentSyntax.Parent is ArgumentListSyntax argumentListSyntax)
 		{
 			var symbolInfo = context.SemanticModel.GetSymbolInfo(argumentListSyntax.Parent!);
@@ -58,14 +68,13 @@ public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 				}
 
 				if (parameter is not null && parameter.NullableAnnotation != NullableAnnotation.Annotated)
-					ReportIfDerivedType(parameter.Type, context);
+					ReportIfDerivedType(parameter.Type, safeHandleType, context);
 			}
 		}
 	}
 
-	private static void ReportIfDerivedType(ITypeSymbol typeSymbol, SyntaxNodeAnalysisContext context)
+	private static void ReportIfDerivedType(ITypeSymbol typeSymbol, INamedTypeSymbol safeHandleType, SyntaxNodeAnalysisContext context)
 	{
-		var safeHandleType = context.Compilation.GetTypeByMetadataName("Vanara.PInvoke.SafeHANDLE");
 		if (typeSymbol is not null && typeSymbol.BaseType is not null && SymbolEqualityComparer.Default.Equals(typeSymbol.BaseType, safeHandleType))
 		{
 			Dictionary<string, string?> properties = new() { ["SafeHandleType"] = typeSymbol.Name };

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Concurrent;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,6 +20,10 @@ internal class SyntaxComparer : IEqualityComparer<SyntaxNode>
 {
 	public static readonly SyntaxComparer Default = new();
 	public bool Equals(SyntaxNode? x, SyntaxNode? y) => x?.IsEquivalentTo(y) ?? y is null;
+	// GetHashCode uses object identity because the generator always groups/keys
+	// nodes that originate from the same Roslyn compilation cache (same reference == same node).
+	// Changing this to a text-based hash would incorrectly merge different parameter nodes
+	// that happen to have identical text (e.g., two 'uint count' params in different methods).
 	public int GetHashCode(SyntaxNode obj) => obj.GetHashCode();
 }
 
@@ -186,7 +191,15 @@ internal static class Util
 		//SymbolEqualityComparer.Default.NameEquals(typeSymbol?.ContainingAssembly, compilation?.Assembly);
 		typeSymbol.Locations.Any(loc => loc.Kind == LocationKind.SourceFile);
 
-	public static bool NameEquals(this AttributeSyntax attr, string name) => Regex.IsMatch(attr.Name.ToString(), $"(?:(?:\\w+\\.)*|\\b){name}(Attribute)?");
+	// Compiled regex cache keyed on attribute short name (e.g. "MarshalAs").
+	private static readonly ConcurrentDictionary<string, Regex> _nameEqualsRegexCache = new(StringComparer.Ordinal);
+
+	public static bool NameEquals(this AttributeSyntax attr, string name)
+	{
+		var regex = _nameEqualsRegexCache.GetOrAdd(name,
+			static n => new Regex($"(?:(?:\\w+\\.)*|\\b){n}(Attribute)?", RegexOptions.Compiled));
+		return regex.IsMatch(attr.Name.ToString());
+	}
 
 	public static ArgumentSyntax ParamToArg(this ParameterSyntax param)
 	{
@@ -203,7 +216,9 @@ internal static class Util
 
 	public static string? Qualify(this string? name, string ns, string? parent = null)
 	{
+#if DEBUG
 		System.Diagnostics.Debug.Write($"{name} (NS:{ns}, P:{parent}) => ");
+#endif
 		if (string.IsNullOrWhiteSpace(name)) return name;
 		if (string.IsNullOrWhiteSpace(ns)) return name;
 		name = parent is not null && name!.StartsWith(parent + '.') ? name.Substring(parent.Length + 1) : name;
@@ -212,7 +227,9 @@ internal static class Util
 		if (name!.StartsWith(prefix))
 			retVal = name.Substring(prefix.Length);
 		else retVal = name.StartsWith(ns + '.') ? name.Substring(ns.Length + 1) : name.Contains('.') ? $"{name}" : name;
+#if DEBUG
 		System.Diagnostics.Debug.WriteLine(retVal);
+#endif
 		return retVal;
 	}
 
@@ -225,7 +242,7 @@ internal static class Util
 
 	public static string ReplaceWholeWords(string text, IReadOnlyDictionary<string, string> wordMap)
 	{
-		Regex regex = new(string.Join("|", wordMap.Keys.Select(k => @$"\b{Regex.Escape(k)}\b")));
+		Regex regex = new(string.Join("|", wordMap.Keys.Select(k => @$"\b{Regex.Escape(k)}\b")), RegexOptions.Compiled);
 		return regex.Replace(text, m => wordMap[m.Value]);
 	}
 
@@ -301,7 +318,12 @@ internal static class Util
 	/// </returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-		=> source.GroupBy(v => keySelector(v)).Select(v => v.First());
+	{
+		var seen = new HashSet<TKey>();
+		foreach (var item in source)
+			if (seen.Add(keySelector(item)))
+				yield return item;
+	}
 
 	public static T WithDocs<T>(this T node, XmlDocument? xmlDoc) where T : SyntaxNode
 	{
