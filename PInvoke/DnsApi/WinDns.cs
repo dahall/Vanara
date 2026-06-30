@@ -3418,7 +3418,7 @@ public static partial class DnsApi
 	/// <summary>Undocumented.</summary>
 	[PInvokeData("windns.h")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<DNS_TLSA_DATA>), nameof(bCertificateAssociationDataLength))]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct DNS_TLSA_DATA
 	{
 		/// <summary/>
@@ -3434,8 +3434,7 @@ public static partial class DnsApi
 		public ushort bCertificateAssociationDataLength;
 
 		/// <summary/>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		public byte[] bPad;        // keep certificate association data field aligned
+		private unsafe fixed byte bPad[3];        // keep certificate association data field aligned
 
 		/// <summary/>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
