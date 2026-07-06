@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 
 namespace Vanara.Collections;
@@ -45,8 +46,9 @@ public interface ICOMEnum<TElem>
 }
 
 /// <summary>
-/// Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful
-/// if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
+/// Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support <see cref="IEnumerable"/>
+/// or <see cref="IEnumerable{T}"/> like some COM objects. The reflected Next method can expose its fetched-count parameter either as
+/// out uint or as IntPtr.
 /// </summary>
 /// <typeparam name="TItem">The type of the item.</typeparam>
 public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
@@ -104,18 +106,40 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 		return true;
 	}
 
-	private class ComEnumWrapper<T>(T o) where T : class, ICOMEnum<TItem>
+	private class ComEnumWrapper<T> where T : class, ICOMEnum<TItem>
 	{
-		private readonly T obj = o;
+		private readonly T obj;
+		private readonly bool nextUsesIntPtr;
+
+		public ComEnumWrapper(T o)
+		{
+			obj = o;
+			var nextMethod = typeof(T).GetMethod("Next") ?? throw new MissingMethodException(typeof(T).FullName, "Next");
+			var nextParams = nextMethod.GetParameters();
+			nextUsesIntPtr = nextParams.Length > 2 && nextParams[2].ParameterType == typeof(IntPtr);
+		}
 
 		public void ComObjReset() => ComInvoke("Reset");
 
 		public HRESULT ComObjTryGetNext(uint celt, TItem?[] rgelt, out uint celtFetched)
 		{
-			var para = new object[] { celt, rgelt, 0U };
-			var hr = (HRESULT?)ComInvoke("Next", para);
-			celtFetched = (uint)para[2];
-			return hr ?? HRESULT.S_OK;
+			IntPtr fetchedPtr = IntPtr.Zero;
+			try
+			{
+				var para = nextUsesIntPtr
+					? new object[] { celt, rgelt, fetchedPtr = Marshal.AllocHGlobal(sizeof(uint)) }
+					: new object[] { celt, rgelt, 0U };
+				if (fetchedPtr != IntPtr.Zero)
+					Marshal.WriteInt32(fetchedPtr, 0);
+				var hr = (HRESULT?)ComInvoke("Next", para);
+				celtFetched = nextUsesIntPtr ? unchecked((uint)Marshal.ReadInt32(fetchedPtr)) : (uint)para[2];
+				return hr ?? HRESULT.S_OK;
+			}
+			finally
+			{
+				if (fetchedPtr != IntPtr.Zero)
+					Marshal.FreeHGlobal(fetchedPtr);
+			}
 		}
 
 		private object? ComInvoke(string meth, object[]? p = null) => typeof(T).GetMethod(meth)?.Invoke(obj, p);
