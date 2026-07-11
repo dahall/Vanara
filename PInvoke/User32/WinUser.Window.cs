@@ -5348,7 +5348,7 @@ public static partial class User32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowthreadprocessid DWORD GetWindowThreadProcessId(
 	// HWND hWnd, LPDWORD lpdwProcessId );
-	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowthreadprocessid")]
 	public static extern uint GetWindowThreadProcessId([In, AddAsMember] HWND hWnd, out uint lpdwProcessId);
 
