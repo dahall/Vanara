@@ -100,7 +100,7 @@ public static partial class Shell32
 		/// <para>Type: <c>ULONG*</c></para>
 		/// <para>
 		/// When this method returns, contains a pointer to the number of elements actually retrieved. This pointer can be <c>NULL</c>
-		/// if this information is not needed.
+		/// if this information is not needed. In managed code, this optional pointer is represented by <see cref="IntPtr"/>.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -110,7 +110,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ienumexplorercommand-next HRESULT Next(
 		// ULONG celt, IExplorerCommand **pUICommand, ULONG *pceltFetched );
 		[PreserveSig]
-		HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IExplorerCommand[] pUICommand, out uint pceltFetched);
+		HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] IExplorerCommand[] pUICommand, IntPtr pceltFetched);
 
 		/// <summary>Not currently implemented.</summary>
 		/// <param name="celt">

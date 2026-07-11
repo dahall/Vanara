@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 
 namespace Vanara.Collections;
@@ -45,14 +46,16 @@ public interface ICOMEnum<TElem>
 }
 
 /// <summary>
-/// Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful
-/// if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/> like some COM objects.
+/// Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support <see cref="IEnumerable"/>
+/// or <see cref="IEnumerable{T}"/> like some COM objects. The reflected Next method can expose its fetched-count parameter either as
+/// out uint or as IntPtr.
 /// </summary>
 /// <typeparam name="TItem">The type of the item.</typeparam>
 public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 {
 	private readonly ComTryGetNext cnext;
 	private readonly Func<TItem>? make;
+	private object? wrapper;
 
 	/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 	/// <param name="next">The method used to try to get the next item in the enumeration.</param>
@@ -85,10 +88,8 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 	/// <param name="enumObj">The COM enumeration interface instance.</param>
 	public static IEnumFromCom<TItem> Create<TIntf>(TIntf enumObj) where TIntf : class, ICOMEnum<TItem>
 	{
-		if (enumObj is null)
-			throw new ArgumentNullException(nameof(enumObj));
-		var cew = new ComEnumWrapper<TIntf>(enumObj);
-		return new IEnumFromCom<TItem>(cew.ComObjTryGetNext, cew.ComObjReset);
+		var cew = enumObj is not null ? new ComEnumWrapper <TIntf>(enumObj) : throw new ArgumentNullException(nameof(enumObj));
+		return new IEnumFromCom<TItem>(cew.ComObjTryGetNext, cew.ComObjReset) { wrapper = cew };
 	}
 
 	private bool TryGet([NotNullWhen(true)] out TItem? item)
@@ -104,18 +105,32 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 		return true;
 	}
 
-	private class ComEnumWrapper<T>(T o) where T : class, ICOMEnum<TItem>
+	private class ComEnumWrapper<T> where T : class, ICOMEnum<TItem>
 	{
-		private readonly T obj = o;
+		private readonly T obj;
+		private readonly bool nextUsesIntPtr;
+
+		public ComEnumWrapper(T o)
+		{
+			obj = o;
+			var nextMethod = typeof(T).GetMethod("Next") ?? throw new MissingMethodException(typeof(T).FullName, "Next");
+			var nextParams = nextMethod.GetParameters();
+			nextUsesIntPtr = nextParams.Length > 2 && nextParams[2].ParameterType == typeof(IntPtr);
+		}
 
 		public void ComObjReset() => ComInvoke("Reset");
 
 		public HRESULT ComObjTryGetNext(uint celt, TItem?[] rgelt, out uint celtFetched)
 		{
-			var para = new object[] { celt, rgelt, 0U };
-			var hr = (HRESULT?)ComInvoke("Next", para);
-			celtFetched = (uint)para[2];
-			return hr ?? HRESULT.S_OK;
+			unsafe
+			{
+				fixed (uint* pCeltFetched = &celtFetched)
+				{
+					IntPtr ptr = (IntPtr)pCeltFetched;
+					object[] para = nextUsesIntPtr ? [celt, rgelt, ptr] : [celt, rgelt, celtFetched];
+					return (HRESULT?)ComInvoke("Next", para) ?? HRESULT.S_OK;
+				}
+			}
 		}
 
 		private object? ComInvoke(string meth, object[]? p = null) => typeof(T).GetMethod(meth)?.Invoke(obj, p);
