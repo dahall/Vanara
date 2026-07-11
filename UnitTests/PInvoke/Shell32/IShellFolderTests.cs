@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Vanara.Collections;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
@@ -51,6 +52,15 @@ public class IShellFolderTests
 	}
 
 	[Test]
+	public void EnumFromComIntPtrFetchedCountTest()
+	{
+		var enumObj = new IntPtrEnum();
+		var values = IEnumFromCom<int>.Create<IIntPtrEnum>(enumObj).ToArray();
+
+		Assert.That(values, Is.EqualTo(new[] { 1, 2 }));
+	}
+
+	[Test]
 	public void Issue530Test()
 	{
 		var pFolder = (IShellFolder2)new MyDocuments();
@@ -77,5 +87,32 @@ public class IShellFolderTests
 		SFGAO? attr = SFGAO.SFGAO_FILESYSTEM;
 		Assert.That(pFolder!.ParseDisplayName(default, default, System.IO.Path.GetFileName(TestCaseSources.WordDoc), out _, out var ppidl, ref attr), ResultIs.Successful);
 		Assert.That(ppidl, ResultIs.ValidHandle);
+	}
+
+	private interface IIntPtrEnum : ICOMEnum<int>
+	{
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] rgelt, IntPtr pceltFetched);
+
+		void Reset();
+	}
+
+	private sealed class IntPtrEnum : IIntPtrEnum
+	{
+		private readonly int[] values = [1, 2];
+		private int index;
+
+		public HRESULT Next(uint celt, int[] rgelt, IntPtr pceltFetched)
+		{
+			var fetched = 0;
+			while (fetched < celt && index < values.Length)
+				rgelt[fetched++] = values[index++];
+
+			if (pceltFetched != IntPtr.Zero)
+				Marshal.WriteInt32(pceltFetched, fetched);
+
+			return fetched == celt ? HRESULT.S_OK : HRESULT.S_FALSE;
+		}
+
+		public void Reset() => index = 0;
 	}
 }
