@@ -398,7 +398,7 @@ public static partial class User32
 	{
 		var l = LoadString(hInstance, uID, out StrPtrAuto p);
 		if (l == 0) Win32Error.ThrowLastError();
-		return p;
+		return p == IntPtr.Zero ? null : p.ToString(l);
 	}
 
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
