@@ -84,6 +84,14 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
 
+	/// <summary>Returns a <see cref="string"/> that represents a substring of this instance.</summary>
+	/// <param name="length">The length of the substring.</param>
+	/// <param name="startIndex">The starting index of the substring.</param>
+	/// <returns>A <see cref="string"/> that represents the specified substring.</returns>
+	public readonly string ToString(Vanara.PInvoke.SizeT length, [Optional] Vanara.PInvoke.SizeT startIndex) => length == 0 ? string.Empty :
+		(length < 0 || startIndex < 0 || startIndex > length ? throw new ArgumentOutOfRangeException(nameof(startIndex)) :
+		StringHelper.GetString(ptr.Offset(startIndex), thisCharSet, (long)length) ?? "null");
+
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
@@ -198,6 +206,14 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
 
+	/// <summary>Returns a <see cref="string"/> that represents a substring of this instance.</summary>
+	/// <param name="length">The length of the substring.</param>
+	/// <param name="startIndex">The starting index of the substring.</param>
+	/// <returns>A <see cref="string"/> that represents the specified substring.</returns>
+	public readonly string ToString(Vanara.PInvoke.SizeT length, [Optional] Vanara.PInvoke.SizeT startIndex) => length == 0 ? string.Empty :
+		(length < 0 || startIndex < 0 || startIndex > length ? throw new ArgumentOutOfRangeException(nameof(startIndex)) :
+		StringHelper.GetString(ptr.Offset(startIndex * Marshal.SystemDefaultCharSize), thisCharSet, (long)length * Marshal.SystemDefaultCharSize) ?? "null");
+
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
@@ -311,6 +327,14 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
+
+	/// <summary>Returns a <see cref="string"/> that represents a substring of this instance.</summary>
+	/// <param name="length">The length of the substring.</param>
+	/// <param name="startIndex">The starting index of the substring.</param>
+	/// <returns>A <see cref="string"/> that represents the specified substring.</returns>
+	public readonly string ToString(Vanara.PInvoke.SizeT length, [Optional] Vanara.PInvoke.SizeT startIndex) => length == 0 ? string.Empty :
+		(length < 0 || startIndex < 0 || startIndex > length ? throw new ArgumentOutOfRangeException(nameof(startIndex)) :
+		StringHelper.GetString(ptr.Offset(startIndex * 2), thisCharSet, (long)length * 2) ?? "null");
 
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrUni"/> instance.</param>
