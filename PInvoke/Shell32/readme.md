@@ -7,7 +7,7 @@ PInvoke API (methods, structures and constants) imported from Windows Shell32.dl
 - Vanara.PInvoke.ComCtl32  
 - Vanara.PInvoke.Ole  
 - Vanara.PInvoke.ShlwApi  
-### Methods - 100% API coverage (195 of 195 functions)  
+### Methods - 99% API coverage (195 of 196 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AssocCreateForClasses](https://www.google.com/search?num=5&q=AssocCreateForClasses+site%3Alearn.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.AssocCreateForClasses](https://github.com/dahall/Vanara/search?l=C%23&q=AssocCreateForClasses)  
@@ -113,6 +113,7 @@ Native Method | Native DLL | Header | Managed Method
 [Shell_MergeMenus](https://www.google.com/search?num=5&q=Shell_MergeMenus+site%3Alearn.microsoft.com) | shell32.dll | shlobj_core.h | [Vanara.PInvoke.Shell32.Shell_MergeMenus](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_MergeMenus)  
 [Shell_NotifyIcon](https://www.google.com/search?num=5&q=Shell_NotifyIcon+site%3Alearn.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.Shell_NotifyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_NotifyIcon)  
 [Shell_NotifyIconGetRect](https://www.google.com/search?num=5&q=Shell_NotifyIconGetRect+site%3Alearn.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.Shell_NotifyIconGetRect](https://github.com/dahall/Vanara/search?l=C%23&q=Shell_NotifyIconGetRect)  
+[SHELL32_RegenerateUserEnvironment](https://www.google.com/search?num=5&q=SHELL32_RegenerateUserEnvironment+site%3Alearn.microsoft.com) | shell32.dll |  |   
 [ShellAbout](https://www.google.com/search?num=5&q=ShellAboutA+site%3Alearn.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.ShellAbout](https://github.com/dahall/Vanara/search?l=C%23&q=ShellAbout)  
 [ShellExecute](https://www.google.com/search?num=5&q=ShellExecuteA+site%3Alearn.microsoft.com) | shell32.dll | shellapi.h | [Vanara.PInvoke.Shell32.ShellExecute](https://github.com/dahall/Vanara/search?l=C%23&q=ShellExecute)  
 [ShellExecuteEx](https://www.google.com/search?num=5&q=ShellExecuteEx+site%3Alearn.microsoft.com) | shell32.dll | Shellapi.h | [Vanara.PInvoke.Shell32.ShellExecuteEx](https://github.com/dahall/Vanara/search?l=C%23&q=ShellExecuteEx)  

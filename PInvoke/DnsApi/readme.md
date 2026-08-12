@@ -5,7 +5,7 @@ PInvoke API (methods, structures and constants imported from Windows DnsApi.dll.
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DnsApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DnsApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DnsApi)  
 ### Dependencies  
 - Vanara.PInvoke.Ws2_32  
-### Methods - 100% API coverage (40 of 40 functions)  
+### Methods - 97% API coverage (40 of 41 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [DnsAcquireContextHandle_](https://www.google.com/search?num=5&q=DnsAcquireContextHandle_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsAcquireContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=DnsAcquireContextHandle)  
@@ -18,6 +18,7 @@ Native Method | Header | Managed Method
 [DnsGetApplicationSettings](https://www.google.com/search?num=5&q=DnsGetApplicationSettings+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsGetApplicationSettings](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetApplicationSettings)  
 [DnsGetCacheDataTable](https://www.google.com/search?num=5&q=DnsGetCacheDataTable+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DnsApi.DnsGetCacheDataTable](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetCacheDataTable)  
 [DnsGetProxyInformation](https://www.google.com/search?num=5&q=DnsGetProxyInformation+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsGetProxyInformation](https://github.com/dahall/Vanara/search?l=C%23&q=DnsGetProxyInformation)  
+[DnsGetZtSettings](https://www.google.com/search?num=5&q=DnsGetZtSettings+site%3Alearn.microsoft.com) |  |   
 [DnsModifyRecordsInSet_](https://www.google.com/search?num=5&q=DnsModifyRecordsInSet_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsModifyRecordsInSet](https://github.com/dahall/Vanara/search?l=C%23&q=DnsModifyRecordsInSet)  
 [DnsNameCompare_](https://www.google.com/search?num=5&q=DnsNameCompare_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsNameCompare](https://github.com/dahall/Vanara/search?l=C%23&q=DnsNameCompare)  
 [DnsQuery_](https://www.google.com/search?num=5&q=DnsQuery_A+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DnsQuery](https://github.com/dahall/Vanara/search?l=C%23&q=DnsQuery)  
@@ -75,6 +76,7 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[&lt;bPad&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<bPad>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DnsApi.DNS_TLSA_DATA.&lt;bPad&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BbPad%26gt%3Be__FixedBuffer)  
 [DNS_A_DATA](https://www.google.com/search?num=5&q=DNS_A_DATA+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_A_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_A_DATA)  
 [DNS_AAAA_DATA](https://www.google.com/search?num=5&q=DNS_AAAA_DATA+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_AAAA_DATA](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_AAAA_DATA)  
 [DNS_ADDR](https://www.google.com/search?num=5&q=DNS_ADDR+site%3Alearn.microsoft.com) | windns.h | [Vanara.PInvoke.DnsApi.DNS_ADDR](https://github.com/dahall/Vanara/search?l=C%23&q=DNS_ADDR)  

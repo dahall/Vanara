@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Kernel32.d
 
 - Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll, bindlink.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 100% API coverage (1163 of 1163 functions)  
+### Methods - 99% API coverage (1163 of 1167 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -37,6 +37,7 @@ Native Method | Native DLL | Header | Managed Method
 [BackupSeek](https://www.google.com/search?num=5&q=BackupSeek+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BackupSeek](https://github.com/dahall/Vanara/search?l=C%23&q=BackupSeek)  
 [BackupWrite](https://www.google.com/search?num=5&q=BackupWrite+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BackupWrite](https://github.com/dahall/Vanara/search?l=C%23&q=BackupWrite)  
 [BaseFlushAppcompatCache](https://www.google.com/search?num=5&q=BaseFlushAppcompatCache+site%3Alearn.microsoft.com) | kernelbase.dll |  | [Vanara.PInvoke.Kernel32.BaseFlushAppcompatCache](https://github.com/dahall/Vanara/search?l=C%23&q=BaseFlushAppcompatCache)  
+[BaseMarkProcessTokenForInstallers](https://www.google.com/search?num=5&q=BaseMarkProcessTokenForInstallers+site%3Alearn.microsoft.com) | kernel32.dll |  |   
 [Beep](https://www.google.com/search?num=5&q=Beep+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.Beep](https://github.com/dahall/Vanara/search?l=C%23&q=Beep)  
 [BeginUpdateResource](https://www.google.com/search?num=5&q=BeginUpdateResourceA+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.BeginUpdateResource](https://github.com/dahall/Vanara/search?l=C%23&q=BeginUpdateResource)  
 [BindIoCompletionCallback](https://www.google.com/search?num=5&q=BindIoCompletionCallback+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.BindIoCompletionCallback](https://github.com/dahall/Vanara/search?l=C%23&q=BindIoCompletionCallback)  
@@ -530,6 +531,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetQueuedCompletionStatusEx](https://www.google.com/search?num=5&q=GetQueuedCompletionStatusEx+site%3Alearn.microsoft.com) | kernel32.dll | IoAPI.h | [Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetQueuedCompletionStatusEx)  
 [GetShortPathName](https://www.google.com/search?num=5&q=GetShortPathNameA+site%3Alearn.microsoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.GetShortPathName](https://github.com/dahall/Vanara/search?l=C%23&q=GetShortPathName)  
 [GetStagedPackageOrigin](https://www.google.com/search?num=5&q=GetStagedPackageOrigin+site%3Alearn.microsoft.com) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetStagedPackageOrigin](https://github.com/dahall/Vanara/search?l=C%23&q=GetStagedPackageOrigin)  
+[GetStagedPackageOrigin2](https://www.google.com/search?num=5&q=GetStagedPackageOrigin2+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [GetStagedPackagePathByFullName](https://www.google.com/search?num=5&q=GetStagedPackagePathByFullName+site%3Alearn.microsoft.com) | kernel32.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetStagedPackagePathByFullName](https://github.com/dahall/Vanara/search?l=C%23&q=GetStagedPackagePathByFullName)  
 [GetStagedPackagePathByFullName2](https://www.google.com/search?num=5&q=GetStagedPackagePathByFullName2+site%3Alearn.microsoft.com) | kernelbase.dll | appmodel.h | [Vanara.PInvoke.Kernel32.GetStagedPackagePathByFullName2](https://github.com/dahall/Vanara/search?l=C%23&q=GetStagedPackagePathByFullName2)  
 [GetStartupInfo](https://www.google.com/search?num=5&q=GetStartupInfoA+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.GetStartupInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetStartupInfo)  
@@ -682,6 +684,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsNativeVhdBoot](https://www.google.com/search?num=5&q=IsNativeVhdBoot+site%3Alearn.microsoft.com) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.IsNativeVhdBoot](https://github.com/dahall/Vanara/search?l=C%23&q=IsNativeVhdBoot)  
 [IsNLSDefinedString](https://www.google.com/search?num=5&q=IsNLSDefinedString+site%3Alearn.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsNLSDefinedString](https://github.com/dahall/Vanara/search?l=C%23&q=IsNLSDefinedString)  
 [IsNormalizedString](https://www.google.com/search?num=5&q=IsNormalizedString+site%3Alearn.microsoft.com) | kernel32.dll | Winnls.h | [Vanara.PInvoke.Kernel32.IsNormalizedString](https://github.com/dahall/Vanara/search?l=C%23&q=IsNormalizedString)  
+[IsPackageFeatureSupported](https://www.google.com/search?num=5&q=IsPackageFeatureSupported+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [IsProcessCritical](https://www.google.com/search?num=5&q=IsProcessCritical+site%3Alearn.microsoft.com) | kernel32.dll | Processthreadsapi.h | [Vanara.PInvoke.Kernel32.IsProcessCritical](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessCritical)  
 [IsProcessInJob](https://www.google.com/search?num=5&q=IsProcessInJob+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.IsProcessInJob](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessInJob)  
 [IsProcessorFeaturePresent](https://www.google.com/search?num=5&q=IsProcessorFeaturePresent+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.IsProcessorFeaturePresent](https://github.com/dahall/Vanara/search?l=C%23&q=IsProcessorFeaturePresent)  
@@ -724,6 +727,7 @@ Native Method | Native DLL | Header | Managed Method
 [LockFile](https://www.google.com/search?num=5&q=LockFile+site%3Alearn.microsoft.com) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.LockFile](https://github.com/dahall/Vanara/search?l=C%23&q=LockFile)  
 [LockFileEx](https://www.google.com/search?num=5&q=LockFileEx+site%3Alearn.microsoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.LockFileEx](https://github.com/dahall/Vanara/search?l=C%23&q=LockFileEx)  
 [LockResource](https://www.google.com/search?num=5&q=LockResource+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.LockResource](https://github.com/dahall/Vanara/search?l=C%23&q=LockResource)  
+[LogFeatureProcessUsage](https://www.google.com/search?num=5&q=LogFeatureProcessUsage+site%3Alearn.microsoft.com) | kernelbase.dll |  |   
 [lstrcmp](https://www.google.com/search?num=5&q=lstrcmp+site%3Alearn.microsoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcmp](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcmp)  
 [lstrcmpi](https://www.google.com/search?num=5&q=lstrcmpi+site%3Alearn.microsoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcmpi](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcmpi)  
 [lstrcpyn](https://www.google.com/search?num=5&q=lstrcpyn+site%3Alearn.microsoft.com) | kernelbase.dll | winbase.h | [Vanara.PInvoke.Kernel32.lstrcpyn](https://github.com/dahall/Vanara/search?l=C%23&q=lstrcpyn)  

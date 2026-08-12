@@ -6,7 +6,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 ### Dependencies  
 - Vanara.PInvoke.Kernel32  
 - Vanara.PInvoke.Gdi32  
-### Methods - 99% API coverage (569 of 571 functions)  
+### Methods - 99% API coverage (570 of 575 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -54,7 +54,7 @@ Native Method | Header | Managed Method
 [CloseTouchInputHandle](https://www.google.com/search?num=5&q=CloseTouchInputHandle+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseTouchInputHandle](https://github.com/dahall/Vanara/search?l=C%23&q=CloseTouchInputHandle)  
 [CloseWindow](https://www.google.com/search?num=5&q=CloseWindow+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseWindow](https://github.com/dahall/Vanara/search?l=C%23&q=CloseWindow)  
 [CloseWindowStation](https://www.google.com/search?num=5&q=CloseWindowStation+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CloseWindowStation](https://github.com/dahall/Vanara/search?l=C%23&q=CloseWindowStation)  
-[ConvertPrimaryPointerToMouseDrag](https://www.google.com/search?num=5&q=ConvertPrimaryPointerToMouseDrag+site%3Alearn.microsoft.com) |  |   
+[ConvertPrimaryPointerToMouseDrag](https://www.google.com/search?num=5&q=ConvertPrimaryPointerToMouseDrag+site%3Alearn.microsoft.com) | None | [Vanara.PInvoke.User32.ConvertPrimaryPointerToMouseDrag](https://github.com/dahall/Vanara/search?l=C%23&q=ConvertPrimaryPointerToMouseDrag)  
 [CopyAcceleratorTableA](https://www.google.com/search?num=5&q=CopyAcceleratorTableA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyAcceleratorTable](https://github.com/dahall/Vanara/search?l=C%23&q=CopyAcceleratorTable)  
 [CopyAcceleratorTableW](https://www.google.com/search?num=5&q=CopyAcceleratorTableW+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyAcceleratorTable](https://github.com/dahall/Vanara/search?l=C%23&q=CopyAcceleratorTable)  
 [CopyIcon](https://www.google.com/search?num=5&q=CopyIcon+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CopyIcon](https://github.com/dahall/Vanara/search?l=C%23&q=CopyIcon)  
@@ -73,6 +73,7 @@ Native Method | Header | Managed Method
 [CreateIconFromResource](https://www.google.com/search?num=5&q=CreateIconFromResource+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreateIconFromResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIconFromResource)  
 [CreateIconFromResourceEx](https://www.google.com/search?num=5&q=CreateIconFromResourceEx+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreateIconFromResourceEx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIconFromResourceEx)  
 [CreateIconIndirect](https://www.google.com/search?num=5&q=CreateIconIndirect+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreateIconIndirect](https://github.com/dahall/Vanara/search?l=C%23&q=CreateIconIndirect)  
+[CreateLayoutSyncForHwnd](https://www.google.com/search?num=5&q=CreateLayoutSyncForHwnd+site%3Alearn.microsoft.com) |  |   
 [CreateMenu](https://www.google.com/search?num=5&q=CreateMenu+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreateMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMenu)  
 [CreatePopupMenu](https://www.google.com/search?num=5&q=CreatePopupMenu+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreatePopupMenu](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePopupMenu)  
 [CreateSyntheticPointerDevice](https://www.google.com/search?num=5&q=CreateSyntheticPointerDevice+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.CreateSyntheticPointerDevice](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSyntheticPointerDevice)  
@@ -120,6 +121,7 @@ Native Method | Header | Managed Method
 [EnableMouseInPointer](https://www.google.com/search?num=5&q=EnableMouseInPointer+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EnableMouseInPointer](https://github.com/dahall/Vanara/search?l=C%23&q=EnableMouseInPointer)  
 [EnableNonClientDpiScaling](https://www.google.com/search?num=5&q=EnableNonClientDpiScaling+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EnableNonClientDpiScaling](https://github.com/dahall/Vanara/search?l=C%23&q=EnableNonClientDpiScaling)  
 [EnableScrollBar](https://www.google.com/search?num=5&q=EnableScrollBar+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EnableScrollBar](https://github.com/dahall/Vanara/search?l=C%23&q=EnableScrollBar)  
+[EnableSynchronizedLayout](https://www.google.com/search?num=5&q=EnableSynchronizedLayout+site%3Alearn.microsoft.com) |  |   
 [EnableWindow](https://www.google.com/search?num=5&q=EnableWindow+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EnableWindow](https://github.com/dahall/Vanara/search?l=C%23&q=EnableWindow)  
 [EndDeferWindowPos](https://www.google.com/search?num=5&q=EndDeferWindowPos+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EndDeferWindowPos](https://github.com/dahall/Vanara/search?l=C%23&q=EndDeferWindowPos)  
 [EndDialog](https://www.google.com/search?num=5&q=EndDialog+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.EndDialog](https://github.com/dahall/Vanara/search?l=C%23&q=EndDialog)  
@@ -248,11 +250,11 @@ Native Method | Header | Managed Method
 [GetPointerDeviceRects](https://www.google.com/search?num=5&q=GetPointerDeviceRects+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDeviceRects](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDeviceRects)  
 [GetPointerDevices](https://www.google.com/search?num=5&q=GetPointerDevices+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerDevices](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerDevices)  
 [GetPointerFrameInfo](https://www.google.com/search?num=5&q=GetPointerFrameInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerFrameInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerFrameInfo)  
-[GetPointerFrameInfoHistory](https://www.google.com/search?num=5&q=GetPointerFrameInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFrameInfoHistory&gt;g__GetPointerFrameInfoHistory|1132_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFrameInfoHistory%26gt%3Bg__GetPointerFrameInfoHistory%7C1132_0)  
+[GetPointerFrameInfoHistory](https://www.google.com/search?num=5&q=GetPointerFrameInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFrameInfoHistory&gt;g__GetPointerFrameInfoHistory|1133_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFrameInfoHistory%26gt%3Bg__GetPointerFrameInfoHistory%7C1133_0)  
 [GetPointerFramePenInfo](https://www.google.com/search?num=5&q=GetPointerFramePenInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerFramePenInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerFramePenInfo)  
-[GetPointerFramePenInfoHistory](https://www.google.com/search?num=5&q=GetPointerFramePenInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFramePenInfoHistory&gt;g__GetPointerFramePenInfoHistory|1134_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFramePenInfoHistory%26gt%3Bg__GetPointerFramePenInfoHistory%7C1134_0)  
+[GetPointerFramePenInfoHistory](https://www.google.com/search?num=5&q=GetPointerFramePenInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFramePenInfoHistory&gt;g__GetPointerFramePenInfoHistory|1135_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFramePenInfoHistory%26gt%3Bg__GetPointerFramePenInfoHistory%7C1135_0)  
 [GetPointerFrameTouchInfo](https://www.google.com/search?num=5&q=GetPointerFrameTouchInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerFrameTouchInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerFrameTouchInfo)  
-[GetPointerFrameTouchInfoHistory](https://www.google.com/search?num=5&q=GetPointerFrameTouchInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFrameTouchInfoHistory&gt;g__GetPointerFrameTouchInfoHistory|1136_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFrameTouchInfoHistory%26gt%3Bg__GetPointerFrameTouchInfoHistory%7C1136_0)  
+[GetPointerFrameTouchInfoHistory](https://www.google.com/search?num=5&q=GetPointerFrameTouchInfoHistory+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.&lt;GetPointerFrameTouchInfoHistory&gt;g__GetPointerFrameTouchInfoHistory|1137_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetPointerFrameTouchInfoHistory%26gt%3Bg__GetPointerFrameTouchInfoHistory%7C1137_0)  
 [GetPointerInfo](https://www.google.com/search?num=5&q=GetPointerInfo+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerInfo)  
 [GetPointerInfoHistory](https://www.google.com/search?num=5&q=GetPointerInfoHistory+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerInfoHistory](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerInfoHistory)  
 [GetPointerInputTransform](https://www.google.com/search?num=5&q=GetPointerInputTransform+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.GetPointerInputTransform](https://github.com/dahall/Vanara/search?l=C%23&q=GetPointerInputTransform)  
@@ -324,6 +326,7 @@ Native Method | Header | Managed Method
 [InitializeTouchInjection](https://www.google.com/search?num=5&q=InitializeTouchInjection+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InitializeTouchInjection](https://github.com/dahall/Vanara/search?l=C%23&q=InitializeTouchInjection)  
 [InjectSyntheticPointerInput](https://www.google.com/search?num=5&q=InjectSyntheticPointerInput+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InjectSyntheticPointerInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectSyntheticPointerInput)  
 [InjectTouchInput](https://www.google.com/search?num=5&q=InjectTouchInput+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InjectTouchInput](https://github.com/dahall/Vanara/search?l=C%23&q=InjectTouchInput)  
+[InjectTouchpadAction](https://www.google.com/search?num=5&q=InjectTouchpadAction+site%3Alearn.microsoft.com) |  |   
 [InSendMessage](https://www.google.com/search?num=5&q=InSendMessage+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessage](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessage)  
 [InSendMessageEx](https://www.google.com/search?num=5&q=InSendMessageEx+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InSendMessageEx](https://github.com/dahall/Vanara/search?l=C%23&q=InSendMessageEx)  
 [InsertMenu](https://www.google.com/search?num=5&q=InsertMenuA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.InsertMenu](https://github.com/dahall/Vanara/search?l=C%23&q=InsertMenu)  
@@ -443,6 +446,7 @@ Native Method | Header | Managed Method
 [RemoveMenu](https://www.google.com/search?num=5&q=RemoveMenu+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.RemoveMenu](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveMenu)  
 [RemoveProp](https://www.google.com/search?num=5&q=RemovePropA+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.RemoveProp](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveProp)  
 [ReplyMessage](https://www.google.com/search?num=5&q=ReplyMessage+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ReplyMessage](https://github.com/dahall/Vanara/search?l=C%23&q=ReplyMessage)  
+[ReportWindowContentInertia](https://www.google.com/search?num=5&q=ReportWindowContentInertia+site%3Alearn.microsoft.com) |  |   
 [ReuseDDElParam](https://www.google.com/search?num=5&q=ReuseDDElParam+site%3Alearn.microsoft.com) | dde.h | [Vanara.PInvoke.User32.ReuseDDElParam](https://github.com/dahall/Vanara/search?l=C%23&q=ReuseDDElParam)  
 [ScreenToClient](https://www.google.com/search?num=5&q=ScreenToClient+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.ScreenToClient](https://github.com/dahall/Vanara/search?l=C%23&q=ScreenToClient)  
 [ScrollDC](https://www.google.com/search?num=5&q=ScrollDC+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ScrollDC](https://github.com/dahall/Vanara/search?l=C%23&q=ScrollDC)  

@@ -5,11 +5,12 @@ PInvoke API (methods, structures and constants imported from Windows Wer.dll.
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Wer?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Wer?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Wer)  
 ### Dependencies  
 - Vanara.PInvoke.Kernel32  
-### Methods - 100% API coverage (15 of 15 functions)  
+### Methods - 93% API coverage (15 of 16 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WerAddExcludedApplication](https://www.google.com/search?num=5&q=WerAddExcludedApplication+site%3Alearn.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerAddExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerAddExcludedApplication)  
 [WerFreeString](https://www.google.com/search?num=5&q=WerFreeString+site%3Alearn.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerFreeString](https://github.com/dahall/Vanara/search?l=C%23&q=WerFreeString)  
+[WerpSetVelocityInformation](https://www.google.com/search?num=5&q=WerpSetVelocityInformation+site%3Alearn.microsoft.com) |  |   
 [WerRemoveExcludedApplication](https://www.google.com/search?num=5&q=WerRemoveExcludedApplication+site%3Alearn.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerRemoveExcludedApplication](https://github.com/dahall/Vanara/search?l=C%23&q=WerRemoveExcludedApplication)  
 [WerReportAddDump](https://www.google.com/search?num=5&q=WerReportAddDump+site%3Alearn.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddDump](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddDump)  
 [WerReportAddFile](https://www.google.com/search?num=5&q=WerReportAddFile+site%3Alearn.microsoft.com) | werapi.h | [Vanara.PInvoke.Wer.WerReportAddFile](https://github.com/dahall/Vanara/search?l=C%23&q=WerReportAddFile)  

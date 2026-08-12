@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows crypt32.dl
 
 - Includes methods from crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Cryptography?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Cryptography?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)  
-### Methods - 98% API coverage (371 of 375 functions)  
+### Methods - 98% API coverage (371 of 377 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](https://www.google.com/search?num=5&q=BCryptAddContextFunction+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -343,6 +343,7 @@ Native Method | Native DLL | Header | Managed Method
 [PFXImportCertStore](https://www.google.com/search?num=5&q=PFXImportCertStore+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.PFXImportCertStore](https://github.com/dahall/Vanara/search?l=C%23&q=PFXImportCertStore)  
 [PFXIsPFXBlob](https://www.google.com/search?num=5&q=PFXIsPFXBlob+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.PFXIsPFXBlob](https://github.com/dahall/Vanara/search?l=C%23&q=PFXIsPFXBlob)  
 [PFXVerifyPassword](https://www.google.com/search?num=5&q=PFXVerifyPassword+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.PFXVerifyPassword](https://github.com/dahall/Vanara/search?l=C%23&q=PFXVerifyPassword)  
+[SslCombineKeys](https://www.google.com/search?num=5&q=SslCombineKeys+site%3Alearn.microsoft.com) | ncrypt.dll |  |   
 [SslComputeClientAuthHash](https://www.google.com/search?num=5&q=SslComputeClientAuthHash+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeClientAuthHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeClientAuthHash)  
 [SslComputeEapKeyBlock](https://www.google.com/search?num=5&q=SslComputeEapKeyBlock+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeEapKeyBlock](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeEapKeyBlock)  
 [SslComputeFinishedHash](https://www.google.com/search?num=5&q=SslComputeFinishedHash+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslComputeFinishedHash](https://github.com/dahall/Vanara/search?l=C%23&q=SslComputeFinishedHash)  
@@ -353,6 +354,7 @@ Native Method | Native DLL | Header | Managed Method
 [SslDecryptPacket](https://www.google.com/search?num=5&q=SslDecryptPacket+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslDecryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslDecryptPacket)  
 [SslEncryptPacket](https://www.google.com/search?num=5&q=SslEncryptPacket+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEncryptPacket](https://github.com/dahall/Vanara/search?l=C%23&q=SslEncryptPacket)  
 [SslEnumCipherSuites](https://www.google.com/search?num=5&q=SslEnumCipherSuites+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumCipherSuites](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumCipherSuites)  
+[SslEnumGroups](https://www.google.com/search?num=5&q=SslEnumGroups+site%3Alearn.microsoft.com) | ncrypt.dll |  |   
 [SslEnumProtocolProviders](https://www.google.com/search?num=5&q=SslEnumProtocolProviders+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslEnumProtocolProviders](https://github.com/dahall/Vanara/search?l=C%23&q=SslEnumProtocolProviders)  
 [SslExportKey](https://www.google.com/search?num=5&q=SslExportKey+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKey](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKey)  
 [SslExportKeyingMaterial](https://www.google.com/search?num=5&q=SslExportKeyingMaterial+site%3Alearn.microsoft.com) | ncrypt.dll | Sslprovider.h | [Vanara.PInvoke.NCrypt.SslExportKeyingMaterial](https://github.com/dahall/Vanara/search?l=C%23&q=SslExportKeyingMaterial)  
