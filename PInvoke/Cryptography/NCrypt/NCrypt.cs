@@ -774,6 +774,110 @@ public static partial class NCrypt
 	public static extern HRESULT NCryptCreatePersistedKey([In, AddAsMember] NCRYPT_PROV_HANDLE hProvider, [AddAsCtor] out SafeNCRYPT_KEY_HANDLE phKey,
 		string pszAlgId, [Optional] string? pszKeyName, [Optional] PrivateKeyType dwLegacyKeySpec, [Optional] CreatePersistedFlags dwFlags);
 
+	/// <summary>
+	/// <para>Note</para>
+	/// <para>
+	/// Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here. The feature described in this topic is
+	/// available in pre-release versions of the <c>Windows Insider Preview</c>.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The handle of the key to use for the decapsulation operation.</para>
+	/// </param>
+	/// <param name="pbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>A pointer to a buffer that contains the KEM ciphertext. The <c>NCryptEncapsulate</c> function may be used to create a KEM ciphertext.</para>
+	/// </param>
+	/// <param name="cbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbCipherText buffer.</para>
+	/// </param>
+	/// <param name="pbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the shared secret key. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbSecretKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbSecretKey buffer.</para>
+	/// </param>
+	/// <param name="pcbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbSecretKey buffer.</para>
+	/// <para>
+	/// If pbSecretKey is <c>NULL</c>, this receives the size, in bytes, required for the shared secret key. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para><c>[in]</c></para>
+	/// <para>Reserved, must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return Code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>
+	/// <code>ERROR_SUCCESS</code>
+	/// </description>
+	/// <description>The function was successful.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_BAD_FLAGS</code>
+	/// </description>
+	/// <description>The <c>dwFlags</c> parameter contains a value that is not valid.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_INVALID_PARAMETER</code>
+	/// </description>
+	/// <description>
+	/// One or more required parameters ( <c>hKey</c>, <c>pcbSecretKey</c>, <c>pcbCipherText</c>) is NULL, or one of the parameters has an
+	/// invalid value.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_BUFFER_TOO_SMALL</code>
+	/// </description>
+	/// <description>
+	/// An output buffer size ( <c>cbSecretKey</c>) is too small for the result decapsulation operation for the KEM parameters associated
+	/// with the decapsulation key. <c>pcbSecretKey</c> receives the number of bytes required for <c>pbSecretKey</c>.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To query the required size of the pbSecretKey buffer needed for the KEM shared secret key, call <b>NCryptDecapsulate</b> with a
+	/// <c>NULL</c> pbSecretKey. The required size will be returned in pcbSecretKey. This query is efficient and returns the size without
+	/// performing the decapsulation. Equivalently, use <c>NCryptGetProperty</c> to query the <b>NCRYPT_KEM_SHARED_SECRET_LENGTH_PROPERTY</b>
+	/// property of the algorithm or key handle. For currently supported KEM algorithms (ML-KEM), the shared secret length is a constant size
+	/// for a given algorithm.
+	/// </para>
+	/// <para>Additional remarks</para>
+	/// <para>
+	/// Given an invalid, but correctly-sized, ciphertext, the ML-KEM decapsulation operation will implicitly reject the ciphertext by
+	/// returning success in equal time to a valid decapsulation operation, with pseudo-random agreed secret output. This forces higher-level
+	/// protocols to fail later when symmetric keys of peers don't match. So, decapsulate will only ever fail if there are programming errors
+	/// (i.e. incorrect size, use of uninitialized hKey), or something fundamentally goes wrong with the environment (i.e. internal memory
+	/// allocation fails, or self-test detect hardware error).
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccng/ncrypt/nf-ncrypt-ncryptdecapsulate
+	// SECURITY_STATUS NCryptDecapsulate ( [in] NCRYPT_KEY_HANDLE hKey, [in] PCBYTE pbCipherText, [in] ULONG cbCipherText, [out] PBYTE pbSecretKey, [in] ULONG cbSecretKey, [out] ULONG *pcbSecretKey, [in] ULONG dwFlags );
+	[PInvokeData("ncrypt.h")]
+	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT NCryptDecapsulate([In] NCRYPT_KEY_HANDLE hKey, [In, SizeDef(nameof(cbCipherText))] byte[] pbCipherText, uint cbCipherText,
+		[Out, SizeDef(nameof(cbSecretKey), SizingMethod.CheckLastError, OutVarName = nameof(pcbSecretKey))] IntPtr pbSecretKey, uint cbSecretKey, out uint pcbSecretKey,
+		[Ignore] uint dwFlags = 0);
+
 	/// <summary>The <c>NCryptDecrypt</c> function decrypts a block of encrypted data.</summary>
 	/// <param name="hKey">The handle of the key to use to decrypt the data.</param>
 	/// <param name="pbInput">
@@ -1470,6 +1574,111 @@ public static partial class NCrypt
 		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
 		[Out, Optional, SizeDef(nameof(cbDerivedKey), SizingMethod.Query, OutVarName = nameof(pcbResult))] IntPtr pbDerivedKey, [Optional] uint cbDerivedKey,
 		out uint pcbResult, [Optional] DeriveKeyFlags dwFlags);
+
+	/// <summary>
+	/// <para>Note</para>
+	/// <para>
+	/// Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here. The feature described in this topic is
+	/// available in pre-release versions of the <c>Windows Insider Preview</c>.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The handle of the key to use for the encapsulation operation.</para>
+	/// </param>
+	/// <param name="pbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the shared secret key. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbSecretKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbSecretKey buffer.</para>
+	/// </param>
+	/// <param name="pcbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbSecretKey buffer.</para>
+	/// <para>
+	/// If pbSecretKey is <c>NULL</c>, this receives the size, in bytes, required for the shared secret key. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="pbCipherText">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the KEM ciphertext. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbCipherText buffer.</para>
+	/// </param>
+	/// <param name="pcbCipherText">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbCipherText buffer.</para>
+	/// <para>
+	/// If pbCipherText is <c>NULL</c>, this receives the size, in bytes, required for the KEM ciphertext. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para><c>[in]</c></para>
+	/// <para>Reserved, must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return Code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>
+	/// <code>ERROR_SUCCESS</code>
+	/// </description>
+	/// <description>The function was successful.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_BAD_FLAGS</code>
+	/// </description>
+	/// <description>The <c>dwFlags</c> parameter contains a value that is not valid.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_INVALID_PARAMETER</code>
+	/// </description>
+	/// <description>One or more required parameters ( <c>hKey</c>, <c>pcbSecretKey</c>, <c>pcbCipherText</c>) is
+	/// <code>NULL</code>
+	/// , or one of the parameters has an invalid value.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>NTE_BUFFER_TOO_SMALL</code>
+	/// </description>
+	/// <description>
+	/// An output buffer size ( <c>cbSecretKey</c>, <c>cbCipherText</c>) is too small for the result of the encapsulation for the KEM
+	/// parameters associated with the encapsulation key. <c>pcbSecretKey</c> receives the number of bytes required for <c>pbSecretKey</c>,
+	/// <c>pcbCipherText</c> receives the number of bytes required for <c>pbCipherText</c>.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// To query the required sizes of the pbSecretKey and pbCipherText buffers, callers may call <b>NCryptEncapsulate</b> with <c>NULL</c>
+	/// values in pbSecretKey and pbCipherText. The required size will be returned in pcbSecretKey and pcbCipherText, respectively. This
+	/// query is efficient and returns the size without performing the encapsulation. Equivalently, use <c>NCryptGetProperty</c> to query the
+	/// <b>NCRYPT_KEM_SHARED_SECRET_LENGTH_PROPERTY</b> property of the algorithm or key handle, and the
+	/// <b>NCRYPT_KEM_CIPHERTEXT_LENGTH_PROPERTY</b> property of the key handle. For currently supported KEM algorithms (ML-KEM), the shared
+	/// secret length is a constant size for a given algorithm and the KEM ciphertext length is a constant size for a given parameter set.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccng/ncrypt/nf-ncrypt-ncryptencapsulate NTSTATUS NCryptEncapsulate ( [in]
+	// NCRYPT_KEY_HANDLE hKey [out] PBYTE pbSecretKey, [in] ULONG cbSecretKey, [out] ULONG *pcbSecretKey, [out] PBYTE pbCipherText, [in]
+	// ULONG cbCipherText, [out] ULONG *pcbCipherText, [in] ULONG dwFlags );
+	[PInvokeData("ncrypt.h")]
+	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus NCryptEncapsulate([In] NCRYPT_KEY_HANDLE hKey,
+		[Out, SizeDef(nameof(cbSecretKey), SizingMethod.CheckLastError, OutVarName = nameof(pcbSecretKey))] IntPtr pbSecretKey, uint cbSecretKey, out uint pcbSecretKey,
+		[Out, SizeDef(nameof(cbCipherText), SizingMethod.CheckLastError, OutVarName = nameof(pcbCipherText))] IntPtr pbCipherText, uint cbCipherText, out uint pcbCipherText,
+		[Ignore] uint dwFlags = 0);
 
 	/// <summary>The <c>NCryptEncrypt</c> function encrypts a block of data.</summary>
 	/// <param name="hKey">The handle of the key to use to encrypt the data.</param>
@@ -4500,7 +4709,7 @@ public static partial class NCrypt
 	[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
 	public static HRESULT NCryptSetProperty<T>(NCRYPT_HANDLE hObject, string pszProperty, in T pbInput, [Optional] SetPropFlags dwFlags)
 	{
-		using var mem = SafeCoTaskMemHandle.CreateFromStructure(pbInput);
+		using SafeCoTaskMemHandle mem = pbInput is string s ? new(s) : SafeCoTaskMemHandle.CreateFromStructure(pbInput);
 		return NCryptSetProperty(hObject, pszProperty, (IntPtr)mem, (uint)mem.Size, dwFlags);
 	}
 

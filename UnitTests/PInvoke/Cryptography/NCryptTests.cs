@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 using static Vanara.PInvoke.BCrypt;
 using static Vanara.PInvoke.NCrypt;
 
@@ -31,5 +32,26 @@ public class NCryptTests
 		var bd2 = b.ToStructure<NCryptBufferDesc>()!;
 		Assert.That(bd2.pBuffers.Length, Is.EqualTo(2));
 		Assert.That(bd2.pBuffers[1].pvBuffer, Is.EquivalentTo(GenericParameter));
+	}
+
+	[Test]
+	public void NCryptEncapsulateDecapsulateTest()
+	{
+		using var hProv = SafeNCRYPT_PROV_HANDLE.OpenStorage(KnownStorageProvider.MS_KEY_STORAGE_PROVIDER);
+		Assert.That(hProv, ResultIs.ValidHandle);
+
+		Assert.That(hProv.CreatePersistedKey(out var hKey, StandardAlgorithmId.BCRYPT_MLKEM_ALGORITHM), ResultIs.Successful);
+		Assert.That(NCryptSetProperty(hKey, BCrypt.PropertyName.BCRYPT_PARAMETER_SET_NAME, ParameterSetName.BCRYPT_MLKEM_PARAMETER_SET_768), ResultIs.Successful);
+		Assert.That(NCryptFinalizeKey(hKey), ResultIs.Successful);
+
+		Assert.That(NCryptEncapsulate(hKey, out var pbSecretKey, out var pbCipherText), ResultIs.Successful);
+		Assert.That(pbSecretKey, Is.Not.Empty);
+		Assert.That(pbSecretKey.Any(b => b != 0), Is.True);
+		Assert.That(pbCipherText, Is.Not.Empty);
+		Assert.That(pbCipherText.Any(b => b != 0), Is.True);
+
+		Assert.That(NCryptDecapsulate(hKey, pbCipherText, out var pbNewSecretKey), ResultIs.Successful);
+		Assert.That(pbNewSecretKey, Is.Not.Empty.And.Length.EqualTo(pbSecretKey.Length));
+		Assert.That(pbNewSecretKey, Is.EquivalentTo(pbSecretKey));
 	}
 }

@@ -3014,6 +3014,120 @@ public static partial class BCrypt
 	public static extern NTStatus BCryptDuplicateKey(BCRYPT_KEY_HANDLE hKey, out SafeBCRYPT_KEY_HANDLE phNewKey,
 		[Optional] IntPtr pbKeyObject, [Optional] uint cbKeyObject, [Optional] uint dwFlags);
 
+	/// <summary>
+	/// <para>Note</para>
+	/// <para>
+	/// Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here. The feature described in this topic is
+	/// available in pre-release versions of the <c>Windows Insider Preview</c>.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para><c>[in]</c></para>
+	/// <para>
+	/// The handle of the key to use for the encapsulation operation. This key must contain a public (encapsulation) key, and the handle
+	/// would typically be obtained by using <c>BCryptImportKeyPair</c> with a <c>public key</c> BLOB for the KEM algorithm. It is also
+	/// possible to use a private key handle for the encapsulation operation, as KEM private key handles represent a key pair.
+	/// </para>
+	/// </param>
+	/// <param name="pbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the shared secret key. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbSecretKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbSecretKey buffer.</para>
+	/// </param>
+	/// <param name="pcbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbSecretKey buffer.</para>
+	/// <para>
+	/// If pbSecretKey is <c>NULL</c>, this receives the size, in bytes, required for the shared secret key. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="pbCipherText">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the KEM ciphertext. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbCipherText buffer.</para>
+	/// </param>
+	/// <param name="pcbCipherText">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbCipherText buffer.</para>
+	/// <para>
+	/// If pbCipherText is <c>NULL</c>, this receives the size, in bytes, required for the KEM ciphertext. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para><c>[in]</c></para>
+	/// <para>Reserved, must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return Code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_SUCCESS</code>
+	/// </description>
+	/// <description>The function was successful.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_INVALID_PARAMETER</code>
+	/// </description>
+	/// <description>One or more required parameters ( <c>hKey</c>, <c>pcbSecretKey</c>, <c>pcbCipherText</c>) is
+	/// <code>NULL</code>
+	/// , or one of the parameters has an invalid value.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_INVALID_BUFFER_SIZE</code>
+	/// </description>
+	/// <description>
+	/// A buffer size ( <c>cbSecretKey</c>, <c>cbCipherText</c>) does not match the expected size for the KEM parameters associated with the
+	/// encapsulation key. *pcbSecretKey receives the number of bytes required for <c>pbSecretKey</c>, <c>pcbCipherText</c> receives the
+	/// number of bytes required for <c>pbCipherText</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_BUFFER_TOO_SMALL</code>
+	/// </description>
+	/// <description>
+	/// An output buffer size ( <c>cbSecretKey</c>, <c>cbCipherText</c>) is too small for the result encapsulation operation for the KEM
+	/// parameters associated with the encapsulation key. <c>pcbSecretKey</c> receives the number of bytes required for <c>pbSecretKey</c>,
+	/// <c>pcbCipherText</c> receives the number of bytes required for <c>pbCipherText</c>.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// To query the required sizes of the pbSecretKey and pbCipherText buffers, callers may call <b>BCryptEncapsulate</b> with <c>NULL</c>
+	/// pbSecretKey and pbCipherText. The required sizes will be returned in pcbSecretKey and pcbCipherText, respectively. This query is
+	/// efficient and returns the size without performing the encapsulation. Equivalently, use <c>BCryptGetProperty</c> to query the
+	/// <b>BCRYPT_KEM_SHARED_SECRET_LENGTH</b> property of the algorithm or key handle, and the <b>BCRYPT_KEM_CIPHERTEXT_LENGTH</b> property
+	/// of the key handle. For currently supported KEM algorithms (ML-KEM), the shared secret length is a constant size for a given algorithm
+	/// and the KEM ciphertext length is a constant size for a given parameter set.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccng/bcrypt/nf-bcrypt-bcryptencapsulate NTSTATUS BCryptEncapsulate( _In_
+	// BCRYPT_KEY_HANDLE hKey, _Out_writes_bytes_to_opt_(cbSecretKey ,*pcbSecretKey) PUCHAR pbSecretKey, _In_ ULONG cbSecretKey, _Out_ ULONG
+	// *pcbSecretKey, _Out_writes_bytes_to_opt_(cbCipherText ,*pcbCipherText) PUCHAR pbCipherText, _In_ ULONG cbCipherText, _Out_ ULONG
+	// *pcbCipherText, _In_ ULONG dwFlags );
+	[PInvokeData("bcrypt.h")]
+	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus BCryptEncapsulate([In] BCRYPT_KEY_HANDLE hKey,
+		[Out, SizeDef(nameof(cbSecretKey), SizingMethod.CheckLastError, OutVarName = nameof(pcbSecretKey))] IntPtr pbSecretKey, uint cbSecretKey, out uint pcbSecretKey,
+		[Out, SizeDef(nameof(cbCipherText), SizingMethod.CheckLastError, OutVarName = nameof(pcbCipherText))] IntPtr pbCipherText, uint cbCipherText, out uint pcbCipherText,
+		[Ignore] uint dwFlags = 0);
+
 	/// <summary>The <c>BCryptEncrypt</c> function encrypts a block of data.</summary>
 	/// <param name="hKey">
 	/// The handle of the key to use to encrypt the data. This handle is obtained from one of the key creation functions, such as
@@ -10259,6 +10373,23 @@ public static partial class BCrypt
 		public const string MS_PRIMITIVE_PROVIDER = "Microsoft Primitive Provider";
 	}
 
+	/// <summary>Values set using BCRYPT_PARAMETER_SET_NAME</summary>
+	public static class ParameterSetName
+	{
+		/// <summary/>
+		public const string BCRYPT_MLKEM_PARAMETER_SET_512 = "512";
+		/// <summary/>
+		public const string BCRYPT_MLKEM_PARAMETER_SET_768 = "768";
+		/// <summary/>
+		public const string BCRYPT_MLKEM_PARAMETER_SET_1024 = "1024";
+		/// <summary/>
+		public const string BCRYPT_MLDSA_PARAMETER_SET_44 = "44";
+		/// <summary/>
+		public const string BCRYPT_MLDSA_PARAMETER_SET_65 = "65";
+		/// <summary/>
+		public const string BCRYPT_MLDSA_PARAMETER_SET_87 = "87";
+	}
+
 	/// <summary>The following values are used with the BCryptGetProperty and BCryptSetProperty functions to identify a property.</summary>
 	public static class PropertyName
 	{
@@ -10432,6 +10563,21 @@ public static partial class BCrypt
 		/// </summary>
 		[CorrespondingType(typeof(uint))]
 		public const string BCRYPT_SIGNATURE_LENGTH = "SignatureLength";
+
+		/// <summary>The size, in bytes, of the shared secret for a key encapsulation mechanism (KEM) key. This data type is a DWORD.</summary>
+		[CorrespondingType(typeof(uint))]
+		public const string BCRYPT_KEM_SHARED_SECRET_LENGTH = "KEMSharedSecretLength";
+
+		/// <summary>The size, in bytes, of the ciphertext for a key encapsulation mechanism (KEM) key. This data type is a DWORD.</summary>
+		[CorrespondingType(typeof(uint))]
+		public const string BCRYPT_KEM_CIPHERTEXT_LENGTH    = "KEMCiphertextLength";
+
+		/// <summary>
+		/// This identifier must be set on BCrypt ML-DSA and ML-KEM keys before they can be finalized. The property can be set to one of the
+		/// following values.
+		/// </summary>
+		[CorrespondingType(typeof(string))]
+		public const string BCRYPT_PARAMETER_SET_NAME = "ParameterSetName";
 	}
 
 	/// <summary>
@@ -10524,6 +10670,22 @@ public static partial class BCrypt
 
 		/// <summary>The MD5 hash algorithm. Standard: RFC 1321</summary>
 		public const string BCRYPT_MD5_ALGORITHM = "MD5";
+
+		/// <summary>The Module-Lattice-Based Digital Signature Algorithm (ML-DSA). Standard: FIPS 204</summary>
+		/// <remarks>Note: Support for this algorithm begins with Windows 11, version 24H2.</remarks>
+		public const string BCRYPT_MLDSA_ALGORITHM = "ML-DSA";
+
+		/// <summary>The composite Module-Lattice-Based Digital Signature Algorithm (ML-DSA) with a traditional signature algorithm. Standard: IETF draft</summary>
+		/// <remarks>Note: This identifier is part of a prerelease product which may be substantially modified before it's commercially released. Microsoft makes no warranties, express or implied, with respect to the information provided here. The identifier is available in pre-release versions of the Windows Insider Preview.</remarks>
+		public const string BCRYPT_COMPOSITE_MLDSA_ALGORITHM = "Composite-ML-DSA";
+
+		/// <summary>The Module-Lattice-Based Key Encapsulation Mechanism (ML-KEM) algorithm. Standard: FIPS 203</summary>
+		/// <remarks>Note: Support for this algorithm begins with Windows 11, version 24H2.</remarks>
+		public const string BCRYPT_MLKEM_ALGORITHM = "ML-KEM";
+
+		/// <summary>The composite Module-Lattice-Based Key Encapsulation Mechanism (ML-KEM) with a traditional key exchange algorithm. Standard: IETF draft and CFRG draft</summary>
+		/// <remarks>Note: This identifier is part of a prerelease product which may be substantially modified before it's commercially released. Microsoft makes no warranties, express or implied, with respect to the information provided here. The identifier is available in pre-release versions of the Windows Insider Preview.</remarks>
+		public const string BCRYPT_COMPOSITE_MLKEM_ALGORITHM = "Composite-ML-KEM";
 
 		/// <summary>
 		/// Password-based key derivation function 2 (PBKDF2) algorithm. Used by the BCryptKeyDerivation and NCryptKeyDerivation functions.

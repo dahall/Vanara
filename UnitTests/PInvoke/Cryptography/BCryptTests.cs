@@ -91,6 +91,22 @@ public class BCryptTests
 	}
 
 	[Test]
+	public void BCryptEncapsulateTest()
+	{
+		using var hAlg = SafeBCRYPT_ALG_HANDLE.OpenProvider(StandardAlgorithmId.BCRYPT_MLKEM_ALGORITHM);
+		Assert.That(hAlg, ResultIs.ValidHandle);
+
+		Assert.That(BCryptGenerateKeyPair(hAlg, out var hKey, 0), ResultIs.Successful);
+		Assert.That(BCryptFinalizeKeyPair(hKey, 0), ResultIs.Successful);
+
+		Assert.That(BCryptEncapsulate(hKey, out var pbSecretKey, out var pbCipherText), ResultIs.Successful);
+		Assert.That(pbSecretKey, Is.Not.Empty);
+		Assert.That(pbSecretKey.Any(b => b != 0), Is.True);
+		Assert.That(pbCipherText, Is.Not.Empty);
+		Assert.That(pbCipherText.Any(b => b != 0), Is.True);
+	}
+
+	[Test]
 	public void EncryptTest()
 	{
 		byte[] rgbPlaintext = "A random string to test."u8.ToArray();
