@@ -6326,6 +6326,80 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReleaseCapture();
 
+	/// <summary>Reports to the system whether the specified window's content is in a state of inertia.</summary>
+	/// <param name="hWnd">A handle to the window whose content inertia state is being reported.</param>
+	/// <param name="bStartInertia">TRUE to report that the window's content has entered inertia; FALSE to report that inertia has stopped.</param>
+	/// <returns>
+	/// <para>Type: <c>BOOL</c></para>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Window content is "in inertia" if it continues to move after having been manipulated by input after the input stream has concluded.
+	/// Report this inertia so that touchpad input can properly halt this motion when appropriate.
+	/// </para>
+	/// <para>If a window is in inertia, the system changes how it responds to touchpad input:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// Shortly after new touchpad input arrives, the system will send WM_STOPINERTIA to the window. The application should react to this
+	/// message by halting the motion of its content, but not necessarily transitioning out of the "in inertia" state if it has optimizations
+	/// for repeated gestures manipulating the same content (for example, hit-testing input favoring content in inertia, or remembering the
+	/// existing content velocity).
+	/// </item>
+	/// <item>
+	/// If the system determines that the touchpad input is attempting to halt the content motion, the system will send WM_ENDINERTIA to the
+	/// window. The application should react to this message by halting the motion of its content and exiting the "in inertia" state.
+	/// </item>
+	/// </list>
+	/// <para>Example scenarios:</para>
+	/// <list type="bullet">
+	/// <item>The user performs a quick tap: WM_ENDINERTIA is sent. Mouse input is not produced — the tap only resulted in ending inertia.</item>
+	/// <item>The user holds a finger on the touchpad and then lifts it: WM_STOPINERTIA followed by WM_ENDINERTIA.</item>
+	/// <item>
+	/// The user performs a quick two-finger gesture: No inertia messages. Repeated gestures are intended to be handled without needlessly
+	/// halting the content.
+	/// </item>
+	/// <item>
+	/// The user holds a finger (or two) on the touchpad and then performs a two-finger gesture: WM_STOPINERTIA. By dwelling before
+	/// performing the gesture, it was possible the user was attempting to halt the content.
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Although in most cases, receiving WM_STOPINERTIA is followed either by WM_ENDINERTIA or another touchpad gesture, it is not
+	/// guaranteed. If applications implement a special content state upon receiving WM_STOPINERTIA, that state should be exited after some
+	/// amount of time. Similarly, WM_ENDINERTIA may not necessarily be preceded by WM_STOPINERTIA if the touchpad input stream is short.
+	/// </para>
+	/// <para>
+	/// Reporting inertia is important for properly handling touchpad input. If a window's content is in inertia and it is not reported to
+	/// the system, then tapping the touchpad will result in the normal behavior of a click (mouse left-down and left-up). The application
+	/// may end up treating this mouse input as interacting with the content in motion, possibly resulting in performing an action the user
+	/// did not intend.
+	/// </para>
+	/// <para>
+	/// For inertia caused by touch or pen input, the system does not need to specially handle the input with respect to inertia, because the
+	/// window whose content is in inertia is typically the same one that receives the subsequent input. For touchpad input, contrarily, the
+	/// system makes a decision before the application receives any input. Reporting inertia caused by touch or pen input is still
+	/// recommended so that if the user attempts to stop the inertia with their touchpad, then the expected behavior occurs.
+	/// </para>
+	/// <para>
+	/// The system only keeps track of a single window in inertia. If inertia is already active when this API is called to report inertia
+	/// starting on a different window, the previous inertia information will be replaced.
+	/// </para>
+	/// <para>
+	/// If reporting inertia starting, the specified window must be owned by the current thread and the thread must have retrieved input in
+	/// the last two seconds. It should subsequently be reported as stopped once the window's content motion stops (unless the window
+	/// received either WM_STOPINERTIA or WM_ENDINERTIA, in which case it is not necessary to report inertia stopping). Reporting inertia
+	/// stopping will be silently ignored if the system is no longer tracking inertia, if the tracked window does not match the specified
+	/// window, or if the tracked window is owned by a different process.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-reportwindowcontentinertia BOOL ReportWindowContentInertia( HWND hWnd );
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winuser.h", MSDNShortId = "")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ReportWindowContentInertia([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bStartInertia);
+
 	/// <summary>Activates a window. The window must be attached to the calling thread's message queue.</summary>
 	/// <param name="hWnd">
 	/// <para>Type: <c>HWND</c></para>

@@ -480,6 +480,44 @@ public static partial class User32
 		TOUCH_MASK_PRESSURE = 0x00000004,
 	}
 
+	/// <summary>Represents the action being injected.</summary>
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.InjectTouchpadAction")]
+	public enum TOUCHPAD_ACTION
+	{
+		/// <summary>Injects a three-finger tap gesture.</summary>
+		TA_3FINGER_TAP,
+
+		/// <summary>Injects a three-finger button press gesture.</summary>
+		TA_3FINGER_PRESS,
+
+		/// <summary>Injects a three-finger button release gesture.</summary>
+		TA_3FINGER_RELEASE,
+
+		/// <summary>Injects a four-finger tap gesture.</summary>
+		TA_4FINGER_TAP,
+
+		/// <summary>Injects a four-finger button press gesture.</summary>
+		TA_4FINGER_PRESS,
+
+		/// <summary>Injects a four-finger button release gesture.</summary>
+		TA_4FINGER_RELEASE,
+
+		/// <summary>Injects a five-finger tap gesture.</summary>
+		TA_5FINGER_TAP,
+
+		/// <summary>Injects a five-finger button press gesture.</summary>
+		TA_5FINGER_PRESS,
+
+		/// <summary>Injects a five-finger button release gesture.</summary>
+		TA_5FINGER_RELEASE,
+
+		/// <summary>Produces a WM_STOPINERTIA message to the tracked inertia window.</summary>
+		TA_INERTIA_STOP,
+
+		/// <summary>Produces a WM_ENDINERTIA message to the tracked inertia window.</summary>
+		TA_INERTIA_END,
+	}
+
 	/// <summary>Retrieves the pointer ID using the specified value.</summary>
 	/// <param name="wParam">The value to be converted.</param>
 	/// <returns>None</returns>
@@ -1871,6 +1909,24 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "9F7FC5E2-F4B8-42C2-A4BE-240E36AFC13B")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool InjectSyntheticPointerInput([In, AddAsMember] HSYNTHETICPOINTERDEVICE device, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINTER_TYPE_INFO[] pointerInfo, uint count);
+
+	/// <summary>Injects the specified action, using the specified device as the originator.</summary>
+	/// <param name="hDevice">A handle to a synthetic pointer device previously created using <c><b>CreateSyntheticPointerDevice2</b></c>.</param>
+	/// <param name="action">A value from the <c><b>TOUCHPAD_ACTION</b></c> enumeration specifying the action to inject.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c><b>GetLastError</b></c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>This API is designed to be used in conjunction with an injected touchpad device created with the <b>SDCO_TOUCHPAD_GESTURE_ONLY</b> option. If the touchpad is not gesture-only, the system will produce these actions in response to processing the touchpad's physical input.</para>
+	/// <para>The finger tap/press/release actions correspond to the global touchpad gestures. The inertia actions (<b>TA_INERTIA_STOP</b> and <b>TA_INERTIA_END</b>) produce <b>WM_STOPINERTIA</b> and <b>WM_ENDINERTIA</b> messages respectively to the tracked inertia window.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-injecttouchpadaction
+	// BOOL InjectTouchpadAction( [in] HSYNTHETICPOINTERDEVICE hDevice, [in] TOUCHPAD_ACTION action );
+	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.InjectTouchpadAction")]
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool InjectTouchpadAction([In] HSYNTHETICPOINTERDEVICE hDevice, [In] TOUCHPAD_ACTION action);
 
 	/// <summary>
 	/// Indicates whether EnableMouseInPointer is set for the mouse to act as a pointer input device and send WM_POINTER messages.
