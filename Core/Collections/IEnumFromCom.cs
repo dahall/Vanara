@@ -55,7 +55,9 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 {
 	private readonly ComTryGetNext cnext;
 	private readonly Func<TItem>? make;
+#pragma warning disable CS0414
 	private object? wrapper;
+#pragma warning restore CS0414
 
 	/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 	/// <param name="next">The method used to try to get the next item in the enumeration.</param>
