@@ -79,7 +79,7 @@ public static partial class NtDll
 		/// applications to run on 64-bit Windows).
 		/// <para>Use the IsWow64Process2 function to obtain this information.</para>
 		/// </summary>
-		[CorrespondingType(typeof(BOOL), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IntPtr), CorrespondingAction.Get)]
 		ProcessWow64Information = 26,
 
 		/// <summary>
