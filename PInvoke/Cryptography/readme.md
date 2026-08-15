@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows crypt32.dl
 
 - Includes methods from crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Cryptography?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Cryptography?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)  
-### Methods - 99% API coverage (374 of 375 functions)  
+### Methods - 100% API coverage (375 of 375 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](https://www.google.com/search?num=5&q=BCryptAddContextFunction+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -13,7 +13,7 @@ Native Method | Native DLL | Header | Managed Method
 [BCryptCreateContext](https://www.google.com/search?num=5&q=BCryptCreateContext+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptCreateContext](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptCreateContext)  
 [BCryptCreateHash](https://www.google.com/search?num=5&q=BCryptCreateHash+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptCreateHash](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptCreateHash)  
 [BCryptCreateMultiHash](https://www.google.com/search?num=5&q=BCryptCreateMultiHash+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptCreateMultiHash](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptCreateMultiHash)  
-[BCryptDecapsulate](https://www.google.com/search?num=5&q=BCryptDecapsulate+site%3Alearn.microsoft.com) | bcrypt.dll |  |   
+[BCryptDecapsulate](https://www.google.com/search?num=5&q=BCryptDecapsulate+site%3Alearn.microsoft.com) | bcrypt.dll | bcyrpt.h | [Vanara.PInvoke.BCrypt.BCryptDecapsulate](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptDecapsulate)  
 [BCryptDecrypt](https://www.google.com/search?num=5&q=BCryptDecrypt+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptDecrypt](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptDecrypt)  
 [BCryptDeleteContext](https://www.google.com/search?num=5&q=BCryptDeleteContext+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptDeleteContext](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptDeleteContext)  
 [BCryptDeriveKey](https://www.google.com/search?num=5&q=BCryptDeriveKey+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptDeriveKey](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptDeriveKey)  

@@ -6,7 +6,7 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 ### Dependencies  
 - Vanara.PInvoke.Cryptography  
 - Vanara.PInvoke.Kernel32  
-### Methods - 99% API coverage (587 of 590 functions)  
+### Methods - 100% API coverage (587 of 587 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -299,8 +299,6 @@ Native Method | Native DLL | Header | Managed Method
 [IsValidSid](https://www.google.com/search?num=5&q=IsValidSid+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.IsValidSid](https://github.com/dahall/Vanara/search?l=C%23&q=IsValidSid)  
 [IsWellKnownSid](https://www.google.com/search?num=5&q=IsWellKnownSid+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.IsWellKnownSid](https://github.com/dahall/Vanara/search?l=C%23&q=IsWellKnownSid)  
 [LockServiceDatabase](https://www.google.com/search?num=5&q=LockServiceDatabase+site%3Alearn.microsoft.com) | advapi32.dll | winsvc.h | [Vanara.PInvoke.AdvApi32.LockServiceDatabase](https://github.com/dahall/Vanara/search?l=C%23&q=LockServiceDatabase)  
-[LogoffSecondaryUserFromSessionW](https://www.google.com/search?num=5&q=LogoffSecondaryUserFromSessionW+site%3Alearn.microsoft.com) | advapi32.dll |  |   
-[LogonSecondaryUserIntoSessionW](https://www.google.com/search?num=5&q=LogonSecondaryUserIntoSessionW+site%3Alearn.microsoft.com) | advapi32.dll |  |   
 [LogonUser](https://www.google.com/search?num=5&q=LogonUserA+site%3Alearn.microsoft.com) | advapi32.dll | winbase.h | [Vanara.PInvoke.AdvApi32.LogonUser](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUser)  
 [LogonUserEx](https://www.google.com/search?num=5&q=LogonUserExA+site%3Alearn.microsoft.com) | advapi32.dll | winbase.h | [Vanara.PInvoke.AdvApi32.LogonUserEx](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUserEx)  
 [LogonUserExExW](https://www.google.com/search?num=5&q=LogonUserExExW+site%3Alearn.microsoft.com) | advapi32.dll |  | [Vanara.PInvoke.AdvApi32.LogonUserExExW](https://github.com/dahall/Vanara/search?l=C%23&q=LogonUserExExW)  
@@ -528,7 +526,6 @@ Native Method | Native DLL | Header | Managed Method
 [SetTokenInformation](https://www.google.com/search?num=5&q=SetTokenInformation+site%3Alearn.microsoft.com) | advapi32.dll | securitybaseapi.h | [Vanara.PInvoke.AdvApi32.SetTokenInformation](https://github.com/dahall/Vanara/search?l=C%23&q=SetTokenInformation)  
 [SetTraceCallback](https://www.google.com/search?num=5&q=SetTraceCallback+site%3Alearn.microsoft.com) | advapi32.dll | Evntrace.h | [Vanara.PInvoke.AdvApi32.SetTraceCallback](https://github.com/dahall/Vanara/search?l=C%23&q=SetTraceCallback)  
 [SetUserFileEncryptionKey](https://www.google.com/search?num=5&q=SetUserFileEncryptionKey+site%3Alearn.microsoft.com) | advapi32.dll | winefs.h | [Vanara.PInvoke.AdvApi32.SetUserFileEncryptionKey](https://github.com/dahall/Vanara/search?l=C%23&q=SetUserFileEncryptionKey)  
-[SslCopyTlsExtensions](https://www.google.com/search?num=5&q=SslCopyTlsExtensions+site%3Alearn.microsoft.com) | schannel.dll |  |   
 [SslCrackCertificate](https://www.google.com/search?num=5&q=SslCrackCertificate+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslCrackCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslCrackCertificate)  
 [SslEmptyCache](https://www.google.com/search?num=5&q=SslEmptyCacheA+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslEmptyCache](https://github.com/dahall/Vanara/search?l=C%23&q=SslEmptyCache)  
 [SslFreeCertificate](https://www.google.com/search?num=5&q=SslFreeCertificate+site%3Alearn.microsoft.com) | schannel.dll | schannel.h | [Vanara.PInvoke.Schannel.SslFreeCertificate](https://github.com/dahall/Vanara/search?l=C%23&q=SslFreeCertificate)  
