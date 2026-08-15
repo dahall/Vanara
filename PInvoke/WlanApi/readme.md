@@ -3,10 +3,9 @@ PInvoke API (methods, structures and constants imported from Windows WlanApi.dll
 
 - Includes methods from wlanapi.dll, wlanui.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WlanApi?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WlanApi?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WlanApi)  
-### Methods - 98% API coverage (58 of 59 functions)  
+### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[MSMSecAuthCipherValidForSafeMode](https://www.google.com/search?num=5&q=MSMSecAuthCipherValidForSafeMode+site%3Alearn.microsoft.com) | wlanapi.dll |  |   
 [WFDCancelOpenSession](https://www.google.com/search?num=5&q=WFDCancelOpenSession+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WFDCancelOpenSession](https://github.com/dahall/Vanara/search?l=C%23&q=WFDCancelOpenSession)  
 [WFDCloseHandle](https://www.google.com/search?num=5&q=WFDCloseHandle+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WFDCloseHandle](https://github.com/dahall/Vanara/search?l=C%23&q=WFDCloseHandle)  
 [WFDOpenHandle](https://www.google.com/search?num=5&q=WFDOpenHandle+site%3Alearn.microsoft.com) | wlanapi.dll | wlanapi.h | [Vanara.PInvoke.WlanApi.WFDOpenHandle](https://github.com/dahall/Vanara/search?l=C%23&q=WFDOpenHandle)  

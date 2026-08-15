@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Gdi32.dll
 
 - Includes methods from gdi32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Gdi32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)  
-### Methods - 99% API coverage (306 of 308 functions)  
+### Methods - 100% API coverage (306 of 306 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.AbortDoc](https://github.com/dahall/Vanara/search?l=C%23&q=AbortDoc)  
@@ -63,8 +63,6 @@ Native Method | Header | Managed Method
 [CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateRoundRectRgn](https://github.com/dahall/Vanara/search?l=C%23&q=CreateRoundRectRgn)  
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateScalableFontResource](https://github.com/dahall/Vanara/search?l=C%23&q=CreateScalableFontResource)  
 [CreateSolidBrush](https://www.google.com/search?num=5&q=CreateSolidBrush+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.CreateSolidBrush](https://github.com/dahall/Vanara/search?l=C%23&q=CreateSolidBrush)  
-[D3DKMTDDisplayEnum2](https://www.google.com/search?num=5&q=D3DKMTDDisplayEnum2+site%3Alearn.microsoft.com) |  |   
-[D3DKMTQueryFeatureInterface](https://www.google.com/search?num=5&q=D3DKMTQueryFeatureInterface+site%3Alearn.microsoft.com) |  |   
 [DeleteColorSpace](https://www.google.com/search?num=5&q=DeleteColorSpace+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteColorSpace)  
 [DeleteDC](https://www.google.com/search?num=5&q=DeleteDC+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.DeleteDC](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteDC)  
 [DeleteEnhMetaFile](https://www.google.com/search?num=5&q=DeleteEnhMetaFile+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DeleteEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=DeleteEnhMetaFile)  
@@ -144,7 +142,7 @@ Native Method | Header | Managed Method
 [GetDCOrgEx](https://www.google.com/search?num=5&q=GetDCOrgEx+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetDCOrgEx](https://github.com/dahall/Vanara/search?l=C%23&q=GetDCOrgEx)  
 [GetDCPenColor](https://www.google.com/search?num=5&q=GetDCPenColor+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetDCPenColor](https://github.com/dahall/Vanara/search?l=C%23&q=GetDCPenColor)  
 [GetDeviceCaps](https://www.google.com/search?num=5&q=GetDeviceCaps+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.GetDeviceCaps](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceCaps)  
-[GetDeviceGammaRamp](https://www.google.com/search?num=5&q=GetDeviceGammaRamp+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.&lt;GetDeviceGammaRamp&gt;g__GetDeviceGammaRamp|126_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetDeviceGammaRamp%26gt%3Bg__GetDeviceGammaRamp%7C126_0)  
+[GetDeviceGammaRamp](https://www.google.com/search?num=5&q=GetDeviceGammaRamp+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetDeviceGammaRamp](https://github.com/dahall/Vanara/search?l=C%23&q=GetDeviceGammaRamp)  
 [GetDIBColorTable](https://www.google.com/search?num=5&q=GetDIBColorTable+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetDIBColorTable](https://github.com/dahall/Vanara/search?l=C%23&q=GetDIBColorTable)  
 [GetDIBits](https://www.google.com/search?num=5&q=GetDIBits+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetDIBits](https://github.com/dahall/Vanara/search?l=C%23&q=GetDIBits)  
 [GetEnhMetaFile](https://www.google.com/search?num=5&q=GetEnhMetaFileA+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetEnhMetaFile](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnhMetaFile)  
@@ -155,7 +153,7 @@ Native Method | Header | Managed Method
 [GetEnhMetaFilePixelFormat](https://www.google.com/search?num=5&q=GetEnhMetaFilePixelFormat+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetEnhMetaFilePixelFormat](https://github.com/dahall/Vanara/search?l=C%23&q=GetEnhMetaFilePixelFormat)  
 [GetFontData](https://www.google.com/search?num=5&q=GetFontData+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetFontData](https://github.com/dahall/Vanara/search?l=C%23&q=GetFontData)  
 [GetFontLanguageInfo](https://www.google.com/search?num=5&q=GetFontLanguageInfo+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetFontLanguageInfo](https://github.com/dahall/Vanara/search?l=C%23&q=GetFontLanguageInfo)  
-[GetFontUnicodeRanges](https://www.google.com/search?num=5&q=GetFontUnicodeRanges+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.&lt;GetFontUnicodeRanges&gt;g__GetFontUnicodeRanges|351_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BGetFontUnicodeRanges%26gt%3Bg__GetFontUnicodeRanges%7C351_0)  
+[GetFontUnicodeRanges](https://www.google.com/search?num=5&q=GetFontUnicodeRanges+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetFontUnicodeRanges](https://github.com/dahall/Vanara/search?l=C%23&q=GetFontUnicodeRanges)  
 [GetGlyphIndices](https://www.google.com/search?num=5&q=GetGlyphIndicesA+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetGlyphIndices](https://github.com/dahall/Vanara/search?l=C%23&q=GetGlyphIndices)  
 [GetGlyphOutline](https://www.google.com/search?num=5&q=GetGlyphOutline+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetGlyphOutline](https://github.com/dahall/Vanara/search?l=C%23&q=GetGlyphOutline)  
 [GetGraphicsMode](https://www.google.com/search?num=5&q=GetGraphicsMode+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.GetGraphicsMode](https://github.com/dahall/Vanara/search?l=C%23&q=GetGraphicsMode)  
@@ -269,7 +267,7 @@ Native Method | Header | Managed Method
 [SetColorSpace](https://www.google.com/search?num=5&q=SetColorSpace+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetColorSpace](https://github.com/dahall/Vanara/search?l=C%23&q=SetColorSpace)  
 [SetDCBrushColor](https://www.google.com/search?num=5&q=SetDCBrushColor+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDCBrushColor](https://github.com/dahall/Vanara/search?l=C%23&q=SetDCBrushColor)  
 [SetDCPenColor](https://www.google.com/search?num=5&q=SetDCPenColor+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDCPenColor](https://github.com/dahall/Vanara/search?l=C%23&q=SetDCPenColor)  
-[SetDeviceGammaRamp](https://www.google.com/search?num=5&q=SetDeviceGammaRamp+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.&lt;SetDeviceGammaRamp&gt;g__SetDeviceGammaRamp|141_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BSetDeviceGammaRamp%26gt%3Bg__SetDeviceGammaRamp%7C141_0)  
+[SetDeviceGammaRamp](https://www.google.com/search?num=5&q=SetDeviceGammaRamp+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDeviceGammaRamp](https://github.com/dahall/Vanara/search?l=C%23&q=SetDeviceGammaRamp)  
 [SetDIBColorTable](https://www.google.com/search?num=5&q=SetDIBColorTable+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBColorTable](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBColorTable)  
 [SetDIBits](https://www.google.com/search?num=5&q=SetDIBits+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBits](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBits)  
 [SetDIBitsToDevice](https://www.google.com/search?num=5&q=SetDIBitsToDevice+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.SetDIBitsToDevice](https://github.com/dahall/Vanara/search?l=C%23&q=SetDIBitsToDevice)  

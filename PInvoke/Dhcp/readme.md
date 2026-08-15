@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Dhcpcsvc.d
 
 - Includes methods from dhcpcsvc6.dll, dhcpcsvc.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Dhcp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Dhcp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Dhcp)  
-### Methods - 91% API coverage (21 of 23 functions)  
+### Methods - 100% API coverage (21 of 21 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DhcpCApiCleanup](https://www.google.com/search?num=5&q=DhcpCApiCleanup+site%3Alearn.microsoft.com) | dhcpcsvc.dll | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DhcpCApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpCApiCleanup)  
@@ -16,10 +16,8 @@ Native Method | Native DLL | Header | Managed Method
 [DhcpUndoRequestParams](https://www.google.com/search?num=5&q=DhcpUndoRequestParams+site%3Alearn.microsoft.com) | dhcpcsvc.dll | dhcpcsdk.h | [Vanara.PInvoke.Dhcp.DhcpUndoRequestParams](https://github.com/dahall/Vanara/search?l=C%23&q=DhcpUndoRequestParams)  
 [Dhcpv6CApiCleanup](https://www.google.com/search?num=5&q=Dhcpv6CApiCleanup+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6CApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6CApiCleanup)  
 [Dhcpv6CApiInitialize](https://www.google.com/search?num=5&q=Dhcpv6CApiInitialize+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6CApiInitialize](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6CApiInitialize)  
-[Dhcpv6FreeCachedParamsDataEx](https://www.google.com/search?num=5&q=Dhcpv6FreeCachedParamsDataEx+site%3Alearn.microsoft.com) | dhcpcsvc6.dll |  |   
 [Dhcpv6ReleasePrefix](https://www.google.com/search?num=5&q=Dhcpv6ReleasePrefix+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6ReleasePrefix](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6ReleasePrefix)  
 [Dhcpv6RenewPrefix](https://www.google.com/search?num=5&q=Dhcpv6RenewPrefix+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RenewPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RenewPrefix)  
-[Dhcpv6RequestCachedParamsEx](https://www.google.com/search?num=5&q=Dhcpv6RequestCachedParamsEx+site%3Alearn.microsoft.com) | dhcpcsvc6.dll |  |   
 [Dhcpv6RequestParams](https://www.google.com/search?num=5&q=Dhcpv6RequestParams+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RequestParams](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RequestParams)  
 [Dhcpv6RequestPrefix](https://www.google.com/search?num=5&q=Dhcpv6RequestPrefix+site%3Alearn.microsoft.com) | dhcpcsvc6.dll | dhcpv6csdk.h | [Vanara.PInvoke.Dhcp.Dhcpv6RequestPrefix](https://github.com/dahall/Vanara/search?l=C%23&q=Dhcpv6RequestPrefix)  
 [McastApiCleanup](https://www.google.com/search?num=5&q=McastApiCleanup+site%3Alearn.microsoft.com) | dhcpcsvc.dll | madcapcl.h | [Vanara.PInvoke.MADCAP.McastApiCleanup](https://github.com/dahall/Vanara/search?l=C%23&q=McastApiCleanup)  
