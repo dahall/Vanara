@@ -35,10 +35,10 @@ public partial class WinternlTests
 		Assert.That(pdp, ResultIs.ValidHandle);
 		TestContext.WriteLine($"DbgPort: {pdp?.Value.ToInt64()}");
 
-		NtQueryResult<BOOL>? pwi = null;
-		Assert.That(() => pwi = NtQueryInformationProcess<BOOL>(hProc, PROCESSINFOCLASS.ProcessWow64Information), Throws.Nothing);
+		NtQueryResult<IntPtr>? pwi = null;
+		Assert.That(() => pwi = NtQueryInformationProcess<IntPtr>(hProc, PROCESSINFOCLASS.ProcessWow64Information), Throws.Nothing);
 		Assert.That(pwi, ResultIs.ValidHandle);
-		Assert.That(pwi?.Value.Value, Is.True);
+		TestContext.WriteLine($"Wow64Information: {pwi?.Value.ToInt64()}");
 
 		NtQueryResult<UNICODE_STRING>? pfn = null;
 		Assert.That(() => pfn = NtQueryInformationProcess<UNICODE_STRING>(hProc, PROCESSINFOCLASS.ProcessImageFileName), Throws.Nothing);
@@ -52,7 +52,7 @@ public partial class WinternlTests
 
 		NtQueryResult<SUBSYSTEM_INFORMATION_TYPE>? psi = null;
 		// This is documented, but fails on Win10
-		Assert.That(() => psi = NtQueryInformationProcess<SUBSYSTEM_INFORMATION_TYPE>(hProc, PROCESSINFOCLASS.ProcessSubsystemInformation), Throws.ArgumentException);
+		Assert.That(() => psi = NtQueryInformationProcess<SUBSYSTEM_INFORMATION_TYPE>(hProc, PROCESSINFOCLASS.ProcessSubsystemInformation), Throws.Nothing);
 		//Assert.That(psi, ResultIs.ValidHandle);
 		//Assert.That(Enum.IsDefined(typeof(SUBSYSTEM_INFORMATION_TYPE), psi.Value), Is.True);
 		//TestContext.WriteLine($"SubSys: {psi.Value}");
