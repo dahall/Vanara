@@ -606,6 +606,25 @@ public static partial class WTSApi32
 		NOTIFY_FOR_ALL_SESSIONS = 1
 	}
 
+	/// <summary>
+	/// Returns if there is an active session on the system without enumerating through the list of sessions. It also does not obtain any
+	/// extra information from Local Session Manager.
+	/// </summary>
+	/// <param name="pbActiveSessionExists">A pointer to a boolean value indicating whether an active session exists.</param>
+	/// <returns>Returns zero if this function fails. If this function succeeds, a nonzero value is returned.</returns>
+	/// <remarks>
+	/// This function only determines if an active session exists. To get a list of sessions and their states, use
+	/// <c>WTSEnumerateSessions</c>. Many processes running in session 0 use <b><c>WTSEnumerateSessions</c></b> to check if an active session
+	/// exists, or to do things if an active session exists (ie: get user name, session id, etc). Using <b>WTSEnumerateSessions</b> when
+	/// there are no active sessions is expensive because the entire list of inactive sessions must be enumerated.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsactivesessionexists BOOL WTSActiveSessionExists( [out]
+	// PBOOL pbActiveSessionExists );
+	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSActiveSessionExists")]
+	[DllImport(Lib_WTSApi32, SetLastError = false, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool WTSActiveSessionExists([MarshalAs(UnmanagedType.Bool)] out bool pbActiveSessionExists);
+
 	/// <summary>Closes an open handle to a Remote Desktop Session Host (RD Session Host) server.</summary>
 	/// <param name="hServer">
 	/// <para>A handle to an RD Session Host server opened by a call to the WTSOpenServer or WTSOpenServerEx function.</para>
