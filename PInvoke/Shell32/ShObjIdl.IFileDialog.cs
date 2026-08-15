@@ -360,7 +360,7 @@ public static partial class Shell32
 
 		/// <summary>Closes the dialog.</summary>
 		/// <param name="hr">The code that will be returned by Show to indicate that the dialog was closed before a selection was made.</param>
-		void Close([MarshalAs(UnmanagedType.Error)] HRESULT hr);
+		void Close(HRESULT hr);
 
 		/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 		/// <param name="guid">The GUID to associate with this dialog state.</param>
@@ -502,7 +502,7 @@ public static partial class Shell32
 
 		/// <summary>Closes the dialog.</summary>
 		/// <param name="hr">The code that will be returned by Show to indicate that the dialog was closed before a selection was made.</param>
-		new void Close([MarshalAs(UnmanagedType.Error)] HRESULT hr);
+		new void Close(HRESULT hr);
 
 		/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 		/// <param name="guid">The GUID to associate with this dialog state.</param>
@@ -938,7 +938,7 @@ public static partial class Shell32
 
 		/// <summary>Closes the dialog.</summary>
 		/// <param name="hr">The code that will be returned by Show to indicate that the dialog was closed before a selection was made.</param>
-		new void Close([MarshalAs(UnmanagedType.Error)] HRESULT hr);
+		new void Close(HRESULT hr);
 
 		/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 		/// <param name="guid">The GUID to associate with this dialog state.</param>
@@ -1312,7 +1312,7 @@ public static partial class Shell32
 
 		/// <summary>Closes the dialog.</summary>
 		/// <param name="hr">The code that will be returned by Show to indicate that the dialog was closed before a selection was made.</param>
-		new void Close([MarshalAs(UnmanagedType.Error)] HRESULT hr);
+		new void Close(HRESULT hr);
 
 		/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 		/// <param name="guid">The GUID to associate with this dialog state.</param>
