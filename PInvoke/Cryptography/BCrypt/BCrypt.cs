@@ -1347,6 +1347,117 @@ public static partial class BCrypt
 		SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags);
 
 	/// <summary>
+	/// <para>Note</para>
+	/// <para>
+	/// Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft
+	/// makes no warranties, express or implied, with respect to the information provided here. The feature described in this topic is
+	/// available in pre-release versions of the <c>Windows Insider Preview</c>.
+	/// </para>
+	/// </summary>
+	/// <param name="hKey">
+	/// <para><c>[in]</c></para>
+	/// <para>
+	/// The handle of the key to use to decapsulate the KEM ciphertext. This must be the private (decapsulation) key which corresponds to the
+	/// public (encapsulation) key used to produce the KEM ciphertext. The key handle is obtained from one of the keypair creation functions,
+	/// such as <c>BCryptGenerateKeyPair</c> or <c>BCryptImportKeyPair</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>A pointer to a buffer that contains the KEM ciphertext. The <c>BCryptEncapsulate</c> function may be used to create a KEM ciphertext.</para>
+	/// </param>
+	/// <param name="cbCipherText">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbCipherText buffer.</para>
+	/// </param>
+	/// <param name="pbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a buffer that receives the shared secret key. See <c>remarks</c> for more information.</para>
+	/// </param>
+	/// <param name="cbSecretKey">
+	/// <para><c>[in]</c></para>
+	/// <para>The size, in bytes, of the pbSecretKey buffer.</para>
+	/// </param>
+	/// <param name="pcbSecretKey">
+	/// <para><c>[out]</c></para>
+	/// <para>A pointer to a <b>ULONG</b> variable that the receives the number of bytes written to pbSecretKey buffer.</para>
+	/// <para>
+	/// If pbSecretKey is <c>NULL</c>, this receives the size, in bytes, required for the shared secret key. See <c>remarks</c> for more information.
+	/// </para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para><c>[in]</c></para>
+	/// <para>Reserved, must be zero.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return Code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_SUCCESS</code>
+	/// </description>
+	/// <description>The function was successful.</description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_INVALID_PARAMETER</code>
+	/// </description>
+	/// <description>One or more required parameters ( <c>hKey</c>, <c>pcbSecretKey</c>, <c>pbCipherText</c>) is
+	/// <code>NULL</code>
+	/// , or one of the parameters has an invalid value.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_INVALID_BUFFER_SIZE</code>
+	/// </description>
+	/// <description>
+	/// A buffer size ( <c>cbSecretKey</c>, <c>cbCipherText</c>) does not match the expected size for the KEM parameters associated with the
+	/// decapsulation key.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <code>STATUS_BUFFER_TOO_SMALL</code>
+	/// </description>
+	/// <description>
+	/// An output buffer size ( <c>cbSecretKey</c>) is too small for the result decapsulation operation for the KEM parameters associated
+	/// with the decapsulation key. <c>pcbSecretKey</c> receives the number of bytes required for <c>pbSecretKey</c>.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To query the required size of the pbSecretKey buffer needed for the KEM shared secret key, call <b>BCryptDecapsulate</b> with a
+	/// <c>NULL</c> pbSecretKey. The required size will be returned in pcbSecretKey. This query is efficient and returns the size without
+	/// performing the decapsulation. Equivalently, use <c>BCryptGetProperty</c> to query the <b>BCRYPT_KEM_SHARED_SECRET_LENGTH</b> property
+	/// of the algorithm or key handle. For currently supported KEM algorithms (ML-KEM), the shared secret length is a constant size for a
+	/// given algorithm.
+	/// </para>
+	/// <para>Additional remarks</para>
+	/// <para>
+	/// Given an invalid, but correctly-sized, ciphertext, the ML-KEM decapsulation operation will implicitly reject the ciphertext by
+	/// returning success in equal time to a valid decapsulation operation, with pseudo-random shared secret key output. This forces
+	/// higher-level protocols to fail later when symmetric keys of peers don't match. So, decapsulate will only ever fail if there are
+	/// programming errors (i.e. incorrect size, use of uninitialized hKey), or something fundamentally goes wrong with the environment (i.e.
+	/// internal memory allocation fails, or and internal consistency test detects hardware error).
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccng/bcrypt/nf-bcrypt-bcryptdecapsulate
+	// NTSTATUS BCryptDecapsulate( _In_ BCRYPT_KEY_HANDLE hKey, _In_reads_bytes_(cbCipherText) PUCHAR pbCipherText, _In_ ULONG cbCipherText, _Out_writes_bytes_to_opt_(cbSecretKey, *pcbSecretKey) PUCHAR pbSecretKey, _In_ ULONG cbSecretKey, _Out_ ULONG *pcbSecretKey, _In_ ULONG dwFlags );
+	[PInvokeData("bcyrpt.h")]
+	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus BCryptDecapsulate([In] BCRYPT_KEY_HANDLE hKey, [In, SizeDef(nameof(cbCipherText))] byte[] pbCipherText, uint cbCipherText,
+		[Out, SizeDef(nameof(cbSecretKey), SizingMethod.CheckLastError, OutVarName = nameof(pcbSecretKey))] IntPtr pbSecretKey, uint cbSecretKey, out uint pcbSecretKey,
+		[Ignore] uint dwFlags = 0);
+
+	/// <summary>
 	/// <para>
 	/// The <c>BCryptCreateMultiHash</c> function creates a multi-hash state that allows for the parallel computation of multiple hash
 	/// operations. This multi-hash state is used by the BCryptProcessMultiOperations function. The multi-hash state can be thought of as
