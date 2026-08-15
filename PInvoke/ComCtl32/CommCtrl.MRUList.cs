@@ -66,7 +66,7 @@ public static partial class ComCtl32
 	/// from comctl32.dll by its ordinal, which is 401 for <b>AddMRUStringW</b>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/shell/addmrustring int AddMRUStringW( _In_ HANDLE hMRU, _In_ LPCTSTR szString );
-	[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern int AddMRUStringW([In] HMRULIST hMRU, [In] string szString);
 
 	/// <summary>
@@ -96,7 +96,7 @@ public static partial class ComCtl32
 	/// from comctl32.dll by its ordinal, which is 401 for <b>AddMRUStringW</b>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/shell/addmrustring int AddMRUStringW( _In_ HANDLE hMRU, _In_ LPCTSTR szString );
-	[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern int AddMRUStringW([In] HMRULIST hMRU, [In] IntPtr szString);
 
 	/// <summary>Creates a new most recently used (MRU) list.</summary>
@@ -113,7 +113,7 @@ public static partial class ComCtl32
 	/// from comctl32.dll by its ordinal, which is 400 for <b>CreateMRUListW</b>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/shell/createmrulist int CreateMRUListW( _In_LPMRUINFO lpmi );
-	[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern HMRULIST CreateMRUListW(in MRUINFO lpmi);
 
 	/// <summary>
@@ -166,7 +166,7 @@ public static partial class ComCtl32
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/shell/enummrulist int EnumMRUListW( _In_HANDLE hMRU, _In_int nItem, _Out_void *lpData,
 	// _In_UINT uLen );
-	[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern int EnumMRUListW([In] HMRULIST hMRU, [In] int nItem, [Out, Optional] IntPtr lpData, [In, Optional] uint uLen);
 
 	/// <summary>Frees the handle associated with the most recently used (MRU) list and writes cached data to the registry.</summary>
