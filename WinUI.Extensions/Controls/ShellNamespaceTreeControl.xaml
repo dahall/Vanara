@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="electrifier.Controls.ShellNamespaceTreeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:electrifier.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="using:electrifier.Controls.Helpers"
+             mc:Ignorable="d">
+
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+        <Grid.Resources>
+            <DataTemplate x:Name="BrowserItemTemplate"
+                          x:DataType="helpers:ShellBrowserItem">
+                <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                              IsSelected="{x:Bind IsSelected}"
+                              ItemsSource="{x:Bind ChildItems}">
+                    <Grid BorderBrush="Transparent"
+                          BorderThickness="3">
+                        <StackPanel HorizontalAlignment="Stretch"
+                                    MaxHeight="23"
+                                    Orientation="Horizontal">
+                            <!-- todo: add overlay for shared, links etc. -->
+                            <Image Name="Image"
+                                   Height="27"
+                                   HorizontalAlignment="Left"
+                                   Source="{x:Bind SoftwareBitmap, Mode=OneWay}"
+                                   VerticalAlignment="Stretch"
+                                   Width="32" />
+                            <TextBlock x:Name="TextBlock"
+                                       Text="{x:Bind DisplayName}"
+                                       VerticalAlignment="Bottom" />
+                        </StackPanel>
+                    </Grid>
+                </TreeViewItem>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TreeView x:Name="TreeView"
+                  Grid.Row="0"
+                  ItemsSource="{x:Bind Items}"
+                  ItemTemplate="{StaticResource BrowserItemTemplate}" />
+    </Grid>
+</UserControl>
