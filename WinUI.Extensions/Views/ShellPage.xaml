@@ -1,0 +1,98 @@
+﻿<Page
+    x:Class="electrifier.Views.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:electrifier.Helpers"
+    xmlns:behaviors="using:electrifier.Behaviors"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    Loaded="OnLoaded">
+    <Grid>
+        <Grid x:Name="AppTitleBar"
+              Canvas.ZIndex="1"
+              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+              IsHitTestVisible="True"
+              VerticalAlignment="Top">
+            <Image Source="/Assets/WindowIcon.ico"
+                   HorizontalAlignment="Left"
+                   Width="16"
+                   Height="16" />
+            <TextBlock x:Name="AppTitleBarText"
+                       VerticalAlignment="Center"
+                       TextWrapping="NoWrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Margin="28,0,0,0"/>
+        </Grid>
+        <NavigationView x:Name="NavigationViewControl"
+                        Canvas.ZIndex="0"
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                        Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
+                        IsBackButtonVisible="Visible"
+                        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+                        IsSettingsVisible="True"
+                        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+                        OpenPaneLength="192">
+            <NavigationView.AutoSuggestBox>
+                <!--<Button AnimatedIcon="History?!?"/>-->
+                <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" />
+            </NavigationView.AutoSuggestBox>
+            <NavigationView.MenuItems>
+                <!--
+                TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
+                https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
+            
+                TODO: Update item icons by updating FontIcon.Glyph properties.
+                https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
+                -->
+                <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.MainViewModel">
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&#xe8fc;" GoToStart -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8fc;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator />
+                <NavigationViewItem x:Uid="Shell_WebView" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe774;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_FileManagement" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagementViewModel">
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph 0xE703 Connect -->
+                        <!-- Glyph 0xe80f Home -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe703;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator />
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Visible">
+                    <NavigationViewItem Icon="Clock" AutomationProperties.Name="Nav2History" />
+                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="Nav2Favorites" />
+                    <NavigationViewItem Icon="Clock" AutomationProperties.Name="Nav2FileManagement" />
+                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="Nav2Browser" />
+                </StackPanel>
+            </NavigationView.PaneFooter>
+            <i:Interaction.Behaviors>
+                <behaviors:NavigationViewHeaderBehavior
+                    DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                    <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Style="{ThemeResource TitleTextBlockStyle}" />
+                            </Grid>
+                        </DataTemplate>
+                    </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
+                </behaviors:NavigationViewHeaderBehavior>
+            </i:Interaction.Behaviors>
+            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+                <Frame x:Name="NavigationFrame"/>
+            </Grid>
+        </NavigationView>
+        <!-- INFO: Für Navigation View probieren: '<controls:PropertySizer HorizontalAlignment="Left" Visibility="{x:Bind ViewPanel.IsPaneOpen, Mode=OneWay}' -->
+    </Grid>
+</Page>
