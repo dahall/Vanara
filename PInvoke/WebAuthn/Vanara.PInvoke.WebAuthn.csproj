@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>webauthn.dll;webauthnplugin.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from the WebAuthn API.</Description>
+    <AssemblyName>Vanara.PInvoke.WebAuthn</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;webauthn</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+</Project>

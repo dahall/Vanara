@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.WebAuthn</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PInvoke\WebAuthn\Vanara.PInvoke.WebAuthn.csproj" />
+  </ItemGroup>
+</Project>
