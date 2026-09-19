@@ -129,6 +129,7 @@
       <dependency id="" version="5.0.8" />
       <dependency id="Vanara.PInvoke.WcmApi" version="5.0.8" />
       <dependency id="Vanara.PInvoke.WcnApi" version="5.0.8" />
+      <dependency id="Vanara.PInvoke.WebAuthn" version="5.0.8" />
       <dependency id="Vanara.PInvoke.WebSocket" version="5.0.8" />
       <dependency id="Vanara.PInvoke.Wer" version="5.0.8" />
       <dependency id="Vanara.PInvoke.WinBio" version="5.0.8" />
