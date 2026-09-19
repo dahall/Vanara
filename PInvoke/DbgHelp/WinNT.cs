@@ -1523,7 +1523,7 @@ public static partial class DbgHelp
 		/// The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K bytes. The
 		/// default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows CE where it is 0x00010000.
 		/// </summary>
-		public uint ImageBase;
+		public nuint ImageBase;
 
 		/// <summary>
 		/// The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the <c>FileAlignment</c>
@@ -1730,19 +1730,19 @@ public static partial class DbgHelp
 		/// The number of bytes to reserve for the stack. Only the memory specified by the <c>SizeOfStackCommit</c> member is committed
 		/// at load time; the rest is made available one page at a time until this reserve size is reached.
 		/// </summary>
-		public uint SizeOfStackReserve;
+		public nuint SizeOfStackReserve;
 
 		/// <summary>The number of bytes to commit for the stack.</summary>
-		public uint SizeOfStackCommit;
+		public nuint SizeOfStackCommit;
 
 		/// <summary>
 		/// The number of bytes to reserve for the local heap. Only the memory specified by the <c>SizeOfHeapCommit</c> member is
 		/// committed at load time; the rest is made available one page at a time until this reserve size is reached.
 		/// </summary>
-		public uint SizeOfHeapReserve;
+		public nuint SizeOfHeapReserve;
 
 		/// <summary>The number of bytes to commit for the local heap.</summary>
-		public uint SizeOfHeapCommit;
+		public nuint SizeOfHeapCommit;
 
 		/// <summary>This member is obsolete.</summary>
 		public uint LoaderFlags;
