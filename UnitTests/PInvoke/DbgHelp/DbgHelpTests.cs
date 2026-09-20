@@ -284,4 +284,26 @@ public class DbgHelpTests
 			}
 		}
 	}
+
+	[Test]
+	public unsafe void OptionalHeaderTest()
+	{
+		using var hFile = CreateFile(@"C:\Windows\notepad.exe", Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
+		Assert.That(hFile, ResultIs.ValidHandle);
+
+		using var hMap = CreateFileMapping(hFile, null, MEM_PROTECTION.PAGE_READONLY);
+		Assert.That(hMap, ResultIs.ValidHandle);
+
+		var pBase = MapViewOfFile(hMap, FILE_MAP.FILE_MAP_READ, 0, 0, default);
+		Assert.That(pBase, Is.Not.EqualTo(IntPtr.Zero));
+		using GenericSafeHandle baseCloser = new(pBase, UnmapViewOfFile, true);
+
+		IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)(void*)pBase;
+		Assert.That(dosHeader->e_magic, Is.EqualTo(IMAGE_DOS_SIGNATURE));
+
+		IMAGE_NT_HEADERS* ntHeader = (IMAGE_NT_HEADERS*)((byte*)dosHeader + dosHeader->e_lfanew);
+		Assert.That(ntHeader->Signature, Is.EqualTo(IMAGE_NT_SIGNATURE));
+
+		ntHeader->OptionalHeader.WriteValues();
+	}
 }

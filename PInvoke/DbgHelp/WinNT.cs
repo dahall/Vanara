@@ -1,50 +1,17 @@
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
+
+using System.Runtime.CompilerServices;
+
 namespace Vanara.PInvoke;
 
 public static partial class DbgHelp
 {
+	/// <summary>The DOS signature for a PE file. This value is used to identify the file as a valid executable.</summary>
+	public const ushort IMAGE_DOS_SIGNATURE = 0x5A4D; // "MZ"
 
-	/// <summary>A <c>LIST_ENTRY</c> structure describes an entry in a doubly linked list or serves as the header for such a list.</summary>
-	/// <remarks>
-	/// <para>A <c>LIST_ENTRY</c> structure that describes the list head must have been initialized by calling InitializeListHead.</para>
-	/// <para>
-	/// A driver can access the <c>Flink</c> or <c>Blink</c> members of a <c>LIST_ENTRY</c>, but the members must only be updated by the
-	/// system routines supplied for this purpose.
-	/// </para>
-	/// <para>
-	/// For more information about how to use <c>LIST_ENTRY</c> structures to implement a doubly linked list, see Singly and Doubly
-	/// Linked Lists.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-list_entry typedef struct _LIST_ENTRY { struct _LIST_ENTRY
-	// *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, PRLIST_ENTRY;
-	[PInvokeData("ntdef.h", MSDNShortId = "NS:ntdef._LIST_ENTRY")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct LIST_ENTRY
-	{
-		/// <summary>
-		/// <para>
-		/// For a <c>LIST_ENTRY</c> structure that serves as a list entry, the <c>Flink</c> member points to the next entry in the list
-		/// or to the list header if there is no next entry in the list.
-		/// </para>
-		/// <para>
-		/// For a <c>LIST_ENTRY</c> structure that serves as the list header, the <c>Flink</c> member points to the first entry in the
-		/// list or to the LIST_ENTRY structure itself if the list is empty.
-		/// </para>
-		/// </summary>
-		public IntPtr Flink;
-
-		/// <summary>
-		/// <para>
-		/// For a <c>LIST_ENTRY</c> structure that serves as a list entry, the <c>Blink</c> member points to the previous entry in the
-		/// list or to the list header if there is no previous entry in the list.
-		/// </para>
-		/// <para>
-		/// For a <c>LIST_ENTRY</c> structure that serves as the list header, the <c>Blink</c> member points to the last entry in the
-		/// list or to the <c>LIST_ENTRY</c> structure itself if the list is empty.
-		/// </para>
-		/// </summary>
-		public IntPtr Blink;
-	}
+	/// <summary>The NT signature for a PE file. This value is used to identify the file as a valid executable.</summary>
+	public const uint IMAGE_NT_SIGNATURE = 0x00004550; // "PE\0\0"
 
 	/// <summary>The format of the debugging information. This member can be one of the following values.</summary>
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_DEBUG_DIRECTORY")]
@@ -63,8 +30,8 @@ public static partial class DbgHelp
 		IMAGE_DEBUG_TYPE_CODEVIEW = 2,
 
 		/// <summary>
-		/// Frame pointer omission (FPO) information. This information tells the debugger how to interpret nonstandard stack frames,
-		/// which use the EBP register for a purpose other than as a frame pointer.
+		/// Frame pointer omission (FPO) information. This information tells the debugger how to interpret nonstandard stack
+		/// frames, which use the EBP register for a purpose other than as a frame pointer.
 		/// </summary>
 		IMAGE_DEBUG_TYPE_FPO = 3,
 
@@ -164,15 +131,19 @@ public static partial class DbgHelp
 
 	/// <summary>The DLL characteristics of the image.</summary>
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_OPTIONAL_HEADER")]
+	[Flags]
 	public enum IMAGE_DLLCHARACTERISTICS : ushort
 	{
+		/// <summary>Image can handle a high entropy 64-bit virtual address space.</summary>
+		IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA = 0x0020,
+
 		/// <summary>The DLL can be relocated at load time.</summary>
 		IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040,
 
 		/// <summary>
 		/// Code integrity checks are forced. If you set this flag and a section contains only uninitialized data, set the
-		/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load because the
-		/// digital signature cannot be verified.
+		/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load
+		/// because the digital signature cannot be verified.
 		/// </summary>
 		IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY = 0x0080,
 
@@ -188,8 +159,14 @@ public static partial class DbgHelp
 		/// <summary>Do not bind the image.</summary>
 		IMAGE_DLLCHARACTERISTICS_NO_BIND = 0x0800,
 
+		/// <summary>Image should execute in an AppContainer.</summary>
+		IMAGE_DLLCHARACTERISTICS_APPCONTAINER = 0x1000,
+
 		/// <summary>A WDM driver.</summary>
 		IMAGE_DLLCHARACTERISTICS_WDM_DRIVER = 0x2000,
+
+		/// <summary>Image supports Control Flow Guard.</summary>
+		IMAGE_DLLCHARACTERISTICS_GUARD_CF = 0x4000,
 
 		/// <summary>The image is terminal server aware.</summary>
 		IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE = 0x8000,
@@ -249,115 +226,9 @@ public static partial class DbgHelp
 		IMAGE_FILE_BYTES_REVERSED_HI = 0x8000,
 	}
 
-	/// <summary>Represents the stack frame layout for a function on an x86 computer when frame pointer omission (FPO) optimization is used. The structure is used to locate the base of the call frame.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-fpo_data
-	// typedef struct _FPO_DATA { DWORD ulOffStart; DWORD cbProcSize; DWORD cdwLocals; WORD cdwParams; WORD cbProlog : 8; WORD cbRegs : 3; WORD fHasSEH : 1; WORD fUseBP : 1; WORD reserved : 1; WORD cbFrame : 2; } FPO_DATA, *PFPO_DATA;
-	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._FPO_DATA")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-	public struct FPO_DATA
-	{
-		/// <summary>The offset of the first byte of the function code.</summary>
-		public uint ulOffStart;
-		/// <summary>The number of bytes in the function.</summary>
-		public uint cbProcSize;
-		/// <summary>The number of local variables.</summary>
-		public uint cdwLocals;
-		/// <summary>The size of the parameters, in <c>DWORD</c>s.</summary>
-		public ushort cdwParams;
-		private ushort flags;
-
-#pragma warning disable IDE1006 // Naming Styles
-		/// <summary>The number of bytes in the function prolog code.</summary>
-		public ushort cbProlog
-		{
-			get => BitHelper.GetBits(flags, 0, 8);
-			set => BitHelper.SetBits(ref flags, 0, 8, value);
-		}
-
-		/// <summary>The number of registers saved.</summary>
-		public ushort cbRegs
-		{
-			get => BitHelper.GetBits(flags, 8, 3);
-			set => BitHelper.SetBits(ref flags, 8, 3, value);
-		}
-
-		/// <summary>A variable that indicates whether the function uses structured exception handling.</summary>
-		public bool fHasSEH
-		{
-			get => BitHelper.GetBit(flags, 11);
-			set => BitHelper.SetBit(ref flags, 11, value);
-		}
-		/// <summary>A variable that indicates whether the EBP register has been allocated.</summary>
-		public bool fUseBP
-		{
-			get => BitHelper.GetBit(flags, 12);
-			set => BitHelper.SetBit(ref flags, 12, value);
-		}
-
-		/// <summary>Reserved for future use.</summary>
-		public bool reserved
-		{
-			get => BitHelper.GetBit(flags, 13);
-			set => BitHelper.SetBit(ref flags, 13, value);
-		}
-
-		/// <summary>
-		///   <para>A variable that indicates the frame type.</para>
-		///   <list type="table">
-		///     <listheader>
-		///       <term>Type</term>
-		///       <term>Meaning</term>
-		///     </listheader>
-		///     <item>
-		///       <term>FRAME_FPO 0</term>
-		///       <term>FPO frame</term>
-		///     </item>
-		///     <item>
-		///       <term>FRAME_NONFPO 3</term>
-		///       <term>Non-FPO frame</term>
-		///     </item>
-		///     <item>
-		///       <term>FRAME_TRAP 1</term>
-		///       <term>Trap frame</term>
-		///     </item>
-		///     <item>
-		///       <term>FRAME_TSS 2</term>
-		///       <term>TSS frame</term>
-		///     </item>
-		///   </list>
-		/// </summary>
-		public FRAME cbFrame
-		{
-			get => (FRAME)BitHelper.GetBits(flags, 14, 2);
-			set => BitHelper.SetBits(ref flags, 14, 2, (ushort)value);
-		}
-#pragma warning restore IDE1006 // Naming Styles
-	}
-
-	/// <summary>Represents an entry in the function table on 64-bit Windows.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-runtime_function
-	// typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY { DWORD BeginAddress; DWORD EndAddress; union { DWORD UnwindInfoAddress; DWORD UnwindData; } DUMMYUNIONNAME; } RUNTIME_FUNCTION, *PRUNTIME_FUNCTION, _IMAGE_RUNTIME_FUNCTION_ENTRY, *_PIMAGE_RUNTIME_FUNCTION_ENTRY;
-	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_RUNTIME_FUNCTION_ENTRY")]
-	[StructLayout(LayoutKind.Explicit)]
-	public struct IMAGE_RUNTIME_FUNCTION_ENTRY
-	{
-		/// <summary>The address of the start of the function.</summary>
-		[FieldOffset(0)]
-		public uint BeginAddress;
-		/// <summary>The address of the end of the function.</summary>
-		[FieldOffset(4)]
-		public uint EndAddress;
-		/// <summary>The address of the unwind information for the function.</summary>
-		[FieldOffset(8)]
-		public uint UnwindInfoAddress;
-		/// <summary />
-		[FieldOffset(8)]
-		public uint UnwindData;
-	}
-
 	/// <summary>
-	/// The architecture type of the computer. An image file can only be run on the specified computer or a system that emulates the
-	/// specified computer.
+	/// The architecture type of the computer. An image file can only be run on the specified computer or a system that emulates
+	/// the specified computer.
 	/// </summary>
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_FILE_HEADER")]
 	public enum IMAGE_FILE_MACHINE : ushort
@@ -560,10 +431,10 @@ public static partial class DbgHelp
 		IMAGE_SCN_ALIGN_8192BYTES = 0x00E00000,
 
 		/// <summary>
-		/// The section contains extended relocations. The count of relocations for the section exceeds the 16 bits that is reserved for
-		/// it in the section header. If the NumberOfRelocations field in the section header is 0xffff, the actual relocation count is
-		/// stored in the VirtualAddress field of the first relocation. It is an error if IMAGE_SCN_LNK_NRELOC_OVFL is set and there are
-		/// fewer than 0xffff relocations in the section.
+		/// The section contains extended relocations. The count of relocations for the section exceeds the 16 bits that is
+		/// reserved for it in the section header. If the NumberOfRelocations field in the section header is 0xffff, the actual
+		/// relocation count is stored in the VirtualAddress field of the first relocation. It is an error if
+		/// IMAGE_SCN_LNK_NRELOC_OVFL is set and there are fewer than 0xffff relocations in the section.
 		/// </summary>
 		IMAGE_SCN_LNK_NRELOC_OVFL = 0x01000000,
 
@@ -631,6 +502,101 @@ public static partial class DbgHelp
 
 		/// <summary>Boot application.</summary>
 		IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION = 16,
+
+		/// <summary>Xbox code catalog.</summary>
+		IMAGE_SUBSYSTEM_XBOX_CODE_CATALOG = 17
+	}
+
+	/// <summary>
+	/// Represents the stack frame layout for a function on an x86 computer when frame pointer omission (FPO) optimization is
+	/// used. The structure is used to locate the base of the call frame.
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-fpo_data typedef struct _FPO_DATA { DWORD ulOffStart;
+	// DWORD cbProcSize; DWORD cdwLocals; WORD cdwParams; WORD cbProlog : 8; WORD cbRegs : 3; WORD fHasSEH : 1; WORD fUseBP : 1;
+	// WORD reserved : 1; WORD cbFrame : 2; } FPO_DATA, *PFPO_DATA;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._FPO_DATA")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct FPO_DATA
+	{
+		/// <summary>The offset of the first byte of the function code.</summary>
+		public uint ulOffStart;
+
+		/// <summary>The number of bytes in the function.</summary>
+		public uint cbProcSize;
+
+		/// <summary>The number of local variables.</summary>
+		public uint cdwLocals;
+
+		/// <summary>The size of the parameters, in <c>DWORD</c> s.</summary>
+		public ushort cdwParams;
+
+		private ushort flags;
+
+		/// <summary>The number of bytes in the function prolog code.</summary>
+		public ushort cbProlog
+		{
+			get => BitHelper.GetBits(flags, 0, 8);
+			set => BitHelper.SetBits(ref flags, 0, 8, value);
+		}
+
+		/// <summary>The number of registers saved.</summary>
+		public ushort cbRegs
+		{
+			get => BitHelper.GetBits(flags, 8, 3);
+			set => BitHelper.SetBits(ref flags, 8, 3, value);
+		}
+
+		/// <summary>A variable that indicates whether the function uses structured exception handling.</summary>
+		public bool fHasSEH
+		{
+			get => BitHelper.GetBit(flags, 11);
+			set => BitHelper.SetBit(ref flags, 11, value);
+		}
+
+		/// <summary>A variable that indicates whether the EBP register has been allocated.</summary>
+		public bool fUseBP
+		{
+			get => BitHelper.GetBit(flags, 12);
+			set => BitHelper.SetBit(ref flags, 12, value);
+		}
+
+		/// <summary>Reserved for future use.</summary>
+		public bool reserved
+		{
+			get => BitHelper.GetBit(flags, 13);
+			set => BitHelper.SetBit(ref flags, 13, value);
+		}
+
+		/// <summary>
+		/// <para>A variable that indicates the frame type.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Type</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FRAME_FPO 0</term>
+		/// <term>FPO frame</term>
+		/// </item>
+		/// <item>
+		/// <term>FRAME_NONFPO 3</term>
+		/// <term>Non-FPO frame</term>
+		/// </item>
+		/// <item>
+		/// <term>FRAME_TRAP 1</term>
+		/// <term>Trap frame</term>
+		/// </item>
+		/// <item>
+		/// <term>FRAME_TSS 2</term>
+		/// <term>TSS frame</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FRAME cbFrame
+		{
+			get => (FRAME)BitHelper.GetBits(flags, 14, 2);
+			set => BitHelper.SetBits(ref flags, 14, 2, (ushort)value);
+		}
 	}
 
 	/// <summary>Represents the COFF symbols header.</summary>
@@ -741,8 +707,8 @@ public static partial class DbgHelp
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_data_directory typedef struct _IMAGE_DATA_DIRECTORY {
-	// DWORD VirtualAddress; DWORD Size; } IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_data_directory typedef struct _IMAGE_DATA_DIRECTORY
+	// { DWORD VirtualAddress; DWORD Size; } IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_DATA_DIRECTORY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_DATA_DIRECTORY
@@ -755,9 +721,9 @@ public static partial class DbgHelp
 	}
 
 	/// <summary>Represents the debug directory format.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_debug_directory typedef struct _IMAGE_DEBUG_DIRECTORY {
-	// DWORD Characteristics; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD Type; DWORD SizeOfData; DWORD
-	// AddressOfRawData; DWORD PointerToRawData; } IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_debug_directory typedef struct
+	// _IMAGE_DEBUG_DIRECTORY { DWORD Characteristics; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD Type;
+	// DWORD SizeOfData; DWORD AddressOfRawData; DWORD PointerToRawData; } IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_DEBUG_DIRECTORY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_DEBUG_DIRECTORY
@@ -799,8 +765,8 @@ public static partial class DbgHelp
 		/// <item>
 		/// <term>IMAGE_DEBUG_TYPE_FPO 3</term>
 		/// <term>
-		/// Frame pointer omission (FPO) information. This information tells the debugger how to interpret nonstandard stack frames,
-		/// which use the EBP register for a purpose other than as a frame pointer.
+		/// Frame pointer omission (FPO) information. This information tells the debugger how to interpret nonstandard stack
+		/// frames, which use the EBP register for a purpose other than as a frame pointer.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -833,12 +799,76 @@ public static partial class DbgHelp
 		public uint PointerToRawData;
 	}
 
+	/// <summary>
+	/// The DOS header of a PE file. This structure is used to identify the file as a valid executable and contains information
+	/// about the layout of the file.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct IMAGE_DOS_HEADER
+	{
+		/// <summary>Magic number ("MZ")</summary>
+		public ushort e_magic;
+
+		/// <summary>Bytes on last page of file</summary>
+		public ushort e_cblp;
+
+		/// <summary>Pages in file</summary>
+		public ushort e_cp;
+
+		/// <summary>Relocations</summary>
+		public ushort e_crlc;
+
+		/// <summary>Size of header in paragraphs</summary>
+		public ushort e_cparhdr;
+
+		/// <summary>Minimum extra paragraphs needed</summary>
+		public ushort e_minalloc;
+
+		/// <summary>Maximum extra paragraphs needed</summary>
+		public ushort e_maxalloc;
+
+		/// <summary>Initial (relative) stack segment value</summary>
+		public ushort e_ss;
+
+		/// <summary>Initial (relative) stack pointer value</summary>
+		public ushort e_sp;
+
+		/// <summary>Optional file checksum for integrity verification</summary>
+		public ushort e_csum;
+
+		/// <summary>Initial Instruction Pointer (entry point offset)</summary>
+		public ushort e_ip;
+
+		/// <summary>Initial Code Segment (relative to load point)</summary>
+		public ushort e_cs;
+
+		/// <summary>File address of relocation table</summary>
+		public ushort e_lfarlc;
+
+		/// <summary>Overlay number</summary>
+		public ushort e_ovno;
+
+		/// <summary>Reserved</summary>
+		public unsafe fixed ushort e_res[4];
+
+		/// <summary>OEM identifier (for e_oeminfo)</summary>
+		public ushort e_oemid;
+
+		/// <summary>OEM information; e_oemid specific</summary>
+		public ushort e_oeminfo;
+
+		/// <summary>Reserved</summary>
+		public unsafe fixed ushort e_res2[10];
+
+		/// <summary>File address of new exe header (NT headers offset)</summary>
+		public uint e_lfanew;
+	}
+
 	/// <summary>Undocumented.</summary>
 	[PInvokeData("winnt.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_EXPORT_DIRECTORY
 	{
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 		public uint Characteristics;
 		public uint TimeDateStamp;
 		public ushort MajorVersion;
@@ -850,12 +880,11 @@ public static partial class DbgHelp
 		public uint AddressOfFunctions; // RVA from base of image
 		public uint AddressOfNames; // RVA from base of image
 		public uint AddressOfNameOrdinals; // RVA from base of image
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 	}
 
 	/// <summary>Represents the COFF header format.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_file_header typedef struct _IMAGE_FILE_HEADER { WORD
-	// Machine; WORD NumberOfSections; DWORD TimeDateStamp; DWORD PointerToSymbolTable; DWORD NumberOfSymbols; WORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_file_header typedef struct _IMAGE_FILE_HEADER {
+	// WORD Machine; WORD NumberOfSections; DWORD TimeDateStamp; DWORD PointerToSymbolTable; DWORD NumberOfSymbols; WORD
 	// SizeOfOptionalHeader; WORD Characteristics; } IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_FILE_HEADER")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -863,8 +892,8 @@ public static partial class DbgHelp
 	{
 		/// <summary>
 		/// <para>
-		/// The architecture type of the computer. An image file can only be run on the specified computer or a system that emulates the
-		/// specified computer. This member can be one of the following values.
+		/// The architecture type of the computer. An image file can only be run on the specified computer or a system that
+		/// emulates the specified computer. This member can be one of the following values.
 		/// </para>
 		/// <list type="table">
 		/// <listheader>
@@ -888,15 +917,15 @@ public static partial class DbgHelp
 		public IMAGE_FILE_MACHINE Machine;
 
 		/// <summary>
-		/// The number of sections. This indicates the size of the section table, which immediately follows the headers. Note that the
-		/// Windows loader limits the number of sections to 96.
+		/// The number of sections. This indicates the size of the section table, which immediately follows the headers. Note that
+		/// the Windows loader limits the number of sections to 96.
 		/// </summary>
 		public ushort NumberOfSections;
 
 		/// <summary>
-		/// The low 32 bits of the time stamp of the image. This represents the date and time the image was created by the linker. The
-		/// value is represented in the number of seconds elapsed since midnight (00:00:00), January 1, 1970, Universal Coordinated
-		/// Time, according to the system clock.
+		/// The low 32 bits of the time stamp of the image. This represents the date and time the image was created by the linker.
+		/// The value is represented in the number of seconds elapsed since midnight (00:00:00), January 1, 1970, Universal
+		/// Coordinated Time, according to the system clock.
 		/// </summary>
 		public uint TimeDateStamp;
 
@@ -991,8 +1020,8 @@ public static partial class DbgHelp
 	/// <code>typedef struct _IMAGE_FUNCTION_ENTRY64 { ULONGLONG StartingAddress; ULONGLONG EndingAddress; union { ULONGLONG EndOfPrologue; ULONGLONG UnwindInfoAddress; }; } IMAGE_FUNCTION_ENTRY64, *PIMAGE_FUNCTION_ENTRY64;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_function_entry typedef struct _IMAGE_FUNCTION_ENTRY {
-	// DWORD StartingAddress; DWORD EndingAddress; DWORD EndOfPrologue; } IMAGE_FUNCTION_ENTRY, *PIMAGE_FUNCTION_ENTRY;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_function_entry typedef struct _IMAGE_FUNCTION_ENTRY
+	// { DWORD StartingAddress; DWORD EndingAddress; DWORD EndOfPrologue; } IMAGE_FUNCTION_ENTRY, *PIMAGE_FUNCTION_ENTRY;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_FUNCTION_ENTRY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_FUNCTION_ENTRY
@@ -1036,17 +1065,18 @@ public static partial class DbgHelp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_load_config_directory32 typedef struct
-	// _IMAGE_LOAD_CONFIG_DIRECTORY32 { DWORD Size; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD GlobalFlagsClear;
-	// DWORD GlobalFlagsSet; DWORD CriticalSectionDefaultTimeout; DWORD DeCommitFreeBlockThreshold; DWORD DeCommitTotalFreeThreshold;
-	// DWORD LockPrefixTable; DWORD MaximumAllocationSize; DWORD VirtualMemoryThreshold; DWORD ProcessHeapFlags; DWORD
-	// ProcessAffinityMask; WORD CSDVersion; WORD DependentLoadFlags; DWORD EditList; DWORD SecurityCookie; DWORD SEHandlerTable; DWORD
-	// SEHandlerCount; DWORD GuardCFCheckFunctionPointer; DWORD GuardCFDispatchFunctionPointer; DWORD GuardCFFunctionTable; DWORD
-	// GuardCFFunctionCount; DWORD GuardFlags; IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity; DWORD GuardAddressTakenIatEntryTable;
-	// DWORD GuardAddressTakenIatEntryCount; DWORD GuardLongJumpTargetTable; DWORD GuardLongJumpTargetCount; DWORD
-	// DynamicValueRelocTable; DWORD CHPEMetadataPointer; DWORD GuardRFFailureRoutine; DWORD GuardRFFailureRoutineFunctionPointer; DWORD
-	// DynamicValueRelocTableOffset; WORD DynamicValueRelocTableSection; WORD Reserved2; DWORD GuardRFVerifyStackPointerFunctionPointer;
-	// DWORD HotPatchTableOffset; DWORD Reserved3; DWORD EnclaveConfigurationPointer; DWORD VolatileMetadataPointer; DWORD
-	// GuardEHContinuationTable; DWORD GuardEHContinuationCount; } IMAGE_LOAD_CONFIG_DIRECTORY32, *PIMAGE_LOAD_CONFIG_DIRECTORY32;
+	// _IMAGE_LOAD_CONFIG_DIRECTORY32 { DWORD Size; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD
+	// GlobalFlagsClear; DWORD GlobalFlagsSet; DWORD CriticalSectionDefaultTimeout; DWORD DeCommitFreeBlockThreshold; DWORD
+	// DeCommitTotalFreeThreshold; DWORD LockPrefixTable; DWORD MaximumAllocationSize; DWORD VirtualMemoryThreshold; DWORD
+	// ProcessHeapFlags; DWORD ProcessAffinityMask; WORD CSDVersion; WORD DependentLoadFlags; DWORD EditList; DWORD
+	// SecurityCookie; DWORD SEHandlerTable; DWORD SEHandlerCount; DWORD GuardCFCheckFunctionPointer; DWORD
+	// GuardCFDispatchFunctionPointer; DWORD GuardCFFunctionTable; DWORD GuardCFFunctionCount; DWORD GuardFlags;
+	// IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity; DWORD GuardAddressTakenIatEntryTable; DWORD GuardAddressTakenIatEntryCount;
+	// DWORD GuardLongJumpTargetTable; DWORD GuardLongJumpTargetCount; DWORD DynamicValueRelocTable; DWORD CHPEMetadataPointer;
+	// DWORD GuardRFFailureRoutine; DWORD GuardRFFailureRoutineFunctionPointer; DWORD DynamicValueRelocTableOffset; WORD
+	// DynamicValueRelocTableSection; WORD Reserved2; DWORD GuardRFVerifyStackPointerFunctionPointer; DWORD HotPatchTableOffset;
+	// DWORD Reserved3; DWORD EnclaveConfigurationPointer; DWORD VolatileMetadataPointer; DWORD GuardEHContinuationTable; DWORD
+	// GuardEHContinuationCount; } IMAGE_LOAD_CONFIG_DIRECTORY32, *PIMAGE_LOAD_CONFIG_DIRECTORY32;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_LOAD_CONFIG_DIRECTORY32")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct IMAGE_LOAD_CONFIG_DIRECTORY32
@@ -1055,9 +1085,9 @@ public static partial class DbgHelp
 		public uint Size;
 
 		/// <summary>
-		/// The date and time stamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00), January
-		/// 1, 1970, Universal Coordinated Time, according to the system clock. The time stamp can be printed using the C run-time (CRT)
-		/// function <c>ctime</c>.
+		/// The date and time stamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00),
+		/// January 1, 1970, Universal Coordinated Time, according to the system clock. The time stamp can be printed using the C
+		/// run-time (CRT) function <c>ctime</c>.
 		/// </summary>
 		public uint TimeDateStamp;
 
@@ -1082,14 +1112,14 @@ public static partial class DbgHelp
 		public uint DeCommitFreeBlockThreshold;
 
 		/// <summary>
-		/// The size of the minimum total memory that must be freed in the process heap before it is freed (de-committed), in bytes.
-		/// This value is advisory.
+		/// The size of the minimum total memory that must be freed in the process heap before it is freed (de-committed), in
+		/// bytes. This value is advisory.
 		/// </summary>
 		public uint DeCommitTotalFreeThreshold;
 
 		/// <summary>
-		/// The VA of a list of addresses where the LOCK prefix is used. These will be replaced by NOP on single-processor systems. This
-		/// member is available only for x86.
+		/// The VA of a list of addresses where the LOCK prefix is used. These will be replaced by NOP on single-processor
+		/// systems. This member is available only for x86.
 		/// </summary>
 		public uint LockPrefixTable;
 
@@ -1198,16 +1228,16 @@ public static partial class DbgHelp
 
 		/// <summary/>
 		public uint GuardEHContinuationCount;
-		
+
 		/// <summary/>
 		public uint GuardXFGCheckFunctionPointer;   // VA
-		
+
 		/// <summary/>
 		public uint GuardXFGDispatchFunctionPointer; // VA
-		
+
 		/// <summary/>
 		public uint GuardXFGTableDispatchFunctionPointer; // VA
-		
+
 		/// <summary/>
 		public uint CastGuardOsDeterminedFailureMode; // VA
 
@@ -1226,17 +1256,17 @@ public static partial class DbgHelp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_load_config_directory64 typedef struct
-	// _IMAGE_LOAD_CONFIG_DIRECTORY64 { DWORD Size; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD GlobalFlagsClear;
-	// DWORD GlobalFlagsSet; DWORD CriticalSectionDefaultTimeout; ULONGLONG DeCommitFreeBlockThreshold; ULONGLONG
-	// DeCommitTotalFreeThreshold; ULONGLONG LockPrefixTable; ULONGLONG MaximumAllocationSize; ULONGLONG VirtualMemoryThreshold;
-	// ULONGLONG ProcessAffinityMask; DWORD ProcessHeapFlags; WORD CSDVersion; WORD DependentLoadFlags; ULONGLONG EditList; ULONGLONG
-	// SecurityCookie; ULONGLONG SEHandlerTable; ULONGLONG SEHandlerCount; ULONGLONG GuardCFCheckFunctionPointer; ULONGLONG
-	// GuardCFDispatchFunctionPointer; ULONGLONG GuardCFFunctionTable; ULONGLONG GuardCFFunctionCount; DWORD GuardFlags;
-	// IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity; ULONGLONG GuardAddressTakenIatEntryTable; ULONGLONG
-	// GuardAddressTakenIatEntryCount; ULONGLONG GuardLongJumpTargetTable; ULONGLONG GuardLongJumpTargetCount; ULONGLONG
-	// DynamicValueRelocTable; ULONGLONG CHPEMetadataPointer; ULONGLONG GuardRFFailureRoutine; ULONGLONG
-	// GuardRFFailureRoutineFunctionPointer; DWORD DynamicValueRelocTableOffset; WORD DynamicValueRelocTableSection; WORD Reserved2;
-	// ULONGLONG GuardRFVerifyStackPointerFunctionPointer; DWORD HotPatchTableOffset; DWORD Reserved3; ULONGLONG
+	// _IMAGE_LOAD_CONFIG_DIRECTORY64 { DWORD Size; DWORD TimeDateStamp; WORD MajorVersion; WORD MinorVersion; DWORD
+	// GlobalFlagsClear; DWORD GlobalFlagsSet; DWORD CriticalSectionDefaultTimeout; ULONGLONG DeCommitFreeBlockThreshold;
+	// ULONGLONG DeCommitTotalFreeThreshold; ULONGLONG LockPrefixTable; ULONGLONG MaximumAllocationSize; ULONGLONG
+	// VirtualMemoryThreshold; ULONGLONG ProcessAffinityMask; DWORD ProcessHeapFlags; WORD CSDVersion; WORD DependentLoadFlags;
+	// ULONGLONG EditList; ULONGLONG SecurityCookie; ULONGLONG SEHandlerTable; ULONGLONG SEHandlerCount; ULONGLONG
+	// GuardCFCheckFunctionPointer; ULONGLONG GuardCFDispatchFunctionPointer; ULONGLONG GuardCFFunctionTable; ULONGLONG
+	// GuardCFFunctionCount; DWORD GuardFlags; IMAGE_LOAD_CONFIG_CODE_INTEGRITY CodeIntegrity; ULONGLONG
+	// GuardAddressTakenIatEntryTable; ULONGLONG GuardAddressTakenIatEntryCount; ULONGLONG GuardLongJumpTargetTable; ULONGLONG
+	// GuardLongJumpTargetCount; ULONGLONG DynamicValueRelocTable; ULONGLONG CHPEMetadataPointer; ULONGLONG GuardRFFailureRoutine;
+	// ULONGLONG GuardRFFailureRoutineFunctionPointer; DWORD DynamicValueRelocTableOffset; WORD DynamicValueRelocTableSection;
+	// WORD Reserved2; ULONGLONG GuardRFVerifyStackPointerFunctionPointer; DWORD HotPatchTableOffset; DWORD Reserved3; ULONGLONG
 	// EnclaveConfigurationPointer; ULONGLONG VolatileMetadataPointer; ULONGLONG GuardEHContinuationTable; ULONGLONG
 	// GuardEHContinuationCount; } IMAGE_LOAD_CONFIG_DIRECTORY64, *PIMAGE_LOAD_CONFIG_DIRECTORY64;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_LOAD_CONFIG_DIRECTORY64")]
@@ -1247,9 +1277,9 @@ public static partial class DbgHelp
 		public uint Size;
 
 		/// <summary>
-		/// The date and time stamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00), January
-		/// 1, 1970, Universal Coordinated Time, according to the system clock. The time stamp can be printed using the C run-time (CRT)
-		/// function <c>ctime</c>.
+		/// The date and time stamp value. The value is represented in the number of seconds elapsed since midnight (00:00:00),
+		/// January 1, 1970, Universal Coordinated Time, according to the system clock. The time stamp can be printed using the C
+		/// run-time (CRT) function <c>ctime</c>.
 		/// </summary>
 		public uint TimeDateStamp;
 
@@ -1274,14 +1304,14 @@ public static partial class DbgHelp
 		public ulong DeCommitFreeBlockThreshold;
 
 		/// <summary>
-		/// The size of the minimum total memory that must be freed in the process heap before it is freed (de-committed), in bytes.
-		/// This value is advisory.
+		/// The size of the minimum total memory that must be freed in the process heap before it is freed (de-committed), in
+		/// bytes. This value is advisory.
 		/// </summary>
 		public ulong DeCommitTotalFreeThreshold;
 
 		/// <summary>
-		/// The VA of a list of addresses where the LOCK prefix is used. These will be replaced by NOP on single-processor systems. This
-		/// member is available only for x86.
+		/// The VA of a list of addresses where the LOCK prefix is used. These will be replaced by NOP on single-processor
+		/// systems. This member is available only for x86.
 		/// </summary>
 		public ulong LockPrefixTable;
 
@@ -1417,8 +1447,8 @@ public static partial class DbgHelp
 	/// <code>typedef struct _IMAGE_NT_HEADERS64 { DWORD Signature; IMAGE_FILE_HEADER FileHeader; IMAGE_OPTIONAL_HEADER64 OptionalHeader; } IMAGE_NT_HEADERS64, *PIMAGE_NT_HEADERS64;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_nt_headers32 typedef struct _IMAGE_NT_HEADERS { DWORD
-	// Signature; IMAGE_FILE_HEADER FileHeader; IMAGE_OPTIONAL_HEADER32 OptionalHeader; } IMAGE_NT_HEADERS32, *PIMAGE_NT_HEADERS32;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_nt_headers32 typedef struct _IMAGE_NT_HEADERS {
+	// DWORD Signature; IMAGE_FILE_HEADER FileHeader; IMAGE_OPTIONAL_HEADER32 OptionalHeader; } IMAGE_NT_HEADERS32, *PIMAGE_NT_HEADERS32;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_NT_HEADERS")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IMAGE_NT_HEADERS
@@ -1435,7 +1465,9 @@ public static partial class DbgHelp
 
 	/// <summary>Represents the optional header format.</summary>
 	/// <remarks>
-	/// <para>The number of directories is not fixed. Check the <c>NumberOfRvaAndSizes</c> member before looking for a specific directory.</para>
+	/// <para>
+	/// The number of directories is not fixed. Check the <c>NumberOfRvaAndSizes</c> member before looking for a specific directory.
+	/// </para>
 	/// <para>
 	/// The actual structure in WinNT.h is named <c>IMAGE_OPTIONAL_HEADER32</c> and <c>IMAGE_OPTIONAL_HEADER</c> is defined as
 	/// <c>IMAGE_OPTIONAL_HEADER32</c>. However, if <c>_WIN64</c> is defined, then <c>IMAGE_OPTIONAL_HEADER</c> is defined as <c>IMAGE_OPTIONAL_HEADER64</c>.
@@ -1444,14 +1476,14 @@ public static partial class DbgHelp
 	/// <code>typedef struct _IMAGE_OPTIONAL_HEADER64 { WORD Magic; BYTE MajorLinkerVersion; BYTE MinorLinkerVersion; DWORD SizeOfCode; DWORD SizeOfInitializedData; DWORD SizeOfUninitializedData; DWORD AddressOfEntryPoint; DWORD BaseOfCode; ULONGLONG ImageBase; DWORD SectionAlignment; DWORD FileAlignment; WORD MajorOperatingSystemVersion; WORD MinorOperatingSystemVersion; WORD MajorImageVersion; WORD MinorImageVersion; WORD MajorSubsystemVersion; WORD MinorSubsystemVersion; DWORD Win32VersionValue; DWORD SizeOfImage; DWORD SizeOfHeaders; DWORD CheckSum; WORD Subsystem; WORD DllCharacteristics; ULONGLONG SizeOfStackReserve; ULONGLONG SizeOfStackCommit; ULONGLONG SizeOfHeapReserve; ULONGLONG SizeOfHeapCommit; DWORD LoaderFlags; DWORD NumberOfRvaAndSizes; IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES]; } IMAGE_OPTIONAL_HEADER64, *PIMAGE_OPTIONAL_HEADER64;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_optional_header32 typedef struct _IMAGE_OPTIONAL_HEADER {
-	// WORD Magic; BYTE MajorLinkerVersion; BYTE MinorLinkerVersion; DWORD SizeOfCode; DWORD SizeOfInitializedData; DWORD
-	// SizeOfUninitializedData; DWORD AddressOfEntryPoint; DWORD BaseOfCode; DWORD BaseOfData; DWORD ImageBase; DWORD SectionAlignment;
-	// DWORD FileAlignment; WORD MajorOperatingSystemVersion; WORD MinorOperatingSystemVersion; WORD MajorImageVersion; WORD
-	// MinorImageVersion; WORD MajorSubsystemVersion; WORD MinorSubsystemVersion; DWORD Win32VersionValue; DWORD SizeOfImage; DWORD
-	// SizeOfHeaders; DWORD CheckSum; WORD Subsystem; WORD DllCharacteristics; DWORD SizeOfStackReserve; DWORD SizeOfStackCommit; DWORD
-	// SizeOfHeapReserve; DWORD SizeOfHeapCommit; DWORD LoaderFlags; DWORD NumberOfRvaAndSizes; IMAGE_DATA_DIRECTORY
-	// DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES]; } IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_optional_header32 typedef struct
+	// _IMAGE_OPTIONAL_HEADER { WORD Magic; BYTE MajorLinkerVersion; BYTE MinorLinkerVersion; DWORD SizeOfCode; DWORD
+	// SizeOfInitializedData; DWORD SizeOfUninitializedData; DWORD AddressOfEntryPoint; DWORD BaseOfCode; DWORD BaseOfData; DWORD
+	// ImageBase; DWORD SectionAlignment; DWORD FileAlignment; WORD MajorOperatingSystemVersion; WORD MinorOperatingSystemVersion;
+	// WORD MajorImageVersion; WORD MinorImageVersion; WORD MajorSubsystemVersion; WORD MinorSubsystemVersion; DWORD
+	// Win32VersionValue; DWORD SizeOfImage; DWORD SizeOfHeaders; DWORD CheckSum; WORD Subsystem; WORD DllCharacteristics; DWORD
+	// SizeOfStackReserve; DWORD SizeOfStackCommit; DWORD SizeOfHeapReserve; DWORD SizeOfHeapCommit; DWORD LoaderFlags; DWORD
+	// NumberOfRvaAndSizes; IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES]; } IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_OPTIONAL_HEADER")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public unsafe struct IMAGE_OPTIONAL_HEADER
@@ -1496,71 +1528,189 @@ public static partial class DbgHelp
 		public uint SizeOfCode;
 
 		/// <summary>
-		/// The size of the initialized data section, in bytes, or the sum of all such sections if there are multiple initialized data sections.
+		/// The size of the initialized data section, in bytes, or the sum of all such sections if there are multiple initialized
+		/// data sections.
 		/// </summary>
 		public uint SizeOfInitializedData;
 
 		/// <summary>
-		/// The size of the uninitialized data section, in bytes, or the sum of all such sections if there are multiple uninitialized
-		/// data sections.
+		/// The size of the uninitialized data section, in bytes, or the sum of all such sections if there are multiple
+		/// uninitialized data sections.
 		/// </summary>
 		public uint SizeOfUninitializedData;
 
 		/// <summary>
 		/// A pointer to the entry point function, relative to the image base address. For executable files, this is the starting
-		/// address. For device drivers, this is the address of the initialization function. The entry point function is optional for
-		/// DLLs. When no entry point is present, this member is zero.
+		/// address. For device drivers, this is the address of the initialization function. The entry point function is optional
+		/// for DLLs. When no entry point is present, this member is zero.
 		/// </summary>
 		public uint AddressOfEntryPoint;
 
 		/// <summary>A pointer to the beginning of the code section, relative to the image base.</summary>
 		public uint BaseOfCode;
 
+		private PADDING padding;
+
 		/// <summary>A pointer to the beginning of the data section, relative to the image base.</summary>
-		public uint BaseOfData;
+		public uint BaseOfData
+		{
+			readonly get => IntPtr.Size == 4 ? padding.padding[0] : 0;
+			set => padding.padding[0] = IntPtr.Size == 4 ? value : throw new PlatformNotSupportedException();
+		}
 
 		/// <summary>
-		/// The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K bytes. The
-		/// default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows CE where it is 0x00010000.
+		/// The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K
+		/// bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on Windows
+		/// CE where it is 0x00010000.
 		/// </summary>
-		public nuint ImageBase;
+		public nuint ImageBase
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).ImageBase : Unsafe.As<PADDING, X64>(ref padding).ImageBase;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).ImageBase = (uint)value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).ImageBase = value;
+			}
+		}
 
 		/// <summary>
-		/// The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the <c>FileAlignment</c>
-		/// member. The default value is the page size for the system.
+		/// The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the
+		/// <c>FileAlignment</c> member. The default value is the page size for the system.
 		/// </summary>
-		public uint SectionAlignment;
+		public uint SectionAlignment
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SectionAlignment : Unsafe.As<PADDING, X64>(ref padding).SectionAlignment;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SectionAlignment = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SectionAlignment = value;
+			}
+		}
 
 		/// <summary>
-		/// The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between 512 and 64K
-		/// (inclusive). The default is 512. If the <c>SectionAlignment</c> member is less than the system page size, this member must
-		/// be the same as <c>SectionAlignment</c>.
+		/// The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between 512
+		/// and 64K (inclusive). The default is 512. If the <c>SectionAlignment</c> member is less than the system page size, this
+		/// member must be the same as <c>SectionAlignment</c>.
 		/// </summary>
-		public uint FileAlignment;
+		public uint FileAlignment
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).FileAlignment : Unsafe.As<PADDING, X64>(ref padding).FileAlignment;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).FileAlignment = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).FileAlignment = value;
+			}
+		}
 
 		/// <summary>The major version number of the required operating system.</summary>
-		public ushort MajorOperatingSystemVersion;
+		public ushort MajorOperatingSystemVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MajorOperatingSystemVersion : Unsafe.As<PADDING, X64>(ref padding).MajorOperatingSystemVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MajorOperatingSystemVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MajorOperatingSystemVersion = value;
+			}
+		}
 
 		/// <summary>The minor version number of the required operating system.</summary>
-		public ushort MinorOperatingSystemVersion;
+		public ushort MinorOperatingSystemVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MinorOperatingSystemVersion : Unsafe.As<PADDING, X64>(ref padding).MinorOperatingSystemVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MinorOperatingSystemVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MinorOperatingSystemVersion = value;
+			}
+		}
 
 		/// <summary>The major version number of the image.</summary>
-		public ushort MajorImageVersion;
+		public ushort MajorImageVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MajorImageVersion : Unsafe.As<PADDING, X64>(ref padding).MajorImageVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MajorImageVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MajorImageVersion = value;
+			}
+		}
 
 		/// <summary>The minor version number of the image.</summary>
-		public ushort MinorImageVersion;
+		public ushort MinorImageVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MinorImageVersion : Unsafe.As<PADDING, X64>(ref padding).MinorImageVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MinorImageVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MinorImageVersion = value;
+			}
+		}
 
 		/// <summary>The major version number of the subsystem.</summary>
-		public ushort MajorSubsystemVersion;
+		public ushort MajorSubsystemVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MajorSubsystemVersion : Unsafe.As<PADDING, X64>(ref padding).MajorSubsystemVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MajorSubsystemVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MajorSubsystemVersion = value;
+			}
+		}
 
 		/// <summary>The minor version number of the subsystem.</summary>
-		public ushort MinorSubsystemVersion;
+		public ushort MinorSubsystemVersion
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).MinorSubsystemVersion : Unsafe.As<PADDING, X64>(ref padding).MinorSubsystemVersion;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).MinorSubsystemVersion = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).MinorSubsystemVersion = value;
+			}
+		}
 
 		/// <summary>This member is reserved and must be 0.</summary>
-		public uint Win32VersionValue;
+		public uint Win32VersionValue
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).Win32VersionValue : Unsafe.As<PADDING, X64>(ref padding).Win32VersionValue;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).Win32VersionValue = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).Win32VersionValue = value;
+			}
+		}
 
 		/// <summary>The size of the image, in bytes, including all headers. Must be a multiple of <c>SectionAlignment</c>.</summary>
-		public uint SizeOfImage;
+		public uint SizeOfImage
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfImage : Unsafe.As<PADDING, X64>(ref padding).SizeOfImage;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfImage = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfImage = value;
+			}
+		}
 
 		/// <summary>
 		/// <para>
@@ -1584,13 +1734,33 @@ public static partial class DbgHelp
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint SizeOfHeaders;
+		public uint SizeOfHeaders
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfHeaders : Unsafe.As<PADDING, X64>(ref padding).SizeOfHeaders;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfHeaders = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfHeaders = value;
+			}
+		}
 
 		/// <summary>
-		/// The image file checksum. The following files are validated at load time: all drivers, any DLL loaded at boot time, and any
-		/// DLL loaded into a critical system process.
+		/// The image file checksum. The following files are validated at load time: all drivers, any DLL loaded at boot time, and
+		/// any DLL loaded into a critical system process.
 		/// </summary>
-		public uint CheckSum;
+		public uint CheckSum
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).CheckSum : Unsafe.As<PADDING, X64>(ref padding).CheckSum;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).CheckSum = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).CheckSum = value;
+			}
+		}
 
 		/// <summary>
 		/// <para>The subsystem required to run this image. The following values are defined.</para>
@@ -1653,7 +1823,17 @@ public static partial class DbgHelp
 		/// </item>
 		/// </list>
 		/// </summary>
-		public IMAGE_SUBSYSTEM Subsystem;
+		public IMAGE_SUBSYSTEM Subsystem
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).Subsystem : Unsafe.As<PADDING, X64>(ref padding).Subsystem;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).Subsystem = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).Subsystem = value;
+			}
+		}
 
 		/// <summary>
 		/// <para>The DLL characteristics of the image. The following values are defined.</para>
@@ -1686,8 +1866,8 @@ public static partial class DbgHelp
 		/// <term>IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY 0x0080</term>
 		/// <term>
 		/// Code integrity checks are forced. If you set this flag and a section contains only uninitialized data, set the
-		/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load because the
-		/// digital signature cannot be verified.
+		/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load
+		/// because the digital signature cannot be verified.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1724,36 +1904,103 @@ public static partial class DbgHelp
 		/// </item>
 		/// </list>
 		/// </summary>
-		public IMAGE_DLLCHARACTERISTICS DllCharacteristics;
+		public IMAGE_DLLCHARACTERISTICS DllCharacteristics
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).DllCharacteristics : Unsafe.As<PADDING, X64>(ref padding).DllCharacteristics;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).DllCharacteristics = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).DllCharacteristics = value;
+			}
+		}
 
 		/// <summary>
-		/// The number of bytes to reserve for the stack. Only the memory specified by the <c>SizeOfStackCommit</c> member is committed
-		/// at load time; the rest is made available one page at a time until this reserve size is reached.
+		/// The number of bytes to reserve for the stack. Only the memory specified by the <c>SizeOfStackCommit</c> member is
+		/// committed at load time; the rest is made available one page at a time until this reserve size is reached.
 		/// </summary>
-		public nuint SizeOfStackReserve;
+		public nuint SizeOfStackReserve
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfStackReserve : Unsafe.As<PADDING, X64>(ref padding).SizeOfStackReserve;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfStackReserve = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfStackReserve = value;
+			}
+		}
 
 		/// <summary>The number of bytes to commit for the stack.</summary>
-		public nuint SizeOfStackCommit;
+		public nuint SizeOfStackCommit
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfStackCommit : Unsafe.As<PADDING, X64>(ref padding).SizeOfStackCommit;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfStackCommit = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfStackCommit = value;
+			}
+		}
 
 		/// <summary>
 		/// The number of bytes to reserve for the local heap. Only the memory specified by the <c>SizeOfHeapCommit</c> member is
 		/// committed at load time; the rest is made available one page at a time until this reserve size is reached.
 		/// </summary>
-		public nuint SizeOfHeapReserve;
+		public nuint SizeOfHeapReserve
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfHeapReserve : Unsafe.As<PADDING, X64>(ref padding).SizeOfHeapReserve;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfHeapReserve = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfHeapReserve = value;
+			}
+		}
 
 		/// <summary>The number of bytes to commit for the local heap.</summary>
-		public nuint SizeOfHeapCommit;
+		public nuint SizeOfHeapCommit
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).SizeOfHeapCommit : Unsafe.As<PADDING, X64>(ref padding).SizeOfHeapCommit;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).SizeOfHeapCommit = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).SizeOfHeapCommit = value;
+			}
+		}
 
 		/// <summary>This member is obsolete.</summary>
-		public uint LoaderFlags;
+		public uint LoaderFlags
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).LoaderFlags : Unsafe.As<PADDING, X64>(ref padding).LoaderFlags;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).LoaderFlags = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).LoaderFlags = value;
+			}
+		}
 
 		/// <summary>
 		/// The number of directory entries in the remainder of the optional header. Each entry describes a location and size.
 		/// </summary>
-		public uint NumberOfRvaAndSizes;
-
-		//[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 /*IMAGE_NUMBEROF_DIRECTORY_ENTRIES*/)]
-		private fixed ulong _DataDirectory[16];
+		public uint NumberOfRvaAndSizes
+		{
+			get => IntPtr.Size == 4 ? Unsafe.As<PADDING, X86>(ref padding).NumberOfRvaAndSizes : Unsafe.As<PADDING, X64>(ref padding).NumberOfRvaAndSizes;
+			set
+			{
+				if (IntPtr.Size == 4)
+					Unsafe.As<PADDING, X86>(ref padding).NumberOfRvaAndSizes = value;
+				else
+					Unsafe.As<PADDING, X64>(ref padding).NumberOfRvaAndSizes = value;
+			}
+		}
 
 		/// <summary>
 		/// <para>A pointer to the first IMAGE_DATA_DIRECTORY structure in the data directory.</para>
@@ -1831,7 +2078,7 @@ public static partial class DbgHelp
 			{
 				unsafe
 				{
-					fixed (void* dd = _DataDirectory)
+					fixed (void* dd = &padding.data[0])
 					{
 						return ((IntPtr)dd).ToArray<IMAGE_DATA_DIRECTORY>(16)!;
 					}
@@ -1844,29 +2091,548 @@ public static partial class DbgHelp
 				unsafe
 				{
 					fixed (IMAGE_DATA_DIRECTORY* v = value)
-					fixed (void* dd = _DataDirectory)
+					fixed (void* dd = &padding.data[0])
 					{
 						((IntPtr)v).CopyTo((IntPtr)dd, sizeof(ulong) * 16);
 					}
 				}
 			}
 		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct PADDING
+		{
+			internal fixed uint padding[20];
+			private readonly IntPtr paddingl1;
+			private readonly IntPtr paddingl2;
+			private readonly IntPtr paddingl3;
+			private readonly IntPtr paddingl4;
+			internal fixed ulong data[16];
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct X86
+		{
+			/// <summary>A pointer to the beginning of the data section, relative to the image base.</summary>
+			public uint BaseOfData;
+
+			/// <summary>
+			/// The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K
+			/// bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on
+			/// Windows CE where it is 0x00010000.
+			/// </summary>
+			public nuint ImageBase;
+
+			/// <summary>
+			/// The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the
+			/// <c>FileAlignment</c> member. The default value is the page size for the system.
+			/// </summary>
+			public uint SectionAlignment;
+
+			/// <summary>
+			/// The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between
+			/// 512 and 64K (inclusive). The default is 512. If the <c>SectionAlignment</c> member is less than the system page
+			/// size, this member must be the same as <c>SectionAlignment</c>.
+			/// </summary>
+			public uint FileAlignment;
+
+			/// <summary>The major version number of the required operating system.</summary>
+			public ushort MajorOperatingSystemVersion;
+
+			/// <summary>The minor version number of the required operating system.</summary>
+			public ushort MinorOperatingSystemVersion;
+
+			/// <summary>The major version number of the image.</summary>
+			public ushort MajorImageVersion;
+
+			/// <summary>The minor version number of the image.</summary>
+			public ushort MinorImageVersion;
+
+			/// <summary>The major version number of the subsystem.</summary>
+			public ushort MajorSubsystemVersion;
+
+			/// <summary>The minor version number of the subsystem.</summary>
+			public ushort MinorSubsystemVersion;
+
+			/// <summary>This member is reserved and must be 0.</summary>
+			public uint Win32VersionValue;
+
+			/// <summary>The size of the image, in bytes, including all headers. Must be a multiple of <c>SectionAlignment</c>.</summary>
+			public uint SizeOfImage;
+
+			/// <summary>
+			/// <para>
+			/// The combined size of the following items, rounded to a multiple of the value specified in the <c>FileAlignment</c> member.
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term><c>e_lfanew</c> member of <c>IMAGE_DOS_HEADER</c></term>
+			/// </item>
+			/// <item>
+			/// <term>4 byte signature</term>
+			/// </item>
+			/// <item>
+			/// <term>size of IMAGE_FILE_HEADER</term>
+			/// </item>
+			/// <item>
+			/// <term>size of optional header</term>
+			/// </item>
+			/// <item>
+			/// <term>size of all section headers</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint SizeOfHeaders;
+
+			/// <summary>
+			/// The image file checksum. The following files are validated at load time: all drivers, any DLL loaded at boot time,
+			/// and any DLL loaded into a critical system process.
+			/// </summary>
+			public uint CheckSum;
+
+			/// <summary>
+			/// <para>The subsystem required to run this image. The following values are defined.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_UNKNOWN 0</term>
+			/// <term>Unknown subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_NATIVE 1</term>
+			/// <term>No subsystem required (device drivers and native system processes).</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_GUI 2</term>
+			/// <term>Windows graphical user interface (GUI) subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_CUI 3</term>
+			/// <term>Windows character-mode user interface (CUI) subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_OS2_CUI 5</term>
+			/// <term>OS/2 CUI subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_POSIX_CUI 7</term>
+			/// <term>POSIX CUI subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_CE_GUI 9</term>
+			/// <term>Windows CE system.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_APPLICATION 10</term>
+			/// <term>Extensible Firmware Interface (EFI) application.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER 11</term>
+			/// <term>EFI driver with boot services.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER 12</term>
+			/// <term>EFI driver with run-time services.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_ROM 13</term>
+			/// <term>EFI ROM image.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_XBOX 14</term>
+			/// <term>Xbox system.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION 16</term>
+			/// <term>Boot application.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IMAGE_SUBSYSTEM Subsystem;
+
+			/// <summary>
+			/// <para>The DLL characteristics of the image. The following values are defined.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0x0001</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0002</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0004</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0008</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE 0x0040</term>
+			/// <term>The DLL can be relocated at load time.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY 0x0080</term>
+			/// <term>
+			/// Code integrity checks are forced. If you set this flag and a section contains only uninitialized data, set the
+			/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load
+			/// because the digital signature cannot be verified.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NX_COMPAT 0x0100</term>
+			/// <term>The image is compatible with data execution prevention (DEP).</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_ISOLATION 0x0200</term>
+			/// <term>The image is isolation aware, but should not be isolated.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_SEH 0x0400</term>
+			/// <term>The image does not use structured exception handling (SEH). No handlers can be called in this image.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_BIND 0x0800</term>
+			/// <term>Do not bind the image.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x1000</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_WDM_DRIVER 0x2000</term>
+			/// <term>A WDM driver.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x4000</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE 0x8000</term>
+			/// <term>The image is terminal server aware.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IMAGE_DLLCHARACTERISTICS DllCharacteristics;
+
+			/// <summary>
+			/// The number of bytes to reserve for the stack. Only the memory specified by the <c>SizeOfStackCommit</c> member is
+			/// committed at load time; the rest is made available one page at a time until this reserve size is reached.
+			/// </summary>
+			public nuint SizeOfStackReserve;
+
+			/// <summary>The number of bytes to commit for the stack.</summary>
+			public nuint SizeOfStackCommit;
+
+			/// <summary>
+			/// The number of bytes to reserve for the local heap. Only the memory specified by the <c>SizeOfHeapCommit</c> member
+			/// is committed at load time; the rest is made available one page at a time until this reserve size is reached.
+			/// </summary>
+			public nuint SizeOfHeapReserve;
+
+			/// <summary>The number of bytes to commit for the local heap.</summary>
+			public nuint SizeOfHeapCommit;
+
+			/// <summary>This member is obsolete.</summary>
+			public uint LoaderFlags;
+
+			/// <summary>
+			/// The number of directory entries in the remainder of the optional header. Each entry describes a location and size.
+			/// </summary>
+			public uint NumberOfRvaAndSizes;
+
+			internal fixed ulong _DataDirectory[16];
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct X64
+		{
+			/// <summary>
+			/// The preferred address of the first byte of the image when it is loaded in memory. This value is a multiple of 64K
+			/// bytes. The default value for DLLs is 0x10000000. The default value for applications is 0x00400000, except on
+			/// Windows CE where it is 0x00010000.
+			/// </summary>
+			public nuint ImageBase;
+
+			/// <summary>
+			/// The alignment of sections loaded in memory, in bytes. This value must be greater than or equal to the
+			/// <c>FileAlignment</c> member. The default value is the page size for the system.
+			/// </summary>
+			public uint SectionAlignment;
+
+			/// <summary>
+			/// The alignment of the raw data of sections in the image file, in bytes. The value should be a power of 2 between
+			/// 512 and 64K (inclusive). The default is 512. If the <c>SectionAlignment</c> member is less than the system page
+			/// size, this member must be the same as <c>SectionAlignment</c>.
+			/// </summary>
+			public uint FileAlignment;
+
+			/// <summary>The major version number of the required operating system.</summary>
+			public ushort MajorOperatingSystemVersion;
+
+			/// <summary>The minor version number of the required operating system.</summary>
+			public ushort MinorOperatingSystemVersion;
+
+			/// <summary>The major version number of the image.</summary>
+			public ushort MajorImageVersion;
+
+			/// <summary>The minor version number of the image.</summary>
+			public ushort MinorImageVersion;
+
+			/// <summary>The major version number of the subsystem.</summary>
+			public ushort MajorSubsystemVersion;
+
+			/// <summary>The minor version number of the subsystem.</summary>
+			public ushort MinorSubsystemVersion;
+
+			/// <summary>This member is reserved and must be 0.</summary>
+			public uint Win32VersionValue;
+
+			/// <summary>The size of the image, in bytes, including all headers. Must be a multiple of <c>SectionAlignment</c>.</summary>
+			public uint SizeOfImage;
+
+			/// <summary>
+			/// <para>
+			/// The combined size of the following items, rounded to a multiple of the value specified in the <c>FileAlignment</c> member.
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term><c>e_lfanew</c> member of <c>IMAGE_DOS_HEADER</c></term>
+			/// </item>
+			/// <item>
+			/// <term>4 byte signature</term>
+			/// </item>
+			/// <item>
+			/// <term>size of IMAGE_FILE_HEADER</term>
+			/// </item>
+			/// <item>
+			/// <term>size of optional header</term>
+			/// </item>
+			/// <item>
+			/// <term>size of all section headers</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public uint SizeOfHeaders;
+
+			/// <summary>
+			/// The image file checksum. The following files are validated at load time: all drivers, any DLL loaded at boot time,
+			/// and any DLL loaded into a critical system process.
+			/// </summary>
+			public uint CheckSum;
+
+			/// <summary>
+			/// <para>The subsystem required to run this image. The following values are defined.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_UNKNOWN 0</term>
+			/// <term>Unknown subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_NATIVE 1</term>
+			/// <term>No subsystem required (device drivers and native system processes).</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_GUI 2</term>
+			/// <term>Windows graphical user interface (GUI) subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_CUI 3</term>
+			/// <term>Windows character-mode user interface (CUI) subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_OS2_CUI 5</term>
+			/// <term>OS/2 CUI subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_POSIX_CUI 7</term>
+			/// <term>POSIX CUI subsystem.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_CE_GUI 9</term>
+			/// <term>Windows CE system.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_APPLICATION 10</term>
+			/// <term>Extensible Firmware Interface (EFI) application.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER 11</term>
+			/// <term>EFI driver with boot services.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER 12</term>
+			/// <term>EFI driver with run-time services.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_EFI_ROM 13</term>
+			/// <term>EFI ROM image.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_XBOX 14</term>
+			/// <term>Xbox system.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION 16</term>
+			/// <term>Boot application.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IMAGE_SUBSYSTEM Subsystem;
+
+			/// <summary>
+			/// <para>The DLL characteristics of the image. The following values are defined.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0x0001</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0002</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0004</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x0008</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE 0x0040</term>
+			/// <term>The DLL can be relocated at load time.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY 0x0080</term>
+			/// <term>
+			/// Code integrity checks are forced. If you set this flag and a section contains only uninitialized data, set the
+			/// PointerToRawData member of IMAGE_SECTION_HEADER for that section to zero; otherwise, the image will fail to load
+			/// because the digital signature cannot be verified.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NX_COMPAT 0x0100</term>
+			/// <term>The image is compatible with data execution prevention (DEP).</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_ISOLATION 0x0200</term>
+			/// <term>The image is isolation aware, but should not be isolated.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_SEH 0x0400</term>
+			/// <term>The image does not use structured exception handling (SEH). No handlers can be called in this image.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_NO_BIND 0x0800</term>
+			/// <term>Do not bind the image.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x1000</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_WDM_DRIVER 0x2000</term>
+			/// <term>A WDM driver.</term>
+			/// </item>
+			/// <item>
+			/// <term>0x4000</term>
+			/// <term>Reserved.</term>
+			/// </item>
+			/// <item>
+			/// <term>IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE 0x8000</term>
+			/// <term>The image is terminal server aware.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IMAGE_DLLCHARACTERISTICS DllCharacteristics;
+
+			/// <summary>
+			/// The number of bytes to reserve for the stack. Only the memory specified by the <c>SizeOfStackCommit</c> member is
+			/// committed at load time; the rest is made available one page at a time until this reserve size is reached.
+			/// </summary>
+			public nuint SizeOfStackReserve;
+
+			/// <summary>The number of bytes to commit for the stack.</summary>
+			public nuint SizeOfStackCommit;
+
+			/// <summary>
+			/// The number of bytes to reserve for the local heap. Only the memory specified by the <c>SizeOfHeapCommit</c> member
+			/// is committed at load time; the rest is made available one page at a time until this reserve size is reached.
+			/// </summary>
+			public nuint SizeOfHeapReserve;
+
+			/// <summary>The number of bytes to commit for the local heap.</summary>
+			public nuint SizeOfHeapCommit;
+
+			/// <summary>This member is obsolete.</summary>
+			public uint LoaderFlags;
+
+			/// <summary>
+			/// The number of directory entries in the remainder of the optional header. Each entry describes a location and size.
+			/// </summary>
+			public uint NumberOfRvaAndSizes;
+
+			internal fixed ulong _DataDirectory[16];
+		}
+	}
+
+	/// <summary>Represents an entry in the function table on 64-bit Windows.</summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-runtime_function typedef struct
+	// _IMAGE_RUNTIME_FUNCTION_ENTRY { DWORD BeginAddress; DWORD EndAddress; union { DWORD UnwindInfoAddress; DWORD UnwindData; }
+	// DUMMYUNIONNAME; } RUNTIME_FUNCTION, *PRUNTIME_FUNCTION, _IMAGE_RUNTIME_FUNCTION_ENTRY, *_PIMAGE_RUNTIME_FUNCTION_ENTRY;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_RUNTIME_FUNCTION_ENTRY")]
+	[StructLayout(LayoutKind.Explicit)]
+	public struct IMAGE_RUNTIME_FUNCTION_ENTRY
+	{
+		/// <summary>The address of the start of the function.</summary>
+		[FieldOffset(0)]
+		public uint BeginAddress;
+
+		/// <summary>The address of the end of the function.</summary>
+		[FieldOffset(4)]
+		public uint EndAddress;
+
+		/// <summary>The address of the unwind information for the function.</summary>
+		[FieldOffset(8)]
+		public uint UnwindInfoAddress;
+
+		/// <summary/>
+		[FieldOffset(8)]
+		public uint UnwindData;
 	}
 
 	/// <summary>Represents the image section header format.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_section_header typedef struct _IMAGE_SECTION_HEADER {
-	// BYTE Name[IMAGE_SIZEOF_SHORT_NAME]; union { DWORD PhysicalAddress; DWORD VirtualSize; } Misc; DWORD VirtualAddress; DWORD
-	// SizeOfRawData; DWORD PointerToRawData; DWORD PointerToRelocations; DWORD PointerToLinenumbers; WORD NumberOfRelocations; WORD
-	// NumberOfLinenumbers; DWORD Characteristics; } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-image_section_header typedef struct _IMAGE_SECTION_HEADER
+	// { BYTE Name[IMAGE_SIZEOF_SHORT_NAME]; union { DWORD PhysicalAddress; DWORD VirtualSize; } Misc; DWORD VirtualAddress; DWORD
+	// SizeOfRawData; DWORD PointerToRawData; DWORD PointerToRelocations; DWORD PointerToLinenumbers; WORD NumberOfRelocations;
+	// WORD NumberOfLinenumbers; DWORD Characteristics; } IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
 	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._IMAGE_SECTION_HEADER")]
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe struct IMAGE_SECTION_HEADER
 	{
 		/// <summary>
-		/// An 8-byte, null-padded UTF-8 string. There is no terminating null character if the string is exactly eight characters long.
-		/// For longer names, this member contains a forward slash (/) followed by an ASCII representation of a decimal number that is
-		/// an offset into the string table. Executable images do not use a string table and do not support section names longer than
-		/// eight characters.
+		/// An 8-byte, null-padded UTF-8 string. There is no terminating null character if the string is exactly eight characters
+		/// long. For longer names, this member contains a forward slash (/) followed by an ASCII representation of a decimal
+		/// number that is an offset into the string table. Executable images do not use a string table and do not support section
+		/// names longer than eight characters.
 		/// </summary>
 		public fixed byte Name[8];
 
@@ -1874,21 +2640,21 @@ public static partial class DbgHelp
 		public MISC Misc;
 
 		/// <summary>
-		/// The address of the first byte of the section when loaded into memory, relative to the image base. For object files, this is
-		/// the address of the first byte before relocation is applied.
+		/// The address of the first byte of the section when loaded into memory, relative to the image base. For object files,
+		/// this is the address of the first byte before relocation is applied.
 		/// </summary>
 		public uint VirtualAddress;
 
 		/// <summary>
-		/// The size of the initialized data on disk, in bytes. This value must be a multiple of the <c>FileAlignment</c> member of the
-		/// IMAGE_OPTIONAL_HEADER structure. If this value is less than the <c>VirtualSize</c> member, the remainder of the section is
-		/// filled with zeroes. If the section contains only uninitialized data, the member is zero.
+		/// The size of the initialized data on disk, in bytes. This value must be a multiple of the <c>FileAlignment</c> member
+		/// of the IMAGE_OPTIONAL_HEADER structure. If this value is less than the <c>VirtualSize</c> member, the remainder of the
+		/// section is filled with zeroes. If the section contains only uninitialized data, the member is zero.
 		/// </summary>
 		public uint SizeOfRawData;
 
 		/// <summary>
-		/// A file pointer to the first page within the COFF file. This value must be a multiple of the <c>FileAlignment</c> member of
-		/// the IMAGE_OPTIONAL_HEADER structure. If a section contains only uninitialized data, set this member is zero.
+		/// A file pointer to the first page within the COFF file. This value must be a multiple of the <c>FileAlignment</c>
+		/// member of the IMAGE_OPTIONAL_HEADER structure. If a section contains only uninitialized data, set this member is zero.
 		/// </summary>
 		public uint PointerToRawData;
 
@@ -1898,7 +2664,8 @@ public static partial class DbgHelp
 		public uint PointerToRelocations;
 
 		/// <summary>
-		/// A file pointer to the beginning of the line-number entries for the section. If there are no COFF line numbers, this value is zero.
+		/// A file pointer to the beginning of the line-number entries for the section. If there are no COFF line numbers, this
+		/// value is zero.
 		/// </summary>
 		public uint PointerToLinenumbers;
 
@@ -2058,10 +2825,10 @@ public static partial class DbgHelp
 		/// <item>
 		/// <term>IMAGE_SCN_LNK_NRELOC_OVFL 0x01000000</term>
 		/// <term>
-		/// The section contains extended relocations. The count of relocations for the section exceeds the 16 bits that is reserved for
-		/// it in the section header. If the NumberOfRelocations field in the section header is 0xffff, the actual relocation count is
-		/// stored in the VirtualAddress field of the first relocation. It is an error if IMAGE_SCN_LNK_NRELOC_OVFL is set and there are
-		/// fewer than 0xffff relocations in the section.
+		/// The section contains extended relocations. The count of relocations for the section exceeds the 16 bits that is
+		/// reserved for it in the section header. If the NumberOfRelocations field in the section header is 0xffff, the actual
+		/// relocation count is stored in the VirtualAddress field of the first relocation. It is an error if
+		/// IMAGE_SCN_LNK_NRELOC_OVFL is set and there are fewer than 0xffff relocations in the section.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -2105,12 +2872,57 @@ public static partial class DbgHelp
 			public uint PhysicalAddress;
 
 			/// <summary>
-			/// The total size of the section when loaded into memory, in bytes. If this value is greater than the <c>SizeOfRawData</c>
-			/// member, the section is filled with zeroes. This field is valid only for executable images and should be set to 0 for
-			/// object files.
+			/// The total size of the section when loaded into memory, in bytes. If this value is greater than the
+			/// <c>SizeOfRawData</c> member, the section is filled with zeroes. This field is valid only for executable images and
+			/// should be set to 0 for object files.
 			/// </summary>
 			[FieldOffset(0)]
 			public uint VirtualSize;
 		}
+	}
+
+	/// <summary>
+	/// A <c>LIST_ENTRY</c> structure describes an entry in a doubly linked list or serves as the header for such a list.
+	/// </summary>
+	/// <remarks>
+	/// <para>A <c>LIST_ENTRY</c> structure that describes the list head must have been initialized by calling InitializeListHead.</para>
+	/// <para>
+	/// A driver can access the <c>Flink</c> or <c>Blink</c> members of a <c>LIST_ENTRY</c>, but the members must only be updated
+	/// by the system routines supplied for this purpose.
+	/// </para>
+	/// <para>
+	/// For more information about how to use <c>LIST_ENTRY</c> structures to implement a doubly linked list, see Singly and
+	/// Doubly Linked Lists.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-list_entry typedef struct _LIST_ENTRY { struct _LIST_ENTRY
+	// *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, PRLIST_ENTRY;
+	[PInvokeData("ntdef.h", MSDNShortId = "NS:ntdef._LIST_ENTRY")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct LIST_ENTRY
+	{
+		/// <summary>
+		/// <para>
+		/// For a <c>LIST_ENTRY</c> structure that serves as a list entry, the <c>Flink</c> member points to the next entry in the
+		/// list or to the list header if there is no next entry in the list.
+		/// </para>
+		/// <para>
+		/// For a <c>LIST_ENTRY</c> structure that serves as the list header, the <c>Flink</c> member points to the first entry in
+		/// the list or to the LIST_ENTRY structure itself if the list is empty.
+		/// </para>
+		/// </summary>
+		public IntPtr Flink;
+
+		/// <summary>
+		/// <para>
+		/// For a <c>LIST_ENTRY</c> structure that serves as a list entry, the <c>Blink</c> member points to the previous entry in
+		/// the list or to the list header if there is no previous entry in the list.
+		/// </para>
+		/// <para>
+		/// For a <c>LIST_ENTRY</c> structure that serves as the list header, the <c>Blink</c> member points to the last entry in
+		/// the list or to the <c>LIST_ENTRY</c> structure itself if the list is empty.
+		/// </para>
+		/// </summary>
+		public IntPtr Blink;
 	}
 }
