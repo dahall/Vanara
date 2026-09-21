@@ -37,6 +37,9 @@ public class DbgHelpTests
 	}
 
 	[Test]
+	public void TestStructs() => TestHelper.GetNestedStructSizes(typeof(Vanara.PInvoke.DbgHelp)).WriteValues();
+
+	[Test]
 	public void EnumDirTreeTest()
 	{
 		var output = EnumDirTree(HPROCESS.NULL, Environment.GetFolderPath(Environment.SpecialFolder.Windows), imgName);
@@ -288,6 +291,9 @@ public class DbgHelpTests
 	[Test]
 	public unsafe void OptionalHeaderTest()
 	{
+		Assert.That(sizeof(IMAGE_OPTIONAL_HEADER), Is.EqualTo(IntPtr.Size == 4 ? 224 : 240));
+		Assert.That(Marshal.OffsetOf<IMAGE_OPTIONAL_HEADER>("padding").ToInt32(), Is.EqualTo(24));
+
 		using var hFile = CreateFile(@"C:\Windows\notepad.exe", Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
 		Assert.That(hFile, ResultIs.ValidHandle);
 

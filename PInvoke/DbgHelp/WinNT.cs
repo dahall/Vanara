@@ -2102,7 +2102,7 @@ public static partial class DbgHelp
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		private struct PADDING
 		{
-			internal fixed uint padding[20];
+			internal fixed uint padding[14];
 			private readonly IntPtr paddingl1;
 			private readonly IntPtr paddingl2;
 			private readonly IntPtr paddingl3;
