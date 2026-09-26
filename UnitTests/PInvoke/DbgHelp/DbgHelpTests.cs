@@ -313,6 +313,7 @@ public class DbgHelpTests
 		ntHeader->OptionalHeader.WriteValues();
 		IMAGE_OPTIONAL_HEADER optionalHeader = ntHeader->OptionalHeader;
 		Assert.That(Enum.IsDefined(optionalHeader.Magic));
+		Assert.That(optionalHeader.DataDirectory.All(x => x.VirtualAddress != 0 || x.Size == 0), "If RVA is 0, then Size must be 0 too");
 		optionalHeader.WriteValues();
 	}
 }
