@@ -311,5 +311,8 @@ public class DbgHelpTests
 		Assert.That(ntHeader->Signature, Is.EqualTo(IMAGE_NT_SIGNATURE));
 
 		ntHeader->OptionalHeader.WriteValues();
+		IMAGE_OPTIONAL_HEADER optionalHeader = ntHeader->OptionalHeader;
+		Assert.That(Enum.IsDefined(optionalHeader.Magic));
+		optionalHeader.WriteValues();
 	}
 }
