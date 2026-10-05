@@ -2047,7 +2047,7 @@ public static partial class Ole32
 	// ULONG *pulSize, REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "c04c736c-8efe-438b-9d21-8b6ad53d36e7")]
-	public static extern HRESULT CoGetMarshalSizeMax(ref uint pulSize, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk,
+	public static extern HRESULT CoGetMarshalSizeMax(ref uint pulSize, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object pUnk,
 		MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags);
 
 	/// <summary>Returns the context for the current object.</summary>
@@ -2221,7 +2221,7 @@ public static partial class Ole32
 	// REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags, LPMARSHAL *ppMarshal );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "0cb74adc-e192-4ae5-9267-02c79e301681")]
-	public static extern HRESULT CoGetStandardMarshal(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnk,
+	public static extern HRESULT CoGetStandardMarshal(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pUnk,
 		MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags, out IMarshal ppMarshal);
 
 	/// <summary>Creates an aggregated standard marshaler for use with lightweight client-side handlers.</summary>
@@ -2664,7 +2664,7 @@ public static partial class Ole32
 	// LPSTREAM pStm, REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "04ca1217-eac1-43e2-b736-8d7522ce8592")]
-	public static extern HRESULT CoMarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk, MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags);
+	public static extern HRESULT CoMarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object pUnk, MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags);
 
 	/// <summary>Marshals an interface pointer from one thread to another thread in the same process.</summary>
 	/// <param name="riid">A reference to the identifier of the interface to be marshaled.</param>
@@ -2697,7 +2697,7 @@ public static partial class Ole32
 	// CoMarshalInterThreadInterfaceInStream( REFIID riid, LPUNKNOWN pUnk, LPSTREAM *ppStm );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "c9ab8713-8604-4f0b-a11b-bdfb7d595d95")]
-	public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object? pUnk, out IStream ppStm);
+	public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? pUnk, out IStream ppStm);
 
 	/// <summary>Retrieves a list of the authentication services registered when the process called CoInitializeSecurity.</summary>
 	/// <param name="pcAuthSvc">A pointer to a variable that receives the number of entries returned in the asAuthSvc array.</param>
@@ -3686,7 +3686,7 @@ public static partial class Ole32
 	// LPSTREAM pStm, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "d0eac0da-2f41-40c4-b756-31bc22752c17")]
-	public static extern HRESULT CoUnmarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT CoUnmarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 
 	/// <summary>Waits for specified handles to be signaled or for a specified timeout period to elapse.</summary>
 	/// <param name="dwFlags">The wait options. Possible values are taken from the COWAIT_FLAGS enumeration.</param>
@@ -4174,7 +4174,7 @@ public static partial class Ole32
 	// AgileReferenceOptions options , REFIID riid, IUnknown *pUnk, IAgileReference **ppAgileReference );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "D16224C7-1BB7-46F5-B66C-54D0B9679006")]
-	public static extern HRESULT RoGetAgileReference(AgileReferenceOptions options, in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, out IAgileReference ppAgileReference);
+	public static extern HRESULT RoGetAgileReference(AgileReferenceOptions options, in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object pUnk, out IAgileReference ppAgileReference);
 
 	/// <summary>Converts a CLSID into a string of printable characters. Different CLSIDs always convert to different strings.</summary>
 	/// <param name="rclsid">The CLSID to be converted.</param>

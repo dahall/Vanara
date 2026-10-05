@@ -22,6 +22,16 @@ public class ShellContextMenuTests
 		];
 	}
 
+	private static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
+	{
+		if (mii.Text is "" or "-")
+			TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}");
+		else
+			TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
+		for (int j = 0; j < mii.SubMenus.Length; j++)
+			ShowMII(mii.SubMenus[j], j, indent + 1);
+	}
+
 	[TestCaseSource(nameof(CreateSources))]
 	public void CreateTest(string[] input)
 	{
@@ -31,16 +41,33 @@ public class ShellContextMenuTests
 		int c = 0;
 		foreach (var i in menu.GetItems())
 			ShowMII(i, c++);
+	}
 
-		static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
+	// Test to pull standard menu and then pull extended menu items using IExplorerCommandProvider interface and enumerate
+	// installed packages with PackageManager.FindPackagesForUser and parse each manifest for the file explorer context menu
+	// extension. This is a different code path than the one used in CreateTest above.
+	[TestCaseSource(nameof(CreateSources))]
+	public void CreateExtTest(string[] input)
+	{
+		ShellItem[] shis = Array.ConvertAll(input, ShellItem.Open);
+		using var menu = ShellContextMenu.CreateFromItems(shis, out var d);
+		menu.PopulateMenu(CMF.CMF_EXTENDEDVERBS);
+
+		// Get the extended menu items using IExplorerCommandProvider interface
+		PIDL[] pidls = Array.ConvertAll(shis, si => { SHGetIDListFromObject(si, out var pidl).ThrowIfFailed(); return pidl!; });
+		using PIDL parent = PIDL.FindCommonParent(pidls);
+		using ShellFolder parentFolder = new(parent);
+		IExplorerCommandProvider? provider = parentFolder.GetViewObject<IExplorerCommandProvider>(User32.GetDesktopWindow());
+		if (provider is not null)
 		{
-			if (mii.Text is "" or "-")
-				TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}");
-			else
-				TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
-			for (int j = 0; j < mii.SubMenus.Length; j++)
-				ShowMII(mii.SubMenus[j], j, indent + 1);
+			provider.GetCommands(null, typeof(IEnumExplorerCommand).GUID, out var ppv);
 		}
+
+		// Add package manifest menus
+
+		int c = 0;
+		foreach (var i in menu.GetItems())
+			ShowMII(i, c++);
 	}
 
 	[Test]

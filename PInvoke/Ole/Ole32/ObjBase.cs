@@ -1121,7 +1121,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
 	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, in BIND_OPTS pBindOptions, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
 
 	/// <summary>
 	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.
@@ -1182,7 +1182,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("objbase.h", MSDNShortId = "0f5c9ef5-3918-4f93-bfd1-1017029b3dc1")]
 	public static extern HRESULT CoGetObject([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In, Optional] BIND_OPTS_V? pBindOptions, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
 
 	/// <summary>
 	/// Returns the default values of the Security Descriptors of the machine-wide launch and access permissions, as well as launch and

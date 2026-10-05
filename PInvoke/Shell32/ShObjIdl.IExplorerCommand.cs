@@ -378,7 +378,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommandprovider-getcommands
 		// HRESULT GetCommands( IUnknown *punkSite, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetCommands([MarshalAs(UnmanagedType.IUnknown)] object punkSite, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+		HRESULT GetCommands([MarshalAs(UnmanagedType.IUnknown), Optional] object? punkSite, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		// IExplorerCommand
 		/// <summary>Gets a specified Explorer command instance.</summary>
@@ -401,7 +401,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommandprovider-getcommand HRESULT
 		// GetCommand( REFGUID rguidCommandId, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetCommand(in Guid rguidCommandId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+		HRESULT GetCommand(in Guid rguidCommandId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 	}
 
 	/// <summary>Exposes a single method that allows retrieval of the command state.</summary>

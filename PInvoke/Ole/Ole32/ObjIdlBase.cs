@@ -1767,7 +1767,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getunmarshalclass HRESULT GetUnmarshalClass(
 		// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, CLSID *pCid );
-		Guid GetUnmarshalClass(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv, [In] MSHCTX dwDestContext,
+		Guid GetUnmarshalClass(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pv, [In] MSHCTX dwDestContext,
 			[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Retrieves the maximum size of the buffer that will be needed during marshaling.</summary>
@@ -1839,7 +1839,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getmarshalsizemax HRESULT GetMarshalSizeMax(
 		// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, DWORD *pSize );
-		uint GetMarshalSizeMax(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv, [In] MSHCTX dwDestContext,
+		uint GetMarshalSizeMax(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pv, [In] MSHCTX dwDestContext,
 			[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Marshals an interface pointer.</summary>
@@ -1925,7 +1925,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-marshalinterface HRESULT MarshalInterface(
 		// IStream *pStm, REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags );
-		void MarshalInterface([In] IStream pStm, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pv,
+		void MarshalInterface([In] IStream pStm, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? pv,
 			[In] MSHCTX dwDestContext, [In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
 
 		/// <summary>Unmarshals an interface pointer.</summary>
