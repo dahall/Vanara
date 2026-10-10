@@ -1,6 +1,13 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Win32.SafeHandles;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using Vanara.Collections;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Shell32;
@@ -50,24 +57,81 @@ public class ShellContextMenuTests
 	public void CreateExtTest(string[] input)
 	{
 		ShellItem[] shis = Array.ConvertAll(input, ShellItem.Open);
-		using var menu = ShellContextMenu.CreateFromItems(shis, out var d);
-		menu.PopulateMenu(CMF.CMF_EXTENDEDVERBS);
+		//using var menu = ShellContextMenu.CreateFromItems(shis, out var d);
+		//menu.PopulateMenu(CMF.CMF_EXTENDEDVERBS);
 
 		// Get the extended menu items using IExplorerCommandProvider interface
-		PIDL[] pidls = Array.ConvertAll(shis, si => { SHGetIDListFromObject(si, out var pidl).ThrowIfFailed(); return pidl!; });
+		PIDL[] pidls = Array.ConvertAll(shis, si => si.PIDL);
 		using PIDL parent = PIDL.FindCommonParent(pidls);
 		using ShellFolder parentFolder = new(parent);
-		IExplorerCommandProvider? provider = parentFolder.GetViewObject<IExplorerCommandProvider>(User32.GetDesktopWindow());
-		if (provider is not null)
+		try
 		{
-			provider.GetCommands(null, typeof(IEnumExplorerCommand).GUID, out var ppv);
+			IExplorerCommandProvider? provider = parentFolder.GetViewObject<IExplorerCommandProvider>(User32.GetDesktopWindow());
+			if (provider is not null)
+			{
+				Assert.That(provider.GetCommands(null, out IEnumExplorerCommand? ppv), ResultIs.Successful);
+				using ShellItemArray shArray = new(parent, pidls);
+				foreach (IExplorerCommand cmd in IEnumFromCom<IExplorerCommand>.Create(ppv!))
+				{
+					Assert.That(cmd.GetFlags(out var flags), ResultIs.Successful);
+					if (flags.HasFlag(EXPCMDFLAGS.ECF_ISSEPARATOR))
+					{
+						TestContext.WriteLine(new string('-', 20));
+						continue;
+					}
+					Assert.That(cmd.GetTitle(shArray.IShellItemArray!, out var title), ResultIs.Successful);
+					TestContext.WriteLine($"{title} : {flags}");
+				}
+			}
+		}
+		catch
+		{
+			TestContext.WriteLine($"No provider");
 		}
 
 		// Add package manifest menus
+		using var sid = AdvApi32.SafePSID.Current;
+		foreach (var (name, _) in EnumPackageManifestForSid(sid))
+		{
+			if (Kernel32.OpenPackageInfoByFullName(name, out var pkgRef).Succeeded)
+			{
+				using (pkgRef)
+				{
+					if (Kernel32.GetPackageInfo(pkgRef, Kernel32.PACKAGE_INFORMATION.PACKAGE_INFORMATION_FULL, out var infoBuf).Succeeded)
+					{
+						Assert.That(infoBuf, Has.Length.GreaterThan(0));
+						string path = Path.Combine(infoBuf[0].path, "AppxManifest.xml");
+						bool wrote = false;
+						Assert.That(File.Exists(path), Is.True);
+						XDocument doc = XDocument.Load(path);
+						foreach (var elem in doc.XPathSelectElements("//*[local-name()='Extension'][@Category='windows.fileExplorerContextMenus']//*[local-name()='ItemType']"))
+						{
+							if (!wrote) { TestContext.WriteLine($"<{infoBuf[0].packageId.name}> {path}"); wrote = true; }
+							TestContext.WriteLine($"@ {elem.Attribute("Type")?.Value}");
+							foreach (var verb in elem.XPathSelectElements("*[local-name()='Verb']"))
+								TestContext.WriteLine($"> {verb.Attribute("Id")?.Value} - {verb.Attribute("Clsid")?.Value}");
+						}
+					}
+				}
+			}
+		}
 
-		int c = 0;
-		foreach (var i in menu.GetItems())
-			ShowMII(i, c++);
+		static IEnumerable<(string name, string xml)> EnumPackageManifestForSid(PSID sid)
+		{
+			const string root = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\";
+			if (AdvApi32.RegOpenKeyEx(HKEY.HKEY_LOCAL_MACHINE, root + sid.ToString("D"), 0, AdvApi32.REGSAM.KEY_READ | AdvApi32.REGSAM.KEY_QUERY_VALUE | AdvApi32.REGSAM.KEY_WOW64_64KEY, out var hKey).Failed)
+				yield break;
+			using (hKey)
+			{
+				foreach (var (name, cls, lastWrite) in AdvApi32.RegEnumKeyEx(hKey))
+				{
+					if (AdvApi32.RegGetValue(hKey, name, "Path", AdvApi32.RRF.RRF_RT_ANY, out _, out var data).Succeeded)
+					{
+						yield return (name, Encoding.Unicode.GetString(data!).TrimEnd('\0'));
+					}
+				}
+			}
+		}
 	}
 
 	[Test]
