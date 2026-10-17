@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using static Vanara.PInvoke.Kernel32;
 using FileAccess = Vanara.PInvoke.Kernel32.FileAccess;
 
@@ -198,13 +199,13 @@ public partial class WinBaseTests_File
 	}
 
 	[Test]
-	public unsafe void ReadDirectoryChangesExWTest()
+	public void ReadDirectoryChangesExWTest()
 	{
 		string newFile = Path.Combine(Path.GetDirectoryName(fn)!, "X.ico");
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		new Thread(() => { Sleep(200); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
 		using SafeHGlobalHandle mem = new(4096);
-		Assert.That(ReadDirectoryChangesExW(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, default, complete, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation), ResultIs.Successful);
+		Assert.That(ReadDirectoryChangesExW(hDir, mem, mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, default, complete, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation), ResultIs.Successful);
 		Assert.That(ret, Is.GreaterThan(0));
 		List<FILE_NOTIFY_EXTENDED_INFORMATION> list = [];
 		uint nxt = 0U;
@@ -217,8 +218,32 @@ public partial class WinBaseTests_File
 		} while (nxt > 0);
 		list.WriteValues();
 
-		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped) =>
+		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped) =>
 			TestContext.WriteLine($"{dwErrorCode}, {dwNumberOfBytesTransfered}");
+	}
+
+	[Test]
+	public async Task ReadDirectoryChangesExWAsyncTest()
+	{
+		string newFile = Path.Combine(Path.GetDirectoryName(fn)!, "X.ico");
+		DeleteFile(newFile);
+		bool runThread = true;
+		var thread = new Thread(() => { while (runThread) { Sleep(200); CopyFile(fn, newFile, false); Sleep(100); DeleteFile(newFile); } });
+		try
+		{
+			thread.Start();
+			int counter = 0;
+			await foreach (var info in ReadDirectoryChangesExWAsync(TestCaseSources.TempDirWhack, false, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME))
+			{
+				info.WriteValues();
+				if (++counter > 5) break;
+			}
+		}
+		finally
+		{
+			runThread = false;
+			if (thread.IsAlive) thread.Join();
+		}
 	}
 
 	[Test]
@@ -228,7 +253,7 @@ public partial class WinBaseTests_File
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		using SafeHGlobalHandle mem = new(4096);
 		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
-		Assert.That(ReadDirectoryChanges(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, IntPtr.Zero, complete), ResultIs.Successful);
+		Assert.That(ReadDirectoryChanges(hDir, mem, mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, IntPtr.Zero, complete), ResultIs.Successful);
 		Assert.That(ret, Is.GreaterThan(0));
 		List<FILE_NOTIFY_INFORMATION> list = [];
 		uint nxt = 0U;
@@ -241,10 +266,8 @@ public partial class WinBaseTests_File
 		} while (nxt > 0);
 		list.WriteValues();
 
-		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped)
-		{
+		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped) =>
 			TestContext.WriteLine($"{dwErrorCode}, {dwNumberOfBytesTransfered}");
-		}
 	}
 
 	[Test]

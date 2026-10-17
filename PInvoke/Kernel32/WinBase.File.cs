@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -2850,6 +2852,69 @@ public static partial class Kernel32
 		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, [In, Optional, StructPointer(typeof(NativeOverlapped))] IntPtr lpOverlapped,
 		[Optional] FileIOCompletionRoutine? lpCompletionRoutine);
 
+#if !NETFRAMEWORK && !NETSTANDARD2_0
+	/// <summary>
+	/// Asynchronously enumerates file change notifications from the specified directory, yielding FILE_NOTIFY_INFORMATION entries
+	/// as they are received.
+	/// </summary>
+	/// <remarks>
+	/// The implementation repeatedly invokes ReadDirectoryChanges to fill a fixed-size buffer and parses one or more
+	/// FILE_NOTIFY_INFORMATION entries per buffer. Enumeration stops when the cancellation token is signaled or when the
+	/// underlying call fails with ERROR_OPERATION_ABORTED, ERROR_INVALID_PARAMETER, or ERROR_ACCESS_DENIED; other errors are
+	/// propagated. Consumers should expect multiple entries per batch and honor cancellation to terminate the sequence promptly.
+	/// </remarks>
+	/// <param name="hDirectory">Handle to an open directory to monitor for file system changes.</param>
+	/// <param name="bWatchSubtree">
+	/// true to monitor the directory and its subdirectories; false to monitor only the directory itself.
+	/// </param>
+	/// <param name="dwNotifyFilter">A combination of FILE_NOTIFY_CHANGE flags specifying which types of changes to report.</param>
+	/// <param name="cancellationToken">CancellationToken to stop the asynchronous enumeration.</param>
+	/// <returns>An asynchronous stream of FILE_NOTIFY_INFORMATION structures that describe changes in the directory.</returns>
+	public static async IAsyncEnumerable<FILE_NOTIFY_INFORMATION> ReadDirectoryChangesAsync([In] HFILE hDirectory, bool bWatchSubtree,
+		FILE_NOTIFY_CHANGE dwNotifyFilter, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		const int bufferSize = 4096;
+		using SafeHGlobalHandle mem = new(bufferSize);
+		while (!cancellationToken.IsCancellationRequested)
+		{
+			uint bytesReturned = 0;
+			bool ok = false;
+			try
+			{
+				ok = await Task.Run(() =>
+					ReadDirectoryChanges(hDirectory, mem, mem.Size, bWatchSubtree, dwNotifyFilter, out bytesReturned, IntPtr.Zero, null),
+					cancellationToken).ConfigureAwait(false);
+			}
+			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			{
+				yield break;
+			}
+
+			if (!ok)
+			{
+				var err = Win32Error.GetLastError();
+				if ((uint)err is Win32Error.ERROR_OPERATION_ABORTED or Win32Error.ERROR_INVALID_PARAMETER or Win32Error.ERROR_ACCESS_DENIED)
+					yield break;
+				err.ThrowIfFailed();
+			}
+
+			if (bytesReturned == 0)
+				continue;
+
+			uint nxt = 0;
+			do
+			{
+				var basePtr = mem.DangerousGetHandle().Offset((int)nxt);
+				FILE_NOTIFY_INFORMATION info = basePtr.ToStructure<FILE_NOTIFY_INFORMATION>();
+				yield return info;
+				if (info.NextEntryOffset == 0)
+					break;
+				nxt += info.NextEntryOffset;
+			} while (nxt < bytesReturned && nxt > 0);
+		}
+	}
+#endif
+
 	/// <summary>
 	/// <para>
 	/// Retrieves information that describes the changes within the specified directory, which can include extended information if that
@@ -3242,7 +3307,7 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReadDirectoryChangesExW([In, AddAsMember] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
 		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
-		in NativeOverlapped lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+		in NativeOverlapped lpOverlapped, [In, Optional] FileIOCompletionRoutine? lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
 
 	/// <summary>
 	/// <para>
@@ -3439,8 +3504,142 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReadDirectoryChangesExW([In, AddAsMember] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
 		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
-		[In, Optional, Ignore] IntPtr lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine,
+		[In, Optional, Ignore] IntPtr lpOverlapped, [In, Optional] FileIOCompletionRoutine? lpCompletionRoutine,
 		READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+
+#if !NETFRAMEWORK && !NETSTANDARD2_0
+	/// <summary>
+	/// <para>
+	/// Retrieves information that describes the changes within the specified directory, which can include extended information if
+	/// that information type is specified. The function does not report changes to the specified directory itself.
+	/// </para>
+	/// <para>To track changes on a volume, see change journals.</para>
+	/// </summary>
+	/// <param name="directoryPath">A path to the directory to be monitored.</param>
+	/// <param name="bWatchSubtree">
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this
+	/// parameter is <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// </param>
+	/// <param name="dwNotifyFilter">
+	/// <para>
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one
+	/// or more of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_FILE_NAME 0x00000001</term>
+	/// <term>
+	/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes
+	/// include renaming, creating, or deleting a file.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME 0x00000002</term>
+	/// <term>
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return.
+	/// Changes include creating or deleting a directory.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES 0x00000004</term>
+	/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SIZE 0x00000008</term>
+	/// <term>
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The
+	/// operating system detects a change in file size only when the file is written to the disk. For operating systems that use
+	/// extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE 0x00000010</term>
+	/// <term>
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation
+	/// to return. The operating system detects a change to the last write-time only when the file is written to the disk. For
+	/// operating systems that use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS 0x00000020</term>
+	/// <term>
+	/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait
+	/// operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_CREATION 0x00000040</term>
+	/// <term>
+	/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation
+	/// to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SECURITY 0x00000100</term>
+	/// <term>
+	/// Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+	/// <returns>An asynchronous stream of FILE_NOTIFY_EXTENDED_INFORMATION structures that describe changes in the directory.</returns>
+	public static async IAsyncEnumerable<FILE_NOTIFY_EXTENDED_INFORMATION> ReadDirectoryChangesExWAsync(string directoryPath, bool bWatchSubtree,
+		FILE_NOTIFY_CHANGE dwNotifyFilter, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		const READ_DIRECTORY_NOTIFY_INFORMATION_CLASS readClass = READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation;
+		const int bufferSize = 4096;
+		if (!System.IO.Directory.Exists(directoryPath))
+			throw new DirectoryNotFoundException($"The directory '{directoryPath}' does not exist.");
+		using SafeHGlobalHandle mem = new(bufferSize);
+		while (!cancellationToken.IsCancellationRequested)
+		{
+			uint bytesReturned = 0;
+			bool ok = false;
+			try
+			{
+				ok = await Task.Run(() => {
+					using SafeHFILE hDir = CreateFile(directoryPath, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
+					if (hDir.IsInvalid)
+						return false;
+					uint err = 0;
+					bool ret = ReadDirectoryChangesExW(hDir, mem, mem.Size, bWatchSubtree, dwNotifyFilter, out bytesReturned, IntPtr.Zero, (uint code, uint _, IntPtr _) => err = code, readClass);
+					return ret;
+				}, cancellationToken).ConfigureAwait(false);
+			}
+			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			{
+				yield break;
+			}
+
+			if (!ok)
+			{
+				var err = Win32Error.GetLastError();
+				if ((uint)err is Win32Error.ERROR_OPERATION_ABORTED or Win32Error.ERROR_INVALID_PARAMETER or Win32Error.ERROR_ACCESS_DENIED)
+					yield break;
+				err.ThrowIfFailed();
+			}
+
+			if (bytesReturned == 0)
+				continue;
+
+			uint nxt = 0;
+			do
+			{
+				var basePtr = mem.DangerousGetHandle().Offset((int)nxt);
+				FILE_NOTIFY_EXTENDED_INFORMATION info = basePtr.ToStructure<FILE_NOTIFY_EXTENDED_INFORMATION>();
+				yield return info;
+				if (info.NextEntryOffset == 0)
+					break;
+				nxt += info.NextEntryOffset;
+			} while (nxt < bytesReturned && nxt > 0);
+		}
+	}
+#endif
 
 	/// <summary>
 	/// <para>Reopens the specified file system object with different access rights, sharing mode, and flags.</para>
